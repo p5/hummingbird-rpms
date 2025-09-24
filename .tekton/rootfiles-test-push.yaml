@@ -1,0 +1,48 @@
+---
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  annotations:
+    build.appstudio.openshift.io/repo: '{{ source_url }}/-/tree/{{ revision }}'
+    build.appstudio.redhat.com/commit_sha: '{{ revision }}'
+    build.appstudio.redhat.com/target_branch: '{{ target_branch }}'
+    pipelinesascode.tekton.dev/max-keep-runs: "3"
+    pipelinesascode.tekton.dev/on-cel-expression: event == "push" && target_branch == "main"
+  creationTimestamp: null
+  labels:
+    appstudio.openshift.io/application: shebert-rpm-test
+    appstudio.openshift.io/component: rootfiles-test
+    pipelines.appstudio.openshift.io/type: build
+  name: rootfiles-test-on-push
+  namespace: rhel-primitives-tenant
+spec:
+  params:
+    - name: ociStorage
+      value: quay.io/redhat-user-workloads/rhel-primitives-tenant/rootfiles-test:{{revision}}
+    - name: package-name
+      value: rootfiles
+    - name: git-url
+      value: "{{ source_url }}"
+    - name: revision
+      value: "{{ revision }}"
+    - name: target-branch
+      value: "{{ target_branch }}"
+    - name: path-context
+      value: rootfiles
+    - name: self-ref-url
+      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+    - name: self-ref-revision
+      value: "add-pulp-support"
+  pipelineRef:
+    resolver: git
+    params:
+      - name: url
+        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      - name: revision
+        value: add-pulp-support
+      - name: pathInRepo
+        value: pipeline/rhel-primitives-build-rpm-package.yaml
+  workspaces:
+    - name: git-auth
+      secret:
+        secretName: '{{ git_auth_secret }}'
