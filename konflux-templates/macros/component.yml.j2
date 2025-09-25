@@ -1,0 +1,20 @@
+{%- macro component(rpm) -%}
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+  name: {{ rpm.component_name }}
+spec:
+  application: {{ application_name }}
+  componentName: {{ rpm.component_name }}
+  containerImage: quay.io/redhat-user-workloads/{{ tenant }}/{{ rpm.component_name }}
+  source:
+    git:
+      context: rpms/{{ rpm.name }}
+      revision: {{ branch }}
+      url: {{ git_repo }}
+{%- endmacro -%}

@@ -1,0 +1,20 @@
+{%- macro image_repository(rpm) -%}
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: {{ application_name }}
+    appstudio.redhat.com/component: {{ rpm.component_name }}
+  name: {{ rpm.component_name }}
+spec:
+  image:
+    name: {{ tenant }}/{{ rpm.component_name }}
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
+{%- endmacro -%}

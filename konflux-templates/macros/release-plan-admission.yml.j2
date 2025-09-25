@@ -1,0 +1,34 @@
+{%- macro release_plan_admission(plan_name, pulp_domain, pulp_credentials_secret, pipeline_url, pipeline_revision, pipeline_path, policy) -%}
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ReleasePlanAdmission
+metadata:
+  name: {{ plan_name }}
+  namespace: {{ tenant }}
+  labels:
+    release.appstudio.openshift.io/block-releases: 'false'
+spec:
+  applications:
+    - {{ application_name }}
+  data:
+    pulp:
+      domain: {{ pulp_domain }}
+      secretName: {{ pulp_credentials_secret }}
+    singleComponentMode: true
+  origin: {{ tenant }}
+  pipeline:
+    pipelineRef:
+      params:
+        - name: url
+          value: '{{ pipeline_url }}'
+        - name: revision
+          value: {{ pipeline_revision }}
+        - name: pathInRepo
+          value: {{ pipeline_path }}
+      resolver: git
+    serviceAccountName: {{ plan_name }}
+    timeouts:
+      pipeline: 4h0m0s
+      tasks: 4h0m0s
+  policy: {{ policy }}
+{%- endmacro -%}
