@@ -131,7 +131,7 @@ spec:
   data:
     pulp:
       domain: public-rhel-primitives
-      secretName: pulp-credentials
+      secretName: pulp-public-rhel-primitives-config-file-secret
     singleComponentMode: true
   origin: rhel-primitives-tenant
   pipeline:
