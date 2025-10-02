@@ -53,6 +53,8 @@ spec:
         value: "{{ pipeline_revision }}"
       - name: pathInRepo
         value: "{{ pipeline_path }}"
+  taskRunTemplate:
+    serviceAccountName: build-pipeline-{{ rpm.name }}
   workspaces:
     - name: git-auth
       secret:

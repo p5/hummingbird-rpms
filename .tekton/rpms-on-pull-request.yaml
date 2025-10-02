@@ -48,6 +48,8 @@ spec:
         value: "add-pulp-support"
       - name: pathInRepo
         value: "pipeline/rhel-primitives-build-rpm-package.yaml"
+  taskRunTemplate:
+    serviceAccountName: build-pipeline-rootfiles-main
   workspaces:
     - name: git-auth
       secret:
@@ -102,6 +104,8 @@ spec:
         value: "add-pulp-support"
       - name: pathInRepo
         value: "pipeline/rhel-primitives-build-rpm-package.yaml"
+  taskRunTemplate:
+    serviceAccountName: build-pipeline-setup-main
   workspaces:
     - name: git-auth
       secret:
