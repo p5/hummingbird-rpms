@@ -1,0 +1,60 @@
+{%- macro pipeline_run(rpm, event_type, cancel_in_progress, output_image_tag, extra_params={}, extra_annotations={}, extra_path_changes=[]) -%}
+---
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  annotations:
+    build.appstudio.openshift.io/repo: https://gitlab.com/redhat/rhel-primitives/rpms/-/tree/{{ "{{revision}}" }}
+    build.appstudio.redhat.com/commit_sha: '{{ "{{revision}}" }}'
+{%- for key, value in extra_annotations.items() %}
+    {{ key }}: '{{ value }}'
+{%- endfor %}
+    build.appstudio.redhat.com/target_branch: '{{ "{{target_branch}}" }}'
+    pipelinesascode.tekton.dev/on-target-branch: "[{{ branch }}]"
+    pipelinesascode.tekton.dev/cancel-in-progress: "{{ cancel_in_progress }}"
+    pipelinesascode.tekton.dev/max-keep-runs: "3"
+    pipelinesascode.tekton.dev/on-event: "[{{ event_type }}]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/{{ rpm.dname }}/***{%- for path in extra_path_changes %}, {{ path }}{%- endfor %}]"
+  creationTimestamp: null
+  labels:
+    appstudio.openshift.io/application: {{ application_name }}
+    appstudio.openshift.io/component: {{ rpm.name }}
+    pipelines.appstudio.openshift.io/type: build
+  name: {{ rpm.name }}-on-{{ event_type.replace('_', '-') }}
+  namespace: {{ tenant }}
+spec:
+  params:
+    - name: git-url
+      value: '{{ "{{source_url}}" }}'
+    - name: revision
+      value: '{{ "{{revision}}" }}'
+{%- for name, value in extra_params.items() %}
+    - name: {{ name }}
+      value: {{ value }}
+{%- endfor %}
+    - name: ociStorage
+      value: quay.io/redhat-user-workloads/{{ tenant }}/{{ rpm.name }}:{{ output_image_tag }}
+    - name: package-name
+      value: {{ rpm.dname }}
+    - name: target-branch
+      value: '{{ "{{target_branch}}" }}'
+    - name: path-context
+      value: "rpms/{{ rpm.dname }}"
+    - name: self-ref-url
+      value: "{{ pipeline_url }}"
+    - name: self-ref-revision
+      value: "{{ pipeline_revision }}"
+  pipelineRef:
+    resolver: git
+    params:
+      - name: url
+        value: "{{ pipeline_url }}"
+      - name: revision
+        value: "{{ pipeline_revision }}"
+      - name: pathInRepo
+        value: "{{ pipeline_path }}"
+  workspaces:
+    - name: git-auth
+      secret:
+        secretName: '{{ "{{git_auth_secret}}" }}'
+{%- endmacro -%}

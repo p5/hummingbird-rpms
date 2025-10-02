@@ -1,0 +1,151 @@
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Application
+metadata:
+  name: rpms-main
+spec:
+  appModelRepository:
+    url: ""
+  displayName: rpms-main
+  gitOpsRepository:
+    url: ""
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+  name: rootfiles-main
+spec:
+  application: rpms-main
+  componentName: rootfiles-main
+  containerImage: quay.io/redhat-user-workloads/rhel-primitives-tenant/rootfiles-main
+  source:
+    git:
+      context: rpms/rootfiles
+      revision: main
+      url: https://gitlab.com/redhat/rhel-primitives/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+  name: setup-main
+spec:
+  application: rpms-main
+  componentName: setup-main
+  containerImage: quay.io/redhat-user-workloads/rhel-primitives-tenant/setup-main
+  source:
+    git:
+      context: rpms/setup
+      revision: main
+      url: https://gitlab.com/redhat/rhel-primitives/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: rootfiles-main
+  name: rootfiles-main
+spec:
+  image:
+    name: rhel-primitives-tenant/rootfiles-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: setup-main
+  name: setup-main
+spec:
+  image:
+    name: rhel-primitives-tenant/setup-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: EnterpriseContractPolicy
+metadata:
+  name: registry-rhel-primitives
+spec:
+  description: >-
+    Includes rules for levels 1, 2 & 3 of SLSA v0.1.
+  publicKey: "k8s://openshift-pipelines/public-key"
+  sources:
+    - name: Release Policies
+      ruleData:
+        allowed_registry_prefixes:
+          - quay.io/rhel-primitives-ci/
+      data:
+        - github.com/release-engineering/rhtap-ec-policy//data
+        - oci::quay.io/konflux-ci/tekton-catalog/data-acceptable-bundles:latest
+      policy:
+        - oci::quay.io/enterprise-contract/ec-release-policy:konflux
+      config:
+        exclude: []
+        include:
+          - '@minimal'
+          - '@slsa3'
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ReleasePlan
+metadata:
+  labels:
+    release.appstudio.openshift.io/auto-release: "true"
+    release.appstudio.openshift.io/standing-attribution: "true"
+    release.appstudio.openshift.io/releasePlanAdmission: rhel-primitives-rpm-release
+  name: rhel-primitives-rpm-release
+spec:
+  application: rpms-main
+  target: rhel-primitives-tenant
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ReleasePlanAdmission
+metadata:
+  name: rhel-primitives-rpm-release
+  namespace: rhel-primitives-tenant
+  labels:
+    release.appstudio.openshift.io/block-releases: 'false'
+spec:
+  applications:
+    - rpms-main
+  data:
+    pulp:
+      domain: public-rhel-primitives
+      secretName: pulp-credentials
+    singleComponentMode: true
+  origin: rhel-primitives-tenant
+  pipeline:
+    pipelineRef:
+      params:
+        - name: url
+          value: 'https://github.com/scoheb/release-service-catalog.git'
+        - name: revision
+          value: push-rpms-to-pulp
+        - name: pathInRepo
+          value: pipelines/managed/push-rpms-to-pulp/push-rpms-to-pulp.yaml
+      resolver: git
+    serviceAccountName: rhel-primitives-rpm-release
+    timeouts:
+      pipeline: 4h0m0s
+      tasks: 4h0m0s
+  policy: registry-rhel-primitives

@@ -1,0 +1,26 @@
+{%- macro policy(policy_name) -%}
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: EnterpriseContractPolicy
+metadata:
+  name: {{ policy_name }}
+spec:
+  description: >-
+    Includes rules for levels 1, 2 & 3 of SLSA v0.1.
+  publicKey: "k8s://openshift-pipelines/public-key"
+  sources:
+    - name: Release Policies
+      ruleData:
+        allowed_registry_prefixes:
+          - quay.io/rhel-primitives-ci/
+      data:
+        - github.com/release-engineering/rhtap-ec-policy//data
+        - oci::quay.io/konflux-ci/tekton-catalog/data-acceptable-bundles:latest
+      policy:
+        - oci::quay.io/enterprise-contract/ec-release-policy:konflux
+      config:
+        exclude: []
+        include:
+          - '@minimal'
+          - '@slsa3'
+{%- endmacro -%}

@@ -1,0 +1,11 @@
+{%- for rpm in rpms -%}
+{{ pipeline_run(
+    rpm=rpm,
+    event_type='pull_request',
+    cancel_in_progress='true',
+    output_image_tag='on-mr-{{pull_request_number}}-{{revision}}',
+    extra_params={'image-expires-after': '5d'},
+    extra_annotations={'build.appstudio.redhat.com/pull_request_number': '{{pull_request_number}}'},
+    extra_path_changes=rpm.extra_path_changes if rpm.extra_path_changes is defined else [],
+) }}
+{% endfor -%}

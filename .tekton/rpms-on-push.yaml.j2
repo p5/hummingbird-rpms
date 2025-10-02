@@ -1,0 +1,9 @@
+{%- for rpm in rpms -%}
+{{ pipeline_run(
+    rpm=rpm,
+    event_type='push',
+    cancel_in_progress='false',
+    output_image_tag='{{revision}}',
+    extra_path_changes=rpm.extra_path_changes if rpm.extra_path_changes is defined else [],
+) }}
+{% endfor -%}
