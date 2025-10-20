@@ -1,6 +1,8 @@
-# RHEL Primitives RPMs
+# Welcome to Project Hummingbird
 
-This project hosts and builds all the RPM components required to build the container images in [gitlab.com/redhat/rhel-primitives/containers](https://gitlab.com/redhat/rhel-primitives/containers).
+Project Hummingbird builds a collection of minimal, hardened, and secure container images, aiming to provide purpose-built containers with a significantly reduced attack surface. This strong focus on security combined with a highly automated update workflow results in containers with nearly zero CVEs.
+
+For more details on the project, please refer to the [Hummingbird containers Git repository](https://gitlab.com/redhat/hummingbird/containers).
 
 ## Overview
 
