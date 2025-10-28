@@ -11,5 +11,5 @@
 
 ## Create
 ```
-$ ./create-pulp-resources.sh public-rhel-primitives "source,x86_64,s390x,ppc64le,aarch64"
+$ ./create-pulp-resources.sh public-hummingbird "source,x86_64,s390x,ppc64le,aarch64"
 ```
