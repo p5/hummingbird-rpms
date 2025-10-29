@@ -38,6 +38,8 @@ spec:
       value: {{ rpm.dname }}
     - name: target-branch
       value: '{{ "{{target_branch}}" }}'
+    - name: specfile
+      value: "{{  rpm.dname }}.spec"
     - name: path-context
       value: "rpms/{{ rpm.dname }}"
     - name: self-ref-url
