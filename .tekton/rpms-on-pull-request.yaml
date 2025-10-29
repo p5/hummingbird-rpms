@@ -3,7 +3,7 @@ apiVersion: tekton.dev/v1
 kind: PipelineRun
 metadata:
   annotations:
-    build.appstudio.openshift.io/repo: https://gitlab.com/redhat/rhel-primitives/rpms/-/tree/{{revision}}
+    build.appstudio.openshift.io/repo: https://gitlab.com/redhat/hummingbird/rpms/-/tree/{{revision}}
     build.appstudio.redhat.com/commit_sha: '{{revision}}'
     build.appstudio.redhat.com/pull_request_number: '{{pull_request_number}}'
     build.appstudio.redhat.com/target_branch: '{{target_branch}}'
@@ -18,7 +18,7 @@ metadata:
     appstudio.openshift.io/component: rootfiles-main
     pipelines.appstudio.openshift.io/type: build
   name: rootfiles-main-on-pull-request
-  namespace: rhel-primitives-tenant
+  namespace: hummingbird-tenant
 spec:
   params:
     - name: git-url
@@ -28,7 +28,7 @@ spec:
     - name: image-expires-after
       value: 5d
     - name: ociStorage
-      value: quay.io/redhat-user-workloads/rhel-primitives-tenant/rootfiles-main:on-mr-{{pull_request_number}}-{{revision}}
+      value: quay.io/redhat-user-workloads/hummingbird-tenant/rootfiles-main:on-mr-{{pull_request_number}}-{{revision}}
     - name: package-name
       value: rootfiles
     - name: target-branch
@@ -47,7 +47,7 @@ spec:
       - name: revision
         value: "add-pulp-support"
       - name: pathInRepo
-        value: "pipeline/rhel-primitives-build-rpm-package.yaml"
+        value: "pipeline/hummingbird-build-rpm-package.yaml"
   taskRunTemplate:
     serviceAccountName: build-pipeline-rootfiles-main
   workspaces:
@@ -59,7 +59,7 @@ apiVersion: tekton.dev/v1
 kind: PipelineRun
 metadata:
   annotations:
-    build.appstudio.openshift.io/repo: https://gitlab.com/redhat/rhel-primitives/rpms/-/tree/{{revision}}
+    build.appstudio.openshift.io/repo: https://gitlab.com/redhat/hummingbird/rpms/-/tree/{{revision}}
     build.appstudio.redhat.com/commit_sha: '{{revision}}'
     build.appstudio.redhat.com/pull_request_number: '{{pull_request_number}}'
     build.appstudio.redhat.com/target_branch: '{{target_branch}}'
@@ -74,7 +74,7 @@ metadata:
     appstudio.openshift.io/component: setup-main
     pipelines.appstudio.openshift.io/type: build
   name: setup-main-on-pull-request
-  namespace: rhel-primitives-tenant
+  namespace: hummingbird-tenant
 spec:
   params:
     - name: git-url
@@ -84,7 +84,7 @@ spec:
     - name: image-expires-after
       value: 5d
     - name: ociStorage
-      value: quay.io/redhat-user-workloads/rhel-primitives-tenant/setup-main:on-mr-{{pull_request_number}}-{{revision}}
+      value: quay.io/redhat-user-workloads/hummingbird-tenant/setup-main:on-mr-{{pull_request_number}}-{{revision}}
     - name: package-name
       value: setup
     - name: target-branch
@@ -103,7 +103,7 @@ spec:
       - name: revision
         value: "add-pulp-support"
       - name: pathInRepo
-        value: "pipeline/rhel-primitives-build-rpm-package.yaml"
+        value: "pipeline/hummingbird-build-rpm-package.yaml"
   taskRunTemplate:
     serviceAccountName: build-pipeline-setup-main
   workspaces:

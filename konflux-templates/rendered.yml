@@ -17,16 +17,17 @@ metadata:
     build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
     git-provider: gitlab
     git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
   name: rootfiles-main
 spec:
   application: rpms-main
   componentName: rootfiles-main
-  containerImage: quay.io/redhat-user-workloads/rhel-primitives-tenant/rootfiles-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/rootfiles-main
   source:
     git:
       context: rpms/rootfiles
       revision: main
-      url: https://gitlab.com/redhat/rhel-primitives/rpms.git
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -35,16 +36,17 @@ metadata:
     build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
     git-provider: gitlab
     git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
   name: setup-main
 spec:
   application: rpms-main
   componentName: setup-main
-  containerImage: quay.io/redhat-user-workloads/rhel-primitives-tenant/setup-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/setup-main
   source:
     git:
       context: rpms/setup
       revision: main
-      url: https://gitlab.com/redhat/rhel-primitives/rpms.git
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: ImageRepository
@@ -55,7 +57,7 @@ metadata:
   name: rootfiles-main
 spec:
   image:
-    name: rhel-primitives-tenant/rootfiles-main
+    name: hummingbird-tenant/rootfiles-main
     visibility: public
   notifications:
   - config:
@@ -73,7 +75,7 @@ metadata:
   name: setup-main
 spec:
   image:
-    name: rhel-primitives-tenant/setup-main
+    name: hummingbird-tenant/setup-main
     visibility: public
   notifications:
   - config:
@@ -85,7 +87,7 @@ spec:
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: EnterpriseContractPolicy
 metadata:
-  name: registry-rhel-primitives
+  name: registry-hummingbird
 spec:
   description: >-
     Includes rules for levels 1, 2 & 3 of SLSA v0.1.
@@ -94,7 +96,7 @@ spec:
     - name: Release Policies
       ruleData:
         allowed_registry_prefixes:
-          - quay.io/rhel-primitives-ci/
+          - quay.io/hummingbird-ci/
       data:
         - github.com/release-engineering/rhtap-ec-policy//data
         - oci::quay.io/konflux-ci/tekton-catalog/data-acceptable-bundles:latest
@@ -112,17 +114,17 @@ metadata:
   labels:
     release.appstudio.openshift.io/auto-release: "true"
     release.appstudio.openshift.io/standing-attribution: "true"
-    release.appstudio.openshift.io/releasePlanAdmission: rhel-primitives-rpm-release
-  name: rhel-primitives-rpm-release
+    release.appstudio.openshift.io/releasePlanAdmission: hummingbird-rpm-release
+  name: hummingbird-rpm-release
 spec:
   application: rpms-main
-  target: rhel-primitives-tenant
+  target: hummingbird-tenant
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: ReleasePlanAdmission
 metadata:
-  name: rhel-primitives-rpm-release
-  namespace: rhel-primitives-tenant
+  name: hummingbird-rpm-release
+  namespace: hummingbird-tenant
   labels:
     release.appstudio.openshift.io/block-releases: 'false'
 spec:
@@ -130,10 +132,10 @@ spec:
     - rpms-main
   data:
     pulp:
-      domain: public-rhel-primitives
-      secretName: pulp-public-rhel-primitives-config-file-secret
+      domain: public-hummingbird
+      secretName: pulp-public-hummingbird-config-file-secret
     singleComponentMode: true
-  origin: rhel-primitives-tenant
+  origin: hummingbird-tenant
   pipeline:
     pipelineRef:
       params:
@@ -144,8 +146,8 @@ spec:
         - name: pathInRepo
           value: pipelines/managed/push-rpms-to-pulp/push-rpms-to-pulp.yaml
       resolver: git
-    serviceAccountName: rhel-primitives-rpm-release
+    serviceAccountName: hummingbird-rpm-release
     timeouts:
       pipeline: 4h0m0s
       tasks: 4h0m0s
-  policy: registry-rhel-primitives
+  policy: registry-hummingbird

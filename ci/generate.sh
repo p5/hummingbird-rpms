@@ -6,8 +6,8 @@ cd "$(dirname "${BASH_SOURCE[0]}")/.."
 
 # Default values
 BRANCH="${BRANCH:-main}"
-TENANT="${TENANT:-rhel-primitives-tenant}"
-GIT_REPO="${GIT_REPO:-https://gitlab.com/redhat/rhel-primitives/rpms.git}"
+TENANT="${TENANT:-hummingbird-tenant}"
+GIT_REPO="${GIT_REPO:-https://gitlab.com/redhat/hummingbird/rpms.git}"
 
 SKIP_KONFLUX=false
 SKIP_PAC=false
@@ -42,7 +42,7 @@ while [[ $# -gt 0 ]]; do
             echo "  --skip-konflux                        Skip Konflux resource generation"
             echo "  --skip-pac                            Skip Pipeline as Code generation"
             echo "  --branch BRANCH                       Git branch (default: main)"
-            echo "  --tenant TENANT                       Konflux tenant (default: rhel-primitives-tenant)"
+            echo "  --tenant TENANT                       Konflux tenant (default: hummingbird-tenant)"
             echo "  --git-repo URL                        Git repository URL"
             echo "  --help, -h                            Show this help message"
             exit 0

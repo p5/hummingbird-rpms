@@ -4,7 +4,7 @@ apiVersion: tekton.dev/v1
 kind: PipelineRun
 metadata:
   annotations:
-    build.appstudio.openshift.io/repo: https://gitlab.com/redhat/rhel-primitives/rpms/-/tree/{{ "{{revision}}" }}
+    build.appstudio.openshift.io/repo: https://gitlab.com/redhat/hummingbird/rpms/-/tree/{{ "{{revision}}" }}
     build.appstudio.redhat.com/commit_sha: '{{ "{{revision}}" }}'
 {%- for key, value in extra_annotations.items() %}
     {{ key }}: '{{ value }}'

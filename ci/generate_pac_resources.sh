@@ -6,7 +6,7 @@ cd "$(dirname "${BASH_SOURCE[0]}")/.."
 
 # Default values
 BRANCH=${BRANCH:-main}
-TENANT=${TENANT:-rhel-primitives-tenant}
+TENANT=${TENANT:-hummingbird-tenant}
 RESOURCE_TYPE=""
 
 # Parse command line arguments
@@ -27,7 +27,7 @@ while [[ $# -gt 0 ]]; do
             echo ""
             echo "Options:"
             echo "  --branch BRANCH      Git branch (default: main)"
-            echo "  --tenant TENANT      Konflux tenant (default: rhel-primitives-tenant)"
+            echo "  --tenant TENANT      Konflux tenant (default: hummingbird-tenant)"
             echo "  --help, -h           Show this help message"
             exit 0
             ;;
@@ -69,7 +69,7 @@ APPLICATION_NAME="rpms-${BRANCH}"
 
 PIPELINE_URL="https://github.com/scoheb/rpmbuild-pipeline.git"
 PIPELINE_REVISION="add-pulp-support"
-PIPELINE_PATH="pipeline/rhel-primitives-build-rpm-package.yaml"
+PIPELINE_PATH="pipeline/hummingbird-build-rpm-package.yaml"
 
 # shellcheck disable=SC2312
 mapfile -d '' rpms < <(find ./rpms -maxdepth 1 -mindepth 1 -type d -print0 | LC_ALL=C sort -z)

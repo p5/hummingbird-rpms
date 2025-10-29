@@ -6,8 +6,8 @@ cd "$(dirname "${BASH_SOURCE[0]}")/.."
 
 # Default values
 BRANCH="${BRANCH:-main}"
-TENANT="${TENANT:-rhel-primitives-tenant}"
-GIT_REPO="${GIT_REPO:-https://gitlab.com/redhat/rhel-primitives/rpms.git}"
+TENANT="${TENANT:-hummingbird-tenant}"
+GIT_REPO="${GIT_REPO:-https://gitlab.com/redhat/hummingbird/rpms.git}"
 
 # Parse command line arguments
 while [[ $# -gt 0 ]]; do
@@ -29,7 +29,7 @@ while [[ $# -gt 0 ]]; do
             echo ""
             echo "Options:"
             echo "  --branch BRANCH                       Git branch (default: main)"
-            echo "  --tenant TENANT                       Konflux tenant (default: rhel-primitives-tenant)"
+            echo "  --tenant TENANT                       Konflux tenant (default: hummingbird-tenant)"
             echo "  --git-repo URL                        Git repository URL"
             echo "  --help, -h                            Show this help message"
             exit 0
