@@ -5,11 +5,11 @@
 {%- for rpm in rpms %}
 {{ image_repository(rpm) }}
 {%- endfor %}
-{{ policy("registry-rhel-primitives") }}
-{{ release_plan("rhel-primitives-rpm-release") }}
-{{ release_plan_admission("rhel-primitives-rpm-release",
-    "public-rhel-primitives",
-    "pulp-public-rhel-primitives-config-file-secret",
+{{ policy("registry-hummingbird") }}
+{{ release_plan("hummingbird-rpm-release") }}
+{{ release_plan_admission("hummingbird-rpm-release",
+    "public-hummingbird",
+    "pulp-public-hummingbird-config-file-secret",
     "https://github.com/konflux-ci/release-service-catalog.git",
     "development", "pipelines/managed/push-rpms-to-pulp/push-rpms-to-pulp.yaml",
-    "registry-rhel-primitives") }}
+    "registry-hummingbird") }}
