@@ -68,7 +68,7 @@ template=.tekton/rpms-on-${RESOURCE_TYPE}.yaml.j2
 APPLICATION_NAME="rpms-${BRANCH}"
 
 PIPELINE_URL="https://github.com/scoheb/rpmbuild-pipeline.git"
-PIPELINE_REVISION="add-pulp-support"
+PIPELINE_REVISION="add-pulp-support-rebased"
 PIPELINE_PATH="pipeline/hummingbird-build-rpm-package.yaml"
 
 # shellcheck disable=SC2312
