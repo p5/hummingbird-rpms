@@ -38,10 +38,16 @@ spec:
       value: {{ rpm.dname }}
     - name: target-branch
       value: '{{ "{{target_branch}}" }}'
+    - name: build-architectures
+      value:
+        - aarch64
+        - x86_64
     - name: specfile
       value: "{{  rpm.dname }}.spec"
     - name: path-context
       value: "rpms/{{ rpm.dname }}"
+    - name: mock-config-template-file
+      value: "mock/mock.cfg"
     - name: self-ref-url
       value: "{{ pipeline_url }}"
     - name: self-ref-revision
