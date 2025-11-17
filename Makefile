@@ -12,6 +12,11 @@ check-host:
 	git ls-files -z 'ci/*.sh' | xargs -0 shellcheck --external-sources --enable=all
 	git ls-files -z 'ci/*.py' | xargs -0 -r ruff check
 	git ls-files -z 'ci/*.py' | xargs -0 -r mypy
+	if command -v pytest > /dev/null; then \
+	  pytest -v; \
+	else \
+	  echo "pytest not installed, skipping tests"; \
+	fi
 
 check:
 	$(PODMAN_RUN) $(PODMAN_IMAGE) make check-host
