@@ -68,8 +68,8 @@ template=.tekton/rpms-on-${RESOURCE_TYPE}.yaml.j2
 APPLICATION_NAME="rpms-${BRANCH}"
 
 PIPELINE_URL="https://github.com/scoheb/rpmbuild-pipeline.git"
-PIPELINE_REVISION="add-pulp-support-rebased"
-PIPELINE_PATH="pipeline/hummingbird-build-rpm-package.yaml"
+PIPELINE_REVISION="mock-config-from-source"
+PIPELINE_PATH="pipeline/build-rpm-package.yaml"
 
 # shellcheck disable=SC2312
 mapfile -d '' rpms < <(find ./rpms -maxdepth 1 -mindepth 1 -type d -print0 | LC_ALL=C sort -z)

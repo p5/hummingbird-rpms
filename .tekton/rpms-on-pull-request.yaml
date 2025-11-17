@@ -33,23 +33,29 @@ spec:
       value: rootfiles
     - name: target-branch
       value: '{{target_branch}}'
+    - name: build-architectures
+      value:
+        - aarch64
+        - x86_64
     - name: specfile
       value: "rootfiles.spec"
     - name: path-context
       value: "rpms/rootfiles"
+    - name: mock-config-template-file
+      value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "add-pulp-support-rebased"
+      value: "mock-config-from-source"
   pipelineRef:
     resolver: git
     params:
       - name: url
         value: "https://github.com/scoheb/rpmbuild-pipeline.git"
       - name: revision
-        value: "add-pulp-support-rebased"
+        value: "mock-config-from-source"
       - name: pathInRepo
-        value: "pipeline/hummingbird-build-rpm-package.yaml"
+        value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
     serviceAccountName: build-pipeline-rootfiles-main
   workspaces:
@@ -91,23 +97,29 @@ spec:
       value: setup
     - name: target-branch
       value: '{{target_branch}}'
+    - name: build-architectures
+      value:
+        - aarch64
+        - x86_64
     - name: specfile
       value: "setup.spec"
     - name: path-context
       value: "rpms/setup"
+    - name: mock-config-template-file
+      value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "add-pulp-support-rebased"
+      value: "mock-config-from-source"
   pipelineRef:
     resolver: git
     params:
       - name: url
         value: "https://github.com/scoheb/rpmbuild-pipeline.git"
       - name: revision
-        value: "add-pulp-support-rebased"
+        value: "mock-config-from-source"
       - name: pathInRepo
-        value: "pipeline/hummingbird-build-rpm-package.yaml"
+        value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
     serviceAccountName: build-pipeline-setup-main
   workspaces:
