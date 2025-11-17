@@ -1,0 +1,24 @@
+{%- macro integration_test_scenario() -%}
+{%- for arch in ["x86_64", "aarch64"] %}
+---
+apiVersion: appstudio.redhat.com/v1beta2
+kind: IntegrationTestScenario
+metadata:
+  name: {{ application_name + "-testing-farm-" + arch.replace("_", "-") }}
+spec:
+  application: {{ application_name }}
+  contexts:
+    - {name: pull_request}
+  params:
+    - {name: COMPOSE, value: RHEL-9-Nightly}
+    - {name: PIPELINE_MODE, value: rpm}
+    - {name: ARCH, value: {{ arch }}}
+    - {name: IMAGE_TAG, value: v3.3.8}
+  resolverRef:
+    resolver: bundles
+    params:
+      - {name: bundle, value: quay.io/scoheb/testing-farm/tmt-via-testing-farm:v3.3.8}
+      - {name: name, value: tmt-via-testing-farm}
+      - {name: kind, value: pipeline}
+{%- endfor %}
+{%- endmacro -%}

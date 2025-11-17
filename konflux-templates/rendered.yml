@@ -30,6 +30,24 @@ spec:
       url: https://gitlab.com/redhat/hummingbird/rpms.git
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: rootfiles-main
+  name: rootfiles-main
+spec:
+  image:
+    name: hummingbird-tenant/rootfiles-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
+---
+apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
 metadata:
   annotations:
@@ -53,24 +71,6 @@ kind: ImageRepository
 metadata:
   labels:
     appstudio.redhat.com/application: rpms-main
-    appstudio.redhat.com/component: rootfiles-main
-  name: rootfiles-main
-spec:
-  image:
-    name: hummingbird-tenant/rootfiles-main
-    visibility: public
-  notifications:
-  - config:
-      url: https://bombino.api.redhat.com/v1/sbom/quay/push
-    event: repo_push
-    method: webhook
-    title: SBOM-event-to-Bombino
----
-apiVersion: appstudio.redhat.com/v1alpha1
-kind: ImageRepository
-metadata:
-  labels:
-    appstudio.redhat.com/application: rpms-main
     appstudio.redhat.com/component: setup-main
   name: setup-main
 spec:
@@ -83,6 +83,47 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+
+---
+apiVersion: appstudio.redhat.com/v1beta2
+kind: IntegrationTestScenario
+metadata:
+  name: rpms-main-testing-farm-x86-64
+spec:
+  application: rpms-main
+  contexts:
+    - {name: pull_request}
+  params:
+    - {name: COMPOSE, value: RHEL-9-Nightly}
+    - {name: PIPELINE_MODE, value: rpm}
+    - {name: ARCH, value: x86_64}
+    - {name: IMAGE_TAG, value: v3.3.8}
+  resolverRef:
+    resolver: bundles
+    params:
+      - {name: bundle, value: quay.io/scoheb/testing-farm/tmt-via-testing-farm:v3.3.8}
+      - {name: name, value: tmt-via-testing-farm}
+      - {name: kind, value: pipeline}
+---
+apiVersion: appstudio.redhat.com/v1beta2
+kind: IntegrationTestScenario
+metadata:
+  name: rpms-main-testing-farm-aarch64
+spec:
+  application: rpms-main
+  contexts:
+    - {name: pull_request}
+  params:
+    - {name: COMPOSE, value: RHEL-9-Nightly}
+    - {name: PIPELINE_MODE, value: rpm}
+    - {name: ARCH, value: aarch64}
+    - {name: IMAGE_TAG, value: v3.3.8}
+  resolverRef:
+    resolver: bundles
+    params:
+      - {name: bundle, value: quay.io/scoheb/testing-farm/tmt-via-testing-farm:v3.3.8}
+      - {name: name, value: tmt-via-testing-farm}
+      - {name: kind, value: pipeline}
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: EnterpriseContractPolicy
