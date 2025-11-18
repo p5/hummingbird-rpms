@@ -46,6 +46,12 @@ default:
     when: manual
     allow_failure: true # allow to merge MR without running this job
 
+check:
+  script:
+    - make check-host
+  rules:
+    - !reference [.rules, mr]
+
 deploy_components_to_konflux:
   variables:
     PARENT_PROJECT_PATH: $CI_PROJECT_PATH
