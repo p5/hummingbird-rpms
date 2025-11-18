@@ -8,17 +8,26 @@ metadata:
 spec:
   application: {{ application_name }}
   contexts:
-    - {name: pull_request}
+    - name: pull_request
   params:
-    - {name: COMPOSE, value: RHEL-9-Nightly}
-    - {name: PIPELINE_MODE, value: rpm}
-    - {name: ARCH, value: {{ arch }}}
-    - {name: IMAGE_TAG, value: v3.3.8}
+    - name: COMPOSE
+      value: RHEL-9-Nightly
+    - name: PIPELINE_MODE
+      value: rpm
+    - name: ARCH
+      value: {{ arch }}
+    - name: IMAGE_TAG
+      value: v3.3.8
   resolverRef:
     resolver: bundles
     params:
-      - {name: bundle, value: quay.io/scoheb/testing-farm/tmt-via-testing-farm:v3.3.8}
-      - {name: name, value: tmt-via-testing-farm}
-      - {name: kind, value: pipeline}
+      - name: bundle
+        value: quay.io/scoheb/testing-farm/tmt-via-testing-farm:v3.3.8
+      - name: name
+        value: tmt-via-testing-farm
+      - name: kind
+        value: pipeline
+      - name: url
+        value: quay.io/scoheb/testing-farm/tmt-via-testing-farm:v3.3.8
 {%- endfor %}
 {%- endmacro -%}

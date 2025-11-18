@@ -92,18 +92,27 @@ metadata:
 spec:
   application: rpms-main
   contexts:
-    - {name: pull_request}
+    - name: pull_request
   params:
-    - {name: COMPOSE, value: RHEL-9-Nightly}
-    - {name: PIPELINE_MODE, value: rpm}
-    - {name: ARCH, value: x86_64}
-    - {name: IMAGE_TAG, value: v3.3.8}
+    - name: COMPOSE
+      value: RHEL-9-Nightly
+    - name: PIPELINE_MODE
+      value: rpm
+    - name: ARCH
+      value: x86_64
+    - name: IMAGE_TAG
+      value: v3.3.8
   resolverRef:
     resolver: bundles
     params:
-      - {name: bundle, value: quay.io/scoheb/testing-farm/tmt-via-testing-farm:v3.3.8}
-      - {name: name, value: tmt-via-testing-farm}
-      - {name: kind, value: pipeline}
+      - name: bundle
+        value: quay.io/scoheb/testing-farm/tmt-via-testing-farm:v3.3.8
+      - name: name
+        value: tmt-via-testing-farm
+      - name: kind
+        value: pipeline
+      - name: url
+        value: quay.io/scoheb/testing-farm/tmt-via-testing-farm:v3.3.8
 ---
 apiVersion: appstudio.redhat.com/v1beta2
 kind: IntegrationTestScenario
@@ -112,18 +121,27 @@ metadata:
 spec:
   application: rpms-main
   contexts:
-    - {name: pull_request}
+    - name: pull_request
   params:
-    - {name: COMPOSE, value: RHEL-9-Nightly}
-    - {name: PIPELINE_MODE, value: rpm}
-    - {name: ARCH, value: aarch64}
-    - {name: IMAGE_TAG, value: v3.3.8}
+    - name: COMPOSE
+      value: RHEL-9-Nightly
+    - name: PIPELINE_MODE
+      value: rpm
+    - name: ARCH
+      value: aarch64
+    - name: IMAGE_TAG
+      value: v3.3.8
   resolverRef:
     resolver: bundles
     params:
-      - {name: bundle, value: quay.io/scoheb/testing-farm/tmt-via-testing-farm:v3.3.8}
-      - {name: name, value: tmt-via-testing-farm}
-      - {name: kind, value: pipeline}
+      - name: bundle
+        value: quay.io/scoheb/testing-farm/tmt-via-testing-farm:v3.3.8
+      - name: name
+        value: tmt-via-testing-farm
+      - name: kind
+        value: pipeline
+      - name: url
+        value: quay.io/scoheb/testing-farm/tmt-via-testing-farm:v3.3.8
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: EnterpriseContractPolicy
