@@ -15,10 +15,8 @@ rpmlint:
 rpm-install:
   command: |
     # Test installing the RPM in a container
-    TEST_IMAGE="quay.io/hummingbird/core-runtime:latest-builder"
-
     # Create a container with a command that keeps it running
-    container_id=$("${TEST_ENGINE:?}" create --entrypoint sleep "${TEST_IMAGE}" infinity)
+    container_id=$("${TEST_ENGINE:?}" create --entrypoint sleep "${TEST_IMAGE:?}" infinity)
 
     # Ensure cleanup on exit
     cleanup() {
@@ -77,10 +75,8 @@ src-rpm-rebuild:
     fi
 
     # Test rebuilding the source RPM in a container
-    TEST_IMAGE="quay.io/hummingbird/core-runtime:latest-builder"
-
     # Create a container with a command that keeps it running
-    container_id=$("${TEST_ENGINE:?}" create --entrypoint sleep "${TEST_IMAGE}" infinity)
+    container_id=$("${TEST_ENGINE:?}" create --entrypoint sleep "${TEST_IMAGE:?}" infinity)
 
     # Ensure cleanup on exit
     cleanup() {

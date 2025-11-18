@@ -110,6 +110,7 @@ export -f TEST_FAIL
 # Parse command line arguments
 TEST_VERBOSE=false
 TEST_ENGINE=podman
+TEST_IMAGE="${TEST_IMAGE:-quay.io/hummingbird/core-runtime:latest-builder}"
 TEST_SRC_RPM=""
 RPM_PATH=""
 
@@ -190,6 +191,7 @@ fi >&2
 export TEST_SRC_RPM
 export TEST_VERBOSE
 export TEST_ENGINE
+export TEST_IMAGE
 export PACKAGE_NAME
 
 temp_dir=$(mktemp -d)
@@ -204,6 +206,7 @@ if [[ -n ${TEST_SRC_RPM} ]]; then
     log_info "Source RPM file: ${TEST_SRC_RPM}"
 fi
 log_info "Container engine: ${TEST_ENGINE}"
+log_info "Container image: ${TEST_IMAGE}"
 log_info "Verbose mode: ${TEST_VERBOSE}"
 
 # Load default tests
@@ -275,8 +278,8 @@ for rpm_file in "${RPM_PATHS[@]}"; do
             [[ ${TEST_VERBOSE} == true ]] && set -x
             # Change to the directory where the test is defined
             cd "${source_dir}"
-            # Ensure TEST_RPM, TEST_SRC_RPM and TEST_ENGINE are available in subshell
-            export TEST_RPM TEST_SRC_RPM TEST_ENGINE
+            # Ensure TEST_RPM, TEST_SRC_RPM, TEST_ENGINE and TEST_IMAGE are available in subshell
+            export TEST_RPM TEST_SRC_RPM TEST_ENGINE TEST_IMAGE
             eval "${command}"
         ) &> "${temp_dir}/output.log" &
 
@@ -383,8 +386,8 @@ if [[ -n ${src_rpm_test_names} ]]; then
             [[ ${TEST_VERBOSE} == true ]] && set -x
             # Change to the directory where the test is defined
             cd "${source_dir}"
-            # Ensure TEST_RPM, TEST_SRC_RPM and TEST_ENGINE are available in subshell
-            export TEST_RPM TEST_SRC_RPM TEST_ENGINE
+            # Ensure TEST_RPM, TEST_SRC_RPM, TEST_ENGINE and TEST_IMAGE are available in subshell
+            export TEST_RPM TEST_SRC_RPM TEST_ENGINE TEST_IMAGE
             eval "${command}"
         ) &> "${temp_dir}/output.log" &
 
