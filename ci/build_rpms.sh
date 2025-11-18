@@ -22,11 +22,11 @@ image=quay.io/redhat-user-workloads/rpm-build-pipeline-tenant/environment:latest
 arch=x86_64
 
 package_name=$1
-test -n "$package_name" || exit 1
+test -n "${package_name}" || exit 1
 
-workdir=$(mktemp -d "/tmp/konflux-build-$package_name-XXXXXXXX")
+workdir=$(mktemp -d "/tmp/konflux-build-${package_name}-XXXXXXXX")
 
-cd "$workdir"
+cd "${workdir}"
 mkdir results
 mkdir config
 
@@ -35,17 +35,17 @@ podman unshare setfacl -m g:135:rwx -m default:g:135:rwx "results"
 podman unshare setfacl -m g:135:rwx -m default:g:135:rwx "config"
 
 # prepare mock config
-sed "s|@ARCH@|$arch|" "${SCRIPT_DIR}/../mock/mock.cfg" > "${workdir}/config/mock.cfg"
+sed "s|@ARCH@|${arch}|" "${SCRIPT_DIR}/../mock/mock.cfg" > "${workdir}/config/mock.cfg"
 
 podman run --rm -ti --privileged --init \
     --pids-limit=16384 \
     -u mockbuilder \
     -v "${workdir}/results:/results:z" \
     -v "${workdir}/config:/config:z" \
-    -v "${RPM_DIR}/$package_name:/source:z" \
-    "$image" \
+    -v "${RPM_DIR}/${package_name}:/source:z" \
+    "${image}" \
 mock -r /config/mock.cfg \
-     --spec "/source/$package_name.spec" \
+     --spec "/source/${package_name}.spec" \
      --sources /source \
      --resultdir /results \
 

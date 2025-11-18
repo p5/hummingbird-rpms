@@ -276,9 +276,7 @@ for rpm_file in "${RPM_PATHS[@]}"; do
             # Change to the directory where the test is defined
             cd "${source_dir}"
             # Ensure TEST_RPM, TEST_SRC_RPM and TEST_ENGINE are available in subshell
-            export TEST_RPM="${TEST_RPM}"
-            export TEST_SRC_RPM="${TEST_SRC_RPM}"
-            export TEST_ENGINE="${TEST_ENGINE}"
+            export TEST_RPM TEST_SRC_RPM TEST_ENGINE
             eval "${command}"
         ) &> "${temp_dir}/output.log" &
 
@@ -386,9 +384,7 @@ if [[ -n ${src_rpm_test_names} ]]; then
             # Change to the directory where the test is defined
             cd "${source_dir}"
             # Ensure TEST_RPM, TEST_SRC_RPM and TEST_ENGINE are available in subshell
-            export TEST_RPM="${TEST_RPM}"
-            export TEST_SRC_RPM="${TEST_SRC_RPM}"
-            export TEST_ENGINE="${TEST_ENGINE}"
+            export TEST_RPM TEST_SRC_RPM TEST_ENGINE
             eval "${command}"
         ) &> "${temp_dir}/output.log" &
 

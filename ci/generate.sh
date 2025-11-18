@@ -60,9 +60,6 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-# shellcheck disable=SC2312
-mapfile -d '' rpms < <(find ./rpms -maxdepth 1 -mindepth 1 -type d -print0 | LC_ALL=C sort -z)
-
 rpms_on_push_yaml='.tekton/rpms-on-push.yaml'
 rpms_on_pull_request_yaml='.tekton/rpms-on-pull-request.yaml'
 
