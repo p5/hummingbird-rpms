@@ -2,17 +2,15 @@
 
 set -e
 
-PULP_BASE_URL="https://mtls.internal.console.redhat.com"
-
 PULP_DOMAIN=$1
 
-if [ -z "${PULP_DOMAIN}" ] ; then
+if [[ -z "${PULP_DOMAIN}" ]]; then
   echo "🔴 error: missing parameter PULP_DOMAIN"
   exit 1
 fi
 
 PULP_REPOSITORIES_STRING=$2
-if [ -z "${PULP_REPOSITORIES_STRING}" ] ; then
+if [[ -z "${PULP_REPOSITORIES_STRING}" ]]; then
   echo "🔴 error: missing parameter PULP_REPOSITORIES (provide comma-delimited repository names)"
   exit 1
 fi
@@ -27,8 +25,9 @@ done
 
 echo "ℹ️ Will create repositories: ${PULP_REPOSITORIES[*]}"
 
-DOMAIN_EXISTS=$(pulp domain list --field name | jq -r ".[] | select(.name == \"${PULP_DOMAIN}\") | .name")
-if [[ "$DOMAIN_EXISTS" == "$PULP_DOMAIN" ]]; then
+pulp_domain_output=$(pulp domain list --field name)
+DOMAIN_EXISTS=$(jq -r ".[] | select(.name == \"${PULP_DOMAIN}\") | .name" <<< "${pulp_domain_output}")
+if [[ "${DOMAIN_EXISTS}" == "${PULP_DOMAIN}" ]]; then
     echo "ℹ️ Domain '${PULP_DOMAIN}' already exists. Skipping creation."
 else
     echo "🆕 Domain '${PULP_DOMAIN}' not found. Creating..."
@@ -39,10 +38,10 @@ fi
 for PULP_REPOSITORY in "${PULP_REPOSITORIES[@]}"; do
     echo "🔄 Processing repository: ${PULP_REPOSITORY}"
 
-    REPO_EXISTS=$(pulp --domain "${PULP_DOMAIN}" rpm repository list --field name | jq -r ".[] | \
-      select(.name == \"${PULP_REPOSITORY}\") | .name")
+    pulp_repo_output=$(pulp --domain "${PULP_DOMAIN}" rpm repository list --field name)
+    REPO_EXISTS=$(jq -r ".[] | select(.name == \"${PULP_REPOSITORY}\") | .name" <<< "${pulp_repo_output}")
 
-    if [[ "$REPO_EXISTS" == "${PULP_REPOSITORY}" ]]; then
+    if [[ "${REPO_EXISTS}" == "${PULP_REPOSITORY}" ]]; then
         echo "ℹ️ Repository '${PULP_REPOSITORY}' already exists. Skipping creation."
     else
         echo "🆕 Repository '${PULP_REPOSITORY}' not found. Creating..."
