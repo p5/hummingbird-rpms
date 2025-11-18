@@ -46,6 +46,15 @@ default:
     when: manual
     allow_failure: true # allow to merge MR without running this job
 
+tree_status:
+  stage: external
+  script:
+    - make generate-host
+    - ./ci/tree_status.sh
+  rules:
+    - !reference [.rules, mr]
+    - !reference [.rules, push]
+
 check:
   script:
     - make check-host
