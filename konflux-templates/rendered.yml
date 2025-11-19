@@ -101,18 +101,18 @@ spec:
     - name: ARCH
       value: x86_64
     - name: IMAGE_TAG
-      value: v3.3.8
+      value: v3.4
   resolverRef:
     resolver: bundles
     params:
       - name: bundle
-        value: quay.io/scoheb/testing-farm/tmt-via-testing-farm:v3.3.8
+        value: quay.io/testing-farm/tmt-via-testing-farm:$(params.IMAGE_TAG)
       - name: name
         value: tmt-via-testing-farm
       - name: kind
         value: pipeline
       - name: url
-        value: quay.io/scoheb/testing-farm/tmt-via-testing-farm:v3.3.8
+        value: quay.io/testing-farm/tmt-via-testing-farm:$(params.IMAGE_TAG)
 ---
 apiVersion: appstudio.redhat.com/v1beta2
 kind: IntegrationTestScenario
@@ -130,18 +130,18 @@ spec:
     - name: ARCH
       value: aarch64
     - name: IMAGE_TAG
-      value: v3.3.8
+      value: v3.4
   resolverRef:
     resolver: bundles
     params:
       - name: bundle
-        value: quay.io/scoheb/testing-farm/tmt-via-testing-farm:v3.3.8
+        value: quay.io/testing-farm/tmt-via-testing-farm:$(params.IMAGE_TAG)
       - name: name
         value: tmt-via-testing-farm
       - name: kind
         value: pipeline
       - name: url
-        value: quay.io/scoheb/testing-farm/tmt-via-testing-farm:v3.3.8
+        value: quay.io/testing-farm/tmt-via-testing-farm:$(params.IMAGE_TAG)
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: EnterpriseContractPolicy
