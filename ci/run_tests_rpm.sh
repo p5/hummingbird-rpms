@@ -35,7 +35,7 @@ EXAMPLES:
 DESCRIPTION:
     Runs default tests for the specified RPM package. Tests are defined in
     ci/default-tests/tests-rpm.yml and package-specific tests in
-    rpms/<package>/tests-rpm.yml (if present).
+    test/rpms/.yml (if present).
 
     When multiple RPMs are specified, the same test suite is run for each RPM.
 EOF
@@ -247,7 +247,7 @@ test_data=$(yaml_to_json < "${default_tests_file}")
 test_data=$(jq --arg dir "${base_dir}/ci/default-tests" 'to_entries | map(.value.source_dir = $dir) | from_entries' <<< "${test_data}")
 
 # Load package-specific tests if they exist
-package_tests_file="${package_dir}/tests-rpm.yml"
+package_tests_file="${base_dir}/test/rpms/${PACKAGE_NAME}.yml"
 if [[ -f ${package_tests_file} ]]; then
     log_info "Including package-specific tests from ${package_tests_file}"
     package_test_data=$(yaml_to_json < "${package_tests_file}")
