@@ -189,6 +189,9 @@ spec:
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
     serviceAccountName: build-pipeline-rpm-main
+  timeouts:
+    pipeline: 12h
+    tasks: 12h
   workspaces:
     - name: git-auth
       secret:
