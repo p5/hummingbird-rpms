@@ -76,3 +76,20 @@ deploy_components_to_konflux:
     - !reference [.rules, mr]
     - !reference [.rules, push]
     - !reference [.rules, web]
+
+trigger_documentation:
+  stage: deploy
+  needs: [{job: deploy_hugo_tag, optional: true}]
+  variables:
+    PARENT_PROJECT_PATH: $CI_PROJECT_PATH
+  trigger:
+    project: redhat/hummingbird/documentation
+    strategy: depend
+  allow_failure: true
+  rules:
+    - if: $CI_PIPELINE_SOURCE =~ 'push|web' && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      changes:
+        - documentation/**/*
+        - README.md
+        - CONTRIBUTING.md
+    - !reference [.rules, mr_manual]
