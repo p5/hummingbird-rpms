@@ -15,26 +15,46 @@ rpmlint:
 rpm-install:
   command: |
     # Test installing the RPM in a container
-    # Create a container with a command that keeps it running
-    container_id=$("${TEST_ENGINE:?}" create --entrypoint sleep "${TEST_IMAGE:?}" infinity)
+
+    # Get the package name from the RPM
+    rpm_name=$(rpm -qp --queryformat '%{NAME}' "${TEST_RPM}")
+
+    # If TEST_REPO_DIR is provided, create a local repository
+    repo_dir=""
+    if [[ -n ${TEST_REPO_DIR:-} ]]; then
+      # Create local repository using create-local-repo.sh
+      # This script runs from ci/default-tests directory, so ../create-local-repo.sh is in ci/
+      repo_dir=$(bash ../create-local-repo.sh --engine "${TEST_ENGINE}" --image "${TEST_IMAGE}" "${TEST_REPO_DIR}"/*.rpm)
+      echo "Created local repository at: ${repo_dir}"
+    fi
+
+    # Create container with optional repo mount
+    if [[ -n ${repo_dir} ]]; then
+      container_id=$("${TEST_ENGINE:?}" create -v "${repo_dir}:/local-repo:ro,z" --entrypoint sleep "${TEST_IMAGE:?}" infinity)
+    else
+      container_id=$("${TEST_ENGINE:?}" create --entrypoint sleep "${TEST_IMAGE:?}" infinity)
+    fi
 
     # Ensure cleanup on exit
     cleanup() {
       "${TEST_ENGINE}" rm -f "${container_id}" 2>/dev/null || true
+      [[ -n ${repo_dir} ]] && rm -rf "${repo_dir}"
     }
     trap cleanup EXIT
-
-    # Copy RPM into container
-    "${TEST_ENGINE}" cp "${TEST_RPM:?}" "${container_id}:/tmp/test.rpm"
 
     # Start the container
     "${TEST_ENGINE}" start "${container_id}"
 
-    # Install the RPM
+    # If we have a local repo, configure it for dependency resolution
+    if [[ -n ${repo_dir} ]]; then
+      "${TEST_ENGINE}" exec --user 0 -e HOME=/root "${container_id}" bash -c 'printf "[local-test]\nname=Local Test Repository\nbaseurl=file:///local-repo\nenabled=1\ngpgcheck=0\n" > /etc/yum.repos.d/local-test.repo'
+    fi
+
+    # Copy RPM into container and install from file (dependencies resolved from local repo if available)
+    "${TEST_ENGINE}" cp "${TEST_RPM:?}" "${container_id}:/tmp/test.rpm"
     "${TEST_ENGINE}" exec --user 0 -e HOME=/root "${container_id}" dnf install -y /tmp/test.rpm
 
     # Verify installation succeeded
-    rpm_name=$(rpm -qp --queryformat '%{NAME}' "${TEST_RPM}")
     "${TEST_ENGINE}" exec --user 0 -e HOME=/root "${container_id}" rpm -q "${rpm_name}"
 
     # Cleanup

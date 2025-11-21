@@ -68,9 +68,22 @@ discover:
             package_name=${IMAGE_NAME%-main}
         fi
         if [[ -n ${IMAGE_URL:-} ]]; then
-          files_dir=$(mktemp -d)
-          oras pull "${IMAGE_URL}" -o "${files_dir}"
-          rpm_file=$(ls -1 "${files_dir}/"*.rpm | grep -v '.src.rpm' | paste -sd,)
-          src_rpm_file=$(ls -1 "${files_dir}/"*.src.rpm)
-          ci/run_tests_rpm.sh --rpm "${rpm_file}" --src-rpm "${src_rpm_file}" "${package_name:-}"
+          work_dir=$(mktemp -d)
+          rpms_dir="${work_dir}/RPMS"
+          srpms_dir="${work_dir}/SRPMS"
+          mkdir -p "${rpms_dir}" "${srpms_dir}"
+
+          # Pull all files to work directory
+          oras pull "${IMAGE_URL}" -o "${work_dir}"
+
+          # Separate binary RPMs and source RPMs into different directories
+          mv "${work_dir}"/*.src.rpm "${srpms_dir}/" 2>/dev/null || true
+          mv "${work_dir}"/*.rpm "${rpms_dir}/" 2>/dev/null || true
+
+          # Get comma-delimited list of binary RPMs and source RPM path
+          rpm_file=$(ls -1 "${rpms_dir}/"*.rpm 2>/dev/null | paste -sd,)
+          src_rpm_file=$(ls -1 "${srpms_dir}/"*.src.rpm 2>/dev/null | head -n1)
+
+          # Run tests with --repo-dir pointing to binary RPMs directory
+          ci/run_tests_rpm.sh --rpm "${rpm_file}" --repo-dir "${rpms_dir}" --src-rpm "${src_rpm_file}" "${package_name:-}"
         fi
