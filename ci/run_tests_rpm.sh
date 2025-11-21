@@ -181,18 +181,24 @@ fi >&2
 # Split comma-delimited RPM paths into array
 IFS=',' read -ra RPM_PATHS <<< "${RPM_PATH}"
 
-# Validate all RPM files exist
-for rpm_file in "${RPM_PATHS[@]}"; do
+# Validate all RPM files exist and convert to absolute paths
+for i in "${!RPM_PATHS[@]}"; do
+    rpm_file="${RPM_PATHS[${i}]}"
     if [[ ! -f ${rpm_file} ]]; then
         echo "Error: RPM file '${rpm_file}' not found"
         exit 1
     fi
+    # Convert to absolute path
+    RPM_PATHS[i]="$(realpath "${rpm_file}")"
 done >&2
 
-# Validate source RPM file exists if provided
-if [[ -n ${TEST_SRC_RPM} ]] && [[ ! -f ${TEST_SRC_RPM} ]]; then
-    echo "Error: Source RPM file '${TEST_SRC_RPM}' not found"
-    exit 1
+# Validate source RPM file exists if provided and convert to absolute path
+if [[ -n ${TEST_SRC_RPM} ]]; then
+    if [[ ! -f ${TEST_SRC_RPM} ]]; then
+        echo "Error: Source RPM file '${TEST_SRC_RPM}' not found"
+        exit 1
+    fi
+    TEST_SRC_RPM=$(realpath "${TEST_SRC_RPM}")
 fi >&2
 
 # Validate repo directory exists if provided and convert to absolute path

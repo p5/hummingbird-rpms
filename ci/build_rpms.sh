@@ -4,12 +4,13 @@
 #
 # This script:
 # - Builds the RPM using mock in the upstream RPM Build Pipeline container
-# - Outputs both binary and source RPMs to a temporary results directory
+# - Outputs binary RPMs to builds/PACKAGE_NAME/RPMS/
+# - Outputs source RPMs to builds/PACKAGE_NAME/SRPMS/
 #
 # Usage: ./ci/build_rpms.sh [OPTIONS] PACKAGE_NAME
 #   PACKAGE_NAME - Name of the package directory in rpms/
 #
-# The built RPMs can be found in: /tmp/konflux-build-PACKAGE_NAME-*/results/
+# The built RPMs can be found in: builds/PACKAGE_NAME/RPMS/ and builds/PACKAGE_NAME/SRPMS/
 #
 # Note: This performs a non-hermetic package build in the same container
 # environment as used by Konflux, but is not a drop-in replacement for the
@@ -17,6 +18,7 @@
 #
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 RPM_DIR=${SCRIPT_DIR}/../rpms
+OUT_DIR=${SCRIPT_DIR}/../builds
 REPO_ROOT=${SCRIPT_DIR}/..
 
 image=quay.io/redhat-user-workloads/rpm-build-pipeline-tenant/environment:latest@sha256:56bde7a1040650bc14ee927534426a52d88de30d588048c6a08be7a8758372cb
@@ -25,15 +27,19 @@ arch=x86_64
 package_name=$1
 test -n "${package_name}" || exit 1
 
-workdir=$(mktemp -d "/tmp/konflux-build-${package_name}-XXXXXXXX")
+# Use builds directory as workdir for easier debugging
+workdir="${OUT_DIR}/${package_name}"
+mkdir -p "${workdir}"
 
 cd "${workdir}"
-mkdir results
-mkdir config
+mkdir -p results
+mkdir -p config
+mkdir -p sources
 
 # Allow mockbuilder (group mock) to read config and write results
 podman unshare setfacl -m g:135:rwx -m default:g:135:rwx "results"
 podman unshare setfacl -m g:135:rwx -m default:g:135:rwx "config"
+podman unshare setfacl -m g:135:rwx -m default:g:135:rwx "sources"
 
 # Copy local source files to sources directory
 cp -f "${RPM_DIR}/${package_name}"/* "${workdir}/sources/" 2>/dev/null || true
@@ -57,7 +63,7 @@ podman run --rm -ti --privileged --init \
     -u mockbuilder \
     -v "${workdir}/results:/results:z" \
     -v "${workdir}/config:/config:z" \
-    -v "${RPM_DIR}/${package_name}:/sources:z" \
+    -v "${workdir}/sources:/sources:z" \
     -v "${REPO_ROOT}:/repo:z" \
     -v "${bare_repo}:/bare:z" \
     "${image}" \
@@ -86,5 +92,18 @@ mock -r /config/mock.cfg \
 popd
 "
 
-echo "RPMs:"
-ls "${workdir}"/results/*.rpm
+# Organize RPMs into separate directories
+mkdir -p "${workdir}/RPMS" "${workdir}/SRPMS"
+mv -f "${workdir}"/results/*.src.rpm "${workdir}/SRPMS/" 2>/dev/null || true
+mv -f "${workdir}"/results/*.rpm "${workdir}/RPMS/" 2>/dev/null || true
+
+echo ""
+echo "Binary RPMs:"
+ls "${workdir}/RPMS"/*.rpm 2>/dev/null || echo "No binary RPMs found"
+
+echo ""
+echo "Source RPMs:"
+ls "${workdir}/SRPMS"/*.src.rpm 2>/dev/null || echo "No source RPMs found"
+
+echo ""
+echo "Build outputs saved to: ${workdir}/"
