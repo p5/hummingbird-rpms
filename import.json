@@ -1,4 +1,11 @@
 {
+  "bash": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "5eaa1a41029ab046f36bd9501a12446676b123e9",
+    "source": "https://src.fedoraproject.org/rpms/bash.git",
+    "version": "5.3.0"
+  },
   "rootfiles": {
     "branch": "rawhide",
     "release": "1",
