@@ -76,13 +76,24 @@ discover:
           # Pull all files to work directory
           oras pull "${IMAGE_URL}" -o "${work_dir}"
 
-          # Separate binary RPMs and source RPMs into different directories
+          # Move source RPMs to srpms_dir
           mv "${work_dir}"/*.src.rpm "${srpms_dir}/" 2>/dev/null || true
-          mv "${work_dir}"/*.rpm "${rpms_dir}/" 2>/dev/null || true
 
-          # Get comma-delimited list of binary RPMs and source RPM path
-          rpm_file=$(ls -1 "${rpms_dir}/"*.rpm 2>/dev/null | paste -sd,)
-          src_rpm_file=$(ls -1 "${srpms_dir}/"*.src.rpm 2>/dev/null | head -n1)
+          # Move binary RPMs matching current architecture to rpms_dir
+          current_arch=$(uname -m)
+          rpm_files=()
+          for f in "${work_dir}"/*.rpm; do
+            [[ $f == *.src.rpm ]] && continue
+            rpm_arch=$(rpm -qp --queryformat '%{ARCH}\n' "$f" 2>/dev/null || true)
+            if [[ ${rpm_arch} == "noarch" || ${rpm_arch} == "${current_arch}" ]]; then
+              mv "$f" "${rpms_dir}/"
+              rpm_files+=("${rpms_dir}/$(basename "$f")")
+            fi
+          done
+          rpm_file=$(IFS=,; echo "${rpm_files[*]}")
+
+          # Get source RPM path
+          src_rpm_file=$(ls -1 "${srpms_dir}/"*.src.rpm)
 
           # Run tests with --repo-dir pointing to binary RPMs directory
           ci/run_tests_rpm.sh --rpm "${rpm_file}" --repo-dir "${rpms_dir}" --src-rpm "${src_rpm_file}" "${package_name:-}"
