@@ -1,5 +1,5 @@
 ---
-# Tests specific to the setup package
+# Tests specific to the rootfiles package
 rpmlint:
   command: |
     rpmlint "${TEST_RPM:?}"

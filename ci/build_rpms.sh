@@ -39,7 +39,6 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-package_name=$1
 test -n "${package_name}" || exit 1
 
 # Use builds directory as workdir for easier debugging
