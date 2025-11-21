@@ -13,11 +13,13 @@ Usage: $0 [OPTIONS] PACKAGE_NAME
 Run tests for RPM packages.
 
 OPTIONS:
-    --rpm PATH[,PATH...] Path to binary RPM file(s) to test (required)
-                         Multiple RPMs can be specified as comma-delimited list
-    --src-rpm PATH       Path to source RPM file (optional, enables source RPM tests)
-    --verbose, -v        Enable verbose output during testing
-    --help, -h           Show this help message
+    --rpm PATH[,PATH...]  Path to binary RPM file(s) to test (required)
+                          Multiple RPMs can be specified as comma-delimited list
+    --repo-dir PATH       Path to directory containing RPMs to create a local repository
+                          (optional, enables dependency resolution for multi-package builds)
+    --src-rpm PATH        Path to source RPM file (optional, enables source RPM tests)
+    --verbose, -v         Enable verbose output during testing
+    --help, -h            Show this help message
 
 ARGUMENTS:
     PACKAGE_NAME         Name of the RPM package (must correspond to a folder in rpms/)
@@ -28,6 +30,7 @@ EXAMPLES:
     $0 --rpm /path/to/setup-2.0-1.fc40.noarch.rpm --verbose setup
     $0 --rpm /path/to/setup.rpm --src-rpm /path/to/setup.src.rpm setup
     $0 --rpm /path/to/setup.fc40.rpm,/path/to/setup.fc41.rpm setup
+    $0 --rpm /path/to/rpm.rpm --repo-dir /path/to/RPMS/ --src-rpm /path/to/rpm.src.rpm rpm
 
 DESCRIPTION:
     Runs default tests for the specified RPM package. Tests are defined in
@@ -112,6 +115,7 @@ TEST_VERBOSE=false
 TEST_ENGINE=podman
 TEST_IMAGE="${TEST_IMAGE:-quay.io/hummingbird/core-runtime:latest-builder}"
 TEST_SRC_RPM=""
+TEST_REPO_DIR=""
 RPM_PATH=""
 
 while [[ $# -gt 0 ]]; do
@@ -122,6 +126,10 @@ while [[ $# -gt 0 ]]; do
             ;;
         --rpm)
             RPM_PATH=$2
+            shift 2
+            ;;
+        --repo-dir)
+            TEST_REPO_DIR=$2
             shift 2
             ;;
         --src-rpm)
@@ -187,8 +195,18 @@ if [[ -n ${TEST_SRC_RPM} ]] && [[ ! -f ${TEST_SRC_RPM} ]]; then
     exit 1
 fi >&2
 
+# Validate repo directory exists if provided and convert to absolute path
+if [[ -n ${TEST_REPO_DIR} ]]; then
+    if [[ ! -d ${TEST_REPO_DIR} ]]; then
+        echo "Error: Repository directory '${TEST_REPO_DIR}' not found"
+        exit 1
+    fi
+    TEST_REPO_DIR=$(realpath "${TEST_REPO_DIR}")
+fi >&2
+
 # Setup test environment
 export TEST_SRC_RPM
+export TEST_REPO_DIR
 export TEST_VERBOSE
 export TEST_ENGINE
 export TEST_IMAGE
@@ -204,6 +222,9 @@ for rpm_file in "${RPM_PATHS[@]}"; do
 done
 if [[ -n ${TEST_SRC_RPM} ]]; then
     log_info "Source RPM file: ${TEST_SRC_RPM}"
+fi
+if [[ -n ${TEST_REPO_DIR} ]]; then
+    log_info "Repository directory: ${TEST_REPO_DIR}"
 fi
 log_info "Container engine: ${TEST_ENGINE}"
 log_info "Container image: ${TEST_IMAGE}"
