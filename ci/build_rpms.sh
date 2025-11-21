@@ -9,6 +9,7 @@
 #
 # Usage: ./ci/build_rpms.sh [OPTIONS] PACKAGE_NAME
 #   PACKAGE_NAME - Name of the package directory in rpms/
+#   --arch ARCH  - Target architecture (default: $(uname -m))
 #
 # The built RPMs can be found in: builds/PACKAGE_NAME/RPMS/ and builds/PACKAGE_NAME/SRPMS/
 #
@@ -22,7 +23,21 @@ OUT_DIR=${SCRIPT_DIR}/../builds
 REPO_ROOT=${SCRIPT_DIR}/..
 
 image=quay.io/redhat-user-workloads/rpm-build-pipeline-tenant/environment:latest@sha256:56bde7a1040650bc14ee927534426a52d88de30d588048c6a08be7a8758372cb
-arch=x86_64
+arch=$(uname -m)
+
+# Parse arguments
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --arch)
+            arch="$2"
+            shift 2
+            ;;
+        *)
+            package_name="$1"
+            shift
+            ;;
+    esac
+done
 
 package_name=$1
 test -n "${package_name}" || exit 1
