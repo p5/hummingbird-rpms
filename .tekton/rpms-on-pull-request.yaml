@@ -39,7 +39,7 @@ spec:
         - x86_64
     - name: specfile
       value: "rootfiles.spec"
-    - name: path-context
+    - name: spec-file-path
       value: "rpms/rootfiles"
     - name: mock-config-template-file
       value: "mock/mock.cfg"
@@ -103,7 +103,7 @@ spec:
         - x86_64
     - name: specfile
       value: "setup.spec"
-    - name: path-context
+    - name: spec-file-path
       value: "rpms/setup"
     - name: mock-config-template-file
       value: "mock/mock.cfg"
