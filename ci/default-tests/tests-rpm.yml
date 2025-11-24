@@ -14,7 +14,7 @@ rpmlint:
 
 rpm-install:
   command: |
-    # Test installing the RPM in a container
+    # Test installing the RPM using dnf-installroot
 
     # Get the package name from the RPM
     rpm_name=$(rpm -qp --queryformat '%{NAME}' "${TEST_RPM}")
@@ -28,38 +28,45 @@ rpm-install:
       echo "Created local repository at: ${repo_dir}"
     fi
 
-    # Create container with optional repo mount
-    if [[ -n ${repo_dir} ]]; then
-      container_id=$("${TEST_ENGINE:?}" create -v "${repo_dir}:/local-repo:ro,z" --entrypoint sleep "${TEST_IMAGE:?}" infinity)
-    else
-      container_id=$("${TEST_ENGINE:?}" create --entrypoint sleep "${TEST_IMAGE:?}" infinity)
-    fi
+    # Create a temporary directory for the build context
+    build_dir=$(mktemp -d)
 
     # Ensure cleanup on exit
     cleanup() {
-      "${TEST_ENGINE}" rm -f "${container_id}" 2>/dev/null || true
+      rm -rf "${build_dir}"
       [[ -n ${repo_dir} ]] && rm -rf "${repo_dir}"
     }
     trap cleanup EXIT
 
-    # Start the container
-    "${TEST_ENGINE}" start "${container_id}"
+    # Copy the RPM to the build context
+    cp "${TEST_RPM:?}" "${build_dir}/test.rpm"
 
-    # If we have a local repo, configure it for dependency resolution
+    # Copy the Containerfile to the build context
+    cp ../rpm-install-test.Containerfile "${build_dir}/Containerfile"
+
+    # Create local-repo directory in build context
+    mkdir -p "${build_dir}/local-repo"
+
+    # If we have a local repo, copy its contents and set build arg
+    local_repo_arg=""
     if [[ -n ${repo_dir} ]]; then
-      "${TEST_ENGINE}" exec --user 0 -e HOME=/root "${container_id}" bash -c 'printf "[local-test]\nname=Local Test Repository\nbaseurl=file:///local-repo\nenabled=1\ngpgcheck=0\n" > /etc/yum.repos.d/local-test.repo'
+      cp -r "${repo_dir}"/* "${build_dir}/local-repo/"
+      local_repo_arg="--build-arg LOCAL_REPO=true"
     fi
 
-    # Copy RPM into container and install from file (dependencies resolved from local repo if available)
-    "${TEST_ENGINE}" cp "${TEST_RPM:?}" "${container_id}:/tmp/test.rpm"
-    "${TEST_ENGINE}" exec --user 0 -e HOME=/root "${container_id}" dnf install -y /tmp/test.rpm
+    # Build the image
+    test_image="rpm-install-test:${rpm_name}-$$"
+    "${TEST_ENGINE}" build \
+      -t "${test_image}" \
+      --cap-add=ALL \
+      ${local_repo_arg} \
+      "${build_dir}"
 
-    # Verify installation succeeded
-    "${TEST_ENGINE}" exec --user 0 -e HOME=/root "${container_id}" rpm -q "${rpm_name}"
+    # Verify the package is installed in the final scratch image
+    "${TEST_ENGINE}" run --rm "${test_image}" rpm -q "${rpm_name}"
 
-    # Cleanup
-    "${TEST_ENGINE}" stop "${container_id}"
-    "${TEST_ENGINE}" rm -f "${container_id}"
+    # Cleanup the test image
+    "${TEST_ENGINE}" rmi -f "${test_image}" 2>/dev/null || true
 
 # Source RPM tests (only run when --src-rpm is provided)
 src-rpm-integrity-check:
