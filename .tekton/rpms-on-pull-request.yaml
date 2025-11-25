@@ -39,7 +39,7 @@ spec:
         - x86_64
     - name: specfile
       value: "rootfiles.spec"
-    - name: spec-file-path
+    - name: monorepo-subdir
       value: "rpms/rootfiles"
     - name: mock-config-template-file
       value: "mock/mock.cfg"
@@ -103,7 +103,7 @@ spec:
         - x86_64
     - name: specfile
       value: "rpm.spec"
-    - name: spec-file-path
+    - name: monorepo-subdir
       value: "rpms/rpm"
     - name: mock-config-template-file
       value: "mock/mock.cfg"
@@ -167,7 +167,7 @@ spec:
         - x86_64
     - name: specfile
       value: "setup.spec"
-    - name: spec-file-path
+    - name: monorepo-subdir
       value: "rpms/setup"
     - name: mock-config-template-file
       value: "mock/mock.cfg"
