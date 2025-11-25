@@ -1,0 +1,25 @@
+execute:
+  how: tmt
+discover:
+  - name: same_repo
+    url: "https://src.fedoraproject.org/rpms/pyproject-rpm-macros.git"
+    how: shell
+    tests:
+    - name: pluggy
+      path: /tests
+      test: ./mocktest.sh python-pluggy
+prepare:
+  - name: Install dependencies
+    how: install
+    package:
+    - mock
+    - rpmdevtools
+    - rpm-build
+    - dnf
+  - name: Update packages
+    how: shell
+    script: dnf upgrade -y
+  - name: Create dummy repo
+    how: shell
+    script: touch /etc/yum.repos.d/test-dummy.repo
+
