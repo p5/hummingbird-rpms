@@ -45,6 +45,12 @@ Run the default and package-specific tests against one or more built RPMs:
   --rpm /path/to/pkg-1.2-1.fcXX.x86_64.rpm \
   --src-rpm /path/to/pkg-1.2-1.fcXX.src.rpm \
   <package_name>
+
+# Test all RPMs in the build output directory after build_rpms.sh
+./ci/run_tests_rpm.sh $(printf -- '--rpm %s ' builds/<package_name>/RPMS/*.rpm) \
+  --repo-dir builds/<package_name>/RPMS/ \
+  --src-rpm builds/<package_name>/SRPMS/*.src.rpm \
+  <package_name>
 ```
 
 Notes:
