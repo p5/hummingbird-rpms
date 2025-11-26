@@ -63,6 +63,9 @@ spec:
         value: "{{ pipeline_path }}"
   taskRunTemplate:
     serviceAccountName: build-pipeline-{{ rpm.name }}
+  timeouts:
+    pipeline: 12h
+    tasks: 12h
   workspaces:
     - name: git-auth
       secret:

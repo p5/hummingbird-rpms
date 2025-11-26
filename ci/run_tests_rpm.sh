@@ -13,8 +13,8 @@ Usage: $0 [OPTIONS] PACKAGE_NAME
 Run tests for RPM packages.
 
 OPTIONS:
-    --rpm PATH[,PATH...]  Path to binary RPM file(s) to test (required)
-                          Multiple RPMs can be specified as comma-delimited list
+    --rpm PATH            Path to binary RPM file to test (required)
+                          Can be specified multiple times for multiple RPMs
     --repo-dir PATH       Path to directory containing RPMs to create a local repository
                           (optional, enables dependency resolution for multi-package builds)
     --src-rpm PATH        Path to source RPM file (optional, enables source RPM tests)
@@ -29,13 +29,13 @@ EXAMPLES:
     $0 --rpm /path/to/rootfiles-1.0-1.fc40.x86_64.rpm rootfiles
     $0 --rpm /path/to/setup-2.0-1.fc40.noarch.rpm --verbose setup
     $0 --rpm /path/to/setup.rpm --src-rpm /path/to/setup.src.rpm setup
-    $0 --rpm /path/to/setup.fc40.rpm,/path/to/setup.fc41.rpm setup
+    $0 --rpm /path/to/setup.fc40.rpm --rpm /path/to/setup.fc41.rpm setup
     $0 --rpm /path/to/rpm.rpm --repo-dir /path/to/RPMS/ --src-rpm /path/to/rpm.src.rpm rpm
 
 DESCRIPTION:
     Runs default tests for the specified RPM package. Tests are defined in
     ci/default-tests/tests-rpm.yml and package-specific tests in
-    rpms/<package>/tests-rpm.yml (if present).
+    test/rpms/.yml (if present).
 
     When multiple RPMs are specified, the same test suite is run for each RPM.
 EOF
@@ -116,7 +116,7 @@ TEST_ENGINE=podman
 TEST_IMAGE="${TEST_IMAGE:-quay.io/hummingbird/core-runtime:latest-builder}"
 TEST_SRC_RPM=""
 TEST_REPO_DIR=""
-RPM_PATH=""
+RPM_PATHS=()
 
 while [[ $# -gt 0 ]]; do
     case $1 in
@@ -125,7 +125,7 @@ while [[ $# -gt 0 ]]; do
             shift
             ;;
         --rpm)
-            RPM_PATH=$2
+            RPM_PATHS+=("$2")
             shift 2
             ;;
         --repo-dir)
@@ -165,7 +165,7 @@ if [[ -z ${PACKAGE_NAME:-} ]]; then
     exit 1
 fi >&2
 
-if [[ -z ${RPM_PATH:-} ]]; then
+if [[ ${#RPM_PATHS[@]} -eq 0 ]]; then
     echo "Error: --rpm PATH is required"
     echo "Usage: $0 [OPTIONS] PACKAGE_NAME"
     exit 1
@@ -177,9 +177,6 @@ if [[ ! -d ${package_dir} ]]; then
     echo "Error: Package directory '${package_dir}' not found"
     exit 1
 fi >&2
-
-# Split comma-delimited RPM paths into array
-IFS=',' read -ra RPM_PATHS <<< "${RPM_PATH}"
 
 # Validate all RPM files exist and convert to absolute paths
 for i in "${!RPM_PATHS[@]}"; do
@@ -247,7 +244,7 @@ test_data=$(yaml_to_json < "${default_tests_file}")
 test_data=$(jq --arg dir "${base_dir}/ci/default-tests" 'to_entries | map(.value.source_dir = $dir) | from_entries' <<< "${test_data}")
 
 # Load package-specific tests if they exist
-package_tests_file="${package_dir}/tests-rpm.yml"
+package_tests_file="${base_dir}/test/rpms/${PACKAGE_NAME}.yml"
 if [[ -f ${package_tests_file} ]]; then
     log_info "Including package-specific tests from ${package_tests_file}"
     package_test_data=$(yaml_to_json < "${package_tests_file}")

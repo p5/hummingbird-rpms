@@ -54,3 +54,10 @@ src-rpmlint:
     - pattern: "E: hardcoded-library-path"
       description: "E: hardcoded-library-path"
       fails: "sometimes"
+
+content:
+  command: |
+    files=$(rpm -ql "${TEST_RPM:?}")
+    for expected in /etc/environment /etc/services /usr/share/licenses/setup; do
+      grep -q -F -x "$expected" <<<"$files" || TEST_FAIL "Expected file $expected not found in RPM"
+    done

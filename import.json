@@ -1,0 +1,30 @@
+{
+  "bash": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "5eaa1a41029ab046f36bd9501a12446676b123e9",
+    "source": "https://src.fedoraproject.org/rpms/bash.git",
+    "version": "5.3.0"
+  },
+  "rootfiles": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "1a0e23b6c9305682af00a62a59158a716a2c5258",
+    "source": "https://src.fedoraproject.org/rpms/rootfiles.git",
+    "version": "9.0"
+  },
+  "rpm": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "0fe8adc2d528678a16f6d7cf3c3f8ba7aa9d261c",
+    "source": "https://src.fedoraproject.org/rpms/rpm.git",
+    "version": "6.0.0"
+  },
+  "setup": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "f2d2aec19325d0200557c13e607d983e71154aec",
+    "source": "https://src.fedoraproject.org/rpms/setup.git",
+    "version": "2.15.0"
+  }
+}

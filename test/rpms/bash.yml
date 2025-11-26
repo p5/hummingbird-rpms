@@ -1,0 +1,28 @@
+---
+# Test overrides for bash
+rpmlint:
+  command: |
+    rpmlint "${TEST_RPM:?}"
+  known_issues:
+    - pattern: "E: spelling-error"
+      description: "rpmlint flags spelling error"
+      # 'sometimes' as not all RPMs trigger all of the issues
+      fails: "sometimes"
+    - pattern: "E: missing-call-to-setgroups-before-setuid"
+      description: "rpmlint flags setgroups issue"
+      fails: "sometimes"
+    - pattern: "E: call-to-mktemp"
+      description: "rpmlint flags call to mktemp"
+      fails: "sometimes"
+    - pattern: "E: incorrect-fsf-address"
+      description: "rpmlint flags incorrect FSF address"
+      fails: "sometimes"
+
+src-rpmlint:
+  command: |
+    # Run rpmlint on source RPM
+    rpmlint "${TEST_SRC_RPM}"
+  known_issues:
+    - pattern: "E: spelling-error"
+      description: "rpmlint flags spelling error"
+      fails: "sometimes"

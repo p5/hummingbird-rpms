@@ -1,0 +1,711 @@
+"""Integration tests for dist_git importer."""
+
+import json
+import os
+import subprocess
+import types
+from pathlib import Path
+from unittest.mock import MagicMock, patch
+
+import pytest
+
+#
+# Fixtures
+#
+
+@pytest.fixture
+def dist_git_module():
+    """Load the dist_git script as a Python module.
+
+    For tests which need to mock internal functions.
+    """
+    script_path = Path(__file__).parent.parent / 'ci' / 'dist_git.py'
+    module = types.ModuleType("dist_git")
+    module.__file__ = str(script_path)
+    code = compile(script_path.read_text(), str(script_path), 'exec')
+    exec(code, module.__dict__)
+    return module
+
+
+@pytest.fixture
+def workdir(tmp_path: Path) -> Path:
+    """Shallow copy of the project with no imports"""
+
+    subprocess.run(['git', 'init'], cwd=tmp_path, check=True)
+    subprocess.run(['git', 'config', 'user.name', 'Test'], cwd=tmp_path, check=True)
+    subprocess.run(['git', 'config', 'user.email', 'test@example.com'], cwd=tmp_path, check=True)
+
+    # Copy dist_git script
+    script_src = Path(__file__).parent.parent / 'ci' / 'dist_git.py'
+    script_dst = tmp_path / 'ci' / 'dist_git.py'
+    script_dst.parent.mkdir()
+    script_dst.write_text(script_src.read_text())
+    script_dst.chmod(0o755)
+
+    (tmp_path / 'import.json').write_text('{}')
+    (tmp_path / 'rpms').mkdir()
+
+    # Create default upstream-releases.json for tests
+    (tmp_path / 'upstream-releases.json').write_text(
+        json.dumps({'fedora': {'f40': 'f40', 'rawhide': 'f99'}}) + '\n'
+    )
+
+    # no-op generate.sh
+    os.symlink('/bin/true', tmp_path / 'ci' / 'generate.sh')
+    (tmp_path / '.tekton').mkdir()
+    (tmp_path / 'konflux-templates').mkdir()
+
+    subprocess.run(['git', 'add', '.'], cwd=tmp_path, check=True)
+    subprocess.run(['git', 'commit', '-m', 'Initial commit'], cwd=tmp_path, check=True)
+
+    return tmp_path
+
+
+@pytest.fixture
+def upstream_repos(tmp_path: Path) -> dict[str, Path]:
+    """Create two mock upstream dist_git repositories."""
+    repos: dict[str, Path] = {}
+
+    # Create first upstream repo: vanilla
+    vanilla_dir = tmp_path / 'upstream' / 'vanilla.git'
+    vanilla_dir.mkdir(parents=True)
+    subprocess.run(['git', 'init', '--initial-branch=rawhide'], cwd=vanilla_dir, check=True)
+    subprocess.run(['git', 'config', 'user.name', 'Test'], cwd=vanilla_dir, check=True)
+    subprocess.run(['git', 'config', 'user.email', 'test@example.com'], cwd=vanilla_dir, check=True)
+
+    # Create a simple spec file
+    (vanilla_dir / 'vanilla.spec').write_text("""Name: vanilla
+Version: 1.0
+Release: 1
+Summary: Test package vanilla
+License: MIT
+
+%description
+Test package
+
+%files
+""")
+    subprocess.run(['git', 'add', 'vanilla.spec'], cwd=vanilla_dir, check=True)
+    subprocess.run(['git', 'commit', '-m', 'Initial commit'], cwd=vanilla_dir, check=True)
+    repos['vanilla'] = vanilla_dir
+
+    # Create second upstream repo: chocolate with a stable branch
+    chocolate_dir = tmp_path / 'upstream' / 'chocolate.git'
+    chocolate_dir.mkdir(parents=True)
+    subprocess.run(['git', 'init', '--initial-branch=rawhide'], cwd=chocolate_dir, check=True)
+    subprocess.run(['git', 'config', 'user.name', 'Test'], cwd=chocolate_dir, check=True)
+    subprocess.run(['git', 'config', 'user.email', 'test@example.com'], cwd=chocolate_dir, check=True)
+
+    choc_spec = chocolate_dir / 'chocolate.spec'
+    choc_spec.write_text("""Name: chocolate
+Version: 10
+Release: 1
+Summary: Test package chocolate
+License: GPL
+
+%description
+Test package chocolate
+
+%files
+""")
+    subprocess.run(['git', 'add', 'chocolate.spec'], cwd=chocolate_dir, check=True)
+    subprocess.run(['git', 'commit', '-m', 'Initial commit'], cwd=chocolate_dir, check=True)
+
+    # Create f40 branch
+    subprocess.run(['git', 'checkout', '-b', 'f40'], cwd=chocolate_dir, check=True)
+    choc_spec.write_text("""Name: chocolate
+Version: 4
+Release: 1
+Summary: Test package chocolate
+License: GPL
+
+%description
+Test package chocolate (f40)
+
+%files
+""")
+    subprocess.run(['git', 'add', 'chocolate.spec'], cwd=chocolate_dir, check=True)
+    subprocess.run(['git', 'commit', '-m', 'Update for f40'], cwd=chocolate_dir, check=True)
+    subprocess.run(['git', 'checkout', 'rawhide'], cwd=chocolate_dir, check=True)
+
+    repos['chocolate'] = chocolate_dir
+
+    return repos
+
+
+#
+# Helpers
+#
+
+def add_upstream_commit(repo_path: Path, package_name: str, old_version: str, new_version: str) -> str:
+    """Add a commit to an upstream repository updating the version.
+
+    Returns the new commit SHA.
+    """
+    spec_file = repo_path / f'{package_name}.spec'
+    spec_file.write_text(spec_file.read_text().replace(f'Version: {old_version}', f'Version: {new_version}'))
+    subprocess.run(['git', 'add', f'{package_name}.spec'], cwd=repo_path, check=True)
+    subprocess.run(['git', 'commit', '-m', f'Update to {new_version}-1'], cwd=repo_path, check=True)
+    return subprocess.run(['git', 'rev-parse', 'HEAD'], cwd=repo_path,
+                          text=True, stdout=subprocess.PIPE, check=True).stdout.strip()
+
+
+def get_last_commit_info(workdir: Path) -> tuple[str, str]:
+    """Get subject and body of the last commit.
+
+    Returns (subject, body) tuple.
+    """
+    result = subprocess.run(['git', 'log', '-1', '--format=%s%n%n%b'], cwd=workdir,
+                            text=True, stdout=subprocess.PIPE, check=True)
+    lines = result.stdout.strip().split('\n')
+    assert lines
+    subject = lines[0]
+    body = '\n'.join(lines[2:]) if len(lines) > 2 else ''
+    return subject, body
+
+
+#
+# Tests
+#
+
+def test_import(workdir: Path, upstream_repos: dict[str, Path]) -> None:
+    """Import a new package."""
+    result = subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["chocolate"]}'],
+        cwd=workdir, capture_output=True, check=True, text=True
+    )
+
+    assert "Successfully imported chocolate" in result.stderr
+
+    chocolate_dir = workdir / 'rpms' / 'chocolate'
+    assert (chocolate_dir / 'chocolate.spec').exists()
+    assert not (chocolate_dir / '.git').exists()
+
+    import_json = json.loads((workdir / 'import.json').read_text())
+    assert 'chocolate' in import_json
+    assert import_json['chocolate']['branch'] == 'rawhide'
+    assert import_json['chocolate']['version'] == '10'
+    assert import_json['chocolate']['release'] == '1'
+
+    subject, body = get_last_commit_info(workdir)
+    assert subject == 'Import chocolate-10-1'
+    assert 'Branch: rawhide' in body
+    assert f"Upstream: {import_json['chocolate']['sha']}" in body
+
+
+def test_import_dry_run(workdir: Path, upstream_repos: dict[str, Path]) -> None:
+    """--dry-run prevents commits."""
+    # Get initial commit (from fixture setup)
+    initial_subject, _ = get_last_commit_info(workdir)
+
+    # Import with --dry-run
+    result = subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), '--dry-run', 'import', f'file://{upstream_repos["chocolate"]}'],
+        cwd=workdir, check=True, capture_output=True, text=True
+    )
+
+    assert "Successfully imported chocolate" in result.stderr
+
+    # Verify files were imported
+    chocolate_dir = workdir / 'rpms' / 'chocolate'
+    assert (chocolate_dir / 'chocolate.spec').exists()
+
+    # Verify import.json was updated
+    import_json = json.loads((workdir / 'import.json').read_text())
+    assert 'chocolate' in import_json
+    assert import_json['chocolate']['version'] == '10'
+
+    # Verify no commit was created (still at initial commit)
+    subject, _ = get_last_commit_info(workdir)
+    assert subject == initial_subject
+
+
+def test_import_sign_off(workdir: Path, upstream_repos: dict[str, Path]) -> None:
+    """--sign-off adds Signed-off-by trailer to commits."""
+    # Import with --sign-off
+    result = subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), '--sign-off', 'import', f'file://{upstream_repos["vanilla"]}'],
+        cwd=workdir, capture_output=True, text=True, check=True
+    )
+
+    assert "Successfully imported vanilla" in result.stderr
+
+    # Verify the import worked
+    import_json = json.loads((workdir / 'import.json').read_text())
+    assert 'vanilla' in import_json
+    assert import_json['vanilla']['version'] == '1.0'
+
+    # Verify commit has sign-off trailer
+    subject, body = get_last_commit_info(workdir)
+    assert subject == 'Import vanilla-1.0-1'
+    assert f"Upstream: {import_json['vanilla']['sha']}" in body
+    assert 'Signed-off-by: Test <test@example.com>' in body
+
+
+def test_import_with_branch(workdir: Path, upstream_repos: dict[str, Path]) -> None:
+    """Importing from a specific branch."""
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'import', '--branch', 'f40', f'file://{upstream_repos["chocolate"]}'],
+        cwd=workdir, check=True,
+    )
+
+    # Check import.json has correct branch and version
+    import_json = json.loads((workdir / 'import.json').read_text())
+    assert import_json['chocolate']['branch'] == 'f40'
+    assert import_json['chocolate']['version'] == '4'
+    assert import_json['chocolate']['release'] == '1'
+
+    subject, body = get_last_commit_info(workdir)
+    assert subject == 'Import chocolate-4-1'
+    assert 'Branch: f40' in body
+    assert f"Upstream: {import_json['chocolate']['sha']}" in body
+
+
+def test_import_existing_package_fails(workdir: Path, upstream_repos: dict[str, Path]) -> None:
+    """Importing an existing package fails."""
+    # Create vanilla directory to simulate existing package
+    (workdir / 'rpms' / 'vanilla').mkdir()
+
+    result = subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["vanilla"]}'],
+        cwd=workdir, capture_output=True, text=True
+    )
+
+    assert result.returncode == 1
+    assert "ERROR: Package vanilla already exists" in result.stderr
+
+
+def test_import_with_ref(workdir: Path, upstream_repos: dict[str, Path]) -> None:
+    """Import with --ref to get an older commit, then update moves to latest."""
+    # Get initial SHA of chocolate
+    old_sha = subprocess.run(
+        ['git', 'rev-parse', 'HEAD'],
+        cwd=upstream_repos["chocolate"], text=True, stdout=subprocess.PIPE, check=True
+    ).stdout.strip()
+
+    # Add new commits to upstream
+    add_upstream_commit(upstream_repos["chocolate"], 'chocolate', '10', '11')
+    new_sha = add_upstream_commit(upstream_repos["chocolate"], 'chocolate', '11', '12')
+
+    # Import using --ref to get the old version
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'import', '--ref', old_sha, f'file://{upstream_repos["chocolate"]}'],
+        cwd=workdir, check=True,
+    )
+
+    # Check that we imported the old version
+    import_json = json.loads((workdir / 'import.json').read_text())
+    assert import_json['chocolate']['sha'] == old_sha
+    assert import_json['chocolate']['version'] == '10'
+    assert import_json['chocolate']['branch'] == 'rawhide'
+
+    # Verify commit message includes the old SHA
+    subject, body = get_last_commit_info(workdir)
+    assert subject == 'Import chocolate-10-1'
+    assert f"Upstream: {old_sha}" in body
+
+    # Now run update to move to latest version
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'update', '--skip-build-check', 'chocolate'],
+        cwd=workdir, check=True,
+    )
+
+    # Check that we're now at the latest version
+    import_json = json.loads((workdir / 'import.json').read_text())
+    assert import_json['chocolate']['sha'] == new_sha
+    assert import_json['chocolate']['version'] == '12'
+
+    # Verify update commit was created
+    subject, body = get_last_commit_info(workdir)
+    assert subject == 'Update chocolate to 12-1'
+    assert f"Upstream: {new_sha}" in body
+
+
+def test_update(workdir: Path, upstream_repos: dict[str, Path]) -> None:
+    """update command"""
+    # Case 1: Import vanilla (unmodified, current)
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["vanilla"]}'],
+        cwd=workdir, check=True,
+    )
+
+    # Case 2: Import chocolate (unmodified, will become outdated)
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["chocolate"]}'],
+        cwd=workdir, check=True,
+    )
+    # Get the sha that was imported
+    import_json = json.loads((workdir / 'import.json').read_text())
+    initial_sha = import_json['chocolate']['sha']
+
+    # Update upstream chocolate
+    add_upstream_commit(upstream_repos["chocolate"], 'chocolate', '10', '11')
+
+    # Case 3: Create a modified package (strawberry) - import old chocolate, modify it, then chocolate gets updated
+    strawberry_dir = workdir / 'rpms' / 'strawberry'
+    strawberry_dir.mkdir()
+    chocolate_spec = (workdir / 'rpms' / 'chocolate' / 'chocolate.spec')
+    # Copy chocolate spec to strawberry and modify it
+    (strawberry_dir / 'chocolate.spec').write_text(chocolate_spec.read_text() + '\n# Local modification\n')
+    # Add strawberry to import.json (copy chocolate's old metadata, so it has an update available)
+    import_json = json.loads((workdir / 'import.json').read_text())
+    import_json['strawberry'] = import_json['chocolate'].copy()
+    (workdir / 'import.json').write_text(json.dumps(import_json, indent=2, sort_keys=True) + '\n')
+
+    # Case 4: Downstream-only package (not in import.json)
+    mango_dir = workdir / 'rpms' / 'mango'
+    mango_dir.mkdir()
+    (mango_dir / 'mango.spec').write_text('Name: mango\nVersion: 1.0\nRelease: 1\n')
+
+    # Let's not cover Koji check here
+    result = subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'update', '--skip-build-check'],
+        cwd=workdir, capture_output=True, text=True, check=True
+    )
+
+    # Check results
+    import_json = json.loads((workdir / 'import.json').read_text())
+
+    # Case 1: vanilla should be unchanged (already up-to-date)
+    assert "already up-to-date" in result.stderr or "vanilla" in result.stderr
+
+    # Case 2: chocolate should be updated to new version
+    assert import_json['chocolate']['sha'] != initial_sha, "chocolate should have been updated"
+    assert import_json['chocolate']['version'] == '11', "chocolate should be at version 11"
+    assert "Updating chocolate" in result.stderr
+
+    # Verify commit was created for chocolate update
+    subject, body = get_last_commit_info(workdir)
+    assert subject == 'Update chocolate to 11-1'
+    assert f"Upstream: {import_json['chocolate']['sha']}" in body
+
+    # Case 3: strawberry should be skipped (has upstream update but also has local modifications)
+    assert "Skipping strawberry: package has local modifications" in result.stderr
+
+    # Case 4: mango should not be mentioned (not in import.json)
+    assert "mango" not in result.stderr
+
+
+def test_update_uses_ls_remote(workdir: Path, upstream_repos: dict[str, Path]) -> None:
+    """update uses ls-remote optimization for up-to-date packages."""
+    # Import vanilla
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["vanilla"]}'],
+        cwd=workdir, check=True,
+    )
+
+    # Create a mock git wrapper that logs commands
+    log_file = workdir / 'git_commands.log'
+    bin_dir = workdir / 'bin'
+    bin_dir.mkdir()
+    mock_git = bin_dir / 'git'
+    mock_git.write_text(f"""#!/bin/bash
+echo "$@" >> {log_file}
+exec /usr/bin/git "$@"
+""")
+    mock_git.chmod(0o755)
+
+    # Update PATH to use mock git
+    env = os.environ.copy()
+    env['PATH'] = f"{bin_dir}:{env['PATH']}"
+
+    # Run update with mock git
+    result = subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'update', 'vanilla'],
+        cwd=workdir, capture_output=True, text=True, check=True, env=env
+    )
+
+    assert "already up-to-date" in result.stderr
+
+    # Should use ls-remote (not clone) to check if package is up-to-date
+    git_commands = log_file.read_text().strip().split('\n')
+    # Filter out config checks
+    non_config_commands = [cmd for cmd in git_commands if not cmd.startswith('config ')]
+    assert non_config_commands == ["ls-remote file://" + str(upstream_repos["vanilla"]) + " rawhide"]
+
+
+def test_update_unbuilt(workdir: Path, upstream_repos: dict[str, Path], dist_git_module) -> None:
+    """Update skips packages not built in Koji."""
+    # Import chocolate
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["chocolate"]}'],
+        cwd=workdir, check=True,
+    )
+
+    # Update upstream chocolate
+    add_upstream_commit(upstream_repos["chocolate"], 'chocolate', '10', '11')
+
+    # Mock Koji to return no build found (for both current and fallback)
+    with patch('xmlrpc.client.ServerProxy') as mock_server_class:
+        mock_server = MagicMock()
+        mock_server.getBuild.return_value = None  # Build not found
+        mock_server_class.return_value = mock_server
+
+        # Run update in-process
+        dist_git_module.ROOT_DIR = workdir
+        dist_git_module.IMPORT_JSON = workdir / 'import.json'
+        dist_git_module.RELEASES_JSON = workdir / 'upstream-releases.json'
+        dist_git_module.imports = json.loads((workdir / 'import.json').read_text())
+        dist_git_module.releases = json.loads((workdir / 'upstream-releases.json').read_text())
+        dist_git_module.update('chocolate')
+        # Should try fc99 first, then fallback to fc40 (both not found)
+        assert mock_server.getBuild.call_count == 2
+        mock_server.getBuild.assert_any_call('chocolate-11-1.fc99')
+        mock_server.getBuild.assert_any_call('chocolate-11-1.fc40')
+        import_json = json.loads((workdir / 'import.json').read_text())
+        assert import_json['chocolate']['version'] == '10', "Should not update when build missing in Koji"
+
+
+def test_update_built(workdir: Path, upstream_repos: dict[str, Path], dist_git_module) -> None:
+    """Update proceeds when built in Koji."""
+    # Import chocolate
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["chocolate"]}'],
+        cwd=workdir, check=True,
+    )
+    json.loads((workdir / 'import.json').read_text())['chocolate']['sha']
+
+    # Update upstream chocolate
+    new_sha = add_upstream_commit(upstream_repos["chocolate"], 'chocolate', '10', '11')
+
+    # Mock Koji to return a successful build with matching commit
+    with patch('xmlrpc.client.ServerProxy') as mock_server_class:
+        mock_server = MagicMock()
+        mock_server.getBuild.return_value = {
+            'build_id': 12345,
+            'nvr': 'chocolate-11-1.fc99',
+            'state': 1,  # COMPLETE
+            'source': f'git+https://example.com/chocolate.git#{new_sha}'
+        }
+        mock_server_class.return_value = mock_server
+
+        # Run update in-process
+        dist_git_module.ROOT_DIR = workdir
+        dist_git_module.IMPORT_JSON = workdir / 'import.json'
+        dist_git_module.RELEASES_JSON = workdir / 'upstream-releases.json'
+        dist_git_module.imports = json.loads((workdir / 'import.json').read_text())
+        dist_git_module.releases = json.loads((workdir / 'upstream-releases.json').read_text())
+        dist_git_module.update('chocolate')
+        mock_server.getBuild.assert_called_once_with('chocolate-11-1.fc99')
+        import_json = json.loads((workdir / 'import.json').read_text())
+        assert import_json['chocolate']['version'] == '11'
+        assert import_json['chocolate']['sha'] == new_sha
+
+
+def test_update_branch_dist_tag(workdir: Path, upstream_repos: dict[str, Path], dist_git_module) -> None:
+    """Update uses correct dist tag for non-rawhide branches."""
+    # Import chocolate from f40 branch
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'import', '--branch', 'f40', f'file://{upstream_repos["chocolate"]}'],
+        cwd=workdir, check=True,
+    )
+
+    # Switch to f40 branch and update upstream chocolate
+    subprocess.run(['git', 'checkout', 'f40'], cwd=upstream_repos["chocolate"], check=True)
+    new_sha = add_upstream_commit(upstream_repos["chocolate"], 'chocolate', '4', '5')
+
+    # Mock Koji to return a successful build
+    with patch('xmlrpc.client.ServerProxy') as mock_server_class:
+        mock_server = MagicMock()
+        mock_server.getBuild.return_value = {
+            'build_id': 12345,
+            'nvr': 'chocolate-5-1.fc40',
+            'state': 1,  # COMPLETE
+            'source': f'git+https://example.com/chocolate.git#{new_sha}'
+        }
+        mock_server_class.return_value = mock_server
+
+        # Run update in-process
+        dist_git_module.ROOT_DIR = workdir
+        dist_git_module.IMPORT_JSON = workdir / 'import.json'
+        dist_git_module.RELEASES_JSON = workdir / 'upstream-releases.json'
+        dist_git_module.imports = json.loads((workdir / 'import.json').read_text())
+        dist_git_module.releases = json.loads((workdir / 'upstream-releases.json').read_text())
+        dist_git_module.update('chocolate')
+        # Should query for .fc40 (from branch f40), not rawhide version
+        mock_server.getBuild.assert_called_once_with('chocolate-5-1.fc40')
+        import_json = json.loads((workdir / 'import.json').read_text())
+        assert import_json['chocolate']['version'] == '5'
+        assert import_json['chocolate']['sha'] == new_sha
+
+
+def test_update_rawhide_fallback(workdir: Path, upstream_repos: dict[str, Path], dist_git_module) -> None:
+    """Update finds rawhide build with previous release dist tag when current not found."""
+    # Import vanilla from rawhide
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["vanilla"]}'],
+        cwd=workdir, check=True,
+    )
+
+    # Update upstream vanilla
+    new_sha = add_upstream_commit(upstream_repos["vanilla"], 'vanilla', '1.0', '2.0')
+
+    # Mock Koji to:
+    # 1. Return None for fc99 (current rawhide)
+    # 2. Return successful build for fc40 (previous release fallback)
+    with patch('xmlrpc.client.ServerProxy') as mock_server_class:
+        mock_server = MagicMock()
+
+        def getBuild_side_effect(nvr):
+            if nvr == 'vanilla-2.0-1.fc99':
+                return None  # Current rawhide not found
+            elif nvr == 'vanilla-2.0-1.fc40':
+                return {
+                    'build_id': 12345,
+                    'nvr': 'vanilla-2.0-1.fc40',
+                    'state': 1,  # COMPLETE
+                    'source': f'git+https://example.com/vanilla.git#{new_sha}'
+                }
+            return None
+
+        mock_server.getBuild.side_effect = getBuild_side_effect
+        mock_server_class.return_value = mock_server
+
+        # Run update in-process
+        dist_git_module.ROOT_DIR = workdir
+        dist_git_module.IMPORT_JSON = workdir / 'import.json'
+        dist_git_module.RELEASES_JSON = workdir / 'upstream-releases.json'
+        dist_git_module.imports = json.loads((workdir / 'import.json').read_text())
+        dist_git_module.releases = json.loads((workdir / 'upstream-releases.json').read_text())
+        dist_git_module.update('vanilla')
+
+        # Should have called getBuild twice: once for fc99, then fallback to fc40
+        assert mock_server.getBuild.call_count == 2
+        mock_server.getBuild.assert_any_call('vanilla-2.0-1.fc99')
+        mock_server.getBuild.assert_any_call('vanilla-2.0-1.fc40')
+
+        # Package should be updated using the fallback
+        import_json = json.loads((workdir / 'import.json').read_text())
+        assert import_json['vanilla']['version'] == '2.0'
+        assert import_json['vanilla']['sha'] == new_sha
+
+
+def test_sync(workdir: Path, upstream_repos: dict[str, Path]) -> None:
+    """Sync discards local modifications."""
+    # Import chocolate (automatically commits)
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["chocolate"]}'],
+        cwd=workdir, check=True
+    )
+
+    # Make local modification and commit it
+    choc_spec = workdir / 'rpms' / 'chocolate' / 'chocolate.spec'
+    choc_spec.write_text(choc_spec.read_text() + '\n# Local modification\n')
+    subprocess.run(['git', 'commit', '-a', '-m', 'Local modification'], cwd=workdir, check=True)
+
+    new_sha = add_upstream_commit(upstream_repos["chocolate"], 'chocolate', '10', '11')
+
+    # sync succeeds and discards local modifications (automatically commits)
+    result = subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'sync', 'chocolate'],
+        cwd=workdir, capture_output=True, text=True, check=True,
+    )
+
+    choc_spec_content = choc_spec.read_text()
+    assert '# Local modification' not in choc_spec_content
+
+    import_json = json.loads((workdir / 'import.json').read_text())
+    assert import_json['chocolate']['sha'] == new_sha
+    assert import_json['chocolate']['version'] == '11'
+
+    # Verify sync commit was created
+    subject, body = get_last_commit_info(workdir)
+    assert subject == 'Sync chocolate to 11-1'
+    assert f"Upstream: {new_sha}" in body
+
+    # Add another upstream commit
+    new_sha2 = add_upstream_commit(upstream_repos["chocolate"], 'chocolate', '11', '12')
+
+    # Update should now pull in the new version
+    result = subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'update', '--skip-build-check', 'chocolate'],
+        cwd=workdir, capture_output=True, text=True, check=True,
+    )
+
+    assert "Updating chocolate" in result.stderr
+
+    import_json = json.loads((workdir / 'import.json').read_text())
+    assert import_json['chocolate']['sha'] == new_sha2
+    assert import_json['chocolate']['version'] == '12'
+
+    # Verify update commit was created
+    subject, body = get_last_commit_info(workdir)
+    assert subject == 'Update chocolate to 12-1'
+    assert f"Upstream: {new_sha2}" in body
+
+
+def test_sync_already_in_sync(workdir: Path, upstream_repos: dict[str, Path]) -> None:
+    """Sync fails when already at upstream."""
+    # Import chocolate (automatically commits)
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["chocolate"]}'],
+        cwd=workdir, check=True,
+    )
+
+    # Sync without upstream changes fails
+    result = subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'sync', 'chocolate'],
+        cwd=workdir, capture_output=True, text=True
+    )
+    assert result.returncode != 0
+    assert "already at upstream" in result.stderr
+
+
+def test_git_config_required(workdir: Path, upstream_repos: dict[str, Path]) -> None:
+    """Fails with helpful message if git user/email not configured."""
+
+    subprocess.run(['git', 'config', '--unset', 'user.name'], cwd=workdir, check=True)
+    subprocess.run(['git', 'config', '--unset', 'user.email'], cwd=workdir, check=True)
+    env = os.environ.copy()
+    env['GIT_CONFIG_GLOBAL'] = '/dev/null'
+    env['GIT_CONFIG_SYSTEM'] = '/dev/null'
+
+    result = subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["chocolate"]}'],
+        cwd=workdir, capture_output=True, text=True, env=env
+    )
+
+    assert result.returncode != 0
+    assert "Please configure git:" in result.stderr
+    assert "git config user.name" in result.stderr
+
+    # No changes were made (import.json and rpms/ should be unchanged)
+    subprocess.run(['git', 'diff', '--exit-code', 'import.json'], cwd=workdir, check=True)
+    assert not (workdir / 'rpms' / 'chocolate').exists(), "Package should not be imported"
+
+    # --dry-run doesn't require git config
+    result = subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), '--dry-run', 'import', f'file://{upstream_repos["chocolate"]}'],
+        cwd=workdir, capture_output=True, text=True, env=env, check=True
+    )
+    assert "Successfully imported chocolate" in result.stderr
+
+
+def test_update_releases(workdir: Path, dist_git_module) -> None:
+    """update-releases fetches from Bodhi and writes upstream-releases.json."""
+    # mock curl response
+    mock_bodhi_response = {
+        'releases': [
+            {'id_prefix': 'FEDORA', 'branch': 'f41', 'dist_tag': 'f41'},
+            {'id_prefix': 'FEDORA', 'branch': 'rawhide', 'dist_tag': 'f44'},
+            {'id_prefix': 'FEDORA', 'branch': 'eln', 'dist_tag': 'eln'},
+            {'id_prefix': 'FEDORA-EPEL', 'branch': 'epel9', 'dist_tag': 'epel9'},
+        ]
+    }
+
+    with patch('subprocess.check_output') as mock_check_output:
+        mock_check_output.return_value = json.dumps(mock_bodhi_response)
+
+        # Run update-releases in-process
+        dist_git_module.ROOT_DIR = workdir
+        dist_git_module.RELEASES_JSON = workdir / 'upstream-releases.json'
+        dist_git_module.update_releases()
+
+    assert json.loads((workdir / 'upstream-releases.json').read_text()) == {
+        'fedora': {
+            'eln': 'eln',
+            'f41': 'f41',
+            'rawhide': 'f44',
+            # EPEL should be filtered out (not FEDORA id_prefix)
+        }
+    }

@@ -8,7 +8,7 @@ This guide is adapted from the Hummingbird containers contribution guide and ali
 Be respectful and constructive. By participating, you agree to uphold a professional and inclusive environment.
 
 ## Repository layout
-- `rpms/<package>/` – RPM spec, sources, and package-specific tests (`tests-rpm.yml`)
+- `rpms/<package>/` – RPM dist-gits (spec, sources), mostly auto-imported
 - `ci/` – helper scripts and default tests
   - `build_rpms.sh` – build RPMs using Mock in the Konflux-compatible container
   - `run_tests_rpm.sh` – run rpmlint and install/rebuild tests in a container
@@ -16,6 +16,7 @@ Be respectful and constructive. By participating, you agree to uphold a professi
   - `run_tests_rpm.fmf` – tmt/Testing Farm entry point
 - `konflux-templates/` – Konflux/PAC resources
 - `mock/` – mock configuration
+- `test/rpms/<package>.yml` – package-specific tests
 
 ## Prerequisites
 - Fedora or RHEL-like environment
@@ -44,6 +45,12 @@ Run the default and package-specific tests against one or more built RPMs:
   --rpm /path/to/pkg-1.2-1.fcXX.x86_64.rpm \
   --src-rpm /path/to/pkg-1.2-1.fcXX.src.rpm \
   <package_name>
+
+# Test all RPMs in the build output directory after build_rpms.sh
+./ci/run_tests_rpm.sh $(printf -- '--rpm %s ' builds/<package_name>/RPMS/*.rpm) \
+  --repo-dir builds/<package_name>/RPMS/ \
+  --src-rpm builds/<package_name>/SRPMS/*.src.rpm \
+  <package_name>
 ```
 
 Notes:
@@ -68,6 +75,47 @@ IMAGE_URL="oci://registry/namespace/artifact:tag_or_digest" tmt run -a
 ```
 
 If you need longer time in Testing Farm, the FMF test includes `duration`, which you can adjust in `ci/run_tests_rpm.fmf`.
+
+## Dist-git Imports
+
+The `ci/dist_git.py` tool imports Fedora/CentOS dist-git packages into the `rpms/` directory. We expect most packages to not have (permanent) Hummingbird specific changes, so most of them will keep syncing with upstream dist-gits. In most cases that will be Fedora rawhide, but for some packages we may pick a different upstream, e.g. stable Fedora or even CentOS Stream.
+
+The status of all imports is tracked in [imports.json](./imports.json). Active Fedora releases are tracked in [upstream-releases.json](./upstream-releases.json), which is updated from the Bodhi API.
+
+See `./ci/dist_git.py --help` for all available options. Some examples:
+
+ * Update upstream-releases.json from Bodhi API (should be done periodically, e.g., weekly via CI):
+
+```bash
+./ci/dist_git.py update-releases
+```
+
+ * Import a new package. This requires specifying the dist-git URL (with `fedora/` being a shortcut for the Fedora dist-git URL) and optionally a branch (default: rawhide):
+
+```bash
+./ci/dist_git.py import fedora/bash
+
+./ci/dist_git.py import --branch f42 fedora/glibc
+./ci/dist_git.py import --branch c10s https://gitlab.com/redhat/centos-stream/rpms/postfix.git
+```
+
+ * Update all or a single package:
+
+```bash
+./ci/dist_git.py update
+
+./ci/dist_git.py update bash
+```
+
+This only imports changes if these were actually built in Koji, to ensure we only import changes which are meant to be released. You can disable this check with `--skip-build-check`.
+
+ * Re-sync a package to upstream, discarding any local modifications. We use this after Fedora adopted our change, or it is no longer relevant:
+
+```bash
+./ci/dist_git.py sync bash
+```
+
+All of these commands automatically commit changes with descriptive commit messages including the upstream SHA. To avoid that, you can use the `--dry-run` option.
 
 ## Branching and pull requests
 - Create feature branches from the default branch.

@@ -77,6 +77,30 @@ deploy_components_to_konflux:
     - !reference [.rules, push]
     - !reference [.rules, web]
 
+dist_git_update:
+  environment:
+    name: chore-mr
+    action: access
+  allow_failure: true
+  when: manual
+  before_script:
+    - |
+      git config --local user.name "${GITLAB_USER_NAME}"
+      git config --local user.email "${GITLAB_USER_EMAIL}"
+      git fetch --quiet origin
+      git remote set-url origin "https://${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git"
+      git config --local credential.username ignored
+      git config --local credential.helper "!echo \"password=\$CHORE_MR_GITLAB_TOKEN\"; :"
+      git branch --quiet --force "${CI_COMMIT_BRANCH:-$CI_DEFAULT_BRANCH}" "origin/${CI_COMMIT_BRANCH:-$CI_DEFAULT_BRANCH}"
+  script:
+    - |
+      ./ci/dist_git.py update
+      ./ci/create_mr.sh --branch chore/dist-git-update --title "chore(rpms): Update dist-git packages"
+  rules:
+    - !reference [.rules, mr]
+    - !reference [.rules, schedule]
+    - !reference [.rules, web]
+
 trigger_documentation:
   stage: deploy
   needs: [{job: deploy_hugo_tag, optional: true}]
