@@ -94,6 +94,11 @@ for path in "${rpms[@]}"; do
     (
         echo "name: ${name}"
         echo "dname: ${dname}"
+        # Add package-specific test file to path changes if it exists
+        if [[ -f "test/rpms/${dname}.yml" ]]; then
+            echo "extra_path_changes:"
+            echo "  - test/rpms/${dname}.yml"
+        fi
     ) > "${temp_rpm_variables}"
 
     yq -i ".rpms += [load(\"${temp_rpm_variables}\")]" "${temp_variables}"
