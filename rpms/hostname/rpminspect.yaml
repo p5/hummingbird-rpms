@@ -1,0 +1,6 @@
+---
+badfuncs:
+  allowed:
+    # hostname uses gethostbyname (safely) to display alias name(s).
+    /usr/bin/hostname:
+      - gethostbyname

@@ -1,0 +1,12 @@
+---
+# Tests specific to the hostname package
+rpmlint:
+  command: |
+    rpmlint "${TEST_RPM:?}"
+  known_issues:
+    - pattern: "E: incorrect-fsf-address"
+      description: "rpmlint flags incorrect FSF address"
+      fails: "sometimes"
+    - pattern: "W: binary-or-shlib-calls-gethostbyname"
+      description: "rpmlint flags binary or shlib calls gethostbyname"
+      fails: "sometimes"

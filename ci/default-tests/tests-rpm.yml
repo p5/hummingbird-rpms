@@ -34,7 +34,9 @@ rpm-install:
     # Ensure cleanup on exit
     cleanup() {
       rm -rf "${build_dir}"
-      [[ -n ${repo_dir} ]] && rm -rf "${repo_dir}"
+      if [[ -n ${repo_dir} ]]; then
+        rm -rf "${repo_dir}"
+      fi
     }
     trap cleanup EXIT
 
