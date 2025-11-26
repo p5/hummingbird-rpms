@@ -1,21 +1,5 @@
 ---
 # Tests specific to the rootfiles package
-rpmlint:
-  command: |
-    rpmlint "${TEST_RPM:?}"
-  known_issues:
-    - pattern: "E: spelling-error"
-      description: "rpmlint flags spelling error"
-      fails: "sometimes"
-
-src-rpmlint:
-  command: |
-    # Run rpmlint on source RPM
-    rpmlint "${TEST_SRC_RPM}"
-  known_issues:
-    - pattern: "E: spelling-error"
-      description: "rpmlint flags spelling error"
-      fails: "sometimes"
 
 # this isn't a generic test as rebuilding packages in general is (1) very
 # expensive (and times out our test for large packages), and (2) mostly

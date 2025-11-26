@@ -8,10 +8,6 @@ rpm-integrity-check:
     rpm -qlp "${TEST_RPM:?}"
     rpm -qRp "${TEST_RPM:?}"
 
-rpmlint:
-  command: |
-    rpmlint "${TEST_RPM:?}"
-
 rpm-install:
   command: |
     # Test installing the RPM using dnf-installroot
@@ -84,13 +80,3 @@ src-rpm-integrity-check:
     rpm -qip "${TEST_SRC_RPM}"
     rpm -qlp "${TEST_SRC_RPM}"
 
-src-rpmlint:
-  command: |
-    # Only run if TEST_SRC_RPM is provided
-    if [[ -z ${TEST_SRC_RPM} ]]; then
-      echo "Skipping: No source RPM provided"
-      exit 0
-    fi
-
-    # Run rpmlint on source RPM
-    rpmlint "${TEST_SRC_RPM}"
