@@ -6,6 +6,13 @@
     "source": "https://src.fedoraproject.org/rpms/bash.git",
     "version": "5.3.0"
   },
+  "curl": {
+    "branch": "rawhide",
+    "release": "3",
+    "sha": "6803c01e8da370a26d6cd6206093cd8f51ac3bae",
+    "source": "https://src.fedoraproject.org/rpms/curl.git",
+    "version": "8.17.0"
+  },
   "hostname": {
     "branch": "rawhide",
     "release": "1",
