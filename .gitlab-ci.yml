@@ -82,7 +82,6 @@ dist_git_update:
     name: chore-mr
     action: access
   allow_failure: true
-  when: manual
   before_script:
     - |
       git config --local user.name "${GITLAB_USER_NAME}"
@@ -97,9 +96,8 @@ dist_git_update:
       ./ci/dist_git.py update
       ./ci/create_mr.sh --branch chore/dist-git-update --title "chore(rpms): Update dist-git packages"
   rules:
-    - !reference [.rules, mr]
     - !reference [.rules, schedule]
-    - !reference [.rules, web]
+    - !reference [.rules, mr_manual]
 
 trigger_documentation:
   stage: deploy
