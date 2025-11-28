@@ -44,16 +44,16 @@ spec:
     - name: mock-config-template-file
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/konflux-ci/rpmbuild-pipeline.git"
+      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "25a3384a73dc7666471f6ffc2d7aed24b1466d88"
+      value: "refactor-mock-template"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/konflux-ci/rpmbuild-pipeline.git"
+        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
       - name: revision
-        value: "25a3384a73dc7666471f6ffc2d7aed24b1466d88"
+        value: "refactor-mock-template"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -111,16 +111,16 @@ spec:
     - name: mock-config-template-file
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/konflux-ci/rpmbuild-pipeline.git"
+      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "25a3384a73dc7666471f6ffc2d7aed24b1466d88"
+      value: "refactor-mock-template"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/konflux-ci/rpmbuild-pipeline.git"
+        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
       - name: revision
-        value: "25a3384a73dc7666471f6ffc2d7aed24b1466d88"
+        value: "refactor-mock-template"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -178,16 +178,16 @@ spec:
     - name: mock-config-template-file
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/konflux-ci/rpmbuild-pipeline.git"
+      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "25a3384a73dc7666471f6ffc2d7aed24b1466d88"
+      value: "refactor-mock-template"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/konflux-ci/rpmbuild-pipeline.git"
+        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
       - name: revision
-        value: "25a3384a73dc7666471f6ffc2d7aed24b1466d88"
+        value: "refactor-mock-template"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -245,16 +245,16 @@ spec:
     - name: mock-config-template-file
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/konflux-ci/rpmbuild-pipeline.git"
+      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "25a3384a73dc7666471f6ffc2d7aed24b1466d88"
+      value: "refactor-mock-template"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/konflux-ci/rpmbuild-pipeline.git"
+        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
       - name: revision
-        value: "25a3384a73dc7666471f6ffc2d7aed24b1466d88"
+        value: "refactor-mock-template"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -312,16 +312,16 @@ spec:
     - name: mock-config-template-file
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/konflux-ci/rpmbuild-pipeline.git"
+      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "25a3384a73dc7666471f6ffc2d7aed24b1466d88"
+      value: "refactor-mock-template"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/konflux-ci/rpmbuild-pipeline.git"
+        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
       - name: revision
-        value: "25a3384a73dc7666471f6ffc2d7aed24b1466d88"
+        value: "refactor-mock-template"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -379,16 +379,16 @@ spec:
     - name: mock-config-template-file
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/konflux-ci/rpmbuild-pipeline.git"
+      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "25a3384a73dc7666471f6ffc2d7aed24b1466d88"
+      value: "refactor-mock-template"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/konflux-ci/rpmbuild-pipeline.git"
+        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
       - name: revision
-        value: "25a3384a73dc7666471f6ffc2d7aed24b1466d88"
+        value: "refactor-mock-template"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -446,16 +446,16 @@ spec:
     - name: mock-config-template-file
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/konflux-ci/rpmbuild-pipeline.git"
+      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "25a3384a73dc7666471f6ffc2d7aed24b1466d88"
+      value: "refactor-mock-template"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/konflux-ci/rpmbuild-pipeline.git"
+        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
       - name: revision
-        value: "25a3384a73dc7666471f6ffc2d7aed24b1466d88"
+        value: "refactor-mock-template"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
