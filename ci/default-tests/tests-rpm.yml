@@ -20,7 +20,7 @@ rpm-install:
     if [[ -n ${TEST_REPO_DIR:-} ]]; then
       # Create local repository using create-local-repo.sh
       # This script runs from ci/default-tests directory, so ../create-local-repo.sh is in ci/
-      repo_dir=$(bash ../create-local-repo.sh --engine "${TEST_ENGINE}" --image "${TEST_IMAGE}" "${TEST_REPO_DIR}"/*.rpm)
+      repo_dir=$(bash ../create-local-repo.sh --engine "${TEST_ENGINE}" "${TEST_REPO_DIR}"/*.rpm)
       echo "Created local repository at: ${repo_dir}"
     fi
 
@@ -79,4 +79,3 @@ src-rpm-integrity-check:
     rpm -K "${TEST_SRC_RPM}"
     rpm -qip "${TEST_SRC_RPM}"
     rpm -qlp "${TEST_SRC_RPM}"
-
