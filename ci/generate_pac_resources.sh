@@ -8,6 +8,8 @@ cd "$(dirname "${BASH_SOURCE[0]}")/.."
 BRANCH=${BRANCH:-main}
 TENANT=${TENANT:-hummingbird-tenant}
 RESOURCE_TYPE=""
+# changes to ci/ also trigger the build pipeline for this rpm (as canary)
+BUILD_TRIGGER_RPM_NAME=${BUILD_TRIGGER_RPM_NAME:-setup}
 
 # Parse command line arguments
 while [[ $# -gt 0 ]]; do
@@ -95,10 +97,24 @@ for path in "${rpms[@]}"; do
     (
         echo "name: ${name}"
         echo "dname: ${dname}"
-        # Add package-specific test file to path changes if it exists
+
+        extra_paths=()
+
+        # Add package-specific test file if it exists
         if [[ -f "test/rpms/${dname}.yml" ]]; then
+            extra_paths+=("test/rpms/${dname}.yml")
+        fi
+
+        # Add ci/ path changes for canary rpm
+        if [[ ${dname} == "${BUILD_TRIGGER_RPM_NAME}" && ${RESOURCE_TYPE} == pull-request ]]; then
+            extra_paths+=("ci/***")
+        fi
+
+        if [[ ${#extra_paths[@]} -gt 0 ]]; then
             echo "extra_path_changes:"
-            echo "  - test/rpms/${dname}.yml"
+            for path_change in "${extra_paths[@]}"; do
+                echo "  - ${path_change}"
+            done
         fi
     ) > "${temp_rpm_variables}"
 
