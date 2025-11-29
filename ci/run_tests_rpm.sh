@@ -248,9 +248,14 @@ package_tests_file="${base_dir}/test/rpms/${PACKAGE_NAME}.yml"
 if [[ -f ${package_tests_file} ]]; then
     log_info "Including package-specific tests from ${package_tests_file}"
     package_test_data=$(yaml_to_json < "${package_tests_file}")
-    package_test_data=$(jq --arg dir "${package_dir}" 'to_entries | map(.value.source_dir = $dir) | from_entries' <<< "${package_test_data}")
-    # Merge tests (package-specific tests override default tests with same name)
-    test_data=$(jq -s '.[0] * .[1]' <(echo "${test_data}") <(echo "${package_test_data}"))
+    # Handle empty/null YAML files (files with only comments)
+    if [[ ${package_test_data} != "null" && -n ${package_test_data} ]]; then
+        package_test_data=$(jq --arg dir "${package_dir}" 'to_entries | map(.value.source_dir = $dir) | from_entries' <<< "${package_test_data}")
+        # Merge tests (package-specific tests override default tests with same name)
+        test_data=$(jq -s '.[0] * .[1]' <(echo "${test_data}") <(echo "${package_test_data}"))
+    else
+        log_info "Package-specific tests file is empty or contains no tests; skipping"
+    fi
 fi
 
 # Separate binary RPM tests from source RPM tests
