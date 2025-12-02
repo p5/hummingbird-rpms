@@ -67,9 +67,10 @@ template=.tekton/rpms-on-${RESOURCE_TYPE}.yaml.j2
 
 APPLICATION_NAME="rpms-${BRANCH}"
 
-PIPELINE_URL="https://github.com/scoheb/rpmbuild-pipeline.git"
+PIPELINE_URL="https://github.com/konflux-ci/rpmbuild-pipeline.git"
 # This is the revision of the rpmbuild-pipeline that is used to build the rpms
-PIPELINE_REVISION="refactor-mock-template"
+# from the hummingbird/devel branch
+PIPELINE_REVISION="616676a13160636e30f571c49eda1d1ee63c30f9"
 PIPELINE_PATH="pipeline/build-rpm-package.yaml"
 
 # shellcheck disable=SC2312
