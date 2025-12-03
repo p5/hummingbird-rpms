@@ -69,8 +69,8 @@ APPLICATION_NAME="rpms-${BRANCH}"
 
 PIPELINE_URL="https://github.com/konflux-ci/rpmbuild-pipeline.git"
 # This is the revision of the rpmbuild-pipeline that is used to build the rpms
-# from the hummingbird/devel branch
-PIPELINE_REVISION="616676a13160636e30f571c49eda1d1ee63c30f9"
+# from the main branch
+PIPELINE_REVISION="ada7af0e5397443d320e4273ebe157df21fa1547"
 PIPELINE_PATH="pipeline/build-rpm-package.yaml"
 
 # shellcheck disable=SC2312
