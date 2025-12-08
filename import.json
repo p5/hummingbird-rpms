@@ -47,5 +47,19 @@
     "sha": "f2d2aec19325d0200557c13e607d983e71154aec",
     "source": "https://src.fedoraproject.org/rpms/setup.git",
     "version": "2.15.0"
+  },
+  "xz": {
+    "branch": "rawhide",
+    "release": "4",
+    "sha": "4dbfb6665e5f3442572c735c859a245125bd563f",
+    "source": "https://src.fedoraproject.org/rpms/xz.git",
+    "version": "5.8.1"
+  },
+  "zstd": {
+    "branch": "rawhide",
+    "release": "4",
+    "sha": "64ce90edbb2775cd985c1c2bbc9ca3d2071a7a8e",
+    "source": "https://src.fedoraproject.org/rpms/zstd.git",
+    "version": "1.5.7"
   }
 }
