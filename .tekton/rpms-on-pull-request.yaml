@@ -11,7 +11,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/bash/***, test/rpms/bash.yml]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/bash/***, mock/mock.cfg, test/rpms/bash.yml]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -78,7 +78,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/curl/***]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/curl/***, mock/mock.cfg]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -145,7 +145,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/hostname/***, test/rpms/hostname.yml]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/hostname/***, mock/mock.cfg, test/rpms/hostname.yml]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -212,7 +212,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/rootfiles/***, test/rpms/rootfiles.yml]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/rootfiles/***, mock/mock.cfg, test/rpms/rootfiles.yml]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -279,7 +279,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/rpm/***, test/rpms/rpm.yml]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/rpm/***, mock/mock.cfg, test/rpms/rpm.yml]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -346,7 +346,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/setup/***, test/rpms/setup.yml]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/setup/***, mock/mock.cfg, test/rpms/setup.yml]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -413,7 +413,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/systemd-stub/***]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/systemd-stub/***, mock/mock.cfg]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
