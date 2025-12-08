@@ -1,0 +1,9 @@
+srpm xz
+mcd $BUILDDIR/$1
+$SRC/${1}-*/configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${SUFFIX} \
+    --build=$BUILD \
+    --host=$TARGET
+make $J V=1
+make $J install DESTDIR=${ROOTFS}
