@@ -1,6 +1,16 @@
+PWD_REALPATH := $(shell realpath .)
+GIT_COMMON_DIR := $(shell git rev-parse --git-common-dir 2>/dev/null || echo "")
+WORKTREE_MOUNT := $(shell [ -n "$(GIT_COMMON_DIR)" ] && [ "$(GIT_COMMON_DIR)" != ".git" ] && echo "-v $(GIT_COMMON_DIR):$(GIT_COMMON_DIR):z" || echo "")
+
 PULL ?= newer
-PODMAN_RUN = podman run --pull=$(PULL) -it --rm -u 0 -v $(PWD):/src:z -w /src -e XARGS_PARALLEL_JOBS
+PODMAN_RUN = podman run --pull=$(PULL) --label io.hummingbird-project.makefile-container=true $(shell [ -t 0 ] && echo "-it" || echo "-i") --rm -u 0 -v $(PWD_REALPATH):$(PWD_REALPATH):z $(WORKTREE_MOUNT) -w $(PWD_REALPATH) -e XARGS_PARALLEL_JOBS -e GITLAB_TOKEN
 PODMAN_IMAGE = quay.io/hummingbird-ci/gitlab-ci:latest
+
+
+.PHONY: container
+container:
+	$(PODMAN_RUN) $(PODMAN_IMAGE) sh
+
 
 .PHONY: delete-konflux-comments
 delete-konflux-comments:
