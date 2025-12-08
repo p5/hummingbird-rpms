@@ -27,3 +27,10 @@ generate-host:
 	ci/generate.sh $(ARGS)
 generate:
 	$(PODMAN_RUN) $(PODMAN_IMAGE) make generate-host ARGS='$(ARGS)'
+
+
+.PHONY: dist-git-host dist-git
+dist-git-host:
+	ci/dist_git.py $(ARGS)
+dist-git:
+	$(PODMAN_RUN) $(PODMAN_IMAGE) make dist-git-host ARGS='$(ARGS)'
