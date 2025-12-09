@@ -6,6 +6,13 @@
     "source": "https://src.fedoraproject.org/rpms/acl.git",
     "version": "2.3.2"
   },
+  "attr": {
+    "branch": "rawhide",
+    "release": "6",
+    "sha": "0adfe3b1f7ddcaecc0bc78a10768a377cf537279",
+    "source": "https://src.fedoraproject.org/rpms/attr.git",
+    "version": "2.5.2"
+  },
   "bash": {
     "branch": "rawhide",
     "release": "2",
