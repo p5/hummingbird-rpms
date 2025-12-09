@@ -20,6 +20,13 @@
     "source": "https://src.fedoraproject.org/rpms/bash.git",
     "version": "5.3.0"
   },
+  "brotli": {
+    "branch": "rawhide",
+    "release": "10",
+    "sha": "5c4fd78921eaa84de12e767229f24392b404da31",
+    "source": "https://src.fedoraproject.org/rpms/brotli.git",
+    "version": "1.1.0"
+  },
   "curl": {
     "branch": "rawhide",
     "release": "5",
