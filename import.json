@@ -8,8 +8,8 @@
   },
   "curl": {
     "branch": "rawhide",
-    "release": "4",
-    "sha": "7d91f53d81f6aa9e760638a1e4dceb82a5b839b7",
+    "release": "5",
+    "sha": "fe73859ecd63f56854b599eda9bc8d991c933d8b",
     "source": "https://src.fedoraproject.org/rpms/curl.git",
     "version": "8.17.0"
   },
