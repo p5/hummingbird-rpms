@@ -1,0 +1,9 @@
+summary: Public (upstream) beakerlib tests
+
+discover:
+  - name: fedora
+    how: fmf
+    url: https://github.com/fedora-sysv/chkconfig.git
+
+execute:
+    how: tmt
