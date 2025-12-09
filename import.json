@@ -48,6 +48,13 @@
     "source": "https://src.fedoraproject.org/rpms/chkconfig.git",
     "version": "1.33"
   },
+  "coreutils": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "eb04a0fe336b24ee60d1c9478d5856ac21d792fe",
+    "source": "https://src.fedoraproject.org/rpms/coreutils.git",
+    "version": "9.9"
+  },
   "curl": {
     "branch": "rawhide",
     "release": "5",
