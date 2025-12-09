@@ -55,6 +55,13 @@
     "source": "https://src.fedoraproject.org/rpms/coreutils.git",
     "version": "9.9"
   },
+  "crypto-policies": {
+    "branch": "rawhide",
+    "release": "1.git19878fe",
+    "sha": "71fce6ba7b402749a7a5975bf21248d2e187861a",
+    "source": "https://src.fedoraproject.org/rpms/crypto-policies.git",
+    "version": "20251128"
+  },
   "curl": {
     "branch": "rawhide",
     "release": "5",
