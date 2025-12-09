@@ -1,4 +1,11 @@
 {
+  "acl": {
+    "branch": "rawhide",
+    "release": "4",
+    "sha": "91824d85dd3d64316176e1fe9257896c1b42e530",
+    "source": "https://src.fedoraproject.org/rpms/acl.git",
+    "version": "2.3.2"
+  },
   "bash": {
     "branch": "rawhide",
     "release": "2",
