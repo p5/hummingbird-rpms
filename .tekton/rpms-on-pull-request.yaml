@@ -480,7 +480,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/setup/***, mock/mock.cfg, test/rpms/setup.yml]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/setup/***, mock/mock.cfg, test/rpms/setup.yml, ci/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
