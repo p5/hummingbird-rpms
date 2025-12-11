@@ -1,0 +1,12 @@
+summary: Run examples
+description: |
+    Runs simple examples which already caused problems while fixing CVE.
+    run-parser is taken from the source
+component:
+  - libyaml
+test: ./runtest.sh
+framework: beakerlib
+require:
+  - libyaml-devel
+  - gcc
+duration: 5m
