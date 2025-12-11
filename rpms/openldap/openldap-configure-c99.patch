@@ -1,0 +1,906 @@
+commit 14f81bc47a4c462ccc609fce74feb014185e2bf9
+Author: Sam James <sam@gentoo.org>
+Date:   Thu Feb 9 23:17:53 2023 +0000
+
+    ITS#10011 build: fix compatibility with stricter C99 compilers
+    
+    Fix the following warnings:
+    - -Wimplicit-int (fatal with Clang 16)
+    - -Wimplicit-function-declaration (fatal with Clang 16)
+    - -Wincompatible-function-pointer-types (fatal with Clang 16)
+    - -Wint-conversion (fatal with Clang 15)
+    - Old style prototypes (K&R, removed from C23)
+    
+    These warnings-now-error led to misconfigurations and failure to build
+    OpenLDAP, as the tests used during configure caused the wrong results
+    to be emitted.
+    
+    For more information, see LWN.net [0] or LLVM's Discourse [1], the Gentoo wiki [2],
+    or the (new) c-std-porting mailing list [3].
+    
+    [0] https://lwn.net/Articles/913505/
+    [1] https://discourse.llvm.org/t/configure-script-breakage-with-the-new-werror-implicit-function-declaration/65213
+    [2] https://wiki.gentoo.org/wiki/Modern_C_porting
+    [3] hosted at lists.linux.dev.
+    
+    Bug: https://bugs.gentoo.org/871288
+    Signed-off-by: Sam James <sam@gentoo.org>
+
+diff -ur openldap-2.6.4.orig/openldap-2.6.4/build/openldap.m4 openldap-2.6.4/openldap-2.6.4/build/openldap.m4
+--- openldap-2.6.4.orig/openldap-2.6.4/build/openldap.m4	2023-02-08 19:53:35.000000000 +0100
++++ openldap-2.6.4/openldap-2.6.4/build/openldap.m4	2023-04-15 19:21:07.377380382 +0200
+@@ -154,6 +154,7 @@
+ if test $ol_cv_header_stdc = yes; then
+   # /bin/cc in Irix-4.0.5 gets non-ANSI ctype macros unless using -ansi.
+ AC_RUN_IFELSE([AC_LANG_SOURCE([[#include <ctype.h>
++#include <stdlib.h>
+ #ifndef HAVE_EBCDIC
+ #	define ISLOWER(c) ('a' <= (c) && (c) <= 'z')
+ #	define TOUPPER(c) (ISLOWER(c) ? 'A' + ((c) - 'a') : (c))
+@@ -303,8 +304,12 @@
+ #define NULL (void*)0
+ #endif
+ 
++#ifdef __STDC__
++static void *task(void *p)
++#else
+ static void *task(p)
+ 	void *p;
++#endif
+ {
+ 	return (void *) (p == NULL);
+ }
+@@ -360,9 +365,13 @@
+ AC_DEFUN([OL_PTHREAD_TEST_PROGRAM],
+ [AC_LANG_SOURCE([OL_PTHREAD_TEST_INCLUDES
+ 
++#ifdef __STDC__
++int main(int argc, char **argv)
++#else
+ int main(argc, argv)
+ 	int argc;
+ 	char **argv;
++#endif
+ {
+ OL_PTHREAD_TEST_FUNCTION
+ }
+@@ -484,7 +493,7 @@
+ #include <sys/types.h>
+ #include <regex.h>
+ static char *pattern, *string;
+-main()
++int main(void)
+ {
+ 	int rc;
+ 	regex_t re;
+@@ -511,7 +520,8 @@
+ [AC_CACHE_CHECK([if toupper() requires islower()],ol_cv_c_upper_lower,[
+ 	AC_RUN_IFELSE([AC_LANG_SOURCE([[
+ #include <ctype.h>
+-main()
++#include <stdlib.h>
++int main(void)
+ {
+ 	if ('C' == toupper('C'))
+ 		exit(0);
+@@ -569,7 +579,7 @@
+ 			]])],[ol_cv_nonposix_strerror_r=yes],[ol_cv_nonposix_strerror_r=no])
+ 	else
+ 		AC_RUN_IFELSE([AC_LANG_SOURCE([[
+-			main() {
++			int main(void) {
+ 				char buf[100];
+ 				buf[0] = 0;
+ 				strerror_r( 1, buf, sizeof buf );
+diff -ur openldap-2.6.4.orig/openldap-2.6.4/configure openldap-2.6.4/openldap-2.6.4/configure
+--- openldap-2.6.4.orig/openldap-2.6.4/configure	2023-02-08 19:53:35.000000000 +0100
++++ openldap-2.6.4/openldap-2.6.4/configure	2023-04-15 19:23:17.437078213 +0200
+@@ -14978,6 +14966,7 @@
+   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+ /* end confdefs.h.  */
+ #include <ctype.h>
++#include <stdlib.h>
+ #ifndef HAVE_EBCDIC
+ #	define ISLOWER(c) ('a' <= (c) && (c) <= 'z')
+ #	define TOUPPER(c) (ISLOWER(c) ? 'A' + ((c) - 'a') : (c))
+@@ -15946,6 +15935,10 @@
+ else
+   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+ /* end confdefs.h.  */
++#include <stdlib.h>
++#ifdef HAVE_SYS_POLL_H
++#include <sys/epoll.h>
++#endif
+ int main(int argc, char **argv)
+ {
+ 	int epfd = epoll_create(256);
+@@ -16126,7 +16119,7 @@
+   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+ /* end confdefs.h.  */
+ 
+-			main() {
++			int main(void) {
+ 				char buf[100];
+ 				buf[0] = 0;
+ 				strerror_r( 1, buf, sizeof buf );
+@@ -16326,7 +16319,7 @@
+ #include <sys/types.h>
+ #include <regex.h>
+ static char *pattern, *string;
+-main()
++int main(void)
+ {
+ 	int rc;
+ 	regex_t re;
+@@ -17559,16 +17552,24 @@
+ #define NULL (void*)0
+ #endif
+ 
++#ifdef __STDC__
++static void *task(void *p)
++#else
+ static void *task(p)
+ 	void *p;
++#endif
+ {
+ 	return (void *) (p == NULL);
+ }
+ 
+ 
++#ifdef __STDC__
++int main(int argc, char **argv)
++#else
+ int main(argc, argv)
+ 	int argc;
+ 	char **argv;
++#endif
+ {
+ 
+ 	/* pthread test function */
+@@ -17664,8 +17665,12 @@
+ #define NULL (void*)0
+ #endif
+ 
++#ifdef __STDC__
++static void *task(void *p)
++#else
+ static void *task(p)
+ 	void *p;
++#endif
+ {
+ 	return (void *) (p == NULL);
+ }
+@@ -17744,16 +17749,24 @@
+ #define NULL (void*)0
+ #endif
+ 
++#ifdef __STDC__
++static void *task(void *p)
++#else
+ static void *task(p)
+ 	void *p;
++#endif
+ {
+ 	return (void *) (p == NULL);
+ }
+ 
+ 
++#ifdef __STDC__
++int main(int argc, char **argv)
++#else
+ int main(argc, argv)
+ 	int argc;
+ 	char **argv;
++#endif
+ {
+ 
+ 	/* pthread test function */
+@@ -17854,8 +17867,12 @@
+ #define NULL (void*)0
+ #endif
+ 
++#ifdef __STDC__
++static void *task(void *p)
++#else
+ static void *task(p)
+ 	void *p;
++#endif
+ {
+ 	return (void *) (p == NULL);
+ }
+@@ -17934,16 +17951,24 @@
+ #define NULL (void*)0
+ #endif
+ 
++#ifdef __STDC__
++static void *task(void *p)
++#else
+ static void *task(p)
+ 	void *p;
++#endif
+ {
+ 	return (void *) (p == NULL);
+ }
+ 
+ 
++#ifdef __STDC__
++int main(int argc, char **argv)
++#else
+ int main(argc, argv)
+ 	int argc;
+ 	char **argv;
++#endif
+ {
+ 
+ 	/* pthread test function */
+@@ -18044,8 +18069,12 @@
+ #define NULL (void*)0
+ #endif
+ 
++#ifdef __STDC__
++static void *task(void *p)
++#else
+ static void *task(p)
+ 	void *p;
++#endif
+ {
+ 	return (void *) (p == NULL);
+ }
+@@ -18124,16 +18153,24 @@
+ #define NULL (void*)0
+ #endif
+ 
++#ifdef __STDC__
++static void *task(void *p)
++#else
+ static void *task(p)
+ 	void *p;
++#endif
+ {
+ 	return (void *) (p == NULL);
+ }
+ 
+ 
++#ifdef __STDC__
++int main(int argc, char **argv)
++#else
+ int main(argc, argv)
+ 	int argc;
+ 	char **argv;
++#endif
+ {
+ 
+ 	/* pthread test function */
+@@ -18234,8 +18271,12 @@
+ #define NULL (void*)0
+ #endif
+ 
++#ifdef __STDC__
++static void *task(void *p)
++#else
+ static void *task(p)
+ 	void *p;
++#endif
+ {
+ 	return (void *) (p == NULL);
+ }
+@@ -18314,16 +18355,24 @@
+ #define NULL (void*)0
+ #endif
+ 
++#ifdef __STDC__
++static void *task(void *p)
++#else
+ static void *task(p)
+ 	void *p;
++#endif
+ {
+ 	return (void *) (p == NULL);
+ }
+ 
+ 
++#ifdef __STDC__
++int main(int argc, char **argv)
++#else
+ int main(argc, argv)
+ 	int argc;
+ 	char **argv;
++#endif
+ {
+ 
+ 	/* pthread test function */
+@@ -18424,8 +18473,12 @@
+ #define NULL (void*)0
+ #endif
+ 
++#ifdef __STDC__
++static void *task(void *p)
++#else
+ static void *task(p)
+ 	void *p;
++#endif
+ {
+ 	return (void *) (p == NULL);
+ }
+@@ -18504,16 +18557,24 @@
+ #define NULL (void*)0
+ #endif
+ 
++#ifdef __STDC__
++static void *task(void *p)
++#else
+ static void *task(p)
+ 	void *p;
++#endif
+ {
+ 	return (void *) (p == NULL);
+ }
+ 
+ 
++#ifdef __STDC__
++int main(int argc, char **argv)
++#else
+ int main(argc, argv)
+ 	int argc;
+ 	char **argv;
++#endif
+ {
+ 
+ 	/* pthread test function */
+@@ -18615,8 +18676,12 @@
+ #define NULL (void*)0
+ #endif
+ 
++#ifdef __STDC__
++static void *task(void *p)
++#else
+ static void *task(p)
+ 	void *p;
++#endif
+ {
+ 	return (void *) (p == NULL);
+ }
+@@ -18695,16 +18760,24 @@
+ #define NULL (void*)0
+ #endif
+ 
++#ifdef __STDC__
++static void *task(void *p)
++#else
+ static void *task(p)
+ 	void *p;
++#endif
+ {
+ 	return (void *) (p == NULL);
+ }
+ 
+ 
++#ifdef __STDC__
++int main(int argc, char **argv)
++#else
+ int main(argc, argv)
+ 	int argc;
+ 	char **argv;
++#endif
+ {
+ 
+ 	/* pthread test function */
+@@ -18805,8 +18878,12 @@
+ #define NULL (void*)0
+ #endif
+ 
++#ifdef __STDC__
++static void *task(void *p)
++#else
+ static void *task(p)
+ 	void *p;
++#endif
+ {
+ 	return (void *) (p == NULL);
+ }
+@@ -18885,16 +18962,24 @@
+ #define NULL (void*)0
+ #endif
+ 
++#ifdef __STDC__
++static void *task(void *p)
++#else
+ static void *task(p)
+ 	void *p;
++#endif
+ {
+ 	return (void *) (p == NULL);
+ }
+ 
+ 
++#ifdef __STDC__
++int main(int argc, char **argv)
++#else
+ int main(argc, argv)
+ 	int argc;
+ 	char **argv;
++#endif
+ {
+ 
+ 	/* pthread test function */
+@@ -18996,8 +19081,12 @@
+ #define NULL (void*)0
+ #endif
+ 
++#ifdef __STDC__
++static void *task(void *p)
++#else
+ static void *task(p)
+ 	void *p;
++#endif
+ {
+ 	return (void *) (p == NULL);
+ }
+@@ -19076,16 +19165,24 @@
+ #define NULL (void*)0
+ #endif
+ 
++#ifdef __STDC__
++static void *task(void *p)
++#else
+ static void *task(p)
+ 	void *p;
++#endif
+ {
+ 	return (void *) (p == NULL);
+ }
+ 
+ 
++#ifdef __STDC__
++int main(int argc, char **argv)
++#else
+ int main(argc, argv)
+ 	int argc;
+ 	char **argv;
++#endif
+ {
+ 
+ 	/* pthread test function */
+@@ -19187,8 +19284,12 @@
+ #define NULL (void*)0
+ #endif
+ 
++#ifdef __STDC__
++static void *task(void *p)
++#else
+ static void *task(p)
+ 	void *p;
++#endif
+ {
+ 	return (void *) (p == NULL);
+ }
+@@ -19267,16 +19368,24 @@
+ #define NULL (void*)0
+ #endif
+ 
++#ifdef __STDC__
++static void *task(void *p)
++#else
+ static void *task(p)
+ 	void *p;
++#endif
+ {
+ 	return (void *) (p == NULL);
+ }
+ 
+ 
++#ifdef __STDC__
++int main(int argc, char **argv)
++#else
+ int main(argc, argv)
+ 	int argc;
+ 	char **argv;
++#endif
+ {
+ 
+ 	/* pthread test function */
+@@ -19377,8 +19486,12 @@
+ #define NULL (void*)0
+ #endif
+ 
++#ifdef __STDC__
++static void *task(void *p)
++#else
+ static void *task(p)
+ 	void *p;
++#endif
+ {
+ 	return (void *) (p == NULL);
+ }
+@@ -19457,16 +19570,24 @@
+ #define NULL (void*)0
+ #endif
+ 
++#ifdef __STDC__
++static void *task(void *p)
++#else
+ static void *task(p)
+ 	void *p;
++#endif
+ {
+ 	return (void *) (p == NULL);
+ }
+ 
+ 
++#ifdef __STDC__
++int main(int argc, char **argv)
++#else
+ int main(argc, argv)
+ 	int argc;
+ 	char **argv;
++#endif
+ {
+ 
+ 	/* pthread test function */
+@@ -19568,8 +19689,12 @@
+ #define NULL (void*)0
+ #endif
+ 
++#ifdef __STDC__
++static void *task(void *p)
++#else
+ static void *task(p)
+ 	void *p;
++#endif
+ {
+ 	return (void *) (p == NULL);
+ }
+@@ -19648,16 +19773,24 @@
+ #define NULL (void*)0
+ #endif
+ 
++#ifdef __STDC__
++static void *task(void *p)
++#else
+ static void *task(p)
+ 	void *p;
++#endif
+ {
+ 	return (void *) (p == NULL);
+ }
+ 
+ 
++#ifdef __STDC__
++int main(int argc, char **argv)
++#else
+ int main(argc, argv)
+ 	int argc;
+ 	char **argv;
++#endif
+ {
+ 
+ 	/* pthread test function */
+@@ -19759,8 +19892,12 @@
+ #define NULL (void*)0
+ #endif
+ 
++#ifdef __STDC__
++static void *task(void *p)
++#else
+ static void *task(p)
+ 	void *p;
++#endif
+ {
+ 	return (void *) (p == NULL);
+ }
+@@ -19839,16 +19976,24 @@
+ #define NULL (void*)0
+ #endif
+ 
++#ifdef __STDC__
++static void *task(void *p)
++#else
+ static void *task(p)
+ 	void *p;
++#endif
+ {
+ 	return (void *) (p == NULL);
+ }
+ 
+ 
++#ifdef __STDC__
++int main(int argc, char **argv)
++#else
+ int main(argc, argv)
+ 	int argc;
+ 	char **argv;
++#endif
+ {
+ 
+ 	/* pthread test function */
+@@ -19949,8 +20094,12 @@
+ #define NULL (void*)0
+ #endif
+ 
++#ifdef __STDC__
++static void *task(void *p)
++#else
+ static void *task(p)
+ 	void *p;
++#endif
+ {
+ 	return (void *) (p == NULL);
+ }
+@@ -20029,16 +20178,24 @@
+ #define NULL (void*)0
+ #endif
+ 
++#ifdef __STDC__
++static void *task(void *p)
++#else
+ static void *task(p)
+ 	void *p;
++#endif
+ {
+ 	return (void *) (p == NULL);
+ }
+ 
+ 
++#ifdef __STDC__
++int main(int argc, char **argv)
++#else
+ int main(argc, argv)
+ 	int argc;
+ 	char **argv;
++#endif
+ {
+ 
+ 	/* pthread test function */
+@@ -20139,8 +20296,12 @@
+ #define NULL (void*)0
+ #endif
+ 
++#ifdef __STDC__
++static void *task(void *p)
++#else
+ static void *task(p)
+ 	void *p;
++#endif
+ {
+ 	return (void *) (p == NULL);
+ }
+@@ -20219,16 +20380,24 @@
+ #define NULL (void*)0
+ #endif
+ 
++#ifdef __STDC__
++static void *task(void *p)
++#else
+ static void *task(p)
+ 	void *p;
++#endif
+ {
+ 	return (void *) (p == NULL);
+ }
+ 
+ 
++#ifdef __STDC__
++int main(int argc, char **argv)
++#else
+ int main(argc, argv)
+ 	int argc;
+ 	char **argv;
++#endif
+ {
+ 
+ 	/* pthread test function */
+@@ -20330,8 +20499,12 @@
+ #define NULL (void*)0
+ #endif
+ 
++#ifdef __STDC__
++static void *task(void *p)
++#else
+ static void *task(p)
+ 	void *p;
++#endif
+ {
+ 	return (void *) (p == NULL);
+ }
+@@ -20410,16 +20583,24 @@
+ #define NULL (void*)0
+ #endif
+ 
++#ifdef __STDC__
++static void *task(void *p)
++#else
+ static void *task(p)
+ 	void *p;
++#endif
+ {
+ 	return (void *) (p == NULL);
+ }
+ 
+ 
++#ifdef __STDC__
++int main(int argc, char **argv)
++#else
+ int main(argc, argv)
+ 	int argc;
+ 	char **argv;
++#endif
+ {
+ 
+ 	/* pthread test function */
+@@ -20631,14 +20812,12 @@
+ /* end confdefs.h.  */
+ 
+ #include <pthread.h>
+-#ifndef NULL
+-#define NULL (void*)0
+-#endif
++pthread_t thread;
+ 
+ int
+ main ()
+ {
+-pthread_detach(NULL);
++pthread_detach(thread);
+   ;
+   return 0;
+ }
+@@ -20752,16 +20931,24 @@
+ #define NULL (void*)0
+ #endif
+ 
++#ifdef __STDC__
++static void *task(void *p)
++#else
+ static void *task(p)
+ 	void *p;
++#endif
+ {
+ 	return (void *) (p == NULL);
+ }
+ 
+ 
++#ifdef __STDC__
++int main(int argc, char **argv)
++#else
+ int main(argc, argv)
+ 	int argc;
+ 	char **argv;
++#endif
+ {
+ 
+ 	/* pthread test function */
+@@ -20851,6 +21038,9 @@
+   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+ /* end confdefs.h.  */
+ 
++#define _XOPEN_SOURCE 500               /* For pthread_setconcurrency() on glibc */
++#include <stdlib.h>
++#include <stdio.h>
+ #include <sys/types.h>
+ #include <sys/time.h>
+ #include <unistd.h>
+@@ -20861,8 +21051,12 @@
+ 
+ static int fildes[2];
+ 
++#ifdef __STDC__
++static void *task(void *p)
++#else
+ static void *task(p)
+ 	void *p;
++#endif
+ {
+ 	int i;
+ 	struct timeval tv;
+@@ -20886,9 +21080,13 @@
+ 	exit(0); /* if we exit here, the select blocked the whole process */
+ }
+ 
++#ifdef __STDC__
++int main(int argc, char **argv)
++#else
+ int main(argc, argv)
+ 	int argc;
+ 	char **argv;
++#endif
+ {
+ 	pthread_t t;
+ 
+@@ -23241,7 +23439,8 @@
+ /* end confdefs.h.  */
+ 
+ #include <ctype.h>
+-main()
++#include <stdlib.h>
++int main(void)
+ {
+ 	if ('C' == toupper('C'))
+ 		exit(0);
+diff -ur openldap-2.6.4.orig/openldap-2.6.4/configure.ac openldap-2.6.4/openldap-2.6.4/configure.ac
+--- openldap-2.6.4.orig/openldap-2.6.4/configure.ac	2023-02-08 19:53:35.000000000 +0100
++++ openldap-2.6.4/openldap-2.6.4/configure.ac	2023-04-15 19:21:07.377380382 +0200
+@@ -1003,7 +1003,11 @@
+ AC_CHECK_HEADERS( sys/epoll.h )
+ if test "${ac_cv_header_sys_epoll_h}" = yes; then
+ 	AC_MSG_CHECKING(for epoll system call)
+-	AC_RUN_IFELSE([AC_LANG_SOURCE([[int main(int argc, char **argv)
++	AC_RUN_IFELSE([AC_LANG_SOURCE([[#include <stdlib.h>
++#ifdef HAVE_SYS_POLL_H
++#include <sys/epoll.h>
++#endif
++int main(int argc, char **argv)
+ {
+ 	int epfd = epoll_create(256);
+ 	exit (epfd == -1 ? 1 : 0);
+@@ -1356,10 +1360,10 @@
+ 		dnl 	pthread_create() in -lpthread (many)
+ 		dnl 	pthread_create() in -lc_r (FreeBSD)
+ 		dnl
+-		dnl Check pthread (draft4) flags (depreciated)
++		dnl Check pthread (draft4) flags (deprecated)
+ 		dnl 	pthread_create() with -threads (OSF/1)
+ 		dnl
+-		dnl Check pthread (draft4) libraries (depreciated)
++		dnl Check pthread (draft4) libraries (deprecated)
+ 		dnl 	pthread_mutex_unlock() in -lpthreads -lmach -lexc -lc_r (OSF/1)
+ 		dnl 	pthread_mutex_lock() in -lpthreads -lmach -lexc (OSF/1)
+ 		dnl 	pthread_mutex_trylock() in -lpthreads -lexc (OSF/1)
+@@ -1378,7 +1382,7 @@
+ 			ol_link_threads=posix
+ 			ol_link_pthreads=""
+ 		fi
+-		
++
+ dnl		OL_PTHREAD_TRY([-mt],		[ol_cv_pthread_mt])
+ 		OL_PTHREAD_TRY([-kthread],	[ol_cv_pthread_kthread])
+ 		OL_PTHREAD_TRY([-pthread],	[ol_cv_pthread_pthread])
+@@ -1465,10 +1469,8 @@
+ 				dnl save the flags
+ 				AC_LINK_IFELSE([AC_LANG_PROGRAM([[
+ #include <pthread.h>
+-#ifndef NULL
+-#define NULL (void*)0
+-#endif
+-]], [[pthread_detach(NULL);]])],[ol_cv_func_pthread_detach=yes],[ol_cv_func_pthread_detach=no])
++pthread_t thread;
++]], [[pthread_detach(thread);]])],[ol_cv_func_pthread_detach=yes],[ol_cv_func_pthread_detach=no])
+ 			])
+ 
+ 			if test $ol_cv_func_pthread_detach = no ; then
+@@ -1523,6 +1525,9 @@
+ 				AC_CACHE_CHECK([if select yields when using pthreads],
+ 					ol_cv_pthread_select_yields,[
+ 				AC_RUN_IFELSE([AC_LANG_SOURCE([[
++#define _XOPEN_SOURCE 500               /* For pthread_setconcurrency() on glibc */
++#include <stdlib.h>
++#include <stdio.h>
+ #include <sys/types.h>
+ #include <sys/time.h>
+ #include <unistd.h>
+@@ -1533,8 +1538,12 @@
+ 
+ static int fildes[2];
+ 
++#ifdef __STDC__
++static void *task(void *p)
++#else
+ static void *task(p)
+ 	void *p;
++#endif
+ {
+ 	int i;
+ 	struct timeval tv;
+@@ -1558,9 +1567,13 @@
+ 	exit(0); /* if we exit here, the select blocked the whole process */
+ }
+ 
++#ifdef __STDC__
++int main(int argc, char **argv)
++#else
+ int main(argc, argv)
+ 	int argc;
+ 	char **argv;
++#endif
+ {
+ 	pthread_t t;
+ 

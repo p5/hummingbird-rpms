@@ -1,0 +1,23 @@
+From c7a4bd27f5dcf93806972aab236001f1d4801e80 Mon Sep 17 00:00:00 2001
+From: Howard Chu <hyc@openldap.org>
+Date: Wed, 31 Jan 2024 16:00:30 +0000
+Subject: [PATCH] ITS#10166 slapi: fix plugin.c plugin_pblock_new() usage
+
+Broken in 9142da8eaf691720f7d6288954250ef085bd3da0
+---
+ servers/slapd/slapi/plugin.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/servers/slapd/slapi/plugin.c b/servers/slapd/slapi/plugin.c
+index ca5dbead59..bfa5c10344 100644
+--- a/servers/slapd/slapi/plugin.c
++++ b/servers/slapd/slapi/plugin.c
+@@ -694,7 +694,7 @@ slapi_int_read_config(
+ 		int rc;
+ 		Slapi_PBlock *pPlugin;
+ 
+-		pPlugin = plugin_pblock_new( iType, numPluginArgc, c->argv );
++		pPlugin = plugin_pblock_new( iType, numPluginArgc, c );
+ 		if (pPlugin == NULL) {
+ 			return 1;
+ 		}

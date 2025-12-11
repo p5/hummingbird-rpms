@@ -1,0 +1,197 @@
+From 19e631e977c4f57905b2380cf79ccaf8e6d99e9d Mon Sep 17 00:00:00 2001
+From: Howard Chu <hyc@openldap.org>
+Date: Mon, 27 Apr 2020 03:41:12 +0100
+Subject: [PATCH 1/4] ITS#9176 Add TLS SNI support to libldap
+
+Implemented for OpenSSL, GnuTLS just stubbed
+---
+ libraries/libldap/ldap-tls.h | 2 +-
+ libraries/libldap/tls2.c     | 2 +-
+ libraries/libldap/tls_g.c    | 2 +-
+ libraries/libldap/tls_o.c    | 8 ++++++--
+ 4 files changed, 9 insertions(+), 5 deletions(-)
+
+diff --git a/libraries/libldap/ldap-tls.h b/libraries/libldap/ldap-tls.h
+index c8a27112f1..c149b1867c 100644
+--- a/libraries/libldap/ldap-tls.h
++++ b/libraries/libldap/ldap-tls.h
+@@ -34,7 +34,7 @@ typedef void (TI_ctx_free)(tls_ctx *ctx);
+ typedef int (TI_ctx_init)(struct ldapoptions *lo, struct ldaptls *lt, int is_server);
+ 
+ typedef tls_session *(TI_session_new)(tls_ctx *ctx, int is_server);
+-typedef int (TI_session_connect)(LDAP *ld, tls_session *s);
++typedef int (TI_session_connect)(LDAP *ld, tls_session *s, const char *name_in);
+ typedef int (TI_session_accept)(tls_session *s);
+ typedef int (TI_session_upflags)(Sockbuf *sb, tls_session *s, int rc);
+ typedef char *(TI_session_errmsg)(tls_session *s, int rc, char *buf, size_t len );
+diff --git a/libraries/libldap/tls2.c b/libraries/libldap/tls2.c
+index 82ca5272cc..cbeea8c6c4 100644
+--- a/libraries/libldap/tls2.c
++++ b/libraries/libldap/tls2.c
+@@ -368,7 +368,7 @@ ldap_int_tls_connect( LDAP *ld, LDAPConn *conn, const char *host )
+ 			lo->ldo_tls_connect_cb( ld, ssl, ctx, lo->ldo_tls_connect_arg );
+ 	}
+ 
+-	err = tls_imp->ti_session_connect( ld, ssl );
++	err = tls_imp->ti_session_connect( ld, ssl, host );
+ 
+ #ifdef HAVE_WINSOCK
+ 	errno = WSAGetLastError();
+diff --git a/libraries/libldap/tls_g.c b/libraries/libldap/tls_g.c
+index 3b72cd2a1f..5468ed3f05 100644
+--- a/libraries/libldap/tls_g.c
++++ b/libraries/libldap/tls_g.c
+@@ -336,7 +336,7 @@ tlsg_session_accept( tls_session *session )
+ }
+ 
+ static int
+-tlsg_session_connect( LDAP *ld, tls_session *session )
++tlsg_session_connect( LDAP *ld, tls_session *session, const char *name_in )
+ {
+ 	return tlsg_session_accept( session);
+ }
+diff --git a/libraries/libldap/tls_o.c b/libraries/libldap/tls_o.c
+index 498f805fa1..455b23c0e9 100644
+--- a/libraries/libldap/tls_o.c
++++ b/libraries/libldap/tls_o.c
+@@ -548,12 +548,16 @@ tlso_session_new( tls_ctx *ctx, int is_server )
+ }
+ 
+ static int
+-tlso_session_connect( LDAP *ld, tls_session *sess )
++tlso_session_connect( LDAP *ld, tls_session *sess, const char *name_in )
+ {
+ 	tlso_session *s = (tlso_session *)sess;
++	int rc;
+ 
++#ifdef SSL_CTRL_SET_TLSEXT_HOSTNAME
++	SSL_set_tlsext_host_name( s, name_in );
++#endif
+ 	/* Caller expects 0 = success, OpenSSL returns 1 = success */
+-	int rc = SSL_connect( s ) - 1;
++	rc = SSL_connect( s ) - 1;
+ #ifdef LDAP_USE_NON_BLOCKING_TLS
+ 	if ( rc < 0 ) {
+ 		int sockerr = sock_errno();
+
+From 421c2021c7209bd7cd947ccb8b989bddab7b63cb Mon Sep 17 00:00:00 2001
+From: Howard Chu <hyc@openldap.org>
+Date: Mon, 27 Apr 2020 18:25:10 +0100
+Subject: [PATCH 2/4] ITS#9176 check for numeric addrs before passing SNI
+
+---
+ libraries/libldap/tls2.c  | 22 +++++++++++++++++++++-
+ libraries/libldap/tls_o.c |  4 +++-
+ 2 files changed, 24 insertions(+), 2 deletions(-)
+
+diff --git a/libraries/libldap/tls2.c b/libraries/libldap/tls2.c
+index cbeea8c6c4..85628bc3b3 100644
+--- a/libraries/libldap/tls2.c
++++ b/libraries/libldap/tls2.c
+@@ -334,6 +334,7 @@ ldap_int_tls_connect( LDAP *ld, LDAPConn *conn, const char *host )
+ 	Sockbuf *sb = conn->lconn_sb;
+ 	int	err;
+ 	tls_session	*ssl = NULL;
++	char *sni = host;
+ 
+ 	if ( HAS_TLS( sb )) {
+ 		ber_sockbuf_ctrl( sb, LBER_SB_OPT_GET_SSL, (void *)&ssl );
+@@ -368,7 +369,26 @@ ldap_int_tls_connect( LDAP *ld, LDAPConn *conn, const char *host )
+ 			lo->ldo_tls_connect_cb( ld, ssl, ctx, lo->ldo_tls_connect_arg );
+ 	}
+ 
+-	err = tls_imp->ti_session_connect( ld, ssl, host );
++	/* pass hostname for SNI, but only if it's an actual name
++	 * and not a numeric address
++	 */
++	{
++		int numeric = 1;
++		char *c;
++		for ( c = sni; *c; c++ ) {
++			if ( *c == ':' )	/* IPv6 address */
++				break;
++			if ( *c == '.' )
++				continue;
++			if ( !isdigit( *c )) {
++				numeric = 0;
++				break;
++			}
++		}
++		if ( numeric )
++			sni = NULL;
++	}
++	err = tls_imp->ti_session_connect( ld, ssl, sni );
+ 
+ #ifdef HAVE_WINSOCK
+ 	errno = WSAGetLastError();
+diff --git a/libraries/libldap/tls_o.c b/libraries/libldap/tls_o.c
+index 455b23c0e9..45948dbc64 100644
+--- a/libraries/libldap/tls_o.c
++++ b/libraries/libldap/tls_o.c
+@@ -554,7 +554,9 @@ tlso_session_connect( LDAP *ld, tls_session *sess, const char *name_in )
+ 	int rc;
+ 
+ #ifdef SSL_CTRL_SET_TLSEXT_HOSTNAME
+-	SSL_set_tlsext_host_name( s, name_in );
++	if ( name_in ) {
++		SSL_set_tlsext_host_name( s, name_in );
++	}
+ #endif
+ 	/* Caller expects 0 = success, OpenSSL returns 1 = success */
+ 	rc = SSL_connect( s ) - 1;
+
+From 05a65a46c684031a841bcc39cf01a82e8cc713a0 Mon Sep 17 00:00:00 2001
+From: Howard Chu <hyc@openldap.org>
+Date: Mon, 27 Apr 2020 18:54:02 +0100
+Subject: [PATCH 3/4] ITS#9176 check for failure setting SNI
+
+---
+ libraries/libldap/tls_o.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/libraries/libldap/tls_o.c b/libraries/libldap/tls_o.c
+index 45948dbc64..86e86db3b6 100644
+--- a/libraries/libldap/tls_o.c
++++ b/libraries/libldap/tls_o.c
+@@ -555,7 +555,9 @@ tlso_session_connect( LDAP *ld, tls_session *sess, const char *name_in )
+ 
+ #ifdef SSL_CTRL_SET_TLSEXT_HOSTNAME
+ 	if ( name_in ) {
+-		SSL_set_tlsext_host_name( s, name_in );
++		rc = SSL_set_tlsext_host_name( s, name_in );
++		if ( !rc )		/* can fail to strdup the name */
++			return -1;
+ 	}
+ #endif
+ 	/* Caller expects 0 = success, OpenSSL returns 1 = success */
+
+From d059488fa86b58744ad70819516d3bf4a37dbb8e Mon Sep 17 00:00:00 2001
+From: Ryan Tandy <ryan@nardis.ca>
+Date: Mon, 27 Apr 2020 11:01:01 -0700
+Subject: [PATCH 4/4] ITS#9176 Implement SNI for GnuTLS
+
+---
+ libraries/libldap/tls_g.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/libraries/libldap/tls_g.c b/libraries/libldap/tls_g.c
+index 5468ed3f05..5fceb3e935 100644
+--- a/libraries/libldap/tls_g.c
++++ b/libraries/libldap/tls_g.c
+@@ -338,6 +338,16 @@ tlsg_session_accept( tls_session *session )
+ static int
+ tlsg_session_connect( LDAP *ld, tls_session *session, const char *name_in )
+ {
++	tlsg_session *s = (tlsg_session *)session;
++	int rc;
++
++	if ( name_in ) {
++		rc = gnutls_server_name_set( s->session, GNUTLS_NAME_DNS, name_in, strlen(name_in) );
++		if ( rc != GNUTLS_E_SUCCESS ) {
++			return rc;
++		}
++	}
++
+ 	return tlsg_session_accept( session);
+ }
+ 

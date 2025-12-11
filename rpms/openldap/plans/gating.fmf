@@ -1,0 +1,8 @@
+summary: Test plan for openldap
+
+discover:
+   how: fmf
+
+execute:
+  how: tmt
+
