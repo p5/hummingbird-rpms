@@ -34,6 +34,13 @@
     "source": "https://src.fedoraproject.org/rpms/openssl.git",
     "version": "3.5.4"
   },
+  "pcre2": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "7564d9d768d993dc417a65d0c9c66d9a857d527d",
+    "source": "https://src.fedoraproject.org/rpms/pcre2.git",
+    "version": "10.47"
+  },
   "popt": {
     "branch": "rawhide",
     "release": "9",
