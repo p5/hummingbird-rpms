@@ -1,0 +1,53 @@
+diff -r e3123b88d012 memory.c
+--- a/memory.c	Tue Aug 16 22:02:45 2022 +0200
++++ b/memory.c	Fri Aug 19 06:25:37 2022 +0900
+@@ -29,7 +29,8 @@
+ see https://www.gnu.org/licenses/.  */
+ 
+ #include <stdio.h>
+-#include <stdlib.h> /* for malloc, realloc, free */
++#include <stdlib.h> /* for malloc, free */
++#include <string.h> /* for memcpy, explicit_bzero */
+ 
+ #include "gmp-impl.h"
+ 
+@@ -98,11 +99,28 @@
+   new_size += 2 * GMP_LIMB_BYTES;
+ #endif
+ 
+-  ret = realloc (oldptr, new_size);
+-  if (ret == 0)
++  if (new_size == 0)
++    {
++      explicit_bzero (oldptr, old_size);
++      free (oldptr);
++      return NULL;
++    }
++  else if (old_size == new_size)
++    return oldptr;
++  else
+     {
+-      fprintf (stderr, "GNU MP: Cannot reallocate memory (old_size=%lu new_size=%lu)\n", (long) old_size, (long) new_size);
+-      abort ();
++      /* We can't simply call realloc, as it may allocate memory from
++	 a different arena.  */
++      ret = malloc (new_size);
++      if (ret == NULL)
++	{
++	  fprintf (stderr, "GNU MP: Cannot reallocate memory (old_size=%lu new_size=%lu)\n", (long) old_size, (long) new_size);
++	  explicit_bzero(oldptr, old_size);
++	  abort();
++	}
++      memcpy (ret, oldptr, MIN(old_size, new_size));
++      explicit_bzero (oldptr, old_size);
++      free (oldptr);
+     }
+ 
+ #ifdef DEBUG
+@@ -141,5 +159,6 @@
+     blk_ptr = p - 1;
+   }
+ #endif
++  explicit_bzero (blk_ptr, blk_size);
+   free (blk_ptr);
+ }

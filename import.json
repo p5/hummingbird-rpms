@@ -83,6 +83,62 @@
     "source": "https://src.fedoraproject.org/rpms/hostname.git",
     "version": "3.25"
   },
+  "libyaml": {
+    "branch": "rawhide",
+    "release": "17",
+    "sha": "866e1217169247473ad626eecd88772eef9dd679",
+    "source": "https://src.fedoraproject.org/rpms/libyaml.git",
+    "version": "0.2.5"
+  },
+  "lua": {
+    "branch": "rawhide",
+    "release": "4",
+    "sha": "9c5ba7e736b92f0ecf35612e1b9cf75ea9b2e863",
+    "source": "https://src.fedoraproject.org/rpms/lua.git",
+    "version": "5.4.8"
+  },
+  "lz4": {
+    "branch": "rawhide",
+    "release": "3",
+    "sha": "9152e2d5ec8eb4b69854e862a2091bcf7aa03df1",
+    "source": "https://src.fedoraproject.org/rpms/lz4.git",
+    "version": "1.10.0"
+  },
+  "ncurses": {
+    "branch": "rawhide",
+    "release": "8.20250614",
+    "sha": "cdb41c6eca745ba4fbdfd789fe67394485ef6ded",
+    "source": "https://src.fedoraproject.org/rpms/ncurses.git",
+    "version": "6.5"
+  },
+  "nettle": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "22cdcd488e7405cb07243032e949f91ecb2726b4",
+    "source": "https://src.fedoraproject.org/rpms/nettle.git",
+    "version": "3.10.1"
+  },
+  "nghttp2": {
+    "branch": "rawhide",
+    "release": "2",
+    "sha": "3060610232b9d2dad64f560d114305a21336759a",
+    "source": "https://src.fedoraproject.org/rpms/nghttp2.git",
+    "version": "1.68.0"
+  },
+  "npth": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "d30f03f2d844bc4960f6d5a0979c5441fd9e7737",
+    "source": "https://src.fedoraproject.org/rpms/npth.git",
+    "version": "1.8"
+  },
+  "openldap": {
+    "branch": "rawhide",
+    "release": "4",
+    "sha": "d2ffb525852e4517da4e0f6373302cc10e66cf01",
+    "source": "https://src.fedoraproject.org/rpms/openldap.git",
+    "version": "2.6.10"
+  },
   "openssl": {
     "branch": "rawhide",
     "release": "1",

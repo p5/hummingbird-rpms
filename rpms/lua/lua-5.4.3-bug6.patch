@@ -1,0 +1,12 @@
+diff -up lua-5.4.3/src/lvm.c.bug6 lua-5.4.3/src/lvm.c
+--- lua-5.4.3/src/lvm.c.bug6	2022-01-24 11:25:20.620080850 -0500
++++ lua-5.4.3/src/lvm.c	2022-01-24 11:25:46.443228197 -0500
+@@ -766,7 +766,7 @@ lua_Number luaV_modf (lua_State *L, lua_
+ /*
+ ** Shift left operation. (Shift right just negates 'y'.)
+ */
+-#define luaV_shiftr(x,y)	luaV_shiftl(x,-(y))
++#define luaV_shiftr(x,y)	luaV_shiftl(x,intop(-, 0, y))
+ 
+ lua_Integer luaV_shiftl (lua_Integer x, lua_Integer y) {
+   if (y < 0) {  /* shift right? */

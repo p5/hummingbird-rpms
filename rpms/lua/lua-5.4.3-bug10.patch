@@ -1,0 +1,261 @@
+diff -up lua-5.4.3/lua-5.4.3-tests/api.lua.bug10 lua-5.4.3/lua-5.4.3-tests/api.lua
+--- lua-5.4.3/lua-5.4.3-tests/api.lua.bug10	2022-01-24 17:07:28.084973092 -0500
++++ lua-5.4.3/lua-5.4.3-tests/api.lua	2022-01-24 17:08:50.306551450 -0500
+@@ -804,15 +804,14 @@ F = function (x)
+   d = nil
+   assert(debug.getmetatable(x).__gc == F)
+   assert(load("table.insert({}, {})"))()   -- create more garbage
+-  collectgarbage()   -- force a GC during GC
+-  assert(debug.getmetatable(x).__gc == F)  -- previous GC did not mess this?
++  assert(not collectgarbage())    -- GC during GC (no op)
+   local dummy = {}    -- create more garbage during GC
+   if A ~= nil then
+     assert(type(A) == "userdata")
+     assert(T.udataval(A) == B)
+     debug.getmetatable(A)    -- just access it
+   end
+-  A = x   -- ressucita userdata
++  A = x   -- ressurect userdata
+   B = udval
+   return 1,2,3
+ end
+diff -up lua-5.4.3/lua-5.4.3-tests/gc.lua.bug10 lua-5.4.3/lua-5.4.3-tests/gc.lua
+--- lua-5.4.3/lua-5.4.3-tests/gc.lua.bug10	2022-01-24 17:08:57.241600231 -0500
++++ lua-5.4.3/lua-5.4.3-tests/gc.lua	2022-01-24 17:10:20.100183086 -0500
+@@ -676,11 +676,13 @@ end
+ -- just to make sure
+ assert(collectgarbage'isrunning')
+ 
+-do    -- check that the collector is reentrant in incremental mode
++do    -- check that the collector is not reentrant in incremental mode
++  local res = true
+   setmetatable({}, {__gc = function ()
+-    collectgarbage()
++    res = collectgarbage()
+   end})
+   collectgarbage()
++  assert(not res)
+ end
+ 
+ 
+diff -up lua-5.4.3/src/lapi.c.bug10 lua-5.4.3/src/lapi.c
+--- lua-5.4.3/src/lapi.c.bug10	2022-01-24 16:56:54.409515673 -0500
++++ lua-5.4.3/src/lapi.c	2022-01-24 16:59:36.136653287 -0500
+@@ -1126,18 +1126,19 @@ LUA_API int lua_status (lua_State *L) {
+ LUA_API int lua_gc (lua_State *L, int what, ...) {
+   va_list argp;
+   int res = 0;
+-  global_State *g;
++  global_State *g = G(L);
++  if (g->gcstp & GCSTPGC)  /* internal stop? */
++    return -1;  /* all options are invalid when stopped */
+   lua_lock(L);
+-  g = G(L);
+   va_start(argp, what);
+   switch (what) {
+     case LUA_GCSTOP: {
+-      g->gcrunning = 0;
++      g->gcstp = GCSTPUSR;  /* stopeed by the user */
+       break;
+     }
+     case LUA_GCRESTART: {
+       luaE_setdebt(g, 0);
+-      g->gcrunning = 1;
++      g->gcstp = 0;  /* (GCSTPGC must be already zero here) */
+       break;
+     }
+     case LUA_GCCOLLECT: {
+@@ -1156,8 +1157,8 @@ LUA_API int lua_gc (lua_State *L, int wh
+     case LUA_GCSTEP: {
+       int data = va_arg(argp, int);
+       l_mem debt = 1;  /* =1 to signal that it did an actual step */
+-      lu_byte oldrunning = g->gcrunning;
+-      g->gcrunning = 1;  /* allow GC to run */
++      lu_byte oldstp = g->gcstp;
++      g->gcstp = 0;  /* allow GC to run (GCSTPGC must be zero here) */
+       if (data == 0) {
+         luaE_setdebt(g, 0);  /* do a basic step */
+         luaC_step(L);
+@@ -1167,7 +1168,7 @@ LUA_API int lua_gc (lua_State *L, int wh
+         luaE_setdebt(g, debt);
+         luaC_checkGC(L);
+       }
+-      g->gcrunning = oldrunning;  /* restore previous state */
++      g->gcstp = oldstp;  /* restore previous state */
+       if (debt > 0 && g->gcstate == GCSpause)  /* end of cycle? */
+         res = 1;  /* signal it */
+       break;
+@@ -1185,7 +1186,7 @@ LUA_API int lua_gc (lua_State *L, int wh
+       break;
+     }
+     case LUA_GCISRUNNING: {
+-      res = g->gcrunning;
++      res = gcrunning(g);
+       break;
+     }
+     case LUA_GCGEN: {
+diff -up lua-5.4.3/src/lbaselib.c.bug10 lua-5.4.3/src/lbaselib.c
+--- lua-5.4.3/src/lbaselib.c.bug10	2022-01-24 16:59:43.337703940 -0500
++++ lua-5.4.3/src/lbaselib.c	2022-01-24 17:02:19.898805225 -0500
+@@ -182,12 +182,20 @@ static int luaB_rawset (lua_State *L) {
+ 
+ 
+ static int pushmode (lua_State *L, int oldmode) {
+-  lua_pushstring(L, (oldmode == LUA_GCINC) ? "incremental"
+-                                           : "generational");
++  if (oldmode == -1)
++    luaL_pushfail(L);  /* invalid call to 'lua_gc' */
++  else
++    lua_pushstring(L, (oldmode == LUA_GCINC) ? "incremental"
++                                             : "generational");
+   return 1;
+ }
+ 
+ 
++/*
++** check whether call to 'lua_gc' was valid (not inside a finalizer)
++*/
++#define checkvalres(res) { if (res == -1) break; }
++
+ static int luaB_collectgarbage (lua_State *L) {
+   static const char *const opts[] = {"stop", "restart", "collect",
+     "count", "step", "setpause", "setstepmul",
+@@ -200,12 +208,14 @@ static int luaB_collectgarbage (lua_Stat
+     case LUA_GCCOUNT: {
+       int k = lua_gc(L, o);
+       int b = lua_gc(L, LUA_GCCOUNTB);
++      checkvalres(k);
+       lua_pushnumber(L, (lua_Number)k + ((lua_Number)b/1024));
+       return 1;
+     }
+     case LUA_GCSTEP: {
+       int step = (int)luaL_optinteger(L, 2, 0);
+       int res = lua_gc(L, o, step);
++      checkvalres(res);
+       lua_pushboolean(L, res);
+       return 1;
+     }
+@@ -213,11 +223,13 @@ static int luaB_collectgarbage (lua_Stat
+     case LUA_GCSETSTEPMUL: {
+       int p = (int)luaL_optinteger(L, 2, 0);
+       int previous = lua_gc(L, o, p);
++      checkvalres(previous);
+       lua_pushinteger(L, previous);
+       return 1;
+     }
+     case LUA_GCISRUNNING: {
+       int res = lua_gc(L, o);
++      checkvalres(res);
+       lua_pushboolean(L, res);
+       return 1;
+     }
+@@ -234,10 +246,13 @@ static int luaB_collectgarbage (lua_Stat
+     }
+     default: {
+       int res = lua_gc(L, o);
++      checkvalres(res);
+       lua_pushinteger(L, res);
+       return 1;
+     }
+   }
++  luaL_pushfail(L);  /* invalid call (inside a finalizer) */
++  return 1;
+ }
+ 
+ 
+diff -up lua-5.4.3/src/lgc.c.bug10 lua-5.4.3/src/lgc.c
+--- lua-5.4.3/src/lgc.c.bug10	2022-01-24 17:02:30.231877910 -0500
++++ lua-5.4.3/src/lgc.c	2022-01-24 17:04:02.486526852 -0500
+@@ -906,16 +906,16 @@ static void GCTM (lua_State *L) {
+   if (!notm(tm)) {  /* is there a finalizer? */
+     int status;
+     lu_byte oldah = L->allowhook;
+-    int running  = g->gcrunning;
++    int oldgcstp  = g->gcstp;
++    g->gcstp = GCSTPGC;  /* avoid GC steps */
+     L->allowhook = 0;  /* stop debug hooks during GC metamethod */
+-    g->gcrunning = 0;  /* avoid GC steps */
+     setobj2s(L, L->top++, tm);  /* push finalizer... */
+     setobj2s(L, L->top++, &v);  /* ... and its argument */
+     L->ci->callstatus |= CIST_FIN;  /* will run a finalizer */
+     status = luaD_pcall(L, dothecall, NULL, savestack(L, L->top - 2), 0);
+     L->ci->callstatus &= ~CIST_FIN;  /* not running a finalizer anymore */
+     L->allowhook = oldah;  /* restore hooks */
+-    g->gcrunning = running;  /* restore state */
++    g->gcstp = oldgcstp;  /* restore state */
+     if (l_unlikely(status != LUA_OK)) {  /* error while running __gc? */
+       luaE_warnerror(L, "__gc metamethod");
+       L->top--;  /* pops error object */
+@@ -1502,9 +1502,11 @@ static void deletelist (lua_State *L, GC
+ */
+ void luaC_freeallobjects (lua_State *L) {
+   global_State *g = G(L);
++  g->gcstp = GCSTPGC;
+   luaC_changemode(L, KGC_INC);
+   separatetobefnz(g, 1);  /* separate all objects with finalizers */
+   lua_assert(g->finobj == NULL);
++  g->gcstp = 0;
+   callallpendingfinalizers(L);
+   deletelist(L, g->allgc, obj2gco(g->mainthread));
+   deletelist(L, g->finobj, NULL);
+@@ -1678,7 +1680,7 @@ static void incstep (lua_State *L, globa
+ void luaC_step (lua_State *L) {
+   global_State *g = G(L);
+   lua_assert(!g->gcemergency);
+-  if (g->gcrunning) {  /* running? */
++  if (gcrunning(g)) {  /* running? */
+     if(isdecGCmodegen(g))
+       genstep(L, g);
+     else
+diff -up lua-5.4.3/src/lgc.h.bug10 lua-5.4.3/src/lgc.h
+--- lua-5.4.3/src/lgc.h.bug10	2022-01-24 17:04:08.890571899 -0500
++++ lua-5.4.3/src/lgc.h	2022-01-24 17:04:41.260799595 -0500
+@@ -148,6 +148,15 @@
+ */
+ #define isdecGCmodegen(g)	(g->gckind == KGC_GEN || g->lastatomic != 0)
+ 
++
++/*
++** Control when GC is running:
++*/
++#define GCSTPUSR	1  /* bit true when GC stopped by user */
++#define GCSTPGC		2  /* bit true when GC stopped by itself */
++#define gcrunning(g)	((g)->gcstp == 0)
++
++
+ /*
+ ** Does one step of collection when debt becomes positive. 'pre'/'pos'
+ ** allows some adjustments to be done only when needed. macro
+diff -up lua-5.4.3/src/lstate.c.bug10 lua-5.4.3/src/lstate.c
+--- lua-5.4.3/src/lstate.c.bug10	2022-01-24 17:04:51.775873561 -0500
++++ lua-5.4.3/src/lstate.c	2022-01-24 17:05:26.544118136 -0500
+@@ -236,7 +236,7 @@ static void f_luaopen (lua_State *L, voi
+   luaS_init(L);
+   luaT_init(L);
+   luaX_init(L);
+-  g->gcrunning = 1;  /* allow gc */
++  g->gcstp = 0;  /* allow gc */
+   setnilvalue(&g->nilvalue);  /* now state is complete */
+   luai_userstateopen(L);
+ }
+@@ -373,7 +373,7 @@ LUA_API lua_State *lua_newstate (lua_All
+   g->ud_warn = NULL;
+   g->mainthread = L;
+   g->seed = luai_makeseed(L);
+-  g->gcrunning = 0;  /* no GC while building state */
++  g->gcstp = GCSTPGC;  /* no GC while building state */
+   g->strt.size = g->strt.nuse = 0;
+   g->strt.hash = NULL;
+   setnilvalue(&g->l_registry);
+diff -up lua-5.4.3/src/lstate.h.bug10 lua-5.4.3/src/lstate.h
+--- lua-5.4.3/src/lstate.h.bug10	2022-01-24 17:05:30.179143707 -0500
++++ lua-5.4.3/src/lstate.h	2022-01-24 17:07:05.577814767 -0500
+@@ -263,7 +263,7 @@ typedef struct global_State {
+   lu_byte gcstopem;  /* stops emergency collections */
+   lu_byte genminormul;  /* control for minor generational collections */
+   lu_byte genmajormul;  /* control for major generational collections */
+-  lu_byte gcrunning;  /* true if GC is running */
++  lu_byte gcstp;  /* control whether GC is running */
+   lu_byte gcemergency;  /* true if this is an emergency collection */
+   lu_byte gcpause;  /* size of pause between successive GCs */
+   lu_byte gcstepmul;  /* GC "speed" */

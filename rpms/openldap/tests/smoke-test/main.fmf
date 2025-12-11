@@ -1,0 +1,31 @@
+summary: Test calls upstream test suite
+description: Test calls upstream test suite
+contact: Viktor Ashirov <vashirov@redhat.com>
+component:
+  - openldap
+test: ./runtest.sh
+framework: beakerlib
+recommend:
+  - openldap
+  - openldap-clients
+  - openldap-servers
+  - cracklib-devel
+  - cyrus-sasl-devel
+  - gdbm-devel
+  - groff
+  - krb5-devel
+  - libdb-devel
+  - libtool
+  - libtool-ltdl-devel
+  - nfs-utils
+  - nss-devel
+  - openssl-devel
+  - pam-devel
+  - perl
+  - perl-ExtUtils-Embed
+  - pkgconf-pkg-config
+  - pkgconfig
+  - rpm-build
+  - unixODBC-devel
+  - yum-utils
+duration: 3h

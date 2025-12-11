@@ -1,0 +1,14 @@
+---
+# This first play always runs on the local staging system
+- hosts: localhost
+  roles:
+  - role: standard-test-beakerlib
+    tags:
+    - classic
+    - container
+    - atomic
+    tests:
+    - Smoke
+    required_packages:
+    - lua     # Required for smoke test
+    - which   # Required for smoke test
