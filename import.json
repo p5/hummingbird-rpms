@@ -90,6 +90,13 @@
     "source": "https://src.fedoraproject.org/rpms/e2fsprogs.git",
     "version": "1.47.3"
   },
+  "elfutils": {
+    "branch": "rawhide",
+    "release": "2",
+    "sha": "fe811227810613065ff5d02ef25edcc82ddae288",
+    "source": "https://src.fedoraproject.org/rpms/elfutils.git",
+    "version": "0.194"
+  },
   "grep": {
     "branch": "rawhide",
     "release": "2",

@@ -1,0 +1,5 @@
+PURPOSE of /tools/elfutils/Regression/RFE-support-reading-compressed-ELF-objects
+Description: Test for BZ#1674430 (RFE support reading compressed ELF objects)
+Author: Martin Cermak <mcermak@redhat.com>
+Bug summary: RFE: support reading compressed ELF objects
+Bugzilla link: https://bugzilla.redhat.com/show_bug.cgi?id=1674430

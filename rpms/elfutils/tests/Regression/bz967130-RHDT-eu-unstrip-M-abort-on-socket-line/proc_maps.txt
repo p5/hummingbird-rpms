@@ -1,0 +1,82 @@
+00400000-024aa000 r-xp 00000000 08:02 159659                             /opt/MessageRouter/bin/msgrouter_dbg
+026aa000-026b2000 rwxp 020aa000 08:02 159659                             /opt/MessageRouter/bin/msgrouter_dbg
+026b2000-026bf000 rwxp 00000000 00:00 0
+0335a000-03e6f000 rwxp 00000000 00:00 0                                  [heap]
+2b7b2d6fa000-2b7b2d71a000 r-xp 00000000 08:02 128802                     /lib64/ld-2.12.so
+2b7b2d71a000-2b7b2d89c000 rwxp 00000000 00:00 0
+2b7b2d919000-2b7b2d91a000 r-xp 0001f000 08:02 128802                     /lib64/ld-2.12.so
+2b7b2d91a000-2b7b2d91b000 rwxp 00020000 08:02 128802                     /lib64/ld-2.12.so
+2b7b2d91b000-2b7b2d91c000 rwxp 00000000 00:00 0
+2b7b2d91c000-2b7b2d933000 r-xp 00000000 08:02 128833                     /lib64/libpthread-2.12.so
+2b7b2d933000-2b7b2db32000 ---p 00017000 08:02 128833                     /lib64/libpthread-2.12.so
+2b7b2db32000-2b7b2db33000 r-xp 00016000 08:02 128833                     /lib64/libpthread-2.12.so
+2b7b2db33000-2b7b2db34000 rwxp 00017000 08:02 128833                     /lib64/libpthread-2.12.so
+2b7b2db34000-2b7b2db39000 rwxp 00000000 00:00 0
+2b7b2db39000-2b7b2db40000 r-xp 00000000 08:02 128837                     /lib64/librt-2.12.so
+2b7b2db40000-2b7b2dd3f000 ---p 00007000 08:02 128837                     /lib64/librt-2.12.so
+2b7b2dd3f000-2b7b2dd40000 r-xp 00006000 08:02 128837                     /lib64/librt-2.12.so
+2b7b2dd40000-2b7b2dd41000 rwxp 00007000 08:02 128837                     /lib64/librt-2.12.so
+2b7b2dd41000-2b7b2dd43000 r-xp 00000000 08:02 128815                     /lib64/libdl-2.12.so
+2b7b2dd43000-2b7b2df43000 ---p 00002000 08:02 128815                     /lib64/libdl-2.12.so
+2b7b2df43000-2b7b2df44000 r-xp 00002000 08:02 128815                     /lib64/libdl-2.12.so
+2b7b2df44000-2b7b2df45000 rwxp 00003000 08:02 128815                     /lib64/libdl-2.12.so
+2b7b2df45000-2b7b2e032000 r-xp 00000000 08:02 276647                     /usr/lib64/libboost_regex.so.5
+2b7b2e032000-2b7b2e232000 ---p 000ed000 08:02 276647                     /usr/lib64/libboost_regex.so.5
+2b7b2e232000-2b7b2e239000 rwxp 000ed000 08:02 276647                     /usr/lib64/libboost_regex.so.5
+2b7b2e239000-2b7b2e23a000 rwxp 00000000 00:00 0
+2b7b2e23a000-2b7b2e322000 r-xp 00000000 08:02 260385                     /usr/lib64/libstdc++.so.6.0.13
+2b7b2e322000-2b7b2e522000 ---p 000e8000 08:02 260385                     /usr/lib64/libstdc++.so.6.0.13
+2b7b2e522000-2b7b2e529000 r-xp 000e8000 08:02 260385                     /usr/lib64/libstdc++.so.6.0.13
+2b7b2e529000-2b7b2e52b000 rwxp 000ef000 08:02 260385                     /usr/lib64/libstdc++.so.6.0.13
+2b7b2e52b000-2b7b2e540000 rwxp 00000000 00:00 0
+2b7b2e540000-2b7b2e5c3000 r-xp 00000000 08:02 128817                     /lib64/libm-2.12.so
+2b7b2e5c3000-2b7b2e7c2000 ---p 00083000 08:02 128817                     /lib64/libm-2.12.so
+2b7b2e7c2000-2b7b2e7c3000 r-xp 00082000 08:02 128817                     /lib64/libm-2.12.so
+2b7b2e7c3000-2b7b2e7c4000 rwxp 00083000 08:02 128817                     /lib64/libm-2.12.so
+2b7b2e7c4000-2b7b2e7da000 r-xp 00000000 08:02 136724                     /lib64/libgcc_s-4.4.6-20110824.so.1
+2b7b2e7da000-2b7b2e9d9000 ---p 00016000 08:02 136724                     /lib64/libgcc_s-4.4.6-20110824.so.1
+2b7b2e9d9000-2b7b2e9da000 rwxp 00015000 08:02 136724                     /lib64/libgcc_s-4.4.6-20110824.so.1
+2b7b2e9da000-2b7b2e9db000 rwxp 00000000 00:00 0
+2b7b2e9db000-2b7b2eb72000 r-xp 00000000 08:02 128809                     /lib64/libc-2.12.so
+2b7b2eb72000-2b7b2ed72000 ---p 00197000 08:02 128809                     /lib64/libc-2.12.so
+2b7b2ed72000-2b7b2ed76000 r-xp 00197000 08:02 128809                     /lib64/libc-2.12.so
+2b7b2ed76000-2b7b2ed77000 rwxp 0019b000 08:02 128809                     /lib64/libc-2.12.so
+2b7b2ed77000-2b7b2ed7c000 rwxp 00000000 00:00 0
+2b7b2ed7c000-2b7b2eebb000 r-xp 00000000 08:02 276645                     /usr/lib64/libicuuc.so.42.1
+2b7b2eebb000-2b7b2f0bb000 ---p 0013f000 08:02 276645                     /usr/lib64/libicuuc.so.42.1
+2b7b2f0bb000-2b7b2f0cc000 rwxp 0013f000 08:02 276645                     /usr/lib64/libicuuc.so.42.1
+2b7b2f0cc000-2b7b2f0ce000 rwxp 00000000 00:00 0
+2b7b2f0ce000-2b7b2f256000 r-xp 00000000 08:02 276635                     /usr/lib64/libicui18n.so.42.1
+2b7b2f256000-2b7b2f456000 ---p 00188000 08:02 276635                     /usr/lib64/libicui18n.so.42.1
+2b7b2f456000-2b7b2f463000 rwxp 00188000 08:02 276635                     /usr/lib64/libicui18n.so.42.1
+2b7b2f463000-2b7b2f465000 rwxp 00000000 00:00 0
+2b7b2f465000-2b7b303aa000 r-xp 00000000 08:02 276633                     /usr/lib64/libicudata.so.42.1
+2b7b303aa000-2b7b305a9000 ---p 00f45000 08:02 276633                     /usr/lib64/libicudata.so.42.1
+2b7b305a9000-2b7b305aa000 rwxp 00f44000 08:02 276633                     /usr/lib64/libicudata.so.42.1
+2b7b305aa000-2b7b313f5000 rwxp 00000000 00:00 0
+2b7b313f5000-2b7b313f6000 ---p 00000000 00:00 0
+2b7b313f6000-2b7b31df6000 rwxp 00000000 00:00 0
+2b7b31df6000-2b7b31df7000 ---p 00000000 00:00 0
+2b7b31df7000-2b7b327f7000 rwxp 00000000 00:00 0
+2b7b34000000-2b7b34021000 rwxp 00000000 00:00 0
+2b7b34021000-2b7b38000000 ---p 00000000 00:00 0
+2b7b38000000-2b7b38282000 rwxp 00000000 00:00 0
+2b7b38282000-2b7b38302000 rwxs 00000000 00:06 493872                     socket:[493872]
+2b7b38302000-2b7b38312000 rwxs 00000000 00:06 493872                     socket:[493872]
+2b7b38312000-2b7b38b12000 r-xs 00000000 00:06 493872                     socket:[493872]
+2b7b38b12000-2b7b38b22000 rwxs 00000000 00:06 493872                     socket:[493872]
+2b7b38b22000-2b7b39322000 rwxs 00000000 00:06 493872                     socket:[493872]
+2b7b39322000-2b7b39323000 ---p 00000000 00:00 0
+2b7b39323000-2b7b39d23000 rwxp 00000000 00:00 0
+2b7b3c000000-2b7b3c021000 rwxp 00000000 00:00 0
+2b7b3c021000-2b7b40000000 ---p 00000000 00:00 0
+2b7b40000000-2b7b40021000 rwxp 00000000 00:00 0
+2b7b40021000-2b7b44000000 ---p 00000000 00:00 0
+2b7b44010000-2b7b4401c000 r-xp 00000000 08:02 128825                     /lib64/libnss_files-2.12.so
+2b7b4401c000-2b7b4421c000 ---p 0000c000 08:02 128825                     /lib64/libnss_files-2.12.so
+2b7b4421c000-2b7b4421d000 r-xp 0000c000 08:02 128825                     /lib64/libnss_files-2.12.so
+2b7b4421d000-2b7b4421e000 rwxp 0000d000 08:02 128825                     /lib64/libnss_files-2.12.so
+2b7b4439f000-2b7b45ea1000 rwxp 00000000 00:00 0
+7fff26cf7000-7fff26d0c000 rwxp 00000000 00:00 0                          [stack]
+7fff26dff000-7fff26e00000 r-xp 00000000 00:00 0                          [vdso]
+ffffffffff600000-ffffffffff601000 r-xp 00000000 00:00 0                  [vsyscall]

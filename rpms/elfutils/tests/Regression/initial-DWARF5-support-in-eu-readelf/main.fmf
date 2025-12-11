@@ -1,0 +1,15 @@
+summary: initial-DWARF5-support-in-eu-readelf
+description: |
+    Bug summary: DWARF5 support in eu-readelf
+    Bugzilla link: https://bugzilla.redhat.com/show_bug.cgi?id=1472979
+contact:
+- Martin Cermak <mcermak@redhat.com>
+component:
+- elfutils
+test: ./runtest.sh
+framework: beakerlib
+recommend:
+- elfutils
+duration: 48h
+extra-summary: /tools/elfutils/Regression/initial-DWARF5-support-in-eu-readelf
+extra-task: /tools/elfutils/Regression/initial-DWARF5-support-in-eu-readelf

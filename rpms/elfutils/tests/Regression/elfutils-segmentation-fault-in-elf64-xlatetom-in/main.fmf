@@ -1,0 +1,15 @@
+summary: elfutils-segmentation-fault-in-elf64-xlatetom-in
+description: |
+    Bug summary: elfutils: segmentation fault in elf64_xlatetom in libelf/elf32_xlatetom.c [rhdts-8]
+    Bugzilla link: https://bugzilla.redhat.com/show_bug.cgi?id=1680048
+contact:
+- Martin Cermak <mcermak@redhat.com>
+component:
+- elfutils
+test: ./runtest.sh
+framework: beakerlib
+recommend:
+- elfutils
+duration: 48h
+extra-summary: /tools/elfutils/Regression/elfutils-segmentation-fault-in-elf64-xlatetom-in
+extra-task: /tools/elfutils/Regression/elfutils-segmentation-fault-in-elf64-xlatetom-in

@@ -1,0 +1,12 @@
+PURPOSE of /tools/elfutils/Regression/bz1059897-Support-64-bit-SYM64-symbol-table
+Description: Test for BZ#1059897 (Support 64-bit /SYM64/ symbol table)
+Author: Vaclav Kadlcik <vkadlcik@redhat.com>
+Bug summary: Support 64-bit /SYM64/ symbol table
+Bugzilla link: https://bugzilla.redhat.com/show_bug.cgi?id=1059897
+
+Verify that a 64-bit symbol table produced on s390x is readable by elfutils
+tools. The test is based on Ed Santiago's examples in Bugzilla; a test file
+(libantlr.a) is taken from antlr-C++-2.7.7-30.el7.s390x.rpm. Mark Wielaard
+mentioned another test included in the upstream; it gets processed within
+../../testsuite (which runs the complete upstream testsuite) so its omission
+here is intentional.

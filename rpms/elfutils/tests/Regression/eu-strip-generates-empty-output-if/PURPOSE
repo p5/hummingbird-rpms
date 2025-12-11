@@ -1,0 +1,5 @@
+PURPOSE of /tools/elfutils/Regression/eu-strip-generates-empty-output-if
+Description: eu-strip-generates-empty-output-if
+Author: Martin Cermak <mcermak@redhat.com>
+Bug summary: eu-strip generates empty output if there is nothing to do
+Bugzilla link: https://bugzilla.redhat.com/show_bug.cgi?id=1455620

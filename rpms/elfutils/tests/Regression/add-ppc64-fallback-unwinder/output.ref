@@ -1,0 +1,17 @@
+PID 23727 - core
+TID 23728:
+#0  0x00000000100104bc raise
+#1  0x0000000010002a1c sigusr2
+#2  0x0000000010002a1c sigusr2
+#3  0x0000000010002b38 stdarg
+#4  0x0000000010002bc4 backtracegen
+#5  0x0000000010002bf0 start
+#6  0x0000000010004c28 start_thread
+eu-stack: dwfl_thread_getframes tid 23728 at 0x10004c27 in /root/mjw/elfutils/tests/backtrace.ppc64le.fp.exec: (null)
+TID 23727:
+#0  0x0000000010006034 pthread_join
+#1  0x00000000100025bc main
+#2  0x00000000100025bc main
+#3  0x00000000100123c4 generic_start_main
+#4  0x0000000010012570 __libc_start_main
+eu-stack: dwfl_thread_getframes tid 23727 at 0x1001256f in /root/mjw/elfutils/tests/backtrace.ppc64le.fp.exec: No DWARF information found

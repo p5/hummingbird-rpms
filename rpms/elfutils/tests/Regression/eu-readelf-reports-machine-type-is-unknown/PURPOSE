@@ -1,0 +1,5 @@
+PURPOSE of /tools/elfutils/Regression/eu-readelf-reports-machine-type-is-unknown
+Description: Test for BZ#1724350 (eu-readelf reports machine type is <unknown>)
+Author: Martin Cermak <mcermak@redhat.com>
+Bug summary: eu-readelf reports machine type is <unknown> on firmware blobs
+Bugzilla link: https://bugzilla.redhat.com/show_bug.cgi?id=1724350

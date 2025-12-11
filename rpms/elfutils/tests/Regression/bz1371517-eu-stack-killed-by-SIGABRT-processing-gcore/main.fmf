@@ -1,0 +1,16 @@
+summary: Test for BZ#1371517 (eu-stack killed by SIGABRT processing gcore)
+description: |
+    Bug summary: eu-stack killed by SIGABRT processing gcore created core file
+    Bugzilla link: https://bugzilla.redhat.com/show_bug.cgi?id=1371517
+contact:
+- Martin Cermak <mcermak@redhat.com>
+component:
+- elfutils
+test: ./runtest.sh
+framework: beakerlib
+recommend:
+- elfutils
+- gdb
+duration: 48h
+extra-summary: /tools/elfutils/Regression/bz1371517-eu-stack-killed-by-SIGABRT-processing-gcore
+extra-task: /tools/elfutils/Regression/bz1371517-eu-stack-killed-by-SIGABRT-processing-gcore

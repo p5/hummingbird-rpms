@@ -1,0 +1,5 @@
+PURPOSE of /tools/elfutils/Regression/static-relocations-not-known-to-older-linkers
+Description: static-relocations-not-known-to-older-linkers
+Author: Martin Cermak <mcermak@redhat.com>
+Bug summary: Need to rebuild rpm in order to remove static relocations not known to older linkers
+Bugzilla link: https://bugzilla.redhat.com/show_bug.cgi?id=1508966

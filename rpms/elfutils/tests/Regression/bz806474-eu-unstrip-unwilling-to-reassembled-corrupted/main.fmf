@@ -1,0 +1,20 @@
+summary: Test for BZ#806474 (eu-unstrip unwilling to reassembled corrupted)
+description: |
+    Bug summary: eu-unstrip unwilling to reassembled corrupted separate debuginfo
+    Bugzilla link: https://bugzilla.redhat.com/show_bug.cgi?id=806474
+
+    Make sure eu-unstrip can merge (when forced) a stripped binary and a separate
+    debuginfo in spite of the debuginfo was produced by a buggy version of binutils
+    (see BZ#698005). The test is based on Mark Wielaard's suggestion in Bugzilla.
+contact:
+- Vaclav Kadlcik <vkadlcik@redhat.com>
+component:
+- elfutils
+test: ./runtest.sh
+framework: beakerlib
+recommend:
+- elfutils
+- bzip2
+duration: 5m
+extra-summary: /tools/elfutils/Regression/bz806474-eu-unstrip-unwilling-to-reassembled-corrupted
+extra-task: /tools/elfutils/Regression/bz806474-eu-unstrip-unwilling-to-reassembled-corrupted

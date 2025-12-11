@@ -1,0 +1,13 @@
+summary: bz1717349-vaguely-related-SEGV
+description: ''
+contact:
+- Martin Cermak <mcermak@redhat.com>
+component:
+- elfutils
+test: ./runtest.sh
+framework: beakerlib
+recommend:
+- elfutils
+duration: 48h
+extra-summary: /tools/elfutils/Regression/bz1717349-vaguely-related-SEGV
+extra-task: /tools/elfutils/Regression/bz1717349-vaguely-related-SEGV
