@@ -1,0 +1,6 @@
+summary: Check that gnutls is rebuilt as part of the same bodhi update
+execute:
+    script: >
+      dnf install -y gnutls-utils
+      && rpm -q gnutls nettle
+      && env GNUTLS_FORCE_FIPS_MODE=1 gnutls-cli --list
