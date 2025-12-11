@@ -1,0 +1,3 @@
+PURPOSE of /CoreOS/findutils/Sanity/smoke
+Description: Smoke test for find and xargs.
+Author: Branislav Nater <bnater@redhat.com>

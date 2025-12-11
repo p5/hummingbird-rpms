@@ -111,6 +111,13 @@
     "source": "https://src.fedoraproject.org/rpms/file.git",
     "version": "5.46"
   },
+  "findutils": {
+    "branch": "rawhide",
+    "release": "6",
+    "sha": "5a4117b723b6108318a5a28df2594aa582a667d3",
+    "source": "https://src.fedoraproject.org/rpms/findutils.git",
+    "version": "4.10.0"
+  },
   "grep": {
     "branch": "rawhide",
     "release": "2",

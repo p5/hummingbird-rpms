@@ -1,0 +1,21 @@
+summary: Check xautofs option
+description: |
+    Bug summary: [RFE] Modify find to be able to skip direct mapped autofs mounts
+    Bugzilla link: None
+
+    Check that the new -xautofs option works as expected: make sure
+    find does not descend into directories on autofs filesystems.
+contact: Branislav Nater <bnater@redhat.com>
+link:
+  - relates: https://bugzilla.redhat.com/show_bug.cgi?id=485672
+  - relates: https://bugzilla.redhat.com/show_bug.cgi?id=529391
+component:
+  - findutils
+test: ./runtest.sh
+framework: beakerlib
+recommend:
+  - autofs
+  - findutils
+duration: 10m
+extra-summary: /CoreOS/findutils/Sanity/options/xautofs
+extra-task: /CoreOS/findutils/Sanity/options/xautofs
