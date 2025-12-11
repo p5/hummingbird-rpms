@@ -1,6 +1,6 @@
 Name:           systemd-stub
 Version:        1
-Release:        %autorelease
+Release:        2
 Summary:        Stub systemd packages for containers
 License:        MIT
 URL:            https://hummingbird-project.io
