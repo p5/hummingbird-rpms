@@ -1,10 +1,66 @@
 {
+  "acl": {
+    "branch": "rawhide",
+    "release": "4",
+    "sha": "91824d85dd3d64316176e1fe9257896c1b42e530",
+    "source": "https://src.fedoraproject.org/rpms/acl.git",
+    "version": "2.3.2"
+  },
+  "attr": {
+    "branch": "rawhide",
+    "release": "6",
+    "sha": "0adfe3b1f7ddcaecc0bc78a10768a377cf537279",
+    "source": "https://src.fedoraproject.org/rpms/attr.git",
+    "version": "2.5.2"
+  },
   "bash": {
     "branch": "rawhide",
     "release": "2",
     "sha": "80dab1fcd899428cda77c1a5081077a433242f5d",
     "source": "https://src.fedoraproject.org/rpms/bash.git",
     "version": "5.3.0"
+  },
+  "brotli": {
+    "branch": "rawhide",
+    "release": "10",
+    "sha": "5c4fd78921eaa84de12e767229f24392b404da31",
+    "source": "https://src.fedoraproject.org/rpms/brotli.git",
+    "version": "1.1.0"
+  },
+  "bzip2": {
+    "branch": "rawhide",
+    "release": "21",
+    "sha": "79b3efe8fc0de8130ed3389226e3c2232fa02716",
+    "source": "https://src.fedoraproject.org/rpms/bzip2.git",
+    "version": "1.0.8"
+  },
+  "ca-certificates": {
+    "branch": "rawhide",
+    "release": "3",
+    "sha": "f4b01a3d59464f892cd9bf98c0cc1a864c0ee8ed",
+    "source": "https://src.fedoraproject.org/rpms/ca-certificates.git",
+    "version": "2025.2.80_v9.0.304"
+  },
+  "chkconfig": {
+    "branch": "rawhide",
+    "release": "3",
+    "sha": "8358faf6403af6ad5abb7287309f0224e757395d",
+    "source": "https://src.fedoraproject.org/rpms/chkconfig.git",
+    "version": "1.33"
+  },
+  "coreutils": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "eb04a0fe336b24ee60d1c9478d5856ac21d792fe",
+    "source": "https://src.fedoraproject.org/rpms/coreutils.git",
+    "version": "9.9"
+  },
+  "crypto-policies": {
+    "branch": "rawhide",
+    "release": "1.git19878fe",
+    "sha": "71fce6ba7b402749a7a5975bf21248d2e187861a",
+    "source": "https://src.fedoraproject.org/rpms/crypto-policies.git",
+    "version": "20251128"
   },
   "curl": {
     "branch": "rawhide",

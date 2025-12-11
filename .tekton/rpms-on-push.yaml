@@ -10,6 +10,134 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "false"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[push]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/acl/***, mock/mock.cfg]"
+  creationTimestamp: null
+  labels:
+    appstudio.openshift.io/application: rpms-main
+    appstudio.openshift.io/component: acl-main
+    pipelines.appstudio.openshift.io/type: build
+  name: acl-main-on-push
+  namespace: hummingbird-tenant
+spec:
+  params:
+    - name: git-url
+      value: '{{source_url}}'
+    - name: revision
+      value: '{{revision}}'
+    - name: ociStorage
+      value: quay.io/redhat-user-workloads/hummingbird-tenant/acl-main:{{revision}}
+    - name: package-name
+      value: acl
+    - name: target-branch
+      value: '{{target_branch}}'
+    - name: build-architectures
+      value:
+        - aarch64
+        - x86_64
+    - name: specfile
+      value: "acl.spec"
+    - name: monorepo-subdir
+      value: "rpms/acl"
+    - name: mock-config-template-file
+      value: "mock/mock.cfg"
+    - name: self-ref-url
+      value: "https://github.com/konflux-ci/rpmbuild-pipeline.git"
+    - name: self-ref-revision
+      value: "ada7af0e5397443d320e4273ebe157df21fa1547"
+  pipelineRef:
+    resolver: git
+    params:
+      - name: url
+        value: "https://github.com/konflux-ci/rpmbuild-pipeline.git"
+      - name: revision
+        value: "ada7af0e5397443d320e4273ebe157df21fa1547"
+      - name: pathInRepo
+        value: "pipeline/build-rpm-package.yaml"
+  taskRunTemplate:
+    serviceAccountName: build-pipeline-acl-main
+  timeouts:
+    pipeline: 12h
+    tasks: 12h
+  workspaces:
+    - name: git-auth
+      secret:
+        secretName: '{{git_auth_secret}}'
+---
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  annotations:
+    build.appstudio.openshift.io/repo: https://gitlab.com/redhat/hummingbird/rpms/-/tree/{{revision}}
+    build.appstudio.redhat.com/commit_sha: '{{revision}}'
+    build.appstudio.redhat.com/target_branch: '{{target_branch}}'
+    pipelinesascode.tekton.dev/on-target-branch: "[main]"
+    pipelinesascode.tekton.dev/cancel-in-progress: "false"
+    pipelinesascode.tekton.dev/max-keep-runs: "3"
+    pipelinesascode.tekton.dev/on-event: "[push]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/attr/***, mock/mock.cfg]"
+  creationTimestamp: null
+  labels:
+    appstudio.openshift.io/application: rpms-main
+    appstudio.openshift.io/component: attr-main
+    pipelines.appstudio.openshift.io/type: build
+  name: attr-main-on-push
+  namespace: hummingbird-tenant
+spec:
+  params:
+    - name: git-url
+      value: '{{source_url}}'
+    - name: revision
+      value: '{{revision}}'
+    - name: ociStorage
+      value: quay.io/redhat-user-workloads/hummingbird-tenant/attr-main:{{revision}}
+    - name: package-name
+      value: attr
+    - name: target-branch
+      value: '{{target_branch}}'
+    - name: build-architectures
+      value:
+        - aarch64
+        - x86_64
+    - name: specfile
+      value: "attr.spec"
+    - name: monorepo-subdir
+      value: "rpms/attr"
+    - name: mock-config-template-file
+      value: "mock/mock.cfg"
+    - name: self-ref-url
+      value: "https://github.com/konflux-ci/rpmbuild-pipeline.git"
+    - name: self-ref-revision
+      value: "ada7af0e5397443d320e4273ebe157df21fa1547"
+  pipelineRef:
+    resolver: git
+    params:
+      - name: url
+        value: "https://github.com/konflux-ci/rpmbuild-pipeline.git"
+      - name: revision
+        value: "ada7af0e5397443d320e4273ebe157df21fa1547"
+      - name: pathInRepo
+        value: "pipeline/build-rpm-package.yaml"
+  taskRunTemplate:
+    serviceAccountName: build-pipeline-attr-main
+  timeouts:
+    pipeline: 12h
+    tasks: 12h
+  workspaces:
+    - name: git-auth
+      secret:
+        secretName: '{{git_auth_secret}}'
+---
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  annotations:
+    build.appstudio.openshift.io/repo: https://gitlab.com/redhat/hummingbird/rpms/-/tree/{{revision}}
+    build.appstudio.redhat.com/commit_sha: '{{revision}}'
+    build.appstudio.redhat.com/target_branch: '{{target_branch}}'
+    pipelinesascode.tekton.dev/on-target-branch: "[main]"
+    pipelinesascode.tekton.dev/cancel-in-progress: "false"
+    pipelinesascode.tekton.dev/max-keep-runs: "3"
+    pipelinesascode.tekton.dev/on-event: "[push]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/bash/***, mock/mock.cfg, test/rpms/bash.yml]"
   creationTimestamp: null
   labels:
@@ -55,6 +183,390 @@ spec:
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
     serviceAccountName: build-pipeline-bash-main
+  timeouts:
+    pipeline: 12h
+    tasks: 12h
+  workspaces:
+    - name: git-auth
+      secret:
+        secretName: '{{git_auth_secret}}'
+---
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  annotations:
+    build.appstudio.openshift.io/repo: https://gitlab.com/redhat/hummingbird/rpms/-/tree/{{revision}}
+    build.appstudio.redhat.com/commit_sha: '{{revision}}'
+    build.appstudio.redhat.com/target_branch: '{{target_branch}}'
+    pipelinesascode.tekton.dev/on-target-branch: "[main]"
+    pipelinesascode.tekton.dev/cancel-in-progress: "false"
+    pipelinesascode.tekton.dev/max-keep-runs: "3"
+    pipelinesascode.tekton.dev/on-event: "[push]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/brotli/***, mock/mock.cfg]"
+  creationTimestamp: null
+  labels:
+    appstudio.openshift.io/application: rpms-main
+    appstudio.openshift.io/component: brotli-main
+    pipelines.appstudio.openshift.io/type: build
+  name: brotli-main-on-push
+  namespace: hummingbird-tenant
+spec:
+  params:
+    - name: git-url
+      value: '{{source_url}}'
+    - name: revision
+      value: '{{revision}}'
+    - name: ociStorage
+      value: quay.io/redhat-user-workloads/hummingbird-tenant/brotli-main:{{revision}}
+    - name: package-name
+      value: brotli
+    - name: target-branch
+      value: '{{target_branch}}'
+    - name: build-architectures
+      value:
+        - aarch64
+        - x86_64
+    - name: specfile
+      value: "brotli.spec"
+    - name: monorepo-subdir
+      value: "rpms/brotli"
+    - name: mock-config-template-file
+      value: "mock/mock.cfg"
+    - name: self-ref-url
+      value: "https://github.com/konflux-ci/rpmbuild-pipeline.git"
+    - name: self-ref-revision
+      value: "ada7af0e5397443d320e4273ebe157df21fa1547"
+  pipelineRef:
+    resolver: git
+    params:
+      - name: url
+        value: "https://github.com/konflux-ci/rpmbuild-pipeline.git"
+      - name: revision
+        value: "ada7af0e5397443d320e4273ebe157df21fa1547"
+      - name: pathInRepo
+        value: "pipeline/build-rpm-package.yaml"
+  taskRunTemplate:
+    serviceAccountName: build-pipeline-brotli-main
+  timeouts:
+    pipeline: 12h
+    tasks: 12h
+  workspaces:
+    - name: git-auth
+      secret:
+        secretName: '{{git_auth_secret}}'
+---
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  annotations:
+    build.appstudio.openshift.io/repo: https://gitlab.com/redhat/hummingbird/rpms/-/tree/{{revision}}
+    build.appstudio.redhat.com/commit_sha: '{{revision}}'
+    build.appstudio.redhat.com/target_branch: '{{target_branch}}'
+    pipelinesascode.tekton.dev/on-target-branch: "[main]"
+    pipelinesascode.tekton.dev/cancel-in-progress: "false"
+    pipelinesascode.tekton.dev/max-keep-runs: "3"
+    pipelinesascode.tekton.dev/on-event: "[push]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/bzip2/***, mock/mock.cfg]"
+  creationTimestamp: null
+  labels:
+    appstudio.openshift.io/application: rpms-main
+    appstudio.openshift.io/component: bzip2-main
+    pipelines.appstudio.openshift.io/type: build
+  name: bzip2-main-on-push
+  namespace: hummingbird-tenant
+spec:
+  params:
+    - name: git-url
+      value: '{{source_url}}'
+    - name: revision
+      value: '{{revision}}'
+    - name: ociStorage
+      value: quay.io/redhat-user-workloads/hummingbird-tenant/bzip2-main:{{revision}}
+    - name: package-name
+      value: bzip2
+    - name: target-branch
+      value: '{{target_branch}}'
+    - name: build-architectures
+      value:
+        - aarch64
+        - x86_64
+    - name: specfile
+      value: "bzip2.spec"
+    - name: monorepo-subdir
+      value: "rpms/bzip2"
+    - name: mock-config-template-file
+      value: "mock/mock.cfg"
+    - name: self-ref-url
+      value: "https://github.com/konflux-ci/rpmbuild-pipeline.git"
+    - name: self-ref-revision
+      value: "ada7af0e5397443d320e4273ebe157df21fa1547"
+  pipelineRef:
+    resolver: git
+    params:
+      - name: url
+        value: "https://github.com/konflux-ci/rpmbuild-pipeline.git"
+      - name: revision
+        value: "ada7af0e5397443d320e4273ebe157df21fa1547"
+      - name: pathInRepo
+        value: "pipeline/build-rpm-package.yaml"
+  taskRunTemplate:
+    serviceAccountName: build-pipeline-bzip2-main
+  timeouts:
+    pipeline: 12h
+    tasks: 12h
+  workspaces:
+    - name: git-auth
+      secret:
+        secretName: '{{git_auth_secret}}'
+---
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  annotations:
+    build.appstudio.openshift.io/repo: https://gitlab.com/redhat/hummingbird/rpms/-/tree/{{revision}}
+    build.appstudio.redhat.com/commit_sha: '{{revision}}'
+    build.appstudio.redhat.com/target_branch: '{{target_branch}}'
+    pipelinesascode.tekton.dev/on-target-branch: "[main]"
+    pipelinesascode.tekton.dev/cancel-in-progress: "false"
+    pipelinesascode.tekton.dev/max-keep-runs: "3"
+    pipelinesascode.tekton.dev/on-event: "[push]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/ca-certificates/***, mock/mock.cfg]"
+  creationTimestamp: null
+  labels:
+    appstudio.openshift.io/application: rpms-main
+    appstudio.openshift.io/component: ca-certificates-main
+    pipelines.appstudio.openshift.io/type: build
+  name: ca-certificates-main-on-push
+  namespace: hummingbird-tenant
+spec:
+  params:
+    - name: git-url
+      value: '{{source_url}}'
+    - name: revision
+      value: '{{revision}}'
+    - name: ociStorage
+      value: quay.io/redhat-user-workloads/hummingbird-tenant/ca-certificates-main:{{revision}}
+    - name: package-name
+      value: ca-certificates
+    - name: target-branch
+      value: '{{target_branch}}'
+    - name: build-architectures
+      value:
+        - aarch64
+        - x86_64
+    - name: specfile
+      value: "ca-certificates.spec"
+    - name: monorepo-subdir
+      value: "rpms/ca-certificates"
+    - name: mock-config-template-file
+      value: "mock/mock.cfg"
+    - name: self-ref-url
+      value: "https://github.com/konflux-ci/rpmbuild-pipeline.git"
+    - name: self-ref-revision
+      value: "ada7af0e5397443d320e4273ebe157df21fa1547"
+  pipelineRef:
+    resolver: git
+    params:
+      - name: url
+        value: "https://github.com/konflux-ci/rpmbuild-pipeline.git"
+      - name: revision
+        value: "ada7af0e5397443d320e4273ebe157df21fa1547"
+      - name: pathInRepo
+        value: "pipeline/build-rpm-package.yaml"
+  taskRunTemplate:
+    serviceAccountName: build-pipeline-ca-certificates-main
+  timeouts:
+    pipeline: 12h
+    tasks: 12h
+  workspaces:
+    - name: git-auth
+      secret:
+        secretName: '{{git_auth_secret}}'
+---
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  annotations:
+    build.appstudio.openshift.io/repo: https://gitlab.com/redhat/hummingbird/rpms/-/tree/{{revision}}
+    build.appstudio.redhat.com/commit_sha: '{{revision}}'
+    build.appstudio.redhat.com/target_branch: '{{target_branch}}'
+    pipelinesascode.tekton.dev/on-target-branch: "[main]"
+    pipelinesascode.tekton.dev/cancel-in-progress: "false"
+    pipelinesascode.tekton.dev/max-keep-runs: "3"
+    pipelinesascode.tekton.dev/on-event: "[push]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/chkconfig/***, mock/mock.cfg]"
+  creationTimestamp: null
+  labels:
+    appstudio.openshift.io/application: rpms-main
+    appstudio.openshift.io/component: chkconfig-main
+    pipelines.appstudio.openshift.io/type: build
+  name: chkconfig-main-on-push
+  namespace: hummingbird-tenant
+spec:
+  params:
+    - name: git-url
+      value: '{{source_url}}'
+    - name: revision
+      value: '{{revision}}'
+    - name: ociStorage
+      value: quay.io/redhat-user-workloads/hummingbird-tenant/chkconfig-main:{{revision}}
+    - name: package-name
+      value: chkconfig
+    - name: target-branch
+      value: '{{target_branch}}'
+    - name: build-architectures
+      value:
+        - aarch64
+        - x86_64
+    - name: specfile
+      value: "chkconfig.spec"
+    - name: monorepo-subdir
+      value: "rpms/chkconfig"
+    - name: mock-config-template-file
+      value: "mock/mock.cfg"
+    - name: self-ref-url
+      value: "https://github.com/konflux-ci/rpmbuild-pipeline.git"
+    - name: self-ref-revision
+      value: "ada7af0e5397443d320e4273ebe157df21fa1547"
+  pipelineRef:
+    resolver: git
+    params:
+      - name: url
+        value: "https://github.com/konflux-ci/rpmbuild-pipeline.git"
+      - name: revision
+        value: "ada7af0e5397443d320e4273ebe157df21fa1547"
+      - name: pathInRepo
+        value: "pipeline/build-rpm-package.yaml"
+  taskRunTemplate:
+    serviceAccountName: build-pipeline-chkconfig-main
+  timeouts:
+    pipeline: 12h
+    tasks: 12h
+  workspaces:
+    - name: git-auth
+      secret:
+        secretName: '{{git_auth_secret}}'
+---
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  annotations:
+    build.appstudio.openshift.io/repo: https://gitlab.com/redhat/hummingbird/rpms/-/tree/{{revision}}
+    build.appstudio.redhat.com/commit_sha: '{{revision}}'
+    build.appstudio.redhat.com/target_branch: '{{target_branch}}'
+    pipelinesascode.tekton.dev/on-target-branch: "[main]"
+    pipelinesascode.tekton.dev/cancel-in-progress: "false"
+    pipelinesascode.tekton.dev/max-keep-runs: "3"
+    pipelinesascode.tekton.dev/on-event: "[push]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/coreutils/***, mock/mock.cfg]"
+  creationTimestamp: null
+  labels:
+    appstudio.openshift.io/application: rpms-main
+    appstudio.openshift.io/component: coreutils-main
+    pipelines.appstudio.openshift.io/type: build
+  name: coreutils-main-on-push
+  namespace: hummingbird-tenant
+spec:
+  params:
+    - name: git-url
+      value: '{{source_url}}'
+    - name: revision
+      value: '{{revision}}'
+    - name: ociStorage
+      value: quay.io/redhat-user-workloads/hummingbird-tenant/coreutils-main:{{revision}}
+    - name: package-name
+      value: coreutils
+    - name: target-branch
+      value: '{{target_branch}}'
+    - name: build-architectures
+      value:
+        - aarch64
+        - x86_64
+    - name: specfile
+      value: "coreutils.spec"
+    - name: monorepo-subdir
+      value: "rpms/coreutils"
+    - name: mock-config-template-file
+      value: "mock/mock.cfg"
+    - name: self-ref-url
+      value: "https://github.com/konflux-ci/rpmbuild-pipeline.git"
+    - name: self-ref-revision
+      value: "ada7af0e5397443d320e4273ebe157df21fa1547"
+  pipelineRef:
+    resolver: git
+    params:
+      - name: url
+        value: "https://github.com/konflux-ci/rpmbuild-pipeline.git"
+      - name: revision
+        value: "ada7af0e5397443d320e4273ebe157df21fa1547"
+      - name: pathInRepo
+        value: "pipeline/build-rpm-package.yaml"
+  taskRunTemplate:
+    serviceAccountName: build-pipeline-coreutils-main
+  timeouts:
+    pipeline: 12h
+    tasks: 12h
+  workspaces:
+    - name: git-auth
+      secret:
+        secretName: '{{git_auth_secret}}'
+---
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  annotations:
+    build.appstudio.openshift.io/repo: https://gitlab.com/redhat/hummingbird/rpms/-/tree/{{revision}}
+    build.appstudio.redhat.com/commit_sha: '{{revision}}'
+    build.appstudio.redhat.com/target_branch: '{{target_branch}}'
+    pipelinesascode.tekton.dev/on-target-branch: "[main]"
+    pipelinesascode.tekton.dev/cancel-in-progress: "false"
+    pipelinesascode.tekton.dev/max-keep-runs: "3"
+    pipelinesascode.tekton.dev/on-event: "[push]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/crypto-policies/***, mock/mock.cfg]"
+  creationTimestamp: null
+  labels:
+    appstudio.openshift.io/application: rpms-main
+    appstudio.openshift.io/component: crypto-policies-main
+    pipelines.appstudio.openshift.io/type: build
+  name: crypto-policies-main-on-push
+  namespace: hummingbird-tenant
+spec:
+  params:
+    - name: git-url
+      value: '{{source_url}}'
+    - name: revision
+      value: '{{revision}}'
+    - name: ociStorage
+      value: quay.io/redhat-user-workloads/hummingbird-tenant/crypto-policies-main:{{revision}}
+    - name: package-name
+      value: crypto-policies
+    - name: target-branch
+      value: '{{target_branch}}'
+    - name: build-architectures
+      value:
+        - aarch64
+        - x86_64
+    - name: specfile
+      value: "crypto-policies.spec"
+    - name: monorepo-subdir
+      value: "rpms/crypto-policies"
+    - name: mock-config-template-file
+      value: "mock/mock.cfg"
+    - name: self-ref-url
+      value: "https://github.com/konflux-ci/rpmbuild-pipeline.git"
+    - name: self-ref-revision
+      value: "ada7af0e5397443d320e4273ebe157df21fa1547"
+  pipelineRef:
+    resolver: git
+    params:
+      - name: url
+        value: "https://github.com/konflux-ci/rpmbuild-pipeline.git"
+      - name: revision
+        value: "ada7af0e5397443d320e4273ebe157df21fa1547"
+      - name: pathInRepo
+        value: "pipeline/build-rpm-package.yaml"
+  taskRunTemplate:
+    serviceAccountName: build-pipeline-crypto-policies-main
   timeouts:
     pipeline: 12h
     tasks: 12h

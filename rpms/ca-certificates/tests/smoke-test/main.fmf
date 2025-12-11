@@ -1,0 +1,5 @@
+summary: Check presence of Verisign root.
+test: bash ./runtest.sh
+framework: beakerlib
+recommend:
+  - beakerlib

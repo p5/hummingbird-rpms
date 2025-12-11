@@ -1,0 +1,4 @@
+PURPOSE of /CoreOS/attr/Sanity/getfattr-ignores-NULs-in-output-when-using-text
+Description: Test for getfattr ignores NULs in output when using "text"
+Author: Jan Scotka <jscotka@redhat.com>
+Bug summary: getfattr ignores NULs in output when using "text" encoding
