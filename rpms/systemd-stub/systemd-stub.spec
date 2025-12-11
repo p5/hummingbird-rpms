@@ -9,10 +9,13 @@ URL:            https://hummingbird-project.io
 # version has to be high to satisfy versioned dependencies, such
 # as rpm having "Conflicts: systemd < 253.5-6"
 %define version 999
-Provides:       systemd = %{version}-%{release}
-Provides:       systemd-shared = %{version}-%{release}
-Provides:       systemd-sysusers = %{version}-%{release}
-Provides:       systemd-pam = %{version}-%{release}
+# DISABLE: systemd-stub satisfies BuildRequires, which breaks a ton of builds
+# re-enable this once we figure out a way to install the stub *only* for
+# container builds
+# Provides:       systemd = %{version}-%{release}
+# Provides:       systemd-shared = %{version}-%{release}
+# Provides:       systemd-sysusers = %{version}-%{release}
+# Provides:       systemd-pam = %{version}-%{release}
 
 %description
 Empty stub systemd packages for satisfying dependencies in containers
