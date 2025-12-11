@@ -76,6 +76,13 @@
     "source": "https://src.fedoraproject.org/rpms/cyrus-sasl.git",
     "version": "2.1.28"
   },
+  "dnf5": {
+    "branch": "rawhide",
+    "release": "3",
+    "sha": "d5463425afb3e02912898a0b436cfb665b3412f3",
+    "source": "https://src.fedoraproject.org/rpms/dnf5.git",
+    "version": "5.3.0.0"
+  },
   "grep": {
     "branch": "rawhide",
     "release": "2",
