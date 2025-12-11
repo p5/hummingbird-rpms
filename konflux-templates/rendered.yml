@@ -388,6 +388,43 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+  name: zchunk-main
+spec:
+  application: rpms-main
+  componentName: zchunk-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/zchunk-main
+  source:
+    git:
+      context: rpms/zchunk
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: zchunk-main
+  name: zchunk-main
+spec:
+  image:
+    name: hummingbird-tenant/zchunk-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
   name: zlib-ng-main
 spec:
   application: rpms-main

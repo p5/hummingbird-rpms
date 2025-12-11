@@ -62,6 +62,13 @@
     "source": "https://src.fedoraproject.org/rpms/xz.git",
     "version": "5.8.1"
   },
+  "zchunk": {
+    "branch": "rawhide",
+    "release": "3",
+    "sha": "a08ff1c9af969affa6b728fdbf0503c00dea2eda",
+    "source": "https://src.fedoraproject.org/rpms/zchunk.git",
+    "version": "1.5.1"
+  },
   "zlib-ng": {
     "branch": "rawhide",
     "release": "1",
