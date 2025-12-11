@@ -1,0 +1,3 @@
+PURPOSE of /CoreOS/cyrus-sasl/Sanity/sanity-ldapdb-plugin
+Description: The ldapdb auxprop plugin provides access to credentials stored in an LDAP server.
+Author: David Spurek <dspurek@redhat.com>
