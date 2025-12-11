@@ -6,7 +6,7 @@ set -euo pipefail
 
 # Parse arguments
 ENGINE=""
-IMAGE="quay.io/hummingbird/core-runtime:latest-builder"
+IMAGE="quay.io/hummingbird-ci/builder:latest"
 RPM_FILES=()
 
 while [[ $# -gt 0 ]]; do
@@ -52,7 +52,7 @@ done
 
 # Run createrepo_c in a container to generate repository metadata
 "${ENGINE}" run --rm --user 0 -e HOME=/root -v "${repo_dir}:/repo:z" "${IMAGE}" \
-    bash -c "dnf install -y createrepo_c >&2 && createrepo_c /repo >&2"
+    createrepo_c /repo >&2
 
 # Output the repository directory path (this is captured by the caller)
 echo "${repo_dir}"
