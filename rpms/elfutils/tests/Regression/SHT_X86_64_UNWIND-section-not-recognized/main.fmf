@@ -1,0 +1,15 @@
+summary: SHT_X86_64_UNWIND-section-not-recognized
+description: |
+    Bug summary: elfutils doesn't recognize gold linker SHT_X86_64_UNWIND section
+    Bugzilla link: https://bugzilla.redhat.com/show_bug.cgi?id=1650114
+contact:
+- Martin Cermak <mcermak@redhat.com>
+component:
+- elfutils
+test: ./runtest.sh
+framework: beakerlib
+recommend:
+- elfutils
+duration: 48h
+extra-summary: /tools/elfutils/Regression/SHT_X86_64_UNWIND-section-not-recognized
+extra-task: /tools/elfutils/Regression/SHT_X86_64_UNWIND-section-not-recognized

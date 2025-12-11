@@ -1,0 +1,5 @@
+summary: fedora CI tests plan 
+discover:
+    how: fmf
+execute:
+    how: tmt

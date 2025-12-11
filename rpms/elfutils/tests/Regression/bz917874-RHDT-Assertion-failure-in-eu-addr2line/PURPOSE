@@ -1,0 +1,5 @@
+PURPOSE of /tools/elfutils/Regression/bz917874-RHDT-Assertion-failure-in-eu-addr2line
+Description: Test for BZ#917874 ([RHDT] Assertion failure in eu-addr2line)
+Author: Dagmar Prokopova <dprokopo@redhat.com>
+Bug summary: [RHDT] Assertion failure in eu-addr2line
+Bugzilla link: https://bugzilla.redhat.com/show_bug.cgi?id=917874

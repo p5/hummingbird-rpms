@@ -1,0 +1,14 @@
+summary: elfutils-debuginfod
+description: ''
+contact: Martin Cermak <mcermak@redhat.com>
+component:
+- elfutils
+test: ./runtest.sh
+framework: beakerlib
+recommend:
+- elfutils
+- elfutils-debuginfod
+- elfutils-debuginfod-client
+duration: 48h
+extra-summary: /tools/elfutils/Sanity/elfutils-debuginfod
+extra-task: /tools/elfutils/Sanity/elfutils-debuginfod

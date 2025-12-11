@@ -1,0 +1,5 @@
+PURPOSE of /tools/elfutils/Regression/abrt-faf-elfutils-IO-default-xsputn
+Description: abrt-faf-elfutils-IO-default-xsputn
+Author: Martin Cermak <mcermak@redhat.com>
+Bug summary: [abrt] [faf] elfutils: _IO_default_xsputn(): /usr/bin/eu-readelf killed by 11
+Bugzilla link: https://bugzilla.redhat.com/show_bug.cgi?id=1262839

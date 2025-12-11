@@ -1,0 +1,15 @@
+summary: eu-elfcompress-breaks-hard-links
+description: ''
+link:
+  - relates: https://bugzilla.redhat.com/show_bug.cgi?id=2188064
+contact: Martin Cermak <mcermak@redhat.com>
+component:
+  - elfutils
+test: ./runtest.sh
+framework: beakerlib
+recommend:
+  - elfutils
+  - gcc
+duration: 1h
+extra-summary: /tools/elfutils/Regression/eu-elfcompress-breaks-hard-links
+extra-task: /tools/elfutils/Regression/eu-elfcompress-breaks-hard-links

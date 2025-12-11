@@ -69,6 +69,76 @@
     "source": "https://src.fedoraproject.org/rpms/curl.git",
     "version": "8.17.0"
   },
+  "cyrus-sasl": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "d53f626c5da122c39bfe6b8799210865ad5478f7",
+    "source": "https://src.fedoraproject.org/rpms/cyrus-sasl.git",
+    "version": "2.1.28"
+  },
+  "dnf5": {
+    "branch": "rawhide",
+    "release": "3",
+    "sha": "d5463425afb3e02912898a0b436cfb665b3412f3",
+    "source": "https://src.fedoraproject.org/rpms/dnf5.git",
+    "version": "5.3.0.0"
+  },
+  "e2fsprogs": {
+    "branch": "rawhide",
+    "release": "3",
+    "sha": "d32b6dc2d7f15702ca45dff064e733c2f5677432",
+    "source": "https://src.fedoraproject.org/rpms/e2fsprogs.git",
+    "version": "1.47.3"
+  },
+  "elfutils": {
+    "branch": "rawhide",
+    "release": "2",
+    "sha": "fe811227810613065ff5d02ef25edcc82ddae288",
+    "source": "https://src.fedoraproject.org/rpms/elfutils.git",
+    "version": "0.194"
+  },
+  "fedora-repos": {
+    "branch": "rawhide",
+    "release": "0.1",
+    "sha": "b38b2b9743f27ab776c2ef406f1c271d8f73339b",
+    "source": "https://src.fedoraproject.org/rpms/fedora-repos.git",
+    "version": "44"
+  },
+  "file": {
+    "branch": "rawhide",
+    "release": "8",
+    "sha": "65ba3e22891d3aa8d4c75ee14658ee81c4b1f4fa",
+    "source": "https://src.fedoraproject.org/rpms/file.git",
+    "version": "5.46"
+  },
+  "findutils": {
+    "branch": "rawhide",
+    "release": "6",
+    "sha": "5a4117b723b6108318a5a28df2594aa582a667d3",
+    "source": "https://src.fedoraproject.org/rpms/findutils.git",
+    "version": "4.10.0"
+  },
+  "fmt": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "e2128bd1d54ff38a127266a8c0dce73559fd073e",
+    "source": "https://src.fedoraproject.org/rpms/fmt.git",
+    "version": "11.2.0"
+  },
+  "fsverity-utils": {
+    "branch": "rawhide",
+    "release": "3",
+    "sha": "6f595a4169590d536324f0f8df243c10b389f94e",
+    "source": "https://src.fedoraproject.org/rpms/fsverity-utils.git",
+    "version": "1.6"
+  },
+  "gdbm": {
+    "branch": "rawhide",
+    "release": "10",
+    "sha": "870811290fc8a18c7798959d1a0e9e17c018022f",
+    "source": "https://src.fedoraproject.org/rpms/gdbm.git",
+    "version": "1.23"
+  },
   "grep": {
     "branch": "rawhide",
     "release": "2",

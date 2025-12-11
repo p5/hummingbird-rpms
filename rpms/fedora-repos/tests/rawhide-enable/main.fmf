@@ -1,0 +1,20 @@
+summary: Tries enabling rawhide and upgrading after it
+description: |
+    Check enabling of Rawhide from stable release.
+    Ensure packages can be updated to Rawhide from a stable release.
+contact:
+- Petr Mensik <pemensik@redhat.com>
+component:
+- fedora-repos
+test: ./runtest.sh
+framework: beakerlib
+recommend:
+- fedora-gpg-keys
+- fedora-repos
+- dnf-utils
+- sed
+- gnupg
+- dnf
+duration: 5m
+extra-summary: /CoreOS/tests/Regression/rawhide-enable
+extra-task: /CoreOS/tests/Regression/rawhide-enable

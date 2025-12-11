@@ -1,0 +1,5 @@
+PURPOSE of /tools/elfutils/Regression/elfutils-segmentation-fault-in-elf64-xlatetom-in
+Description: elfutils-segmentation-fault-in-elf64-xlatetom-in
+Author: Martin Cermak <mcermak@redhat.com>
+Bug summary: elfutils: segmentation fault in elf64_xlatetom in libelf/elf32_xlatetom.c [rhdts-8]
+Bugzilla link: https://bugzilla.redhat.com/show_bug.cgi?id=1680048

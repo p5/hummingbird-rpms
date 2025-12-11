@@ -1,0 +1,14 @@
+summary: api-break-in-libasm-h
+description: ''
+contact:
+- Martin Cermak <mcermak@redhat.com>
+component:
+- elfutils
+test: ./runtest.sh
+framework: beakerlib
+recommend:
+- elfutils-devel
+- gcc
+duration: 48h
+extra-summary: /tools/elfutils/Regression/api-break-in-libasm-h
+extra-task: /tools/elfutils/Regression/api-break-in-libasm-h

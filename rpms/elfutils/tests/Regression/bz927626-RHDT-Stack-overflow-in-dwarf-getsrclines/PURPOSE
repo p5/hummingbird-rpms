@@ -1,0 +1,5 @@
+PURPOSE of /tools/elfutils/Regression/bz927626-RHDT-Stack-overflow-in-dwarf-getsrclines
+Description: Test for BZ#927626 ([RHDT] Stack overflow in dwarf_getsrclines)
+Author: Dagmar Prokopova <dprokopo@redhat.com>
+Bug summary: [RHDT] Stack overflow in dwarf_getsrclines
+Bugzilla link: https://bugzilla.redhat.com/show_bug.cgi?id=927626

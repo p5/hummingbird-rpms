@@ -1,0 +1,15 @@
+summary: Test for BZ#917874 ([RHDT] Assertion failure in eu-addr2line)
+description: |
+    Bug summary: [RHDT] Assertion failure in eu-addr2line
+    Bugzilla link: https://bugzilla.redhat.com/show_bug.cgi?id=917874
+contact:
+- Dagmar Prokopova <dprokopo@redhat.com>
+component:
+- elfutils
+test: ./runtest.sh
+framework: beakerlib
+recommend:
+- elfutils
+duration: 5m
+extra-summary: /tools/elfutils/Regression/bz917874-RHDT-Assertion-failure-in-eu-addr2line
+extra-task: /tools/elfutils/Regression/bz917874-RHDT-Assertion-failure-in-eu-addr2line

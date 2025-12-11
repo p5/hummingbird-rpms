@@ -1,0 +1,13 @@
+summary: Rebuild coreutils
+description: ''
+contact: Milos Prchlik <mprchlik@redhat.com>
+component:
+  - file
+test: ./runtest.sh
+framework: beakerlib
+recommend:
+  - file
+  - rpm-build
+duration: 1h
+extra-summary: rebuild-coreutils
+extra-task: rebuild-coreutils

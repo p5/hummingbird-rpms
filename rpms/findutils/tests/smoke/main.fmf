@@ -1,0 +1,12 @@
+summary: Smoke test for find and xargs.
+description: ''
+contact: Branislav Nater <bnater@redhat.com>
+component:
+  - findutils
+test: ./runtest.sh
+framework: beakerlib
+recommend:
+  - findutils
+duration: 5m
+extra-summary: /CoreOS/findutils/Sanity/smoke
+extra-task: /CoreOS/findutils/Sanity/smoke

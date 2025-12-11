@@ -1,0 +1,16 @@
+summary: require-compression-libraries
+description: |
+    Bug summary: gcc-toolset-10-elfutils-devel doesn't have Requires and/or links against all supported compression libraries for libdw
+    Bugzilla link: https://bugzilla.redhat.com/show_bug.cgi?id=1873413
+contact:
+- Martin Cermak <mcermak@redhat.com>
+component:
+- elfutils
+test: ./runtest.sh
+framework: beakerlib
+recommend:
+- elfutils
+- gcc
+duration: 48h
+extra-summary: /tools/elfutils/Regression/require-compression-libraries
+extra-task: /tools/elfutils/Regression/require-compression-libraries

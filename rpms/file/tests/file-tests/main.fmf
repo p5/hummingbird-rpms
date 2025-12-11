@@ -1,0 +1,11 @@
+summary: File regressions detection tests from github.com:file/file-tests.git
+contact: Jan Kaluza <jkaluza@redhat.com>
+component:
+  - file
+test: ./runtest.sh
+framework: beakerlib
+recommend:
+  - file
+duration: 20m
+extra-summary: file-tests
+extra-task: file-tests

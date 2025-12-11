@@ -1,0 +1,5 @@
+PURPOSE of /tools/elfutils/Regression/bz1371517-eu-stack-killed-by-SIGABRT-processing-gcore
+Description: Test for BZ#1371517 (eu-stack killed by SIGABRT processing gcore)
+Author: Martin Cermak <mcermak@redhat.com>
+Bug summary: eu-stack killed by SIGABRT processing gcore created core file
+Bugzilla link: https://bugzilla.redhat.com/show_bug.cgi?id=1371517

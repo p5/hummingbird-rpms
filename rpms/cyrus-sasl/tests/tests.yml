@@ -1,0 +1,18 @@
+---
+# This first play always runs on the local staging system
+- hosts: localhost
+  roles:
+  - role: standard-test-beakerlib
+    tags:
+    - classic
+    tests:
+    - sanity-ldapdb-plugin
+    required_packages:
+    - cyrus-sasl
+    - cyrus-sasl-md5
+    - cyrus-sasl-ldap
+    - cyrus-sasl-plain
+    - cyrus-sasl-devel
+    - expect
+    - openldap-servers
+    - openldap-clients

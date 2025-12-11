@@ -1,0 +1,16 @@
+Owner:           Martin Cermak <mcermak@redhat.com>
+Name:            /tools/elfutils/Regression/eu-strip-invalid-section-alignment-while
+TestVersion:     1.0
+Path:            /mnt/tests/tools/elfutils/Regression/eu-strip-invalid-section-alignment-while
+Description:     eu-strip-invalid-section-alignment-while
+Type:            Regression
+TestTime:        1d
+RunFor:          elfutils
+Requires:        elfutils
+Requires:        gcc
+Requires:        libaio-devel
+Priority:        Normal
+License:         GPLv2+
+Confidential:    no
+Destructive:     no
+Bug:             1303845

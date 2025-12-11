@@ -1,0 +1,5 @@
+PURPOSE of /tools/elfutils/Regression/robustify-elfutils-0-172-against-bad-DWARF5-data
+Description: Test for BZ#1593328 (Robustify elfutils 0.172 against bad DWARF5 data)
+Author: Martin Cermak <mcermak@redhat.com>
+Bug summary: Robustify elfutils 0.172 against bad DWARF5 data
+Bugzilla link: https://bugzilla.redhat.com/show_bug.cgi?id=1593328

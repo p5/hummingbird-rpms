@@ -1,0 +1,15 @@
+summary: static-relocations-not-known-to-older-linkers
+description: |
+    Bug summary: Need to rebuild rpm in order to remove static relocations not known to older linkers
+    Bugzilla link: https://bugzilla.redhat.com/show_bug.cgi?id=1508966
+contact:
+- Martin Cermak <mcermak@redhat.com>
+component:
+- elfutils
+test: ./runtest.sh
+framework: beakerlib
+recommend:
+- elfutils-devel
+duration: 48h
+extra-summary: /tools/elfutils/Regression/static-relocations-not-known-to-older-linkers
+extra-task: /tools/elfutils/Regression/static-relocations-not-known-to-older-linkers

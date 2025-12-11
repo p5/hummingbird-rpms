@@ -1,0 +1,1 @@
+DOS/MBR boot sector; partition 1 : ID=0x8e, start-CHS (0x3ff,254,63), end-CHS (0x3ff,254,63), startsector 2048, 841519104 sectors; partition 2 : ID=0x5, start-CHS (0x3ff,254,63), end-CHS (0x3ff,254,63), startsector 841521152, 29363265 sectors, extended partition table
