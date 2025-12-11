@@ -1,0 +1,57 @@
+From 638055dbe76ca0b3f87bcc0879e5810fadece18c Mon Sep 17 00:00:00 2001
+From: Karel Zak <kzak@redhat.com>
+Date: Thu, 27 Nov 2025 10:27:07 +0100
+Subject: lib, lscpu: fix const qualifier discarded warnings in bsearch
+
+Fix compilation warnings from newer compilers with stricter
+const-correctness checks. When bsearch() searches in const arrays,
+the result pointer must also be const to avoid discarding the
+const qualifier.
+
+Fixed in:
+- lib/color-names.c: searching in static const basic_schemes[]
+- sys-utils/lscpu-cputype.c: searching in const pattern arrays
+
+The warnings were:
+  lib/color-names.c:62:13: error: assignment discards 'const'
+  qualifier from pointer target type
+  [-Werror=discarded-qualifiers]
+
+Signed-off-by: Karel Zak <kzak@redhat.com>
+(cherry picked from commit 0cef3e4f5aac19bc3623883ca64c66538aa9b442)
+---
+ lib/color-names.c         | 3 ++-
+ sys-utils/lscpu-cputype.c | 3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/lib/color-names.c b/lib/color-names.c
+index 88c4ef957..daebcedae 100644
+--- a/lib/color-names.c
++++ b/lib/color-names.c
+@@ -54,7 +54,8 @@ const char *color_sequence_from_colorname(const char *str)
+ 		{ "white",      UL_COLOR_WHITE           },
+ 		{ "yellow",	UL_COLOR_BOLD_YELLOW     }
+ 	};
+-	struct ul_color_name key = { .name = str }, *res;
++	struct ul_color_name key = { .name = str };
++	const struct ul_color_name *res;
+ 
+ 	if (!str)
+ 		return NULL;
+diff --git a/sys-utils/lscpu-cputype.c b/sys-utils/lscpu-cputype.c
+index 3937a00a8..99b112bf9 100644
+--- a/sys-utils/lscpu-cputype.c
++++ b/sys-utils/lscpu-cputype.c
+@@ -444,7 +444,8 @@ static char *key_cleanup(char *str, int *keynum)
+ 
+ static const struct cpuinfo_pattern *cpuinfo_parse_line(char *str, char **value, int *keynum)
+ {
+-	struct cpuinfo_pattern key = { .id = 0 }, *pat;
++	struct cpuinfo_pattern key = { .id = 0 };
++	const struct cpuinfo_pattern *pat;
+ 	char *p, *v;
+ 	char buf[CPUTYPE_PATTERN_BUFSZ] = { 0 };
+ 
+-- 
+2.51.1
+

@@ -1,0 +1,33 @@
+From cb68695cf9d93fe8692c69ae3773e64364491d48 Mon Sep 17 00:00:00 2001
+From: Karel Zak <kzak@redhat.com>
+Date: Thu, 27 Nov 2025 16:44:47 +0100
+Subject: namei: fix const qualifier warning in readlink_to_namei
+
+Fix const qualifier discarded warning in readlink_to_namei().
+This warning is reported by gcc 15 which defaults to the C23 standard.
+
+The strrchr() function returns a pointer into a const string, so the
+receiving variable must be declared as const char *.
+
+Signed-off-by: Karel Zak <kzak@redhat.com>
+(cherry picked from commit e318417f00982bf496fd2359853b07ada3e3c544)
+---
+ misc-utils/namei.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/misc-utils/namei.c b/misc-utils/namei.c
+index 0a9ed8df8..2c3049284 100644
+--- a/misc-utils/namei.c
++++ b/misc-utils/namei.c
+@@ -100,7 +100,7 @@ readlink_to_namei(struct namei *nm, const char *path)
+ 	if (sz < 1)
+ 		err(EXIT_FAILURE, _("failed to read symlink: %s"), path);
+ 	if (*sym != '/') {
+-		char *p = strrchr(path, '/');
++		const char *p = strrchr(path, '/');
+ 
+ 		if (p) {
+ 			isrel = 1;
+-- 
+2.51.1
+

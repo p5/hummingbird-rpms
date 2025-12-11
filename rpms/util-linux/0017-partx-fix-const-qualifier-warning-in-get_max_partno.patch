@@ -1,0 +1,34 @@
+From d1ae6e00299866ae3ad8dd549302eaa9b499a24f Mon Sep 17 00:00:00 2001
+From: Karel Zak <kzak@redhat.com>
+Date: Thu, 27 Nov 2025 16:48:53 +0100
+Subject: partx: fix const qualifier warning in get_max_partno
+
+Fix const qualifier discarded warning in get_max_partno().
+This warning is reported by gcc 15 which defaults to the C23 standard.
+
+The strrchr() function returns a pointer into a const string, so the
+receiving variable must be declared as const char *.
+
+Signed-off-by: Karel Zak <kzak@redhat.com>
+(cherry picked from commit 4c94ce5d05d97420df7a512bbbaee8c4017414ae)
+---
+ disk-utils/partx.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/disk-utils/partx.c b/disk-utils/partx.c
+index 347d5daad..a2df5d4c0 100644
+--- a/disk-utils/partx.c
++++ b/disk-utils/partx.c
+@@ -218,7 +218,8 @@ err:
+ 
+ static int get_max_partno(const char *disk, dev_t devno)
+ {
+-	char path[PATH_MAX], *parent, *dirname = NULL;
++	char path[PATH_MAX], *dirname = NULL;
++	const char *parent;
+ 	struct stat st;
+ 	DIR *dir;
+ 	struct dirent *d;
+-- 
+2.51.1
+

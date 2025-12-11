@@ -1,0 +1,58 @@
+From 0cd0a9dd42a3249bbbee4855fbc406c4ca5fdd5b Mon Sep 17 00:00:00 2001
+From: Karel Zak <kzak@redhat.com>
+Date: Mon, 6 Oct 2025 15:04:24 +0200
+Subject: libblkid: use snprintf() instead of sprintf()
+
+Replace sprintf() calls with snprintf() to ensure proper bounds
+checking when formatting strings.
+
+In encode.c, the check now validates snprintf() return value instead
+of pre-checking buffer size, providing more robust error handling.
+
+In probe.c, snprintf() is used with proper size calculation based on
+remaining buffer space.
+
+Signed-off-by: Karel Zak <kzak@redhat.com>
+(cherry picked from commit 041380f4ca7244df624bf7efdb5e27fdd3144175)
+(cherry picked from commit 917917253e60b0ba485cf6a27a2f993aa43e1eea)
+---
+ libblkid/src/encode.c | 6 ++++--
+ libblkid/src/probe.c  | 4 ++--
+ 2 files changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/libblkid/src/encode.c b/libblkid/src/encode.c
+index 8213873ee..4b83f6690 100644
+--- a/libblkid/src/encode.c
++++ b/libblkid/src/encode.c
+@@ -191,9 +191,11 @@ int blkid_encode_string(const char *str, char *str_enc, size_t len)
+ 			j += seqlen;
+ 			i += (seqlen-1);
+ 		} else if (str[i] == '\\' || !is_whitelisted(str[i], NULL)) {
+-			if (len-j < 4)
++			int rc;
++
++			rc = snprintf(&str_enc[j], len-j, "\\x%02x", (unsigned char) str[i]);
++			if (rc != 4)
+ 				goto err;
+-			sprintf(&str_enc[j], "\\x%02x", (unsigned char) str[i]);
+ 			j += 4;
+ 		} else {
+ 			if (len-j < 1)
+diff --git a/libblkid/src/probe.c b/libblkid/src/probe.c
+index 61b93021c..a38f5990e 100644
+--- a/libblkid/src/probe.c
++++ b/libblkid/src/probe.c
+@@ -2012,8 +2012,8 @@ static void blkid_probe_log_csum_mismatch(blkid_probe pr, size_t n, const void *
+ 	int hex_size = min(sizeof(csum_hex), n * 2);
+ 
+ 	for (int i = 0; i < hex_size; i+=2) {
+-		sprintf(&csum_hex[i], "%02X", ((const unsigned char *) csum)[i / 2]);
+-		sprintf(&expected_hex[i], "%02X", ((const unsigned char *) expected)[i / 2]);
++		snprintf(&csum_hex[i], sizeof(csum_hex) - i, "%02X", ((const unsigned char *) csum)[i / 2]);
++		snprintf(&expected_hex[i], sizeof(expected_hex) - i, "%02X", ((const unsigned char *) expected)[i / 2]);
+ 	}
+ 
+ 	DBG(LOWPROBE, ul_debug(
+-- 
+2.51.1
+

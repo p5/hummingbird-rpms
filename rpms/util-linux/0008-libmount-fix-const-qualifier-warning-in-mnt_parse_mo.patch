@@ -1,0 +1,54 @@
+From 1ba0d6e2c78f3423cb6427e4922f5949af7429e0 Mon Sep 17 00:00:00 2001
+From: Karel Zak <kzak@redhat.com>
+Date: Thu, 27 Nov 2025 16:24:11 +0100
+Subject: libmount: fix const qualifier warning in mnt_parse_mountinfo_line
+
+Fix const qualifier discarded warning in mnt_parse_mountinfo_line().
+This warning is reported by gcc 15 which defaults to the C23 standard.
+
+The strstr() function returns a pointer into a const string, so
+introduce a separate 'sep' variable to hold this const pointer,
+keeping 'p' for non-const unmangle() results that need to be freed.
+
+Signed-off-by: Karel Zak <kzak@redhat.com>
+(cherry picked from commit 530bf5c5b071753e149699c638ad1820daf5c205)
+---
+ libmount/src/tab_parse.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
+
+diff --git a/libmount/src/tab_parse.c b/libmount/src/tab_parse.c
+index 3dd853880..3503c233c 100644
+--- a/libmount/src/tab_parse.c
++++ b/libmount/src/tab_parse.c
+@@ -186,6 +186,7 @@ static int mnt_parse_mountinfo_line(struct libmnt_fs *fs, const char *s)
+ 	int rc = 0;
+ 	unsigned int maj, min;
+ 	char *p;
++	const char *sep;
+ 
+ 	fs->flags |= MNT_FS_KERNEL;
+ 
+@@ -242,15 +243,15 @@ static int mnt_parse_mountinfo_line(struct libmnt_fs *fs, const char *s)
+ 	}
+ 
+ 	/* (7) optional fields, terminated by " - " */
+-	p = strstr(s, " - ");
+-	if (!p) {
++	sep = strstr(s, " - ");
++	if (!sep) {
+ 		DBG(TAB, ul_debug("mountinfo parse error: separator not found"));
+ 		return -EINVAL;
+ 	}
+-	if (p > s + 1)
+-		fs->opt_fields = strndup(s + 1, p - s - 1);
++	if (sep > s + 1)
++		fs->opt_fields = strndup(s + 1, sep - s - 1);
+ 
+-	s = skip_separator(p + 3);
++	s = skip_separator(sep + 3);
+ 
+ 	/* (8) FS type */
+ 	p = unmangle(s, &s);
+-- 
+2.51.1
+

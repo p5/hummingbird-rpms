@@ -1,0 +1,34 @@
+From 3a9950c35da4f1e7032d55f3c993fff390fde9c2 Mon Sep 17 00:00:00 2001
+From: Karel Zak <kzak@redhat.com>
+Date: Thu, 27 Nov 2025 16:35:56 +0100
+Subject: lsfd: fix const qualifier warning in new_counter_spec
+
+Fix const qualifier discarded warning in new_counter_spec().
+This warning is reported by gcc 15 which defaults to the C23 standard.
+
+The function modifies the input string by inserting a null terminator
+to split it into name and expression parts, so the parameter should
+be char * rather than const char *.
+
+Signed-off-by: Karel Zak <kzak@redhat.com>
+(cherry picked from commit 014d2779afb4118d7117442eeed562e2c7b7594f)
+---
+ lsfd-cmd/lsfd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/lsfd-cmd/lsfd.c b/lsfd-cmd/lsfd.c
+index 9aae240fc..2e83acf91 100644
+--- a/lsfd-cmd/lsfd.c
++++ b/lsfd-cmd/lsfd.c
+@@ -2278,7 +2278,7 @@ static struct libscols_filter *new_filter(const char *expr, bool debug, struct l
+ 	return f;
+ }
+ 
+-static struct counter_spec *new_counter_spec(const char *spec_str)
++static struct counter_spec *new_counter_spec(char *spec_str)
+ {
+ 	char *sep;
+ 	struct counter_spec *spec;
+-- 
+2.51.1
+
