@@ -55,6 +55,13 @@
     "source": "https://src.fedoraproject.org/rpms/setup.git",
     "version": "2.15.0"
   },
+  "shadow-utils": {
+    "branch": "rawhide",
+    "release": "7",
+    "sha": "d39147a22233042f440eae625add65ddefeaa4bc",
+    "source": "https://src.fedoraproject.org/rpms/shadow-utils.git",
+    "version": "4.18.0"
+  },
   "sqlite": {
     "branch": "rawhide",
     "release": "1",
