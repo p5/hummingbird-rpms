@@ -87,9 +87,12 @@ dist_git_update:
       git config --local user.name "${GITLAB_USER_NAME}"
       git config --local user.email "${GITLAB_USER_EMAIL}"
       git fetch --quiet origin
-      git remote set-url origin "https://${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git"
       git config --local credential.username ignored
       git config --local credential.helper "!echo \"password=\$CHORE_MR_GITLAB_TOKEN\"; :"
+      # Workaround for GitLab Runner 18.6 MR !5912:
+      # Remove include.path to .gitlab-runner.ext.conf which re-injects the read-only
+      # gitlab-ci-token into the remote URL, preventing the credential helper from working.
+      git config --local --unset-all include.path || true
       git branch --quiet --force "${CI_COMMIT_BRANCH:-$CI_DEFAULT_BRANCH}" "origin/${CI_COMMIT_BRANCH:-$CI_DEFAULT_BRANCH}"
   script:
     - |
