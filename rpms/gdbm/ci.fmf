@@ -1,0 +1,10 @@
+/test:
+    summary:
+        Basic set of quick tests for gdbm.
+    discover:
+      - name: fedora
+        how: fmf
+        url: "https://src.fedoraproject.org/tests/gdbm.git"
+        ref: main
+    execute:
+        how: tmt
