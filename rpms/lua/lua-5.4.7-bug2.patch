@@ -1,0 +1,54 @@
+From 782ef85b22f89d1cd1ab083202f018668d26e4b0 Mon Sep 17 00:00:00 2001
+From: Roberto Ierusalimschy <roberto@inf.puc-rio.br>
+Date: Sat, 17 Aug 2024 12:37:04 -0300
+Subject: [PATCH] Bug: wrong code gen. for indices with comparisons
+
+In function 'luaK_exp2val', used to generate code for indices: Macro
+'hasjumps' does not consider the case when the whole expression is a
+"jump" (a test). In all other of its uses, the surrounding code ensures
+that the expression cannot be VJMP.
+---
+ src/lcode.c                 | 3 ++-
+ lua-5.4.7-tests/closure.lua | 8 ++++++++
+ 2 files changed, 10 insertions(+), 1 deletion(-)
+
+diff --git a/src/lcode.c b/src/lcode.c
+index 87616140e..3f78370c6 100644
+--- a/src/lcode.c
++++ b/src/lcode.c
+@@ -35,6 +35,7 @@
+ #define MAXREGS		255
+ 
+ 
++/* (note that expressions VJMP also have jumps.) */
+ #define hasjumps(e)	((e)->t != (e)->f)
+ 
+ 
+@@ -985,7 +986,7 @@ void luaK_exp2anyregup (FuncState *fs, expdesc *e) {
+ ** or it is a constant.
+ */
+ void luaK_exp2val (FuncState *fs, expdesc *e) {
+-  if (hasjumps(e))
++  if (e->k == VJMP || hasjumps(e))
+     luaK_exp2anyreg(fs, e);
+   else
+     luaK_dischargevars(fs, e);
+diff --git a/lua-5.4.7-tests/closure.lua b/lua-5.4.7-tests/closure.lua
+index ea038e824..37271472a 100644
+--- a/lua-5.4.7-tests/closure.lua
++++ b/lua-5.4.7-tests/closure.lua
+@@ -3,6 +3,14 @@
+ 
+ print "testing closures"
+ 
++do  -- bug in 5.4.7
++  _ENV[true] = 10
++  local function aux () return _ENV[1 < 2] end
++  assert(aux() == 10)
++  _ENV[true] = nil
++end
++
++
+ local A,B = 0,{g=10}
+ local function f(x)
+   local a = {}

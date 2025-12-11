@@ -1,0 +1,143 @@
+diff -up lua-5.4.3/lua-5.4.3-tests/coroutine.lua.bug8 lua-5.4.3/lua-5.4.3-tests/coroutine.lua
+--- lua-5.4.3/lua-5.4.3-tests/coroutine.lua.bug8	2022-01-24 13:52:57.345650003 -0500
++++ lua-5.4.3/lua-5.4.3-tests/coroutine.lua	2022-01-24 13:55:46.679628140 -0500
+@@ -137,11 +137,16 @@ do
+   local st, msg = coroutine.close(co)
+   assert(st and msg == nil)
+ 
++
+   -- cannot close the running coroutine
+   local st, msg = pcall(coroutine.close, coroutine.running())
+   assert(not st and string.find(msg, "running"))
+ 
+   local main = coroutine.running()
++  -- also ok to close it again
++  st, msg = coroutine.close(co)
++  assert(st and msg == nil)
++
+ 
+   -- cannot close a "normal" coroutine
+   ;(coroutine.wrap(function ()
+@@ -149,6 +154,22 @@ do
+     assert(not st and string.find(msg, "normal"))
+   end))()
+ 
++  -- cannot close a coroutine while closing it
++  do
++    local co
++    co = coroutine.create(
++      function()
++        local x <close> = func2close(function()
++            coroutine.close(co)   -- try to close it again
++         end)
++        coroutine.yield(20)
++      end)
++    local st, msg = coroutine.resume(co)
++    assert(st and msg == 20)
++    st, msg = coroutine.close(co)
++    assert(not st and string.find(msg, "running coroutine"))
++  end
++
+   -- to-be-closed variables in coroutines
+   local X
+ 
+@@ -158,6 +179,9 @@ do
+   assert(not st and msg == 100)
+   st, msg = coroutine.close(co)
+   assert(not st and msg == 100)
++  -- after closing, no more errors
++  st, msg = coroutine.close(co)
++  assert(st and msg == nil)
+ 
+   co = coroutine.create(function ()
+     local x <close> = func2close(function (self, err)
+@@ -189,6 +213,9 @@ do
+   local st, msg = coroutine.close(co)
+   assert(st == false and coroutine.status(co) == "dead" and msg == 200)
+   assert(x == 200)
++  -- after closing, no more errors
++  st, msg = coroutine.close(co)
++  assert(st and msg == nil)
+ end
+ 
+ do
+@@ -419,7 +446,7 @@ do
+ 
+   local X = false
+   A = coroutine.wrap(function()
+-    local _ <close> = setmetatable({}, {__close = function () X = true end})
++    local _ <close> = func2close(function () X = true end)
+     return pcall(A, 1)
+   end)
+   st, res = A()
+@@ -427,6 +454,22 @@ do
+ end
+ 
+ 
++-- bug in 5.4.1
++do
++  -- coroutine ran close metamethods with invalid status during a
++  -- reset.
++  local co
++  co = coroutine.wrap(function()
++    local x <close> = func2close(function() return pcall(co) end)
++    error(111)
++  end)
++  local st, errobj = pcall(co)
++  assert(not st and errobj == 111)
++  st, errobj = pcall(co)
++  assert(not st and string.find(errobj, "dead coroutine"))
++end
++
++
+ -- attempt to resume 'normal' coroutine
+ local co1, co2
+ co1 = coroutine.create(function () return co2() end)
+diff -up lua-5.4.3/src/lcorolib.c.bug8 lua-5.4.3/src/lcorolib.c
+--- lua-5.4.3/src/lcorolib.c.bug8	2022-01-24 13:51:10.238031307 -0500
++++ lua-5.4.3/src/lcorolib.c	2022-01-24 13:51:58.951312692 -0500
+@@ -78,7 +78,7 @@ static int luaB_auxwrap (lua_State *L) {
+     if (stat != LUA_OK && stat != LUA_YIELD) {  /* error in the coroutine? */
+       stat = lua_resetthread(co);  /* close its tbc variables */
+       lua_assert(stat != LUA_OK);
+-      lua_xmove(co, L, 1);  /* copy error message */
++      lua_xmove(co, L, 1);  /* move error message to the caller */
+     }
+     if (stat != LUA_ERRMEM &&  /* not a memory error and ... */
+         lua_type(L, -1) == LUA_TSTRING) {  /* ... error object is a string? */
+@@ -179,7 +179,7 @@ static int luaB_close (lua_State *L) {
+       }
+       else {
+         lua_pushboolean(L, 0);
+-        lua_xmove(co, L, 1);  /* copy error message */
++        lua_xmove(co, L, 1);  /* move error message */
+         return 2;
+       }
+     }
+diff -up lua-5.4.3/src/lstate.c.bug8 lua-5.4.3/src/lstate.c
+--- lua-5.4.3/src/lstate.c.bug8	2022-01-24 13:52:07.581362543 -0500
++++ lua-5.4.3/src/lstate.c	2022-01-24 13:52:40.932555194 -0500
+@@ -166,7 +166,7 @@ void luaE_checkcstack (lua_State *L) {
+   if (getCcalls(L) == LUAI_MAXCCALLS)
+     luaG_runerror(L, "C stack overflow");
+   else if (getCcalls(L) >= (LUAI_MAXCCALLS / 10 * 11))
+-    luaD_throw(L, LUA_ERRERR);  /* error while handing stack error */
++    luaD_throw(L, LUA_ERRERR);  /* error while handling stack error */
+ }
+ 
+ 
+@@ -331,13 +331,13 @@ int luaE_resetthread (lua_State *L, int
+   ci->callstatus = CIST_C;
+   if (status == LUA_YIELD)
+     status = LUA_OK;
++  L->status = LUA_OK;  /* so it can run __close metamethods */
+   status = luaD_closeprotected(L, 1, status);
+   if (status != LUA_OK)  /* errors? */
+     luaD_seterrorobj(L, status, L->stack + 1);
+   else
+     L->top = L->stack + 1;
+   ci->top = L->top + LUA_MINSTACK;
+-  L->status = cast_byte(status);
+   luaD_reallocstack(L, cast_int(ci->top - L->stack), 0);
+   return status;
+ }

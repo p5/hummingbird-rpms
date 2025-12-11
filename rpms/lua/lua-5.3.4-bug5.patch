@@ -1,0 +1,14 @@
+diff -up lua-5.3.4/src/lgc.c.bug5 lua-5.3.4/src/lgc.c
+--- lua-5.3.4/src/lgc.c.bug5	2017-10-29 20:30:18.824283152 -0400
++++ lua-5.3.4/src/lgc.c	2017-10-29 20:31:12.133021523 -0400
+@@ -643,8 +643,9 @@ static void clearkeys (global_State *g,
+     for (n = gnode(h, 0); n < limit; n++) {
+       if (!ttisnil(gval(n)) && (iscleared(g, gkey(n)))) {
+         setnilvalue(gval(n));  /* remove value ... */
+-        removeentry(n);  /* and remove entry from table */
+       }
++      if (ttisnil(gval(n)))  /* is entry empty? */
++        removeentry(n);  /* remove entry from table */
+     }
+   }
+ }

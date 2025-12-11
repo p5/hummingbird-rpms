@@ -1,0 +1,56 @@
+http://lua-users.org/lists/lua-l/2022-02/msg00112.html
+
+Subject: Bug in luac (Lua 5.4.4)?
+From: Marc Balmer <marc@...>
+Date: Sat, 26 Feb 2022 12:59:16 +0100
+
+I think there is a regression in luac that was introduced in Lua 5.4.4:
+
+We compile several files into a single output file like so
+
+luac -o agenda.luac agenda.lua entry.lua guide.lua location.lua
+
+Up to Lua 5.4.3 there was no issue.  Now with Lua 5.4.4 we get a malloc/free error:
+
+luac -o agenda.luac agenda.lua entry.lua guide.lua location.lua
+luac(27853,0x107171600) malloc: *** error for object 0x600001044170: pointer being freed was not allocated
+luac(27853,0x107171600) malloc: *** set a breakpoint in malloc_error_break to debug
+make: *** [agenda.ext] Abort trap: 6
+
+That is on macOS Monterey, on RHEL 8 it looks like this:
+
+luac -o agenda.luac agenda.lua entry.lua guide.lua location.lua
+free(): double free detected in tcache 2
+
+The problem seems to be the call to luaM_freearray(L,f->lineinfo,f->sizelineinfo); on line 158 of luac.c. This is the only call that has been added to the combine() function.  If I comment out that line, things work as expected.
+
+http://lua-users.org/lists/lua-l/2022-02/msg00113.html
+
+Subject: Re: Bug in luac (Lua 5.4.4)?
+From: Luiz Henrique de Figueiredo <lhf@...>
+Date: Sat, 26 Feb 2022 14:33:02 -0300
+
+> The problem seems to be the call to luaM_freearray(L,f->lineinfo,f->sizelineinfo); on line 158 of luac.c.
+
+I'm sorry about that. This issue has appeared before and I've failed
+to address it properly:
+http://lua-users.org/lists/lua-l/2021-09/msg00091.html
+http://lua-users.org/lists/lua-l/2017-05/msg00143.html
+
+Could you please try this patch? Thanks.
+
+luaM_freearray(L, f->lineinfo, f->sizelineinfo);
+f->lineinfo = NULL;                             /* add this line */
+f->sizelineinfo = 0;
+
+diff -up lua-5.4.4/src/luac.c.doublefree lua-5.4.4/src/luac.c
+--- lua-5.4.4/src/luac.c.doublefree	2021-11-04 12:42:28.000000000 -0400
++++ lua-5.4.4/src/luac.c	2022-07-26 10:36:47.624031818 -0400
+@@ -156,6 +156,7 @@ static const Proto* combine(lua_State* L
+    if (f->p[i]->sizeupvalues>0) f->p[i]->upvalues[0].instack=0;
+   }
+   luaM_freearray(L,f->lineinfo,f->sizelineinfo);
++  f->lineinfo = NULL;
+   f->sizelineinfo=0;
+   return f;
+  }

@@ -90,6 +90,13 @@
     "source": "https://src.fedoraproject.org/rpms/libyaml.git",
     "version": "0.2.5"
   },
+  "lua": {
+    "branch": "rawhide",
+    "release": "4",
+    "sha": "9c5ba7e736b92f0ecf35612e1b9cf75ea9b2e863",
+    "source": "https://src.fedoraproject.org/rpms/lua.git",
+    "version": "5.4.8"
+  },
   "openssl": {
     "branch": "rawhide",
     "release": "1",

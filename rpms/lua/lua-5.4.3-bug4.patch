@@ -1,0 +1,23 @@
+diff -up lua-5.4.3/lua-5.4.3-tests/locals.lua.bug4 lua-5.4.3/lua-5.4.3-tests/locals.lua
+--- lua-5.4.3/lua-5.4.3-tests/locals.lua.bug4	2022-01-24 11:21:11.757660851 -0500
++++ lua-5.4.3/lua-5.4.3-tests/locals.lua	2022-01-24 11:21:34.088788271 -0500
+@@ -187,6 +187,8 @@ do   -- constants
+   checkro("y", "local x, y <const>, z = 10, 20, 30; x = 11; y = 12")
+   checkro("x", "local x <const>, y, z <const> = 10, 20, 30; x = 11")
+   checkro("z", "local x <const>, y, z <const> = 10, 20, 30; y = 10; z = 11")
++  checkro("foo", "local foo <const> = 10; function foo() end")
++  checkro("foo", "local foo <const> = {}; function foo() end")
+ 
+   checkro("z", [[
+     local a, z <const>, b = 10;
+diff -up lua-5.4.3/src/lparser.c.bug4 lua-5.4.3/src/lparser.c
+--- lua-5.4.3/src/lparser.c.bug4	2022-01-24 11:20:27.808410077 -0500
++++ lua-5.4.3/src/lparser.c	2022-01-24 11:20:49.592534377 -0500
+@@ -1776,6 +1776,7 @@ static void funcstat (LexState *ls, int
+   luaX_next(ls);  /* skip FUNCTION */
+   ismethod = funcname(ls, &v);
+   body(ls, &b, ismethod, line);
++  check_readonly(ls, &v);
+   luaK_storevar(ls->fs, &v, &b);
+   luaK_fixline(ls->fs, line);  /* definition "happens" in the first line */
+ }

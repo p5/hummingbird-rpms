@@ -1,0 +1,68 @@
+From 30982bec968fd34694b5be3ecbbc92de78d8eacb Mon Sep 17 00:00:00 2001
+From: Roberto Ierusalimschy <roberto@inf.puc-rio.br>
+Date: Fri, 5 Jul 2024 14:31:07 -0300
+Subject: [PATCH] Bug: Bad stack manipulation in 'multiline' (REPL)
+
+'incomplete' was popping error message that should be used in case
+there is no more lines to complete the input, that is, 'pushline'
+returns NULL, due to end of file.
+---
+ src/lua.c                | 11 +++++------
+ lua-5.4.7-tests/main.lua |  5 +++++
+ 2 files changed, 10 insertions(+), 6 deletions(-)
+
+diff --git a/src/lua.c b/src/lua.c
+index 6da331f11..4a90e55dd 100644
+--- a/src/lua.c
++++ b/src/lua.c
+@@ -490,10 +490,8 @@ static int incomplete (lua_State *L, int status) {
+   if (status == LUA_ERRSYNTAX) {
+     size_t lmsg;
+     const char *msg = lua_tolstring(L, -1, &lmsg);
+-    if (lmsg >= marklen && strcmp(msg + lmsg - marklen, EOFMARK) == 0) {
+-      lua_pop(L, 1);
++    if (lmsg >= marklen && strcmp(msg + lmsg - marklen, EOFMARK) == 0)
+       return 1;
+-    }
+   }
+   return 0;  /* else... */
+ }
+@@ -508,9 +506,9 @@ static int pushline (lua_State *L, int firstline) {
+   size_t l;
+   const char *prmt = get_prompt(L, firstline);
+   int readstatus = lua_readline(L, b, prmt);
+-  if (readstatus == 0)
+-    return 0;  /* no input (prompt will be popped by caller) */
+   lua_pop(L, 1);  /* remove prompt */
++  if (readstatus == 0)
++    return 0;  /* no input */
+   l = strlen(b);
+   if (l > 0 && b[l-1] == '\n')  /* line ends with newline? */
+     b[--l] = '\0';  /* remove it */
+@@ -552,8 +550,9 @@ static int multiline (lua_State *L) {
+     int status = luaL_loadbuffer(L, line, len, "=stdin");  /* try it */
+     if (!incomplete(L, status) || !pushline(L, 0)) {
+       lua_saveline(L, line);  /* keep history */
+-      return status;  /* cannot or should not try to add continuation line */
++      return status;  /* should not or cannot try to add continuation line */
+     }
++    lua_remove(L, -2);  /* remove error message (from incomplete line) */
+     lua_pushliteral(L, "\n");  /* add newline... */
+     lua_insert(L, -2);  /* ...between the two lines */
+     lua_concat(L, 3);  /* join them */
+diff --git a/lua-5.4.7-tests/main.lua b/lua-5.4.7-tests/main.lua
+index 11b14b446..cec4fa04f 100644
+--- a/lua-5.4.7-tests/main.lua
++++ b/lua-5.4.7-tests/main.lua
+@@ -349,6 +349,11 @@ prepfile("a = [[b\nc\nd\ne]]\n=a")
+ RUN([[lua -e"_PROMPT='' _PROMPT2=''" -i < %s > %s]], prog, out)
+ checkprogout("b\nc\nd\ne\n\n")
+ 
++-- input interrupted in continuation line
++prepfile("a.\n")
++RUN([[lua -i < %s > /dev/null 2> %s]], prog, out)
++checkprogout("near <eof>\n")
++
+ local prompt = "alo"
+ prepfile[[ --
+ a = 2

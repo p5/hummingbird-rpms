@@ -1,0 +1,23 @@
+diff -up lua-5.3.4/src/lapi.c.bug6 lua-5.3.4/src/lapi.c
+--- lua-5.3.4/src/lapi.c.bug6	2018-02-13 10:18:59.386451581 -0500
++++ lua-5.3.4/src/lapi.c	2018-02-13 10:19:42.700575448 -0500
+@@ -533,6 +533,7 @@ LUA_API void lua_pushcclosure (lua_State
+   lua_lock(L);
+   if (n == 0) {
+     setfvalue(L->top, fn);
++    api_incr_top(L);
+   }
+   else {
+     CClosure *cl;
+@@ -546,9 +547,9 @@ LUA_API void lua_pushcclosure (lua_State
+       /* does not need barrier because closure is white */
+     }
+     setclCvalue(L, L->top, cl);
++    api_incr_top(L);
++    luaC_checkGC(L);
+   }
+-  api_incr_top(L);
+-  luaC_checkGC(L);
+   lua_unlock(L);
+ }
+ 
