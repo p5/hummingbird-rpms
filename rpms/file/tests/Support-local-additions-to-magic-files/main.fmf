@@ -1,0 +1,17 @@
+summary: Support local additions to magic files
+description: |+
+    Testing custom additions in
+    /etc/magic
+    $HOME/.magic
+    $HOME/.magic.mgc
+
+contact: Karel Srot <ksrot@redhat.com>
+component:
+  - file
+test: ./runtest.sh
+framework: beakerlib
+recommend:
+  - file
+duration: 5m
+extra-summary: Support-local-additions-to-magic-files
+extra-task: Support-local-additions-to-magic-files

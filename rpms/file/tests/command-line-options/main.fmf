@@ -1,0 +1,15 @@
+summary: Tests (most of) command line options available for the file command.
+description: |
+    test multiple cmd line options
+contact: Karel Srot <ksrot@redhat.com>
+component:
+  - file
+  - zlib
+test: ./runtest.sh
+framework: beakerlib
+recommend:
+  - bzip2
+  - file
+duration: 10m
+extra-summary: /CoreOS/file/Sanity/command-line-options
+extra-task: /CoreOS/file/Sanity/command-line-options

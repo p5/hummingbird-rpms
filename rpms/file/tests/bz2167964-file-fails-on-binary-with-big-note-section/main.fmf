@@ -1,0 +1,11 @@
+summary: bz2167964-file-fails-on-binary-with-big-note-section
+component:
+  - file
+test: ./runtest.sh
+framework: beakerlib
+recommend:
+  - binutils
+  - file
+duration: 5m
+extra-summary: /CoreOS/file/Regression/bz2167964-file-fails-on-binary-with-big-note-section
+extra-task: /CoreOS/file/Regression/bz2167964-file-fails-on-binary-with-big-note-section

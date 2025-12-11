@@ -1,0 +1,5 @@
+PURPOSE of /CoreOS/file/Sanity/command-line-options
+Description: Tests (most of) command line options available for the file command.
+Author: Karel Srot <ksrot@redhat.com>
+
+test multiple cmd line options
