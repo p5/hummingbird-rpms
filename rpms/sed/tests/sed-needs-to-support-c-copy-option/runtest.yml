@@ -1,0 +1,93 @@
+#!/bin/bash
+# vim: dict=/usr/share/beakerlib/dictionary.vim cpt=.,w,b,u,t,i,k
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+#   runtest.sh of /CoreOS/sed/Regression/sed-needs-to-support-c-copy-option
+#   Description: Test for sed needs to support -c/--copy option
+#   Author: Karel Srot <ksrot@redhat.com>
+#
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+#   Copyright (c) 2010 Red Hat, Inc. All rights reserved.
+#
+#   This copyrighted material is made available to anyone wishing
+#   to use, modify, copy, or redistribute it subject to the terms
+#   and conditions of the GNU General Public License version 2.
+#
+#   This program is distributed in the hope that it will be
+#   useful, but WITHOUT ANY WARRANTY; without even the implied
+#   warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+#   PURPOSE. See the GNU General Public License for more details.
+#
+#   You should have received a copy of the GNU General Public
+#   License along with this program; if not, write to the Free
+#   Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+#   Boston, MA 02110-1301, USA.
+#
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- hosts: '{{ hosts | default("localhost") }}'
+  vars:
+    package: sed
+  tasks:
+    - name: Make TmpDir
+      command: "mktemp -d"
+      register: TmpDir
+    - name: Prepare test files
+      lineinfile:
+        dest: "{{ TmpDir.stdout }}/file1"
+        create: yes
+        line: "test"
+    - name: Prepare second test file
+      file:
+        dest: "{{ TmpDir.stdout }}/file2"
+        state: touch
+    - name: Bind mount files. Dont write to /etc so dont use mount module
+      shell: "mount -n --bind file1 file2"
+      args:
+        warn: no
+        chdir: "{{ TmpDir.stdout }}"
+    - name: Verify tests files
+      command: "grep test file2"
+      args:
+        chdir: "{{ TmpDir.stdout }}"
+    - block:
+      - name: Runtest - executing sed -i
+        shell: "sed -i 's/test/passed/' file2 &> out1"
+        args:
+          warn: no
+          chdir: "{{ TmpDir.stdout }}"
+        register: sedi
+        failed_when: sedi.rc != 4
+      - name: Runtest - grep out1
+        command: grep "cannot rename" out1
+        args:
+          chdir: "{{ TmpDir.stdout }}"
+      - name: Runtest - grep file2
+        command: grep "test" file2
+        args:
+          chdir: "{{ TmpDir.stdout }}"
+      - name: Runtest - executing sed -i -c
+        shell: "sed -i -c 's/test/passed/' file2 &> out2"
+        args:
+          warn: no
+          chdir: "{{ TmpDir.stdout }}"
+      - name: Runtest - grep out2
+        command: grep "cannot rename" out2
+        args:
+          chdir: "{{ TmpDir.stdout }}"
+        register: out2
+        failed_when: out2.rc != 1
+      - name: Runtest - grep file2
+        command: grep "passed" file2
+        args:
+          chdir: "{{ TmpDir.stdout }}"
+      always:
+      - name: Cleanup file
+        shell: "umount file2"
+        args:
+          chdir: "{{ TmpDir.stdout }}"
+      - name: Cleanup dir
+        file:
+          path: "{{ TmpDir.stdout }}"
+          state: absent

@@ -1,0 +1,45 @@
+PURPOSE of /CoreOS/sed/Regression/sed-reports-syntax-errors-with-some-multibyte
+Description: Test for sed reports syntax errors with some multibyte
+Author: Marek Polacek <mpolacek@redhat.com>
+Bug summary: sed reports syntax errors with some multibyte characters
+
+Description:
+
+Description of problem:
+
+Using a multibyte character that ends with 0x5c (backslash) can cause sed to report syntax errors.
+
+
+Version-Release number of selected component (if applicable): sed-4.1.5-5
+
+
+How reproducible:  Always
+
+
+Steps to Reproduce:
+1.  Start with your shell in a UTF-8 locale, eg en-US.UTF-8 (you can probably do this in a different locale, but it definitely works if you start in a UTF-8 locale).
+
+2. Run the follow commands to construct a sed script:
+
+   U2010=$(echo -ne '\x20\x10' | iconv -f ucs-2be)
+   echo "echo '$U2010' | sed 's/$U2010/hyphen/g'" | iconv -t gbk > /tmp/script
+
+3. Run the shell script in a locale that uses the gbk character set:
+
+   LC_ALL=zh_CN.gbk sh /tmp/script 2>&1 | iconv -f gbk
+  
+Actual results:
+   The script reports an error:
+
+    sed：-e 表达式 #1，字符 13：unterminated `s' command
+
+Expected results:
+
+   The single word "hyphen"
+
+
+Additional info:
+
+The error arises because the character U+2010 (HYPHEN) is encoded as \xa9\x5c in the gbk encoding.  Sed sees the "\x5c" as a backslash escaping the following character which, in this case, is the "/" that we hope is going to terminate the pattern; it doesn't and so we get a syntax error.
+
+Of course, this is just one character in one encoding.  There are likely to be many others and this is just one example.   I have another example for SJIS, (U+8868) but SJIS isn't a good encoding to use for reporting bugs :-).

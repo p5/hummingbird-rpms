@@ -1,0 +1,9 @@
+Test Name: uppercase-operand
+Author: Petr Muller <pmuller@redhat.com>
+Location: /CoreOS/sed/Regression/uppercase-operand
+
+Short Description: Verifiies that sed correctly processes an 'u' operand, which returns uppercase of matched character
+
+
+Long Description:
+Verifiies that sed correctly processes an 'u' operand, which returns uppercase of matched character

@@ -1,0 +1,7 @@
+- hosts: '{{ hosts | default("localhost") }}'
+  vars:
+    package: sed
+    OUTPUTFILE: ./outputfile
+  tasks:
+    - name: Runtest
+      script: "./handle-escapes-correctly.sh > {{ OUTPUTFILE }}"

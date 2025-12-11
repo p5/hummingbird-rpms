@@ -1,0 +1,44 @@
+---
+# Tests for classic and docker container environments
+- hosts: localhost
+  tags:
+    - classic
+    - container
+  roles:
+  - role: standard-test-beakerlib
+    tests:
+    - selftest
+    - backup-file-not-cleared
+    - handle-escapes-correctly
+    - sed-does-not-handle-inline-edits-of-symlinks-with
+    - sed-needs-to-support-c-copy-option
+    - sed-reports-syntax-errors-with-some-multibyte
+    - uppercase-operand
+    required_packages:
+    - wget              # beakerlib needs wget command
+    - findutils         # backup-file-not-cleared needs find command
+    - glibc-langpack-en # sed-reports-syntax-errors-with-some-multibyte needs en_US.UTF-8 locale
+    - glibc-langpack-zh # sed-reports-syntax-errors-with-some-multibyte needs zh_CN.gbk locale
+    - glibc-langpack-ru # selftest needs ru_RU.UTF-8 locale
+    - gcc               # selftest needs gcc package
+    - rpm-build         # selftest needs rpm-build package
+    - automake          # selftest needs automake package
+    - libselinux-devel  # selftest needs libselinux-devel package
+    - glibc-devel       # selftest needs glibc-devel package
+    - yum-utils         # selftest needs yum-utils package
+    - libacl-devel      # selftest needs libacl-devel package
+
+# Tests for Atomic Host
+- hosts: localhost
+  tags:
+    - atomic
+  roles:
+  - role: standard-test-beakerlib
+    tests:
+    #- selftest # cannot run under Atomic
+    - backup-file-not-cleared
+    - handle-escapes-correctly
+    - sed-does-not-handle-inline-edits-of-symlinks-with
+    - sed-needs-to-support-c-copy-option
+    #- sed-reports-syntax-errors-with-some-multibyte # needs glibc-langpack-zh
+    - uppercase-operand
