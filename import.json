@@ -104,6 +104,13 @@
     "source": "https://src.fedoraproject.org/rpms/lz4.git",
     "version": "1.10.0"
   },
+  "ncurses": {
+    "branch": "rawhide",
+    "release": "8.20250614",
+    "sha": "cdb41c6eca745ba4fbdfd789fe67394485ef6ded",
+    "source": "https://src.fedoraproject.org/rpms/ncurses.git",
+    "version": "6.5"
+  },
   "openssl": {
     "branch": "rawhide",
     "release": "1",
