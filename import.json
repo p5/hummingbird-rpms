@@ -118,6 +118,13 @@
     "source": "https://src.fedoraproject.org/rpms/nettle.git",
     "version": "3.10.1"
   },
+  "nghttp2": {
+    "branch": "rawhide",
+    "release": "2",
+    "sha": "3060610232b9d2dad64f560d114305a21336759a",
+    "source": "https://src.fedoraproject.org/rpms/nghttp2.git",
+    "version": "1.68.0"
+  },
   "openssl": {
     "branch": "rawhide",
     "release": "1",
