@@ -1,0 +1,11 @@
+summary: Internal Tier1 tests plan
+discover:
+    how: fmf
+    filter: 'tier: 1'
+    url: https://pkgs.devel.redhat.com/git/tests/sqlite
+execute:
+    how: tmt
+adjust:
+    enabled: false
+    when: distro == centos-stream or distro == fedora
+    because: No access to internal git repositories
