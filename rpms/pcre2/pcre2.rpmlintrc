@@ -1,0 +1,6 @@
+from Config import *
+addFilter("spelling-error .* encodings");
+# sljit upstream does not make any releases
+addFilter("unversioned-explicit-provides bundled\\(sljit\\)");
+# Documentation is in a required pcre2-devel package
+addFilter("pcre2-static.* no-documentation");

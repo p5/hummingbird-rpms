@@ -1,0 +1,26 @@
+# We want to use the following Packit functions in the pcre2 package:
+# koji_build, bodhi_update
+
+# See the documentation for more information:
+# https://packit.dev/docs/configuration/
+
+specfile_path: pcre2.spec
+
+# name in upstream package repository or registry (e.g. in PyPI)
+upstream_package_name: pcre2
+# downstream (Fedora) RPM package name
+downstream_package_name: pcre2
+
+jobs:
+  - job: koji_build
+    trigger: commit
+    allowed_pr_authors: ["ljavorsk", "mschorm", "packit"]
+    allowed_committers: ["ljavorsk", "mschorm", "packit"]
+    dist_git_branches:
+      - fedora-latest
+      - fedora-rawhide
+
+  - job: bodhi_update
+    trigger: commit
+    dist_git_branches:
+      - fedora-latest # rawhide updates are created automatically

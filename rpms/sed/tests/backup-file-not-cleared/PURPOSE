@@ -1,0 +1,4 @@
+PURPOSE of /CoreOS/sed/Regression/backup-file-not-cleared
+Description: Test for tmp file not clear after registered to rhevm
+Author: Petr Muller <pmuller@redhat.com>
+Bug summary: tmp file not clear after registered to rhevm

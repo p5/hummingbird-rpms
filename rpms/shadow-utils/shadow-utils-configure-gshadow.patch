@@ -1,0 +1,20 @@
+The missing #include <gshadow.h> causes the configure check to fail
+spuriously, resulting in HAVE_SHADOWGRP not being defined.
+
+Submitted upstream: <https://github.com/shadow-maint/shadow/pull/595>
+
+diff --git a/configure.ac b/configure.ac
+index 924254a0c8171802..6c7d9839979e037d 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -116,6 +116,10 @@ if test "$ac_cv_header_shadow_h" = "yes"; then
+ 		ac_cv_libc_shadowgrp,
+ 		AC_RUN_IFELSE([AC_LANG_SOURCE([
+ 				#include <shadow.h>
++				#ifdef HAVE_GSHADOW_H
++				#include <gshadow.h>
++				#endif
++				int
+ 				main()
+ 				{
+ 					struct sgrp *sg = sgetsgent("test:x::");

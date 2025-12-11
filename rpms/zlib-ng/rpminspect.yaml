@@ -1,0 +1,37 @@
+# This file has been generated automatically by regenerate-rpminspect.
+# Ignore LTO test on CPU-optimized files which cannot use the LTO.
+# More described in upstream: https://github.com/zlib-ng/zlib-ng/pull/938
+
+annocheck:
+    extra_opts:
+        - hardened:
+--skip-lto=arch/arm/adler32_neon.c
+--skip-lto=arch/arm/chunkset_neon.c
+--skip-lto=arch/arm/compare256_neon.c
+--skip-lto=arch/arm/crc32_acle.c
+--skip-lto=arch/arm/insert_string_acle.c
+--skip-lto=arch/arm/slide_hash_armv6.c
+--skip-lto=arch/arm/slide_hash_neon.c
+--skip-lto=arch/power/adler32_power8.c
+--skip-lto=arch/power/adler32_vmx.c
+--skip-lto=arch/power/chunkset_power8.c
+--skip-lto=arch/power/compare256_power9.c
+--skip-lto=arch/power/crc32_power8.c
+--skip-lto=arch/power/slide_hash_power8.c
+--skip-lto=arch/power/slide_hash_vmx.c
+--skip-lto=arch/s390/crc32-vx.c
+--skip-lto=arch/x86/adler32_avx2.c
+--skip-lto=arch/x86/adler32_avx512.c
+--skip-lto=arch/x86/adler32_avx512_vnni.c
+--skip-lto=arch/x86/adler32_sse42.c
+--skip-lto=arch/x86/adler32_ssse3.c
+--skip-lto=arch/x86/chunkset_avx2.c
+--skip-lto=arch/x86/chunkset_sse2.c
+--skip-lto=arch/x86/chunkset_ssse3.c
+--skip-lto=arch/x86/compare256_avx2.c
+--skip-lto=arch/x86/compare256_sse2.c
+--skip-lto=arch/x86/crc32_pclmulqdq.c
+--skip-lto=arch/x86/crc32_vpclmulqdq.c
+--skip-lto=arch/x86/insert_string_sse42.c
+--skip-lto=arch/x86/slide_hash_avx2.c
+--skip-lto=arch/x86/slide_hash_sse2.c

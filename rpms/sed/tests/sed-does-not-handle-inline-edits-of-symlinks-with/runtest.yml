@@ -1,0 +1,56 @@
+#!/bin/bash
+# vim: dict=/usr/share/beakerlib/dictionary.vim cpt=.,w,b,u,t,i,k
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+#   runtest.sh of /CoreOS/sed/Regression/sed-does-not-handle-inline-edits-of-symlinks-with
+#   Description: Test for sed does not handle inline edits of symlinks with
+#   Author: Marek Polacek <mpolacek@redhat.com>
+#
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+#   Copyright (c) 2011 Red Hat, Inc. All rights reserved.
+#
+#   This copyrighted material is made available to anyone wishing
+#   to use, modify, copy, or redistribute it subject to the terms
+#   and conditions of the GNU General Public License version 2.
+#
+#   This program is distributed in the hope that it will be
+#   useful, but WITHOUT ANY WARRANTY; without even the implied
+#   warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+#   PURPOSE. See the GNU General Public License for more details.
+#
+#   You should have received a copy of the GNU General Public
+#   License along with this program; if not, write to the Free
+#   Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+#   Boston, MA 02110-1301, USA.
+#
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- hosts: '{{ hosts | default("localhost") }}'
+  vars:
+    package: sed
+  tasks:
+    - name: Make TmpDir
+      command: "mktemp -d"
+      register: TmpDir
+    - name: Prepare the test file
+      lineinfile:
+        create: yes
+        dest: "{{ TmpDir.stdout }}/1"
+        line: 'zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz'
+    - name: Create a sym link
+      file:
+        src: "{{ TmpDir.stdout }}/1"
+        dest: "{{ TmpDir.stdout }}/2"
+        state: link
+    - block:
+      - name: Runtest - Try to replace characters
+        shell: "sed -i -e 's/z/a/g' 2 "
+        args:
+          warn: no
+          chdir: "{{ TmpDir.stdout }}"
+      always:
+      - name: Cleanup
+        file:
+          path: "{{ TmpDir.stdout }}"
+          state: absent

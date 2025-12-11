@@ -1,0 +1,20 @@
+actions:
+  pre-sync:
+  # Change defined versions
+  # Uses awk -F'.' '{printf "%d%02d%02d00", $1, $2, $3} to get PACKIT provided
+  # version and prepare it for version needed for path. Works by splitting by
+  # '.' and formatting with padded 0
+  - bash -c "sed -i -r \"s/%define majorver(\s*)\S+/%define majorver\1$(echo $PACKIT_PROJECT_VERSION | awk -F'.' '{printf \"%d\", $1}')/\" $PACKIT_DOWNSTREAM_REPO/sqlite.spec"
+  - bash -c "sed -i -r \"s/%define realver(\s*)\S+/%define realver\1$(echo $PACKIT_PROJECT_VERSION | awk -F'.' '{printf \"%d%02d%02d00\", $1, $2, $3}')/\" $PACKIT_DOWNSTREAM_REPO/sqlite.spec"
+  - bash -c "sed -i -r \"s/%define docver(\s*)\S+/%define docver\1$(echo $PACKIT_PROJECT_VERSION | awk -F'.' '{printf \"%d%02d%02d00\", $1, $2, $3}')/\" $PACKIT_DOWNSTREAM_REPO/sqlite.spec"
+  - bash -c "sed -i -r \"s/%define rpmver(\s*)\S+/%define rpmver\1$PACKIT_PROJECT_VERSION/\" $PACKIT_DOWNSTREAM_REPO/sqlite.spec"
+  - bash -c "sed -i -r \"s/%define year(\s*)\S+/%define year\1$(date +%Y)/\" $PACKIT_DOWNSTREAM_REPO/sqlite.spec"
+jobs:
+  - job: pull_from_upstream
+    trigger: release
+    dist_git_branches:
+      - fedora-rawhide
+  - job: koji_build
+    trigger: commit
+    dist_git_branches:
+      - fedora-rawhide

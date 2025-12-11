@@ -1,0 +1,34 @@
+PURPOSE of /CoreOS/sed/Regression/sed-does-not-handle-inline-edits-of-symlinks-with
+Description: Test for sed does not handle inline edits of symlinks with
+Author: Marek Polacek <mpolacek@redhat.com>
+Bug summary: sed does not handle inline edits of symlinks with no dir portion
+
+Description:
+
+Description of problem:
+
+When executing on a symlink in present working directory, sed does not build the original path correctly, thus failing to follow the symlink.
+
+Version-Release number of selected component (if applicable):
+
+sed-4.1.5-5.fc6
+
+How reproducible:
+
+Always.
+
+Steps to Reproduce:
+1. echo "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz" >1
+2. ln -s 1 2
+3. sed -i -e 's/z/a/g' 2
+
+Actual results:
+
+sed: ck_follow_symlink: couldn't lstat 2/1: Not a directory
+
+Expected results:
+
+All z's in the file should be replaced with a's.  
+
+
+Additional info:

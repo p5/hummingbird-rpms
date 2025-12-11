@@ -90,6 +90,34 @@
     "source": "https://src.fedoraproject.org/rpms/openssl.git",
     "version": "3.5.4"
   },
+  "pcre2": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "7564d9d768d993dc417a65d0c9c66d9a857d527d",
+    "source": "https://src.fedoraproject.org/rpms/pcre2.git",
+    "version": "10.47"
+  },
+  "popt": {
+    "branch": "rawhide",
+    "release": "9",
+    "sha": "b4d0a0c63f8d2315b5208a604a455510fe0cc774",
+    "source": "https://src.fedoraproject.org/rpms/popt.git",
+    "version": "1.19"
+  },
+  "publicsuffix-list": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "6dbc4af11314f64f559c5d3797b618cd453bf4f7",
+    "source": "https://src.fedoraproject.org/rpms/publicsuffix-list.git",
+    "version": "20250616"
+  },
+  "readline": {
+    "branch": "rawhide",
+    "release": "2",
+    "sha": "faef64fc003d6f8a2ff4c959d66810bac9a35ed1",
+    "source": "https://src.fedoraproject.org/rpms/readline.git",
+    "version": "8.3"
+  },
   "rootfiles": {
     "branch": "rawhide",
     "release": "1",
@@ -104,6 +132,20 @@
     "source": "https://src.fedoraproject.org/rpms/rpm.git",
     "version": "6.0.0"
   },
+  "sdbus-cpp": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "0bd1d0f0aa3633f79370dad432bbcf7143f34cc4",
+    "source": "https://src.fedoraproject.org/rpms/sdbus-cpp.git",
+    "version": "2.2.1"
+  },
+  "sed": {
+    "branch": "rawhide",
+    "release": "6",
+    "sha": "4b1f76b01c2501d0fee4d6fe2c9dd6eea6918d18",
+    "source": "https://src.fedoraproject.org/rpms/sed.git",
+    "version": "4.9"
+  },
   "setup": {
     "branch": "rawhide",
     "release": "1",
@@ -111,12 +153,40 @@
     "source": "https://src.fedoraproject.org/rpms/setup.git",
     "version": "2.15.0"
   },
+  "shadow-utils": {
+    "branch": "rawhide",
+    "release": "7",
+    "sha": "d39147a22233042f440eae625add65ddefeaa4bc",
+    "source": "https://src.fedoraproject.org/rpms/shadow-utils.git",
+    "version": "4.18.0"
+  },
+  "sqlite": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "219545f868cfa3a6b4662f217e453d07d8e552dd",
+    "source": "https://src.fedoraproject.org/rpms/sqlite.git",
+    "version": "3.51.0"
+  },
   "xz": {
     "branch": "rawhide",
     "release": "4",
     "sha": "4dbfb6665e5f3442572c735c859a245125bd563f",
     "source": "https://src.fedoraproject.org/rpms/xz.git",
     "version": "5.8.1"
+  },
+  "zchunk": {
+    "branch": "rawhide",
+    "release": "3",
+    "sha": "a08ff1c9af969affa6b728fdbf0503c00dea2eda",
+    "source": "https://src.fedoraproject.org/rpms/zchunk.git",
+    "version": "1.5.1"
+  },
+  "zlib-ng": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "d5f7e25717ad0bee8d65c4c8cdce7b195a8774e1",
+    "source": "https://src.fedoraproject.org/rpms/zlib-ng.git",
+    "version": "2.3.2"
   },
   "zstd": {
     "branch": "rawhide",

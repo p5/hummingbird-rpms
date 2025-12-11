@@ -1,0 +1,7 @@
+summary: Fedora zlib-ng tests
+discover:
+  - name: fedora
+    how: fmf
+    url: https://src.fedoraproject.org/tests/zlib-ng.git
+execute:
+    how: tmt

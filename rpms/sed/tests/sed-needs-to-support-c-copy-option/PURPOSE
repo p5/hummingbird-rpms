@@ -1,0 +1,33 @@
+PURPOSE of /CoreOS/sed/Regression/sed-needs-to-support-c-copy-option
+Description: Test for sed needs to support -c/--copy option
+Author: Karel Srot <ksrot@redhat.com>
+Bug summary: sed needs to support -c/--copy option
+
+Description:
+
+Description of problem:
+sed on bind-mounted files fails in rename step.  In previous versions this was fixed by using -c/--copy functionality which appears to have been removed in 4.2.1-4.
+
+Bind mounts are used in stateless systems for persistent data.  
+
+Version-Release number of selected component (if applicable):
+4.2.1-4
+
+How reproducible:
+Always
+
+Steps to Reproduce:
+1. touch file1 file2
+2. mount --bind file1 file2
+3. echo "test" > file1
+4. sed -i "s/test/fail/g" file2
+  
+Actual results:
+sed: cannot rename ./sedfnZpvY: Device or resource busy
+
+
+Expected results:
+sed script completes. 
+
+Additional info:
+As of 4.2.1-4, the -c/--copy options did not exist at all.  Using them resulted in the printing of the help message.  Using 4.2.1-5 from koji reintroduced the -c/--copy option support, but the above sed command still fails.
