@@ -1,0 +1,33 @@
+From d2d6d2bba6470d3b38a284d7de874901e3cb6662 Mon Sep 17 00:00:00 2001
+From: Karel Zak <kzak@redhat.com>
+Date: Thu, 27 Nov 2025 16:47:46 +0100
+Subject: enosys: fix const qualifier warning in parse_block
+
+Fix const qualifier discarded warning in parse_block().
+This warning is reported by gcc 15 which defaults to the C23 standard.
+
+The strchr() function returns a pointer into a const string, so the
+receiving variable must be declared as const char *.
+
+Signed-off-by: Karel Zak <kzak@redhat.com>
+(cherry picked from commit 70379d240dcf975d140160bb4c14cf1b3fe70bcc)
+---
+ misc-utils/enosys.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/misc-utils/enosys.c b/misc-utils/enosys.c
+index 6afb27107..5f780ae98 100644
+--- a/misc-utils/enosys.c
++++ b/misc-utils/enosys.c
+@@ -105,7 +105,7 @@ static struct blocked_number *parse_block(const char *s, int ret, const struct s
+ 	struct blocked_number *blocked;
+ 	const char *name, *error_name;
+ 	long blocked_number;
+-	char *colon;
++	const char *colon;
+ 	bool found;
+ 	size_t i;
+ 
+-- 
+2.51.1
+

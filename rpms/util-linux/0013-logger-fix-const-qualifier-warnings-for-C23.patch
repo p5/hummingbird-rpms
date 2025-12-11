@@ -1,0 +1,67 @@
+From f7458f53c4cf63014de131434872e6c8fee6adab Mon Sep 17 00:00:00 2001
+From: Karel Zak <kzak@redhat.com>
+Date: Thu, 27 Nov 2025 16:43:38 +0100
+Subject: logger: fix const qualifier warnings for C23
+
+Fix const qualifier discarded warnings in valid_structured_data_param()
+and valid_structured_data_id() functions. These warnings are reported by
+gcc 15 which defaults to the C23 standard.
+
+The strchr() and strstr() functions return pointers into const strings,
+so the receiving variables must be declared as const char *.
+
+Signed-off-by: Karel Zak <kzak@redhat.com>
+(cherry picked from commit 22c3b959ef381b35a55ed00cf6acd2507b461d4b)
+---
+ misc-utils/logger.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/misc-utils/logger.c b/misc-utils/logger.c
+index f332a7d27..2a45b12bf 100644
+--- a/misc-utils/logger.c
++++ b/misc-utils/logger.c
+@@ -699,10 +699,10 @@ static char *get_structured_data_string(struct logger_ctl *ctl)
+ 
+ static int valid_structured_data_param(const char *str)
+ {
+-	char *s;
+-	char *eq  = strchr(str, '='),
+-	     *qm1 = strchr(str, '"'),
+-	     *qm2 = qm1 ? ul_strchr_escaped(qm1 + 1, '"') : NULL;
++	const char *s;
++	const char *eq  = strchr(str, '='),
++	           *qm1 = strchr(str, '"'),
++	           *qm2 = qm1 ? ul_strchr_escaped(qm1 + 1, '"') : NULL;
+ 
+ 	/* something is missing */
+ 	if (!eq || !qm1 || !qm2)
+@@ -710,7 +710,7 @@ static int valid_structured_data_param(const char *str)
+ 
+ 	/* ']' need to be escaped */
+ 	for (s = qm1 + 1; s && *s; ) {
+-		char *p = strchr(s, ']');
++		const char *p = strchr(s, ']');
+ 		if (!p)
+ 			break;
+ 		if (p > qm2 || p == ul_strchr_escaped(s, ']'))
+@@ -720,7 +720,7 @@ static int valid_structured_data_param(const char *str)
+ 
+ 	/* '\' is allowed only before '[]"\' chars */
+ 	for (s = qm1 + 1; s && *s; ) {
+-		char *p = strchr(s, '\\');
++		const char *p = strchr(s, '\\');
+ 		if (!p)
+ 			break;
+ 		if (!strchr("[]\"\\", *(p + 1)))
+@@ -739,7 +739,7 @@ static int valid_structured_data_param(const char *str)
+  */
+ static int valid_structured_data_id(const char *str)
+ {
+-	char *at = strchr(str, '@');
++	const char *at = strchr(str, '@');
+ 	const char *p;
+ 
+ 	/* standardized IDs without @<digits> */
+-- 
+2.51.1
+
