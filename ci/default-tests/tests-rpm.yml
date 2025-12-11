@@ -53,7 +53,9 @@ rpm-install:
     fi
 
     # Build the image
-    test_image="rpm-install-test:${rpm_name}-$$"
+    # Sanitize rpm_name for use in container tag (replace non-alphanumeric/._- with -)
+    sanitized_name="${rpm_name//[^a-zA-Z0-9._-]/-}"
+    test_image="rpm-install-test:${sanitized_name}-$$"
     "${TEST_ENGINE}" build \
       -t "${test_image}" \
       --cap-add=ALL \
