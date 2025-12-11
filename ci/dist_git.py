@@ -64,8 +64,10 @@ def parse_spec_version(package_dir: Path) -> tuple[str, str]:
 
     # Use rpmspec to query the resolved version and release
     # Set dist to %{nil} to get release without dist suffix
+    # Set _sourcedir so rpmspec can find source files referenced in the spec
     rpmspec = subprocess.run(
-        ['rpmspec', '-q', '--qf', '%{VERSION}\n%{RELEASE}\n', '--define=dist %{nil}', '--srpm', str(spec_file)],
+        ['rpmspec', '-q', '--qf', '%{VERSION}\n%{RELEASE}\n',
+         '--define=dist %{nil}', f'--define=_sourcedir {package_dir}', '--srpm', str(spec_file)],
         stdout=subprocess.PIPE, text=True, check=True)
     lines = rpmspec.stdout.strip().splitlines()
     try:
