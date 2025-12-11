@@ -118,6 +118,13 @@
     "source": "https://src.fedoraproject.org/rpms/findutils.git",
     "version": "4.10.0"
   },
+  "fmt": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "e2128bd1d54ff38a127266a8c0dce73559fd073e",
+    "source": "https://src.fedoraproject.org/rpms/fmt.git",
+    "version": "11.2.0"
+  },
   "grep": {
     "branch": "rawhide",
     "release": "2",

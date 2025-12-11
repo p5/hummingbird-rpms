@@ -647,6 +647,43 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+  name: fmt-main
+spec:
+  application: rpms-main
+  componentName: fmt-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/fmt-main
+  source:
+    git:
+      context: rpms/fmt
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: fmt-main
+  name: fmt-main
+spec:
+  image:
+    name: hummingbird-tenant/fmt-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
   name: grep-main
 spec:
   application: rpms-main
