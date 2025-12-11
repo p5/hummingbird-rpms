@@ -1,0 +1,38 @@
+
+# We want to use the following Packit functions in the zlib-ng package:
+# koji_build, bodhi_update, pull_from_upstream
+
+# See the documentation for more information:
+# https://packit.dev/docs/configuration/
+
+specfile_path: zlib-ng.spec
+
+# name in upstream package repository or registry (e.g. in PyPI)
+upstream_package_name: zlib-ng
+upstream_project_url: https://github.com/zlib-ng/zlib-ng/
+# downstream (Fedora) RPM package name
+downstream_package_name: zlib-ng
+
+jobs:
+  - job: pull_from_upstream
+    trigger: release
+    dist_git_branches:
+      - fedora-latest
+      - fedora-42
+      - fedora-rawhide
+
+  - job: koji_build
+    trigger: commit
+    allowed_pr_authors: ["ljavorsk", "tuliom", "aekoroglu", "packit"]
+    allowed_committers: ["ljavorsk", "tuliom", "aekoroglu", "packit"]
+    dist_git_branches:
+      - fedora-latest
+      - fedora-42
+      - fedora-rawhide
+
+  - job: bodhi_update
+    trigger: commit
+    dist_git_branches:
+      # rawhide updates are created automatically
+      - fedora-latest
+      - fedora-42

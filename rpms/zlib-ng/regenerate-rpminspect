@@ -1,0 +1,33 @@
+#!/usr/bin/bash
+#
+# Regenerated rpminspect.yaml.
+# The contents in rpminspect.yaml depends on the usage of NOLTOFLAG in
+# zlib-ng's build system.
+
+OUTPUT=$(pwd)/rpminspect.yaml
+
+cat - <<EOF > $OUTPUT
+# This file has been generated automatically by regenerate-rpminspect.
+# Ignore LTO test on CPU-optimized files which cannot use the LTO.
+# More described in upstream: https://github.com/zlib-ng/zlib-ng/pull/938
+
+annocheck:
+    extra_opts:
+        - hardened:
+EOF
+
+tmpdir=$(mktemp -p $(pwd) -d)
+
+fedpkg prep --builddir $tmpdir > /dev/null
+
+rootdir=$(dirname $(find $tmpdir -name arch))
+for makefile in $(find $tmpdir -name Makefile.in); do
+  dir=$(dirname $makefile)
+  for f in $(gawk \
+             'match($0, /\$\(NOLTOFLAG\).*\/([^\/]+\.c)/, ret) {print ret[1]}' \
+             $makefile | sort -u); do
+    echo "--skip-lto=$(realpath --relative-to=$rootdir $dir)/$f" >> $OUTPUT
+  done
+done
+
+rm -rf $tmpdir
