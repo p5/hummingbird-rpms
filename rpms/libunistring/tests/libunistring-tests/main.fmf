@@ -1,0 +1,16 @@
+summary: Functional test for the gettext module
+contact: Pooja Yadav <poyadav@redhat.com>
+component:
+- python
+require:
+- gcc
+- make
+- libunistring
+- libunistring-devel
+test: bash runtest.sh
+framework: beakerlib
+recommend:
+- python
+duration: 5m
+extra-summary: /CoreOS/python/libunistring-tests
+extra-task: /CoreOS/python/libunistring-tests
