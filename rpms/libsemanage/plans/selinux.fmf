@@ -1,0 +1,7 @@
+summary: selinux tests - Tier 1 | libsemanage
+discover:
+    how: fmf
+    url: https://src.fedoraproject.org/tests/selinux
+    filter: "tier: 1 | component: libsemanage"
+execute:
+    how: tmt
