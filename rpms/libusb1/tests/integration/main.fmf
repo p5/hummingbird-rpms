@@ -1,0 +1,6 @@
+summary:
+    Test for libusb1
+test: bash ./run.sh
+
+
+

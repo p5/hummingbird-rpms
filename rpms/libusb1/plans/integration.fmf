@@ -1,0 +1,11 @@
+summary: Basic smoke test
+discover:
+    how: fmf
+prepare:
+  - name: packages
+    how: install
+    package:
+        - glibc-common
+        - libusb1-tests-examples
+execute:
+    how: tmt
