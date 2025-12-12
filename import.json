@@ -272,6 +272,13 @@
     "source": "https://src.fedoraproject.org/rpms/libtasn1.git",
     "version": "4.20.0"
   },
+  "libtool": {
+    "branch": "rawhide",
+    "release": "8",
+    "sha": "ad7f75a9881731ecc9ceda8c83bf56813c4df49a",
+    "source": "https://src.fedoraproject.org/rpms/libtool.git",
+    "version": "2.5.4"
+  },
   "libyaml": {
     "branch": "rawhide",
     "release": "17",
