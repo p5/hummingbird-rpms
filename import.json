@@ -237,6 +237,13 @@
     "source": "https://src.fedoraproject.org/rpms/librepo.git",
     "version": "1.20.0"
   },
+  "libselinux": {
+    "branch": "rawhide",
+    "release": "5",
+    "sha": "466af9d9e61879347e77c74373eafdb55b521144",
+    "source": "https://src.fedoraproject.org/rpms/libselinux.git",
+    "version": "3.9"
+  },
   "libyaml": {
     "branch": "rawhide",
     "release": "17",
