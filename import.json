@@ -202,6 +202,13 @@
     "source": "https://src.fedoraproject.org/rpms/libgcrypt.git",
     "version": "1.11.2"
   },
+  "libgpg-error": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "3a79bae5a201759332c035ee5b9dd3cfa2ad004b",
+    "source": "https://src.fedoraproject.org/rpms/libgpg-error.git",
+    "version": "1.57"
+  },
   "libyaml": {
     "branch": "rawhide",
     "release": "17",
