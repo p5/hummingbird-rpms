@@ -258,6 +258,13 @@
     "source": "https://src.fedoraproject.org/rpms/libsepol.git",
     "version": "3.9"
   },
+  "libsolv": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "45efe3b0e102fec66181a3a903683d307b83acb3",
+    "source": "https://src.fedoraproject.org/rpms/libsolv.git",
+    "version": "0.7.35"
+  },
   "libyaml": {
     "branch": "rawhide",
     "release": "17",
