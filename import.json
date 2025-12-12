@@ -216,6 +216,13 @@
     "source": "https://src.fedoraproject.org/rpms/libidn2.git",
     "version": "2.3.8"
   },
+  "libksba": {
+    "branch": "rawhide",
+    "release": "4",
+    "sha": "8fbe90e4d34ae16e22dd5973be58d631f8a19672",
+    "source": "https://src.fedoraproject.org/rpms/libksba.git",
+    "version": "1.6.7"
+  },
   "libyaml": {
     "branch": "rawhide",
     "release": "17",
