@@ -153,6 +153,13 @@
     "source": "https://src.fedoraproject.org/rpms/hostname.git",
     "version": "3.25"
   },
+  "libarchive": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "7f12967a515183a299ccfbedb18ba0b4a56ca40a",
+    "source": "https://src.fedoraproject.org/rpms/libarchive.git",
+    "version": "3.8.4"
+  },
   "libyaml": {
     "branch": "rawhide",
     "release": "17",

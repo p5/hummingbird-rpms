@@ -1,0 +1,35 @@
+# We want to use the following Packit functions in the libarchive package:
+# koji_build, bodhi_update and pull_from_upstream
+
+# See the documentation for more information:
+# https://packit.dev/docs/configuration/
+
+specfile_path: libarchive.spec
+
+# name in upstream package repository or registry (e.g. in PyPI)
+upstream_package_name: libarchive
+upstream_project_url: https://github.com/libarchive/libarchive
+upstream_tag_template: v{version}
+# downstream (Fedora) RPM package name
+downstream_package_name: libarchive
+issue_repository: https://src.fedoraproject.org/rpms/libarchive
+
+jobs:
+  - job: pull_from_upstream
+    trigger: release
+    dist_git_branches:
+      - fedora-latest
+      - fedora-rawhide
+
+  - job: koji_build
+    trigger: commit
+    allowed_pr_authors: ["packit", "ljavorsk", "mmuzila", "praiskup"]
+    allowed_committers: ["packit", "ljavorsk", "mmuzila", "praiskup"]
+    dist_git_branches:
+      - fedora-latest
+      - fedora-rawhide
+
+  - job: bodhi_update
+    trigger: commit
+    dist_git_branches:
+      - fedora-latest # rawhide updates are created automatically

@@ -1,0 +1,16 @@
+summary: Private (RHEL) beakerlib tests
+enabled: false
+adjust:
+  - when: distro == rhel
+    enabled: true
+    because: private tests are accesible only within rhel pipline
+discover:
+  - name: rhel-libarchive
+    how: fmf
+    url: git://pkgs.devel.redhat.com/tests/libarchive
+  - name: distribution
+    how: fmf
+    url: git://pkgs.devel.redhat.com/tests/distribution
+    test: /install/rhel-buildroot
+execute:
+    how: tmt

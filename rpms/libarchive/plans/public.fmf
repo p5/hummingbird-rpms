@@ -1,0 +1,10 @@
+summary: Public (Gitlab) beakerlib tests
+discover:
+  - name: gitlab
+    how: fmf
+    url: https://gitlab.com/redhat/centos-stream/tests/libarchive.git
+execute:
+    how: tmt
+provision:
+    hardware:
+      memory: ">= 6 GB"
