@@ -44,3 +44,10 @@ dist-git-host:
 	ci/dist_git.py $(ARGS)
 dist-git:
 	$(PODMAN_RUN) $(PODMAN_IMAGE) make dist-git-host ARGS='$(ARGS)'
+
+
+.PHONY: find-missing-rpms-host find-missing-rpms
+find-missing-rpms-host:
+	ci/verify_rpms_in_pulp.sh $(ARGS)
+find-missing-rpms:
+	$(PODMAN_RUN) $(PODMAN_IMAGE) make find-missing-rpms-host ARGS='$(ARGS)'
