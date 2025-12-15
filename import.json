@@ -254,9 +254,9 @@
   "rpm": {
     "branch": "rawhide",
     "release": "1",
-    "sha": "0fe8adc2d528678a16f6d7cf3c3f8ba7aa9d261c",
+    "sha": "d79f98c9d2d54349c22cf36bd89826e437f3dd2c",
     "source": "https://src.fedoraproject.org/rpms/rpm.git",
-    "version": "6.0.0"
+    "version": "6.0.1"
   },
   "sdbus-cpp": {
     "branch": "rawhide",
