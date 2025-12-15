@@ -56,8 +56,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-acl-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -120,8 +120,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-attr-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -184,8 +184,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-audit-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -248,8 +248,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-bash-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -312,8 +312,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-brotli-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -376,8 +376,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-bzip2-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -440,8 +440,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-ca-certificates-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -504,8 +504,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-chkconfig-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -568,8 +568,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-coreutils-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -632,8 +632,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-crypto-policies-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -696,8 +696,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-curl-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -760,8 +760,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-cyrus-sasl-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -824,8 +824,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-dnf5-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -888,8 +888,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-e2fsprogs-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -952,8 +952,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-elfutils-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -1016,8 +1016,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-fedora-repos-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -1080,8 +1080,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-file-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -1144,8 +1144,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-findutils-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -1208,8 +1208,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-fmt-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -1272,8 +1272,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-fsverity-utils-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -1336,8 +1336,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-gdbm-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -1400,8 +1400,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-glib2-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -1464,8 +1464,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-gmp-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -1528,8 +1528,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-gnupg2-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -1592,8 +1592,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-grep-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -1656,8 +1656,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-hostname-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -1720,8 +1720,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-ima-evm-utils-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -1784,8 +1784,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-json-c-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -1848,8 +1848,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-libarchive-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -1912,8 +1912,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-libassuan-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -1976,8 +1976,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-libcap-ng-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -2040,8 +2040,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-libeconf-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -2104,8 +2104,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-libevent-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -2168,8 +2168,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-libffi-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -2232,8 +2232,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-libgcrypt-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -2296,8 +2296,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-libgpg-error-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -2360,8 +2360,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-libidn2-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -2424,8 +2424,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-libksba-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -2488,8 +2488,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-libpsl-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -2552,8 +2552,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-librepo-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -2616,8 +2616,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-libselinux-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -2680,8 +2680,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-libsemanage-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -2744,8 +2744,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-libsepol-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -2808,8 +2808,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-libsolv-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -2872,8 +2872,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-libssh-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -2936,8 +2936,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-libtasn1-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -3000,8 +3000,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-libtool-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -3064,8 +3064,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-libunistring-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -3128,8 +3128,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-libusb1-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -3192,8 +3192,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-libverto-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -3256,8 +3256,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-libxcrypt-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -3320,8 +3320,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-libxml2-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -3384,8 +3384,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-libyaml-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -3448,8 +3448,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-lua-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -3512,8 +3512,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-lz4-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -3576,8 +3576,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-ncurses-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -3640,8 +3640,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-nettle-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -3704,8 +3704,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-nghttp2-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -3768,8 +3768,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-ngtcp2-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -3832,8 +3832,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-npth-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -3896,8 +3896,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-openldap-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -3960,8 +3960,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-openssl-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -4024,8 +4024,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-p11-kit-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -4088,8 +4088,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-pam-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -4152,8 +4152,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-pcre2-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -4216,8 +4216,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-popt-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -4280,8 +4280,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-publicsuffix-list-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -4344,8 +4344,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-readline-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -4408,8 +4408,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-rootfiles-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -4472,8 +4472,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-rpm-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -4536,8 +4536,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-sdbus-cpp-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -4600,8 +4600,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-sed-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -4664,8 +4664,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-setup-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 18h
+    tasks: 18h
   workspaces:
     - name: git-auth
       secret:
@@ -4728,8 +4728,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-shadow-utils-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -4792,8 +4792,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-sqlite-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -4856,8 +4856,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-systemd-stub-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -4920,8 +4920,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-tpm2-tss-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -4984,8 +4984,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-util-linux-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -5048,8 +5048,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-xz-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -5112,8 +5112,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-zchunk-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -5176,8 +5176,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-zlib-ng-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
@@ -5240,8 +5240,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-zstd-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:

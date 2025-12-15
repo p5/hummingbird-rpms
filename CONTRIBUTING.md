@@ -117,6 +117,25 @@ This only imports changes if these were actually built in Koji, to ensure we onl
 
 All of these commands automatically commit changes with descriptive commit messages including the upstream SHA. To avoid that, you can use the `--dry-run` option.
 
+## Pipeline timeouts
+
+Pipeline and task timeouts are configurable per-package. The default timeout is 4 hours. To set a custom timeout for a specific package, edit the `PACKAGE_TIMEOUTS` associative array in `ci/generate_pac_resources.sh`:
+
+```bash
+declare -A PACKAGE_TIMEOUTS=(
+    ["setup"]=18
+    ["your-package"]=6
+)
+```
+
+After modifying timeouts, regenerate the pipeline files:
+
+```bash
+make generate
+```
+
+This updates `.tekton/rpms-on-push.yaml` and `.tekton/rpms-on-pull-request.yaml` with the new timeout values.
+
 ## Branching and pull requests
 - Create feature branches from the default branch.
 - Keep edits focused and small; separate unrelated changes into separate PRs.
