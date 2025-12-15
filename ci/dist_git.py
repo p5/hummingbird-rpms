@@ -350,7 +350,7 @@ def import_(url: str, branch: str, ref: str | None = None, dry_run: bool = False
 
     # Commit the changes
     if not dry_run:
-        run_git('add', f'rpms/{package_name}', 'import.json', 'konflux-templates', '.tekton', cwd=ROOT_DIR)
+        run_git('add', '-f', f'rpms/{package_name}', 'import.json', 'konflux-templates', '.tekton', cwd=ROOT_DIR)
         commit_msg = f"Import {package_name}-{version}-{release}\n\nBranch: {branch}\nUpstream: {sha}"
         run_git_commit('-m', commit_msg, cwd=ROOT_DIR)
 
@@ -422,7 +422,7 @@ def update(package_name: str, skip_build_check: bool = False, sync: bool = False
 
         # Commit the changes
         if not dry_run:
-            run_git('add', f'rpms/{package_name}', 'import.json', cwd=ROOT_DIR)
+            run_git('add', '-f', f'rpms/{package_name}', 'import.json', cwd=ROOT_DIR)
             verb = "Sync" if sync else "Update"
             commit_msg = f"{verb} {package_name} to {version}-{release}\n\nUpstream: {latest_sha}"
             run_git_commit('-m', commit_msg, cwd=ROOT_DIR)
