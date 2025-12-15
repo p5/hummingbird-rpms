@@ -11,6 +11,16 @@ RESOURCE_TYPE=""
 # changes to ci/ also trigger the build pipeline for this rpm (as canary)
 BUILD_TRIGGER_RPM_NAME=${BUILD_TRIGGER_RPM_NAME:-setup}
 
+# Timeout configuration
+DEFAULT_TIMEOUT_HOURS=4
+# Per-package timeout overrides (in hours)
+# Example: declare -A PACKAGE_TIMEOUTS=(["setup"]=18 ["bash"]=6)
+declare -A PACKAGE_TIMEOUTS=(
+    ["setup"]=18
+    # Add more package-specific timeouts here
+    # ["package-name"]=hours
+)
+
 # Parse command line arguments
 while [[ $# -gt 0 ]]; do
     case $1 in
@@ -94,9 +104,13 @@ for path in "${rpms[@]}"; do
     dname=$(basename "${path}")
     name=${dname}-${BRANCH}
 
+    # Get timeout for this package (use default if not specified)
+    timeout_hours=${PACKAGE_TIMEOUTS[${dname}]:-${DEFAULT_TIMEOUT_HOURS}}
+
     (
         echo "name: ${name}"
         echo "dname: ${dname}"
+        echo "timeout_hours: ${timeout_hours}"
 
         extra_paths=()
 

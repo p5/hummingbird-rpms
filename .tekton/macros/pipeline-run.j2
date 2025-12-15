@@ -1,4 +1,4 @@
-{%- macro pipeline_run(rpm, event_type, cancel_in_progress, output_image_tag, extra_params={}, extra_annotations={}, extra_path_changes=[]) -%}
+{%- macro pipeline_run(rpm, event_type, cancel_in_progress, output_image_tag, extra_params={}, extra_annotations={}, extra_path_changes=[], timeout_hours=4) -%}
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -64,8 +64,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-{{ rpm.name }}
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: {{ timeout_hours }}h
+    tasks: {{ timeout_hours }}h
   workspaces:
     - name: git-auth
       secret:
