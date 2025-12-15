@@ -63,10 +63,13 @@ sed "s|@ARCH@|${arch}|" "${SCRIPT_DIR}/../mock/mock.cfg" > "${workdir}/config/mo
 
 # Detect git directory location (handle worktrees)
 if [[ -f "${REPO_ROOT}/.git" ]]; then
-    # Git worktree - read the gitdir location
+    # Git worktree - read the gitdir location (may be relative)
     gitdir=$(grep 'gitdir:' "${REPO_ROOT}/.git" | cut -d' ' -f2) || true
     gitdir="${gitdir:-}"
-    bare_repo="${gitdir%/worktrees/*}"
+    # Strip /worktrees/* to get the bare repo root
+    bare_repo_relative="${gitdir%/worktrees/*}"
+    # Convert to absolute path (resolve relative to REPO_ROOT)
+    bare_repo=$(cd "${REPO_ROOT}" && realpath "${bare_repo_relative}")
 else
     # Regular git repo
     bare_repo="${REPO_ROOT}/.git"
