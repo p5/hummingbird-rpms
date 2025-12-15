@@ -758,6 +758,117 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+  name: glib2-main
+spec:
+  application: rpms-main
+  componentName: glib2-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/glib2-main
+  source:
+    git:
+      context: rpms/glib2
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: glib2-main
+  name: glib2-main
+spec:
+  image:
+    name: hummingbird-tenant/glib2-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
+  name: gmp-main
+spec:
+  application: rpms-main
+  componentName: gmp-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/gmp-main
+  source:
+    git:
+      context: rpms/gmp
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: gmp-main
+  name: gmp-main
+spec:
+  image:
+    name: hummingbird-tenant/gmp-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
+  name: gnupg2-main
+spec:
+  application: rpms-main
+  componentName: gnupg2-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/gnupg2-main
+  source:
+    git:
+      context: rpms/gnupg2
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: gnupg2-main
+  name: gnupg2-main
+spec:
+  image:
+    name: hummingbird-tenant/gnupg2-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
   name: grep-main
 spec:
   application: rpms-main
@@ -816,6 +927,43 @@ metadata:
 spec:
   image:
     name: hummingbird-tenant/hostname-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
+  name: ima-evm-utils-main
+spec:
+  application: rpms-main
+  componentName: ima-evm-utils-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/ima-evm-utils-main
+  source:
+    git:
+      context: rpms/ima-evm-utils
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: ima-evm-utils-main
+  name: ima-evm-utils-main
+spec:
+  image:
+    name: hummingbird-tenant/ima-evm-utils-main
     visibility: public
   notifications:
   - config:

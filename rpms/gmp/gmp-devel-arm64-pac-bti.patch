@@ -1,0 +1,619 @@
+From e5346eefe194871dc0b381f91b6ba90096c9df0a Mon Sep 17 00:00:00 2001
+From: Bill Roberts <bill.roberts@arm.com>
+Date: Tue, 22 Apr 2025 09:57:49 -0500
+Subject: [PATCH] aarch64: support PAC and BTI
+
+Enable Pointer Authentication Codes (PAC) and Branch Target
+Identification (BTI) support for ARM 64 targets.
+
+PAC works by signing the LR with either an A key or B key and verifying
+the return address. While there are several instructions that can
+perform this operation, the Linux ARM ABI uses hint-space instructions
+which execute as NOPs on older hardware. Hint space instructions can be
+assembled and linked with older binutils. This all provides for backwards
+compatibility for both the toolchains as well as the hardware the code
+is built or executed on. This limits the instruction set to paciasp,
+pacibsp, autiasp and autibsp. Instructions prefixed with pac are for
+signing and instructions prefixed with aut are for verifying the
+signature. Both instructions are then followed with an a or b to
+indicate which key they are using. The keys can be controlled using
+-mbranch-protection=pac-ret for the A key and
+-mbranch-protection=pac-ret+b-key for the B key.
+
+BTI works by marking all call and jump positions with bti c and bti
+j instructions. If execution control transfers to an instruction other
+than a BTI instruction, the execution is killed via SIGILL. Note that
+to remove one instruction, the aforementioned pac instructions will
+also work as a BTI landing pad for bti c usages.
+
+For BTI to work, all object files linked for a unit of execution,
+whether an executable or a library must have the GNU Notes section of
+the ELF file marked to indicate BTI support. This is so loader/linkers
+can apply the proper permission bits (PROT_BRI) on the memory region.
+
+PAC can also be annotated in the GNU ELF notes section, but it's not
+required for enablement, as interleaved PAC and non-pac code works as
+expected since it's the callee that performs all the checking. The
+linker follows the same rules as BTI for discarding the PAC flag from
+the GNU Notes section.
+
+Testing was done under the following CFLAGS and CXXFLAGS for all
+combinations:
+1. -mbranch-protection=none
+2. -mbranch-protection=standard
+3. -mbranch-protection=pac-ret
+4. -mbranch-protection=pac-ret+b-key
+5. -mbranch-protection=bti
+
+Add tests that get skipped on non-pac and bti enabled systems,
+so this safely limits the tests to aarch64 platforms with support.
+One test dynamically tests that an mpn assembly routine supports
+BTI when the binary is enabled AND the system has support by
+calling that routine and verifying it's functionality and then
+by calling it one instruction past the correct entry point, and
+thus missing the landing pad.
+
+The other test added, tests that the ELF binary has the proper
+GNU Notes section for the set of build flags.
+
+Signed-off-by: Bill Roberts <bill.roberts@arm.com>
+---
+ acinclude.m4                   |  33 +++++++++++
+ configure.ac                   |  20 ++++++-
+ mpn/Makeasm.am                 |   3 +-
+ mpn/arm64/arm64-defs.m4        | 100 +++++++++++++++++++++++++++++++++
+ mpn/arm64/divrem_1.asm         |   8 ++-
+ tests/mpn/Makefile.am          |  43 +++++++++-----
+ tests/mpn/log-compiler.sh      |  21 +++++++
+ tests/mpn/t-arm64_bti.c        |  87 ++++++++++++++++++++++++++++
+ tests/mpn/t-arm64_elf_check.sh |  96 +++++++++++++++++++++++++++++++
+ 9 files changed, 394 insertions(+), 17 deletions(-)
+ create mode 100755 tests/mpn/log-compiler.sh
+ create mode 100644 tests/mpn/t-arm64_bti.c
+ create mode 100755 tests/mpn/t-arm64_elf_check.sh
+
+diff --git a/acinclude.m4 b/acinclude.m4
+index 4fca12de2..8f683516a 100644
+--- a/acinclude.m4
++++ b/acinclude.m4
+@@ -3992,3 +3992,36 @@ case $gmp_cv_check_libm_for_build in
+   *)   LIBM_FOR_BUILD=$gmp_cv_check_libm_for_build ;;
+ esac
+ ])
++
++# Define GMP_GET_MACRO_VALUE to capture the value of a C preprocessor symbol via compilation.
++# This is useful when something like AC_EGREP_CPP doesn't have the correct environment.
++# Arg 1 - The name of the macro to check in the compiled program.
++# Arg 2 - The variable name to define the value of the macro to.
++# Arg 3 - The default value if not defined.
++#
++# Example: GMP_GET_MACRO_VALUE([FOO], [BAR], [0])
++# This will check for macro FOO and define in a new variable BAR the value
++# of FOO as derived from invoking the C pre-processor or the default value
++# as specified by the caller.
++#
++AC_DEFUN([GMP_GET_MACRO_VALUE], [
++  AC_MSG_CHECKING([value of $1])
++
++  $2=$(printf "#ifdef $1\n$1_VALUE=$1\n#else\n$1_VALUE=$3\n#endif\n" | ${CC} ${CFLAGS} -E - | grep "$1_VALUE" | cut -d'=' -f2-)
++  AC_MSG_RESULT([$$2])
++])
++
++# Define GMP_CHECK_PROG to find a host program using AC_CHECK_PROG and fail if not found.
++#
++# Arg 1 - The name of the variable to define if found.
++# Arg 2 - The program to check for, and the value of the variable named in argument 1.
++#
++# Example: GMP_CHECK_PROG([GREP], [grep])
++# This will check for program grep and define GREP equal to "grep"
++#
++AC_DEFUN([GMP_CHECK_PROG], [
++  AC_CHECK_PROG([$1], [$2], [$2])
++  if test "$$1" != "$2"; then
++    AC_MSG_FAILURE([Could not find $2! Ensure it's on PATH and/or installed.])
++  fi
++])
+diff --git a/configure.ac b/configure.ac
+index edee25fae..5c7d01634 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -82,6 +82,8 @@
+ AC_CONFIG_HEADERS(config.h:config.in)
+ AM_MAINTAINER_MODE
+ 
++GMP_CHECK_PROG([GREP], [grep])
++GMP_CHECK_PROG([CUT], [cut])
+ 
+ AC_ARG_ENABLE(assert,
+ AC_HELP_STRING([--enable-assert],[enable ASSERT checking [default=no]]),
+@@ -3770,7 +3772,17 @@
+ 	    *-*-darwin*)
+ 	      GMP_INCLUDE_MPN(arm64/darwin.m4) ;;
+ 	    *)
+-	      GMP_INCLUDE_MPN(arm64/arm64-defs.m4) ;;
++	      GMP_INCLUDE_MPN(arm64/arm64-defs.m4)
++	      GMP_GET_MACRO_VALUE([__ARM_FEATURE_BTI_DEFAULT], [ARM64_FEATURE_BTI_DEFAULT], [0])
++		  GMP_DEFINE_RAW(["define(<ARM64_FEATURE_BTI_DEFAULT>,<$ARM64_FEATURE_BTI_DEFAULT>)"])
++	      AC_SUBST([ARM64_FEATURE_BTI_DEFAULT])
++
++	      GMP_GET_MACRO_VALUE([__ARM_FEATURE_PAC_DEFAULT], [ARM64_FEATURE_PAC_DEFAULT], [0])
++		  GMP_DEFINE_RAW(["define(<ARM64_FEATURE_PAC_DEFAULT>,<$ARM64_FEATURE_PAC_DEFAULT>)"])
++	      AC_SUBST([ARM64_FEATURE_PAC_DEFAULT])
++
++	      GMP_GET_MACRO_VALUE([__ELF__], [ARM64_ELF], [0])
++		  GMP_DEFINE_RAW(["define(<ARM64_ELF>,<$ARM64_ELF>)"])
+           esac
+ 	  ;;
+       esac
+@@ -4063,6 +4075,12 @@
+ 
+ LT_INIT
+ 
++AC_CHECK_TOOL([HAVE_BASH], [bash], [no])
++AM_CONDITIONAL([HAVE_BASH], [test "$HAVE_BASH" != "no"])
++
++AC_CHECK_TOOL([HAVE_READELF], [readelf], [no])
++AM_CONDITIONAL([HAVE_READELF], [test "$HAVE_READELF" != "no"])
++
+ # Create config.m4.
+ GMP_FINISH
+ 
+diff --git a/mpn/Makeasm.am b/mpn/Makeasm.am
+index 5d7306c22..527bf41cf 100644
+--- a/mpn/Makeasm.am
++++ b/mpn/Makeasm.am
+@@ -115,4 +115,5 @@ RM_TMP = rm -f
+ 	$(CCAS) $(COMPILE_FLAGS) tmp-$*.s -o $@
+ 	$(RM_TMP) tmp-$*.s
+ .asm.lo:
+-	$(LIBTOOL) --mode=compile --tag=CC $(top_srcdir)/mpn/m4-ccas --m4="$(M4)" $(CCAS) $(COMPILE_FLAGS) `test -f '$<' || echo '$(srcdir)/'`$<
++	$(LIBTOOL) --mode=compile --tag=CC $(top_srcdir)/mpn/m4-ccas --m4="$(M4)" \
++		$(CCAS) $(COMPILE_FLAGS) `test -f '$<' || echo '$(srcdir)/'`$<
+diff --git a/mpn/arm64/arm64-defs.m4 b/mpn/arm64/arm64-defs.m4
+index 46149f7bf..c717e5ebd 100644
+--- a/mpn/arm64/arm64-defs.m4
++++ b/mpn/arm64/arm64-defs.m4
+@@ -36,6 +36,101 @@ dnl  don't want to disable macro expansions in or after them.
+ 
+ changecom
+ 
++dnl use the hint instructions so they NOP on older machines.
++dnl Add comments so the assembly is notated with the instruction
++
++
++define(`PACIASP', `hint #25  /* paciasp */')
++define(`AUTIASP', `hint #29  /* autiasp */')
++define(`PACIBSP', `hint #27  /* pacibsp */')
++define(`AUTIBSP', `hint #31  /* autibsp */')
++
++dnl if BTI is enabled we want the SIGN_LR to be a valid
++dnl landing pad, we don't need VERIFY_LR and we need to
++dnl indicate the valid BTI support for gnu notes.
++
++
++ifelse(ARM64_FEATURE_BTI_DEFAULT, `1',
++  `define(`BTI_C',   `hint #34  /* bti c */')
++   define(`SIGN_LR', `BTI_C')
++   define(`GNU_PROPERTY_AARCH64_BTI', `1')
++   define(`PAC_OR_BTI')', `
++   define(`BTI_C', `')
++   define(`GNU_PROPERTY_AARCH64_BTI', `0')'
++')
++
++dnl define instructions for PAC, which can use the A
++dnl or the B key. PAC instructions are also valid BTI
++dnl landing pads, so we re-define SIGN_LR if BTI is
++dnl enabled.
++
++
++ifelse(ARM64_FEATURE_PAC_DEFAULT, `1',
++    `define(`SIGN_LR', `PACIASP')
++     define(`VERIFY_LR', `AUTIASP')
++     define(`GNU_PROPERTY_AARCH64_POINTER_AUTH', `2')
++     define(`PAC_OR_BTI')',
++   ARM64_FEATURE_PAC_DEFAULT, `2',
++    `define(`SIGN_LR', `PACIBSP')
++     define(`VERIFY_LR', `AUTIBSP')
++     define(`GNU_PROPERTY_AARCH64_POINTER_AUTH', `2')
++     define(`PAC_OR_BTI')',
++    `ifdef(`SIGN_LR', , `define(`SIGN_LR', `')')
++     define(`VERIFY_LR', `')
++     define(`GNU_PROPERTY_AARCH64_POINTER_AUTH', `0')'
++')
++
++dnl NOTE OVERRIDES asm-defs.m4 definition for arch specific functionality
++dnl
++dnl Usage: PROLOGUE_cpu(GSYM_PREFIX`'foo[,param])
++dnl         EPILOGUE_cpu(GSYM_PREFIX`'foo)
++dnl
++dnl  These macros hold the CPU-specific parts of PROLOGUE and is called
++dnl  with the function name, with GSYM_PREFIX already prepended.
++dnl
++dnl  By default, it marks entry points with a bti c instruction unless
++dnl  the second argument is true and it marks it using SIGN_LR which expands
++dnl  to the proper paci instruction OR bti c instruction depending on
++dnl  compilation flags. In the case of an instruction that uses paci, this
++dnl  provides a one instruction advantage over having a bti c followed by
++dnl  a paci instruction.
++
++define(`PROLOGUE_cpu',
++m4_assert_numargs_range(1,2)
++`	TEXT
++	ALIGN(8)
++	GLOBL	`$1' GLOBL_ATTR
++	TYPE(`$1',`function')
++`$1'LABEL_SUFFIX
++	ifelse(`$2',`true',
++		`SIGN_LR',
++		`BTI_C')
++')
++
++dnl ADD_GNU_NOTES_IF_NEEDED
++dnl
++dnl Conditionally add into ELF assembly files the GNU notes indicating if
++dnl BTI or PAC is support. BTI is required by the linkers and loaders, however
++dnl PAC is a nice to have for auditing. Use readelf -n to display.
++
++
++define(`ADD_GNU_NOTES_IF_NEEDED', `
++  ifdef(`ARM64_ELF', `
++    ifdef(`PAC_OR_BTI', `
++      .pushsection .note.gnu.property, "a";
++      .balign 8;
++      .long 4;
++      .long 0x10;
++      .long 0x5;
++      .asciz "GNU";
++      .long 0xc0000000; /* GNU_PROPERTY_AARCH64_FEATURE_1_AND */
++      .long 4;
++      .long eval(indir(`GNU_PROPERTY_AARCH64_POINTER_AUTH') + indir(`GNU_PROPERTY_AARCH64_BTI'));
++      .long 0;
++      .popsection;
++    ')
++  ')
++')
+ 
+ dnl  LEA_HI(reg,gmp_symbol), LEA_LO(reg,gmp_symbol)
+ dnl
+@@ -50,4 +145,9 @@ define(`LEA_HI', `adrp	$1, $2')dnl
+ define(`LEA_LO', `add	$1, $1, :lo12:$2')dnl
+ ')dnl
+ 
++dnl divert output to the following m4 file to shove the GNU Notes section into subsequent
++dnl files implicitly.
++divert(1)
++ADD_GNU_NOTES_IF_NEEDED
++
+ divert`'dnl
+diff --git a/mpn/arm64/divrem_1.asm b/mpn/arm64/divrem_1.asm
+index 9d5bb5959..2c5265780 100644
+--- a/mpn/arm64/divrem_1.asm
++++ b/mpn/arm64/divrem_1.asm
+@@ -65,7 +65,7 @@ dnl                      mp_limb_t d_unnorm, mp_limb_t dinv, int cnt)
+ 
+ ASM_START()
+ 
+-PROLOGUE(mpn_preinv_divrem_1)
++PROLOGUE(mpn_preinv_divrem_1, true)
+ 	cbz	n_arg, L(fz)
+ 	stp	x29, x30, [sp, #-80]!
+ 	mov	x29, sp
+@@ -85,7 +85,7 @@ PROLOGUE(mpn_preinv_divrem_1)
+ 	b	L(uentry)
+ EPILOGUE()
+ 
+-PROLOGUE(mpn_divrem_1)
++PROLOGUE(mpn_divrem_1, true)
+ 	cbz	n_arg, L(fz)
+ 	stp	x29, x30, [sp, #-80]!
+ 	mov	x29, sp
+@@ -154,6 +154,7 @@ L(uend):add	x2, x11, #1
+ 	ldp	x21, x22, [sp, #32]
+ 	ldp	x23, x24, [sp, #48]
+ 	ldp	x29, x30, [sp], #80
++	VERIFY_LR
+ 	ret
+ 
+ L(ufx):	add	x2, x2, #1
+@@ -194,6 +195,7 @@ L(nend):cbnz	fn, L(frac)
+ 	ldp	x21, x22, [sp, #32]
+ 	ldp	x23, x24, [sp, #48]
+ 	ldp	x29, x30, [sp], #80
++	VERIFY_LR
+ 	ret
+ 
+ L(nfx):	add	x2, x2, #1
+@@ -219,6 +221,7 @@ L(ftop):add	x2, x11, #1
+ 	ldp	x21, x22, [sp, #32]
+ 	ldp	x23, x24, [sp, #48]
+ 	ldp	x29, x30, [sp], #80
++	VERIFY_LR
+ 	ret
+ 
+ C Block zero. We need this for the degenerated case of n = 0, fn != 0.
+@@ -227,5 +230,6 @@ L(ztop):str	xzr, [qp_arg], #8
+ 	sub	fn_arg, fn_arg, #1
+ 	cbnz	fn_arg, L(ztop)
+ L(zend):mov	x0, #0
++	VERIFY_LR
+ 	ret
+ EPILOGUE()
+diff --git a/tests/mpn/Makefile.am b/tests/mpn/Makefile.am
+index 0e979a3ad..16d4d2dc6 100644
+--- a/tests/mpn/Makefile.am
++++ b/tests/mpn/Makefile.am
+@@ -22,19 +22,36 @@ AM_CPPFLAGS = -I$(top_srcdir) -I$(top_srcdir)/tests
+ AM_LDFLAGS = -no-install
+ LDADD = $(top_builddir)/tests/libtests.la $(top_builddir)/libgmp.la
+ 
+-check_PROGRAMS = t-asmtype t-aors_1 t-divrem_1 t-mod_1 t-fat t-get_d	\
+-  t-instrument t-iord_u t-mp_bases t-perfsqr t-scan logic		\
+-  t-toom22 t-toom32 t-toom33 t-toom42 t-toom43 t-toom44			\
+-  t-toom52 t-toom53 t-toom54 t-toom62 t-toom63 t-toom6h t-toom8h	\
+-  t-toom2-sqr t-toom3-sqr t-toom4-sqr t-toom6-sqr t-toom8-sqr		\
+-  t-div t-mul t-mullo t-sqrlo t-mulmod_bnm1 t-sqrmod_bnm1 t-mulmid	\
+-  t-mulmod_bknp1 t-sqrmod_bknp1						\
+-  t-addaddmul t-hgcd t-hgcd_appr t-matrix22 t-invert t-bdiv t-fib2m	\
+-  t-broot t-brootinv t-minvert t-sizeinbase t-gcd_11 t-gcd_22 t-gcdext_1
+-
+-EXTRA_DIST = toom-shared.h toom-sqr-shared.h
+-
+-TESTS = $(check_PROGRAMS)
++TEST_EXTENSIONS = .sh
++AM_SH_LOG_FLAGS = --enable-pac=@ARM64_FEATURE_PAC_DEFAULT@ \
++  --enable-bti=@ARM64_FEATURE_BTI_DEFAULT@ \
++  $(top_builddir)/.libs/libgmp.so
++SH_LOG_COMPILER = $(srcdir)/log-compiler.sh
++
++check_PROGRAMS = t-asmtype t-aors_1 t-divrem_1 t-mod_1 t-fat t-get_d	 \
++  t-instrument t-iord_u t-mp_bases t-perfsqr t-scan logic		 \
++  t-toom22 t-toom32 t-toom33 t-toom42 t-toom43 t-toom44			 \
++  t-toom52 t-toom53 t-toom54 t-toom62 t-toom63 t-toom6h t-toom8h	 \
++  t-toom2-sqr t-toom3-sqr t-toom4-sqr t-toom6-sqr t-toom8-sqr		 \
++  t-div t-mul t-mullo t-sqrlo t-mulmod_bnm1 t-sqrmod_bnm1 t-mulmid	 \
++  t-mulmod_bknp1 t-sqrmod_bknp1						 \
++  t-addaddmul t-hgcd t-hgcd_appr t-matrix22 t-invert t-bdiv t-fib2m	 \
++  t-broot t-brootinv t-minvert t-sizeinbase t-gcd_11 t-gcd_22 t-gcdext_1 \
++  t-arm64_bti
++
++test_scripts =
++if HAVE_BASH
++if HAVE_READELF
++  test_scripts += t-arm64_elf_check.sh
++endif
++endif
++check_SCRIPTS = $(test_scripts)
++
++EXTRA_DIST = toom-shared.h toom-sqr-shared.h t-arm64_elf_check.sh
++
++TESTS = $(check_PROGRAMS) $(check_SCRIPTS)
++
++XFAIL_TESTS = t-arm64_bti
+ 
+ $(top_builddir)/tests/libtests.la:
+ 	cd $(top_builddir)/tests; $(MAKE) $(AM_MAKEFLAGS) libtests.la
+diff --git a/tests/mpn/log-compiler.sh b/tests/mpn/log-compiler.sh
+new file mode 100755
+index 000000000..092b21b33
+--- /dev/null
++++ b/tests/mpn/log-compiler.sh
+@@ -0,0 +1,21 @@
++#!/usr/bin/env bash
++
++echo "Log Compiler: $@"
++
++# Flip <options> command to command <options> by swaping the
++# first and last elements of the argv array
++# Convert "$@" to an array for easy manipulation
++args=("$@")
++
++# Get the indices for the first and last elements
++first=0
++last=$((${#args[@]} - 1))
++
++# Swap the first and last elements
++temp="${args[$first]}"
++args[$first]="${args[$last]}"
++args[$last]="$temp"
++
++# Run the script
++./${args[@]}
++exit $?
+diff --git a/tests/mpn/t-arm64_bti.c b/tests/mpn/t-arm64_bti.c
+new file mode 100644
+index 000000000..ca8ab22bb
+--- /dev/null
++++ b/tests/mpn/t-arm64_bti.c
+@@ -0,0 +1,87 @@
++/*
++Copyright 2024 Free Software Foundation, Inc.
++
++This file is part of the GNU MP Library test suite.
++
++The GNU MP Library test suite is free software; you can redistribute it
++and/or modify it under the terms of the GNU General Public License as
++published by the Free Software Foundation; either version 3 of the License,
++or (at your option) any later version.
++
++The GNU MP Library test suite is distributed in the hope that it will be
++useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
++MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General
++Public License for more details.
++
++You should have received a copy of the GNU General Public License along with
++the GNU MP Library test suite.  If not, see https://www.gnu.org/licenses/.  */
++
++/*
++ * Test if if BTI is working within the GMP assembly stubs for AArch64 aka arm64
++ * within GMP. This test gets a function pointer to mpn_lshift avoiding the PLT
++ * using dlsym and calls the function and checks for a valid return. It then
++ * advances the function pointer by 2, which points us to the next instruction,
++ * and calls. The following scenarios are possible:
++ * | Binary BTI Enabled | Hardware BTI Enabled | Executable Outcome  | Test Outcome  |
++ * | 0                  | 0                    | Works returning 77  | SKIP          |
++ * | 0                  | 1                    | Works returning 77  | SKIP          |
++ * | 1                  | 0                    | Works returning 77  | SKIP          |
++ * | 1                  | 1                    | BTI Exception       | PASS          |
++ * Note: 77 is the magic value for autotools to indicate to skip a test.
++ * Note: You MUST run this test when enabled on a BTI enabled hardware setup.
++ * Note: That for non-aarch64 platforms, this also just skips.
++ */
++
++#define SKIP 77
++
++/* AArch64 BTI Binary enabled code ONLY */
++#ifdef __ARM_FEATURE_BTI_DEFAULT
++
++#include <stdint.h>
++#include <stdlib.h>
++#include <stdio.h>
++
++#include <dlfcn.h>
++#include <sys/auxv.h>
++#include <asm/hwcap.h>
++
++#include "gmp-impl.h"
++#include "tests.h"
++
++typedef mp_limb_t (*fn_mpn_lshift)(mp_ptr, mp_srcptr, mp_size_t, unsigned int);
++
++int
++main (int argc, char **argv)
++{
++	unsigned long hwcap2 = getauxval(AT_HWCAP2);
++	if (!(hwcap2 & HWCAP2_BTI)) {
++		fprintf(stderr, "Hardware does not support BTI\n");
++		return SKIP;
++	}
++
++	mp_limb_t xp = 0x1001, wp;
++
++	fn_mpn_lshift fn = dlsym(RTLD_DEFAULT, "__gmpn_lshift");
++	if (!fn) {
++	  fprintf(stderr, "Could not find the symbol __gmpn_lshift\n");
++	  /* This test should not pass, so zero will cause the test harness to fail */
++	  return 0;
++	}
++
++	/* should work as this will land on a BTI landing pad as expected */
++	fn (&wp, &xp, (mp_size_t) 1, 1);
++	ASSERT_ALWAYS (wp == 0x2002);
++
++	/* this should fail as it's off 1 instruction */
++	fn = (fn_mpn_lshift)((uintptr_t)fn + 4);
++	fn(&wp, &xp, (mp_size_t) 1, 1);
++	fprintf(stderr, "This should cause an exception, does your system support BTI?\n");
++	return 0;
++}
++#else
++/* No binary support for BTI or another arch, just skips */
++int
++main (int argc, char **argv) {
++	return SKIP;
++}
++#endif
+diff --git a/tests/mpn/t-arm64_elf_check.sh b/tests/mpn/t-arm64_elf_check.sh
+new file mode 100755
+index 000000000..12d238883
+--- /dev/null
++++ b/tests/mpn/t-arm64_elf_check.sh
+@@ -0,0 +1,96 @@
++#!/usr/bin/env bash
++
++set -e -o pipefail
++
++check_val() {
++
++  local grep_flags="-qi"
++  local not_msg=""
++  # invert the grep match if it SHOULDN'T be found in the flags.
++  # ie BTI 0 means BTI should not be in the notes.
++  if [ "${2}" -eq 0 ]; then
++    grep_flags+="v"
++    not_msg="Not "
++  fi
++
++  printf 'Checking for %s in "%s". Expecting "%sPresent", ' "${1}" "${ELF_BINARY}" "${not_msg}"
++
++  set +e
++  readelf -n "${ELF_BINARY}" | grep $grep_flags -- "${1}"
++  local r="${?}"
++  set -e
++  # Possible states we care about, which grep will fail under:
++  #   - State 1: Not expecting and Found
++  #   - State 2: Expecting and not Found
++  if [[ "${r}" -ne 0 ]]; then
++    # Flip the not message
++    if [ -z "${not_msg}" ]; then
++      not_msg="Not "
++    else
++      not_msg=""
++    fi
++  fi
++
++  # print found or not found
++  printf 'got "%sPresent."\n' "${not_msg}"
++
++  # The grep result means we return the rc through the named variable
++  # this way consumers can just add all the values to determine if its
++  # a failure.
++  declare -g "${1}=${r}"
++}
++
++# Initialize variables
++BTI="0"
++PAC="0"
++ELF_BINARY=""
++
++# Loop through the arguments
++while [[ "${#}" -gt 0 ]]; do
++  case "${1}" in
++  --enable-bti=*)
++    BTI="${1#*=}"
++    shift
++    ;;
++  --enable-pac=*)
++    PAC="${1#*=}"
++    shift
++    ;;
++  --enable-bti | --enable-pac)
++    # If the argument is in the form --enable-bti value (without =)
++    printf 'Error: Option %s requires a value, like --enable-bti=value' "${1}"
++    exit 1
++    ;;
++  *)
++    # Handle the non-option argument
++    if [[ -z "${ELF_BINARY}" ]]; then
++      ELF_BINARY="${1}"
++    else
++      printf 'Error: More than one non-option argument provided: %s\n' "${1}"
++      exit 1
++    fi
++    shift
++    ;;
++  esac
++done
++
++if [ -z "${ELF_BINARY}" ]; then
++  printf "Must specify the ELF binary as the ONLY script argument\n"
++  exit 1
++fi
++
++# Skip if nothing is enabled, 77 is automake magic for SKIP this test.
++# For non-supporting architectures and ABIs both of these will be 0
++# and thus skip.
++if [[ "${BTI}" -eq 0 && "${PAC}" -eq 0 ]]; then
++  printf "PAC and BTI disabled...skipping\n"
++  exit 77
++fi
++
++check_val "BTI" "${BTI}"
++check_val "PAC" "${PAC}"
++
++# don't use expr as it returns non-zero when the addition result is non-zero
++# and causes the set -e script to fail.
++rc="$((BTI + PAC))"
++exit "${rc}"
+-- 
+2.50.1
+

@@ -1,0 +1,4 @@
+/*.rpm
+/gnupg-*.tar.bz*
+/gnupg-*/
+/results_gnupg2/

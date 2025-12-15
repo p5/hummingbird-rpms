@@ -139,6 +139,27 @@
     "source": "https://src.fedoraproject.org/rpms/gdbm.git",
     "version": "1.23"
   },
+  "glib2": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "8c735393e91be4ee5fc303aedd1b6581741fb01a",
+    "source": "https://src.fedoraproject.org/rpms/glib2.git",
+    "version": "2.87.0"
+  },
+  "gmp": {
+    "branch": "rawhide",
+    "release": "4",
+    "sha": "56096312a18ac561c1d3c79c11c7e4ed52a8afc8",
+    "source": "https://src.fedoraproject.org/rpms/gmp.git",
+    "version": "6.3.0"
+  },
+  "gnupg2": {
+    "branch": "rawhide",
+    "release": "4",
+    "sha": "a695c22242619f17f0690c4eb368cde32b288613",
+    "source": "https://src.fedoraproject.org/rpms/gnupg2.git",
+    "version": "2.4.8"
+  },
   "grep": {
     "branch": "rawhide",
     "release": "2",
@@ -152,6 +173,13 @@
     "sha": "743fda931ab667f384da6684b4c495099d7a1c70",
     "source": "https://src.fedoraproject.org/rpms/hostname.git",
     "version": "3.25"
+  },
+  "ima-evm-utils": {
+    "branch": "rawhide",
+    "release": "7",
+    "sha": "667e783b37838ccb6a2cb2198a22f280b2bb5548",
+    "source": "https://src.fedoraproject.org/rpms/ima-evm-utils.git",
+    "version": "1.6.2"
   },
   "libarchive": {
     "branch": "rawhide",
