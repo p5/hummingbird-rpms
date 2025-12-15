@@ -77,6 +77,22 @@ deploy_components_to_konflux:
     - !reference [.rules, push]
     - !reference [.rules, web]
 
+add_components_to_konflux:
+  variables:
+    PARENT_PROJECT_PATH: $CI_PROJECT_PATH
+    PARENT_MERGE_REQUEST_IID: $CI_MERGE_REQUEST_IID
+    PARENT_COMMIT_SHA: $CI_COMMIT_SHA
+    PARENT_BASE_SHA: $CI_MERGE_REQUEST_DIFF_BASE_SHA
+    ONLY_JOB_NAME: rpms-components-add
+  trigger:
+    project: redhat/hummingbird/infrastructure
+    strategy: depend
+  allow_failure: true
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+      changes:
+        - konflux-templates/rendered.yml
+
 dist_git_update:
   environment:
     name: chore-mr
