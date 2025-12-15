@@ -265,6 +265,13 @@
     "source": "https://src.fedoraproject.org/rpms/libsolv.git",
     "version": "0.7.35"
   },
+  "libssh": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "23198341de92346c3215d2181e3fe7b79e09d0b2",
+    "source": "https://src.fedoraproject.org/rpms/libssh.git",
+    "version": "0.11.3"
+  },
   "libtasn1": {
     "branch": "rawhide",
     "release": "1",
