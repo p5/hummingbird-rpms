@@ -146,6 +146,13 @@
     "source": "https://src.fedoraproject.org/rpms/glib2.git",
     "version": "2.87.0"
   },
+  "gmp": {
+    "branch": "rawhide",
+    "release": "4",
+    "sha": "56096312a18ac561c1d3c79c11c7e4ed52a8afc8",
+    "source": "https://src.fedoraproject.org/rpms/gmp.git",
+    "version": "6.3.0"
+  },
   "grep": {
     "branch": "rawhide",
     "release": "2",
