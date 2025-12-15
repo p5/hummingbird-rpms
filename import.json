@@ -195,6 +195,13 @@
     "source": "https://src.fedoraproject.org/rpms/json-c.git",
     "version": "0.18"
   },
+  "keyutils": {
+    "branch": "rawhide",
+    "release": "6",
+    "sha": "0fdb9190f6ad534a8d28fba90dc95ca14dea3778",
+    "source": "https://src.fedoraproject.org/rpms/keyutils.git",
+    "version": "1.6.3"
+  },
   "libarchive": {
     "branch": "rawhide",
     "release": "1",
@@ -404,6 +411,13 @@
     "sha": "3060610232b9d2dad64f560d114305a21336759a",
     "source": "https://src.fedoraproject.org/rpms/nghttp2.git",
     "version": "1.68.0"
+  },
+  "nghttp3": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "0855053d5dd934d8d908fb5a9687b6814c8eb8b5",
+    "source": "https://src.fedoraproject.org/rpms/nghttp3.git",
+    "version": "1.13.1"
   },
   "ngtcp2": {
     "branch": "rawhide",
