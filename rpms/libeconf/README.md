@@ -1,0 +1,3 @@
+# libeconf
+
+The libeconf package

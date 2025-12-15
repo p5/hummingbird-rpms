@@ -1,0 +1,33 @@
+summary: Runs upstream testsuite
+description: ''
+enabled: true
+link:
+  - relates: https://bugzilla.redhat.com/show_bug.cgi?id=1031159
+  - relates: https://bugzilla.redhat.com/show_bug.cgi?id=839210
+  - relates: https://bugzilla.redhat.com/show_bug.cgi?id=1006261
+tag:
+  - CI-Tier-1
+  - RHEL6
+  - Tier1
+  - rhel-buildroot
+tier: '1'
+contact: mcermak@redhat.com
+component:
+  - libffi
+test: ./runtest.sh
+framework: beakerlib
+require:
+  - libffi
+  - libffi-devel
+  - libtool
+  - gcc
+  - dejagnu
+  - rpm-build
+  - gcc-c++
+  - texinfo
+  - strace
+duration: 35m
+extra-nitrate: TC#0063644
+extra-summary: /tools/libffi/Sanity/testsuite
+extra-task: /tools/libffi/Sanity/testsuite
+id: 2d3a499f-1f59-40f0-a76c-1c73569d0512

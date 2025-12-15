@@ -1,0 +1,4 @@
+/*.rpm
+/libksba-*/
+/libksba-*.tar.bz2*
+/results_libksba/

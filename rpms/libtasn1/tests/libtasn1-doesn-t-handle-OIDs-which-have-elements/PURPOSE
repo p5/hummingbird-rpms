@@ -1,0 +1,6 @@
+PURPOSE of /CoreOS/libtasn1/Regression/libtasn1-doesn-t-handle-OIDs-which-have-elements
+Description: Test for libtasn1 doesn't handle OIDs which have elements
+Author: Hubert Kario <hkario@redhat.com>
+Bug summary: libtasn1 doesn't handle OIDs which have elements of size which exceed 32-bits
+
+Test that libtasn1 does handle OIDs which have elements of size which exceed 32-bits

@@ -1,0 +1,25 @@
+summary: Test calls upstream test suite.
+test: ./runtest.sh
+enabled: true
+framework: beakerlib
+require:
+  - library(distribution/fips)
+recommend:
+  - libgcrypt
+  - nfs-utils
+  - rpm-build
+  - autoconf
+  - automake
+  - libtool
+  - gawk
+  - gcc-c++
+  - libgpg-error-devel
+  - pkgconfig
+  - texinfo
+  - fipscheck
+  - libkcapi-fipscheck
+  - crypto-policies-scripts
+  - bc
+  - annobin-annocheck
+  - gnupg2
+duration: 45m

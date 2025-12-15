@@ -1,0 +1,17 @@
+---
+- hosts: localhost
+  roles:
+  - role: standard-test-beakerlib
+    tags:
+    - classic
+    - container
+    tests:
+    - libtasn1-doesn-t-handle-OIDs-which-have-elements
+    required_packages:
+    - libtasn1
+    - libtasn1-devel
+    - libtasn1-tools
+    - openssl
+    - valgrind
+    - nfs-utils
+    - rpm-build
