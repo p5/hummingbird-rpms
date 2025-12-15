@@ -1,0 +1,17 @@
+PURPOSE of /CoreOS/p11-kit/trust-anchor-complains-about-invalid-attribute-and
+Description: Test for trust anchor complains about invalid attribute and
+Author: Hubert Kario <hkario@redhat.com>
+Bug summary: trust anchor complains about invalid attribute and fails when a new certificate tries to store into trust place
+
+Steps to Reproduce:
+1. /etc/pki/tls/certs/make-dummy-cert mycert-tmp.pem
+2. openssl x509 -in mycert-tmp.pem -addtrust clientAuth -addtrust serverAuth -addtrust emailProtection -out mycert.pem
+3. trust anchor --store mycert.pem
+
+Actual results:
+p11-kit: the CKA_TRUSTED attribute is not valid for the object
+p11-kit: couldn't create object: Certain fields have invalid values
+
+
+Expected results:
+Certificate is stored in trust place.

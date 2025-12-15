@@ -426,6 +426,13 @@
     "source": "https://src.fedoraproject.org/rpms/openssl.git",
     "version": "3.5.4"
   },
+  "p11-kit": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "a33bf8feb91135889310ccdcd5633611501600bc",
+    "source": "https://src.fedoraproject.org/rpms/p11-kit.git",
+    "version": "0.25.8"
+  },
   "pam": {
     "branch": "rawhide",
     "release": "3",
