@@ -153,6 +153,13 @@
     "source": "https://src.fedoraproject.org/rpms/gmp.git",
     "version": "6.3.0"
   },
+  "gnupg2": {
+    "branch": "rawhide",
+    "release": "4",
+    "sha": "a695c22242619f17f0690c4eb368cde32b288613",
+    "source": "https://src.fedoraproject.org/rpms/gnupg2.git",
+    "version": "2.4.8"
+  },
   "grep": {
     "branch": "rawhide",
     "release": "2",
