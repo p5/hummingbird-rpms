@@ -181,6 +181,13 @@
     "source": "https://src.fedoraproject.org/rpms/ima-evm-utils.git",
     "version": "1.6.2"
   },
+  "json-c": {
+    "branch": "rawhide",
+    "release": "7",
+    "sha": "2b1531aee7d2ec510cb81d9b3bf4a997eb58045f",
+    "source": "https://src.fedoraproject.org/rpms/json-c.git",
+    "version": "0.18"
+  },
   "libarchive": {
     "branch": "rawhide",
     "release": "1",
