@@ -1,0 +1,15 @@
+[hummingbird]
+name=Hummingbird - $basearch
+baseurl=https://console.redhat.com/api/pulp-content/public-hummingbird/$arch/
+# gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-hummingbird-release-SHA256
+gpgcheck=0
+enabled=1
+sslverify=1
+
+[hummingbird-source]
+name=Hummingbird - Source
+baseurl=https://console.redhat.com/api/pulp-content/public-hummingbird/source/
+# gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-hummingbird-release-SHA256
+gpgcheck=0
+enabled=0
+sslverify=1
