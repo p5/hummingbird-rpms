@@ -25,6 +25,17 @@ RUN rpmkeys --import /etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-rawhide-primary --root 
 # Copy the RPM to test
 COPY test.rpm /tmp/test.rpm
 
+# Configure Hummingbird repository for dependency resolution
+RUN mkdir -p /etc/yum.repos.d/ && \
+    cat <<EOF > /etc/yum.repos.d/hummingbird.repo
+[hummingbird]
+name=Hummingbird - \$basearch
+baseurl=https://console.redhat.com/api/pulp-content/public-hummingbird/\$arch/
+gpgcheck=0
+enabled=1
+sslverify=1
+EOF
+
 # Copy local repository if present and configure it (only if LOCAL_REPO is set)
 COPY local-repo /tmp/local-repo/
 RUN <<EOF
