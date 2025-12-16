@@ -1,0 +1,11 @@
+PURPOSE of /CoreOS/which/Sanity/basic-functionality-test
+Description: tests basic functionality
+Author: Karel Srot <ksrot@redhat.com>
+
+tests following scenarios:
+ * test --version
+ * test locating the bash binary
+ * test an alias
+ * test non existing command
+ * test with customized PATH
+ * test options -a / --all
