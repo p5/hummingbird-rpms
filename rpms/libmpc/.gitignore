@@ -1,0 +1,4 @@
+*.rpm
+.build-*
+mpc-*/
+/mpc-*.tar.gz
