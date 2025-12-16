@@ -1,0 +1,27 @@
+PURPOSE of /CoreOS/patch/Regression/Cannot-handle-file-names-with-integrated-spaces
+Description: Test for bz431887 (Cannot handle file names with integrated spaces)
+Author: Ondrej Moris <omoris@redhat.com>
+Bug summary: Cannot handle file names with integrated spaces
+Bugzilla link: https://bugzilla.redhat.com/show_bug.cgi?id=431887
+
+Description:
+
+Description of problem:
+If the file name for the file to be patched in a patch file has spaces, it
+cannot be handled by patch.
+
+Version-Release number of selected component (if applicable):
+patch-2.5.4-29.2.2
+
+How reproducible:
+create a patch of a file with spaces in path
+try to apply the patch
+
+Actual results:
+patch asks for the file name to patch
+
+Expected results:
+Just the patched file
+
+Additional info:
+Note that this bug is fixed upstream on 2003-05-18!
