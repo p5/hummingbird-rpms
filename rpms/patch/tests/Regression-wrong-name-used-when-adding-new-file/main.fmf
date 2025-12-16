@@ -1,0 +1,13 @@
+summary: 'Test for Regression: wrong name used when adding new file'
+contact: Karel Srot <ksrot@redhat.com>
+component:
+  - patch
+test: ./runtest.sh
+framework: beakerlib
+recommend:
+  - patch
+duration: 5m
+extra-summary: 
+    /CoreOS/patch/Regression/Regression-wrong-name-used-when-adding-new-file
+extra-task: 
+    /CoreOS/patch/Regression/Regression-wrong-name-used-when-adding-new-file

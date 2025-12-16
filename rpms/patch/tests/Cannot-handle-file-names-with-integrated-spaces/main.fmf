@@ -1,0 +1,16 @@
+summary: Test for bz431887 (Cannot handle file names with integrated spaces)
+contact: Ondrej Moris <omoris@redhat.com>
+link:
+  - relates: https://bugzilla.redhat.com/show_bug.cgi?id=431887
+component:
+  - patch
+test: ./runtest.sh
+framework: beakerlib
+recommend:
+  - patch
+  - expect
+duration: 5m
+extra-summary: 
+    /CoreOS/patch/Regression/Cannot-handle-file-names-with-integrated-spaces
+extra-task: 
+    /CoreOS/patch/Regression/Cannot-handle-file-names-with-integrated-spaces

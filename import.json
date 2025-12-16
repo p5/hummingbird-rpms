@@ -62,6 +62,13 @@
     "source": "https://src.fedoraproject.org/rpms/coreutils.git",
     "version": "9.9"
   },
+  "cpio": {
+    "branch": "rawhide",
+    "release": "6",
+    "sha": "1dd1311e4456af20805b3955c92626dfebcde27d",
+    "source": "https://src.fedoraproject.org/rpms/cpio.git",
+    "version": "2.15"
+  },
   "crypto-policies": {
     "branch": "rawhide",
     "release": "1.git19878fe",
@@ -481,6 +488,13 @@
     "sha": "a6b937d812c29318262dccd9153f8c6220b10b8c",
     "source": "https://src.fedoraproject.org/rpms/pam.git",
     "version": "1.7.1"
+  },
+  "patch": {
+    "branch": "rawhide",
+    "release": "3",
+    "sha": "f367e09a2321dc54e2625e28a8ad759875a2651d",
+    "source": "https://src.fedoraproject.org/rpms/patch.git",
+    "version": "2.8"
   },
   "pcre2": {
     "branch": "rawhide",

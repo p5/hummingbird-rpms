@@ -1,0 +1,55 @@
+PURPOSE of /CoreOS/patch/Regression/Regression-wrong-name-used-when-adding-new-file
+Description: Test for Regression: wrong name used when adding new file
+Author: Karel Srot <ksrot@redhat.com>
+Bug summary: Regression: wrong name used when adding new file
+
+Description:
+
++++ This bug was initially created as a clone of Bug #549122 +++
+
+Description of problem:
+Regression: Suffix inside of new files of patch files are added to new files.
+Take http://cvs.fedoraproject.org/viewvc/devel/popt/popt-1.13-multilib.patch
+for example for reproducing:
+
+With patch-2.6-1, "%patch0 -p1 -b .multilib" causes:
+-rw-r--r-- 1 tux tux 256 Dec 20 15:26 footer_no_timestamp.html.multilib
+-rw-r--r-- 1 tux tux   0 Dec 20 15:26 footer_no_timestamp.html.multilib.multilib
+
+-rw-r--r-- 1 tux tux 51543 Dec 20 15:26 Doxyfile.in
+-rw-r--r-- 1 tux tux 51519 May 25  2007 Doxyfile.in.multilib
+
+With patch-2.5.4-36, "%patch0 -p1 -b .multilib" causes:
+-rw-r--r-- 1 tux tux 256 Dec 20 15:32 footer_no_timestamp.html
+---------- 1 tux tux   0 Dec 20 15:32 footer_no_timestamp.html.multilib
+
+-rw-r--r-- 1 tux tux 51543 Dec 20 15:32 Doxyfile.in
+-rw-r--r-- 1 tux tux 51519 May 25  2007 Doxyfile.in.multilib
+
+You see what I mean? If the file is created by the patch file, the suffix
+inside of the patch is appended to the new created file. That behaviour has
+been introduced with the new version and it looks like a regression to me.
+
+Version-Release number of selected component (if applicable):
+patch-2.6-1
+patch-2.5.4-36
+
+How reproducible:
+Everytime, see above.
+
+Actual results:
+Regression: Suffixes inside of patches at new files are added to new files
+
+Expected results:
+Good old behaviour like at patch-2.5.4-36.
+
+--- Additional comment from twaugh@redhat.com on 2009-12-21 05:17:27 EDT ---
+
+Verified.
+
+Affects F-12 and F-11 as well.
+
+--- Additional comment from twaugh@redhat.com on 2009-12-21 11:44:02 EDT ---
+
+Reported upstream:
+  https://savannah.gnu.org/bugs/index.php?28367

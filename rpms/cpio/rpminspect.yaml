@@ -1,0 +1,7 @@
+# Set up global ignore list
+# The 'gethostbyname' func is used only in the lib/rtapelib.c file
+# We've decided it's not a risk due to the fact that it's used for open the magnetic tape function
+badfuncs:
+    allowed:
+        /usr/bin/cpio:
+            - gethostbyname
