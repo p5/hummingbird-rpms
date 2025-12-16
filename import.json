@@ -254,9 +254,9 @@
   "libgpg-error": {
     "branch": "rawhide",
     "release": "1",
-    "sha": "3a79bae5a201759332c035ee5b9dd3cfa2ad004b",
+    "sha": "aa604a1da7f5faf75d30f4306d1a27d598fe07fd",
     "source": "https://src.fedoraproject.org/rpms/libgpg-error.git",
-    "version": "1.57"
+    "version": "1.58"
   },
   "libidn2": {
     "branch": "rawhide",
