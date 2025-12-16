@@ -117,24 +117,41 @@ This only imports changes if these were actually built in Koji, to ensure we onl
 
 All of these commands automatically commit changes with descriptive commit messages including the upstream SHA. To avoid that, you can use the `--dry-run` option.
 
-## Pipeline timeouts
+## Package-specific overrides
 
-Pipeline and task timeouts are configurable per-package. The default timeout is 4 hours. To set a custom timeout for a specific package, edit the `PACKAGE_TIMEOUTS` associative array in `ci/generate_pac_resources.sh`:
+Per-package build configuration can be customized in `ci/package-overrides.yaml`. If a package is not listed, it uses default settings.
 
-```bash
-declare -A PACKAGE_TIMEOUTS=(
-    ["setup"]=18
-    ["your-package"]=6
-)
+Available options:
+
+| Option | Description | Default |
+|--------|-------------|---------|
+| `timeout_hours` | Build timeout in hours | 4 |
+| `build_platforms` | List of MPLs (instance sizes) for multi-platform builds | Pipeline defaults |
+
+Example configuration:
+
+```yaml
+# Long-running package with custom timeout
+setup:
+  timeout_hours: 12
+
+# Package requiring larger build instances
+llvm:
+  timeout_hours: 12
+  build_platforms:
+    - "linux-d160-c8xlarge/arm64"
+    - "linux-d160-c8xlarge/amd64"
 ```
 
-After modifying timeouts, regenerate the pipeline files:
+All available MPLs can be found in the [Konflux multi-platform builds documentation](https://konflux.pages.redhat.com/docs/users/getting-started/multi-platform-builds.html).
+
+After modifying overrides, regenerate the pipeline files:
 
 ```bash
 make generate
 ```
 
-This updates `.tekton/rpms-on-push.yaml` and `.tekton/rpms-on-pull-request.yaml` with the new timeout values.
+This updates `.tekton/rpms-on-push.yaml` and `.tekton/rpms-on-pull-request.yaml` with the new configuration.
 
 ## Branching and pull requests
 - Create feature branches from the default branch.
