@@ -1,0 +1,1310 @@
+From 633bea37176f3fe16dd431ccb35112aa970c7db1 Mon Sep 17 00:00:00 2001
+From: Frantisek Krenzelok <krenzelok.frantisek@gmail.com>
+Date: Tue, 11 Feb 2025 12:45:44 +0100
+Subject: [PATCH 1/7] kTLS: keyupdate_test improvements
+
+- ktls_utils.h has helper funtion to create standard sockets required
+  for ktls support testing.
+- key_update test for kTLS is now a flavourt of the tls13/key_update
+  test instead of being standalone(broadens the testing cases).
+- gnutls_ktls.c now uses the aformentioned ktls_utils.h
+
+Signed-off-by: Frantisek Krenzelok <krenzelok.frantisek@gmail.com>
+---
+ tests/Makefile.am        |  16 +-
+ tests/gnutls_ktls.c      |  60 ++-----
+ tests/ktls_keyupdate.c   | 368 ---------------------------------------
+ tests/ktls_utils.h       |  94 ++++++++++
+ tests/tls13/key_update.c | 115 +++++++++++-
+ 5 files changed, 228 insertions(+), 425 deletions(-)
+ delete mode 100644 tests/ktls_keyupdate.c
+ create mode 100644 tests/ktls_utils.h
+
+diff --git a/tests/Makefile.am b/tests/Makefile.am
+index 72926e9da4..9990ee21cc 100644
+--- a/tests/Makefile.am
++++ b/tests/Makefile.am
+@@ -517,12 +517,6 @@ if ENABLE_TPM2
+ dist_check_SCRIPTS += tpm2.sh
+ endif
+ 
+-if ENABLE_KTLS
+-indirect_tests += gnutls_ktls
+-dist_check_SCRIPTS += ktls.sh
+-indirect_tests += ktls_keyupdate
+-dist_check_SCRIPTS += ktls_keyupdate.sh
+-endif
+ 
+ if !WINDOWS
+ 
+@@ -530,6 +524,16 @@ if !WINDOWS
+ # List of tests not available/functional under windows
+ #
+ 
++if ENABLE_KTLS
++indirect_tests += gnutls_ktls
++dist_check_SCRIPTS += ktls.sh
++
++indirect_tests += ktls_keyupdate
++ktls_keyupdate_SOURCES = tls13/key_update.c
++ktls_keyupdate_CFLAGS = -DUSE_KTLS
++dist_check_SCRIPTS += ktls_keyupdate.sh
++endif
++
+ dist_check_SCRIPTS += dtls/dtls.sh dtls/dtls-resume.sh #dtls/dtls-nb
+ 
+ indirect_tests += dtls-stress
+diff --git a/tests/gnutls_ktls.c b/tests/gnutls_ktls.c
+index 90d3e9af91..ca576d42aa 100644
+--- a/tests/gnutls_ktls.c
++++ b/tests/gnutls_ktls.c
+@@ -31,6 +31,7 @@ int main(void)
+ 
+ #include "cert-common.h"
+ #include "utils.h"
++#include "ktls_utils.h"
+ 
+ static void server_log_func(int level, const char *str)
+ {
+@@ -94,7 +95,8 @@ static void client(int fd, const char *prio)
+ 	} while (ret == GNUTLS_E_AGAIN || ret == GNUTLS_E_INTERRUPTED);
+ 
+ 	if (ret == 0) {
+-		success("client: Peer has closed the TLS connection\n");
++		if (debug)
++			success("client: Peer has closed the TLS connection\n");
+ 		goto end;
+ 	} else if (ret < 0) {
+ 		fail("client: Error: %s\n", gnutls_strerror(ret));
+@@ -116,7 +118,8 @@ static void client(int fd, const char *prio)
+ 	} while (ret == GNUTLS_E_AGAIN || ret == GNUTLS_E_INTERRUPTED);
+ 
+ 	if (ret == 0) {
+-		success("client: Peer has closed the TLS connection\n");
++		if (debug)
++			success("client: Peer has closed the TLS connection\n");
+ 		goto end;
+ 	} else if (ret < 0) {
+ 		fail("client: Error: %s\n", gnutls_strerror(ret));
+@@ -277,35 +280,16 @@ static void ch_handler(int sig)
+ static void run(const char *prio)
+ {
+ 	int ret;
+-	struct sockaddr_in saddr;
+-	socklen_t addrlen;
+-	int listener;
+-	int fd;
++	int client_fd, server_fd;
+ 
+ 	success("running ktls test with %s\n", prio);
+ 
+ 	signal(SIGCHLD, ch_handler);
+ 	signal(SIGPIPE, SIG_IGN);
+ 
+-	listener = socket(AF_INET, SOCK_STREAM, 0);
+-	if (listener == -1) {
+-		fail("error in listener(): %s\n", strerror(errno));
+-	}
+-
+-	memset(&saddr, 0, sizeof(saddr));
+-	saddr.sin_family = AF_INET;
+-	saddr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
+-	saddr.sin_port = 0;
+-
+-	ret = bind(listener, (struct sockaddr *)&saddr, sizeof(saddr));
+-	if (ret == -1) {
+-		fail("error in bind(): %s\n", strerror(errno));
+-	}
+-
+-	addrlen = sizeof(saddr);
+-	ret = getsockname(listener, (struct sockaddr *)&saddr, &addrlen);
+-	if (ret == -1) {
+-		fail("error in getsockname(): %s\n", strerror(errno));
++	if ((ret = create_socket_pair(&client_fd, &server_fd))) {
++		fail("Error in socket creation: %d\n", ret);
++		exit(1);
+ 	}
+ 
+ 	child = fork();
+@@ -315,30 +299,20 @@ static void run(const char *prio)
+ 	}
+ 
+ 	if (child) {
+-		int status;
+ 		/* parent */
+-		ret = listen(listener, 1);
+-		if (ret == -1) {
+-			fail("error in listen(): %s\n", strerror(errno));
+-		}
++		int status;
++		close(client_fd);
+ 
+-		fd = accept(listener, NULL, NULL);
+-		if (fd == -1) {
+-			fail("error in accept(): %s\n", strerror(errno));
+-		}
+-		server(fd, prio);
++		server(server_fd, prio);
+ 
+ 		wait(&status);
+ 		check_wait_status(status);
+ 	} else {
+-		fd = socket(AF_INET, SOCK_STREAM, 0);
+-		if (fd == -1) {
+-			fail("error in socket(): %s\n", strerror(errno));
+-			exit(1);
+-		}
+-		usleep(1000000);
+-		connect(fd, (struct sockaddr *)&saddr, addrlen);
+-		client(fd, prio);
++		close(server_fd);
++		sleep(1);
++
++		client(client_fd, prio);
++
+ 		exit(0);
+ 	}
+ }
+diff --git a/tests/ktls_keyupdate.c b/tests/ktls_keyupdate.c
+deleted file mode 100644
+index b439b7df21..0000000000
+--- a/tests/ktls_keyupdate.c
++++ /dev/null
+@@ -1,368 +0,0 @@
+-// Copyright (C) 2022 Red Hat, Inc.
+-//
+-// Author: Frantisek Krenzelok
+-//
+-// This file is part of GnuTLS.
+-//
+-// GnuTLS is free software; you can redistribute it and/or modify it
+-// under the terms of the GNU General Public License as published by the
+-// Free Software Foundation; either version 3 of the License, or (at
+-// your option) any later version.
+-//
+-// GnuTLS is distributed in the hope that it will be useful, but
+-// WITHOUT ANY WARRANTY; without even the implied warranty of
+-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+-// General Public License for more details.
+-//
+-// You should have received a copy of the GNU General Public License
+-// along with GnuTLS.  If not, see <https://www.gnu.org/licenses/>.
+-
+-#ifdef HAVE_CONFIG_H
+-#include "config.h"
+-#endif
+-
+-#include <stdio.h>
+-#include <stdlib.h>
+-#include <string.h>
+-#include <sys/types.h>
+-#include <netinet/in.h>
+-#include <sys/socket.h>
+-#include <sys/wait.h>
+-#include <arpa/inet.h>
+-#include <unistd.h>
+-#include <gnutls/gnutls.h>
+-#include <gnutls/crypto.h>
+-#include <gnutls/dtls.h>
+-#include <gnutls/socket.h>
+-#include <signal.h>
+-#include <assert.h>
+-#include <errno.h>
+-
+-#include "cert-common.h"
+-#include "utils.h"
+-
+-#if defined(_WIN32)
+-
+-int main(void)
+-{
+-	exit(77);
+-}
+-
+-#else
+-
+-#define MAX_BUF 1024
+-#define MSG "Hello world!"
+-
+-#define HANDSHAKE(session, name, ret)                                 \
+-	{                                                             \
+-		do {                                                  \
+-			ret = gnutls_handshake(session);              \
+-		} while (ret < 0 && gnutls_error_is_fatal(ret) == 0); \
+-		if (ret < 0) {                                        \
+-			fail("%s: Handshake failed\n", name);         \
+-			goto end;                                     \
+-		}                                                     \
+-	}
+-
+-#define SEND_MSG(session, name, ret)                                     \
+-	{                                                                \
+-		do {                                                     \
+-			ret = gnutls_record_send(session, MSG,           \
+-						 strlen(MSG) + 1);       \
+-		} while (ret == GNUTLS_E_AGAIN ||                        \
+-			 ret == GNUTLS_E_INTERRUPTED);                   \
+-		if (ret < 0) {                                           \
+-			fail("%s: data sending has failed (%s)\n", name, \
+-			     gnutls_strerror(ret));                      \
+-			goto end;                                        \
+-		}                                                        \
+-	}
+-
+-#define RECV_MSG(session, name, buffer, buffer_len, ret)                       \
+-	{                                                                      \
+-		memset(buffer, 0, sizeof(buffer));                             \
+-		do {                                                           \
+-			ret = gnutls_record_recv(session, buffer,              \
+-						 sizeof(buffer));              \
+-		} while (ret == GNUTLS_E_AGAIN ||                              \
+-			 ret == GNUTLS_E_INTERRUPTED);                         \
+-		if (ret == 0) {                                                \
+-			success("%s: Peer has closed the TLS connection\n",    \
+-				name);                                         \
+-			goto end;                                              \
+-		} else if (ret < 0) {                                          \
+-			fail("%s: Error -> %s\n", name, gnutls_strerror(ret)); \
+-			goto end;                                              \
+-		}                                                              \
+-		if (strncmp(buffer, MSG, ret)) {                               \
+-			fail("%s: Message doesn't match\n", name);             \
+-			goto end;                                              \
+-		}                                                              \
+-	}
+-
+-#define KEY_UPDATE(session, name, peer_req, ret)                            \
+-	{                                                                   \
+-		do {                                                        \
+-			ret = gnutls_session_key_update(session, peer_req); \
+-		} while (ret == GNUTLS_E_AGAIN ||                           \
+-			 ret == GNUTLS_E_INTERRUPTED);                      \
+-		if (ret < 0) {                                              \
+-			fail("%s: key update has failed (%s)\n", name,      \
+-			     gnutls_strerror(ret));                         \
+-			goto end;                                           \
+-		}                                                           \
+-	}
+-
+-#define CHECK_KTLS_ENABLED(session, ret)                                     \
+-	{                                                                    \
+-		ret = gnutls_transport_is_ktls_enabled(session);             \
+-		if (!(ret & GNUTLS_KTLS_RECV)) {                             \
+-			fail("client: KTLS was not properly initialized\n"); \
+-			goto end;                                            \
+-		}                                                            \
+-	}
+-
+-static void server_log_func(int level, const char *str)
+-{
+-	fprintf(stderr, "server|<%d>| %s", level, str);
+-}
+-
+-static void client_log_func(int level, const char *str)
+-{
+-	fprintf(stderr, "client|<%d>| %s", level, str);
+-}
+-
+-static void client(int fd, const char *prio, int pipe)
+-{
+-	const char *name = "client";
+-	int ret;
+-	char foo;
+-	char buffer[MAX_BUF + 1];
+-	gnutls_certificate_credentials_t x509_cred;
+-	gnutls_session_t session;
+-
+-	global_init();
+-
+-	if (debug) {
+-		gnutls_global_set_log_function(client_log_func);
+-		gnutls_global_set_log_level(7);
+-	}
+-
+-	gnutls_certificate_allocate_credentials(&x509_cred);
+-
+-	gnutls_init(&session, GNUTLS_CLIENT);
+-	gnutls_handshake_set_timeout(session, 0);
+-
+-	assert(gnutls_priority_set_direct(session, prio, NULL) >= 0);
+-
+-	gnutls_credentials_set(session, GNUTLS_CRD_CERTIFICATE, x509_cred);
+-
+-	gnutls_transport_set_int(session, fd);
+-
+-	HANDSHAKE(session, name, ret);
+-
+-	CHECK_KTLS_ENABLED(session, ret)
+-	// Test 0: Try sending/receiving data
+-	RECV_MSG(session, name, buffer, MAX_BUF + 1, ret)
+-	SEND_MSG(session, name, ret)
+-	CHECK_KTLS_ENABLED(session, ret)
+-	// Test 1: Servers does key update
+-	read(pipe, &foo, 1);
+-	RECV_MSG(session, name, buffer, MAX_BUF + 1, ret)
+-	SEND_MSG(session, name, ret)
+-	CHECK_KTLS_ENABLED(session, ret)
+-	// Test 2: Does key update witch request
+-	read(pipe, &foo, 1);
+-	RECV_MSG(session, name, buffer, MAX_BUF + 1, ret)
+-	SEND_MSG(session, name, ret)
+-	CHECK_KTLS_ENABLED(session, ret)
+-	ret = gnutls_bye(session, GNUTLS_SHUT_RDWR);
+-	if (ret < 0) {
+-		fail("client: error in closing session: %s\n",
+-		     gnutls_strerror(ret));
+-	}
+-
+-	ret = 0;
+-end:
+-
+-	close(fd);
+-
+-	gnutls_deinit(session);
+-
+-	gnutls_certificate_free_credentials(x509_cred);
+-
+-	gnutls_global_deinit();
+-
+-	if (ret != 0)
+-		exit(1);
+-}
+-
+-pid_t child;
+-static void terminate(void)
+-{
+-	assert(child);
+-	kill(child, SIGTERM);
+-	exit(1);
+-}
+-
+-static void server(int fd, const char *prio, int pipe)
+-{
+-	const char *name = "server";
+-	int ret;
+-	char bar = 0;
+-	char buffer[MAX_BUF + 1];
+-	gnutls_certificate_credentials_t x509_cred;
+-	gnutls_session_t session;
+-
+-	global_init();
+-
+-	if (debug) {
+-		gnutls_global_set_log_function(server_log_func);
+-		gnutls_global_set_log_level(7);
+-	}
+-
+-	gnutls_certificate_allocate_credentials(&x509_cred);
+-	ret = gnutls_certificate_set_x509_key_mem(
+-		x509_cred, &server_cert, &server_key, GNUTLS_X509_FMT_PEM);
+-	if (ret < 0)
+-		exit(1);
+-
+-	gnutls_init(&session, GNUTLS_SERVER);
+-	gnutls_handshake_set_timeout(session, 0);
+-
+-	assert(gnutls_priority_set_direct(session, prio, NULL) >= 0);
+-
+-	gnutls_credentials_set(session, GNUTLS_CRD_CERTIFICATE, x509_cred);
+-
+-	gnutls_transport_set_int(session, fd);
+-
+-	HANDSHAKE(session, name, ret)
+-	CHECK_KTLS_ENABLED(session, ret)
+-	success("Test 0: sending/receiving data\n");
+-	SEND_MSG(session, name, ret)
+-	RECV_MSG(session, name, buffer, MAX_BUF + 1, ret)
+-	CHECK_KTLS_ENABLED(session, ret)
+-	success("Test 1: server key update without request\n");
+-	KEY_UPDATE(session, name, 0, ret)
+-	write(pipe, &bar, 1);
+-	SEND_MSG(session, name, ret)
+-	RECV_MSG(session, name, buffer, MAX_BUF + 1, ret)
+-	CHECK_KTLS_ENABLED(session, ret)
+-	success("Test 2: server key update with request\n");
+-	KEY_UPDATE(session, name, GNUTLS_KU_PEER, ret)
+-	write(pipe, &bar, 1);
+-	SEND_MSG(session, name, ret)
+-	RECV_MSG(session, name, buffer, MAX_BUF + 1, ret)
+-	CHECK_KTLS_ENABLED(session, ret)
+-	ret = gnutls_bye(session, GNUTLS_SHUT_RDWR);
+-	if (ret < 0) {
+-		fail("server: error in closing session: %s\n",
+-		     gnutls_strerror(ret));
+-	}
+-
+-	ret = 0;
+-end:
+-	close(fd);
+-	gnutls_deinit(session);
+-
+-	gnutls_certificate_free_credentials(x509_cred);
+-
+-	gnutls_global_deinit();
+-
+-	if (ret) {
+-		terminate();
+-	}
+-
+-	if (debug)
+-		success("server: finished\n");
+-}
+-
+-static void ch_handler(int sig)
+-{
+-	return;
+-}
+-
+-static void run(const char *prio)
+-{
+-	int ret;
+-	struct sockaddr_in saddr;
+-	socklen_t addrlen;
+-	int listener;
+-	int fd;
+-
+-	int sync_pipe[2]; //used for synchronization
+-	pipe(sync_pipe);
+-
+-	success("running ktls test with %s\n", prio);
+-
+-	signal(SIGCHLD, ch_handler);
+-	signal(SIGPIPE, SIG_IGN);
+-
+-	listener = socket(AF_INET, SOCK_STREAM, 0);
+-	if (listener == -1) {
+-		fail("error in listener(): %s\n", strerror(errno));
+-	}
+-
+-	memset(&saddr, 0, sizeof(saddr));
+-	saddr.sin_family = AF_INET;
+-	saddr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
+-	saddr.sin_port = 0;
+-
+-	ret = bind(listener, (struct sockaddr *)&saddr, sizeof(saddr));
+-	if (ret == -1) {
+-		fail("error in bind(): %s\n", strerror(errno));
+-	}
+-
+-	addrlen = sizeof(saddr);
+-	ret = getsockname(listener, (struct sockaddr *)&saddr, &addrlen);
+-	if (ret == -1) {
+-		fail("error in getsockname(): %s\n", strerror(errno));
+-	}
+-
+-	child = fork();
+-	if (child < 0) {
+-		fail("error in fork(): %s\n", strerror(errno));
+-		exit(1);
+-	}
+-
+-	if (child) {
+-		int status;
+-		/* parent */
+-		ret = listen(listener, 1);
+-		if (ret == -1) {
+-			fail("error in listen(): %s\n", strerror(errno));
+-		}
+-
+-		fd = accept(listener, NULL, NULL);
+-		if (fd == -1) {
+-			fail("error in accept(): %s\n", strerror(errno));
+-		}
+-
+-		close(sync_pipe[0]);
+-		server(fd, prio, sync_pipe[1]);
+-
+-		wait(&status);
+-		check_wait_status(status);
+-	} else {
+-		fd = socket(AF_INET, SOCK_STREAM, 0);
+-		if (fd == -1) {
+-			fail("error in socket(): %s\n", strerror(errno));
+-			exit(1);
+-		}
+-
+-		usleep(1000000);
+-		connect(fd, (struct sockaddr *)&saddr, addrlen);
+-
+-		close(sync_pipe[1]);
+-		client(fd, prio, sync_pipe[0]);
+-		exit(0);
+-	}
+-}
+-
+-void doit(void)
+-{
+-	run("NORMAL:-VERS-ALL:+VERS-TLS1.3:-CIPHER-ALL:+AES-128-GCM");
+-	run("NORMAL:-VERS-ALL:+VERS-TLS1.3:-CIPHER-ALL:+AES-256-GCM");
+-}
+-
+-#endif /* _WIN32 */
+diff --git a/tests/ktls_utils.h b/tests/ktls_utils.h
+new file mode 100644
+index 0000000000..231618d615
+--- /dev/null
++++ b/tests/ktls_utils.h
+@@ -0,0 +1,94 @@
++#ifndef GNUTLS_TESTS_KTLS_UTILS_H
++#define GNUTLS_TESTS_KTLS_UTILS_H
++
++#include <fcntl.h>
++#include <signal.h>
++
++#include <netinet/in.h>
++
++#include <sys/socket.h>
++#include <sys/wait.h>
++
++/* Sets the NONBLOCK flag on the socket(fd) */
++inline static int set_nonblocking(int fd)
++{
++	int flags = fcntl(fd, F_GETFL, 0);
++	if (flags == -1) {
++		return 1;
++	}
++
++	if (fcntl(fd, F_SETFL, flags | O_NONBLOCK) == -1) {
++		return 2;
++	}
++
++	return 0;
++}
++
++/* Creates a pair of TCP connected sockets */
++static int create_socket_pair(int *client_fd, int *server_fd)
++{
++	int ret;
++	struct sockaddr_in saddr;
++	socklen_t addrlen;
++	int listener;
++
++	listener = socket(AF_INET, SOCK_STREAM, 0);
++	if (listener == -1) {
++		fail("error in listener(): %s\n", strerror(errno));
++		return 1;
++	}
++
++	int opt = 0;
++	setsockopt(listener, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
++
++	memset(&saddr, 0, sizeof(saddr));
++	saddr.sin_family = AF_INET;
++	saddr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
++	saddr.sin_port = 0;
++
++	ret = bind(listener, (struct sockaddr *)&saddr, sizeof(saddr));
++	if (ret == -1) {
++		fail("error in bind(): %s\n", strerror(errno));
++		return 1;
++	}
++
++	addrlen = sizeof(saddr);
++	ret = getsockname(listener, (struct sockaddr *)&saddr, &addrlen);
++	if (ret == -1) {
++		fail("error in getsockname(): %s\n", strerror(errno));
++		return 1;
++	}
++
++	ret = listen(listener, 1);
++	if (ret == -1) {
++		fail("error in listen(): %s\n", strerror(errno));
++		close(listener);
++		return 1;
++	}
++
++	*client_fd = socket(AF_INET, SOCK_STREAM, 0);
++	if (*client_fd < 0) {
++		fail("error in socket(): %s\n", strerror(errno));
++		return 1;
++	}
++
++	ret = connect(*client_fd, (struct sockaddr *)&saddr, addrlen);
++	if (ret < 0) {
++		fail("error in connect(): %s\n", strerror(errno));
++		close(listener);
++		close(*client_fd);
++		return 1;
++	}
++
++	*server_fd = accept(listener, NULL, NULL);
++	if (*server_fd < 0) {
++		fail("error in accept(): %s\n", strerror(errno));
++		close(listener);
++		close(*client_fd);
++		return 1;
++	}
++
++	return 0;
++}
++
++#endif //GNUTLS_TESTS_KTLS_UTILS_H
+diff --git a/tests/tls13/key_update.c b/tests/tls13/key_update.c
+index 19bea7b9ac..9c72ee14ab 100644
+--- a/tests/tls13/key_update.c
++++ b/tests/tls13/key_update.c
+@@ -47,6 +47,67 @@ static void tls_log_func(int level, const char *str)
+ #define MSG \
+ 	"Hello TLS, and hi and how are you and more data here... and more... and even more and even more more data..."
+ 
++#ifdef USE_KTLS
++/* For ktls flavour of the test, the test needs to be run with the kTLS enabled
++ * option in the GnuTLS configuration file, in the case of the GnuTLS testing,
++ * the shell script `tests/ktls_keyupdate.sh` does just that.
++ */
++
++#include "ktls_utils.h"
++
++#define RUN(s, n)                                         \
++	{                                                 \
++		int ret;                                  \
++		int cfd, sfd;                             \
++		if ((ret = create_sockets(&cfd, &sfd))) { \
++			fail("kTLS: %s\n", errors[ret]);  \
++			exit(1);                          \
++		}                                         \
++		run(s, n, cfd, sfd);                      \
++		close(cfd);                               \
++		close(sfd);                               \
++	}
++
++/* We could check specificaly but given how the setting of new keys work, let's
++ * check if something had gone sideways on both the receive and sending sockets.
++ */
++#define CHECK_KTLS_ENABLED(session)                             \
++	switch (gnutls_transport_is_ktls_enabled(session)) {    \
++	case GNUTLS_KTLS_RECV:                                  \
++		fail("kTLS: Only recv support is initiated\n"); \
++		break;                                          \
++	case GNUTLS_KTLS_SEND:                                  \
++		fail("kTLS: Only send support is initiated\n"); \
++		break;                                          \
++	case GNUTLS_KTLS_DUPLEX:                                \
++		break;                                          \
++	default:                                                \
++		fail("kTLS: dissabled\n");                      \
++	}
++
++/* ktls needs to use real sockets */
++char *errors[] = { "", "Failed to create the socket pair",
++		   "Failed to set the socket non-blocking" };
++
++inline static int create_sockets(int *cfd, int *sfd)
++{
++	int ret = create_socket_pair(cfd, sfd);
++	if (ret)
++		return 1;
++
++	if (set_nonblocking(*cfd) || set_nonblocking(*sfd))
++		return 2;
++
++	return 0;
++}
++
++#else /* non-kTLS */
++
++#define RUN(s, n) run(s, n, -1, -1)
++#define CHECK_KTLS_ENABLED(session) /* No-op */
++
++#endif /* non-kTLS */
++
+ static unsigned key_update_msg_inc = 0;
+ static unsigned key_update_msg_out = 0;
+ 
+@@ -68,7 +129,7 @@ static int hsk_callback(gnutls_session_t session, unsigned int htype,
+ 	return 0;
+ }
+ 
+-static void run(const char *name, unsigned test)
++static void run(const char *name, unsigned test, int cfd, int sfd)
+ {
+ 	/* Server stuff. */
+ 	gnutls_certificate_credentials_t ccred;
+@@ -100,9 +161,14 @@ static void run(const char *name, unsigned test)
+ 		exit(1);
+ 
+ 	gnutls_credentials_set(server, GNUTLS_CRD_CERTIFICATE, scred);
++#ifdef USE_KTLS
++	/* for kTLS you can't use custom push/pull functions */
++	gnutls_transport_set_int(server, sfd);
++#else
+ 	gnutls_transport_set_push_function(server, server_push);
+ 	gnutls_transport_set_pull_function(server, server_pull);
+ 	gnutls_transport_set_ptr(server, server);
++#endif
+ 
+ 	/* Init client */
+ 	assert(gnutls_certificate_allocate_credentials(&ccred) >= 0);
+@@ -118,14 +184,23 @@ static void run(const char *name, unsigned test)
+ 	if (ret < 0)
+ 		exit(1);
+ 
++#ifdef USE_KTLS
++	/* for kTLS you can't use custom push/pull functions */
++	gnutls_transport_set_int(client, cfd);
++#else
+ 	gnutls_transport_set_push_function(client, client_push);
+ 	gnutls_transport_set_pull_function(client, client_pull);
+ 	gnutls_transport_set_ptr(client, client);
++#endif
+ 
+ 	HANDSHAKE(client, server);
+ 	if (debug)
+ 		success("Handshake established\n");
+ 
++	/* check kTLS initialization (both send and recv should be supported)*/
++	CHECK_KTLS_ENABLED(client);
++	CHECK_KTLS_ENABLED(server);
++
+ 	switch (test) {
+ 	case 0:
+ 	case 1:
+@@ -134,10 +209,14 @@ static void run(const char *name, unsigned test)
+ 			ret = gnutls_session_key_update(client, 0);
+ 		} while (ret == GNUTLS_E_AGAIN || ret == GNUTLS_E_INTERRUPTED);
+ 
++		CHECK_KTLS_ENABLED(client);
++		CHECK_KTLS_ENABLED(server);
++
+ 		/* server receives the client key update and sends data */
+ 		TRANSFER(client, server, MSG, strlen(MSG), buffer, MAX_BUF);
+ 		TRANSFER(server, client, MSG, strlen(MSG), buffer, MAX_BUF);
+ 		EMPTY_BUF(server, client, buffer, MAX_BUF);
++
+ 		if (test != 0)
+ 			break;
+ 		sec_sleep(2);
+@@ -151,10 +230,14 @@ static void run(const char *name, unsigned test)
+ 		if (ret < 0)
+ 			fail("error in key update: %s\n", gnutls_strerror(ret));
+ 
++		CHECK_KTLS_ENABLED(server);
++		CHECK_KTLS_ENABLED(client);
++
+ 		/* client receives the key update and sends data */
+ 		TRANSFER(client, server, MSG, strlen(MSG), buffer, MAX_BUF);
+ 		TRANSFER(server, client, MSG, strlen(MSG), buffer, MAX_BUF);
+ 		EMPTY_BUF(server, client, buffer, MAX_BUF);
++
+ 		if (test != 0)
+ 			break;
+ 		sec_sleep(2);
+@@ -167,10 +250,14 @@ static void run(const char *name, unsigned test)
+ 		if (ret < 0)
+ 			fail("error in key update: %s\n", gnutls_strerror(ret));
+ 
++		CHECK_KTLS_ENABLED(client);
++		CHECK_KTLS_ENABLED(server);
++
+ 		/* server receives the client key update and sends data */
+ 		TRANSFER(client, server, MSG, strlen(MSG), buffer, MAX_BUF);
+ 		TRANSFER(server, client, MSG, strlen(MSG), buffer, MAX_BUF);
+ 		EMPTY_BUF(server, client, buffer, MAX_BUF);
++
+ 		if (test != 0)
+ 			break;
+ 		sec_sleep(2);
+@@ -183,6 +270,9 @@ static void run(const char *name, unsigned test)
+ 		if (ret < 0)
+ 			fail("error in key update: %s\n", gnutls_strerror(ret));
+ 
++		CHECK_KTLS_ENABLED(server);
++		CHECK_KTLS_ENABLED(client);
++
+ 		TRANSFER(client, server, MSG, strlen(MSG), buffer, MAX_BUF);
+ 		TRANSFER(server, client, MSG, strlen(MSG), buffer, MAX_BUF);
+ 		EMPTY_BUF(server, client, buffer, MAX_BUF);
+@@ -210,6 +300,9 @@ static void run(const char *name, unsigned test)
+ 		/* client receives key update */
+ 		EMPTY_BUF(server, client, buffer, MAX_BUF);
+ 
++		CHECK_KTLS_ENABLED(server);
++		CHECK_KTLS_ENABLED(client);
++
+ 		/* client uncorks and sends key update */
+ 		do {
+ 			ret = gnutls_record_uncork(client, GNUTLS_RECORD_WAIT);
+@@ -217,6 +310,9 @@ static void run(const char *name, unsigned test)
+ 		if (ret < 0)
+ 			fail("cannot send: %s\n", gnutls_strerror(ret));
+ 
++		CHECK_KTLS_ENABLED(server);
++		CHECK_KTLS_ENABLED(client);
++
+ 		EMPTY_BUF(server, client, buffer, MAX_BUF);
+ 
+ 		sec_sleep(2);
+@@ -238,6 +334,9 @@ static void run(const char *name, unsigned test)
+ 		if (ret < 0)
+ 			fail("error in key update: %s\n", gnutls_strerror(ret));
+ 
++		CHECK_KTLS_ENABLED(server);
++		CHECK_KTLS_ENABLED(client);
++
+ 		/* server receives the client key update and sends data */
+ 		TRANSFER(client, server, MSG, strlen(MSG), buffer, MAX_BUF);
+ 		TRANSFER(server, client, MSG, strlen(MSG), buffer, MAX_BUF);
+@@ -263,11 +362,11 @@ static void run(const char *name, unsigned test)
+ 
+ void doit(void)
+ {
+-	run("single", 1);
+-	run("single", 2);
+-	run("single", 3);
+-	run("single", 4);
+-	run("single", 5);
+-	run("single", 6);
+-	run("all", 0); /* all one after each other */
++	RUN("single", 1);
++	RUN("single", 2);
++	RUN("single", 3);
++	RUN("single", 4);
++	RUN("single", 5);
++	RUN("single", 6);
++	RUN("all", 0); /* all one after each other */
+ }
+-- 
+GitLab
+
+
+From 247640a84f6aa7dddf6e2380d7189542b5483a4a Mon Sep 17 00:00:00 2001
+From: Frantisek Krenzelok <krenzelok.frantisek@gmail.com>
+Date: Tue, 11 Feb 2025 13:35:43 +0100
+Subject: [PATCH 2/7] kTLS: add new keyupdate error return on recv
+
+kTLS now returns -EKEYEXPIRED when the socket's keys aren't updated after
+receiving a keyupdate (this is very unlikely). Currently when this
+happens the ktls recv funtion returns GNUTLS_E_AGAIN and the receive
+function is called again and again.
+
+Signed-off-by: Frantisek Krenzelok <krenzelok.frantisek@gmail.com>
+---
+ lib/system/ktls.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
+
+diff --git a/lib/system/ktls.c b/lib/system/ktls.c
+index 432c70c5a2..cb29c5a763 100644
+--- a/lib/system/ktls.c
++++ b/lib/system/ktls.c
+@@ -59,6 +59,7 @@ gnutls_transport_is_ktls_enabled(gnutls_session_t session)
+ {
+ 	if (unlikely(!session->internals.initial_negotiation_completed)) {
+ 		_gnutls_debug_log("Initial negotiation is not yet complete\n");
++		gnutls_assert();
+ 		return 0;
+ 	}
+ 
+@@ -82,7 +83,9 @@ void _gnutls_ktls_enable(gnutls_session_t session)
+ 		}
+ 	} else {
+ 		_gnutls_record_log(
+-			"Unable to set TCP_ULP for read socket: %d\n", errno);
++			"kTLS: Unable to set TCP_ULP for read socket: %d\n",
++			errno);
++		gnutls_assert();
+ 	}
+ 
+ 	if (sockin != sockout) {
+@@ -91,8 +94,9 @@ void _gnutls_ktls_enable(gnutls_session_t session)
+ 			session->internals.ktls_enabled |= GNUTLS_KTLS_SEND;
+ 		} else {
+ 			_gnutls_record_log(
+-				"Unable to set TCP_ULP for write socket: %d\n",
++				"kTLS: Unable to set TCP_ULP for write socket: %d\n",
+ 				errno);
++			gnutls_assert();
+ 		}
+ 	}
+ #endif
+@@ -1064,6 +1068,13 @@ int _gnutls_ktls_recv_control_msg(gnutls_session_t session,
+ 		default:
+ 			return GNUTLS_E_PULL_ERROR;
+ 		}
++	} else if (unlikely(ret == -EKEYEXPIRED)) {
++		/* This will be received until a keyupdate is performed on the
++		   scoket. */
++		_gnutls_debug_log("kTLS: socket(recv) has not yet received "
++				  "updated keys\n");
++		gnutls_assert();
++		return GNUTLS_E_AGAIN;
+ 	}
+ 
+ 	/* connection closed */
+-- 
+GitLab
+
+
+From 1cf5e7d5748e0a2312b55e9c4bcf252a34765919 Mon Sep 17 00:00:00 2001
+From: Krenzelok Frantisek <krenzelok.frantisek@gmail.com>
+Date: Mon, 17 Feb 2025 23:08:57 +0100
+Subject: [PATCH 4/7] kTLS: add rekey kernel version check (Linux)
+
+Signed-off-by: Krenzelok Frantisek <krenzelok.frantisek@gmail.com>
+---
+ lib/system/ktls.c       |  8 ++++++++
+ tests/ktls.sh           | 17 ++++++++---------
+ tests/ktls_keyupdate.sh | 18 ++++++++++++++----
+ tests/scripts/common.sh | 26 ++++++++++++++++++++++++++
+ 4 files changed, 56 insertions(+), 13 deletions(-)
+
+diff --git a/lib/system/ktls.c b/lib/system/ktls.c
+index cb29c5a763..66ab24ec7a 100644
+--- a/lib/system/ktls.c
++++ b/lib/system/ktls.c
+@@ -507,6 +507,14 @@ int _gnutls_ktls_set_keys(gnutls_session_t session,
+ 		return GNUTLS_E_UNIMPLEMENTED_FEATURE;
+ 	}
+ 
++	if (major < 6 || (major == 6 && minor < 14)) {
++		_gnutls_debug_log("Linux kernel version %lu.%lu doesn't yet "
++				  "support kTLS keyupdate, this will result in "
++				  "invalidation of the current session after a "
++				  "key-update is performed\n",
++				  major, minor);
++	}
++
+ 	/* check whether or not cipher suite supports ktls
+ 	 */
+ 	switch (cipher) {
+diff --git a/tests/ktls.sh b/tests/ktls.sh
+index a15d6116d9..ca9ead8df0 100644
+--- a/tests/ktls.sh
++++ b/tests/ktls.sh
+@@ -25,19 +25,18 @@
+ 
+ case "$host_os" in
+     FreeBSD)
+-	if ! sysctl -n kern.ipc.tls.enable | grep 1 > /dev/null; then 
+-		exit 77 
++	if ! sysctl -n kern.ipc.tls.enable | grep 1 > /dev/null; then
++		exit 77
+ 	fi
++
++	kernel_version_check 13 0 || exit 77
+ 	;;
+     Linux)
+-	if ! grep '^tls ' /proc/modules 2>&1 /dev/null; then 
+-		exit 77 
++	if ! grep '^tls ' /proc/modules 2>&1 /dev/null; then
++		exit 77
+ 	fi
+-	case "$(uname -r)" in
+-	    4.* | 5.[0-9].* | 5.10.*)
+-		exit 77 
+-		;;
+-	esac
++
++	kernel_version_check 5 10 || exit 77
+ 	;;
+ esac
+ 
+diff --git a/tests/ktls_keyupdate.sh b/tests/ktls_keyupdate.sh
+index ae12a2f102..54706d8d94 100755
+--- a/tests/ktls_keyupdate.sh
++++ b/tests/ktls_keyupdate.sh
+@@ -19,13 +19,23 @@
+ # You should have received a copy of the GNU General Public License
+ # along with GnuTLS.  If not, see <https://www.gnu.org/licenses/>.
+ 
+-: ${builddir=.}
++: ${builddir=.} ${host_os=`uname`}
+ 
+ . "$srcdir/scripts/common.sh"
+ 
+-if ! grep '^tls ' /proc/modules 2>&1 /dev/null; then
+-    exit 77
+-fi
++case "$host_os" in
++    FreeBSD)
++	# key update is not yet supported on FreeBSD
++	exit 77
++	;;
++    Linux)
++	if ! grep '^tls ' /proc/modules 2>&1 /dev/null; then
++		exit 77
++	fi
++
++	kernel_version_check 6 14 || exit 77
++	;;
++esac
+ 
+ testdir=`create_testdir ktls_keyupdate`
+ 
+diff --git a/tests/scripts/common.sh b/tests/scripts/common.sh
+index 47355cf025..c5f91b62c4 100644
+--- a/tests/scripts/common.sh
++++ b/tests/scripts/common.sh
+@@ -267,3 +267,29 @@ check_if_equal() {
+ 	diff -b -B "$1" "$2"
+ 	return $?
+ }
++
++# works for FreeBSD and Linux
++# $1: the major version to check against
++# $2: the minor version to check against
++kernel_version_check() {
++	local required_major=$1
++	local required_minor=$2
++
++	kernel_version=$(uname -r | sed -E 's/^([0-9]+\.[0-9]+).*/\1/' 2>/dev/null)
++	kernel_major=$(echo $kernel_version | cut -d. -f1 2>/dev/null)
++	kernel_minor=$(echo $kernel_version | cut -d. -f2 2>/dev/null)
++
++	if ! [[ "$kernel_major" =~ ^[0-9]+$ ]] || ! [[ "$kernel_minor" =~ ^[0-9]+$ ]]; then
++		return 1
++	fi
++
++	if [ "$kernel_major" -lt "$required_major" ]; then
++		return 1
++	fi
++
++	if [ "$kernel_major" -eq "$required_major" ] && [ "$kernel_minor" -lt "$required_minor" ]; then
++		return 1
++	fi
++
++	return 0
++}
+-- 
+GitLab
+
+
+From 82fac5267fd74196c29e8a8b3e47e17d6ec4c20b Mon Sep 17 00:00:00 2001
+From: Krenzelok Frantisek <krenzelok.frantisek@gmail.com>
+Date: Tue, 11 Mar 2025 11:37:33 +0100
+Subject: [PATCH 5/7] kTLS: improve alert messages
+
+Signed-off-by: Krenzelok Frantisek <krenzelok.frantisek@gmail.com>
+---
+ lib/system/ktls.c | 38 +++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 37 insertions(+), 1 deletion(-)
+
+diff --git a/lib/system/ktls.c b/lib/system/ktls.c
+index 66ab24ec7a..2983888d37 100644
+--- a/lib/system/ktls.c
++++ b/lib/system/ktls.c
+@@ -1122,8 +1122,44 @@ int _gnutls_ktls_recv_int(gnutls_session_t session, content_type_t type,
+ 				GNUTLS_E_UNIMPLEMENTED_FEATURE);
+ 			break;
+ 		case GNUTLS_ALERT:
++			if (ret < 2) {
++				return gnutls_assert_val(
++					GNUTLS_E_UNEXPECTED_PACKET);
++			}
++
++			uint8_t level = ((uint8_t *)data)[0];
++			uint8_t desc = ((uint8_t *)data)[1];
++
++			_gnutls_record_log(
++				"REC[%p]: Alert[%d|%d] - %s - was received\n",
++				session, level, desc,
++				gnutls_alert_get_name((int)desc));
++
++			session->internals.last_alert = desc;
++
++			/* if close notify is received and
++			 * the alert is not fatal
++			 */
++			if (desc == GNUTLS_A_CLOSE_NOTIFY &&
++			    level != GNUTLS_AL_FATAL) {
++				/* If we have been expecting for an alert do
++				 */
++				session->internals.read_eof = 1;
++				return 0;
++			}
++			/* if the alert is FATAL or WARNING
++			 * return the appropriate message
++			 */
++			gnutls_assert();
++			if (level == GNUTLS_AL_FATAL) {
++				session->internals.resumable = false;
++				session->internals.invalid_connection = 1;
++				return gnutls_assert_val(
++					GNUTLS_E_FATAL_ALERT_RECEIVED);
++			}
++
++			ret = GNUTLS_E_WARNING_ALERT_RECEIVED;
+ 			session_invalidate(session);
+-			ret = 0;
+ 			break;
+ 		case GNUTLS_HANDSHAKE:
+ 			ret = gnutls_handshake_write(
+-- 
+GitLab
+
+
+From 93d1fe12e52a382bd024b0db51482f0c7272bb2a Mon Sep 17 00:00:00 2001
+From: Krenzelok Frantisek <krenzelok.frantisek@gmail.com>
+Date: Tue, 11 Mar 2025 11:38:47 +0100
+Subject: [PATCH 6/7] kTLS: fix gnutls-cli-debug - test
+
+Signed-off-by: Krenzelok Frantisek <krenzelok.frantisek@gmail.com>
+---
+ src/cli-debug.c           |  6 ++++++
+ src/tests.c               |  4 +++-
+ tests/gnutls-cli-debug.sh | 11 ++++++-----
+ 3 files changed, 15 insertions(+), 6 deletions(-)
+
+diff --git a/src/cli-debug.c b/src/cli-debug.c
+index ad8e525e30..b140cd3bc4 100644
+--- a/src/cli-debug.c
++++ b/src/cli-debug.c
+@@ -67,6 +67,11 @@ static void tls_log_func(int level, const char *str)
+ 	fprintf(stderr, "|<%d>| %s", level, str);
+ }
+ 
++static void tls_audit_log_func(gnutls_session_t session, const char *str)
++{
++	fprintf(stderr, "|<%p>| %s", session, str);
++}
++
+ typedef test_code_t (*TEST_FUNC)(gnutls_session_t);
+ 
+ typedef struct {
+@@ -277,6 +282,7 @@ int main(int argc, char **argv)
+ 	}
+ 
+ 	gnutls_global_set_log_function(tls_log_func);
++	gnutls_global_set_audit_log_function(tls_audit_log_func);
+ 	gnutls_global_set_log_level(debug);
+ 
+ 	/* get server name */
+diff --git a/src/tests.c b/src/tests.c
+index 6544d1e2e0..2c06c8d669 100644
+--- a/src/tests.c
++++ b/src/tests.c
+@@ -1770,7 +1770,9 @@ static test_code_t test_do_handshake_and_send_record(gnutls_session_t session)
+ 		return ret;
+ 
+ 	gnutls_record_send(session, snd_buf, sizeof(snd_buf) - 1);
+-	ret = gnutls_record_recv(session, buf, sizeof(buf) - 1);
++	do {
++		ret = gnutls_record_recv(session, buf, sizeof(buf) - 1);
++	} while (ret == GNUTLS_E_INTERRUPTED || ret == GNUTLS_E_AGAIN);
+ 	if (ret < 0)
+ 		return TEST_FAILED;
+ 
+diff --git a/tests/gnutls-cli-debug.sh b/tests/gnutls-cli-debug.sh
+index c09e676c6a..82f4d4d111 100755
+--- a/tests/gnutls-cli-debug.sh
++++ b/tests/gnutls-cli-debug.sh
+@@ -26,6 +26,7 @@
+ : ${TIMEOUT=timeout}
+ OUTFILE=cli-debug.$$.tmp
+ TMPFILE=config.$$.tmp
++LOGFILE="$(basename "$0" .sh).log"
+ unset RETCODE
+ 
+ if ! test -x "${SERV}"; then
+@@ -71,7 +72,7 @@ PID=$!
+ wait_server ${PID}
+ 
+ "$TIMEOUT" 1800 \
+-"${DCLI}" --attime "2017-08-9" -p "${PORT}" localhost >$OUTFILE 2>&1 || fail ${PID} "gnutls-cli-debug run should have succeeded!"
++"${DCLI}" --attime "2017-08-9" -p "${PORT}" localhost >$OUTFILE 2>$LOGFILE  || fail ${PID} "gnutls-cli-debug run should have succeeded!"
+ 
+ kill ${PID}
+ wait
+@@ -118,7 +119,7 @@ PID=$!
+ wait_server ${PID}
+ 
+ "$TIMEOUT" 1800 \
+-"${DCLI}" --attime "2017-08-9" -p "${PORT}" localhost >$OUTFILE 2>&1 || fail ${PID} "gnutls-cli-debug run should have succeeded!"
++"${DCLI}" --attime "2017-08-9" -p "${PORT}" localhost >$OUTFILE 2>$LOGFILE  || fail ${PID} "gnutls-cli-debug run should have succeeded!"
+ 
+ kill ${PID}
+ wait
+@@ -160,7 +161,7 @@ PID=$!
+ wait_server ${PID}
+ 
+ "$TIMEOUT" 1800 \
+-"${DCLI}" --attime "2017-08-9" -p "${PORT}" localhost >$OUTFILE 2>&1 || fail ${PID} "gnutls-cli-debug run should have succeeded!"
++"${DCLI}" --attime "2017-08-9" -p "${PORT}" localhost >$OUTFILE 2>$LOGFILE  || fail ${PID} "gnutls-cli-debug run should have succeeded!"
+ 
+ kill ${PID}
+ wait
+@@ -186,7 +187,7 @@ _EOF_
+ 
+ GNUTLS_SYSTEM_PRIORITY_FILE="${TMPFILE}" \
+ "$TIMEOUT" 1800 \
+-"${DCLI}" --attime "2017-08-9" -p "${PORT}" localhost >$OUTFILE 2>&1 || fail ${PID} "gnutls-cli-debug run should have succeeded!"
++"${DCLI}" --attime "2017-08-9" -p "${PORT}" localhost >$OUTFILE 2>$LOGFILE  || fail ${PID} "gnutls-cli-debug run should have succeeded!"
+ 
+ kill ${PID}
+ wait
+@@ -209,7 +210,7 @@ if test "${ENABLE_GOST}" = "1" && test "${GNUTLS_FORCE_FIPS_MODE}" != 1 ; then
+ 	wait_server ${PID}
+ 
+ 	"$TIMEOUT" 1800 \
+-	"${DCLI}" --attime "2017-08-9" -p "${PORT}" localhost >$OUTFILE 2>&1 || fail ${PID} "gnutls-cli-debug run should have succeeded!"
++	"${DCLI}" --attime "2017-08-9" -p "${PORT}" localhost >$OUTFILE 2>$LOGFILE  || fail ${PID} "gnutls-cli-debug run should have succeeded!"
+ 
+ 	kill ${PID}
+ 	wait
+-- 
+GitLab
+
+
+From eaa6912f6ee6bd8ff5f1175bbd7ccedd0526695e Mon Sep 17 00:00:00 2001
+From: Krenzelok Frantisek <krenzelok.frantisek@gmail.com>
+Date: Mon, 17 Mar 2025 12:41:24 +0100
+Subject: [PATCH 7/7] tests: add  enviromental variable
+
+Signed-off-by: Krenzelok Frantisek <krenzelok.frantisek@gmail.com>
+---
+ tests/Makefile.am       | 2 +-
+ tests/ktls.sh           | 4 ++--
+ tests/ktls_keyupdate.sh | 4 ++--
+ 3 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/tests/Makefile.am b/tests/Makefile.am
+index 9990ee21cc..b39a97bac3 100644
+--- a/tests/Makefile.am
++++ b/tests/Makefile.am
+@@ -21,7 +21,7 @@
+ 
+ SUBDIRS = . cert-tests slow
+ 
+-TESTS_ENVIRONMENT =
++TESTS_ENVIRONMENT = HOST_OS=$$(uname)
+ 
+ if WINDOWS
+ SUBDIRS += windows
+diff --git a/tests/ktls.sh b/tests/ktls.sh
+index ca9ead8df0..c2847be833 100644
+--- a/tests/ktls.sh
++++ b/tests/ktls.sh
+@@ -19,11 +19,11 @@
+ # You should have received a copy of the GNU General Public License
+ # along with GnuTLS. If not, see <https://www.gnu.org/licenses/>.
+ 
+-: ${builddir=.} ${host_os=`uname`}
++: ${builddir=.}
+ 
+ . "$srcdir/scripts/common.sh"
+ 
+-case "$host_os" in
++case "$HOST_OS" in
+     FreeBSD)
+ 	if ! sysctl -n kern.ipc.tls.enable | grep 1 > /dev/null; then
+ 		exit 77
+diff --git a/tests/ktls_keyupdate.sh b/tests/ktls_keyupdate.sh
+index 54706d8d94..54526727e3 100755
+--- a/tests/ktls_keyupdate.sh
++++ b/tests/ktls_keyupdate.sh
+@@ -19,11 +19,11 @@
+ # You should have received a copy of the GNU General Public License
+ # along with GnuTLS.  If not, see <https://www.gnu.org/licenses/>.
+ 
+-: ${builddir=.} ${host_os=`uname`}
++: ${builddir=.}
+ 
+ . "$srcdir/scripts/common.sh"
+ 
+-case "$host_os" in
++case "$HOST_OS" in
+     FreeBSD)
+ 	# key update is not yet supported on FreeBSD
+ 	exit 77
+-- 
+GitLab
+

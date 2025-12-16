@@ -1,0 +1,27 @@
+From a9800309197fe5aef913944b2fc77164946f0689 Mon Sep 17 00:00:00 2001
+From: Daiki Ueno <ueno@gnu.org>
+Date: Tue, 23 Jul 2024 16:04:56 +0900
+Subject: [PATCH] build: link against libhogweed when checking
+ nettle_rsa_oaep_*
+
+Signed-off-by: Daiki Ueno <ueno@gnu.org>
+---
+ configure.ac | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index fb0aefe1f4..8b55808bd7 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -795,7 +795,7 @@ AM_CONDITIONAL([NEED_SIV_GCM], [test "$ac_cv_func_nettle_siv_gcm_encrypt_message
+ 
+ # Check for RSA-OAEP
+ save_LIBS=$LIBS
+-LIBS="$LIBS $NETTLE_LIBS"
++LIBS="$LIBS $HOGWEED_LIBS $NETTLE_LIBS $GMP_LIBS"
+ AC_CHECK_FUNCS(nettle_rsa_oaep_sha256_encrypt)
+ LIBS=$save_LIBS
+ AM_CONDITIONAL([NEED_RSA_OAEP], [test "$ac_cv_func_nettle_rsa_oaep_sha256_encrypt" != yes])
+-- 
+2.45.2
+
