@@ -1,0 +1,11 @@
+/test:
+    summary:
+        Basic set of quick tests for cpio.
+    discover:
+      - name: fedora
+        how: fmf
+        filter: "tag: Tier1,Tier2,Tier3 & distros: fedora"
+        url: "https://src.fedoraproject.org/tests/cpio.git"
+        ref: master
+    execute:
+        how: tmt

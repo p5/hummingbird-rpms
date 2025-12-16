@@ -1,0 +1,88 @@
+diff --git a/src/cpio b/src/cpio
+index 79bcd82..eb703bf 100755
+Binary files a/src/cpio and b/src/cpio differ
+diff --git a/src/main.c b/src/main.c
+index 13cdfcf..141332e 100644
+--- a/src/main.c
++++ b/src/main.c
+@@ -110,7 +110,7 @@ static struct argp_option options[] = {
+   /* ********** */
+ #define GRID 100  
+   {NULL, 0, NULL, 0,
+-   N_("Operation modifiers valid in any mode:"), GRID },
++   N_("Operation modifiers valid in any mode:"), GRID +1},
+ 
+   {"directory", 'D', N_("DIR"), 0,
+    N_("Change to directory DIR"), GRID+1 },
+@@ -145,7 +145,7 @@ static struct argp_option options[] = {
+ 
+ #define GRID 110
+   {NULL, 0, NULL, 0,
+-   N_("Operation modifiers valid in copy-in and copy-out modes"), GRID },
++   N_("Operation modifiers valid in copy-in and copy-out modes"), GRID +1},
+   {"file", 'F', N_("[[USER@]HOST:]FILE-NAME"), 0,
+    N_("Use this FILE-NAME instead of standard input or output. Optional USER and HOST specify the user and host names in case of a remote archive"), GRID+1 },
+   {"message", 'M', N_("STRING"), 0,
+@@ -158,7 +158,7 @@ static struct argp_option options[] = {
+   /* ********** */
+ #define GRID 200  
+   {NULL, 0, NULL, 0,
+-   N_("Operation modifiers valid only in copy-in mode:"), GRID },
++   N_("Operation modifiers valid only in copy-in mode:"), GRID +1},
+   {"nonmatching", 'f', 0, 0,
+    N_("Only copy files that do not match any of the given patterns"), GRID+1 },
+   {"numeric-uid-gid", 'n', 0, 0,
+@@ -188,7 +188,7 @@ static struct argp_option options[] = {
+   /* ********** */
+ #define GRID 300
+   {NULL, 0, NULL, 0,
+-   N_("Operation modifiers valid only in copy-out mode:"), GRID },
++   N_("Operation modifiers valid only in copy-out mode:"), GRID +1},
+   {"append", 'A', 0, 0,
+    N_("Append to an existing archive."), GRID+1 },
+   {NULL, 'O', N_("[[USER@]HOST:]FILE-NAME"), 0,
+@@ -205,7 +205,7 @@ static struct argp_option options[] = {
+   /* ********** */
+ #define GRID 400
+   {NULL, 0, NULL, 0,
+-   N_("Operation modifiers valid only in copy-pass mode:"), GRID},
++   N_("Operation modifiers valid only in copy-pass mode:"), GRID +1},
+   {"link", 'l', 0, 0,
+    N_("Link files instead of copying them, when  possible"), GRID+1 },
+ 
+@@ -214,7 +214,7 @@ static struct argp_option options[] = {
+   /* ********** */
+ #define GRID 500
+   {NULL, 0, NULL, 0,
+-   N_("Operation modifiers valid in copy-in and copy-out modes:"), GRID },
++   N_("Operation modifiers valid in copy-in and copy-out modes:"), GRID +1},
+   {"absolute-filenames", ABSOLUTE_FILENAMES_OPTION, 0, 0,
+    N_("Do not strip file system prefix components from the file names"),
+    GRID+1 },
+@@ -224,7 +224,7 @@ static struct argp_option options[] = {
+   /* ********** */
+ #define GRID 600
+   {NULL, 0, NULL, 0,
+-   N_("Operation modifiers valid in copy-out and copy-pass modes:"), GRID },
++   N_("Operation modifiers valid in copy-out and copy-pass modes:"), GRID +1},
+   {"null", '0', 0, 0,
+    N_("Filenames in the list are delimited by null characters instead of newlines"), GRID+1 },
+   {"dereference", 'L', 0, 0,
+@@ -236,7 +236,7 @@ static struct argp_option options[] = {
+   /* ********** */
+ #define GRID 700
+   {NULL, 0, NULL, 0,
+-   N_("Operation modifiers valid in copy-in and copy-pass modes:"), GRID },
++   N_("Operation modifiers valid in copy-in and copy-pass modes:"), GRID +1},
+   {"preserve-modification-time", 'm', 0, 0,
+    N_("Retain previous file modification times when creating files"), GRID+1 },
+   {"make-directories", 'd', 0, 0,
+@@ -562,7 +562,7 @@ static struct argp argp = {
+   options,
+   parse_opt,
+   N_("[destination-directory]"),
+-  doc,
++  NULL,
+   NULL,
+   NULL,
+   NULL

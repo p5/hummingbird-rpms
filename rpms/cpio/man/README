@@ -1,0 +1,19 @@
+How to (re)generate manual page:
+--------------------------------
+
+1. apply the `help.patch` to cpio sources and then re-build sources
+
+2. run help2man on cpio shell wrapper:
+    `cpio_binary=../cpio-2.12/src/cpio help2man ./cpio > latest-output`
+
+3. note the changes in `git diff latest-output`, those will probably need
+   manual tweaking in resulting manual page.
+
+4. move the generated file on place:
+    `cp latest-output ../cpio.1`
+
+5. apply `downstream.patch`
+     `cd .. ; patch -p1 cpio.1 < man/downstream.patch`
+
+6. fix collisions and regenerate `downstream.patch`
+      `diff -u man/latest-output cpio.1 > man/downstream.patch`
