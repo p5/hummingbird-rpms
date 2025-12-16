@@ -1,0 +1,14 @@
+summary: tests basic functionality
+description: "tests following scenarios:\n * test --version\n * test locating the
+    bash binary\n * test an alias\n * test non existing command\n * test with customized
+    PATH\n * test options -a / --all\n"
+contact: Karel Srot <ksrot@redhat.com>
+component:
+  - which
+test: ./runtest.sh
+framework: beakerlib
+recommend:
+  - which
+duration: 5m
+extra-summary: /CoreOS/which/Sanity/basic-functionality-test
+extra-task: /CoreOS/which/Sanity/basic-functionality-test
