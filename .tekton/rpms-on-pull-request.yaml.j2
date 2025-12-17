@@ -8,5 +8,6 @@
     extra_annotations={'build.appstudio.redhat.com/pull_request_number': '{{pull_request_number}}'},
     extra_path_changes=rpm.extra_path_changes if rpm.extra_path_changes is defined else [],
     timeout_hours=rpm.timeout_hours,
+    build_platforms=rpm.build_platforms if rpm.build_platforms is defined else None,
 ) }}
 {% endfor -%}

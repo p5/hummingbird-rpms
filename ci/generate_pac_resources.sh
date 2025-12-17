@@ -11,15 +11,11 @@ RESOURCE_TYPE=""
 # changes to ci/ also trigger the build pipeline for this rpm (as canary)
 BUILD_TRIGGER_RPM_NAME=${BUILD_TRIGGER_RPM_NAME:-setup}
 
-# Timeout configuration
+# Per-package configuration file for timeouts and build platforms
+# See ci/package-overrides.yaml for overrides
+PACKAGE_CONFIG="ci/package-overrides.yaml"
 DEFAULT_TIMEOUT_HOURS=4
-# Per-package timeout overrides (in hours)
-# Example: declare -A PACKAGE_TIMEOUTS=(["setup"]=18 ["bash"]=6)
-declare -A PACKAGE_TIMEOUTS=(
-    ["setup"]=18
-    # Add more package-specific timeouts here
-    # ["package-name"]=hours
-)
+
 
 # Parse command line arguments
 while [[ $# -gt 0 ]]; do
@@ -79,10 +75,11 @@ template=.tekton/rpms-on-${RESOURCE_TYPE}.yaml.j2
 
 APPLICATION_NAME="rpms-${BRANCH}"
 
-PIPELINE_URL="https://github.com/konflux-ci/rpmbuild-pipeline.git"
-# This is the revision of the rpmbuild-pipeline that is used to build the rpms
-# from the main branch
-PIPELINE_REVISION="ada7af0e5397443d320e4273ebe157df21fa1547"
+# Temporarily using a fork of the rpmbuild-pipeline that supports build platforms
+# until the changes are merged into the main branch
+# https://github.com/konflux-ci/rpmbuild-pipeline/pull/128
+PIPELINE_URL="https://github.com/scoheb/rpmbuild-pipeline.git"
+PIPELINE_REVISION="fix-build-platforms"
 PIPELINE_PATH="pipeline/build-rpm-package.yaml"
 
 # shellcheck disable=SC2312
@@ -104,13 +101,24 @@ for path in "${rpms[@]}"; do
     dname=$(basename "${path}")
     name=${dname}-${BRANCH}
 
-    # Get timeout for this package (use default if not specified)
-    timeout_hours=${PACKAGE_TIMEOUTS[${dname}]:-${DEFAULT_TIMEOUT_HOURS}}
-
     (
         echo "name: ${name}"
         echo "dname: ${dname}"
-        echo "timeout_hours: ${timeout_hours}"
+
+        # Always include timeout_hours, using configured value or default
+        if timeout_hours=$(yq -e ".${dname}.timeout_hours" "${PACKAGE_CONFIG}" 2>/dev/null); then
+            echo "timeout_hours: ${timeout_hours}"
+        else
+            echo "timeout_hours: ${DEFAULT_TIMEOUT_HOURS}"
+        fi
+
+        # Only include build_platforms if overridden in the config file
+        if build_platforms=$(yq -e ".${dname}.build_platforms[]" "${PACKAGE_CONFIG}" 2>/dev/null); then
+            echo "build_platforms:"
+            echo "${build_platforms}" | while read -r platform; do
+                echo "  - ${platform}"
+            done
+        fi
 
         extra_paths=()
 

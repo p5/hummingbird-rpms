@@ -1,4 +1,4 @@
-{%- macro pipeline_run(rpm, event_type, cancel_in_progress, output_image_tag, extra_params={}, extra_annotations={}, extra_path_changes=[], timeout_hours=4) -%}
+{%- macro pipeline_run(rpm, event_type, cancel_in_progress, output_image_tag, extra_params={}, extra_annotations={}, extra_path_changes=[], timeout_hours=4, build_platforms=None) -%}
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -42,6 +42,13 @@ spec:
       value:
         - aarch64
         - x86_64
+{%- if build_platforms %}
+    - name: build-platforms
+      value:
+{%- for platform in build_platforms %}
+        - "{{ platform }}"
+{%- endfor %}
+{%- endif %}
     - name: specfile
       value: "{{  rpm.dname }}.spec"
     - name: monorepo-subdir
