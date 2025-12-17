@@ -1,0 +1,5 @@
+discover:
+    how: fmf
+    url: https://gitlab.com/redhat/centos-stream/tests/tar
+execute:
+    how: tmt
