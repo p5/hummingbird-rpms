@@ -1,0 +1,6 @@
+summary: Basic smoke test
+discover:
+    how: fmf
+    url: https://src.fedoraproject.org/tests/gzip.git
+execute:
+    how: tmt
