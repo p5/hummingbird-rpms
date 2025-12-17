@@ -1,0 +1,26 @@
+From c76affb4551630ff661ac1c1ee99353a17eb16e1 Mon Sep 17 00:00:00 2001
+From: Paul Eggert <eggert@cs.ucla.edu>
+Date: Fri, 30 May 2025 12:31:04 -0700
+Subject: gzip: fix s390x build failure
+
+Problem reported by Jakub Martisko <https://bugs.gnu.org/78618>.
+* dfltcc.c: Include errno.h.
+---
+ dfltcc.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/dfltcc.c b/dfltcc.c
+index 9f86581..8307a97 100644
+--- a/dfltcc.c
++++ b/dfltcc.c
+@@ -17,6 +17,7 @@
+ 
+ #include <config.h>
+ 
++#include <errno.h>
+ #include <stdlib.h>
+ 
+ #ifdef HAVE_SYS_SDT_H
+-- 
+cgit v1.2.3
+
