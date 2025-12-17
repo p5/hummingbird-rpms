@@ -1,0 +1,10 @@
+Create 2 files, f1, f2 with contents "abc" and "abc " (without quotes),
+i.e. the same line with a space on the end.
+
+Diff ignoring whitespace:
+
+diff -b f1 f2
+
+should produce no diff output, but does on F8. Works fine on FC6.
+
+version: diffutils-2.8.1-17.fc8

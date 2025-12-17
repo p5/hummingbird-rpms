@@ -1,0 +1,14 @@
+summary: Test for sdiff does not recognize -E option
+description: "Bug summary: sdiff does not recognize -E option\n\nThe test runs sdiff
+    -E on two files differing just in use of tab/8 spaces. sdiff shall not fail and
+    shall return that the files are identical.\n"
+contact: Martin Kyral <mkyral@redhat.com>
+component:
+  - diffutils
+test: ./runtest.sh
+framework: beakerlib
+recommend:
+  - diffutils
+duration: 10m
+extra-summary: /CoreOS/diffutils/Regression/sdiff-does-not-recognize-E-option
+extra-task: /CoreOS/diffutils/Regression/sdiff-does-not-recognize-E-option

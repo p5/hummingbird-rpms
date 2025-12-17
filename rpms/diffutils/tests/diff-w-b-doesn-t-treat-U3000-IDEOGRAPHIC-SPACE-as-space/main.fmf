@@ -1,0 +1,17 @@
+summary: Test for diffutils to ensure U3000 ideographic space is treated as 
+    space when used -b or -w options
+description: "Bug summary: diff -w/-b doesn't treat U3000 (IDEOGRAPHIC SPACE) as space\n\
+    \nTest for diffutils to ensure U3000 ideographic space is treated as space when
+    used -b or -w options\n"
+contact: Filip Holec <fholec@redhat.com>
+component:
+  - diffutils
+test: ./runtest.sh
+framework: beakerlib
+recommend:
+  - diffutils
+duration: 5m
+extra-summary: 
+    /CoreOS/diffutils/Regression/diff-w-b-doesn-t-treat-U3000-IDEOGRAPHIC-SPACE-as-space
+extra-task: 
+    /CoreOS/diffutils/Regression/diff-w-b-doesn-t-treat-U3000-IDEOGRAPHIC-SPACE-as-space
