@@ -1,0 +1,58 @@
+From 15fb5ad536c375a74cc0d87859c9fc919d924c9d Mon Sep 17 00:00:00 2001
+From: rpm-build <rpm-build>
+Date: Thu, 10 Jul 2025 05:45:06 +0900
+Subject: [PATCH] support VPATH build for mldsa tests
+
+Signed-off-by: rpm-build <rpm-build>
+---
+ tests/cert-tests/mldsa.sh | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/tests/cert-tests/mldsa.sh b/tests/cert-tests/mldsa.sh
+index 7e31e11..55e31ce 100644
+--- a/tests/cert-tests/mldsa.sh
++++ b/tests/cert-tests/mldsa.sh
+@@ -130,7 +130,7 @@ for variant in 44 65 87; do
+ 	# Check default
+ 	TMPKEYDEFAULT=$testdir/key-$algo-$format-default
+ 	TMPKEY=$testdir/key-$algo-$format
+-	${VALGRIND} "${CERTTOOL}" -k --no-text --infile "data/key-$algo-$format.pem" >"$TMPKEYDEFAULT"
++	${VALGRIND} "${CERTTOOL}" -k --no-text --infile "$srcdir/data/key-$algo-$format.pem" >"$TMPKEYDEFAULT"
+ 	if [ $? != 0 ]; then
+ 	    cat "$TMPKEYDEFAULT"
+ 	    exit 1
+@@ -138,19 +138,19 @@ for variant in 44 65 87; do
+ 
+ 	# The "expandedKey" format doesn't have public key part
+ 	if [ "$format" = seed ] || [ "$format" = both ]; then
+-	    if ! "${DIFF}" "$TMPKEYDEFAULT" "data/key-$algo-both.pem"; then
++	    if ! "${DIFF}" "$TMPKEYDEFAULT" "$srcdir/data/key-$algo-both.pem"; then
+ 		exit 1
+ 	    fi
+ 	fi
+ 
+ 	# Check roundtrip with --key-format
+-	${VALGRIND} "${CERTTOOL}" -k --no-text --key-format "$format" --infile "data/key-$algo-$format.pem" >"$TMPKEY"
++	${VALGRIND} "${CERTTOOL}" -k --no-text --key-format "$format" --infile "$srcdir/data/key-$algo-$format.pem" >"$TMPKEY"
+ 	if [ $? != 0 ]; then
+ 	    cat "$TMPKEY"
+ 	    exit 1
+ 	fi
+ 
+-	if ! "${DIFF}" "$TMPKEY" "data/key-$algo-$format.pem"; then
++	if ! "${DIFF}" "$TMPKEY" "$srcdir/data/key-$algo-$format.pem"; then
+ 	    exit 1
+ 	fi
+     done
+@@ -164,7 +164,7 @@ for n in 1; do
+     fi
+ 
+     echo "Testing inconsistent ML-DSA key ($n)"
+-    if "${CERTTOOL}" -k --infile "data/key-mldsa-inconsistent$n.pem"; then
++    if "${CERTTOOL}" -k --infile "$srcdir/data/key-mldsa-inconsistent$n.pem"; then
+ 	exit 1
+     fi
+ done
+-- 
+2.49.0
+

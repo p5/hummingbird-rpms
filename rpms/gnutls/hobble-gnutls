@@ -1,0 +1,8 @@
+#!/bin/sh
+set -x
+
+if [ "$1" = "-e" ] ; then
+    CMD="cat < /dev/null >"
+else
+    CMD="rm -f"
+fi

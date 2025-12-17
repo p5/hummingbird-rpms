@@ -1,0 +1,2131 @@
+From dd7f8c30ca44695992bbb92146e385b4b700f285 Mon Sep 17 00:00:00 2001
+From: Daiki Ueno <ueno@gnu.org>
+Date: Sat, 29 Jun 2024 09:52:55 +0900
+Subject: [PATCH 1/4] m4: factor out soname check into a separate macro
+
+This moves the SONAME detection from configure.ac to m4/hooks.m4 as
+the LIBGNUTLS_CHECK_SONAME macro. The new macro doesn't implicitly
+set *_LIBRARY_SONAME to "none", so the callers need to adjust
+themselves depending on whether the macro is defined.
+
+Signed-off-by: Daiki Ueno <ueno@gnu.org>
+---
+ configure.ac   | 50 ++++++++++++--------------------------------------
+ lib/fips.c     | 26 ++++++++++++++------------
+ lib/fipshmac.c | 14 ++++++++++++++
+ lib/global.c   |  6 ++++++
+ m4/hooks.m4    | 20 ++++++++++++++++++++
+ 5 files changed, 66 insertions(+), 50 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 1744813b79..3f001998b4 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -810,61 +810,35 @@ save_CFLAGS=$CFLAGS
+ CFLAGS="$CFLAGS $GMP_CFLAGS"
+ save_LIBS=$LIBS
+ LIBS="$LIBS $GMP_LIBS"
+-AC_MSG_CHECKING([gmp soname])
+-AC_LINK_IFELSE([AC_LANG_PROGRAM([
++LIBGNUTLS_CHECK_SONAME([gmp], [AC_LANG_PROGRAM([
+                #include <gmp.h>],[
+                mpz_t n;
+-               mpz_init(n);])],
+-	[gmp_so=`(eval "$LDDPROG conftest$EXEEXT $LDDPOSTPROC") | grep '^libgmp\.so'`],
+-	[gmp_so=none])
+-if test -z "$gmp_so"; then
+-	gmp_so=none
+-fi
+-AC_MSG_RESULT($gmp_so)
+-if test "$gmp_so" != none; then
+-	AC_DEFINE_UNQUOTED([GMP_LIBRARY_SONAME], ["$gmp_so"], [The soname of gmp library])
+-fi
+-LIBS=$save_LIBS
+-CFLAGS=$save_CFLAGS
++               mpz_init(n);])])
++LIBS="$save_LIBS"
++CFLAGS="$save_CFLAGS"
+ 
+ save_CFLAGS=$CFLAGS
+ CFLAGS="$CFLAGS $NETTLE_CFLAGS"
+ save_LIBS=$LIBS
+ LIBS="$LIBS $NETTLE_LIBS"
+-AC_MSG_CHECKING([nettle soname])
+-AC_LINK_IFELSE([AC_LANG_PROGRAM([
++LIBGNUTLS_CHECK_SONAME([nettle], [AC_LANG_PROGRAM([
+                #include <nettle/sha2.h>],[
+                struct sha256_ctx ctx;
+-               sha256_init(&ctx);])],
+-	[nettle_so=`(eval "$LDDPROG conftest$EXEEXT $LDDPOSTPROC") | grep '^libnettle\.so'`],
+-	[nettle_so=none])
+-if test -z "$nettle_so"; then
+-	nettle_so=none
+-fi
+-AC_MSG_RESULT($nettle_so)
+-AC_DEFINE_UNQUOTED([NETTLE_LIBRARY_SONAME], ["$nettle_so"], [The soname of nettle library])
+-LIBS=$save_LIBS
+-CFLAGS=$save_CFLAGS
++               sha256_init(&ctx);])])
++LIBS="$save_LIBS"
++CFLAGS="$save_CFLAGS"
+ 
+ save_CFLAGS=$CFLAGS
+ # <nettle/bignum.h> includes <gmp.h>
+ CFLAGS="$CFLAGS $HOGWEED_CFLAGS $GMP_CFLAGS"
+ save_LIBS=$LIBS
+ LIBS="$LIBS $HOGWEED_LIBS"
+-AC_MSG_CHECKING([hogweed soname])
+-AC_LINK_IFELSE([AC_LANG_PROGRAM([
++LIBGNUTLS_CHECK_SONAME([hogweed], [AC_LANG_PROGRAM([
+                #include <nettle/rsa.h>],[
+                struct rsa_private_key priv;
+-               nettle_rsa_private_key_init(&priv);])],
+-	[hogweed_so=`(eval "$LDDPROG conftest$EXEEXT $LDDPOSTPROC") | grep '^libhogweed\.so'`],
+-	[hogweed_so=none])
+-if test -z "$hogweed_so"; then
+-	hogweed_so=none
+-fi
+-AC_MSG_RESULT($hogweed_so)
+-AC_DEFINE_UNQUOTED([HOGWEED_LIBRARY_SONAME], ["$hogweed_so"], [The soname of hogweed library])
+-LIBS=$save_LIBS
+-CFLAGS=$save_CFLAGS
++               nettle_rsa_private_key_init(&priv);])])
++LIBS="$save_LIBS"
++CFLAGS="$save_CFLAGS"
+ 
+ gnutls_so=libgnutls.so.`expr "$LT_CURRENT" - "$LT_AGE"`
+ AC_DEFINE_UNQUOTED([GNUTLS_LIBRARY_SONAME], ["$gnutls_so"], [The soname of gnutls library])
+diff --git a/lib/fips.c b/lib/fips.c
+index 1611200be8..e5fce6b1b9 100644
+--- a/lib/fips.c
++++ b/lib/fips.c
+@@ -152,15 +152,17 @@ void _gnutls_fips_mode_reset_zombie(void)
+ 	}
+ }
+ 
+-/* These only works with the platform where SONAME is part of the ABI.
+- * For example, *_SONAME will be set to "none" on Windows platforms. */
+-#define GNUTLS_LIBRARY_NAME GNUTLS_LIBRARY_SONAME
+-#define NETTLE_LIBRARY_NAME NETTLE_LIBRARY_SONAME
+-#define HOGWEED_LIBRARY_NAME HOGWEED_LIBRARY_SONAME
++/* These only works with the platform where SONAME is part of the ABI. */
++#ifndef GNUTLS_LIBRARY_SONAME
++#define GNUTLS_LIBRARY_SONAME "none"
++#endif
+ 
+-/* GMP can be statically linked. */
+-#ifdef GMP_LIBRARY_SONAME
+-#define GMP_LIBRARY_NAME GMP_LIBRARY_SONAME
++#ifndef NETTLE_LIBRARY_SONAME
++#define NETTLE_LIBRARY_SONAME "none"
++#endif
++
++#ifndef HOGWEED_LIBRARY_SONAME
++#define HOGWEED_LIBRARY_SONAME "none"
+ #endif
+ 
+ #define HMAC_SIZE 32
+@@ -246,14 +248,14 @@ static int handler(void *user, const char *section, const char *name,
+ 		} else {
+ 			return 0;
+ 		}
+-	} else if (!strcmp(section, GNUTLS_LIBRARY_NAME)) {
++	} else if (!strcmp(section, GNUTLS_LIBRARY_SONAME)) {
+ 		return lib_handler(&p->gnutls, section, name, value);
+-	} else if (!strcmp(section, NETTLE_LIBRARY_NAME)) {
++	} else if (!strcmp(section, NETTLE_LIBRARY_SONAME)) {
+ 		return lib_handler(&p->nettle, section, name, value);
+-	} else if (!strcmp(section, HOGWEED_LIBRARY_NAME)) {
++	} else if (!strcmp(section, HOGWEED_LIBRARY_SONAME)) {
+ 		return lib_handler(&p->hogweed, section, name, value);
+ #ifdef GMP_LIBRARY_SONAME
+-	} else if (!strcmp(section, GMP_LIBRARY_NAME)) {
++	} else if (!strcmp(section, GMP_LIBRARY_SONAME)) {
+ 		return lib_handler(&p->gmp, section, name, value);
+ #endif
+ 	} else {
+diff --git a/lib/fipshmac.c b/lib/fipshmac.c
+index 6a4883a131..d3561b4c47 100644
+--- a/lib/fipshmac.c
++++ b/lib/fipshmac.c
+@@ -34,6 +34,20 @@
+ #include "errors.h"
+ 
+ #define FORMAT_VERSION 1
++
++/* These only works with the platform where SONAME is part of the ABI. */
++#ifndef GNUTLS_LIBRARY_SONAME
++#define GNUTLS_LIBRARY_SONAME "none"
++#endif
++
++#ifndef NETTLE_LIBRARY_SONAME
++#define NETTLE_LIBRARY_SONAME "none"
++#endif
++
++#ifndef HOGWEED_LIBRARY_SONAME
++#define HOGWEED_LIBRARY_SONAME "none"
++#endif
++
+ #define HMAC_SIZE 32
+ #define HMAC_ALGO GNUTLS_MAC_SHA256
+ #define HMAC_STR_SIZE (2 * HMAC_SIZE + 1)
+diff --git a/lib/global.c b/lib/global.c
+index 718740c103..b434140bbf 100644
+--- a/lib/global.c
++++ b/lib/global.c
+@@ -563,9 +563,15 @@ static const struct gnutls_library_config_st _gnutls_library_config[] = {
+ #ifdef FIPS_MODULE_VERSION
+ 	{ "fips-module-version", FIPS_MODULE_VERSION },
+ #endif
++#ifdef GNUTLS_LIBRARY_SONAME
+ 	{ "libgnutls-soname", GNUTLS_LIBRARY_SONAME },
++#endif
++#ifdef NETTLE_LIBRARY_SONAME
+ 	{ "libnettle-soname", NETTLE_LIBRARY_SONAME },
++#endif
++#ifdef HOGWEED_LIBRARY_SONAME
+ 	{ "libhogweed-soname", HOGWEED_LIBRARY_SONAME },
++#endif
+ #ifdef GMP_LIBRARY_SONAME
+ 	{ "libgmp-soname", GMP_LIBRARY_SONAME },
+ #endif
+diff --git a/m4/hooks.m4 b/m4/hooks.m4
+index cf6064ca1d..a786d35150 100644
+--- a/m4/hooks.m4
++++ b/m4/hooks.m4
+@@ -421,3 +421,23 @@ dnl #AM_ICONV
+ dnl m4_ifdef([gl_ICONV_MODULE_INDICATOR],
+ dnl  [gl_ICONV_MODULE_INDICATOR([iconv])])
+ ])
++
++AC_DEFUN([LIBGNUTLS_CHECK_SONAME],
++[
++  m4_pushdef([soname], AS_TR_SH([$1]))
++  m4_pushdef([SONAME], AS_TR_CPP([$1]))
++  AC_MSG_CHECKING([$1 [soname]])
++  AC_LINK_IFELSE([$2],
++	[soname[]_so=`(eval "$LDDPROG conftest$EXEEXT $LDDPOSTPROC") | grep '^lib[]$1\.so'`],
++	[soname[]_so=none])
++  if test -z "$soname[]_so"; then
++	soname[]_so=none
++  fi
++  AC_MSG_RESULT($soname[]_so)
++  if test "$soname[]_so" != none; then
++	SONAME[]_LIBRARY_SONAME="$soname[]_so"
++	AC_DEFINE_UNQUOTED([SONAME[]_LIBRARY_SONAME], ["$soname[]_so"], [The soname of $1 library])
++  fi
++  m4_popdef([soname])
++  m4_popdef([SONAME])
++])
+-- 
+2.45.2
+
+
+From 0647139f50b6c14f2f2d22d40a42a8fdfaead5d5 Mon Sep 17 00:00:00 2001
+From: Daiki Ueno <ueno@gnu.org>
+Date: Sat, 6 Jul 2024 11:59:08 +0900
+Subject: [PATCH 2/4] build: check if dlopen(SONAME) works in configure
+
+Signed-off-by: Daiki Ueno <ueno@gnu.org>
+---
+ configure.ac | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
+
+diff --git a/configure.ac b/configure.ac
+index 3f001998b4..8d8c4038b6 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -946,6 +946,27 @@ AM_CONDITIONAL(P11KIT_0_23_11_API, $PKG_CONFIG --atleast-version=0.23.11 p11-kit
+ 
+ AM_CONDITIONAL(ENABLE_PKCS11, test "$with_p11_kit" != "no")
+ 
++save_LIBS=$LIBS
++LIBS="$LIBS -lm"
++LIBGNUTLS_CHECK_SONAME([m], [AC_LANG_PROGRAM([
++               #include <math.h>],[
++               trunc (0);])])
++LIBS="$save_LIBS"
++CFLAGS="$save_CFLAGS"
++
++AC_RUN_IFELSE(
++  [AC_LANG_PROGRAM(
++    [[#include <dlfcn.h>
++      #include <stdlib.h>
++    ]],
++    [[void *handle = dlopen("$M_LIBRARY_SONAME", RTLD_LAZY | RTLD_GLOBAL);
++      return handle != NULL ? 0 : 1;
++    ]])],
++  [ac_cv_dlopen_soname_works=yes],
++  [ac_cv_dlopen_soname_works=no],
++  [ac_cv_dlopen_soname_works=cross-compiling])
++
++AM_CONDITIONAL([ENABLE_DLOPEN], [test "$ac_cv_dlopen_soname_works" = yes])
+ need_ltlibdl=no
+ 
+ AC_ARG_WITH(tpm2,
+-- 
+2.45.2
+
+
+From 297c83d2830e44a675e8e52d65a66e0ba327f788 Mon Sep 17 00:00:00 2001
+From: Daiki Ueno <ueno@gnu.org>
+Date: Sat, 29 Jun 2024 13:34:36 +0900
+Subject: [PATCH 3/4] build: detect SONAME for compression libraries at
+ configure
+
+Instead of hard-coding the SONAMEs for zlib, libzstd, libbrotlienc,
+and libbrotlidec, this checks the actual SONAMEs at configure time, so
+the first argument of dlopen is more acurate when a SONAME is bumped.
+
+Signed-off-by: Daiki Ueno <ueno@gnu.org>
+---
+ configure.ac   | 82 +++++++++++++++++++++++++++++++++++++++-----------
+ lib/compress.c |  8 ++---
+ 2 files changed, 68 insertions(+), 22 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 8d8c4038b6..28d6895efb 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -1048,8 +1048,6 @@ AC_DEFINE_UNQUOTED([TROUSERS_LIB], ["$ac_trousers_lib"], [the location of the tr
+ AC_SUBST(TROUSERS_LIB)
+ 
+ 
+-AM_CONDITIONAL(NEED_LTLIBDL, test "$need_ltlibdl" = yes)
+-
+ # For minitasn1.
+ AC_CHECK_SIZEOF(unsigned long int, 4)
+ AC_CHECK_SIZEOF(unsigned int, 4)
+@@ -1058,35 +1056,45 @@ AC_CHECK_SIZEOF(time_t, 4)
+ AC_ARG_WITH(zlib, AS_HELP_STRING([--without-zlib],
+                                  [disable zlib compression support]),
+             ac_zlib=$withval, ac_zlib=yes)
+-AC_MSG_CHECKING([whether to include zlib compression support])
+-if test x$ac_zlib != xno; then
+-    AC_MSG_RESULT(yes)
+-    AC_LIB_HAVE_LINKFLAGS(z,, [#include <zlib.h>], [compress (0, 0, 0, 0);])
+-    if test x$ac_cv_libz != xyes; then
+-	AC_MSG_WARN(
+-  *** 
+-  *** ZLIB was not found. You will not be able to use ZLIB compression.)
+-fi
+-else
+-    AC_MSG_RESULT(no)
+-fi
+-
+-PKG_CHECK_EXISTS(zlib, ZLIB_HAS_PKGCONFIG=y, ZLIB_HAS_PKGCONFIG=n)
+-
+ if test x$ac_zlib != xno; then
++    PKG_CHECK_EXISTS(zlib, ZLIB_HAS_PKGCONFIG=y, ZLIB_HAS_PKGCONFIG=n)
+     if test "$ZLIB_HAS_PKGCONFIG" = "y" ; then
++        PKG_CHECK_MODULES(ZLIB, [zlib])
+ 	if test "x$GNUTLS_REQUIRES_PRIVATE" = x; then
+ 	    GNUTLS_REQUIRES_PRIVATE="Requires.private: zlib"
+ 	else
+ 	    GNUTLS_REQUIRES_PRIVATE="$GNUTLS_REQUIRES_PRIVATE, zlib"
+ 	fi
+-	LIBZ_PC=""
++	ac_zlib=yes
+     else
++	AC_LIB_HAVE_LINKFLAGS(z,, [#include <zlib.h>], [compress (0, 0, 0, 0);])
++	if test x$ac_cv_libz != xyes; then
++	    AC_MSG_WARN([[
++*** 
++*** ZLIB was not found. You will not be able to use ZLIB compression.
++*** ]])
++        fi
++	ac_zlib=$ac_cv_libz
++	ZLIB_LIBS=$LIBZ
+ 	LIBZ_PC=$LIBZ
+     fi
+ fi
++if test x$ac_zlib != xno; then
++    AC_DEFINE([HAVE_LIBZ], 1, [Define if ZLIB compression is enabled.])
++    need_ltlibdl=yes
++fi
+ AC_SUBST(LIBZ_PC)
+ 
++AS_IF([test "$ac_cv_dlopen_soname_works" = yes], [
++    save_LIBS=$LIBS
++    LIBS="$LIBS $ZLIB_LIBS"
++    LIBGNUTLS_CHECK_SONAME([z], [AC_LANG_PROGRAM([
++                   #include <zlib.h>],[
++                   compress (0, 0, 0, 0);])])
++    LIBS="$save_LIBS"
++    CFLAGS="$save_CFLAGS"
++])
++
+ AC_ARG_WITH(brotli,
+ 	    AS_HELP_STRING([--without-brotli], [disable brotli compression support]),
+ 	    ac_brotli=$withval, ac_brotli=yes)
+@@ -1102,6 +1110,7 @@ if test x$ac_brotli != xno; then
+ 	else
+ 	    GNUTLS_REQUIRES_PRIVATE="${GNUTLS_REQUIRES_PRIVATE}, libbrotlienc, libbrotlidec"
+ 	fi
++	need_ltlibdl=yes
+     else
+ 	AC_MSG_WARN(*** LIBBROTLI was not found. You will not be able to use BROTLI compression.)
+     fi
+@@ -1110,6 +1119,28 @@ else
+ fi
+ AM_CONDITIONAL(HAVE_LIBBROTLI, test "$with_libbrotlienc" != "no" && test "$with_libbrotlidec" != "no")
+ 
++AS_IF([test "$ac_cv_dlopen_soname_works" = yes], [
++    save_CFLAGS=$CFLAGS
++    CFLAGS="$CFLAGS $LIBBROTLIENC_CFLAGS"
++    save_LIBS=$LIBS
++    LIBS="$LIBS $LIBBROTLIENC_LIBS"
++    LIBGNUTLS_CHECK_SONAME([brotlienc], [AC_LANG_PROGRAM([
++           #include <brotli/encode.h>],[
++           BrotliEncoderVersion();])])
++    LIBS="$save_LIBS"
++    CFLAGS="$save_CFLAGS"
++
++    save_CFLAGS=$CFLAGS
++    CFLAGS="$CFLAGS $LIBBROTLIDEC_CFLAGS"
++    save_LIBS=$LIBS
++    LIBS="$LIBS $LIBBROTLIDEC_LIBS"
++    LIBGNUTLS_CHECK_SONAME([brotlidec], [AC_LANG_PROGRAM([
++           #include <brotli/decode.h>],[
++           BrotliDecoderVersion();])])
++    LIBS="$save_LIBS"
++    CFLAGS="$save_CFLAGS"
++])
++
+ AC_ARG_WITH(zstd,
+ 	    AS_HELP_STRING([--without-zstd], [disable zstd compression support]),
+ 	    ac_zstd=$withval, ac_zstd=yes)
+@@ -1124,6 +1155,7 @@ if test x$ac_zstd != xno; then
+ 	else
+ 	    GNUTLS_REQUIRES_PRIVATE="${GNUTLS_REQUIRES_PRIVATE}, libzstd"
+ 	fi
++	need_ltlibdl=yes
+     else
+ 	AC_MSG_WARN(*** LIBZSTD was not found. You will not be able to use ZSTD compression.)
+     fi
+@@ -1132,6 +1164,20 @@ else
+ fi
+ AM_CONDITIONAL(HAVE_LIBZSTD, test "$with_libzstd" != "no")
+ 
++AS_IF([test "$ac_cv_dlopen_soname_works" = yes], [
++    save_CFLAGS=$CFLAGS
++    CFLAGS="$CFLAGS $LIBZSTD_CFLAGS"
++    save_LIBS=$LIBS
++    LIBS="$LIBS $LIBZSTD_LIBS"
++    LIBGNUTLS_CHECK_SONAME([zstd], [AC_LANG_PROGRAM([
++           #include <zstd.h>],[
++           ZSTD_versionNumber();])])
++    LIBS="$save_LIBS"
++    CFLAGS="$save_CFLAGS"
++])
++
++AM_CONDITIONAL(NEED_LTLIBDL, test "$need_ltlibdl" = yes)
++
+ # export for use in scripts
+ AC_SUBST(ac_cv_sizeof_time_t)
+ 
+diff --git a/lib/compress.c b/lib/compress.c
+index a0a7c699c3..26ea2912c2 100644
+--- a/lib/compress.c
++++ b/lib/compress.c
+@@ -72,7 +72,7 @@ static int zlib_init(void)
+ #ifndef _WIN32
+ 	if (_zlib_handle != NULL)
+ 		return 0;
+-	if ((_zlib_handle = dlopen("libz.so.1", RTLD_NOW | RTLD_GLOBAL)) ==
++	if ((_zlib_handle = dlopen(Z_LIBRARY_SONAME, RTLD_NOW | RTLD_GLOBAL)) ==
+ 	    NULL)
+ 		goto error;
+ 	if ((_gnutls_zlib_compressBound =
+@@ -135,10 +135,10 @@ static int brotli_init(void)
+ #ifndef _WIN32
+ 	if (_brotlienc_handle != NULL || _brotlidec_handle != NULL)
+ 		return 0;
+-	if ((_brotlienc_handle = dlopen("libbrotlienc.so.1",
++	if ((_brotlienc_handle = dlopen(BROTLIENC_LIBRARY_SONAME,
+ 					RTLD_NOW | RTLD_GLOBAL)) == NULL)
+ 		goto error;
+-	if ((_brotlidec_handle = dlopen("libbrotlidec.so.1",
++	if ((_brotlidec_handle = dlopen(BROTLIDEC_LIBRARY_SONAME,
+ 					RTLD_NOW | RTLD_GLOBAL)) == NULL)
+ 		goto error;
+ 	if ((_gnutls_BrotliEncoderMaxCompressedSize =
+@@ -195,7 +195,7 @@ static int zstd_init(void)
+ #ifndef _WIN32
+ 	if (_zstd_handle != NULL)
+ 		return 0;
+-	if ((_zstd_handle = dlopen("libzstd.so.1", RTLD_NOW | RTLD_GLOBAL)) ==
++	if ((_zstd_handle = dlopen(ZSTD_LIBRARY_SONAME, RTLD_NOW | RTLD_GLOBAL)) ==
+ 	    NULL)
+ 		goto error;
+ 	if ((_gnutls_ZSTD_isError = dlsym(_zstd_handle, "ZSTD_isError")) ==
+-- 
+2.45.2
+
+
+From 3e5be1315a15ac6e1e33e08f28030b8215b6d234 Mon Sep 17 00:00:00 2001
+From: Daiki Ueno <ueno@gnu.org>
+Date: Sat, 29 Jun 2024 13:36:58 +0900
+Subject: [PATCH 4/4] build: switch to using dlwrap for loading compression
+ libraries
+
+This switches the logic to load compression libraries from the
+hand-written code to the automatically generated code by the dlwrap
+tool[1], which enables to select whether to use dlopen or link to the
+library at build time.
+
+1. https://crates.io/crates/dlwrap
+
+Signed-off-by: Daiki Ueno <ueno@gnu.org>
+---
+ cfg.mk                      |   2 +-
+ configure.ac                |   1 +
+ devel/check-headers.sh      |   4 +-
+ devel/dlwrap/brotli.license |   4 +
+ devel/dlwrap/brotlidec.syms |   1 +
+ devel/dlwrap/brotlienc.syms |   2 +
+ devel/dlwrap/z.license      |  20 ++++
+ devel/dlwrap/z.syms         |   3 +
+ devel/dlwrap/zstd.license   |   7 ++
+ devel/dlwrap/zstd.syms      |   4 +
+ devel/generate-dlwrap.sh    |  37 ++++++
+ devel/indent-gnutls         |   2 +-
+ lib/Makefile.am             |  40 ++++++-
+ lib/compress.c              | 218 ++++++++++--------------------------
+ lib/dlwrap/brotlidec.c      | 182 ++++++++++++++++++++++++++++++
+ lib/dlwrap/brotlidec.h      |  47 ++++++++
+ lib/dlwrap/brotlidecfuncs.h |   9 ++
+ lib/dlwrap/brotlienc.c      | 182 ++++++++++++++++++++++++++++++
+ lib/dlwrap/brotlienc.h      |  47 ++++++++
+ lib/dlwrap/brotliencfuncs.h |  10 ++
+ lib/dlwrap/zlib.c           | 182 ++++++++++++++++++++++++++++++
+ lib/dlwrap/zlib.h           |  47 ++++++++
+ lib/dlwrap/zlibfuncs.h      |  27 +++++
+ lib/dlwrap/zstd.c           | 182 ++++++++++++++++++++++++++++++
+ lib/dlwrap/zstd.h           |  47 ++++++++
+ lib/dlwrap/zstdfuncs.h      |  15 +++
+ 26 files changed, 1154 insertions(+), 168 deletions(-)
+ create mode 100644 devel/dlwrap/brotli.license
+ create mode 100644 devel/dlwrap/brotlidec.syms
+ create mode 100644 devel/dlwrap/brotlienc.syms
+ create mode 100644 devel/dlwrap/z.license
+ create mode 100644 devel/dlwrap/z.syms
+ create mode 100644 devel/dlwrap/zstd.license
+ create mode 100644 devel/dlwrap/zstd.syms
+ create mode 100755 devel/generate-dlwrap.sh
+ create mode 100644 lib/dlwrap/brotlidec.c
+ create mode 100644 lib/dlwrap/brotlidec.h
+ create mode 100644 lib/dlwrap/brotlidecfuncs.h
+ create mode 100644 lib/dlwrap/brotlienc.c
+ create mode 100644 lib/dlwrap/brotlienc.h
+ create mode 100644 lib/dlwrap/brotliencfuncs.h
+ create mode 100644 lib/dlwrap/zlib.c
+ create mode 100644 lib/dlwrap/zlib.h
+ create mode 100644 lib/dlwrap/zlibfuncs.h
+ create mode 100644 lib/dlwrap/zstd.c
+ create mode 100644 lib/dlwrap/zstd.h
+ create mode 100644 lib/dlwrap/zstdfuncs.h
+
+diff --git a/cfg.mk b/cfg.mk
+index 5ef839a2c1..1b94279633 100644
+--- a/cfg.mk
++++ b/cfg.mk
+@@ -24,7 +24,7 @@ PACKAGE ?= gnutls
+ 
+ .PHONY: config glimport
+ 
+-INDENT_SOURCES = `find . -name \*.[ch] -o -name gnutls.h.in | grep -v -e ^./build-aux/ -e ^./config.h -e ^./devel/ -e ^./gnulib -e ^./lib/minitasn1/ -e ^./lib/includes/gnutls/gnutls.h -e ^./lib/nettle/backport/ -e ^./lib/priority_options.h -e ^./lib/unistring/ -e ^./lib/x509/supported_exts.h -e ^./lib/build-aux/ -e ^./gl/ -e ^./src/gl/ -e ^./src/.*-options.[ch] -e -args.[ch] -e asn1_tab.c -e ^./tests/suite/`
++INDENT_SOURCES = `find . -name \*.[ch] -o -name gnutls.h.in | grep -v -e ^./build-aux/ -e ^./config.h -e ^./devel/ -e ^./gnulib -e ^./lib/minitasn1/ -e ^./lib/includes/gnutls/gnutls.h -e ^./lib/nettle/backport/ -e ^./lib/priority_options.h -e ^./lib/unistring/ -e ^./lib/x509/supported_exts.h -e ^./lib/build-aux/ -e ^./lib/dlwrap/ -e ^./gl/ -e ^./src/gl/ -e ^./src/.*-options.[ch] -e -args.[ch] -e asn1_tab.c -e ^./tests/suite/`
+ 
+ ifeq ($(.DEFAULT_GOAL),abort-due-to-no-makefile)
+ .DEFAULT_GOAL := bootstrap
+diff --git a/configure.ac b/configure.ac
+index 28d6895efb..62a7fbdf66 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -1083,6 +1083,7 @@ if test x$ac_zlib != xno; then
+     AC_DEFINE([HAVE_LIBZ], 1, [Define if ZLIB compression is enabled.])
+     need_ltlibdl=yes
+ fi
++AM_CONDITIONAL(HAVE_ZLIB, test "$ac_zlib" = "yes")
+ AC_SUBST(LIBZ_PC)
+ 
+ AS_IF([test "$ac_cv_dlopen_soname_works" = yes], [
+diff --git a/devel/dlwrap/brotli.license b/devel/dlwrap/brotli.license
+new file mode 100644
+index 0000000000..d65b39b1ac
+--- /dev/null
++++ b/devel/dlwrap/brotli.license
+@@ -0,0 +1,4 @@
++Copyright 2013 Google Inc. All Rights Reserved.
++
++Distributed under MIT license.
++See file LICENSE for detail or copy at https://opensource.org/licenses/MIT
+diff --git a/devel/dlwrap/brotlidec.syms b/devel/dlwrap/brotlidec.syms
+new file mode 100644
+index 0000000000..97edbad15e
+--- /dev/null
++++ b/devel/dlwrap/brotlidec.syms
+@@ -0,0 +1 @@
++BrotliDecoderDecompress
+diff --git a/devel/dlwrap/brotlienc.syms b/devel/dlwrap/brotlienc.syms
+new file mode 100644
+index 0000000000..d618292047
+--- /dev/null
++++ b/devel/dlwrap/brotlienc.syms
+@@ -0,0 +1,2 @@
++BrotliEncoderMaxCompressedSize
++BrotliEncoderCompress
+diff --git a/devel/dlwrap/z.license b/devel/dlwrap/z.license
+new file mode 100644
+index 0000000000..94ce4ae9c9
+--- /dev/null
++++ b/devel/dlwrap/z.license
+@@ -0,0 +1,20 @@
++Copyright (C) 1995-2022 Jean-loup Gailly and Mark Adler
++
++This software is provided 'as-is', without any express or implied
++warranty.  In no event will the authors be held liable for any damages
++arising from the use of this software.
++
++Permission is granted to anyone to use this software for any purpose,
++including commercial applications, and to alter it and redistribute it
++freely, subject to the following restrictions:
++
++1. The origin of this software must not be misrepresented; you must not
++   claim that you wrote the original software. If you use this software
++   in a product, an acknowledgment in the product documentation would be
++   appreciated but is not required.
++2. Altered source versions must be plainly marked as such, and must not be
++   misrepresented as being the original software.
++3. This notice may not be removed or altered from any source distribution.
++
++Jean-loup Gailly        Mark Adler
++jloup@gzip.org          madler@alumni.caltech.edu
+diff --git a/devel/dlwrap/z.syms b/devel/dlwrap/z.syms
+new file mode 100644
+index 0000000000..e3ed6c13f2
+--- /dev/null
++++ b/devel/dlwrap/z.syms
+@@ -0,0 +1,3 @@
++compressBound
++compress
++uncompress
+diff --git a/devel/dlwrap/zstd.license b/devel/dlwrap/zstd.license
+new file mode 100644
+index 0000000000..4b585386bf
+--- /dev/null
++++ b/devel/dlwrap/zstd.license
+@@ -0,0 +1,7 @@
++Copyright (c) Meta Platforms, Inc. and affiliates.
++All rights reserved.
++
++This source code is licensed under both the BSD-style license (found in the
++LICENSE file in the root directory of this source tree) and the GPLv2 (found
++in the COPYING file in the root directory of this source tree).
++You may select, at your option, one of the above-listed licenses.
+diff --git a/devel/dlwrap/zstd.syms b/devel/dlwrap/zstd.syms
+new file mode 100644
+index 0000000000..881bdc8135
+--- /dev/null
++++ b/devel/dlwrap/zstd.syms
+@@ -0,0 +1,4 @@
++ZSTD_isError
++ZSTD_compressBound
++ZSTD_compress
++ZSTD_decompress
+diff --git a/devel/generate-dlwrap.sh b/devel/generate-dlwrap.sh
+new file mode 100755
+index 0000000000..dbcf870612
+--- /dev/null
++++ b/devel/generate-dlwrap.sh
+@@ -0,0 +1,37 @@
++#!/bin/sh
++
++# This script generates dlopen stubs for optional libraries using dlwrap tool:
++# https://crates.io/crates/dlwrap
++
++# Copyright (c) 2023 Daiki Ueno
++# License: GPLv3+ <http://gnu.org/licenses/gpl.html>
++
++set +e
++
++: ${srcdir=.}
++: ${DLWRAP=dlwrap}
++
++if ! "$DLWRAP" -V >& /dev/null; then
++    echo 1>&2 "$0: "$DLWRAP" is missing"
++    exit 77
++fi
++
++SRC="$srcdir/devel/$DLWRAP"
++DST="$srcdir/lib/$DLWRAP"
++
++echo "Generating $DST/zlib.h"
++
++"$DLWRAP" --input /usr/include/zlib.h -o "$DST" --clang-resource-dir $(clang -print-resource-dir) --symbol-file "$SRC/z.syms" --license-file "$SRC/z.license" --soname Z_LIBRARY_SONAME --prefix gnutls_zlib --header-guard GNUTLS_LIB_DLWRAP_ZLIB_H_ --include "<zlib.h>"
++
++echo "Generating $DST/zstd.h"
++
++"$DLWRAP" --input /usr/include/zstd.h -o "$DST" --clang-resource-dir $(clang -print-resource-dir) --symbol-file "$SRC/zstd.syms" --license-file "$SRC/zstd.license" --soname ZSTD_LIBRARY_SONAME --prefix gnutls_zstd --header-guard GNUTLS_LIB_DLWRAP_ZSTD_H_ --include "<zstd.h>"
++
++echo "Generating $DST/brotlienc.h"
++
++"$DLWRAP" --input /usr/include/brotli/encode.h -o "$DST" --clang-resource-dir $(clang -print-resource-dir) --symbol-file "$SRC/brotlienc.syms" --license-file "$SRC/brotli.license" --soname BROTLIENC_LIBRARY_SONAME --prefix gnutls_brotlienc --loader-basename brotlienc --header-guard GNUTLS_LIB_DLWRAP_BROTLIENC_H_ --include "<brotli/encode.h>"
++
++echo "Generating $DST/brotlidec.h"
++
++"$DLWRAP" --input /usr/include/brotli/decode.h -o "$DST" --clang-resource-dir $(clang -print-resource-dir) --symbol-file "$SRC/brotlidec.syms" --license-file "$SRC/brotli.license" --soname BROTLIDEC_LIBRARY_SONAME --prefix gnutls_brotlidec --loader-basename brotlidec --header-guard GNUTLS_LIB_DLWRAP_BROTLIDEC_H_ --include "<brotli/decode.h>"
++
+diff --git a/lib/Makefile.am b/lib/Makefile.am
+index a50d3114ea..d1bd07248e 100644
+--- a/lib/Makefile.am
++++ b/lib/Makefile.am
+@@ -33,7 +33,7 @@ localedir = $(datadir)/locale
+ 
+ include $(top_srcdir)/lib/common.mk
+ 
+-AM_CPPFLAGS = \
++AM_CPPFLAGS =					\
+ 	-DLOCALEDIR=\"$(localedir)\"		\
+ 	-I$(srcdir)/../gl			\
+ 	-I$(builddir)/../gl			\
+@@ -45,7 +45,8 @@ AM_CPPFLAGS = \
+ 	$(LIBTASN1_CFLAGS)			\
+ 	$(P11_KIT_CFLAGS)			\
+ 	$(TSS2_CFLAGS)
+-	$(LIBZSTD_CFLAGS)
++
++thirdparty_libadd =
+ 
+ if !HAVE_LIBUNISTRING
+ SUBDIRS += unistring
+@@ -85,6 +86,39 @@ COBJECTS = range.c record.c compress.c debug.c cipher.c gthreads.h handshake-tls
+ 	hello_ext_lib.c hello_ext_lib.h ocsp-api.c stek.c cert-cred-rawpk.c \
+ 	iov.c iov.h system/ktls.c system/ktls.h pathbuf.c pathbuf.h
+ 
++if HAVE_ZLIB
++COBJECTS += dlwrap/zlib.c dlwrap/zlibfuncs.h dlwrap/zlib.h
++
++if ENABLE_DLOPEN
++AM_CPPFLAGS += $(ZLIB_CFLAGS) -DGNUTLS_ZLIB_ENABLE_DLOPEN=1
++else
++thirdparty_libadd += $(ZLIB_LIBS)
++endif
++endif
++
++if HAVE_LIBZSTD
++COBJECTS += dlwrap/zstd.c dlwrap/zstdfuncs.h dlwrap/zstd.h
++
++if ENABLE_DLOPEN
++AM_CPPFLAGS += $(LIBZSTD_CFLAGS) -DGNUTLS_ZSTD_ENABLE_DLOPEN=1
++else
++thirdparty_libadd += $(LIBZSTD_LIBS)
++endif
++endif
++
++if HAVE_LIBBROTLI
++COBJECTS += dlwrap/brotlienc.c dlwrap/brotliencfuncs.h dlwrap/brotlienc.h
++COBJECTS += dlwrap/brotlidec.c dlwrap/brotlidecfuncs.h dlwrap/brotlidec.h
++
++if ENABLE_DLOPEN
++AM_CPPFLAGS += $(LIBBROTLIENC_CFLAGS) -DGNUTLS_BROTLIENC_ENABLE_DLOPEN=1
++AM_CPPFLAGS += $(LIBBROTLIDEC_CFLAGS) -DGNUTLS_BROTLIDEC_ENABLE_DLOPEN=1
++else
++thirdparty_libadd += $(LIBBROTLIENC_LIBS)
++thirdparty_libadd += $(LIBBROTLIDEC_LIBS)
++endif
++endif
++
+ if ENABLE_GOST
+ COBJECTS += vko.c
+ endif
+@@ -156,7 +190,7 @@ libgnutls_la_LIBADD = ../gl/libgnu.la x509/libgnutls_x509.la \
+ 	ext/libgnutls_ext.la \
+ 	auth/libgnutls_auth.la algorithms/libgnutls_alg.la \
+ 	extras/libgnutls_extras.la
+-thirdparty_libadd = $(LTLIBINTL) $(LIBSOCKET) $(LTLIBNSL) \
++thirdparty_libadd += $(LTLIBINTL) $(LIBSOCKET) $(LTLIBNSL) \
+ 	$(P11_KIT_LIBS) $(LIB_SELECT) $(GNUTLS_LIBS_PRIVATE)
+ 
+ if HAVE_LIBIDN2
+diff --git a/lib/compress.c b/lib/compress.c
+index 26ea2912c2..936a459532 100644
+--- a/lib/compress.c
++++ b/lib/compress.c
+@@ -25,198 +25,91 @@
+ 
+ #include "compress.h"
+ 
+-#ifndef _WIN32
++#ifdef _WIN32
++#define RTLD_NOW 0
++#define RTLD_GLOBAL 0
++#else
+ #include <dlfcn.h>
+ #endif
+ 
++#ifndef Z_LIBRARY_SONAME
++#define Z_LIBRARY_SONAME "none"
++#endif
++
++#ifndef BROTLIENC_LIBRARY_SONAME
++#define BROTLIENC_LIBRARY_SONAME "none"
++#endif
++
++#ifndef BROTLIDEC_LIBRARY_SONAME
++#define BROTLIDEC_LIBRARY_SONAME "none"
++#endif
++
++#ifndef ZSTD_LIBRARY_SONAME
++#define ZSTD_LIBRARY_SONAME "none"
++#endif
++
+ #ifdef HAVE_LIBZ
+-#include <zlib.h>
++#include "dlwrap/zlib.h"
+ #endif
+ 
+ #ifdef HAVE_LIBBROTLI
+-#include <brotli/decode.h>
+-#include <brotli/encode.h>
++#include "dlwrap/brotlienc.h"
++#include "dlwrap/brotlidec.h"
+ #endif
+ 
+ #ifdef HAVE_LIBZSTD
+-#include <zstd.h>
++#include "dlwrap/zstd.h"
+ #endif
+ 
+ #ifdef HAVE_LIBZ
+-static void *_zlib_handle;
+-
+-#if HAVE___TYPEOF__
+-static __typeof__(compressBound)(*_gnutls_zlib_compressBound);
+-static __typeof__(compress)(*_gnutls_zlib_compress);
+-static __typeof__(uncompress)(*_gnutls_zlib_uncompress);
+-#else
+-static uLong (*_gnutls_zlib_compressBound)(uLong sourceLen);
+-static int (*_gnutls_zlib_compress)(Bytef *dest, uLongf *destLen,
+-				    const Bytef *source, uLong sourceLen);
+-static int (*_gnutls_zlib_uncompress)(Bytef *dest, uLongf *destLen,
+-				      const Bytef *source, uLong sourceLen);
+-#endif /* HAVE___TYPEOF__ */
+-
+ static void zlib_deinit(void)
+ {
+-#ifndef _WIN32
+-	if (_zlib_handle != NULL) {
+-		dlclose(_zlib_handle);
+-		_zlib_handle = NULL;
+-	}
+-#endif /* _WIN32 */
++	gnutls_zlib_unload_library();
+ }
+ 
+ static int zlib_init(void)
+ {
+-#ifndef _WIN32
+-	if (_zlib_handle != NULL)
+-		return 0;
+-	if ((_zlib_handle = dlopen(Z_LIBRARY_SONAME, RTLD_NOW | RTLD_GLOBAL)) ==
+-	    NULL)
+-		goto error;
+-	if ((_gnutls_zlib_compressBound =
+-		     dlsym(_zlib_handle, "compressBound")) == NULL)
+-		goto error;
+-	if ((_gnutls_zlib_compress = dlsym(_zlib_handle, "compress")) == NULL)
+-		goto error;
+-	if ((_gnutls_zlib_uncompress = dlsym(_zlib_handle, "uncompress")) ==
+-	    NULL)
+-		goto error;
++	if (gnutls_zlib_ensure_library(Z_LIBRARY_SONAME,
++				       RTLD_NOW | RTLD_GLOBAL) < 0)
++		return gnutls_assert_val(GNUTLS_E_INTERNAL_ERROR);
+ 	return 0;
+-error:
+-	zlib_deinit();
+-	return gnutls_assert_val(GNUTLS_E_INTERNAL_ERROR);
+-#else
+-	return gnutls_assert_val(GNUTLS_E_UNIMPLEMENTED_FEATURE);
+-#endif /* _WIN32 */
+ }
+ #endif /* HAVE_LIBZ */
+ 
+ #ifdef HAVE_LIBBROTLI
+-static void *_brotlienc_handle;
+-static void *_brotlidec_handle;
+-
+-#if HAVE___TYPEOF__
+-static __typeof__(BrotliEncoderMaxCompressedSize)(
+-	*_gnutls_BrotliEncoderMaxCompressedSize);
+-static __typeof__(BrotliEncoderCompress)(*_gnutls_BrotliEncoderCompress);
+-static __typeof__(BrotliDecoderDecompress)(*_gnutls_BrotliDecoderDecompress);
+-#else
+-static size_t (*_gnutls_BrotliEncoderMaxCompressedSize)(size_t input_size);
+-static BROTLI_BOOL (*_gnutls_BrotliEncoderCompress)(
+-	int quality, int lgwin, BrotliEncoderMode mode, size_t input_size,
+-	const uint8_t input_buffer[BROTLI_ARRAY_PARAM(input_size)],
+-	size_t *encoded_size,
+-	uint8_t encoded_buffer[BROTLI_ARRAY_PARAM(*encoded_size)]);
+-static BrotliDecoderResult (*_gnutls_BrotliDecoderDecompress)(
+-	size_t encoded_size,
+-	const uint8_t encoded_buffer[BROTLI_ARRAY_PARAM(encoded_size)],
+-	size_t *decoded_size,
+-	uint8_t decoded_buffer[BROTLI_ARRAY_PARAM(*decoded_size)]);
+-#endif /* HAVE___TYPEOF__ */
+ 
+ static void brotli_deinit(void)
+ {
+-#ifndef _WIN32
+-	if (_brotlienc_handle != NULL) {
+-		dlclose(_brotlienc_handle);
+-		_brotlienc_handle = NULL;
+-	}
+-	if (_brotlidec_handle != NULL) {
+-		dlclose(_brotlidec_handle);
+-		_brotlidec_handle = NULL;
+-	}
+-#endif /* _WIN32 */
++	gnutls_brotlienc_unload_library();
++	gnutls_brotlidec_unload_library();
+ }
+ 
+ static int brotli_init(void)
+ {
+-#ifndef _WIN32
+-	if (_brotlienc_handle != NULL || _brotlidec_handle != NULL)
+-		return 0;
+-	if ((_brotlienc_handle = dlopen(BROTLIENC_LIBRARY_SONAME,
+-					RTLD_NOW | RTLD_GLOBAL)) == NULL)
+-		goto error;
+-	if ((_brotlidec_handle = dlopen(BROTLIDEC_LIBRARY_SONAME,
+-					RTLD_NOW | RTLD_GLOBAL)) == NULL)
+-		goto error;
+-	if ((_gnutls_BrotliEncoderMaxCompressedSize =
+-		     dlsym(_brotlienc_handle,
+-			   "BrotliEncoderMaxCompressedSize")) == NULL)
+-		goto error;
+-	if ((_gnutls_BrotliEncoderCompress =
+-		     dlsym(_brotlienc_handle, "BrotliEncoderCompress")) == NULL)
+-		goto error;
+-	if ((_gnutls_BrotliDecoderDecompress = dlsym(
+-		     _brotlidec_handle, "BrotliDecoderDecompress")) == NULL)
+-		goto error;
++	if (gnutls_brotlienc_ensure_library(BROTLIENC_LIBRARY_SONAME,
++					    RTLD_NOW | RTLD_GLOBAL) < 0)
++		return gnutls_assert_val(GNUTLS_E_INTERNAL_ERROR);
++
++	if (gnutls_brotlidec_ensure_library(BROTLIDEC_LIBRARY_SONAME,
++					    RTLD_NOW | RTLD_GLOBAL) < 0)
++		return gnutls_assert_val(GNUTLS_E_INTERNAL_ERROR);
+ 	return 0;
+-error:
+-	brotli_deinit();
+-	return gnutls_assert_val(GNUTLS_E_INTERNAL_ERROR);
+-#else
+-	return gnutls_assert_val(GNUTLS_E_UNIMPLEMENTED_FEATURE);
+-#endif /* _WIN32 */
+ }
+ #endif /* HAVE_LIBBROTLI */
+ 
+ #ifdef HAVE_LIBZSTD
+-static void *_zstd_handle;
+-
+-#if HAVE___TYPEOF__
+-static __typeof__(ZSTD_isError)(*_gnutls_ZSTD_isError);
+-static __typeof__(ZSTD_compressBound)(*_gnutls_ZSTD_compressBound);
+-static __typeof__(ZSTD_compress)(*_gnutls_ZSTD_compress);
+-static __typeof__(ZSTD_decompress)(*_gnutls_ZSTD_decompress);
+-#else
+-static unsigned (*_gnutls_ZSTD_isError)(size_t code);
+-static size_t (*_gnutls_ZSTD_compressBound)(size_t srcSize);
+-static size_t (*_gnutls_ZSTD_compress)(void *dst, size_t dstCapacity,
+-				       const void *src, size_t srcSize,
+-				       int compressionLevel);
+-static size_t (*_gnutls_ZSTD_decompress)(void *dst, size_t dstCapacity,
+-					 const void *src,
+-					 size_t compressedSize);
+-#endif /* HAVE___TYPEOF__ */
+ 
+ static void zstd_deinit(void)
+ {
+-#ifndef _WIN32
+-	if (_zstd_handle != NULL) {
+-		dlclose(_zstd_handle);
+-		_zstd_handle = NULL;
+-	}
+-#endif /* _WIN32 */
++	gnutls_zstd_unload_library();
+ }
+ 
+ static int zstd_init(void)
+ {
+-#ifndef _WIN32
+-	if (_zstd_handle != NULL)
+-		return 0;
+-	if ((_zstd_handle = dlopen(ZSTD_LIBRARY_SONAME, RTLD_NOW | RTLD_GLOBAL)) ==
+-	    NULL)
+-		goto error;
+-	if ((_gnutls_ZSTD_isError = dlsym(_zstd_handle, "ZSTD_isError")) ==
+-	    NULL)
+-		goto error;
+-	if ((_gnutls_ZSTD_compressBound =
+-		     dlsym(_zstd_handle, "ZSTD_compressBound")) == NULL)
+-		goto error;
+-	if ((_gnutls_ZSTD_compress = dlsym(_zstd_handle, "ZSTD_compress")) ==
+-	    NULL)
+-		goto error;
+-	if ((_gnutls_ZSTD_decompress =
+-		     dlsym(_zstd_handle, "ZSTD_decompress")) == NULL)
+-		goto error;
++	if (gnutls_zstd_ensure_library(ZSTD_LIBRARY_SONAME,
++				       RTLD_NOW | RTLD_GLOBAL) < 0)
++		return gnutls_assert_val(GNUTLS_E_INTERNAL_ERROR);
+ 	return 0;
+-error:
+-	zstd_deinit();
+-	return gnutls_assert_val(GNUTLS_E_INTERNAL_ERROR);
+-#else
+-	return gnutls_assert_val(GNUTLS_E_UNIMPLEMENTED_FEATURE);
+-#endif /* _WIN32 */
+ }
+ #endif /* HAVE_LIBZSTD */
+ 
+@@ -345,15 +238,16 @@ size_t _gnutls_compress_bound(gnutls_compression_method_t alg, size_t src_len)
+ 	switch (alg) {
+ #ifdef HAVE_LIBZ
+ 	case GNUTLS_COMP_ZLIB:
+-		return _gnutls_zlib_compressBound(src_len);
++		return GNUTLS_ZLIB_FUNC(compressBound)(src_len);
+ #endif
+ #ifdef HAVE_LIBBROTLI
+ 	case GNUTLS_COMP_BROTLI:
+-		return _gnutls_BrotliEncoderMaxCompressedSize(src_len);
++		return GNUTLS_BROTLIENC_FUNC(BrotliEncoderMaxCompressedSize)(
++			src_len);
+ #endif
+ #ifdef HAVE_LIBZSTD
+ 	case GNUTLS_COMP_ZSTD:
+-		return _gnutls_ZSTD_compressBound(src_len);
++		return GNUTLS_ZSTD_FUNC(ZSTD_compressBound)(src_len);
+ #endif
+ 	default:
+ 		return 0;
+@@ -372,7 +266,7 @@ int _gnutls_compress(gnutls_compression_method_t alg, uint8_t *dst,
+ 		int err;
+ 		uLongf comp_len = dst_len;
+ 
+-		err = _gnutls_zlib_compress(dst, &comp_len, src, src_len);
++		err = GNUTLS_ZLIB_FUNC(compress)(dst, &comp_len, src, src_len);
+ 		if (err != Z_OK)
+ 			return gnutls_assert_val(GNUTLS_E_COMPRESSION_FAILED);
+ 		ret = comp_len;
+@@ -383,7 +277,7 @@ int _gnutls_compress(gnutls_compression_method_t alg, uint8_t *dst,
+ 		BROTLI_BOOL err;
+ 		size_t comp_len = dst_len;
+ 
+-		err = _gnutls_BrotliEncoderCompress(
++		err = GNUTLS_BROTLIENC_FUNC(BrotliEncoderCompress)(
+ 			BROTLI_DEFAULT_QUALITY, BROTLI_DEFAULT_WINDOW,
+ 			BROTLI_DEFAULT_MODE, src_len, src, &comp_len, dst);
+ 		if (!err)
+@@ -395,9 +289,9 @@ int _gnutls_compress(gnutls_compression_method_t alg, uint8_t *dst,
+ 	case GNUTLS_COMP_ZSTD: {
+ 		size_t comp_len;
+ 
+-		comp_len = _gnutls_ZSTD_compress(dst, dst_len, src, src_len,
+-						 ZSTD_CLEVEL_DEFAULT);
+-		if (_gnutls_ZSTD_isError(comp_len))
++		comp_len = GNUTLS_ZSTD_FUNC(ZSTD_compress)(
++			dst, dst_len, src, src_len, ZSTD_CLEVEL_DEFAULT);
++		if (GNUTLS_ZSTD_FUNC(ZSTD_isError)(comp_len))
+ 			return gnutls_assert_val(GNUTLS_E_COMPRESSION_FAILED);
+ 		ret = comp_len;
+ 	} break;
+@@ -425,7 +319,8 @@ int _gnutls_decompress(gnutls_compression_method_t alg, uint8_t *dst,
+ 		int err;
+ 		uLongf plain_len = dst_len;
+ 
+-		err = _gnutls_zlib_uncompress(dst, &plain_len, src, src_len);
++		err = GNUTLS_ZLIB_FUNC(uncompress)(dst, &plain_len, src,
++						   src_len);
+ 		if (err != Z_OK)
+ 			return gnutls_assert_val(GNUTLS_E_DECOMPRESSION_FAILED);
+ 		ret = plain_len;
+@@ -436,8 +331,8 @@ int _gnutls_decompress(gnutls_compression_method_t alg, uint8_t *dst,
+ 		BrotliDecoderResult err;
+ 		size_t plain_len = dst_len;
+ 
+-		err = _gnutls_BrotliDecoderDecompress(src_len, src, &plain_len,
+-						      dst);
++		err = GNUTLS_BROTLIDEC_FUNC(
++			BrotliDecoderDecompress)(src_len, src, &plain_len, dst);
+ 		if (err != BROTLI_DECODER_RESULT_SUCCESS)
+ 			return gnutls_assert_val(GNUTLS_E_DECOMPRESSION_FAILED);
+ 		ret = plain_len;
+@@ -447,8 +342,9 @@ int _gnutls_decompress(gnutls_compression_method_t alg, uint8_t *dst,
+ 	case GNUTLS_COMP_ZSTD: {
+ 		size_t plain_len;
+ 
+-		plain_len = _gnutls_ZSTD_decompress(dst, dst_len, src, src_len);
+-		if (_gnutls_ZSTD_isError(plain_len))
++		plain_len = GNUTLS_ZSTD_FUNC(ZSTD_decompress)(dst, dst_len, src,
++							      src_len);
++		if (GNUTLS_ZSTD_FUNC(ZSTD_isError)(plain_len))
+ 			return gnutls_assert_val(GNUTLS_E_DECOMPRESSION_FAILED);
+ 		ret = plain_len;
+ 	} break;
+diff --git a/lib/dlwrap/brotlidec.c b/lib/dlwrap/brotlidec.c
+new file mode 100644
+index 0000000000..45c9b4b259
+--- /dev/null
++++ b/lib/dlwrap/brotlidec.c
+@@ -0,0 +1,182 @@
++/*
++ * Copying and distribution of this file, with or without modification,
++ * are permitted in any medium without royalty provided the copyright
++ * notice and this notice are preserved.  This file is offered as-is,
++ * without any warranty.
++ */
++
++#ifdef HAVE_CONFIG_H
++#include "config.h"
++#endif
++
++#include "brotlidec.h"
++
++#if defined(GNUTLS_BROTLIDEC_ENABLE_DLOPEN) && GNUTLS_BROTLIDEC_ENABLE_DLOPEN
++
++#include <assert.h>
++#include <dlfcn.h>
++#include <errno.h>
++#include <stdlib.h>
++
++/* If BROTLIDEC_LIBRARY_SONAME is defined, dlopen handle can be automatically
++ * set; otherwise, the caller needs to call
++ * gnutls_brotlidec_ensure_library with soname determined at run time.
++ */
++#ifdef BROTLIDEC_LIBRARY_SONAME
++
++static void
++ensure_library (void)
++{
++  if (gnutls_brotlidec_ensure_library (BROTLIDEC_LIBRARY_SONAME, RTLD_LAZY | RTLD_LOCAL) < 0)
++    abort ();
++}
++
++#if defined(GNUTLS_BROTLIDEC_ENABLE_PTHREAD) && GNUTLS_BROTLIDEC_ENABLE_PTHREAD
++#include <pthread.h>
++
++static pthread_once_t dlopen_once = PTHREAD_ONCE_INIT;
++
++#define ENSURE_LIBRARY pthread_once(&dlopen_once, ensure_library)
++
++#else /* GNUTLS_BROTLIDEC_ENABLE_PTHREAD */
++
++#define ENSURE_LIBRARY do {	    \
++    if (!gnutls_brotlidec_dlhandle) \
++      ensure_library();		    \
++  } while (0)
++
++#endif /* !GNUTLS_BROTLIDEC_ENABLE_PTHREAD */
++
++#else /* BROTLIDEC_LIBRARY_SONAME */
++
++#define ENSURE_LIBRARY do {} while (0)
++
++#endif /* !BROTLIDEC_LIBRARY_SONAME */
++
++static void *gnutls_brotlidec_dlhandle;
++
++/* Define redirection symbols */
++#pragma GCC diagnostic push
++#pragma GCC diagnostic ignored "-Wunused-macros"
++
++#if (2 <= __GNUC__ || (4 <= __clang_major__))
++#define FUNC(ret, name, args, cargs)			\
++  static __typeof__(name)(*gnutls_brotlidec_sym_##name);
++#else
++#define FUNC(ret, name, args, cargs)		\
++  static ret(*gnutls_brotlidec_sym_##name)args;
++#endif
++#define VOID_FUNC FUNC
++#include "brotlidecfuncs.h"
++#undef VOID_FUNC
++#undef FUNC
++
++#pragma GCC diagnostic pop
++
++/* Define redirection wrapper functions */
++#pragma GCC diagnostic push
++#pragma GCC diagnostic ignored "-Wunused-macros"
++
++#define FUNC(ret, name, args, cargs)        \
++ret gnutls_brotlidec_func_##name args           \
++{					    \
++  ENSURE_LIBRARY;			    \
++  assert (gnutls_brotlidec_sym_##name);	    \
++  return gnutls_brotlidec_sym_##name cargs;	    \
++}
++#define VOID_FUNC(ret, name, args, cargs)   \
++ret gnutls_brotlidec_func_##name args           \
++{					    \
++  ENSURE_LIBRARY;			    \
++  assert (gnutls_brotlidec_sym_##name);	    \
++  gnutls_brotlidec_sym_##name cargs;		    \
++}
++#include "brotlidecfuncs.h"
++#undef VOID_FUNC
++#undef FUNC
++
++#pragma GCC diagnostic pop
++
++static int
++ensure_symbol (const char *name, void **symp)
++{
++  if (!*symp)
++    {
++      void *sym = dlsym (gnutls_brotlidec_dlhandle, name);
++      if (!sym)
++	return -errno;
++      *symp = sym;
++    }
++  return 0;
++}
++
++int
++gnutls_brotlidec_ensure_library (const char *soname, int flags)
++{
++  int err;
++
++  if (!gnutls_brotlidec_dlhandle)
++    {
++      gnutls_brotlidec_dlhandle = dlopen (soname, flags);
++      if (!gnutls_brotlidec_dlhandle)
++	return -errno;
++    }
++
++#define ENSURE_SYMBOL(name)					\
++  ensure_symbol(#name, (void **)&gnutls_brotlidec_sym_##name)
++
++#pragma GCC diagnostic push
++#pragma GCC diagnostic ignored "-Wunused-macros"
++
++#define FUNC(ret, name, args, cargs)	\
++  err = ENSURE_SYMBOL(name);		\
++  if (err < 0)				\
++    return err;
++#define VOID_FUNC FUNC
++#include "brotlidecfuncs.h"
++#undef VOID_FUNC
++#undef FUNC
++
++#pragma GCC diagnostic pop
++
++#undef ENSURE_SYMBOL
++  return 0;
++}
++
++void
++gnutls_brotlidec_unload_library (void)
++{
++  if (gnutls_brotlidec_dlhandle)
++    dlclose (gnutls_brotlidec_dlhandle);
++
++#pragma GCC diagnostic push
++#pragma GCC diagnostic ignored "-Wunused-macros"
++
++#define FUNC(ret, name, args, cargs)		\
++  gnutls_brotlidec_sym_##name = NULL;
++#define VOID_FUNC FUNC
++#include "brotlidecfuncs.h"
++#undef VOID_FUNC
++#undef FUNC
++
++#pragma GCC diagnostic pop
++
++#undef RESET_SYMBOL
++}
++
++#else /* GNUTLS_BROTLIDEC_ENABLE_DLOPEN */
++
++int
++gnutls_brotlidec_ensure_library (const char *soname, int flags)
++{
++  (void) soname;
++  (void) flags;
++  return 0;
++}
++
++void
++gnutls_brotlidec_unload_library (void)
++{
++}
++
++#endif /* !GNUTLS_BROTLIDEC_ENABLE_DLOPEN */
+diff --git a/lib/dlwrap/brotlidec.h b/lib/dlwrap/brotlidec.h
+new file mode 100644
+index 0000000000..31397f24cf
+--- /dev/null
++++ b/lib/dlwrap/brotlidec.h
+@@ -0,0 +1,47 @@
++/*
++ * Copying and distribution of this file, with or without modification,
++ * are permitted in any medium without royalty provided the copyright
++ * notice and this notice are preserved.  This file is offered as-is,
++ * without any warranty.
++ */
++
++#ifndef GNUTLS_LIB_DLWRAP_BROTLIDEC_H_
++#define GNUTLS_LIB_DLWRAP_BROTLIDEC_H_
++
++#include <brotli/decode.h>
++
++#if defined(GNUTLS_BROTLIDEC_ENABLE_DLOPEN) && GNUTLS_BROTLIDEC_ENABLE_DLOPEN
++
++#define FUNC(ret, name, args, cargs)		\
++  ret gnutls_brotlidec_func_##name args;
++#define VOID_FUNC FUNC
++#include "brotlidecfuncs.h"
++#undef VOID_FUNC
++#undef FUNC
++
++#define GNUTLS_BROTLIDEC_FUNC(name) gnutls_brotlidec_func_##name
++
++#else
++
++#define GNUTLS_BROTLIDEC_FUNC(name) name
++
++#endif /* GNUTLS_BROTLIDEC_ENABLE_DLOPEN */
++
++/* Ensure SONAME to be loaded with dlopen FLAGS, and all the necessary
++ * symbols are resolved.
++ *
++ * Returns 0 on success; negative error code otherwise.
++ *
++ * Note that this function is NOT thread-safe; when calling it from
++ * multi-threaded programs, protect it with a locking mechanism.
++ */
++int gnutls_brotlidec_ensure_library (const char *soname, int flags);
++
++/* Unload library and reset symbols.
++ *
++ * Note that this function is NOT thread-safe; when calling it from
++ * multi-threaded programs, protect it with a locking mechanism.
++ */
++void gnutls_brotlidec_unload_library (void);
++
++#endif /* GNUTLS_LIB_DLWRAP_BROTLIDEC_H_ */
+diff --git a/lib/dlwrap/brotlidecfuncs.h b/lib/dlwrap/brotlidecfuncs.h
+new file mode 100644
+index 0000000000..aa033e3a8b
+--- /dev/null
++++ b/lib/dlwrap/brotlidecfuncs.h
+@@ -0,0 +1,9 @@
++/*
++ * This file was automatically generated from decode.h,
++ * which is covered by the following license:
++ * Copyright 2013 Google Inc. All Rights Reserved.
++ *
++ * Distributed under MIT license.
++ * See file LICENSE for detail or copy at https://opensource.org/licenses/MIT
++ */
++FUNC(BrotliDecoderResult, BrotliDecoderDecompress, (size_t encoded_size, const uint8_t encoded_buffer[], size_t *decoded_size, uint8_t decoded_buffer[]), (encoded_size, encoded_buffer, decoded_size, decoded_buffer))
+diff --git a/lib/dlwrap/brotlienc.c b/lib/dlwrap/brotlienc.c
+new file mode 100644
+index 0000000000..9dd8ff37c6
+--- /dev/null
++++ b/lib/dlwrap/brotlienc.c
+@@ -0,0 +1,182 @@
++/*
++ * Copying and distribution of this file, with or without modification,
++ * are permitted in any medium without royalty provided the copyright
++ * notice and this notice are preserved.  This file is offered as-is,
++ * without any warranty.
++ */
++
++#ifdef HAVE_CONFIG_H
++#include "config.h"
++#endif
++
++#include "brotlienc.h"
++
++#if defined(GNUTLS_BROTLIENC_ENABLE_DLOPEN) && GNUTLS_BROTLIENC_ENABLE_DLOPEN
++
++#include <assert.h>
++#include <dlfcn.h>
++#include <errno.h>
++#include <stdlib.h>
++
++/* If BROTLIENC_LIBRARY_SONAME is defined, dlopen handle can be automatically
++ * set; otherwise, the caller needs to call
++ * gnutls_brotlienc_ensure_library with soname determined at run time.
++ */
++#ifdef BROTLIENC_LIBRARY_SONAME
++
++static void
++ensure_library (void)
++{
++  if (gnutls_brotlienc_ensure_library (BROTLIENC_LIBRARY_SONAME, RTLD_LAZY | RTLD_LOCAL) < 0)
++    abort ();
++}
++
++#if defined(GNUTLS_BROTLIENC_ENABLE_PTHREAD) && GNUTLS_BROTLIENC_ENABLE_PTHREAD
++#include <pthread.h>
++
++static pthread_once_t dlopen_once = PTHREAD_ONCE_INIT;
++
++#define ENSURE_LIBRARY pthread_once(&dlopen_once, ensure_library)
++
++#else /* GNUTLS_BROTLIENC_ENABLE_PTHREAD */
++
++#define ENSURE_LIBRARY do {	    \
++    if (!gnutls_brotlienc_dlhandle) \
++      ensure_library();		    \
++  } while (0)
++
++#endif /* !GNUTLS_BROTLIENC_ENABLE_PTHREAD */
++
++#else /* BROTLIENC_LIBRARY_SONAME */
++
++#define ENSURE_LIBRARY do {} while (0)
++
++#endif /* !BROTLIENC_LIBRARY_SONAME */
++
++static void *gnutls_brotlienc_dlhandle;
++
++/* Define redirection symbols */
++#pragma GCC diagnostic push
++#pragma GCC diagnostic ignored "-Wunused-macros"
++
++#if (2 <= __GNUC__ || (4 <= __clang_major__))
++#define FUNC(ret, name, args, cargs)			\
++  static __typeof__(name)(*gnutls_brotlienc_sym_##name);
++#else
++#define FUNC(ret, name, args, cargs)		\
++  static ret(*gnutls_brotlienc_sym_##name)args;
++#endif
++#define VOID_FUNC FUNC
++#include "brotliencfuncs.h"
++#undef VOID_FUNC
++#undef FUNC
++
++#pragma GCC diagnostic pop
++
++/* Define redirection wrapper functions */
++#pragma GCC diagnostic push
++#pragma GCC diagnostic ignored "-Wunused-macros"
++
++#define FUNC(ret, name, args, cargs)        \
++ret gnutls_brotlienc_func_##name args           \
++{					    \
++  ENSURE_LIBRARY;			    \
++  assert (gnutls_brotlienc_sym_##name);	    \
++  return gnutls_brotlienc_sym_##name cargs;	    \
++}
++#define VOID_FUNC(ret, name, args, cargs)   \
++ret gnutls_brotlienc_func_##name args           \
++{					    \
++  ENSURE_LIBRARY;			    \
++  assert (gnutls_brotlienc_sym_##name);	    \
++  gnutls_brotlienc_sym_##name cargs;		    \
++}
++#include "brotliencfuncs.h"
++#undef VOID_FUNC
++#undef FUNC
++
++#pragma GCC diagnostic pop
++
++static int
++ensure_symbol (const char *name, void **symp)
++{
++  if (!*symp)
++    {
++      void *sym = dlsym (gnutls_brotlienc_dlhandle, name);
++      if (!sym)
++	return -errno;
++      *symp = sym;
++    }
++  return 0;
++}
++
++int
++gnutls_brotlienc_ensure_library (const char *soname, int flags)
++{
++  int err;
++
++  if (!gnutls_brotlienc_dlhandle)
++    {
++      gnutls_brotlienc_dlhandle = dlopen (soname, flags);
++      if (!gnutls_brotlienc_dlhandle)
++	return -errno;
++    }
++
++#define ENSURE_SYMBOL(name)					\
++  ensure_symbol(#name, (void **)&gnutls_brotlienc_sym_##name)
++
++#pragma GCC diagnostic push
++#pragma GCC diagnostic ignored "-Wunused-macros"
++
++#define FUNC(ret, name, args, cargs)	\
++  err = ENSURE_SYMBOL(name);		\
++  if (err < 0)				\
++    return err;
++#define VOID_FUNC FUNC
++#include "brotliencfuncs.h"
++#undef VOID_FUNC
++#undef FUNC
++
++#pragma GCC diagnostic pop
++
++#undef ENSURE_SYMBOL
++  return 0;
++}
++
++void
++gnutls_brotlienc_unload_library (void)
++{
++  if (gnutls_brotlienc_dlhandle)
++    dlclose (gnutls_brotlienc_dlhandle);
++
++#pragma GCC diagnostic push
++#pragma GCC diagnostic ignored "-Wunused-macros"
++
++#define FUNC(ret, name, args, cargs)		\
++  gnutls_brotlienc_sym_##name = NULL;
++#define VOID_FUNC FUNC
++#include "brotliencfuncs.h"
++#undef VOID_FUNC
++#undef FUNC
++
++#pragma GCC diagnostic pop
++
++#undef RESET_SYMBOL
++}
++
++#else /* GNUTLS_BROTLIENC_ENABLE_DLOPEN */
++
++int
++gnutls_brotlienc_ensure_library (const char *soname, int flags)
++{
++  (void) soname;
++  (void) flags;
++  return 0;
++}
++
++void
++gnutls_brotlienc_unload_library (void)
++{
++}
++
++#endif /* !GNUTLS_BROTLIENC_ENABLE_DLOPEN */
+diff --git a/lib/dlwrap/brotlienc.h b/lib/dlwrap/brotlienc.h
+new file mode 100644
+index 0000000000..ed1af45e04
+--- /dev/null
++++ b/lib/dlwrap/brotlienc.h
+@@ -0,0 +1,47 @@
++/*
++ * Copying and distribution of this file, with or without modification,
++ * are permitted in any medium without royalty provided the copyright
++ * notice and this notice are preserved.  This file is offered as-is,
++ * without any warranty.
++ */
++
++#ifndef GNUTLS_LIB_DLWRAP_BROTLIENC_H_
++#define GNUTLS_LIB_DLWRAP_BROTLIENC_H_
++
++#include <brotli/encode.h>
++
++#if defined(GNUTLS_BROTLIENC_ENABLE_DLOPEN) && GNUTLS_BROTLIENC_ENABLE_DLOPEN
++
++#define FUNC(ret, name, args, cargs)		\
++  ret gnutls_brotlienc_func_##name args;
++#define VOID_FUNC FUNC
++#include "brotliencfuncs.h"
++#undef VOID_FUNC
++#undef FUNC
++
++#define GNUTLS_BROTLIENC_FUNC(name) gnutls_brotlienc_func_##name
++
++#else
++
++#define GNUTLS_BROTLIENC_FUNC(name) name
++
++#endif /* GNUTLS_BROTLIENC_ENABLE_DLOPEN */
++
++/* Ensure SONAME to be loaded with dlopen FLAGS, and all the necessary
++ * symbols are resolved.
++ *
++ * Returns 0 on success; negative error code otherwise.
++ *
++ * Note that this function is NOT thread-safe; when calling it from
++ * multi-threaded programs, protect it with a locking mechanism.
++ */
++int gnutls_brotlienc_ensure_library (const char *soname, int flags);
++
++/* Unload library and reset symbols.
++ *
++ * Note that this function is NOT thread-safe; when calling it from
++ * multi-threaded programs, protect it with a locking mechanism.
++ */
++void gnutls_brotlienc_unload_library (void);
++
++#endif /* GNUTLS_LIB_DLWRAP_BROTLIENC_H_ */
+diff --git a/lib/dlwrap/brotliencfuncs.h b/lib/dlwrap/brotliencfuncs.h
+new file mode 100644
+index 0000000000..1a4f884d35
+--- /dev/null
++++ b/lib/dlwrap/brotliencfuncs.h
+@@ -0,0 +1,10 @@
++/*
++ * This file was automatically generated from encode.h,
++ * which is covered by the following license:
++ * Copyright 2013 Google Inc. All Rights Reserved.
++ *
++ * Distributed under MIT license.
++ * See file LICENSE for detail or copy at https://opensource.org/licenses/MIT
++ */
++FUNC(size_t, BrotliEncoderMaxCompressedSize, (size_t input_size), (input_size))
++FUNC(int, BrotliEncoderCompress, (int quality, int lgwin, BrotliEncoderMode mode, size_t input_size, const uint8_t input_buffer[], size_t *encoded_size, uint8_t encoded_buffer[]), (quality, lgwin, mode, input_size, input_buffer, encoded_size, encoded_buffer))
+diff --git a/lib/dlwrap/zlib.c b/lib/dlwrap/zlib.c
+new file mode 100644
+index 0000000000..455485c63f
+--- /dev/null
++++ b/lib/dlwrap/zlib.c
+@@ -0,0 +1,182 @@
++/*
++ * Copying and distribution of this file, with or without modification,
++ * are permitted in any medium without royalty provided the copyright
++ * notice and this notice are preserved.  This file is offered as-is,
++ * without any warranty.
++ */
++
++#ifdef HAVE_CONFIG_H
++#include "config.h"
++#endif
++
++#include "zlib.h"
++
++#if defined(GNUTLS_ZLIB_ENABLE_DLOPEN) && GNUTLS_ZLIB_ENABLE_DLOPEN
++
++#include <assert.h>
++#include <dlfcn.h>
++#include <errno.h>
++#include <stdlib.h>
++
++/* If Z_LIBRARY_SONAME is defined, dlopen handle can be automatically
++ * set; otherwise, the caller needs to call
++ * gnutls_zlib_ensure_library with soname determined at run time.
++ */
++#ifdef Z_LIBRARY_SONAME
++
++static void
++ensure_library (void)
++{
++  if (gnutls_zlib_ensure_library (Z_LIBRARY_SONAME, RTLD_LAZY | RTLD_LOCAL) < 0)
++    abort ();
++}
++
++#if defined(GNUTLS_ZLIB_ENABLE_PTHREAD) && GNUTLS_ZLIB_ENABLE_PTHREAD
++#include <pthread.h>
++
++static pthread_once_t dlopen_once = PTHREAD_ONCE_INIT;
++
++#define ENSURE_LIBRARY pthread_once(&dlopen_once, ensure_library)
++
++#else /* GNUTLS_ZLIB_ENABLE_PTHREAD */
++
++#define ENSURE_LIBRARY do {	    \
++    if (!gnutls_zlib_dlhandle) \
++      ensure_library();		    \
++  } while (0)
++
++#endif /* !GNUTLS_ZLIB_ENABLE_PTHREAD */
++
++#else /* Z_LIBRARY_SONAME */
++
++#define ENSURE_LIBRARY do {} while (0)
++
++#endif /* !Z_LIBRARY_SONAME */
++
++static void *gnutls_zlib_dlhandle;
++
++/* Define redirection symbols */
++#pragma GCC diagnostic push
++#pragma GCC diagnostic ignored "-Wunused-macros"
++
++#if (2 <= __GNUC__ || (4 <= __clang_major__))
++#define FUNC(ret, name, args, cargs)			\
++  static __typeof__(name)(*gnutls_zlib_sym_##name);
++#else
++#define FUNC(ret, name, args, cargs)		\
++  static ret(*gnutls_zlib_sym_##name)args;
++#endif
++#define VOID_FUNC FUNC
++#include "zlibfuncs.h"
++#undef VOID_FUNC
++#undef FUNC
++
++#pragma GCC diagnostic pop
++
++/* Define redirection wrapper functions */
++#pragma GCC diagnostic push
++#pragma GCC diagnostic ignored "-Wunused-macros"
++
++#define FUNC(ret, name, args, cargs)        \
++ret gnutls_zlib_func_##name args           \
++{					    \
++  ENSURE_LIBRARY;			    \
++  assert (gnutls_zlib_sym_##name);	    \
++  return gnutls_zlib_sym_##name cargs;	    \
++}
++#define VOID_FUNC(ret, name, args, cargs)   \
++ret gnutls_zlib_func_##name args           \
++{					    \
++  ENSURE_LIBRARY;			    \
++  assert (gnutls_zlib_sym_##name);	    \
++  gnutls_zlib_sym_##name cargs;		    \
++}
++#include "zlibfuncs.h"
++#undef VOID_FUNC
++#undef FUNC
++
++#pragma GCC diagnostic pop
++
++static int
++ensure_symbol (const char *name, void **symp)
++{
++  if (!*symp)
++    {
++      void *sym = dlsym (gnutls_zlib_dlhandle, name);
++      if (!sym)
++	return -errno;
++      *symp = sym;
++    }
++  return 0;
++}
++
++int
++gnutls_zlib_ensure_library (const char *soname, int flags)
++{
++  int err;
++
++  if (!gnutls_zlib_dlhandle)
++    {
++      gnutls_zlib_dlhandle = dlopen (soname, flags);
++      if (!gnutls_zlib_dlhandle)
++	return -errno;
++    }
++
++#define ENSURE_SYMBOL(name)					\
++  ensure_symbol(#name, (void **)&gnutls_zlib_sym_##name)
++
++#pragma GCC diagnostic push
++#pragma GCC diagnostic ignored "-Wunused-macros"
++
++#define FUNC(ret, name, args, cargs)	\
++  err = ENSURE_SYMBOL(name);		\
++  if (err < 0)				\
++    return err;
++#define VOID_FUNC FUNC
++#include "zlibfuncs.h"
++#undef VOID_FUNC
++#undef FUNC
++
++#pragma GCC diagnostic pop
++
++#undef ENSURE_SYMBOL
++  return 0;
++}
++
++void
++gnutls_zlib_unload_library (void)
++{
++  if (gnutls_zlib_dlhandle)
++    dlclose (gnutls_zlib_dlhandle);
++
++#pragma GCC diagnostic push
++#pragma GCC diagnostic ignored "-Wunused-macros"
++
++#define FUNC(ret, name, args, cargs)		\
++  gnutls_zlib_sym_##name = NULL;
++#define VOID_FUNC FUNC
++#include "zlibfuncs.h"
++#undef VOID_FUNC
++#undef FUNC
++
++#pragma GCC diagnostic pop
++
++#undef RESET_SYMBOL
++}
++
++#else /* GNUTLS_ZLIB_ENABLE_DLOPEN */
++
++int
++gnutls_zlib_ensure_library (const char *soname, int flags)
++{
++  (void) soname;
++  (void) flags;
++  return 0;
++}
++
++void
++gnutls_zlib_unload_library (void)
++{
++}
++
++#endif /* !GNUTLS_ZLIB_ENABLE_DLOPEN */
+diff --git a/lib/dlwrap/zlib.h b/lib/dlwrap/zlib.h
+new file mode 100644
+index 0000000000..a9666d27f5
+--- /dev/null
++++ b/lib/dlwrap/zlib.h
+@@ -0,0 +1,47 @@
++/*
++ * Copying and distribution of this file, with or without modification,
++ * are permitted in any medium without royalty provided the copyright
++ * notice and this notice are preserved.  This file is offered as-is,
++ * without any warranty.
++ */
++
++#ifndef GNUTLS_LIB_DLWRAP_ZLIB_H_
++#define GNUTLS_LIB_DLWRAP_ZLIB_H_
++
++#include <zlib.h>
++
++#if defined(GNUTLS_ZLIB_ENABLE_DLOPEN) && GNUTLS_ZLIB_ENABLE_DLOPEN
++
++#define FUNC(ret, name, args, cargs)		\
++  ret gnutls_zlib_func_##name args;
++#define VOID_FUNC FUNC
++#include "zlibfuncs.h"
++#undef VOID_FUNC
++#undef FUNC
++
++#define GNUTLS_ZLIB_FUNC(name) gnutls_zlib_func_##name
++
++#else
++
++#define GNUTLS_ZLIB_FUNC(name) name
++
++#endif /* GNUTLS_ZLIB_ENABLE_DLOPEN */
++
++/* Ensure SONAME to be loaded with dlopen FLAGS, and all the necessary
++ * symbols are resolved.
++ *
++ * Returns 0 on success; negative error code otherwise.
++ *
++ * Note that this function is NOT thread-safe; when calling it from
++ * multi-threaded programs, protect it with a locking mechanism.
++ */
++int gnutls_zlib_ensure_library (const char *soname, int flags);
++
++/* Unload library and reset symbols.
++ *
++ * Note that this function is NOT thread-safe; when calling it from
++ * multi-threaded programs, protect it with a locking mechanism.
++ */
++void gnutls_zlib_unload_library (void);
++
++#endif /* GNUTLS_LIB_DLWRAP_ZLIB_H_ */
+diff --git a/lib/dlwrap/zlibfuncs.h b/lib/dlwrap/zlibfuncs.h
+new file mode 100644
+index 0000000000..efe01455d2
+--- /dev/null
++++ b/lib/dlwrap/zlibfuncs.h
+@@ -0,0 +1,27 @@
++/*
++ * This file was automatically generated from zlib.h,
++ * which is covered by the following license:
++ * Copyright (C) 1995-2022 Jean-loup Gailly and Mark Adler
++ *
++ * This software is provided 'as-is', without any express or implied
++ * warranty.  In no event will the authors be held liable for any damages
++ * arising from the use of this software.
++ *
++ * Permission is granted to anyone to use this software for any purpose,
++ * including commercial applications, and to alter it and redistribute it
++ * freely, subject to the following restrictions:
++ *
++ * 1. The origin of this software must not be misrepresented; you must not
++ *    claim that you wrote the original software. If you use this software
++ *    in a product, an acknowledgment in the product documentation would be
++ *    appreciated but is not required.
++ * 2. Altered source versions must be plainly marked as such, and must not be
++ *    misrepresented as being the original software.
++ * 3. This notice may not be removed or altered from any source distribution.
++ *
++ * Jean-loup Gailly        Mark Adler
++ * jloup@gzip.org          madler@alumni.caltech.edu
++ */
++FUNC(int, compress, (Bytef *dest, uLongf *destLen, const Bytef *source, uLong sourceLen), (dest, destLen, source, sourceLen))
++FUNC(uLong, compressBound, (uLong sourceLen), (sourceLen))
++FUNC(int, uncompress, (Bytef *dest, uLongf *destLen, const Bytef *source, uLong sourceLen), (dest, destLen, source, sourceLen))
+diff --git a/lib/dlwrap/zstd.c b/lib/dlwrap/zstd.c
+new file mode 100644
+index 0000000000..2ea7252975
+--- /dev/null
++++ b/lib/dlwrap/zstd.c
+@@ -0,0 +1,182 @@
++/*
++ * Copying and distribution of this file, with or without modification,
++ * are permitted in any medium without royalty provided the copyright
++ * notice and this notice are preserved.  This file is offered as-is,
++ * without any warranty.
++ */
++
++#ifdef HAVE_CONFIG_H
++#include "config.h"
++#endif
++
++#include "zstd.h"
++
++#if defined(GNUTLS_ZSTD_ENABLE_DLOPEN) && GNUTLS_ZSTD_ENABLE_DLOPEN
++
++#include <assert.h>
++#include <dlfcn.h>
++#include <errno.h>
++#include <stdlib.h>
++
++/* If ZSTD_LIBRARY_SONAME is defined, dlopen handle can be automatically
++ * set; otherwise, the caller needs to call
++ * gnutls_zstd_ensure_library with soname determined at run time.
++ */
++#ifdef ZSTD_LIBRARY_SONAME
++
++static void
++ensure_library (void)
++{
++  if (gnutls_zstd_ensure_library (ZSTD_LIBRARY_SONAME, RTLD_LAZY | RTLD_LOCAL) < 0)
++    abort ();
++}
++
++#if defined(GNUTLS_ZSTD_ENABLE_PTHREAD) && GNUTLS_ZSTD_ENABLE_PTHREAD
++#include <pthread.h>
++
++static pthread_once_t dlopen_once = PTHREAD_ONCE_INIT;
++
++#define ENSURE_LIBRARY pthread_once(&dlopen_once, ensure_library)
++
++#else /* GNUTLS_ZSTD_ENABLE_PTHREAD */
++
++#define ENSURE_LIBRARY do {	    \
++    if (!gnutls_zstd_dlhandle) \
++      ensure_library();		    \
++  } while (0)
++
++#endif /* !GNUTLS_ZSTD_ENABLE_PTHREAD */
++
++#else /* ZSTD_LIBRARY_SONAME */
++
++#define ENSURE_LIBRARY do {} while (0)
++
++#endif /* !ZSTD_LIBRARY_SONAME */
++
++static void *gnutls_zstd_dlhandle;
++
++/* Define redirection symbols */
++#pragma GCC diagnostic push
++#pragma GCC diagnostic ignored "-Wunused-macros"
++
++#if (2 <= __GNUC__ || (4 <= __clang_major__))
++#define FUNC(ret, name, args, cargs)			\
++  static __typeof__(name)(*gnutls_zstd_sym_##name);
++#else
++#define FUNC(ret, name, args, cargs)		\
++  static ret(*gnutls_zstd_sym_##name)args;
++#endif
++#define VOID_FUNC FUNC
++#include "zstdfuncs.h"
++#undef VOID_FUNC
++#undef FUNC
++
++#pragma GCC diagnostic pop
++
++/* Define redirection wrapper functions */
++#pragma GCC diagnostic push
++#pragma GCC diagnostic ignored "-Wunused-macros"
++
++#define FUNC(ret, name, args, cargs)        \
++ret gnutls_zstd_func_##name args           \
++{					    \
++  ENSURE_LIBRARY;			    \
++  assert (gnutls_zstd_sym_##name);	    \
++  return gnutls_zstd_sym_##name cargs;	    \
++}
++#define VOID_FUNC(ret, name, args, cargs)   \
++ret gnutls_zstd_func_##name args           \
++{					    \
++  ENSURE_LIBRARY;			    \
++  assert (gnutls_zstd_sym_##name);	    \
++  gnutls_zstd_sym_##name cargs;		    \
++}
++#include "zstdfuncs.h"
++#undef VOID_FUNC
++#undef FUNC
++
++#pragma GCC diagnostic pop
++
++static int
++ensure_symbol (const char *name, void **symp)
++{
++  if (!*symp)
++    {
++      void *sym = dlsym (gnutls_zstd_dlhandle, name);
++      if (!sym)
++	return -errno;
++      *symp = sym;
++    }
++  return 0;
++}
++
++int
++gnutls_zstd_ensure_library (const char *soname, int flags)
++{
++  int err;
++
++  if (!gnutls_zstd_dlhandle)
++    {
++      gnutls_zstd_dlhandle = dlopen (soname, flags);
++      if (!gnutls_zstd_dlhandle)
++	return -errno;
++    }
++
++#define ENSURE_SYMBOL(name)					\
++  ensure_symbol(#name, (void **)&gnutls_zstd_sym_##name)
++
++#pragma GCC diagnostic push
++#pragma GCC diagnostic ignored "-Wunused-macros"
++
++#define FUNC(ret, name, args, cargs)	\
++  err = ENSURE_SYMBOL(name);		\
++  if (err < 0)				\
++    return err;
++#define VOID_FUNC FUNC
++#include "zstdfuncs.h"
++#undef VOID_FUNC
++#undef FUNC
++
++#pragma GCC diagnostic pop
++
++#undef ENSURE_SYMBOL
++  return 0;
++}
++
++void
++gnutls_zstd_unload_library (void)
++{
++  if (gnutls_zstd_dlhandle)
++    dlclose (gnutls_zstd_dlhandle);
++
++#pragma GCC diagnostic push
++#pragma GCC diagnostic ignored "-Wunused-macros"
++
++#define FUNC(ret, name, args, cargs)		\
++  gnutls_zstd_sym_##name = NULL;
++#define VOID_FUNC FUNC
++#include "zstdfuncs.h"
++#undef VOID_FUNC
++#undef FUNC
++
++#pragma GCC diagnostic pop
++
++#undef RESET_SYMBOL
++}
++
++#else /* GNUTLS_ZSTD_ENABLE_DLOPEN */
++
++int
++gnutls_zstd_ensure_library (const char *soname, int flags)
++{
++  (void) soname;
++  (void) flags;
++  return 0;
++}
++
++void
++gnutls_zstd_unload_library (void)
++{
++}
++
++#endif /* !GNUTLS_ZSTD_ENABLE_DLOPEN */
+diff --git a/lib/dlwrap/zstd.h b/lib/dlwrap/zstd.h
+new file mode 100644
+index 0000000000..80ac2fbd46
+--- /dev/null
++++ b/lib/dlwrap/zstd.h
+@@ -0,0 +1,47 @@
++/*
++ * Copying and distribution of this file, with or without modification,
++ * are permitted in any medium without royalty provided the copyright
++ * notice and this notice are preserved.  This file is offered as-is,
++ * without any warranty.
++ */
++
++#ifndef GNUTLS_LIB_DLWRAP_ZSTD_H_
++#define GNUTLS_LIB_DLWRAP_ZSTD_H_
++
++#include <zstd.h>
++
++#if defined(GNUTLS_ZSTD_ENABLE_DLOPEN) && GNUTLS_ZSTD_ENABLE_DLOPEN
++
++#define FUNC(ret, name, args, cargs)		\
++  ret gnutls_zstd_func_##name args;
++#define VOID_FUNC FUNC
++#include "zstdfuncs.h"
++#undef VOID_FUNC
++#undef FUNC
++
++#define GNUTLS_ZSTD_FUNC(name) gnutls_zstd_func_##name
++
++#else
++
++#define GNUTLS_ZSTD_FUNC(name) name
++
++#endif /* GNUTLS_ZSTD_ENABLE_DLOPEN */
++
++/* Ensure SONAME to be loaded with dlopen FLAGS, and all the necessary
++ * symbols are resolved.
++ *
++ * Returns 0 on success; negative error code otherwise.
++ *
++ * Note that this function is NOT thread-safe; when calling it from
++ * multi-threaded programs, protect it with a locking mechanism.
++ */
++int gnutls_zstd_ensure_library (const char *soname, int flags);
++
++/* Unload library and reset symbols.
++ *
++ * Note that this function is NOT thread-safe; when calling it from
++ * multi-threaded programs, protect it with a locking mechanism.
++ */
++void gnutls_zstd_unload_library (void);
++
++#endif /* GNUTLS_LIB_DLWRAP_ZSTD_H_ */
+diff --git a/lib/dlwrap/zstdfuncs.h b/lib/dlwrap/zstdfuncs.h
+new file mode 100644
+index 0000000000..8e3eb9ff59
+--- /dev/null
++++ b/lib/dlwrap/zstdfuncs.h
+@@ -0,0 +1,15 @@
++/*
++ * This file was automatically generated from zstd.h,
++ * which is covered by the following license:
++ * Copyright (c) Meta Platforms, Inc. and affiliates.
++ * All rights reserved.
++ *
++ * This source code is licensed under both the BSD-style license (found in the
++ * LICENSE file in the root directory of this source tree) and the GPLv2 (found
++ * in the COPYING file in the root directory of this source tree).
++ * You may select, at your option, one of the above-listed licenses.
++ */
++FUNC(size_t, ZSTD_compress, (void *dst, size_t dstCapacity, const void *src, size_t srcSize, int compressionLevel), (dst, dstCapacity, src, srcSize, compressionLevel))
++FUNC(size_t, ZSTD_decompress, (void *dst, size_t dstCapacity, const void *src, size_t compressedSize), (dst, dstCapacity, src, compressedSize))
++FUNC(size_t, ZSTD_compressBound, (size_t srcSize), (srcSize))
++FUNC(unsigned int, ZSTD_isError, (size_t code), (code))
+-- 
+2.45.2
+

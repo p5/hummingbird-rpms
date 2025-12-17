@@ -1,0 +1,3246 @@
+From 39dad633e6acb18c3853b7cb182324ccd250ba46 Mon Sep 17 00:00:00 2001
+From: Daiki Ueno <ueno@gnu.org>
+Date: Fri, 31 May 2024 09:18:27 +0900
+Subject: [PATCH 1/2] build: plumb liboqs as an optional dependency
+
+This exposes OQS functions necessary to implement Kyber768 through
+dlopen with stub implementation for lower-level cryptographic
+primitives, such as SHA3 and DRBG.
+
+Signed-off-by: Daiki Ueno <ueno@gnu.org>
+---
+ .gitignore                     |   1 +
+ cfg.mk                         |   2 +-
+ configure.ac                   |  37 ++++
+ devel/dlwrap/oqs.syms          |   9 +
+ devel/generate-dlwrap.sh       |   3 +
+ devel/indent-gnutls            |   2 +-
+ lib/Makefile.am                |  14 ++
+ lib/dlwrap/oqs.c               | 182 ++++++++++++++++
+ lib/dlwrap/oqs.h               |  53 +++++
+ lib/dlwrap/oqsfuncs.h          |  14 ++
+ lib/global.c                   |   8 +
+ lib/liboqs/Makefile.am         |  43 ++++
+ lib/liboqs/backport/sha3_ops.h | 256 ++++++++++++++++++++++
+ lib/liboqs/liboqs.c            |  41 ++++
+ lib/liboqs/liboqs.h            |  27 +++
+ lib/liboqs/rand.c              |  43 ++++
+ lib/liboqs/rand.h              |  27 +++
+ lib/liboqs/sha3.c              | 373 +++++++++++++++++++++++++++++++++
+ lib/liboqs/sha3.h              |  27 +++
+ 19 files changed, 1160 insertions(+), 2 deletions(-)
+ create mode 100644 devel/dlwrap/oqs.syms
+ create mode 100644 lib/dlwrap/oqs.c
+ create mode 100644 lib/dlwrap/oqs.h
+ create mode 100644 lib/dlwrap/oqsfuncs.h
+ create mode 100644 lib/liboqs/Makefile.am
+ create mode 100644 lib/liboqs/backport/sha3_ops.h
+ create mode 100644 lib/liboqs/liboqs.c
+ create mode 100644 lib/liboqs/liboqs.h
+ create mode 100644 lib/liboqs/rand.c
+ create mode 100644 lib/liboqs/rand.h
+ create mode 100644 lib/liboqs/sha3.c
+ create mode 100644 lib/liboqs/sha3.h
+
+diff --git a/cfg.mk b/cfg.mk
+index 1b94279633..88f6df480d 100644
+--- a/cfg.mk
++++ b/cfg.mk
+@@ -24,7 +24,7 @@ PACKAGE ?= gnutls
+ 
+ .PHONY: config glimport
+ 
+-INDENT_SOURCES = `find . -name \*.[ch] -o -name gnutls.h.in | grep -v -e ^./build-aux/ -e ^./config.h -e ^./devel/ -e ^./gnulib -e ^./lib/minitasn1/ -e ^./lib/includes/gnutls/gnutls.h -e ^./lib/nettle/backport/ -e ^./lib/priority_options.h -e ^./lib/unistring/ -e ^./lib/x509/supported_exts.h -e ^./lib/build-aux/ -e ^./lib/dlwrap/ -e ^./gl/ -e ^./src/gl/ -e ^./src/.*-options.[ch] -e -args.[ch] -e asn1_tab.c -e ^./tests/suite/`
++INDENT_SOURCES = `find . -name \*.[ch] -o -name gnutls.h.in | grep -v -e ^./build-aux/ -e ^./config.h -e ^./devel/ -e ^./gnulib -e ^./lib/minitasn1/ -e ^./lib/includes/gnutls/gnutls.h -e ^./lib/nettle/backport/ -e ^./lib/priority_options.h -e ^./lib/unistring/ -e ^./lib/x509/supported_exts.h -e ^./lib/build-aux/ -e ^./lib/dlwrap/ -e ^./lib/liboqs/backport/ -e ^./gl/ -e ^./src/gl/ -e ^./src/.*-options.[ch] -e -args.[ch] -e asn1_tab.c -e ^./tests/suite/`
+ 
+ ifeq ($(.DEFAULT_GOAL),abort-due-to-no-makefile)
+ .DEFAULT_GOAL := bootstrap
+diff --git a/configure.ac b/configure.ac
+index fb0aefe1f4..145eada690 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -1185,6 +1185,41 @@ AS_IF([test "$ac_cv_dlopen_soname_works" = yes], [
+     CFLAGS="$save_CFLAGS"
+ ])
+ 
++AC_ARG_WITH(liboqs,
++	AS_HELP_STRING([--with-liboqs],
++		[Enable liboqs support.]),
++	[with_liboqs=$withval], [with_liboqs=no])
++AS_IF([test "$with_liboqs" != "no"], [PKG_CHECK_MODULES(LIBOQS, [liboqs >= 0.10.1], [have_liboqs=yes], [have_liboqs=no])])
++AS_IF([test "$have_liboqs" = "yes"], [AC_DEFINE([HAVE_LIBOQS], 1, [Have liboqs])],
++      [test "$with_liboqs" = "yes"], [AC_MSG_ERROR([[
++***
++*** liboqs support was requested but the required libraries were not found.
++*** ]])])
++
++save_CFLAGS=$CFLAGS
++CFLAGS="$CFLAGS $LIBOQS_CFLAGS"
++AC_CHECK_DECLS([OQS_SHA3_set_callbacks])
++CFLAGS="$save_CFLAGS"
++
++# liboqs 0.10.1 didn't expose OQS_SHA3_set_callbacks from the header
++# file, so extra treatment is needed:
++# https://github.com/open-quantum-safe/liboqs/pull/1832
++AM_CONDITIONAL(NEED_LIBOQS_SHA3_OPS_H, test "$ac_cv_have_decl_OQS_SHA3_set_callbacks" != yes)
++
++AM_CONDITIONAL(ENABLE_LIBOQS, test "$have_liboqs" = "yes")
++
++AS_IF([test "$ac_cv_dlopen_soname_works" = yes], [
++    save_CFLAGS=$CFLAGS
++    CFLAGS="$CFLAGS $LIBOQS_CFLAGS"
++    save_LIBS=$LIBS
++    LIBS="$LIBS $LIBOQS_LIBS"
++    LIBGNUTLS_CHECK_SONAME([oqs], [AC_LANG_PROGRAM([
++                   #include <oqs/oqs.h>],[
++                   OQS_version ();])])
++    LIBS="$save_LIBS"
++    CFLAGS="$save_CFLAGS"
++])
++
+ AM_CONDITIONAL(NEED_LTLIBDL, test "$need_ltlibdl" = yes)
+ 
+ # export for use in scripts
+@@ -1382,6 +1417,7 @@ AC_CONFIG_FILES([
+   lib/gnutls.pc
+   lib/includes/Makefile
+   lib/includes/gnutls/gnutls.h
++  lib/liboqs/Makefile
+   lib/minitasn1/Makefile
+   lib/nettle/Makefile
+   lib/x509/Makefile
+@@ -1463,6 +1499,7 @@ if features are disabled)
+   Non-SuiteB curves:    $enable_non_suiteb
+   FIPS140 mode:         $enable_fips
+   Strict DER time:	$ac_strict_der_time
++  liboqs:               $have_liboqs
+ ])
+ 
+ AC_MSG_NOTICE([Optional libraries:
+diff --git a/devel/dlwrap/oqs.syms b/devel/dlwrap/oqs.syms
+new file mode 100644
+index 0000000000..8f067b2dd3
+--- /dev/null
++++ b/devel/dlwrap/oqs.syms
+@@ -0,0 +1,9 @@
++OQS_SHA3_set_callbacks
++OQS_init
++OQS_destroy
++OQS_KEM_new
++OQS_KEM_encaps
++OQS_KEM_decaps
++OQS_KEM_keypair
++OQS_KEM_free
++OQS_randombytes_custom_algorithm
+\ No newline at end of file
+diff --git a/devel/generate-dlwrap.sh b/devel/generate-dlwrap.sh
+index dbcf870612..3e253d9228 100755
+--- a/devel/generate-dlwrap.sh
++++ b/devel/generate-dlwrap.sh
+@@ -35,3 +35,6 @@ echo "Generating $DST/brotlidec.h"
+ 
+ "$DLWRAP" --input /usr/include/brotli/decode.h -o "$DST" --clang-resource-dir $(clang -print-resource-dir) --symbol-file "$SRC/brotlidec.syms" --license-file "$SRC/brotli.license" --soname BROTLIDEC_LIBRARY_SONAME --prefix gnutls_brotlidec --loader-basename brotlidec --header-guard GNUTLS_LIB_DLWRAP_BROTLIDEC_H_ --include "<brotli/decode.h>"
+ 
++echo "Generating $DST/oqs.h"
++
++"$DLWRAP" --input /usr/include/oqs/oqs.h -o "$DST" --clang-resource-dir $(clang -print-resource-dir) --symbol-file "$SRC/oqs.syms" --license "SPDX-License-Identifier: MIT" --soname OQS_LIBRARY_SONAME --prefix gnutls_oqs --header-guard GNUTLS_LIB_DLWRAP_OQS_H_ --include "<oqs/oqs.h>"
+diff --git a/lib/Makefile.am b/lib/Makefile.am
+index d1bd07248e..067772c322 100644
+--- a/lib/Makefile.am
++++ b/lib/Makefile.am
+@@ -29,6 +29,10 @@ if ENABLE_MINITASN1
+ SUBDIRS += minitasn1
+ endif
+ 
++if ENABLE_LIBOQS
++SUBDIRS += liboqs
++endif
++
+ localedir = $(datadir)/locale
+ 
+ include $(top_srcdir)/lib/common.mk
+@@ -119,6 +123,16 @@ thirdparty_libadd += $(LIBBROTLIDEC_LIBS)
+ endif
+ endif
+ 
++if ENABLE_LIBOQS
++COBJECTS += dlwrap/oqs.c dlwrap/oqsfuncs.h dlwrap/oqs.h
++
++if ENABLE_DLOPEN
++AM_CPPFLAGS += $(LIBOQS_CFLAGS) -DGNUTLS_OQS_ENABLE_DLOPEN=1
++else
++thirdparty_libadd += $(LIBOQS_LIBS)
++endif
++endif
++
+ if ENABLE_GOST
+ COBJECTS += vko.c
+ endif
+diff --git a/lib/dlwrap/oqs.c b/lib/dlwrap/oqs.c
+new file mode 100644
+index 0000000000..d7fcc9c80c
+--- /dev/null
++++ b/lib/dlwrap/oqs.c
+@@ -0,0 +1,182 @@
++/*
++ * Copying and distribution of this file, with or without modification,
++ * are permitted in any medium without royalty provided the copyright
++ * notice and this notice are preserved.  This file is offered as-is,
++ * without any warranty.
++ */
++
++#ifdef HAVE_CONFIG_H
++#include "config.h"
++#endif
++
++#include "oqs.h"
++
++#if defined(GNUTLS_OQS_ENABLE_DLOPEN) && GNUTLS_OQS_ENABLE_DLOPEN
++
++#include <assert.h>
++#include <dlfcn.h>
++#include <errno.h>
++#include <stdlib.h>
++
++/* If OQS_LIBRARY_SONAME is defined, dlopen handle can be automatically
++ * set; otherwise, the caller needs to call
++ * gnutls_oqs_ensure_library with soname determined at run time.
++ */
++#ifdef OQS_LIBRARY_SONAME
++
++static void
++ensure_library (void)
++{
++  if (gnutls_oqs_ensure_library (OQS_LIBRARY_SONAME, RTLD_LAZY | RTLD_LOCAL) < 0)
++    abort ();
++}
++
++#if defined(GNUTLS_OQS_ENABLE_PTHREAD) && GNUTLS_OQS_ENABLE_PTHREAD
++#include <pthread.h>
++
++static pthread_once_t dlopen_once = PTHREAD_ONCE_INIT;
++
++#define ENSURE_LIBRARY pthread_once(&dlopen_once, ensure_library)
++
++#else /* GNUTLS_OQS_ENABLE_PTHREAD */
++
++#define ENSURE_LIBRARY do {	    \
++    if (!gnutls_oqs_dlhandle) \
++      ensure_library();		    \
++  } while (0)
++
++#endif /* !GNUTLS_OQS_ENABLE_PTHREAD */
++
++#else /* OQS_LIBRARY_SONAME */
++
++#define ENSURE_LIBRARY do {} while (0)
++
++#endif /* !OQS_LIBRARY_SONAME */
++
++static void *gnutls_oqs_dlhandle;
++
++/* Define redirection symbols */
++#pragma GCC diagnostic push
++#pragma GCC diagnostic ignored "-Wunused-macros"
++
++#if (2 <= __GNUC__ || (4 <= __clang_major__))
++#define FUNC(ret, name, args, cargs)			\
++  static __typeof__(name)(*gnutls_oqs_sym_##name);
++#else
++#define FUNC(ret, name, args, cargs)		\
++  static ret(*gnutls_oqs_sym_##name)args;
++#endif
++#define VOID_FUNC FUNC
++#include "oqsfuncs.h"
++#undef VOID_FUNC
++#undef FUNC
++
++#pragma GCC diagnostic pop
++
++/* Define redirection wrapper functions */
++#pragma GCC diagnostic push
++#pragma GCC diagnostic ignored "-Wunused-macros"
++
++#define FUNC(ret, name, args, cargs)        \
++ret gnutls_oqs_func_##name args           \
++{					    \
++  ENSURE_LIBRARY;			    \
++  assert (gnutls_oqs_sym_##name);	    \
++  return gnutls_oqs_sym_##name cargs;	    \
++}
++#define VOID_FUNC(ret, name, args, cargs)   \
++ret gnutls_oqs_func_##name args           \
++{					    \
++  ENSURE_LIBRARY;			    \
++  assert (gnutls_oqs_sym_##name);	    \
++  gnutls_oqs_sym_##name cargs;		    \
++}
++#include "oqsfuncs.h"
++#undef VOID_FUNC
++#undef FUNC
++
++#pragma GCC diagnostic pop
++
++static int
++ensure_symbol (const char *name, void **symp)
++{
++  if (!*symp)
++    {
++      void *sym = dlsym (gnutls_oqs_dlhandle, name);
++      if (!sym)
++	return -errno;
++      *symp = sym;
++    }
++  return 0;
++}
++
++int
++gnutls_oqs_ensure_library (const char *soname, int flags)
++{
++  int err;
++
++  if (!gnutls_oqs_dlhandle)
++    {
++      gnutls_oqs_dlhandle = dlopen (soname, flags);
++      if (!gnutls_oqs_dlhandle)
++	return -errno;
++    }
++
++#define ENSURE_SYMBOL(name)					\
++  ensure_symbol(#name, (void **)&gnutls_oqs_sym_##name)
++
++#pragma GCC diagnostic push
++#pragma GCC diagnostic ignored "-Wunused-macros"
++
++#define FUNC(ret, name, args, cargs)	\
++  err = ENSURE_SYMBOL(name);		\
++  if (err < 0)				\
++    return err;
++#define VOID_FUNC FUNC
++#include "oqsfuncs.h"
++#undef VOID_FUNC
++#undef FUNC
++
++#pragma GCC diagnostic pop
++
++#undef ENSURE_SYMBOL
++  return 0;
++}
++
++void
++gnutls_oqs_unload_library (void)
++{
++  if (gnutls_oqs_dlhandle)
++    dlclose (gnutls_oqs_dlhandle);
++
++#pragma GCC diagnostic push
++#pragma GCC diagnostic ignored "-Wunused-macros"
++
++#define FUNC(ret, name, args, cargs)		\
++  gnutls_oqs_sym_##name = NULL;
++#define VOID_FUNC FUNC
++#include "oqsfuncs.h"
++#undef VOID_FUNC
++#undef FUNC
++
++#pragma GCC diagnostic pop
++
++#undef RESET_SYMBOL
++}
++
++#else /* GNUTLS_OQS_ENABLE_DLOPEN */
++
++int
++gnutls_oqs_ensure_library (const char *soname, int flags)
++{
++  (void) soname;
++  (void) flags;
++  return 0;
++}
++
++void
++gnutls_oqs_unload_library (void)
++{
++}
++
++#endif /* !GNUTLS_OQS_ENABLE_DLOPEN */
+diff --git a/lib/dlwrap/oqs.h b/lib/dlwrap/oqs.h
+new file mode 100644
+index 0000000000..6a1d8e0766
+--- /dev/null
++++ b/lib/dlwrap/oqs.h
+@@ -0,0 +1,53 @@
++/*
++ * Copying and distribution of this file, with or without modification,
++ * are permitted in any medium without royalty provided the copyright
++ * notice and this notice are preserved.  This file is offered as-is,
++ * without any warranty.
++ */
++
++#ifndef GNUTLS_LIB_DLWRAP_OQS_H_
++#define GNUTLS_LIB_DLWRAP_OQS_H_
++
++/* Local modification: remove this once liboqs 0.10.2 is released */
++#include "config.h"
++#if !HAVE_DECL_OQS_SHA3_SET_CALLBACKS
++#include "liboqs/backport/sha3_ops.h"
++#endif
++
++#include <oqs/oqs.h>
++
++#if defined(GNUTLS_OQS_ENABLE_DLOPEN) && GNUTLS_OQS_ENABLE_DLOPEN
++
++#define FUNC(ret, name, args, cargs)		\
++  ret gnutls_oqs_func_##name args;
++#define VOID_FUNC FUNC
++#include "oqsfuncs.h"
++#undef VOID_FUNC
++#undef FUNC
++
++#define GNUTLS_OQS_FUNC(name) gnutls_oqs_func_##name
++
++#else
++
++#define GNUTLS_OQS_FUNC(name) name
++
++#endif /* GNUTLS_OQS_ENABLE_DLOPEN */
++
++/* Ensure SONAME to be loaded with dlopen FLAGS, and all the necessary
++ * symbols are resolved.
++ *
++ * Returns 0 on success; negative error code otherwise.
++ *
++ * Note that this function is NOT thread-safe; when calling it from
++ * multi-threaded programs, protect it with a locking mechanism.
++ */
++int gnutls_oqs_ensure_library (const char *soname, int flags);
++
++/* Unload library and reset symbols.
++ *
++ * Note that this function is NOT thread-safe; when calling it from
++ * multi-threaded programs, protect it with a locking mechanism.
++ */
++void gnutls_oqs_unload_library (void);
++
++#endif /* GNUTLS_LIB_DLWRAP_OQS_H_ */
+diff --git a/lib/dlwrap/oqsfuncs.h b/lib/dlwrap/oqsfuncs.h
+new file mode 100644
+index 0000000000..95c1b083dc
+--- /dev/null
++++ b/lib/dlwrap/oqsfuncs.h
+@@ -0,0 +1,14 @@
++/*
++ * This file was automatically generated from oqs.h,
++ * which is covered by the following license:
++ * SPDX-License-Identifier: MIT
++ */
++VOID_FUNC(void, OQS_init, (void), ())
++VOID_FUNC(void, OQS_destroy, (void), ())
++VOID_FUNC(void, OQS_SHA3_set_callbacks, (struct OQS_SHA3_callbacks *new_callbacks), (new_callbacks))
++VOID_FUNC(void, OQS_randombytes_custom_algorithm, (void (*algorithm_ptr)(uint8_t *, size_t)), (algorithm_ptr))
++FUNC(OQS_KEM *, OQS_KEM_new, (const char *method_name), (method_name))
++FUNC(OQS_STATUS, OQS_KEM_keypair, (const OQS_KEM *kem, uint8_t *public_key, uint8_t *secret_key), (kem, public_key, secret_key))
++FUNC(OQS_STATUS, OQS_KEM_encaps, (const OQS_KEM *kem, uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key), (kem, ciphertext, shared_secret, public_key))
++FUNC(OQS_STATUS, OQS_KEM_decaps, (const OQS_KEM *kem, uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key), (kem, shared_secret, ciphertext, secret_key))
++VOID_FUNC(void, OQS_KEM_free, (OQS_KEM *kem), (kem))
+diff --git a/lib/global.c b/lib/global.c
+index b434140bbf..ae2f7f54dc 100644
+--- a/lib/global.c
++++ b/lib/global.c
+@@ -41,6 +41,7 @@
+ #include "system-keys.h"
+ #include "str.h"
+ #include "global.h"
++#include "liboqs/liboqs.h"
+ 
+ /* Minimum library versions we accept. */
+ #define GNUTLS_MIN_LIBTASN1_VERSION "0.3.4"
+@@ -328,6 +329,10 @@ static int _gnutls_global_init(unsigned constructor)
+ 		goto out;
+ 	}
+ 
++#ifdef HAVE_LIBOQS
++	_gnutls_liboqs_init();
++#endif
++
+ #ifndef _WIN32
+ 	ret = _gnutls_register_fork_handler();
+ 	if (ret < 0) {
+@@ -444,6 +449,9 @@ static void _gnutls_global_deinit(unsigned destructor)
+ #ifdef HAVE_TPM2
+ 		_gnutls_tpm2_deinit();
+ #endif
++#ifdef HAVE_LIBOQS
++		_gnutls_liboqs_deinit();
++#endif
+ 
+ 		_gnutls_nss_keylog_deinit();
+ 	} else {
+diff --git a/lib/liboqs/Makefile.am b/lib/liboqs/Makefile.am
+new file mode 100644
+index 0000000000..a20e7cbdf9
+--- /dev/null
++++ b/lib/liboqs/Makefile.am
+@@ -0,0 +1,43 @@
++## Process this file with automake to produce Makefile.in
++# Copyright (C) 2004-2012 Free Software Foundation, Inc.
++# Copyright (C) 2024 Red Hat, Inc.
++#
++# Author: Daiki Ueno
++#
++# This file is part of GNUTLS.
++#
++# The GNUTLS library is free software; you can redistribute it and/or
++# modify it under the terms of the GNU Lesser General Public License
++# as published by the Free Software Foundation; either version 3 of
++# the License, or (at your option) any later version.
++#
++# The GNUTLS library is distributed in the hope that it will be
++# useful, but WITHOUT ANY WARRANTY; without even the implied warranty
++# of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++# Lesser General Public License for more details.
++#
++# You should have received a copy of the GNU Lesser General Public License
++# along with this program.  If not, see <https://www.gnu.org/licenses/>
++
++include $(top_srcdir)/lib/common.mk
++
++AM_CFLAGS += $(LIBOQS_CFLAGS)
++
++AM_CPPFLAGS = \
++	-I$(srcdir)/../../gl		\
++	-I$(builddir)/../../gl		\
++	-I$(srcdir)/../includes		\
++	-I$(builddir)/../includes	\
++	-I$(srcdir)/..
++
++if ENABLE_DLOPEN
++AM_CPPFLAGS += $(LIBOQS_CFLAGS) -DGNUTLS_OQS_ENABLE_DLOPEN=1
++endif
++
++noinst_LTLIBRARIES = libcrypto.la
++
++libcrypto_la_SOURCES = liboqs.h liboqs.c rand.h rand.c sha3.h sha3.c
++
++if NEED_LIBOQS_SHA3_OPS_H
++libcrypto_la_SOURCES += backport/sha3_ops.h
++endif
+diff --git a/lib/liboqs/backport/sha3_ops.h b/lib/liboqs/backport/sha3_ops.h
+new file mode 100644
+index 0000000000..694fc21873
+--- /dev/null
++++ b/lib/liboqs/backport/sha3_ops.h
+@@ -0,0 +1,256 @@
++/**
++ * \file sha3_ops.h
++ * \brief Header defining the callback API for OQS SHA3 and SHAKE
++ *
++ * \author John Underhill, Douglas Stebila
++ *
++ * SPDX-License-Identifier: MIT
++ */
++
++#ifndef OQS_SHA3_OPS_H
++#define OQS_SHA3_OPS_H
++
++#include <stddef.h>
++#include <stdint.h>
++
++#include <oqs/common.h>
++
++#if defined(__cplusplus)
++extern "C" {
++#endif
++
++/** Data structure for the state of the incremental SHA3-256 API. */
++typedef struct {
++	/** Internal state. */
++	void *ctx;
++} OQS_SHA3_sha3_256_inc_ctx;
++
++/** Data structure for the state of the incremental SHA3-384 API. */
++typedef struct {
++	/** Internal state. */
++	void *ctx;
++} OQS_SHA3_sha3_384_inc_ctx;
++
++/** Data structure for the state of the incremental SHA3-512 API. */
++typedef struct {
++	/** Internal state. */
++	void *ctx;
++} OQS_SHA3_sha3_512_inc_ctx;
++
++/** Data structure for the state of the incremental SHAKE-128 API. */
++typedef struct {
++	/** Internal state. */
++	void *ctx;
++} OQS_SHA3_shake128_inc_ctx;
++
++/** Data structure for the state of the incremental SHAKE-256 API. */
++typedef struct {
++	/** Internal state. */
++	void *ctx;
++} OQS_SHA3_shake256_inc_ctx;
++
++/** Data structure implemented by cryptographic provider for SHA-3 operations.
++ */
++struct OQS_SHA3_callbacks {
++	/**
++	 * Implementation of function OQS_SHA3_sha3_256.
++	 */
++	void (*SHA3_sha3_256)(uint8_t *output, const uint8_t *input, size_t inplen);
++
++	/**
++	 * Implementation of function OQS_SHA3_sha3_256_inc_init.
++	 */
++	void (*SHA3_sha3_256_inc_init)(OQS_SHA3_sha3_256_inc_ctx *state);
++
++	/**
++	 * Implementation of function OQS_SHA3_sha3_256_inc_absorb.
++	 */
++	void (*SHA3_sha3_256_inc_absorb)(OQS_SHA3_sha3_256_inc_ctx *state, const uint8_t *input, size_t inlen);
++
++	/**
++	 * Implementation of function OQS_SHA3_sha3_256_inc_finalize.
++	 */
++	void (*SHA3_sha3_256_inc_finalize)(uint8_t *output, OQS_SHA3_sha3_256_inc_ctx *state);
++
++	/**
++	 * Implementation of function OQS_SHA3_sha3_256_inc_ctx_release.
++	 */
++	void (*SHA3_sha3_256_inc_ctx_release)(OQS_SHA3_sha3_256_inc_ctx *state);
++
++	/**
++	 * Implementation of function OQS_SHA3_sha3_256_inc_ctx_reset.
++	 */
++	void (*SHA3_sha3_256_inc_ctx_reset)(OQS_SHA3_sha3_256_inc_ctx *state);
++
++	/**
++	 * Implementation of function OQS_SHA3_sha3_256_inc_ctx_clone.
++	 */
++	void (*SHA3_sha3_256_inc_ctx_clone)(OQS_SHA3_sha3_256_inc_ctx *dest, const OQS_SHA3_sha3_256_inc_ctx *src);
++
++	/**
++	 * Implementation of function OQS_SHA3_sha3_384.
++	 */
++	void (*SHA3_sha3_384)(uint8_t *output, const uint8_t *input, size_t inplen);
++
++	/**
++	 * Implementation of function OQS_SHA3_sha3_384_inc_init.
++	 */
++	void (*SHA3_sha3_384_inc_init)(OQS_SHA3_sha3_384_inc_ctx *state);
++
++	/**
++	 * Implementation of function OQS_SHA3_sha3_384_inc_absorb.
++	 */
++	void (*SHA3_sha3_384_inc_absorb)(OQS_SHA3_sha3_384_inc_ctx *state, const uint8_t *input, size_t inlen);
++
++	/**
++	 * Implementation of function OQS_SHA3_sha3_384_inc_finalize.
++	 */
++	void (*SHA3_sha3_384_inc_finalize)(uint8_t *output, OQS_SHA3_sha3_384_inc_ctx *state);
++
++	/**
++	 * Implementation of function OQS_SHA3_sha3_384_inc_ctx_release.
++	 */
++	void (*SHA3_sha3_384_inc_ctx_release)(OQS_SHA3_sha3_384_inc_ctx *state);
++
++	/**
++	 * Implementation of function OQS_SHA3_sha3_384_inc_ctx_reset.
++	 */
++	void (*SHA3_sha3_384_inc_ctx_reset)(OQS_SHA3_sha3_384_inc_ctx *state);
++
++	/**
++	 * Implementation of function OQS_SHA3_sha3_384_inc_ctx_clone.
++	 */
++	void (*SHA3_sha3_384_inc_ctx_clone)(OQS_SHA3_sha3_384_inc_ctx *dest, const OQS_SHA3_sha3_384_inc_ctx *src);
++
++	/**
++	 * Implementation of function OQS_SHA3_sha3_512.
++	 */
++	void (*SHA3_sha3_512)(uint8_t *output, const uint8_t *input, size_t inplen);
++
++	/**
++	 * Implementation of function OQS_SHA3_sha3_512_inc_init.
++	 */
++	void (*SHA3_sha3_512_inc_init)(OQS_SHA3_sha3_512_inc_ctx *state);
++
++	/**
++	 * Implementation of function OQS_SHA3_sha3_512_inc_absorb.
++	 */
++	void (*SHA3_sha3_512_inc_absorb)(OQS_SHA3_sha3_512_inc_ctx *state, const uint8_t *input, size_t inlen);
++
++	/**
++	 * Implementation of function OQS_SHA3_sha3_512_inc_finalize.
++	 */
++	void (*SHA3_sha3_512_inc_finalize)(uint8_t *output, OQS_SHA3_sha3_512_inc_ctx *state);
++
++	/**
++	 * Implementation of function OQS_SHA3_sha3_512_inc_ctx_release.
++	 */
++	void (*SHA3_sha3_512_inc_ctx_release)(OQS_SHA3_sha3_512_inc_ctx *state);
++
++	/**
++	 * Implementation of function OQS_SHA3_sha3_512_inc_ctx_reset.
++	 */
++	void (*SHA3_sha3_512_inc_ctx_reset)(OQS_SHA3_sha3_512_inc_ctx *state);
++
++	/**
++	 * Implementation of function OQS_SHA3_sha3_512_inc_ctx_clone.
++	 */
++	void (*SHA3_sha3_512_inc_ctx_clone)(OQS_SHA3_sha3_512_inc_ctx *dest, const OQS_SHA3_sha3_512_inc_ctx *src);
++
++	/**
++	 * Implementation of function OQS_SHA3_shake128.
++	 */
++	void (*SHA3_shake128)(uint8_t *output, size_t outlen, const uint8_t *input, size_t inplen);
++
++	/**
++	 * Implementation of function OQS_SHA3_shake128_inc_init.
++	 */
++	void (*SHA3_shake128_inc_init)(OQS_SHA3_shake128_inc_ctx *state);
++
++	/**
++	 * Implementation of function OQS_SHA3_shake128_inc_absorb.
++	 */
++	void (*SHA3_shake128_inc_absorb)(OQS_SHA3_shake128_inc_ctx *state, const uint8_t *input, size_t inlen);
++
++	/**
++	 * Implementation of function OQS_SHA3_shake128_inc_finalize.
++	 */
++	void (*SHA3_shake128_inc_finalize)(OQS_SHA3_shake128_inc_ctx *state);
++
++	/**
++	 * Implementation of function OQS_SHA3_shake128_inc_squeeze.
++	 */
++	void (*SHA3_shake128_inc_squeeze)(uint8_t *output, size_t outlen, OQS_SHA3_shake128_inc_ctx *state);
++
++	/**
++	 * Implementation of function OQS_SHA3_shake128_inc_ctx_release.
++	 */
++	void (*SHA3_shake128_inc_ctx_release)(OQS_SHA3_shake128_inc_ctx *state);
++
++	/**
++	 * Implementation of function OQS_SHA3_shake128_inc_ctx_clone.
++	 */
++	void (*SHA3_shake128_inc_ctx_clone)(OQS_SHA3_shake128_inc_ctx *dest, const OQS_SHA3_shake128_inc_ctx *src);
++
++	/**
++	 * Implementation of function OQS_SHA3_shake128_inc_ctx_reset.
++	 */
++	void (*SHA3_shake128_inc_ctx_reset)(OQS_SHA3_shake128_inc_ctx *state);
++
++	/**
++	 * Implementation of function OQS_SHA3_shake256.
++	 */
++	void (*SHA3_shake256)(uint8_t *output, size_t outlen, const uint8_t *input, size_t inplen);
++
++	/**
++	 * Implementation of function OQS_SHA3_shake256_inc_init.
++	 */
++	void (*SHA3_shake256_inc_init)(OQS_SHA3_shake256_inc_ctx *state);
++
++	/**
++	 * Implementation of function OQS_SHA3_shake256_inc_absorb.
++	 */
++	void (*SHA3_shake256_inc_absorb)(OQS_SHA3_shake256_inc_ctx *state, const uint8_t *input, size_t inlen);
++
++	/**
++	 * Implementation of function OQS_SHA3_shake256_inc_finalize.
++	 */
++	void (*SHA3_shake256_inc_finalize)(OQS_SHA3_shake256_inc_ctx *state);
++
++	/**
++	 * Implementation of function OQS_SHA3_shake256_inc_squeeze.
++	 */
++	void (*SHA3_shake256_inc_squeeze)(uint8_t *output, size_t outlen, OQS_SHA3_shake256_inc_ctx *state);
++
++	/**
++	 * Implementation of function OQS_SHA3_shake256_inc_ctx_release.
++	 */
++	void (*SHA3_shake256_inc_ctx_release)(OQS_SHA3_shake256_inc_ctx *state);
++
++	/**
++	 * Implementation of function OQS_SHA3_shake256_inc_ctx_clone.
++	 */
++	void (*SHA3_shake256_inc_ctx_clone)(OQS_SHA3_shake256_inc_ctx *dest, const OQS_SHA3_shake256_inc_ctx *src);
++
++	/**
++	 * Implementation of function OQS_SHA3_shake256_inc_ctx_reset.
++	 */
++	void (*SHA3_shake256_inc_ctx_reset)(OQS_SHA3_shake256_inc_ctx *state);
++};
++
++/**
++ * Set callback functions for SHA3 operations.
++ *
++ * This function may be called before OQS_init to switch the
++ * cryptographic provider for SHA3 operations. If it is not called,
++ * the default provider determined at build time will be used.
++ *
++ * @param new_callbacks Callback functions defined in OQS_SHA3_callbacks struct
++ */
++OQS_API void OQS_SHA3_set_callbacks(struct OQS_SHA3_callbacks *new_callbacks);
++
++#if defined(__cplusplus)
++} // extern "C"
++#endif
++
++#endif // OQS_SHA3_OPS_H
+diff --git a/lib/liboqs/liboqs.c b/lib/liboqs/liboqs.c
+new file mode 100644
+index 0000000000..88f2369719
+--- /dev/null
++++ b/lib/liboqs/liboqs.c
+@@ -0,0 +1,41 @@
++/*
++ * Copyright (C) 2024 Red Hat, Inc.
++ *
++ * This file is part of GNUTLS.
++ *
++ * The GNUTLS library is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Lesser General Public License
++ * as published by the Free Software Foundation; either version 2.1 of
++ * the License, or (at your option) any later version.
++ *
++ * This library is distributed in the hope that it will be useful, but
++ * WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * Lesser General Public License for more details.
++ *
++ * You should have received a copy of the GNU Lesser General Public License
++ * along with this program.  If not, see <https://www.gnu.org/licenses/>
++ *
++ */
++
++#include "config.h"
++
++#include "liboqs/liboqs.h"
++
++#include "dlwrap/oqs.h"
++#include "liboqs/rand.h"
++#include "liboqs/sha3.h"
++
++void _gnutls_liboqs_init(void)
++{
++	_gnutls_liboqs_sha3_init();
++	GNUTLS_OQS_FUNC(OQS_init)();
++	_gnutls_liboqs_rand_init();
++}
++
++void _gnutls_liboqs_deinit(void)
++{
++	_gnutls_liboqs_rand_deinit();
++	_gnutls_liboqs_sha3_deinit();
++	GNUTLS_OQS_FUNC(OQS_destroy)();
++}
+diff --git a/lib/liboqs/liboqs.h b/lib/liboqs/liboqs.h
+new file mode 100644
+index 0000000000..b6c1659212
+--- /dev/null
++++ b/lib/liboqs/liboqs.h
+@@ -0,0 +1,27 @@
++/*
++ * Copyright (C) 2024 Red Hat, Inc.
++ *
++ * This file is part of GNUTLS.
++ *
++ * The GNUTLS library is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Lesser General Public License
++ * as published by the Free Software Foundation; either version 2.1 of
++ * the License, or (at your option) any later version.
++ *
++ * This library is distributed in the hope that it will be useful, but
++ * WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * Lesser General Public License for more details.
++ *
++ * You should have received a copy of the GNU Lesser General Public License
++ * along with this program.  If not, see <https://www.gnu.org/licenses/>
++ *
++ */
++
++#ifndef GNUTLS_LIB_LIBOQS_LIBOQS_H
++#define GNUTLS_LIB_LIBOQS_LIBOQS_H
++
++void _gnutls_liboqs_init(void);
++void _gnutls_liboqs_deinit(void);
++
++#endif /* GNUTLS_LIB_LIBOQS_LIBOQS_H */
+diff --git a/lib/liboqs/rand.c b/lib/liboqs/rand.c
+new file mode 100644
+index 0000000000..40496800ad
+--- /dev/null
++++ b/lib/liboqs/rand.c
+@@ -0,0 +1,43 @@
++/*
++ * Copyright (C) 2024 Red Hat, Inc.
++ *
++ * This file is part of GNUTLS.
++ *
++ * The GNUTLS library is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Lesser General Public License
++ * as published by the Free Software Foundation; either version 2.1 of
++ * the License, or (at your option) any later version.
++ *
++ * This library is distributed in the hope that it will be useful, but
++ * WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * Lesser General Public License for more details.
++ *
++ * You should have received a copy of the GNU Lesser General Public License
++ * along with this program.  If not, see <https://www.gnu.org/licenses/>
++ *
++ */
++
++#include "config.h"
++
++#include "liboqs/rand.h"
++
++#include "dlwrap/oqs.h"
++#include "fips.h"
++#include <gnutls/crypto.h>
++#include <stdint.h>
++
++static void rand_bytes(uint8_t *data, size_t size)
++{
++	if (gnutls_rnd(GNUTLS_RND_RANDOM, data, size) < 0)
++		_gnutls_switch_lib_state(LIB_STATE_ERROR);
++}
++
++void _gnutls_liboqs_rand_init(void)
++{
++	GNUTLS_OQS_FUNC(OQS_randombytes_custom_algorithm)(rand_bytes);
++}
++
++void _gnutls_liboqs_rand_deinit(void)
++{
++}
+diff --git a/lib/liboqs/rand.h b/lib/liboqs/rand.h
+new file mode 100644
+index 0000000000..b27ac23362
+--- /dev/null
++++ b/lib/liboqs/rand.h
+@@ -0,0 +1,27 @@
++/*
++ * Copyright (C) 2024 Red Hat, Inc.
++ *
++ * This file is part of GNUTLS.
++ *
++ * The GNUTLS library is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Lesser General Public License
++ * as published by the Free Software Foundation; either version 2.1 of
++ * the License, or (at your option) any later version.
++ *
++ * This library is distributed in the hope that it will be useful, but
++ * WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * Lesser General Public License for more details.
++ *
++ * You should have received a copy of the GNU Lesser General Public License
++ * along with this program.  If not, see <https://www.gnu.org/licenses/>
++ *
++ */
++
++#ifndef GNUTLS_LIB_LIBOQS_RAND_H
++#define GNUTLS_LIB_LIBOQS_RAND_H
++
++void _gnutls_liboqs_rand_init(void);
++void _gnutls_liboqs_rand_deinit(void);
++
++#endif /* GNUTLS_LIB_LIBOQS_RAND_H */
+diff --git a/lib/liboqs/sha3.c b/lib/liboqs/sha3.c
+new file mode 100644
+index 0000000000..9f5977e425
+--- /dev/null
++++ b/lib/liboqs/sha3.c
+@@ -0,0 +1,373 @@
++/*
++ * Copyright (C) 2024 Red Hat, Inc.
++ *
++ * This file is part of GNUTLS.
++ *
++ * The GNUTLS library is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Lesser General Public License
++ * as published by the Free Software Foundation; either version 2.1 of
++ * the License, or (at your option) any later version.
++ *
++ * This library is distributed in the hope that it will be useful, but
++ * WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * Lesser General Public License for more details.
++ *
++ * You should have received a copy of the GNU Lesser General Public License
++ * along with this program.  If not, see <https://www.gnu.org/licenses/>
++ *
++ */
++
++#include "config.h"
++
++#include "liboqs/sha3.h"
++
++#include "dlwrap/oqs.h"
++#include <assert.h>
++#include <gnutls/crypto.h>
++#include <string.h>
++
++/* SHA3-256 */
++
++static void SHA3_sha3_256(uint8_t *output, const uint8_t *input, size_t inplen)
++{
++	gnutls_hash_fast(GNUTLS_DIG_SHA3_256, input, inplen, output);
++}
++
++/* SHA3-256 incremental */
++
++static void SHA3_sha3_256_inc_init(OQS_SHA3_sha3_256_inc_ctx *state)
++{
++	gnutls_hash_hd_t hd;
++	int ret;
++
++	ret = gnutls_hash_init(&hd, GNUTLS_DIG_SHA3_256);
++	assert(ret == 0);
++	state->ctx = hd;
++}
++
++static void SHA3_sha3_256_inc_absorb(OQS_SHA3_sha3_256_inc_ctx *state,
++				     const uint8_t *input, size_t inplen)
++{
++	int ret;
++
++	ret = gnutls_hash((gnutls_hash_hd_t)state->ctx, input, inplen);
++	assert(ret == 0);
++}
++
++static void SHA3_sha3_256_inc_finalize(uint8_t *output,
++				       OQS_SHA3_sha3_256_inc_ctx *state)
++{
++	gnutls_hash_output((gnutls_hash_hd_t)state->ctx, output);
++}
++
++static void SHA3_sha3_256_inc_ctx_release(OQS_SHA3_sha3_256_inc_ctx *state)
++{
++	gnutls_hash_deinit((gnutls_hash_hd_t)state->ctx, NULL);
++}
++
++static void SHA3_sha3_256_inc_ctx_clone(OQS_SHA3_sha3_256_inc_ctx *dest,
++					const OQS_SHA3_sha3_256_inc_ctx *src)
++{
++	dest->ctx = gnutls_hash_copy((gnutls_hash_hd_t)src->ctx);
++}
++
++static void SHA3_sha3_256_inc_ctx_reset(OQS_SHA3_sha3_256_inc_ctx *state)
++{
++	gnutls_hash_output((gnutls_hash_hd_t)state->ctx, NULL);
++}
++
++/* SHA3-384 */
++
++static void SHA3_sha3_384(uint8_t *output, const uint8_t *input, size_t inplen)
++{
++	gnutls_hash_fast(GNUTLS_DIG_SHA3_384, input, inplen, output);
++}
++
++/* SHA3-384 incremental */
++static void SHA3_sha3_384_inc_init(OQS_SHA3_sha3_384_inc_ctx *state)
++{
++	gnutls_hash_hd_t hd;
++	int ret;
++
++	ret = gnutls_hash_init(&hd, GNUTLS_DIG_SHA3_384);
++	assert(ret == 0);
++	state->ctx = hd;
++}
++
++static void SHA3_sha3_384_inc_absorb(OQS_SHA3_sha3_384_inc_ctx *state,
++				     const uint8_t *input, size_t inplen)
++{
++	int ret;
++
++	ret = gnutls_hash((gnutls_hash_hd_t)state->ctx, input, inplen);
++	assert(ret == 0);
++}
++
++static void SHA3_sha3_384_inc_finalize(uint8_t *output,
++				       OQS_SHA3_sha3_384_inc_ctx *state)
++{
++	gnutls_hash_output((gnutls_hash_hd_t)state->ctx, output);
++}
++
++static void SHA3_sha3_384_inc_ctx_release(OQS_SHA3_sha3_384_inc_ctx *state)
++{
++	gnutls_hash_deinit((gnutls_hash_hd_t)state->ctx, NULL);
++}
++
++static void SHA3_sha3_384_inc_ctx_clone(OQS_SHA3_sha3_384_inc_ctx *dest,
++					const OQS_SHA3_sha3_384_inc_ctx *src)
++{
++	dest->ctx = gnutls_hash_copy((gnutls_hash_hd_t)src->ctx);
++}
++
++static void SHA3_sha3_384_inc_ctx_reset(OQS_SHA3_sha3_384_inc_ctx *state)
++{
++	gnutls_hash_output((gnutls_hash_hd_t)state->ctx, NULL);
++}
++
++/* SHA3-512 */
++
++static void SHA3_sha3_512(uint8_t *output, const uint8_t *input, size_t inplen)
++{
++	gnutls_hash_fast(GNUTLS_DIG_SHA3_512, input, inplen, output);
++}
++
++/* SHA3-512 incremental */
++
++static void SHA3_sha3_512_inc_init(OQS_SHA3_sha3_512_inc_ctx *state)
++{
++	gnutls_hash_hd_t hd;
++	int ret;
++
++	ret = gnutls_hash_init(&hd, GNUTLS_DIG_SHA3_512);
++	assert(ret == 0);
++	state->ctx = hd;
++}
++
++static void SHA3_sha3_512_inc_absorb(OQS_SHA3_sha3_512_inc_ctx *state,
++				     const uint8_t *input, size_t inplen)
++{
++	int ret;
++
++	ret = gnutls_hash((gnutls_hash_hd_t)state->ctx, input, inplen);
++	assert(ret == 0);
++}
++
++static void SHA3_sha3_512_inc_finalize(uint8_t *output,
++				       OQS_SHA3_sha3_512_inc_ctx *state)
++{
++	gnutls_hash_output((gnutls_hash_hd_t)state->ctx, output);
++}
++
++static void SHA3_sha3_512_inc_ctx_release(OQS_SHA3_sha3_512_inc_ctx *state)
++{
++	gnutls_hash_deinit((gnutls_hash_hd_t)state->ctx, NULL);
++}
++
++static void SHA3_sha3_512_inc_ctx_clone(OQS_SHA3_sha3_512_inc_ctx *dest,
++					const OQS_SHA3_sha3_512_inc_ctx *src)
++{
++	dest->ctx = gnutls_hash_copy((gnutls_hash_hd_t)src->ctx);
++}
++
++static void SHA3_sha3_512_inc_ctx_reset(OQS_SHA3_sha3_512_inc_ctx *state)
++{
++	gnutls_hash_output((gnutls_hash_hd_t)state->ctx, NULL);
++}
++
++/* SHAKE-128 */
++
++static void SHA3_shake128(uint8_t *output, size_t outlen, const uint8_t *input,
++			  size_t inplen)
++{
++	gnutls_hash_hd_t hd;
++	int ret;
++
++	ret = gnutls_hash_init(&hd, GNUTLS_DIG_SHAKE_128);
++	assert(ret == 0);
++
++	ret = gnutls_hash(hd, input, inplen);
++	assert(ret == 0);
++
++	ret = gnutls_hash_squeeze(hd, output, outlen);
++	assert(ret == 0);
++
++	gnutls_hash_deinit(hd, NULL);
++}
++
++/* SHAKE-128 incremental
++ */
++
++static void SHA3_shake128_inc_init(OQS_SHA3_shake128_inc_ctx *state)
++{
++	gnutls_hash_hd_t hd;
++	int ret;
++
++	ret = gnutls_hash_init(&hd, GNUTLS_DIG_SHAKE_128);
++	assert(ret == 0);
++
++	state->ctx = hd;
++}
++
++static void SHA3_shake128_inc_absorb(OQS_SHA3_shake128_inc_ctx *state,
++				     const uint8_t *input, size_t inplen)
++{
++	int ret;
++
++	gnutls_hash_output((gnutls_hash_hd_t)state->ctx, NULL);
++	ret = gnutls_hash((gnutls_hash_hd_t)state->ctx, input, inplen);
++	assert(ret == 0);
++}
++
++static void SHA3_shake128_inc_finalize(OQS_SHA3_shake128_inc_ctx *state)
++{
++	(void)state;
++}
++
++static void SHA3_shake128_inc_squeeze(uint8_t *output, size_t outlen,
++				      OQS_SHA3_shake128_inc_ctx *state)
++{
++	int ret;
++
++	ret = gnutls_hash_squeeze((gnutls_hash_hd_t)state->ctx, output, outlen);
++	assert(ret == 0);
++}
++
++static void SHA3_shake128_inc_ctx_release(OQS_SHA3_shake128_inc_ctx *state)
++{
++	gnutls_hash_deinit((gnutls_hash_hd_t)state->ctx, NULL);
++}
++
++static void SHA3_shake128_inc_ctx_clone(OQS_SHA3_shake128_inc_ctx *dest,
++					const OQS_SHA3_shake128_inc_ctx *src)
++{
++	dest->ctx = gnutls_hash_copy((gnutls_hash_hd_t)src->ctx);
++}
++
++static void SHA3_shake128_inc_ctx_reset(OQS_SHA3_shake128_inc_ctx *state)
++{
++	gnutls_hash_output((gnutls_hash_hd_t)state->ctx, NULL);
++}
++
++/* SHAKE-256 */
++
++static void SHA3_shake256(uint8_t *output, size_t outlen, const uint8_t *input,
++			  size_t inplen)
++{
++	gnutls_hash_hd_t hd;
++	int ret;
++
++	ret = gnutls_hash_init(&hd, GNUTLS_DIG_SHAKE_256);
++	assert(ret == 0);
++
++	ret = gnutls_hash(hd, input, inplen);
++	assert(ret == 0);
++
++	ret = gnutls_hash_squeeze(hd, output, outlen);
++	assert(ret == 0);
++
++	gnutls_hash_deinit(hd, NULL);
++}
++
++/* SHAKE-256 incremental */
++
++static void SHA3_shake256_inc_init(OQS_SHA3_shake256_inc_ctx *state)
++{
++	gnutls_hash_hd_t hd;
++	int ret;
++
++	ret = gnutls_hash_init(&hd, GNUTLS_DIG_SHAKE_256);
++	assert(ret == 0);
++
++	state->ctx = hd;
++}
++
++static void SHA3_shake256_inc_absorb(OQS_SHA3_shake256_inc_ctx *state,
++				     const uint8_t *input, size_t inplen)
++{
++	int ret;
++
++	gnutls_hash_output((gnutls_hash_hd_t)state->ctx, NULL);
++	ret = gnutls_hash((gnutls_hash_hd_t)state->ctx, input, inplen);
++	assert(ret == 0);
++}
++
++static void SHA3_shake256_inc_finalize(OQS_SHA3_shake256_inc_ctx *state)
++{
++	(void)state;
++}
++
++static void SHA3_shake256_inc_squeeze(uint8_t *output, size_t outlen,
++				      OQS_SHA3_shake256_inc_ctx *state)
++{
++	int ret;
++
++	ret = gnutls_hash_squeeze((gnutls_hash_hd_t)state->ctx, output, outlen);
++	assert(ret == 0);
++}
++
++static void SHA3_shake256_inc_ctx_release(OQS_SHA3_shake256_inc_ctx *state)
++{
++	gnutls_hash_deinit((gnutls_hash_hd_t)state->ctx, NULL);
++}
++
++static void SHA3_shake256_inc_ctx_clone(OQS_SHA3_shake256_inc_ctx *dest,
++					const OQS_SHA3_shake256_inc_ctx *src)
++{
++	dest->ctx = gnutls_hash_copy((gnutls_hash_hd_t)src->ctx);
++}
++
++static void SHA3_shake256_inc_ctx_reset(OQS_SHA3_shake256_inc_ctx *state)
++{
++	gnutls_hash_output((gnutls_hash_hd_t)state->ctx, NULL);
++}
++
++static struct OQS_SHA3_callbacks sha3_callbacks = {
++	SHA3_sha3_256,
++	SHA3_sha3_256_inc_init,
++	SHA3_sha3_256_inc_absorb,
++	SHA3_sha3_256_inc_finalize,
++	SHA3_sha3_256_inc_ctx_release,
++	SHA3_sha3_256_inc_ctx_reset,
++	SHA3_sha3_256_inc_ctx_clone,
++	SHA3_sha3_384,
++	SHA3_sha3_384_inc_init,
++	SHA3_sha3_384_inc_absorb,
++	SHA3_sha3_384_inc_finalize,
++	SHA3_sha3_384_inc_ctx_release,
++	SHA3_sha3_384_inc_ctx_reset,
++	SHA3_sha3_384_inc_ctx_clone,
++	SHA3_sha3_512,
++	SHA3_sha3_512_inc_init,
++	SHA3_sha3_512_inc_absorb,
++	SHA3_sha3_512_inc_finalize,
++	SHA3_sha3_512_inc_ctx_release,
++	SHA3_sha3_512_inc_ctx_reset,
++	SHA3_sha3_512_inc_ctx_clone,
++	SHA3_shake128,
++	SHA3_shake128_inc_init,
++	SHA3_shake128_inc_absorb,
++	SHA3_shake128_inc_finalize,
++	SHA3_shake128_inc_squeeze,
++	SHA3_shake128_inc_ctx_release,
++	SHA3_shake128_inc_ctx_clone,
++	SHA3_shake128_inc_ctx_reset,
++	SHA3_shake256,
++	SHA3_shake256_inc_init,
++	SHA3_shake256_inc_absorb,
++	SHA3_shake256_inc_finalize,
++	SHA3_shake256_inc_squeeze,
++	SHA3_shake256_inc_ctx_release,
++	SHA3_shake256_inc_ctx_clone,
++	SHA3_shake256_inc_ctx_reset,
++};
++
++void _gnutls_liboqs_sha3_init(void)
++{
++	GNUTLS_OQS_FUNC(OQS_SHA3_set_callbacks)(&sha3_callbacks);
++}
++
++void _gnutls_liboqs_sha3_deinit(void)
++{
++}
+diff --git a/lib/liboqs/sha3.h b/lib/liboqs/sha3.h
+new file mode 100644
+index 0000000000..8b9058aa0d
+--- /dev/null
++++ b/lib/liboqs/sha3.h
+@@ -0,0 +1,27 @@
++/*
++ * Copyright (C) 2024 Red Hat, Inc.
++ *
++ * This file is part of GNUTLS.
++ *
++ * The GNUTLS library is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Lesser General Public License
++ * as published by the Free Software Foundation; either version 2.1 of
++ * the License, or (at your option) any later version.
++ *
++ * This library is distributed in the hope that it will be useful, but
++ * WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * Lesser General Public License for more details.
++ *
++ * You should have received a copy of the GNU Lesser General Public License
++ * along with this program.  If not, see <https://www.gnu.org/licenses/>
++ *
++ */
++
++#ifndef GNUTLS_LIB_LIBOQS_SHA3_H
++#define GNUTLS_LIB_LIBOQS_SHA3_H
++
++void _gnutls_liboqs_sha3_init(void);
++void _gnutls_liboqs_sha3_deinit(void);
++
++#endif /* GNUTLS_LIB_LIBOQS_SHA3_H */
+-- 
+2.45.2
+
+
+From 1bc78c387a9796e8248ffb644576074f8de4e6ad Mon Sep 17 00:00:00 2001
+From: Daiki Ueno <ueno@gnu.org>
+Date: Sun, 2 Jun 2024 07:19:14 +0900
+Subject: [PATCH 2/2] key_share: support X25519Kyber768Draft00
+
+This implements X25519Kyber768Draft00 hybrid post-quantum key exchange
+in TLS 1.3, based on the draft:
+https://datatracker.ietf.org/doc/draft-tls-westerbaan-xyber768d00/
+
+Signed-off-by: Daiki Ueno <ueno@gnu.org>
+---
+ lib/Makefile.am                 |   4 +
+ lib/algorithms/groups.c         |   8 ++
+ lib/algorithms/publickey.c      |   6 ++
+ lib/crypto-backend.h            |   7 ++
+ lib/ext/key_share.c             | 148 ++++++++++++++++++++++++++--
+ lib/gnutls_int.h                |   2 +
+ lib/includes/gnutls/gnutls.h.in |  12 ++-
+ lib/nettle/Makefile.am          |   4 +
+ lib/nettle/pk.c                 | 164 ++++++++++++++++++++++++++++++++
+ lib/pk.h                        |   4 +
+ lib/state.c                     |   1 +
+ tests/Makefile.am               |   4 +
+ tests/pqc-hybrid-kx.sh          |  54 +++++++++++
+ 13 files changed, 409 insertions(+), 9 deletions(-)
+ create mode 100644 tests/pqc-hybrid-kx.sh
+
+diff --git a/lib/Makefile.am b/lib/Makefile.am
+index 067772c322..0e89fdf184 100644
+--- a/lib/Makefile.am
++++ b/lib/Makefile.am
+@@ -273,6 +273,10 @@ thirdparty_libadd += $(NETTLE_LIBS) $(HOGWEED_LIBS) $(GMP_LIBS)
+ libgnutls_la_LIBADD += nettle/libcrypto.la
+ endif
+ 
++if ENABLE_LIBOQS
++libgnutls_la_LIBADD += liboqs/libcrypto.la
++endif
++
+ if HAVE_LD_OUTPUT_DEF
+ libgnutls_la_LDFLAGS += -Wl,--output-def,libgnutls-$(DLL_VERSION).def
+ libgnutls-$(DLL_VERSION).def: libgnutls.la
+diff --git a/lib/algorithms/groups.c b/lib/algorithms/groups.c
+index 9093de6eb2..a329c746e9 100644
+--- a/lib/algorithms/groups.c
++++ b/lib/algorithms/groups.c
+@@ -169,6 +169,14 @@ static const gnutls_group_entry_st supported_groups[] = {
+ 	  .q_bits = &gnutls_ffdhe_8192_key_bits,
+ 	  .pk = GNUTLS_PK_DH,
+ 	  .tls_id = 0x104 },
++#endif
++#ifdef HAVE_LIBOQS
++	{ .name = "X25519-KYBER768",
++	  .id = GNUTLS_GROUP_EXP_X25519_KYBER768,
++	  .curve = GNUTLS_ECC_CURVE_X25519,
++	  .pk = GNUTLS_PK_ECDH_X25519,
++	  .pk2 = GNUTLS_PK_EXP_KYBER768,
++	  .tls_id = 0x6399 },
+ #endif
+ 	{ 0, 0, 0 }
+ };
+diff --git a/lib/algorithms/publickey.c b/lib/algorithms/publickey.c
+index 0ef0834933..10938bce0e 100644
+--- a/lib/algorithms/publickey.c
++++ b/lib/algorithms/publickey.c
+@@ -202,6 +202,12 @@ static const gnutls_pk_entry pk_algorithms[] = {
+ 	  .oid = ECDH_X448_OID,
+ 	  .id = GNUTLS_PK_ECDH_X448,
+ 	  .curve = GNUTLS_ECC_CURVE_X448 },
++#ifdef HAVE_LIBOQS
++	{ .name = "KYBER768",
++	  .oid = NULL,
++	  .id = GNUTLS_PK_EXP_KYBER768,
++	  .curve = GNUTLS_ECC_CURVE_INVALID },
++#endif
+ 	{ .name = "UNKNOWN",
+ 	  .oid = NULL,
+ 	  .id = GNUTLS_PK_UNKNOWN,
+diff --git a/lib/crypto-backend.h b/lib/crypto-backend.h
+index fd8ee0c728..5c0630adaa 100644
+--- a/lib/crypto-backend.h
++++ b/lib/crypto-backend.h
+@@ -411,6 +411,13 @@ typedef struct gnutls_crypto_pk {
+ 		      const gnutls_pk_params_st *pub,
+ 		      const gnutls_datum_t *nonce, unsigned int flags);
+ 
++	int (*encaps)(gnutls_pk_algorithm_t, gnutls_datum_t *ciphertext,
++		      gnutls_datum_t *shared_secret, const gnutls_datum_t *pub);
++
++	int (*decaps)(gnutls_pk_algorithm_t, gnutls_datum_t *shared_secret,
++		      const gnutls_datum_t *ciphertext,
++		      const gnutls_datum_t *priv);
++
+ 	int (*curve_exists)(gnutls_ecc_curve_t); /* true/false */
+ 	int (*pk_exists)(gnutls_pk_algorithm_t); /* true/false */
+ 	int (*sign_exists)(gnutls_sign_algorithm_t); /* true/false */
+diff --git a/lib/ext/key_share.c b/lib/ext/key_share.c
+index 575ffaf8f2..6926cdd00e 100644
+--- a/lib/ext/key_share.c
++++ b/lib/ext/key_share.c
+@@ -120,6 +120,8 @@ static int client_gen_key_share(gnutls_session_t session,
+ 
+ 	} else if (group->pk == GNUTLS_PK_ECDH_X25519 ||
+ 		   group->pk == GNUTLS_PK_ECDH_X448) {
++		unsigned int length_pos;
++
+ 		gnutls_pk_params_release(&session->key.kshare.ecdhx_params);
+ 		gnutls_pk_params_init(&session->key.kshare.ecdhx_params);
+ 
+@@ -129,6 +131,8 @@ static int client_gen_key_share(gnutls_session_t session,
+ 		if (ret < 0)
+ 			return gnutls_assert_val(ret);
+ 
++		length_pos = extdata->length;
++
+ 		ret = _gnutls_buffer_append_data_prefix(
+ 			extdata, 16,
+ 			session->key.kshare.ecdhx_params.raw_pub.data,
+@@ -141,6 +145,33 @@ static int client_gen_key_share(gnutls_session_t session,
+ 		session->key.kshare.ecdhx_params.algo = group->pk;
+ 		session->key.kshare.ecdhx_params.curve = group->curve;
+ 
++		if (group->pk2 != GNUTLS_PK_UNKNOWN) {
++			gnutls_pk_params_release(
++				&session->key.kshare.kem_params);
++			gnutls_pk_params_init(&session->key.kshare.kem_params);
++
++			ret = _gnutls_pk_generate_keys(
++				group->pk2, 0, &session->key.kshare.kem_params,
++				1);
++			if (ret < 0) {
++				gnutls_assert();
++				goto cleanup;
++			}
++
++			ret = _gnutls_buffer_append_data(
++				extdata,
++				session->key.kshare.kem_params.raw_pub.data,
++				session->key.kshare.kem_params.raw_pub.size);
++			if (ret < 0) {
++				gnutls_assert();
++				goto cleanup;
++			}
++
++			/* copy actual length */
++			_gnutls_write_uint16(extdata->length - length_pos - 2,
++					     &extdata->data[length_pos]);
++		}
++
+ 		ret = 0;
+ 
+ 	} else if (group->pk == GNUTLS_PK_DH) {
+@@ -243,6 +274,10 @@ static int server_gen_key_share(gnutls_session_t session,
+ 
+ 	} else if (group->pk == GNUTLS_PK_ECDH_X25519 ||
+ 		   group->pk == GNUTLS_PK_ECDH_X448) {
++		unsigned int length_pos;
++
++		length_pos = extdata->length;
++
+ 		ret = _gnutls_buffer_append_data_prefix(
+ 			extdata, 16,
+ 			session->key.kshare.ecdhx_params.raw_pub.data,
+@@ -250,8 +285,22 @@ static int server_gen_key_share(gnutls_session_t session,
+ 		if (ret < 0)
+ 			return gnutls_assert_val(ret);
+ 
+-		ret = 0;
++		if (group->pk2 != GNUTLS_PK_UNKNOWN) {
++			ret = _gnutls_buffer_append_data(
++				extdata,
++				session->key.kshare.kem_params.raw_pub.data,
++				session->key.kshare.kem_params.raw_pub.size);
++			if (ret < 0) {
++				gnutls_assert();
++				goto cleanup;
++			}
+ 
++			/* copy actual length */
++			_gnutls_write_uint16(extdata->length - length_pos - 2,
++					     &extdata->data[length_pos]);
++		}
++
++		ret = 0;
+ 	} else if (group->pk == GNUTLS_PK_DH) {
+ 		ret = _gnutls_buffer_append_prefix(extdata, 16,
+ 						   group->prime->size);
+@@ -333,9 +382,15 @@ static int server_use_key_share(gnutls_session_t session,
+ 
+ 		curve = _gnutls_ecc_curve_get_params(group->curve);
+ 
+-		if (curve->size != data_size)
+-			return gnutls_assert_val(
+-				GNUTLS_E_RECEIVED_ILLEGAL_PARAMETER);
++		if (group->pk2 != GNUTLS_PK_UNKNOWN) {
++			if (curve->size > data_size)
++				return gnutls_assert_val(
++					GNUTLS_E_RECEIVED_ILLEGAL_PARAMETER);
++		} else {
++			if (curve->size != data_size)
++				return gnutls_assert_val(
++					GNUTLS_E_RECEIVED_ILLEGAL_PARAMETER);
++		}
+ 
+ 		/* generate our key */
+ 		ret = _gnutls_pk_generate_keys(
+@@ -351,7 +406,7 @@ static int server_use_key_share(gnutls_session_t session,
+ 		pub.curve = curve->id;
+ 
+ 		pub.raw_pub.data = (void *)data;
+-		pub.raw_pub.size = data_size;
++		pub.raw_pub.size = curve->size;
+ 
+ 		/* We don't mask the MSB in the final byte as required
+ 		 * by RFC7748. This will be done internally by nettle 3.3 or later.
+@@ -363,6 +418,50 @@ static int server_use_key_share(gnutls_session_t session,
+ 			return gnutls_assert_val(ret);
+ 		}
+ 
++		if (group->pk2 != GNUTLS_PK_UNKNOWN) {
++			gnutls_datum_t key;
++			gnutls_datum_t peer_pub;
++
++			gnutls_pk_params_release(
++				&session->key.kshare.kem_params);
++			gnutls_pk_params_init(&session->key.kshare.kem_params);
++
++			/* generate our key */
++			ret = _gnutls_pk_generate_keys(
++				group->pk2, 0, &session->key.kshare.kem_params,
++				1);
++			if (ret < 0)
++				return gnutls_assert_val(ret);
++
++			/* server's public key is unused, but the raw_pub field
++			 * is used to store ciphertext */
++			gnutls_free(
++				session->key.kshare.kem_params.raw_pub.data);
++
++			peer_pub.data = (uint8_t *)data + curve->size;
++			peer_pub.size = data_size - curve->size;
++
++			ret = _gnutls_pk_encaps(
++				group->pk2,
++				&session->key.kshare.kem_params.raw_pub, &key,
++				&peer_pub);
++			if (ret < 0)
++				return gnutls_assert_val(ret);
++
++			session->key.key.data = gnutls_realloc_fast(
++				session->key.key.data,
++				session->key.key.size + key.size);
++			if (!session->key.key.data) {
++				_gnutls_free_datum(&key);
++				return gnutls_assert_val(GNUTLS_E_MEMORY_ERROR);
++			}
++
++			memcpy(session->key.key.data + session->key.key.size,
++			       key.data, key.size);
++			session->key.key.size += key.size;
++			_gnutls_free_datum(&key);
++		}
++
+ 		ret = 0;
+ 
+ 	} else if (group->pk == GNUTLS_PK_DH) {
+@@ -496,9 +595,15 @@ static int client_use_key_share(gnutls_session_t session,
+ 			return gnutls_assert_val(
+ 				GNUTLS_E_RECEIVED_ILLEGAL_PARAMETER);
+ 
+-		if (curve->size != data_size)
+-			return gnutls_assert_val(
+-				GNUTLS_E_RECEIVED_ILLEGAL_PARAMETER);
++		if (group->pk2 != GNUTLS_PK_UNKNOWN) {
++			if (curve->size > data_size)
++				return gnutls_assert_val(
++					GNUTLS_E_RECEIVED_ILLEGAL_PARAMETER);
++		} else {
++			if (curve->size != data_size)
++				return gnutls_assert_val(
++					GNUTLS_E_RECEIVED_ILLEGAL_PARAMETER);
++		}
+ 
+ 		/* read the public key and generate shared */
+ 		gnutls_pk_params_init(&pub);
+@@ -519,6 +624,33 @@ static int client_use_key_share(gnutls_session_t session,
+ 			return gnutls_assert_val(ret);
+ 		}
+ 
++		if (group->pk2 != GNUTLS_PK_UNKNOWN) {
++			gnutls_datum_t key;
++			gnutls_datum_t ciphertext;
++
++			ciphertext.data = (uint8_t *)data + curve->size;
++			ciphertext.size = data_size - curve->size;
++
++			ret = _gnutls_pk_decaps(
++				group->pk2, &key, &ciphertext,
++				&session->key.kshare.kem_params.raw_priv);
++			if (ret < 0)
++				return gnutls_assert_val(ret);
++
++			session->key.key.data = gnutls_realloc_fast(
++				session->key.key.data,
++				session->key.key.size + key.size);
++			if (!session->key.key.data) {
++				_gnutls_free_datum(&key);
++				return gnutls_assert_val(GNUTLS_E_MEMORY_ERROR);
++			}
++
++			memcpy(session->key.key.data + session->key.key.size,
++			       key.data, key.size);
++			session->key.key.size += key.size;
++			_gnutls_free_datum(&key);
++		}
++
+ 		ret = 0;
+ 
+ 	} else if (group->pk == GNUTLS_PK_DH) {
+diff --git a/lib/gnutls_int.h b/lib/gnutls_int.h
+index 258a08c842..5727739bdc 100644
+--- a/lib/gnutls_int.h
++++ b/lib/gnutls_int.h
+@@ -594,6 +594,7 @@ struct gnutls_key_st {
+ 		gnutls_pk_params_st ecdh_params;
+ 		gnutls_pk_params_st ecdhx_params;
+ 		gnutls_pk_params_st dh_params;
++		gnutls_pk_params_st kem_params;
+ 	} kshare;
+ 
+ 	/* The union contents depend on the negotiated protocol.
+@@ -764,6 +765,7 @@ typedef struct gnutls_group_entry_st {
+ 	const unsigned *q_bits;
+ 	gnutls_ecc_curve_t curve;
+ 	gnutls_pk_algorithm_t pk;
++	gnutls_pk_algorithm_t pk2;
+ 	unsigned tls_id; /* The RFC4492 namedCurve ID or TLS 1.3 group ID */
+ } gnutls_group_entry_st;
+ 
+diff --git a/lib/includes/gnutls/gnutls.h.in b/lib/includes/gnutls/gnutls.h.in
+index 6b87610c44..790406e4df 100644
+--- a/lib/includes/gnutls/gnutls.h.in
++++ b/lib/includes/gnutls/gnutls.h.in
+@@ -908,7 +908,12 @@ typedef enum {
+ 	GNUTLS_PK_ECDH_X448 = 11,
+ 	GNUTLS_PK_EDDSA_ED448 = 12,
+ 	GNUTLS_PK_RSA_OAEP = 13,
+-	GNUTLS_PK_MAX = GNUTLS_PK_RSA_OAEP
++	GNUTLS_PK_MAX = GNUTLS_PK_RSA_OAEP,
++
++	/* Experimental algorithms */
++	GNUTLS_PK_EXP_MIN = 256,
++	GNUTLS_PK_EXP_KYBER768 = GNUTLS_PK_EXP_MIN,
++	GNUTLS_PK_EXP_MAX = GNUTLS_PK_EXP_KYBER768
+ } gnutls_pk_algorithm_t;
+ 
+ const char *gnutls_pk_algorithm_get_name(gnutls_pk_algorithm_t algorithm);
+@@ -1136,6 +1141,11 @@ typedef enum {
+ 	GNUTLS_GROUP_FFDHE8192,
+ 	GNUTLS_GROUP_FFDHE6144,
+ 	GNUTLS_GROUP_MAX = GNUTLS_GROUP_FFDHE6144,
++
++	/* Experimental algorithms */
++	GNUTLS_GROUP_EXP_MIN = 512,
++	GNUTLS_GROUP_EXP_X25519_KYBER768 = GNUTLS_GROUP_EXP_MIN,
++	GNUTLS_GROUP_EXP_MAX = GNUTLS_GROUP_EXP_X25519_KYBER768
+ } gnutls_group_t;
+ 
+ /* macros to allow specifying a specific curve in gnutls_privkey_generate()
+diff --git a/lib/nettle/Makefile.am b/lib/nettle/Makefile.am
+index b855c8c193..0f21823cb4 100644
+--- a/lib/nettle/Makefile.am
++++ b/lib/nettle/Makefile.am
+@@ -36,6 +36,10 @@ if ENABLE_MINITASN1
+ AM_CPPFLAGS += -I$(srcdir)/../minitasn1
+ endif
+ 
++if ENABLE_DLOPEN
++AM_CPPFLAGS += $(LIBOQS_CFLAGS) -DGNUTLS_OQS_ENABLE_DLOPEN=1
++endif
++
+ noinst_LTLIBRARIES = libcrypto.la
+ 
+ libcrypto_la_SOURCES = pk.c mpi.c mac.c cipher.c init.c \
+diff --git a/lib/nettle/pk.c b/lib/nettle/pk.c
+index b317b790d7..4155a540ed 100644
+--- a/lib/nettle/pk.c
++++ b/lib/nettle/pk.c
+@@ -70,6 +70,9 @@
+ #include "gnettle.h"
+ #include "fips.h"
+ #include "dh.h"
++#ifdef HAVE_LIBOQS
++#include "dlwrap/oqs.h"
++#endif
+ 
+ static inline const struct ecc_curve *get_supported_nist_curve(int curve);
+ static inline const struct ecc_curve *get_supported_gost_curve(int curve);
+@@ -687,6 +690,111 @@ cleanup:
+ 	return ret;
+ }
+ 
++static int _wrap_nettle_pk_encaps(gnutls_pk_algorithm_t algo,
++				  gnutls_datum_t *ciphertext,
++				  gnutls_datum_t *shared_secret,
++				  const gnutls_datum_t *pub)
++{
++	int ret;
++
++	switch (algo) {
++#ifdef HAVE_LIBOQS
++	case GNUTLS_PK_EXP_KYBER768: {
++		OQS_KEM *kem = NULL;
++		OQS_STATUS rc;
++
++		kem = GNUTLS_OQS_FUNC(OQS_KEM_new)(OQS_KEM_alg_kyber_768);
++		if (kem == NULL)
++			return gnutls_assert_val(GNUTLS_E_MEMORY_ERROR);
++
++		ciphertext->data = gnutls_malloc(kem->length_ciphertext);
++		if (ciphertext->data == NULL) {
++			GNUTLS_OQS_FUNC(OQS_KEM_free)(kem);
++			ret = gnutls_assert_val(GNUTLS_E_MEMORY_ERROR);
++			goto cleanup;
++		}
++		ciphertext->size = kem->length_ciphertext;
++
++		shared_secret->data = gnutls_malloc(kem->length_shared_secret);
++		if (shared_secret->data == NULL) {
++			GNUTLS_OQS_FUNC(OQS_KEM_free)(kem);
++			ret = gnutls_assert_val(GNUTLS_E_MEMORY_ERROR);
++			goto cleanup;
++		}
++		shared_secret->size = kem->length_shared_secret;
++
++		rc = GNUTLS_OQS_FUNC(OQS_KEM_encaps)(
++			kem, ciphertext->data, shared_secret->data, pub->data);
++		if (rc != OQS_SUCCESS) {
++			GNUTLS_OQS_FUNC(OQS_KEM_free)(kem);
++			ret = gnutls_assert_val(GNUTLS_E_INVALID_REQUEST);
++			goto cleanup;
++		}
++
++		GNUTLS_OQS_FUNC(OQS_KEM_free)(kem);
++		ret = 0;
++	} break;
++#endif
++	default:
++		ret = gnutls_assert_val(GNUTLS_E_UNKNOWN_ALGORITHM);
++		goto cleanup;
++	}
++
++cleanup:
++	if (ret < 0) {
++		gnutls_free(ciphertext->data);
++		gnutls_free(shared_secret->data);
++	}
++	return ret;
++}
++
++static int _wrap_nettle_pk_decaps(gnutls_pk_algorithm_t algo,
++				  gnutls_datum_t *shared_secret,
++				  const gnutls_datum_t *ciphertext,
++				  const gnutls_datum_t *priv)
++{
++	int ret;
++
++	switch (algo) {
++#ifdef HAVE_LIBOQS
++	case GNUTLS_PK_EXP_KYBER768: {
++		OQS_KEM *kem = NULL;
++		OQS_STATUS rc;
++
++		kem = GNUTLS_OQS_FUNC(OQS_KEM_new)(OQS_KEM_alg_kyber_768);
++		if (kem == NULL)
++			return gnutls_assert_val(GNUTLS_E_MEMORY_ERROR);
++
++		shared_secret->data = gnutls_malloc(kem->length_shared_secret);
++		if (shared_secret->data == NULL) {
++			GNUTLS_OQS_FUNC(OQS_KEM_free)(kem);
++			ret = gnutls_assert_val(GNUTLS_E_MEMORY_ERROR);
++			goto cleanup;
++		}
++		shared_secret->size = kem->length_shared_secret;
++
++		rc = GNUTLS_OQS_FUNC(OQS_KEM_decaps)(
++			kem, shared_secret->data, ciphertext->data, priv->data);
++		if (rc != OQS_SUCCESS) {
++			GNUTLS_OQS_FUNC(OQS_KEM_free)(kem);
++			ret = gnutls_assert_val(GNUTLS_E_INVALID_REQUEST);
++			goto cleanup;
++		}
++
++		GNUTLS_OQS_FUNC(OQS_KEM_free)(kem);
++		ret = 0;
++	} break;
++#endif
++	default:
++		ret = gnutls_assert_val(GNUTLS_E_UNKNOWN_ALGORITHM);
++		goto cleanup;
++	}
++cleanup:
++	if (ret < 0)
++		gnutls_free(shared_secret->data);
++	return ret;
++}
++
+ /* This wraps nettle_rsa_encrypt so it returns ciphertext as a byte
+  * array instead of a mpz_t value.  Returns 1 on success; 0 otherwise.
+  */
+@@ -2234,6 +2342,9 @@ static int _wrap_nettle_pk_exists(gnutls_pk_algorithm_t pk)
+ 	case GNUTLS_PK_RSA_PSS:
+ 	case GNUTLS_PK_RSA_OAEP:
+ 	case GNUTLS_PK_EDDSA_ED25519:
++#ifdef HAVE_LIBOQS
++	case GNUTLS_PK_EXP_KYBER768:
++#endif
+ #if ENABLE_GOST
+ 	case GNUTLS_PK_GOST_01:
+ 	case GNUTLS_PK_GOST_12_256:
+@@ -2875,6 +2986,9 @@ static int pct_test(gnutls_pk_algorithm_t algo,
+ 	}
+ 	case GNUTLS_PK_ECDH_X25519:
+ 	case GNUTLS_PK_ECDH_X448:
++#ifdef HAVE_LIBOQS
++	case GNUTLS_PK_EXP_KYBER768:
++#endif
+ 		ret = 0;
+ 		goto cleanup;
+ 	default:
+@@ -3605,6 +3719,49 @@ wrap_nettle_pk_generate_keys(gnutls_pk_algorithm_t algo,
+ 			goto cleanup;
+ 		break;
+ 	}
++#ifdef HAVE_LIBOQS
++	case GNUTLS_PK_EXP_KYBER768: {
++		OQS_KEM *kem = NULL;
++		OQS_STATUS rc;
++
++		not_approved = true;
++
++		kem = GNUTLS_OQS_FUNC(OQS_KEM_new)(OQS_KEM_alg_kyber_768);
++		if (kem == NULL) {
++			ret = gnutls_assert_val(GNUTLS_E_MEMORY_ERROR);
++			goto cleanup;
++		}
++
++		params->raw_priv.size = kem->length_secret_key;
++		params->raw_priv.data = gnutls_malloc(params->raw_priv.size);
++		if (params->raw_priv.data == NULL) {
++			GNUTLS_OQS_FUNC(OQS_KEM_free)(kem);
++			ret = gnutls_assert_val(GNUTLS_E_MEMORY_ERROR);
++			goto cleanup;
++		}
++
++		params->raw_pub.size = kem->length_public_key;
++		params->raw_pub.data = gnutls_malloc(params->raw_pub.size);
++		if (params->raw_pub.data == NULL) {
++			GNUTLS_OQS_FUNC(OQS_KEM_free)(kem);
++			ret = gnutls_assert_val(GNUTLS_E_MEMORY_ERROR);
++			goto cleanup;
++		}
++
++		rc = GNUTLS_OQS_FUNC(OQS_KEM_keypair)(kem, params->raw_pub.data,
++						      params->raw_priv.data);
++		if (rc != OQS_SUCCESS) {
++			GNUTLS_OQS_FUNC(OQS_KEM_free)(kem);
++			ret = gnutls_assert_val(GNUTLS_E_ILLEGAL_PARAMETER);
++			goto cleanup;
++		}
++
++		GNUTLS_OQS_FUNC(OQS_KEM_free)(kem);
++
++		ret = 0;
++		break;
++	}
++#endif
+ 	default:
+ 		gnutls_assert();
+ 		return GNUTLS_E_INVALID_REQUEST;
+@@ -3858,6 +4015,11 @@ static int wrap_nettle_pk_verify_priv_params(gnutls_pk_algorithm_t algo,
+ 		ret = 0;
+ 		break;
+ 	}
++#ifdef HAVE_LIBOQS
++	case GNUTLS_PK_EXP_KYBER768:
++		ret = 0;
++		break;
++#endif
+ #if ENABLE_GOST
+ 	case GNUTLS_PK_GOST_01:
+ 	case GNUTLS_PK_GOST_12_256:
+@@ -4307,6 +4469,8 @@ gnutls_crypto_pk_st _gnutls_pk_ops = {
+ 	.generate_keys = wrap_nettle_pk_generate_keys,
+ 	.pk_fixup_private_params = wrap_nettle_pk_fixup,
+ 	.derive = _wrap_nettle_pk_derive,
++	.encaps = _wrap_nettle_pk_encaps,
++	.decaps = _wrap_nettle_pk_decaps,
+ 	.curve_exists = _wrap_nettle_pk_curve_exists,
+ 	.pk_exists = _wrap_nettle_pk_exists,
+ 	.sign_exists = _wrap_nettle_pk_sign_exists
+diff --git a/lib/pk.h b/lib/pk.h
+index 20fe314f94..eca4e02d73 100644
+--- a/lib/pk.h
++++ b/lib/pk.h
+@@ -46,6 +46,10 @@ extern gnutls_crypto_pk_st _gnutls_pk_ops;
+ 	_gnutls_pk_ops.derive(algo, out, pub, priv, nonce, 0)
+ #define _gnutls_pk_derive_tls13(algo, out, pub, priv) \
+ 	_gnutls_pk_ops.derive(algo, out, pub, priv, NULL, PK_DERIVE_TLS13)
++#define _gnutls_pk_encaps(algo, ciphertext, shared_secret, pub) \
++	_gnutls_pk_ops.encaps(algo, ciphertext, shared_secret, pub)
++#define _gnutls_pk_decaps(algo, shared_secret, ciphertext, priv) \
++	_gnutls_pk_ops.decaps(algo, shared_secret, ciphertext, priv)
+ #define _gnutls_pk_generate_keys(algo, bits, params, temporal) \
+ 	_gnutls_pk_ops.generate_keys(algo, bits, params, temporal)
+ #define _gnutls_pk_generate_params(algo, bits, priv) \
+diff --git a/lib/state.c b/lib/state.c
+index ec514c0cd2..f2c74d97d0 100644
+--- a/lib/state.c
++++ b/lib/state.c
+@@ -459,6 +459,7 @@ static void deinit_keys(gnutls_session_t session)
+ 	gnutls_pk_params_release(&session->key.kshare.ecdhx_params);
+ 	gnutls_pk_params_release(&session->key.kshare.ecdh_params);
+ 	gnutls_pk_params_release(&session->key.kshare.dh_params);
++	gnutls_pk_params_release(&session->key.kshare.kem_params);
+ 
+ 	if (!vers->tls13_sem && session->key.binders[0].prf == NULL) {
+ 		gnutls_pk_params_release(&session->key.proto.tls12.ecdh.params);
+diff --git a/tests/Makefile.am b/tests/Makefile.am
+index c674835c1f..ca76736d2e 100644
+--- a/tests/Makefile.am
++++ b/tests/Makefile.am
+@@ -600,6 +600,10 @@ ctests += win32-certopenstore
+ 
+ endif
+ 
++if ENABLE_LIBOQS
++dist_check_SCRIPTS += pqc-hybrid-kx.sh
++endif
++
+ cpptests =
+ if ENABLE_CXX
+ if HAVE_CMOCKA
+diff --git a/tests/pqc-hybrid-kx.sh b/tests/pqc-hybrid-kx.sh
+new file mode 100644
+index 0000000000..b9302b43b1
+--- /dev/null
++++ b/tests/pqc-hybrid-kx.sh
+@@ -0,0 +1,54 @@
++#!/bin/sh
++
++# Copyright (C) 2022 Red Hat, Inc.
++#
++# Author: Daiki Ueno
++#
++# This file is part of GnuTLS.
++#
++# GnuTLS is free software; you can redistribute it and/or modify it
++# under the terms of the GNU General Public License as published by the
++# Free Software Foundation; either version 3 of the License, or (at
++# your option) any later version.
++#
++# GnuTLS is distributed in the hope that it will be useful, but
++# WITHOUT ANY WARRANTY; without even the implied warranty of
++# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
++# General Public License for more details.
++#
++# You should have received a copy of the GNU General Public License
++# along with GnuTLS. If not, see <https://www.gnu.org/licenses/>.
++
++: ${srcdir=.}
++: ${SERV=../src/gnutls-serv${EXEEXT}}
++: ${CLI=../src/gnutls-cli${EXEEXT}}
++
++if ! test -x "${SERV}"; then
++	exit 77
++fi
++
++if ! test -x "${CLI}"; then
++	exit 77
++fi
++
++. "${srcdir}/scripts/common.sh"
++testdir=`create_testdir pqc-hybrid-kx`
++
++KEY="$srcdir/../doc/credentials/x509/key-ed25519.pem"
++CERT="$srcdir/../doc/credentials/x509/cert-ed25519.pem"
++CACERT="$srcdir/../doc/credentials/x509/ca.pem"
++
++eval "${GETPORT}"
++launch_server --echo --priority NORMAL:-GROUP-ALL:+GROUP-X25519-KYBER768 --x509keyfile="$KEY" --x509certfile="$CERT"
++PID=$!
++wait_server ${PID}
++
++${VALGRIND} "${CLI}" -p "${PORT}" 127.0.0.1 --priority NORMAL:-GROUP-ALL:+GROUP-X25519-KYBER768 --x509cafile="$CACERT" --logfile="$testdir/cli.log" </dev/null
++
++kill ${PID}
++wait
++
++grep -- '- Description: (TLS1.3-X.509)-(ECDHE-X25519-KYBER768)-(EdDSA-Ed25519)-(AES-256-GCM)' "$testdir/cli.log" || { echo "unexpected handshake description"; exit 1; }
++
++rm -rf "$testdir"
++exit 0
+-- 
+2.45.2
+
+From baae5fca41567297ef3550bcbce6ac4c18984006 Mon Sep 17 00:00:00 2001
+From: Daiki Ueno <ueno@gnu.org>
+Date: Tue, 23 Jul 2024 11:25:18 +0900
+Subject: [PATCH 1/3] dlwrap: use different macro for library soname in
+ generated code
+
+As GnuTLS opt in for manual initialization of dlopen'ed libraries,
+config.h shouldn't define the SONAME macro used in the generated code.
+
+Signed-off-by: Daiki Ueno <ueno@gnu.org>
+---
+ devel/generate-dlwrap.sh | 18 +++++++++++++-----
+ lib/dlwrap/brotlidec.c   | 17 +++++++++--------
+ lib/dlwrap/brotlienc.c   | 17 +++++++++--------
+ lib/dlwrap/oqs.c         | 17 +++++++++--------
+ lib/dlwrap/zlib.c        | 17 +++++++++--------
+ lib/dlwrap/zstd.c        | 17 +++++++++--------
+ 6 files changed, 58 insertions(+), 45 deletions(-)
+
+diff --git a/devel/generate-dlwrap.sh b/devel/generate-dlwrap.sh
+index 3e253d9228..0394655bbf 100755
+--- a/devel/generate-dlwrap.sh
++++ b/devel/generate-dlwrap.sh
+@@ -21,20 +21,28 @@ DST="$srcdir/lib/$DLWRAP"
+ 
+ echo "Generating $DST/zlib.h"
+ 
+-"$DLWRAP" --input /usr/include/zlib.h -o "$DST" --clang-resource-dir $(clang -print-resource-dir) --symbol-file "$SRC/z.syms" --license-file "$SRC/z.license" --soname Z_LIBRARY_SONAME --prefix gnutls_zlib --header-guard GNUTLS_LIB_DLWRAP_ZLIB_H_ --include "<zlib.h>"
++"$DLWRAP" --input /usr/include/zlib.h -o "$DST" --clang-resource-dir $(clang -print-resource-dir) --symbol-file "$SRC/z.syms" --license-file "$SRC/z.license" --soname Z_LIBRARY_SONAME_UNUSED --prefix gnutls_zlib --header-guard GNUTLS_LIB_DLWRAP_ZLIB_H_ --include "<zlib.h>"
+ 
+ echo "Generating $DST/zstd.h"
+ 
+-"$DLWRAP" --input /usr/include/zstd.h -o "$DST" --clang-resource-dir $(clang -print-resource-dir) --symbol-file "$SRC/zstd.syms" --license-file "$SRC/zstd.license" --soname ZSTD_LIBRARY_SONAME --prefix gnutls_zstd --header-guard GNUTLS_LIB_DLWRAP_ZSTD_H_ --include "<zstd.h>"
++"$DLWRAP" --input /usr/include/zstd.h -o "$DST" --clang-resource-dir $(clang -print-resource-dir) --symbol-file "$SRC/zstd.syms" --license-file "$SRC/zstd.license" --soname ZSTD_LIBRARY_SONAME_UNUSED --prefix gnutls_zstd --header-guard GNUTLS_LIB_DLWRAP_ZSTD_H_ --include "<zstd.h>"
+ 
+ echo "Generating $DST/brotlienc.h"
+ 
+-"$DLWRAP" --input /usr/include/brotli/encode.h -o "$DST" --clang-resource-dir $(clang -print-resource-dir) --symbol-file "$SRC/brotlienc.syms" --license-file "$SRC/brotli.license" --soname BROTLIENC_LIBRARY_SONAME --prefix gnutls_brotlienc --loader-basename brotlienc --header-guard GNUTLS_LIB_DLWRAP_BROTLIENC_H_ --include "<brotli/encode.h>"
++"$DLWRAP" --input /usr/include/brotli/encode.h -o "$DST" --clang-resource-dir $(clang -print-resource-dir) --symbol-file "$SRC/brotlienc.syms" --license-file "$SRC/brotli.license" --soname BROTLIENC_LIBRARY_SONAME_UNUSED --prefix gnutls_brotlienc --loader-basename brotlienc --header-guard GNUTLS_LIB_DLWRAP_BROTLIENC_H_ --include "<brotli/encode.h>"
+ 
+ echo "Generating $DST/brotlidec.h"
+ 
+-"$DLWRAP" --input /usr/include/brotli/decode.h -o "$DST" --clang-resource-dir $(clang -print-resource-dir) --symbol-file "$SRC/brotlidec.syms" --license-file "$SRC/brotli.license" --soname BROTLIDEC_LIBRARY_SONAME --prefix gnutls_brotlidec --loader-basename brotlidec --header-guard GNUTLS_LIB_DLWRAP_BROTLIDEC_H_ --include "<brotli/decode.h>"
++"$DLWRAP" --input /usr/include/brotli/decode.h -o "$DST" --clang-resource-dir $(clang -print-resource-dir) --symbol-file "$SRC/brotlidec.syms" --license-file "$SRC/brotli.license" --soname BROTLIDEC_LIBRARY_SONAME_UNUSED --prefix gnutls_brotlidec --loader-basename brotlidec --header-guard GNUTLS_LIB_DLWRAP_BROTLIDEC_H_ --include "<brotli/decode.h>"
+ 
+ echo "Generating $DST/oqs.h"
+ 
+-"$DLWRAP" --input /usr/include/oqs/oqs.h -o "$DST" --clang-resource-dir $(clang -print-resource-dir) --symbol-file "$SRC/oqs.syms" --license "SPDX-License-Identifier: MIT" --soname OQS_LIBRARY_SONAME --prefix gnutls_oqs --header-guard GNUTLS_LIB_DLWRAP_OQS_H_ --include "<oqs/oqs.h>"
++"$DLWRAP" --input /usr/include/oqs/oqs.h -o "$DST" --clang-resource-dir $(clang -print-resource-dir) --symbol-file "$SRC/oqs.syms" --license "SPDX-License-Identifier: MIT" --soname OQS_LIBRARY_SONAME_UNUSED --prefix gnutls_oqs --header-guard GNUTLS_LIB_DLWRAP_OQS_H_ --include "<oqs/oqs.h>"
++
++sed -i '/^#include <oqs\/oqs.h>/i\
++/* Local modification: remove this once liboqs 0.10.2 is released */\
++#include "config.h"\
++#if !HAVE_DECL_OQS_SHA3_SET_CALLBACKS\
++#include "liboqs/backport/sha3_ops.h"\
++#endif\
++' "$DST/oqs.h"
+diff --git a/lib/dlwrap/brotlidec.c b/lib/dlwrap/brotlidec.c
+index 45c9b4b259..15cee63bd6 100644
+--- a/lib/dlwrap/brotlidec.c
++++ b/lib/dlwrap/brotlidec.c
+@@ -18,16 +18,16 @@
+ #include <errno.h>
+ #include <stdlib.h>
+ 
+-/* If BROTLIDEC_LIBRARY_SONAME is defined, dlopen handle can be automatically
++/* If BROTLIDEC_LIBRARY_SONAME_UNUSED is defined, dlopen handle can be automatically
+  * set; otherwise, the caller needs to call
+  * gnutls_brotlidec_ensure_library with soname determined at run time.
+  */
+-#ifdef BROTLIDEC_LIBRARY_SONAME
++#ifdef BROTLIDEC_LIBRARY_SONAME_UNUSED
+ 
+ static void
+ ensure_library (void)
+ {
+-  if (gnutls_brotlidec_ensure_library (BROTLIDEC_LIBRARY_SONAME, RTLD_LAZY | RTLD_LOCAL) < 0)
++  if (gnutls_brotlidec_ensure_library (BROTLIDEC_LIBRARY_SONAME_UNUSED, RTLD_LAZY | RTLD_LOCAL) < 0)
+     abort ();
+ }
+ 
+@@ -47,11 +47,11 @@ static pthread_once_t dlopen_once = PTHREAD_ONCE_INIT;
+ 
+ #endif /* !GNUTLS_BROTLIDEC_ENABLE_PTHREAD */
+ 
+-#else /* BROTLIDEC_LIBRARY_SONAME */
++#else /* BROTLIDEC_LIBRARY_SONAME_UNUSED */
+ 
+ #define ENSURE_LIBRARY do {} while (0)
+ 
+-#endif /* !BROTLIDEC_LIBRARY_SONAME */
++#endif /* !BROTLIDEC_LIBRARY_SONAME_UNUSED */
+ 
+ static void *gnutls_brotlidec_dlhandle;
+ 
+@@ -147,7 +147,10 @@ void
+ gnutls_brotlidec_unload_library (void)
+ {
+   if (gnutls_brotlidec_dlhandle)
+-    dlclose (gnutls_brotlidec_dlhandle);
++    {
++      dlclose (gnutls_brotlidec_dlhandle);
++      gnutls_brotlidec_dlhandle = NULL;
++    }
+ 
+ #pragma GCC diagnostic push
+ #pragma GCC diagnostic ignored "-Wunused-macros"
+@@ -160,8 +163,6 @@ gnutls_brotlidec_unload_library (void)
+ #undef FUNC
+ 
+ #pragma GCC diagnostic pop
+-
+-#undef RESET_SYMBOL
+ }
+ 
+ #else /* GNUTLS_BROTLIDEC_ENABLE_DLOPEN */
+diff --git a/lib/dlwrap/brotlienc.c b/lib/dlwrap/brotlienc.c
+index 9dd8ff37c6..1deff747e2 100644
+--- a/lib/dlwrap/brotlienc.c
++++ b/lib/dlwrap/brotlienc.c
+@@ -18,16 +18,16 @@
+ #include <errno.h>
+ #include <stdlib.h>
+ 
+-/* If BROTLIENC_LIBRARY_SONAME is defined, dlopen handle can be automatically
++/* If BROTLIENC_LIBRARY_SONAME_UNUSED is defined, dlopen handle can be automatically
+  * set; otherwise, the caller needs to call
+  * gnutls_brotlienc_ensure_library with soname determined at run time.
+  */
+-#ifdef BROTLIENC_LIBRARY_SONAME
++#ifdef BROTLIENC_LIBRARY_SONAME_UNUSED
+ 
+ static void
+ ensure_library (void)
+ {
+-  if (gnutls_brotlienc_ensure_library (BROTLIENC_LIBRARY_SONAME, RTLD_LAZY | RTLD_LOCAL) < 0)
++  if (gnutls_brotlienc_ensure_library (BROTLIENC_LIBRARY_SONAME_UNUSED, RTLD_LAZY | RTLD_LOCAL) < 0)
+     abort ();
+ }
+ 
+@@ -47,11 +47,11 @@ static pthread_once_t dlopen_once = PTHREAD_ONCE_INIT;
+ 
+ #endif /* !GNUTLS_BROTLIENC_ENABLE_PTHREAD */
+ 
+-#else /* BROTLIENC_LIBRARY_SONAME */
++#else /* BROTLIENC_LIBRARY_SONAME_UNUSED */
+ 
+ #define ENSURE_LIBRARY do {} while (0)
+ 
+-#endif /* !BROTLIENC_LIBRARY_SONAME */
++#endif /* !BROTLIENC_LIBRARY_SONAME_UNUSED */
+ 
+ static void *gnutls_brotlienc_dlhandle;
+ 
+@@ -147,7 +147,10 @@ void
+ gnutls_brotlienc_unload_library (void)
+ {
+   if (gnutls_brotlienc_dlhandle)
+-    dlclose (gnutls_brotlienc_dlhandle);
++    {
++      dlclose (gnutls_brotlienc_dlhandle);
++      gnutls_brotlienc_dlhandle = NULL;
++    }
+ 
+ #pragma GCC diagnostic push
+ #pragma GCC diagnostic ignored "-Wunused-macros"
+@@ -160,8 +163,6 @@ gnutls_brotlienc_unload_library (void)
+ #undef FUNC
+ 
+ #pragma GCC diagnostic pop
+-
+-#undef RESET_SYMBOL
+ }
+ 
+ #else /* GNUTLS_BROTLIENC_ENABLE_DLOPEN */
+diff --git a/lib/dlwrap/oqs.c b/lib/dlwrap/oqs.c
+index d7fcc9c80c..c05f883127 100644
+--- a/lib/dlwrap/oqs.c
++++ b/lib/dlwrap/oqs.c
+@@ -18,16 +18,16 @@
+ #include <errno.h>
+ #include <stdlib.h>
+ 
+-/* If OQS_LIBRARY_SONAME is defined, dlopen handle can be automatically
++/* If OQS_LIBRARY_SONAME_UNUSED is defined, dlopen handle can be automatically
+  * set; otherwise, the caller needs to call
+  * gnutls_oqs_ensure_library with soname determined at run time.
+  */
+-#ifdef OQS_LIBRARY_SONAME
++#ifdef OQS_LIBRARY_SONAME_UNUSED
+ 
+ static void
+ ensure_library (void)
+ {
+-  if (gnutls_oqs_ensure_library (OQS_LIBRARY_SONAME, RTLD_LAZY | RTLD_LOCAL) < 0)
++  if (gnutls_oqs_ensure_library (OQS_LIBRARY_SONAME_UNUSED, RTLD_LAZY | RTLD_LOCAL) < 0)
+     abort ();
+ }
+ 
+@@ -47,11 +47,11 @@ static pthread_once_t dlopen_once = PTHREAD_ONCE_INIT;
+ 
+ #endif /* !GNUTLS_OQS_ENABLE_PTHREAD */
+ 
+-#else /* OQS_LIBRARY_SONAME */
++#else /* OQS_LIBRARY_SONAME_UNUSED */
+ 
+ #define ENSURE_LIBRARY do {} while (0)
+ 
+-#endif /* !OQS_LIBRARY_SONAME */
++#endif /* !OQS_LIBRARY_SONAME_UNUSED */
+ 
+ static void *gnutls_oqs_dlhandle;
+ 
+@@ -147,7 +147,10 @@ void
+ gnutls_oqs_unload_library (void)
+ {
+   if (gnutls_oqs_dlhandle)
+-    dlclose (gnutls_oqs_dlhandle);
++    {
++      dlclose (gnutls_oqs_dlhandle);
++      gnutls_oqs_dlhandle = NULL;
++    }
+ 
+ #pragma GCC diagnostic push
+ #pragma GCC diagnostic ignored "-Wunused-macros"
+@@ -160,8 +163,6 @@ gnutls_oqs_unload_library (void)
+ #undef FUNC
+ 
+ #pragma GCC diagnostic pop
+-
+-#undef RESET_SYMBOL
+ }
+ 
+ #else /* GNUTLS_OQS_ENABLE_DLOPEN */
+diff --git a/lib/dlwrap/zlib.c b/lib/dlwrap/zlib.c
+index 455485c63f..878070c0a4 100644
+--- a/lib/dlwrap/zlib.c
++++ b/lib/dlwrap/zlib.c
+@@ -18,16 +18,16 @@
+ #include <errno.h>
+ #include <stdlib.h>
+ 
+-/* If Z_LIBRARY_SONAME is defined, dlopen handle can be automatically
++/* If Z_LIBRARY_SONAME_UNUSED is defined, dlopen handle can be automatically
+  * set; otherwise, the caller needs to call
+  * gnutls_zlib_ensure_library with soname determined at run time.
+  */
+-#ifdef Z_LIBRARY_SONAME
++#ifdef Z_LIBRARY_SONAME_UNUSED
+ 
+ static void
+ ensure_library (void)
+ {
+-  if (gnutls_zlib_ensure_library (Z_LIBRARY_SONAME, RTLD_LAZY | RTLD_LOCAL) < 0)
++  if (gnutls_zlib_ensure_library (Z_LIBRARY_SONAME_UNUSED, RTLD_LAZY | RTLD_LOCAL) < 0)
+     abort ();
+ }
+ 
+@@ -47,11 +47,11 @@ static pthread_once_t dlopen_once = PTHREAD_ONCE_INIT;
+ 
+ #endif /* !GNUTLS_ZLIB_ENABLE_PTHREAD */
+ 
+-#else /* Z_LIBRARY_SONAME */
++#else /* Z_LIBRARY_SONAME_UNUSED */
+ 
+ #define ENSURE_LIBRARY do {} while (0)
+ 
+-#endif /* !Z_LIBRARY_SONAME */
++#endif /* !Z_LIBRARY_SONAME_UNUSED */
+ 
+ static void *gnutls_zlib_dlhandle;
+ 
+@@ -147,7 +147,10 @@ void
+ gnutls_zlib_unload_library (void)
+ {
+   if (gnutls_zlib_dlhandle)
+-    dlclose (gnutls_zlib_dlhandle);
++    {
++      dlclose (gnutls_zlib_dlhandle);
++      gnutls_zlib_dlhandle = NULL;
++    }
+ 
+ #pragma GCC diagnostic push
+ #pragma GCC diagnostic ignored "-Wunused-macros"
+@@ -160,8 +163,6 @@ gnutls_zlib_unload_library (void)
+ #undef FUNC
+ 
+ #pragma GCC diagnostic pop
+-
+-#undef RESET_SYMBOL
+ }
+ 
+ #else /* GNUTLS_ZLIB_ENABLE_DLOPEN */
+diff --git a/lib/dlwrap/zstd.c b/lib/dlwrap/zstd.c
+index 2ea7252975..532c80b610 100644
+--- a/lib/dlwrap/zstd.c
++++ b/lib/dlwrap/zstd.c
+@@ -18,16 +18,16 @@
+ #include <errno.h>
+ #include <stdlib.h>
+ 
+-/* If ZSTD_LIBRARY_SONAME is defined, dlopen handle can be automatically
++/* If ZSTD_LIBRARY_SONAME_UNUSED is defined, dlopen handle can be automatically
+  * set; otherwise, the caller needs to call
+  * gnutls_zstd_ensure_library with soname determined at run time.
+  */
+-#ifdef ZSTD_LIBRARY_SONAME
++#ifdef ZSTD_LIBRARY_SONAME_UNUSED
+ 
+ static void
+ ensure_library (void)
+ {
+-  if (gnutls_zstd_ensure_library (ZSTD_LIBRARY_SONAME, RTLD_LAZY | RTLD_LOCAL) < 0)
++  if (gnutls_zstd_ensure_library (ZSTD_LIBRARY_SONAME_UNUSED, RTLD_LAZY | RTLD_LOCAL) < 0)
+     abort ();
+ }
+ 
+@@ -47,11 +47,11 @@ static pthread_once_t dlopen_once = PTHREAD_ONCE_INIT;
+ 
+ #endif /* !GNUTLS_ZSTD_ENABLE_PTHREAD */
+ 
+-#else /* ZSTD_LIBRARY_SONAME */
++#else /* ZSTD_LIBRARY_SONAME_UNUSED */
+ 
+ #define ENSURE_LIBRARY do {} while (0)
+ 
+-#endif /* !ZSTD_LIBRARY_SONAME */
++#endif /* !ZSTD_LIBRARY_SONAME_UNUSED */
+ 
+ static void *gnutls_zstd_dlhandle;
+ 
+@@ -147,7 +147,10 @@ void
+ gnutls_zstd_unload_library (void)
+ {
+   if (gnutls_zstd_dlhandle)
+-    dlclose (gnutls_zstd_dlhandle);
++    {
++      dlclose (gnutls_zstd_dlhandle);
++      gnutls_zstd_dlhandle = NULL;
++    }
+ 
+ #pragma GCC diagnostic push
+ #pragma GCC diagnostic ignored "-Wunused-macros"
+@@ -160,8 +163,6 @@ gnutls_zstd_unload_library (void)
+ #undef FUNC
+ 
+ #pragma GCC diagnostic pop
+-
+-#undef RESET_SYMBOL
+ }
+ 
+ #else /* GNUTLS_ZSTD_ENABLE_DLOPEN */
+-- 
+2.45.2
+
+
+From ec65c64e6c904d5a408e2afb31ecacc2b52ed7dc Mon Sep 17 00:00:00 2001
+From: Daiki Ueno <ueno@gnu.org>
+Date: Tue, 23 Jul 2024 15:12:11 +0900
+Subject: [PATCH 2/3] liboqs: manually load liboqs.so at startup
+
+Signed-off-by: Daiki Ueno <ueno@gnu.org>
+---
+ lib/global.c        |  6 +++++-
+ lib/liboqs/liboqs.c | 21 ++++++++++++++++++++-
+ lib/liboqs/liboqs.h |  2 +-
+ 3 files changed, 26 insertions(+), 3 deletions(-)
+
+diff --git a/lib/global.c b/lib/global.c
+index ae2f7f54dc..4aaf79a768 100644
+--- a/lib/global.c
++++ b/lib/global.c
+@@ -330,7 +330,11 @@ static int _gnutls_global_init(unsigned constructor)
+ 	}
+ 
+ #ifdef HAVE_LIBOQS
+-	_gnutls_liboqs_init();
++	ret = _gnutls_liboqs_init();
++	if (ret < 0) {
++		gnutls_assert();
++		goto out;
++	}
+ #endif
+ 
+ #ifndef _WIN32
+diff --git a/lib/liboqs/liboqs.c b/lib/liboqs/liboqs.c
+index 88f2369719..c5531d4796 100644
+--- a/lib/liboqs/liboqs.c
++++ b/lib/liboqs/liboqs.c
+@@ -22,15 +22,33 @@
+ 
+ #include "liboqs/liboqs.h"
+ 
++#ifdef _WIN32
++#define RTLD_NOW 0
++#define RTLD_GLOBAL 0
++#else
++#include <dlfcn.h>
++#endif
++
++#ifndef OQS_LIBRARY_SONAME
++#define OQS_LIBRARY_SONAME "none"
++#endif
++
++#include "errors.h"
++
+ #include "dlwrap/oqs.h"
+ #include "liboqs/rand.h"
+ #include "liboqs/sha3.h"
+ 
+-void _gnutls_liboqs_init(void)
++int _gnutls_liboqs_init(void)
+ {
++	if (gnutls_oqs_ensure_library(OQS_LIBRARY_SONAME,
++				      RTLD_NOW | RTLD_GLOBAL) < 0)
++		return gnutls_assert_val(GNUTLS_E_INTERNAL_ERROR);
++
+ 	_gnutls_liboqs_sha3_init();
+ 	GNUTLS_OQS_FUNC(OQS_init)();
+ 	_gnutls_liboqs_rand_init();
++	return 0;
+ }
+ 
+ void _gnutls_liboqs_deinit(void)
+@@ -38,4 +56,5 @@ void _gnutls_liboqs_deinit(void)
+ 	_gnutls_liboqs_rand_deinit();
+ 	_gnutls_liboqs_sha3_deinit();
+ 	GNUTLS_OQS_FUNC(OQS_destroy)();
++	gnutls_oqs_unload_library();
+ }
+diff --git a/lib/liboqs/liboqs.h b/lib/liboqs/liboqs.h
+index b6c1659212..50206fa77c 100644
+--- a/lib/liboqs/liboqs.h
++++ b/lib/liboqs/liboqs.h
+@@ -21,7 +21,7 @@
+ #ifndef GNUTLS_LIB_LIBOQS_LIBOQS_H
+ #define GNUTLS_LIB_LIBOQS_LIBOQS_H
+ 
+-void _gnutls_liboqs_init(void);
++int _gnutls_liboqs_init(void);
+ void _gnutls_liboqs_deinit(void);
+ 
+ #endif /* GNUTLS_LIB_LIBOQS_LIBOQS_H */
+-- 
+2.45.2
+
+
+From ecc41197f2233494d066114e2747b17b24d24543 Mon Sep 17 00:00:00 2001
+From: Daiki Ueno <ueno@gnu.org>
+Date: Tue, 23 Jul 2024 09:50:04 +0900
+Subject: [PATCH 3/3] tests: pqc-hybrid-kx: use key and certificate in
+ distribution
+
+The Ed25519 key and certificate in doc/credentials/x509/ are currently
+not included in the distribution.  Use the ECDSA ones in the test to
+make the test work.
+
+Signed-off-by: Daiki Ueno <ueno@gnu.org>
+---
+ tests/pqc-hybrid-kx.sh | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/tests/pqc-hybrid-kx.sh b/tests/pqc-hybrid-kx.sh
+index b9302b43b1..b587587bd2 100644
+--- a/tests/pqc-hybrid-kx.sh
++++ b/tests/pqc-hybrid-kx.sh
+@@ -34,8 +34,8 @@ fi
+ . "${srcdir}/scripts/common.sh"
+ testdir=`create_testdir pqc-hybrid-kx`
+ 
+-KEY="$srcdir/../doc/credentials/x509/key-ed25519.pem"
+-CERT="$srcdir/../doc/credentials/x509/cert-ed25519.pem"
++KEY="$srcdir/../doc/credentials/x509/key-ecc.pem"
++CERT="$srcdir/../doc/credentials/x509/cert-ecc.pem"
+ CACERT="$srcdir/../doc/credentials/x509/ca.pem"
+ 
+ eval "${GETPORT}"
+@@ -43,12 +43,12 @@ launch_server --echo --priority NORMAL:-GROUP-ALL:+GROUP-X25519-KYBER768 --x509k
+ PID=$!
+ wait_server ${PID}
+ 
+-${VALGRIND} "${CLI}" -p "${PORT}" 127.0.0.1 --priority NORMAL:-GROUP-ALL:+GROUP-X25519-KYBER768 --x509cafile="$CACERT" --logfile="$testdir/cli.log" </dev/null
++${VALGRIND} "${CLI}" -p "${PORT}" localhost --priority NORMAL:-GROUP-ALL:+GROUP-X25519-KYBER768 --x509cafile="$CACERT" --logfile="$testdir/cli.log" </dev/null
+ 
+ kill ${PID}
+ wait
+ 
+-grep -- '- Description: (TLS1.3-X.509)-(ECDHE-X25519-KYBER768)-(EdDSA-Ed25519)-(AES-256-GCM)' "$testdir/cli.log" || { echo "unexpected handshake description"; exit 1; }
++grep -- '- Description: (TLS1.3-X.509)-(ECDHE-X25519-KYBER768)-(ECDSA-SECP256R1-SHA256)-(AES-256-GCM)' "$testdir/cli.log" || { echo "unexpected handshake description"; exit 1; }
+ 
+ rm -rf "$testdir"
+ exit 0
+-- 
+2.45.2
+
+From acba7357c7274c3783dd9b70e054f062e937da93 Mon Sep 17 00:00:00 2001
+From: Daiki Ueno <ueno@gnu.org>
+Date: Tue, 23 Jul 2024 20:48:26 +0900
+Subject: [PATCH] liboqs: defer loading of liboqs at run-time
+
+Instead of loading liboqs at startup, this defers it until the liboqs
+functions are actually used.
+
+Signed-off-by: Daiki Ueno <ueno@gnu.org>
+---
+ lib/dlwrap/brotlidec.c | 24 ++++++++++++++++++----
+ lib/dlwrap/brotlidec.h |  7 +++++++
+ lib/dlwrap/brotlienc.c | 24 ++++++++++++++++++----
+ lib/dlwrap/brotlienc.h |  7 +++++++
+ lib/dlwrap/oqs.c       | 24 ++++++++++++++++++----
+ lib/dlwrap/oqs.h       |  7 +++++++
+ lib/dlwrap/zlib.c      | 24 ++++++++++++++++++----
+ lib/dlwrap/zlib.h      |  7 +++++++
+ lib/dlwrap/zstd.c      | 24 ++++++++++++++++++----
+ lib/dlwrap/zstd.h      |  7 +++++++
+ lib/global.c           |  8 --------
+ lib/liboqs/liboqs.c    | 46 +++++++++++++++++++++++++++++++++++-------
+ lib/liboqs/liboqs.h    |  2 +-
+ lib/nettle/pk.c        | 33 ++++++++++++++++++++++++------
+ 14 files changed, 202 insertions(+), 42 deletions(-)
+
+diff --git a/lib/dlwrap/brotlidec.c b/lib/dlwrap/brotlidec.c
+index 15cee63bd6..7e4546a8e7 100644
+--- a/lib/dlwrap/brotlidec.c
++++ b/lib/dlwrap/brotlidec.c
+@@ -128,10 +128,13 @@ gnutls_brotlidec_ensure_library (const char *soname, int flags)
+ #pragma GCC diagnostic push
+ #pragma GCC diagnostic ignored "-Wunused-macros"
+ 
+-#define FUNC(ret, name, args, cargs)	\
+-  err = ENSURE_SYMBOL(name);		\
+-  if (err < 0)				\
+-    return err;
++#define FUNC(ret, name, args, cargs)		\
++  err = ENSURE_SYMBOL(name);			\
++  if (err < 0)					\
++    {						\
++      gnutls_brotlidec_dlhandle = NULL;		\
++      return err;				\
++    }
+ #define VOID_FUNC FUNC
+ #include "brotlidecfuncs.h"
+ #undef VOID_FUNC
+@@ -165,6 +168,12 @@ gnutls_brotlidec_unload_library (void)
+ #pragma GCC diagnostic pop
+ }
+ 
++unsigned
++gnutls_brotlidec_is_usable (void)
++{
++  return gnutls_brotlidec_dlhandle != NULL;
++}
++
+ #else /* GNUTLS_BROTLIDEC_ENABLE_DLOPEN */
+ 
+ int
+@@ -180,4 +189,11 @@ gnutls_brotlidec_unload_library (void)
+ {
+ }
+ 
++unsigned
++gnutls_brotlidec_is_usable (void)
++{
++  /* The library is linked at build time, thus always usable */
++  return 1;
++}
++
+ #endif /* !GNUTLS_BROTLIDEC_ENABLE_DLOPEN */
+diff --git a/lib/dlwrap/brotlidec.h b/lib/dlwrap/brotlidec.h
+index 31397f24cf..f7d97eed35 100644
+--- a/lib/dlwrap/brotlidec.h
++++ b/lib/dlwrap/brotlidec.h
+@@ -44,4 +44,11 @@ int gnutls_brotlidec_ensure_library (const char *soname, int flags);
+  */
+ void gnutls_brotlidec_unload_library (void);
+ 
++/* Return 1 if the library is loaded and usable.
++ *
++ * Note that this function is NOT thread-safe; when calling it from
++ * multi-threaded programs, protect it with a locking mechanism.
++ */
++unsigned gnutls_brotlidec_is_usable (void);
++
+ #endif /* GNUTLS_LIB_DLWRAP_BROTLIDEC_H_ */
+diff --git a/lib/dlwrap/brotlienc.c b/lib/dlwrap/brotlienc.c
+index 1deff747e2..fae13ed313 100644
+--- a/lib/dlwrap/brotlienc.c
++++ b/lib/dlwrap/brotlienc.c
+@@ -128,10 +128,13 @@ gnutls_brotlienc_ensure_library (const char *soname, int flags)
+ #pragma GCC diagnostic push
+ #pragma GCC diagnostic ignored "-Wunused-macros"
+ 
+-#define FUNC(ret, name, args, cargs)	\
+-  err = ENSURE_SYMBOL(name);		\
+-  if (err < 0)				\
+-    return err;
++#define FUNC(ret, name, args, cargs)		\
++  err = ENSURE_SYMBOL(name);			\
++  if (err < 0)					\
++    {						\
++      gnutls_brotlienc_dlhandle = NULL;		\
++      return err;				\
++    }
+ #define VOID_FUNC FUNC
+ #include "brotliencfuncs.h"
+ #undef VOID_FUNC
+@@ -165,6 +168,12 @@ gnutls_brotlienc_unload_library (void)
+ #pragma GCC diagnostic pop
+ }
+ 
++unsigned
++gnutls_brotlienc_is_usable (void)
++{
++  return gnutls_brotlienc_dlhandle != NULL;
++}
++
+ #else /* GNUTLS_BROTLIENC_ENABLE_DLOPEN */
+ 
+ int
+@@ -180,4 +189,11 @@ gnutls_brotlienc_unload_library (void)
+ {
+ }
+ 
++unsigned
++gnutls_brotlienc_is_usable (void)
++{
++  /* The library is linked at build time, thus always usable */
++  return 1;
++}
++
+ #endif /* !GNUTLS_BROTLIENC_ENABLE_DLOPEN */
+diff --git a/lib/dlwrap/brotlienc.h b/lib/dlwrap/brotlienc.h
+index ed1af45e04..4dfbf3b838 100644
+--- a/lib/dlwrap/brotlienc.h
++++ b/lib/dlwrap/brotlienc.h
+@@ -44,4 +44,11 @@ int gnutls_brotlienc_ensure_library (const char *soname, int flags);
+  */
+ void gnutls_brotlienc_unload_library (void);
+ 
++/* Return 1 if the library is loaded and usable.
++ *
++ * Note that this function is NOT thread-safe; when calling it from
++ * multi-threaded programs, protect it with a locking mechanism.
++ */
++unsigned gnutls_brotlienc_is_usable (void);
++
+ #endif /* GNUTLS_LIB_DLWRAP_BROTLIENC_H_ */
+diff --git a/lib/dlwrap/oqs.c b/lib/dlwrap/oqs.c
+index c05f883127..f9ae269faa 100644
+--- a/lib/dlwrap/oqs.c
++++ b/lib/dlwrap/oqs.c
+@@ -128,10 +128,13 @@ gnutls_oqs_ensure_library (const char *soname, int flags)
+ #pragma GCC diagnostic push
+ #pragma GCC diagnostic ignored "-Wunused-macros"
+ 
+-#define FUNC(ret, name, args, cargs)	\
+-  err = ENSURE_SYMBOL(name);		\
+-  if (err < 0)				\
+-    return err;
++#define FUNC(ret, name, args, cargs)		\
++  err = ENSURE_SYMBOL(name);			\
++  if (err < 0)					\
++    {						\
++      gnutls_oqs_dlhandle = NULL;		\
++      return err;				\
++    }
+ #define VOID_FUNC FUNC
+ #include "oqsfuncs.h"
+ #undef VOID_FUNC
+@@ -165,6 +168,12 @@ gnutls_oqs_unload_library (void)
+ #pragma GCC diagnostic pop
+ }
+ 
++unsigned
++gnutls_oqs_is_usable (void)
++{
++  return gnutls_oqs_dlhandle != NULL;
++}
++
+ #else /* GNUTLS_OQS_ENABLE_DLOPEN */
+ 
+ int
+@@ -180,4 +189,11 @@ gnutls_oqs_unload_library (void)
+ {
+ }
+ 
++unsigned
++gnutls_oqs_is_usable (void)
++{
++  /* The library is linked at build time, thus always usable */
++  return 1;
++}
++
+ #endif /* !GNUTLS_OQS_ENABLE_DLOPEN */
+diff --git a/lib/dlwrap/oqs.h b/lib/dlwrap/oqs.h
+index 6a1d8e0766..1cf5d015a5 100644
+--- a/lib/dlwrap/oqs.h
++++ b/lib/dlwrap/oqs.h
+@@ -50,4 +50,11 @@ int gnutls_oqs_ensure_library (const char *soname, int flags);
+  */
+ void gnutls_oqs_unload_library (void);
+ 
++/* Return 1 if the library is loaded and usable.
++ *
++ * Note that this function is NOT thread-safe; when calling it from
++ * multi-threaded programs, protect it with a locking mechanism.
++ */
++unsigned gnutls_oqs_is_usable (void);
++
+ #endif /* GNUTLS_LIB_DLWRAP_OQS_H_ */
+diff --git a/lib/dlwrap/zlib.c b/lib/dlwrap/zlib.c
+index 878070c0a4..19851513a9 100644
+--- a/lib/dlwrap/zlib.c
++++ b/lib/dlwrap/zlib.c
+@@ -128,10 +128,13 @@ gnutls_zlib_ensure_library (const char *soname, int flags)
+ #pragma GCC diagnostic push
+ #pragma GCC diagnostic ignored "-Wunused-macros"
+ 
+-#define FUNC(ret, name, args, cargs)	\
+-  err = ENSURE_SYMBOL(name);		\
+-  if (err < 0)				\
+-    return err;
++#define FUNC(ret, name, args, cargs)		\
++  err = ENSURE_SYMBOL(name);			\
++  if (err < 0)					\
++    {						\
++      gnutls_zlib_dlhandle = NULL;		\
++      return err;				\
++    }
+ #define VOID_FUNC FUNC
+ #include "zlibfuncs.h"
+ #undef VOID_FUNC
+@@ -165,6 +168,12 @@ gnutls_zlib_unload_library (void)
+ #pragma GCC diagnostic pop
+ }
+ 
++unsigned
++gnutls_zlib_is_usable (void)
++{
++  return gnutls_zlib_dlhandle != NULL;
++}
++
+ #else /* GNUTLS_ZLIB_ENABLE_DLOPEN */
+ 
+ int
+@@ -180,4 +189,11 @@ gnutls_zlib_unload_library (void)
+ {
+ }
+ 
++unsigned
++gnutls_zlib_is_usable (void)
++{
++  /* The library is linked at build time, thus always usable */
++  return 1;
++}
++
+ #endif /* !GNUTLS_ZLIB_ENABLE_DLOPEN */
+diff --git a/lib/dlwrap/zlib.h b/lib/dlwrap/zlib.h
+index a9666d27f5..0d7113febf 100644
+--- a/lib/dlwrap/zlib.h
++++ b/lib/dlwrap/zlib.h
+@@ -44,4 +44,11 @@ int gnutls_zlib_ensure_library (const char *soname, int flags);
+  */
+ void gnutls_zlib_unload_library (void);
+ 
++/* Return 1 if the library is loaded and usable.
++ *
++ * Note that this function is NOT thread-safe; when calling it from
++ * multi-threaded programs, protect it with a locking mechanism.
++ */
++unsigned gnutls_zlib_is_usable (void);
++
+ #endif /* GNUTLS_LIB_DLWRAP_ZLIB_H_ */
+diff --git a/lib/dlwrap/zstd.c b/lib/dlwrap/zstd.c
+index 532c80b610..bd5153e464 100644
+--- a/lib/dlwrap/zstd.c
++++ b/lib/dlwrap/zstd.c
+@@ -128,10 +128,13 @@ gnutls_zstd_ensure_library (const char *soname, int flags)
+ #pragma GCC diagnostic push
+ #pragma GCC diagnostic ignored "-Wunused-macros"
+ 
+-#define FUNC(ret, name, args, cargs)	\
+-  err = ENSURE_SYMBOL(name);		\
+-  if (err < 0)				\
+-    return err;
++#define FUNC(ret, name, args, cargs)		\
++  err = ENSURE_SYMBOL(name);			\
++  if (err < 0)					\
++    {						\
++      gnutls_zstd_dlhandle = NULL;		\
++      return err;				\
++    }
+ #define VOID_FUNC FUNC
+ #include "zstdfuncs.h"
+ #undef VOID_FUNC
+@@ -165,6 +168,12 @@ gnutls_zstd_unload_library (void)
+ #pragma GCC diagnostic pop
+ }
+ 
++unsigned
++gnutls_zstd_is_usable (void)
++{
++  return gnutls_zstd_dlhandle != NULL;
++}
++
+ #else /* GNUTLS_ZSTD_ENABLE_DLOPEN */
+ 
+ int
+@@ -180,4 +189,11 @@ gnutls_zstd_unload_library (void)
+ {
+ }
+ 
++unsigned
++gnutls_zstd_is_usable (void)
++{
++  /* The library is linked at build time, thus always usable */
++  return 1;
++}
++
+ #endif /* !GNUTLS_ZSTD_ENABLE_DLOPEN */
+diff --git a/lib/dlwrap/zstd.h b/lib/dlwrap/zstd.h
+index 80ac2fbd46..4a68a45e37 100644
+--- a/lib/dlwrap/zstd.h
++++ b/lib/dlwrap/zstd.h
+@@ -44,4 +44,11 @@ int gnutls_zstd_ensure_library (const char *soname, int flags);
+  */
+ void gnutls_zstd_unload_library (void);
+ 
++/* Return 1 if the library is loaded and usable.
++ *
++ * Note that this function is NOT thread-safe; when calling it from
++ * multi-threaded programs, protect it with a locking mechanism.
++ */
++unsigned gnutls_zstd_is_usable (void);
++
+ #endif /* GNUTLS_LIB_DLWRAP_ZSTD_H_ */
+diff --git a/lib/global.c b/lib/global.c
+index 4aaf79a768..42d90ee9d5 100644
+--- a/lib/global.c
++++ b/lib/global.c
+@@ -329,14 +329,6 @@ static int _gnutls_global_init(unsigned constructor)
+ 		goto out;
+ 	}
+ 
+-#ifdef HAVE_LIBOQS
+-	ret = _gnutls_liboqs_init();
+-	if (ret < 0) {
+-		gnutls_assert();
+-		goto out;
+-	}
+-#endif
+-
+ #ifndef _WIN32
+ 	ret = _gnutls_register_fork_handler();
+ 	if (ret < 0) {
+diff --git a/lib/liboqs/liboqs.c b/lib/liboqs/liboqs.c
+index c5531d4796..3c0df56644 100644
+--- a/lib/liboqs/liboqs.c
++++ b/lib/liboqs/liboqs.c
+@@ -34,27 +34,59 @@
+ #endif
+ 
+ #include "errors.h"
++#include "locks.h"
+ 
+ #include "dlwrap/oqs.h"
+ #include "liboqs/rand.h"
+ #include "liboqs/sha3.h"
+ 
+-int _gnutls_liboqs_init(void)
++/* We can't use GNUTLS_ONCE here, as it wouldn't allow manual unloading */
++GNUTLS_STATIC_MUTEX(liboqs_init_mutex);
++static int _liboqs_init = 0;
++
++int _gnutls_liboqs_ensure(void)
+ {
++	int ret;
++
++	if (_liboqs_init)
++		return GNUTLS_E_SUCCESS;
++
++	ret = gnutls_static_mutex_lock(&liboqs_init_mutex);
++	if (unlikely(ret < 0))
++		return gnutls_assert_val(ret);
++
+ 	if (gnutls_oqs_ensure_library(OQS_LIBRARY_SONAME,
+-				      RTLD_NOW | RTLD_GLOBAL) < 0)
+-		return gnutls_assert_val(GNUTLS_E_INTERNAL_ERROR);
++				      RTLD_NOW | RTLD_GLOBAL) < 0) {
++		_gnutls_debug_log(
++			"liboqs: unable to initialize liboqs functions\n");
++		ret = gnutls_assert_val(GNUTLS_E_INTERNAL_ERROR);
++		goto out;
++	}
+ 
+ 	_gnutls_liboqs_sha3_init();
+ 	GNUTLS_OQS_FUNC(OQS_init)();
+ 	_gnutls_liboqs_rand_init();
+-	return 0;
++
++	_liboqs_init = 1;
++	ret = GNUTLS_E_SUCCESS;
++
++out:
++	(void)gnutls_static_mutex_unlock(&liboqs_init_mutex);
++
++	return ret;
+ }
+ 
++/* This is not thread-safe: call this function only from
++ * gnutls_global_deinit, which has a proper protection.
++ */
+ void _gnutls_liboqs_deinit(void)
+ {
+-	_gnutls_liboqs_rand_deinit();
+-	_gnutls_liboqs_sha3_deinit();
+-	GNUTLS_OQS_FUNC(OQS_destroy)();
++	if (_liboqs_init) {
++		_gnutls_liboqs_rand_deinit();
++		_gnutls_liboqs_sha3_deinit();
++		GNUTLS_OQS_FUNC(OQS_destroy)();
++	}
++
+ 	gnutls_oqs_unload_library();
++	_liboqs_init = 0;
+ }
+diff --git a/lib/liboqs/liboqs.h b/lib/liboqs/liboqs.h
+index 50206fa77c..3717454275 100644
+--- a/lib/liboqs/liboqs.h
++++ b/lib/liboqs/liboqs.h
+@@ -21,7 +21,7 @@
+ #ifndef GNUTLS_LIB_LIBOQS_LIBOQS_H
+ #define GNUTLS_LIB_LIBOQS_LIBOQS_H
+ 
+-int _gnutls_liboqs_init(void);
++int _gnutls_liboqs_ensure(void);
+ void _gnutls_liboqs_deinit(void);
+ 
+ #endif /* GNUTLS_LIB_LIBOQS_LIBOQS_H */
+diff --git a/lib/nettle/pk.c b/lib/nettle/pk.c
+index 4155a540ed..79f7988d50 100644
+--- a/lib/nettle/pk.c
++++ b/lib/nettle/pk.c
+@@ -72,6 +72,7 @@
+ #include "dh.h"
+ #ifdef HAVE_LIBOQS
+ #include "dlwrap/oqs.h"
++#include "liboqs/liboqs.h"
+ #endif
+ 
+ static inline const struct ecc_curve *get_supported_nist_curve(int curve);
+@@ -703,6 +704,9 @@ static int _wrap_nettle_pk_encaps(gnutls_pk_algorithm_t algo,
+ 		OQS_KEM *kem = NULL;
+ 		OQS_STATUS rc;
+ 
++		if (_gnutls_liboqs_ensure() < 0)
++			return gnutls_assert_val(GNUTLS_E_UNKNOWN_PK_ALGORITHM);
++
+ 		kem = GNUTLS_OQS_FUNC(OQS_KEM_new)(OQS_KEM_alg_kyber_768);
+ 		if (kem == NULL)
+ 			return gnutls_assert_val(GNUTLS_E_MEMORY_ERROR);
+@@ -761,6 +765,9 @@ static int _wrap_nettle_pk_decaps(gnutls_pk_algorithm_t algo,
+ 		OQS_KEM *kem = NULL;
+ 		OQS_STATUS rc;
+ 
++		if (_gnutls_liboqs_ensure() < 0)
++			return gnutls_assert_val(GNUTLS_E_UNKNOWN_PK_ALGORITHM);
++
+ 		kem = GNUTLS_OQS_FUNC(OQS_KEM_new)(OQS_KEM_alg_kyber_768);
+ 		if (kem == NULL)
+ 			return gnutls_assert_val(GNUTLS_E_MEMORY_ERROR);
+@@ -2342,9 +2349,6 @@ static int _wrap_nettle_pk_exists(gnutls_pk_algorithm_t pk)
+ 	case GNUTLS_PK_RSA_PSS:
+ 	case GNUTLS_PK_RSA_OAEP:
+ 	case GNUTLS_PK_EDDSA_ED25519:
+-#ifdef HAVE_LIBOQS
+-	case GNUTLS_PK_EXP_KYBER768:
+-#endif
+ #if ENABLE_GOST
+ 	case GNUTLS_PK_GOST_01:
+ 	case GNUTLS_PK_GOST_12_256:
+@@ -2353,6 +2357,10 @@ static int _wrap_nettle_pk_exists(gnutls_pk_algorithm_t pk)
+ 	case GNUTLS_PK_ECDH_X448:
+ 	case GNUTLS_PK_EDDSA_ED448:
+ 		return 1;
++#ifdef HAVE_LIBOQS
++	case GNUTLS_PK_EXP_KYBER768:
++		return _gnutls_liboqs_ensure() == 0;
++#endif
+ 	default:
+ 		return 0;
+ 	}
+@@ -2986,11 +2994,15 @@ static int pct_test(gnutls_pk_algorithm_t algo,
+ 	}
+ 	case GNUTLS_PK_ECDH_X25519:
+ 	case GNUTLS_PK_ECDH_X448:
++		break;
+ #ifdef HAVE_LIBOQS
+ 	case GNUTLS_PK_EXP_KYBER768:
++		if (_gnutls_liboqs_ensure() < 0) {
++			ret = gnutls_assert_val(GNUTLS_E_UNKNOWN_PK_ALGORITHM);
++			goto cleanup;
++		}
+ #endif
+-		ret = 0;
+-		goto cleanup;
++		break;
+ 	default:
+ 		ret = gnutls_assert_val(GNUTLS_E_UNKNOWN_PK_ALGORITHM);
+ 		goto cleanup;
+@@ -3724,6 +3736,13 @@ wrap_nettle_pk_generate_keys(gnutls_pk_algorithm_t algo,
+ 		OQS_KEM *kem = NULL;
+ 		OQS_STATUS rc;
+ 
++#ifdef HAVE_LIBOQS
++		if (_gnutls_liboqs_ensure() < 0) {
++			ret = gnutls_assert_val(GNUTLS_E_UNKNOWN_PK_ALGORITHM);
++			goto cleanup;
++		}
++#endif
++
+ 		not_approved = true;
+ 
+ 		kem = GNUTLS_OQS_FUNC(OQS_KEM_new)(OQS_KEM_alg_kyber_768);
+@@ -4017,7 +4036,9 @@ static int wrap_nettle_pk_verify_priv_params(gnutls_pk_algorithm_t algo,
+ 	}
+ #ifdef HAVE_LIBOQS
+ 	case GNUTLS_PK_EXP_KYBER768:
+-		ret = 0;
++		ret = _gnutls_liboqs_ensure();
++		if (ret < 0)
++			ret = gnutls_assert_val(GNUTLS_E_UNKNOWN_PK_ALGORITHM);
+ 		break;
+ #endif
+ #if ENABLE_GOST
+-- 
+2.45.2
+
+From dfac4bb0d96507a409e3c3434c04bd8f79ac479f Mon Sep 17 00:00:00 2001
+From: Daiki Ueno <ueno@gnu.org>
+Date: Mon, 29 Jul 2024 08:40:34 +0900
+Subject: [PATCH 1/2] liboqs: check whether Kyber768 is compiled in
+
+In the default build configuration of liboqs 0.10.1, Kyber768 is
+disabled. This adds a guard against it and skip tests if not
+available.
+
+Signed-off-by: Daiki Ueno <ueno@gnu.org>
+---
+ devel/dlwrap/oqs.syms  |  1 +
+ lib/dlwrap/oqsfuncs.h  |  1 +
+ lib/nettle/pk.c        | 27 ++++++++++++++++++---------
+ tests/pqc-hybrid-kx.sh |  4 ++++
+ 4 files changed, 24 insertions(+), 9 deletions(-)
+
+diff --git a/devel/dlwrap/oqs.syms b/devel/dlwrap/oqs.syms
+index 8f067b2dd3..413f887598 100644
+--- a/devel/dlwrap/oqs.syms
++++ b/devel/dlwrap/oqs.syms
+@@ -1,6 +1,7 @@
+ OQS_SHA3_set_callbacks
+ OQS_init
+ OQS_destroy
++OQS_KEM_alg_is_enabled
+ OQS_KEM_new
+ OQS_KEM_encaps
+ OQS_KEM_decaps
+diff --git a/lib/dlwrap/oqsfuncs.h b/lib/dlwrap/oqsfuncs.h
+index 95c1b083dc..4aa0ba4ab4 100644
+--- a/lib/dlwrap/oqsfuncs.h
++++ b/lib/dlwrap/oqsfuncs.h
+@@ -7,6 +7,7 @@ VOID_FUNC(void, OQS_init, (void), ())
+ VOID_FUNC(void, OQS_destroy, (void), ())
+ VOID_FUNC(void, OQS_SHA3_set_callbacks, (struct OQS_SHA3_callbacks *new_callbacks), (new_callbacks))
+ VOID_FUNC(void, OQS_randombytes_custom_algorithm, (void (*algorithm_ptr)(uint8_t *, size_t)), (algorithm_ptr))
++FUNC(int, OQS_KEM_alg_is_enabled, (const char *method_name), (method_name))
+ FUNC(OQS_KEM *, OQS_KEM_new, (const char *method_name), (method_name))
+ FUNC(OQS_STATUS, OQS_KEM_keypair, (const OQS_KEM *kem, uint8_t *public_key, uint8_t *secret_key), (kem, public_key, secret_key))
+ FUNC(OQS_STATUS, OQS_KEM_encaps, (const OQS_KEM *kem, uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key), (kem, ciphertext, shared_secret, public_key))
+diff --git a/lib/nettle/pk.c b/lib/nettle/pk.c
+index eb8c44459d..8a987ed121 100644
+--- a/lib/nettle/pk.c
++++ b/lib/nettle/pk.c
+@@ -704,7 +704,9 @@ static int _wrap_nettle_pk_encaps(gnutls_pk_algorithm_t algo,
+ 		OQS_KEM *kem = NULL;
+ 		OQS_STATUS rc;
+ 
+-		if (_gnutls_liboqs_ensure() < 0)
++		if (_gnutls_liboqs_ensure() < 0 ||
++		    !GNUTLS_OQS_FUNC(OQS_KEM_alg_is_enabled)(
++			    OQS_KEM_alg_kyber_768))
+ 			return gnutls_assert_val(GNUTLS_E_UNKNOWN_PK_ALGORITHM);
+ 
+ 		kem = GNUTLS_OQS_FUNC(OQS_KEM_new)(OQS_KEM_alg_kyber_768);
+@@ -765,7 +767,9 @@ static int _wrap_nettle_pk_decaps(gnutls_pk_algorithm_t algo,
+ 		OQS_KEM *kem = NULL;
+ 		OQS_STATUS rc;
+ 
+-		if (_gnutls_liboqs_ensure() < 0)
++		if (_gnutls_liboqs_ensure() < 0 ||
++		    !GNUTLS_OQS_FUNC(OQS_KEM_alg_is_enabled)(
++			    OQS_KEM_alg_kyber_768))
+ 			return gnutls_assert_val(GNUTLS_E_UNKNOWN_PK_ALGORITHM);
+ 
+ 		kem = GNUTLS_OQS_FUNC(OQS_KEM_new)(OQS_KEM_alg_kyber_768);
+@@ -2359,7 +2363,9 @@ static int _wrap_nettle_pk_exists(gnutls_pk_algorithm_t pk)
+ 		return 1;
+ #ifdef HAVE_LIBOQS
+ 	case GNUTLS_PK_EXP_KYBER768:
+-		return _gnutls_liboqs_ensure() == 0;
++		return _gnutls_liboqs_ensure() == 0 &&
++		       GNUTLS_OQS_FUNC(OQS_KEM_alg_is_enabled)(
++			       OQS_KEM_alg_kyber_768);
+ #endif
+ 	default:
+ 		return 0;
+@@ -2997,7 +3003,9 @@ static int pct_test(gnutls_pk_algorithm_t algo,
+ 		break;
+ #ifdef HAVE_LIBOQS
+ 	case GNUTLS_PK_EXP_KYBER768:
+-		if (_gnutls_liboqs_ensure() < 0) {
++		if (_gnutls_liboqs_ensure() < 0 ||
++		    !GNUTLS_OQS_FUNC(OQS_KEM_alg_is_enabled)(
++			    OQS_KEM_alg_kyber_768)) {
+ 			ret = gnutls_assert_val(GNUTLS_E_UNKNOWN_PK_ALGORITHM);
+ 			goto cleanup;
+ 		}
+@@ -3736,12 +3744,12 @@ wrap_nettle_pk_generate_keys(gnutls_pk_algorithm_t algo,
+ 		OQS_KEM *kem = NULL;
+ 		OQS_STATUS rc;
+ 
+-#ifdef HAVE_LIBOQS
+-		if (_gnutls_liboqs_ensure() < 0) {
++		if (_gnutls_liboqs_ensure() < 0 ||
++		    !GNUTLS_OQS_FUNC(OQS_KEM_alg_is_enabled)(
++			    OQS_KEM_alg_kyber_768)) {
+ 			ret = gnutls_assert_val(GNUTLS_E_UNKNOWN_PK_ALGORITHM);
+ 			goto cleanup;
+ 		}
+-#endif
+ 
+ 		not_approved = true;
+ 
+@@ -4038,8 +4046,9 @@ static int wrap_nettle_pk_verify_priv_params(gnutls_pk_algorithm_t algo,
+ 	}
+ #ifdef HAVE_LIBOQS
+ 	case GNUTLS_PK_EXP_KYBER768:
+-		ret = _gnutls_liboqs_ensure();
+-		if (ret < 0)
++		if (_gnutls_liboqs_ensure() < 0 ||
++		    !GNUTLS_OQS_FUNC(OQS_KEM_alg_is_enabled)(
++			    OQS_KEM_alg_kyber_768))
+ 			ret = gnutls_assert_val(GNUTLS_E_UNKNOWN_PK_ALGORITHM);
+ 		break;
+ #endif
+diff --git a/tests/pqc-hybrid-kx.sh b/tests/pqc-hybrid-kx.sh
+index b587587bd2..6d47105fa0 100644
+--- a/tests/pqc-hybrid-kx.sh
++++ b/tests/pqc-hybrid-kx.sh
+@@ -31,6 +31,10 @@ if ! test -x "${CLI}"; then
+ 	exit 77
+ fi
+ 
++if ! "${CLI}" --list | grep '^Public Key Systems: .*Kyber768.*' >/dev/null; then
++	exit 77
++fi
++
+ . "${srcdir}/scripts/common.sh"
+ testdir=`create_testdir pqc-hybrid-kx`
+ 
+-- 
+2.45.2
+
