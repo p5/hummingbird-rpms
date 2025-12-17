@@ -1,0 +1,2 @@
+summary: man pages install smoke tests
+description: verify that the man pages are installed correctly
