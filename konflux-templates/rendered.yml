@@ -388,6 +388,43 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+  name: createrepo-c-main
+spec:
+  application: rpms-main
+  componentName: createrepo-c-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/createrepo-c-main
+  source:
+    git:
+      context: rpms/createrepo_c
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: createrepo-c-main
+  name: createrepo-c-main
+spec:
+  image:
+    name: hummingbird-tenant/createrepo-c-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
   name: crypto-policies-main
 spec:
   application: rpms-main
@@ -557,6 +594,43 @@ metadata:
 spec:
   image:
     name: hummingbird-tenant/dnf5-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
+  name: drpm-main
+spec:
+  application: rpms-main
+  componentName: drpm-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/drpm-main
+  source:
+    git:
+      context: rpms/drpm
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: drpm-main
+  name: drpm-main
+spec:
+  image:
+    name: hummingbird-tenant/drpm-main
     visibility: public
   notifications:
   - config:
@@ -1482,6 +1556,43 @@ metadata:
 spec:
   image:
     name: hummingbird-tenant/libassuan-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
+  name: libcap-main
+spec:
+  application: rpms-main
+  componentName: libcap-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/libcap-main
+  source:
+    git:
+      context: rpms/libcap
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: libcap-main
+  name: libcap-main
+spec:
+  image:
+    name: hummingbird-tenant/libcap-main
     visibility: public
   notifications:
   - config:
@@ -2719,6 +2830,43 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+  name: oniguruma-main
+spec:
+  application: rpms-main
+  componentName: oniguruma-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/oniguruma-main
+  source:
+    git:
+      context: rpms/oniguruma
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: oniguruma-main
+  name: oniguruma-main
+spec:
+  image:
+    name: hummingbird-tenant/oniguruma-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
   name: openldap-main
 spec:
   application: rpms-main
@@ -3591,6 +3739,43 @@ metadata:
 spec:
   image:
     name: hummingbird-tenant/xz-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
+  name: yq-main
+spec:
+  application: rpms-main
+  componentName: yq-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/yq-main
+  source:
+    git:
+      context: rpms/yq
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: yq-main
+  name: yq-main
+spec:
+  image:
+    name: hummingbird-tenant/yq-main
     visibility: public
   notifications:
   - config:

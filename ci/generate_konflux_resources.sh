@@ -74,7 +74,8 @@ for path in "${rpms[@]}"; do
     name=$(basename "${path}")
     (
         echo "name: ${name}"
-        echo "component_name: ${name}-${BRANCH}"
+        # resource names must not contain underscores, but some package names do (like createrepo_c)
+        echo "component_name: ${name//_/-}-${BRANCH}"
         echo "repository: ${name}"
         echo "tags: [latest]"
     ) > "${temp_rpm_variables}"
