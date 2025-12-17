@@ -111,6 +111,13 @@
     "source": "https://src.fedoraproject.org/rpms/dnf5.git",
     "version": "5.3.0.0"
   },
+  "drpm": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "c5c91b0fcbf59eec34278a4999a780a629736adf",
+    "source": "https://src.fedoraproject.org/rpms/drpm.git",
+    "version": "0.5.3"
+  },
   "e2fsprogs": {
     "branch": "rawhide",
     "release": "3",
