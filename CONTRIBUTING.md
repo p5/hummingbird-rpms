@@ -5,9 +5,11 @@ Thank you for your interest in contributing! This repository contains RPM packag
 This guide is adapted from the Hummingbird containers contribution guide and aligned with our workflows and tooling. See the original for broader context: [Hummingbird Containers CONTRIBUTING](https://gitlab.com/redhat/hummingbird/containers/-/blob/main/CONTRIBUTING.md).
 
 ## Code of Conduct
+
 Be respectful and constructive. By participating, you agree to uphold a professional and inclusive environment.
 
 ## Repository layout
+
 - `rpms/<package>/` – RPM dist-gits (spec, sources), mostly auto-imported
 - `ci/` – helper scripts and default tests
   - `build_rpms.sh` – build RPMs using Mock in the Konflux-compatible container
@@ -19,6 +21,7 @@ Be respectful and constructive. By participating, you agree to uphold a professi
 - `test/rpms/<package>.yml` – package-specific tests
 
 ## Prerequisites
+
 - Fedora or RHEL-like environment
 - Podman
 - rpmlint
@@ -26,6 +29,7 @@ Be respectful and constructive. By participating, you agree to uphold a professi
 - jq, python3, python3-yaml (used by `run_tests_rpm.sh`)
 
 ## Build locally
+
 Build a package’s SRPM and RPMs using the Konflux-aligned environment:
 
 ```bash
@@ -34,6 +38,7 @@ Build a package’s SRPM and RPMs using the Konflux-aligned environment:
 ```
 
 ## Test locally (containerized)
+
 Run the default and package-specific tests against one or more built RPMs:
 
 ```bash
@@ -54,6 +59,7 @@ Run the default and package-specific tests against one or more built RPMs:
 ```
 
 Notes:
+
 - Tests run inside a Podman container.
 - The test image defaults to `quay.io/hummingbird/core-runtime:latest-builder`. You can override via `TEST_IMAGE`:
 
@@ -64,6 +70,7 @@ TEST_IMAGE=quay.io/hummingbird/core-runtime:specific-tag ./ci/run_tests_rpm.sh -
 - Container execution is performed as root with `HOME=/root` to avoid XDG state permission issues in dnf5.
 
 ## Test in tmt/Testing Farm locally
+
 You can drive the same FMF test locally with tmt. The FMF test expects an OCI artifact that contains RPMs, referenced via `IMAGE_URL` (Testing Farm sets this automatically). For local trials you can point to any compatible OCI artifact or skip the ORAS pull logic and directly call the script.
 
 ```bash
@@ -84,13 +91,13 @@ The status of all imports is tracked in [imports.json](./imports.json). Active F
 
 See `./ci/dist_git.py --help` for all available options. Some examples:
 
- * Update upstream-releases.json from Bodhi API (should be done periodically, e.g., weekly via CI):
+- Update upstream-releases.json from Bodhi API (should be done periodically, e.g., weekly via CI):
 
 ```bash
 ./ci/dist_git.py update-releases
 ```
 
- * Import a new package. This requires specifying the dist-git URL (with `fedora/` being a shortcut for the Fedora dist-git URL) and optionally a branch (default: rawhide):
+- Import a new package. This requires specifying the dist-git URL (with `fedora/` being a shortcut for the Fedora dist-git URL) and optionally a branch (default: rawhide):
 
 ```bash
 ./ci/dist_git.py import fedora/bash
@@ -99,7 +106,7 @@ See `./ci/dist_git.py --help` for all available options. Some examples:
 ./ci/dist_git.py import --branch c10s https://gitlab.com/redhat/centos-stream/rpms/postfix.git
 ```
 
- * Update all or a single package:
+- Update all or a single package:
 
 ```bash
 ./ci/dist_git.py update
@@ -109,7 +116,7 @@ See `./ci/dist_git.py --help` for all available options. Some examples:
 
 This only imports changes if these were actually built in Koji, to ensure we only import changes which are meant to be released. You can disable this check with `--skip-build-check`.
 
- * Re-sync a package to upstream, discarding any local modifications. We use this after Fedora adopted our change, or it is no longer relevant:
+- Re-sync a package to upstream, discarding any local modifications. We use this after Fedora adopted our change, or it is no longer relevant:
 
 ```bash
 ./ci/dist_git.py sync bash
@@ -154,17 +161,20 @@ make generate
 This updates `.tekton/rpms-on-push.yaml` and `.tekton/rpms-on-pull-request.yaml` with the new configuration.
 
 ## Branching and pull requests
+
 - Create feature branches from the default branch.
 - Keep edits focused and small; separate unrelated changes into separate PRs.
 - Include meaningful commit messages (why + what). Reference related issues if applicable.
 - PRs must pass CI (build + tests). Fix lint/test failures or mark known failures properly.
 
 ## Commit message conventions
+
 - First line: short imperative summary (≤ 72 chars)
 - Body (optional): context, rationale, and user/ops impact
 - Reference issues using standard notation (e.g. "Fixes: #123")
 
 ## Packaging and testing guidelines
+
 - Spec files should be reproducible and minimal.
 - Prefer pinned container digests for CI images where feasible. If a tag and digest are both present (`name:tag@sha256:<digest>`), the digest is authoritative for content selection.
 - Default tests in `ci/default-tests/tests-rpm.yml` must be fast, deterministic, and safe for all packages.
@@ -172,20 +182,25 @@ This updates `.tekton/rpms-on-push.yaml` and `.tekton/rpms-on-pull-request.yaml`
 - When possible, capture flaky or environmental issues under `known_issues` in test YAML with clear matching patterns and descriptions.
 
 ## Style
+
 - Shell: bash with `set -euo pipefail`, readable variable names, and early returns where reasonable.
 - YAML: consistent indentation and quoting; prefer explicitness over magic.
 - Comments: add when necessary to explain non-obvious rationale; avoid restating the code.
 
 ## Security and supply chain
+
 - Avoid embedding credentials or secrets; use environment variables or CI secret stores.
 - Prefer pulling images by digest for stability and repeatability in CI.
 - Validate inputs and sanitize any paths used by scripts.
 
 ## Reporting issues
+
 Open an issue describing the problem, reproduction steps, and environment. Attach logs (build/test) when possible. If the failure is intermittent, call that out explicitly.
 
 ## Licensing
+
 Ensure files include appropriate licenses and that any third-party content is compatible with the project's license.
 
 ## Thank you
+
 Your contributions make the Hummingbird RPMs better for everyone. We appreciate your time and feedback!
