@@ -1,0 +1,32 @@
+PURPOSE of /CoreOS/gawk/Regression/printf-format-s-in-gawk-not-working
+Description: Test for printf format "%.*s" in gawk not working
+Author: David Kutalek <dkutalek@redhat.com>
+Summary: printf format "%.*s" in gawk not working
+
+Description:
+
+Description of problem:
+The bug in gawk exists in the Redhat Ent6 gawk package. The patch to fix is checked in the fedora src rpm for gawk-3.1.7-3 and is gawk-3.1.7-prec-utf8.patch.
+
+Here a repeat of the original bug report.
+
+The "%.*s" format string in printf no longer works.
+
+Version-Release number of selected component (if applicable):
+gawk-3.1.6-5.fc11.i586
+
+How reproducible:
+Run example from bash command line.
+The example should remove the last character from the string.
+
+Steps to Reproduce:
+# echo ab123dl|gawk '{printf("%.*s\n",length($0)-1,$0)}'
+
+Actual results:
+ab123dl
+
+Expected results:
+ab123d
+
+Additional info:
+works OK with gawk-3.1.5-14.el5 and previously on fc10

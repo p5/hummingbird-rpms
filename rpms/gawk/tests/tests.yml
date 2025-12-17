@@ -1,0 +1,19 @@
+---
+# This first play always runs on the local staging system
+- hosts: localhost
+  roles:
+  - role: standard-test-beakerlib
+    tags:
+    - classic
+    - container
+    - atomic
+    tests:
+    - awk-matches-lowercase-when-searching-for-uppercase
+    - printf-format-s-in-gawk-not-working
+    - awk-assign-syntax-support
+    - awk-syntax-support
+    - double-free-or-corruption
+    - gawk-3-1-7-modifies-command-line-arguments
+    required_packages:
+    - gawk
+    - procps-ng
