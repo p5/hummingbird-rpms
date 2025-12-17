@@ -1,0 +1,4 @@
+PURPOSE of double-free-or-corruption
+Description: Test for double-free-or-corruption
+Author: David Kutalek <dkutalek@redhat.com>
+Summary: gawk regression from RHEL3/4

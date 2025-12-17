@@ -1,0 +1,4 @@
+PURPOSE of awk-matches-lowercase-when-searching-for-uppercase
+Description: awk matches lowercase when searching for uppercase
+Author: Filip Holec <fholec@redhat.com>
+Summary: awk matches lowercase when searching for uppercase range
