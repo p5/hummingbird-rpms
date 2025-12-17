@@ -1,0 +1,13 @@
+summary: Test for diffutils to check if comparing two files using diff -Z with 
+    mixed line endings doesn't hang
+description: "Bug summary: diff -Z hangs\n"
+contact: Filip Holec <fholec@redhat.com>
+component:
+  - diffutils
+test: ./runtest.sh
+framework: beakerlib
+recommend:
+  - diffutils
+duration: 5m
+extra-summary: /CoreOS/diffutils/Regression/diff-Z-hangs
+extra-task: /CoreOS/diffutils/Regression/diff-Z-hangs

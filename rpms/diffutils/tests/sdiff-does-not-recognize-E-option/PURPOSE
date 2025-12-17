@@ -1,0 +1,6 @@
+PURPOSE of /CoreOS/diffutils/Regression/sdiff-does-not-recognize-E-option
+Description: Test for sdiff does not recognize -E option
+Author: Martin Kyral <mkyral@redhat.com>
+Bug summary: sdiff does not recognize -E option
+
+The test runs sdiff -E on two files differing just in use of tab/8 spaces. sdiff shall not fail and shall return that the files are identical.

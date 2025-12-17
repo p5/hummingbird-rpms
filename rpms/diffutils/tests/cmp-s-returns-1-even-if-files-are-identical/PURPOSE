@@ -1,0 +1,9 @@
+PURPOSE of /CoreOS/diffutils/Regression/cmp-s-returns-1-even-if-files-are-identical
+Description: Test for cmp -s returns 1 even if files are identical
+Author: Jeffrey Bastian <jbastian@redhat.com>
+Bug summary: cmp -s returns 1 even if files are identical
+
+Description:
+'cmp -s' can return 1 even if files are identical, for example, if comparing
+a file from /proc with a copy of that file in /tmp, since all files in
+/proc have a size of 0 bytes.

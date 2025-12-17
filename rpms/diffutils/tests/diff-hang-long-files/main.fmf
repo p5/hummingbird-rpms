@@ -1,0 +1,20 @@
+summary: Diff appears to hang in long file
+description: "Test Name: diff-hang-long-files\nAuthor: Michal Fabry <mfabry@redhat.com>\n\
+    Location: /CoreOS/diffutils/Regression/diff-hang-long-files\n\nShort Description:
+    Diff appears to hang in long file\n\n\nLong Description:\n\nRunning the \"diff
+    -bBw\" command on a very large input file (eg 250 MB), in a multi-byte locale
+    (ie UTF-8), took a very long time to complete, if at all. In a reported case,
+    a diff ran for multiple days and did not complete. In certain situations, this
+    could cause 100% CPU usage.\n"
+contact: Michal Fabry <mfabry@redhat.com>
+component:
+  - diffutils
+test: ./runtest.sh
+framework: beakerlib
+recommend:
+  - diffutils
+  - words
+  - time
+duration: 5m
+extra-summary: /CoreOS/diffutils/Regression/diff-hang-long-files
+extra-task: /CoreOS/diffutils/Regression/diff-hang-long-files

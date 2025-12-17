@@ -1,0 +1,15 @@
+summary: diff -b should ignore whitespace
+description: "Create 2 files, f1, f2 with contents \"abc\" and \"abc \" (without quotes),\n\
+    i.e. the same line with a space on the end.\n\nDiff ignoring whitespace:\n\ndiff
+    -b f1 f2\n\nshould produce no diff output, but does on F8. Works fine on FC6.\n\
+    \nversion: diffutils-2.8.1-17.fc8\n"
+contact: Bill Peck <bpeck@redhat.com>
+component:
+  - diffutils
+test: ./runtest.sh
+framework: beakerlib
+recommend:
+  - diffutils
+duration: 5m
+extra-summary: /CoreOS/diffutils/whitespace
+extra-task: /CoreOS/diffutils/whitespace

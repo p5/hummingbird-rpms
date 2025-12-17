@@ -1,0 +1,4 @@
+PURPOSE of /CoreOS/diffutils/Regression/diff-Z-hangs
+Description: Test for diffutils to check if comparing two files using diff -Z with mixed line endings doesn't hang
+Author: Filip Holec <fholec@redhat.com>
+Bug summary: diff -Z hangs

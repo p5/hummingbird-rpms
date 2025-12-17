@@ -1,0 +1,6 @@
+PURPOSE of /CoreOS/diffutils/Regression/diff-w-b-doesn-t-treat-U3000-IDEOGRAPHIC-SPACE-as-space
+Description: Test for diffutils to ensure U3000 ideographic space is treated as space when used -b or -w options
+Author: Filip Holec <fholec@redhat.com>
+Bug summary: diff -w/-b doesn't treat U3000 (IDEOGRAPHIC SPACE) as space
+
+Test for diffutils to ensure U3000 ideographic space is treated as space when used -b or -w options
