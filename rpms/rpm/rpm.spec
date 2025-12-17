@@ -33,7 +33,7 @@
 Summary: The RPM package management system
 Name: rpm
 Version: %{rpmver}
-Release: %{?snapver:0.%{snapver}.}%{baserelease}%{?dist}
+Release: %{?snapver:0.%{snapver}.}%{baserelease}%{?dist}.1
 Url: https://rpm.org/
 License: GPL-2.0-or-later
 Source0: http://ftp.rpm.org/releases/%{srcdir}/rpm-%{srcver}.tar.bz2
