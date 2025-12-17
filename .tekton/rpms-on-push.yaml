@@ -1034,6 +1034,70 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "false"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[push]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/ed/***, mock/mock.cfg]"
+  creationTimestamp: null
+  labels:
+    appstudio.openshift.io/application: rpms-main
+    appstudio.openshift.io/component: ed-main
+    pipelines.appstudio.openshift.io/type: build
+  name: ed-main-on-push
+  namespace: hummingbird-tenant
+spec:
+  params:
+    - name: git-url
+      value: '{{source_url}}'
+    - name: revision
+      value: '{{revision}}'
+    - name: ociStorage
+      value: quay.io/redhat-user-workloads/hummingbird-tenant/ed-main:{{revision}}
+    - name: package-name
+      value: ed
+    - name: target-branch
+      value: '{{target_branch}}'
+    - name: build-architectures
+      value:
+        - aarch64
+        - x86_64
+    - name: specfile
+      value: "ed.spec"
+    - name: monorepo-subdir
+      value: "rpms/ed"
+    - name: mock-config-template-file
+      value: "mock/mock.cfg"
+    - name: self-ref-url
+      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+    - name: self-ref-revision
+      value: "fix-build-platforms"
+  pipelineRef:
+    resolver: git
+    params:
+      - name: url
+        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      - name: revision
+        value: "fix-build-platforms"
+      - name: pathInRepo
+        value: "pipeline/build-rpm-package.yaml"
+  taskRunTemplate:
+    serviceAccountName: build-pipeline-ed-main
+  timeouts:
+    pipeline: 4h
+    tasks: 4h
+  workspaces:
+    - name: git-auth
+      secret:
+        secretName: '{{git_auth_secret}}'
+---
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  annotations:
+    build.appstudio.openshift.io/repo: https://gitlab.com/redhat/hummingbird/rpms/-/tree/{{revision}}
+    build.appstudio.redhat.com/commit_sha: '{{revision}}'
+    build.appstudio.redhat.com/target_branch: '{{target_branch}}'
+    pipelinesascode.tekton.dev/on-target-branch: "[main]"
+    pipelinesascode.tekton.dev/cancel-in-progress: "false"
+    pipelinesascode.tekton.dev/max-keep-runs: "3"
+    pipelinesascode.tekton.dev/on-event: "[push]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/elfutils/***, mock/mock.cfg]"
   creationTimestamp: null
   labels:
