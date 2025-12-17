@@ -38,7 +38,7 @@ spec:
       value: "acl.spec"
     - name: monorepo-subdir
       value: "rpms/acl"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -102,7 +102,7 @@ spec:
       value: "attr.spec"
     - name: monorepo-subdir
       value: "rpms/attr"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -166,7 +166,7 @@ spec:
       value: "audit.spec"
     - name: monorepo-subdir
       value: "rpms/audit"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -230,7 +230,7 @@ spec:
       value: "bash.spec"
     - name: monorepo-subdir
       value: "rpms/bash"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -294,7 +294,7 @@ spec:
       value: "brotli.spec"
     - name: monorepo-subdir
       value: "rpms/brotli"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -358,7 +358,7 @@ spec:
       value: "bzip2.spec"
     - name: monorepo-subdir
       value: "rpms/bzip2"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -422,7 +422,7 @@ spec:
       value: "ca-certificates.spec"
     - name: monorepo-subdir
       value: "rpms/ca-certificates"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -486,7 +486,7 @@ spec:
       value: "chkconfig.spec"
     - name: monorepo-subdir
       value: "rpms/chkconfig"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -550,7 +550,7 @@ spec:
       value: "coreutils.spec"
     - name: monorepo-subdir
       value: "rpms/coreutils"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -614,7 +614,7 @@ spec:
       value: "cpio.spec"
     - name: monorepo-subdir
       value: "rpms/cpio"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -678,7 +678,7 @@ spec:
       value: "createrepo_c.spec"
     - name: monorepo-subdir
       value: "rpms/createrepo_c"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -742,7 +742,7 @@ spec:
       value: "crypto-policies.spec"
     - name: monorepo-subdir
       value: "rpms/crypto-policies"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -806,7 +806,7 @@ spec:
       value: "curl.spec"
     - name: monorepo-subdir
       value: "rpms/curl"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -870,7 +870,7 @@ spec:
       value: "cyrus-sasl.spec"
     - name: monorepo-subdir
       value: "rpms/cyrus-sasl"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -934,7 +934,7 @@ spec:
       value: "diffutils.spec"
     - name: monorepo-subdir
       value: "rpms/diffutils"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -998,7 +998,7 @@ spec:
       value: "dnf5.spec"
     - name: monorepo-subdir
       value: "rpms/dnf5"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -1062,7 +1062,7 @@ spec:
       value: "drpm.spec"
     - name: monorepo-subdir
       value: "rpms/drpm"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -1126,7 +1126,7 @@ spec:
       value: "e2fsprogs.spec"
     - name: monorepo-subdir
       value: "rpms/e2fsprogs"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -1190,7 +1190,7 @@ spec:
       value: "ed.spec"
     - name: monorepo-subdir
       value: "rpms/ed"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -1254,7 +1254,7 @@ spec:
       value: "elfutils.spec"
     - name: monorepo-subdir
       value: "rpms/elfutils"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -1318,7 +1318,7 @@ spec:
       value: "fedora-repos.spec"
     - name: monorepo-subdir
       value: "rpms/fedora-repos"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -1382,7 +1382,7 @@ spec:
       value: "file.spec"
     - name: monorepo-subdir
       value: "rpms/file"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -1446,7 +1446,7 @@ spec:
       value: "filesystem.spec"
     - name: monorepo-subdir
       value: "rpms/filesystem"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -1510,7 +1510,7 @@ spec:
       value: "findutils.spec"
     - name: monorepo-subdir
       value: "rpms/findutils"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -1574,7 +1574,7 @@ spec:
       value: "fmt.spec"
     - name: monorepo-subdir
       value: "rpms/fmt"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -1638,7 +1638,7 @@ spec:
       value: "fsverity-utils.spec"
     - name: monorepo-subdir
       value: "rpms/fsverity-utils"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -1702,7 +1702,7 @@ spec:
       value: "gawk.spec"
     - name: monorepo-subdir
       value: "rpms/gawk"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -1766,7 +1766,7 @@ spec:
       value: "gdbm.spec"
     - name: monorepo-subdir
       value: "rpms/gdbm"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -1830,7 +1830,7 @@ spec:
       value: "glib2.spec"
     - name: monorepo-subdir
       value: "rpms/glib2"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -1894,7 +1894,7 @@ spec:
       value: "gmp.spec"
     - name: monorepo-subdir
       value: "rpms/gmp"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -1958,7 +1958,7 @@ spec:
       value: "gnupg2.spec"
     - name: monorepo-subdir
       value: "rpms/gnupg2"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -2022,7 +2022,7 @@ spec:
       value: "gnutls.spec"
     - name: monorepo-subdir
       value: "rpms/gnutls"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -2086,7 +2086,7 @@ spec:
       value: "grep.spec"
     - name: monorepo-subdir
       value: "rpms/grep"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -2150,7 +2150,7 @@ spec:
       value: "gzip.spec"
     - name: monorepo-subdir
       value: "rpms/gzip"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -2214,7 +2214,7 @@ spec:
       value: "hostname.spec"
     - name: monorepo-subdir
       value: "rpms/hostname"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -2278,7 +2278,7 @@ spec:
       value: "hummingbird-release.spec"
     - name: monorepo-subdir
       value: "rpms/hummingbird-release"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -2342,7 +2342,7 @@ spec:
       value: "ima-evm-utils.spec"
     - name: monorepo-subdir
       value: "rpms/ima-evm-utils"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -2406,7 +2406,7 @@ spec:
       value: "jq.spec"
     - name: monorepo-subdir
       value: "rpms/jq"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -2470,7 +2470,7 @@ spec:
       value: "json-c.spec"
     - name: monorepo-subdir
       value: "rpms/json-c"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -2534,7 +2534,7 @@ spec:
       value: "keyutils.spec"
     - name: monorepo-subdir
       value: "rpms/keyutils"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -2598,7 +2598,7 @@ spec:
       value: "libarchive.spec"
     - name: monorepo-subdir
       value: "rpms/libarchive"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -2662,7 +2662,7 @@ spec:
       value: "libassuan.spec"
     - name: monorepo-subdir
       value: "rpms/libassuan"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -2726,7 +2726,7 @@ spec:
       value: "libcap.spec"
     - name: monorepo-subdir
       value: "rpms/libcap"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -2790,7 +2790,7 @@ spec:
       value: "libcap-ng.spec"
     - name: monorepo-subdir
       value: "rpms/libcap-ng"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -2854,7 +2854,7 @@ spec:
       value: "libeconf.spec"
     - name: monorepo-subdir
       value: "rpms/libeconf"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -2918,7 +2918,7 @@ spec:
       value: "libevent.spec"
     - name: monorepo-subdir
       value: "rpms/libevent"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -2982,7 +2982,7 @@ spec:
       value: "libffi.spec"
     - name: monorepo-subdir
       value: "rpms/libffi"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -3046,7 +3046,7 @@ spec:
       value: "libgcrypt.spec"
     - name: monorepo-subdir
       value: "rpms/libgcrypt"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -3110,7 +3110,7 @@ spec:
       value: "libgpg-error.spec"
     - name: monorepo-subdir
       value: "rpms/libgpg-error"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -3174,7 +3174,7 @@ spec:
       value: "libidn2.spec"
     - name: monorepo-subdir
       value: "rpms/libidn2"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -3238,7 +3238,7 @@ spec:
       value: "libksba.spec"
     - name: monorepo-subdir
       value: "rpms/libksba"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -3302,7 +3302,7 @@ spec:
       value: "libmpc.spec"
     - name: monorepo-subdir
       value: "rpms/libmpc"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -3366,7 +3366,7 @@ spec:
       value: "libpsl.spec"
     - name: monorepo-subdir
       value: "rpms/libpsl"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -3430,7 +3430,7 @@ spec:
       value: "librepo.spec"
     - name: monorepo-subdir
       value: "rpms/librepo"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -3494,7 +3494,7 @@ spec:
       value: "libselinux.spec"
     - name: monorepo-subdir
       value: "rpms/libselinux"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -3558,7 +3558,7 @@ spec:
       value: "libsemanage.spec"
     - name: monorepo-subdir
       value: "rpms/libsemanage"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -3622,7 +3622,7 @@ spec:
       value: "libsepol.spec"
     - name: monorepo-subdir
       value: "rpms/libsepol"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -3686,7 +3686,7 @@ spec:
       value: "libsolv.spec"
     - name: monorepo-subdir
       value: "rpms/libsolv"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -3750,7 +3750,7 @@ spec:
       value: "libssh.spec"
     - name: monorepo-subdir
       value: "rpms/libssh"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -3814,7 +3814,7 @@ spec:
       value: "libtasn1.spec"
     - name: monorepo-subdir
       value: "rpms/libtasn1"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -3878,7 +3878,7 @@ spec:
       value: "libtool.spec"
     - name: monorepo-subdir
       value: "rpms/libtool"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -3942,7 +3942,7 @@ spec:
       value: "libunistring.spec"
     - name: monorepo-subdir
       value: "rpms/libunistring"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -4006,7 +4006,7 @@ spec:
       value: "libusb1.spec"
     - name: monorepo-subdir
       value: "rpms/libusb1"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -4070,7 +4070,7 @@ spec:
       value: "libverto.spec"
     - name: monorepo-subdir
       value: "rpms/libverto"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -4134,7 +4134,7 @@ spec:
       value: "libxcrypt.spec"
     - name: monorepo-subdir
       value: "rpms/libxcrypt"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -4198,7 +4198,7 @@ spec:
       value: "libxml2.spec"
     - name: monorepo-subdir
       value: "rpms/libxml2"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -4262,7 +4262,7 @@ spec:
       value: "libyaml.spec"
     - name: monorepo-subdir
       value: "rpms/libyaml"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -4326,7 +4326,7 @@ spec:
       value: "lua.spec"
     - name: monorepo-subdir
       value: "rpms/lua"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -4390,7 +4390,7 @@ spec:
       value: "lz4.spec"
     - name: monorepo-subdir
       value: "rpms/lz4"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -4454,7 +4454,7 @@ spec:
       value: "mpfr.spec"
     - name: monorepo-subdir
       value: "rpms/mpfr"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -4518,7 +4518,7 @@ spec:
       value: "ncurses.spec"
     - name: monorepo-subdir
       value: "rpms/ncurses"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -4582,7 +4582,7 @@ spec:
       value: "nettle.spec"
     - name: monorepo-subdir
       value: "rpms/nettle"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -4646,7 +4646,7 @@ spec:
       value: "nghttp2.spec"
     - name: monorepo-subdir
       value: "rpms/nghttp2"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -4710,7 +4710,7 @@ spec:
       value: "nghttp3.spec"
     - name: monorepo-subdir
       value: "rpms/nghttp3"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -4774,7 +4774,7 @@ spec:
       value: "ngtcp2.spec"
     - name: monorepo-subdir
       value: "rpms/ngtcp2"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -4838,7 +4838,7 @@ spec:
       value: "npth.spec"
     - name: monorepo-subdir
       value: "rpms/npth"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -4902,7 +4902,7 @@ spec:
       value: "oniguruma.spec"
     - name: monorepo-subdir
       value: "rpms/oniguruma"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -4966,7 +4966,7 @@ spec:
       value: "openldap.spec"
     - name: monorepo-subdir
       value: "rpms/openldap"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -5030,7 +5030,7 @@ spec:
       value: "openssl.spec"
     - name: monorepo-subdir
       value: "rpms/openssl"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -5094,7 +5094,7 @@ spec:
       value: "p11-kit.spec"
     - name: monorepo-subdir
       value: "rpms/p11-kit"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -5158,7 +5158,7 @@ spec:
       value: "pam.spec"
     - name: monorepo-subdir
       value: "rpms/pam"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -5222,7 +5222,7 @@ spec:
       value: "patch.spec"
     - name: monorepo-subdir
       value: "rpms/patch"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -5286,7 +5286,7 @@ spec:
       value: "pcre2.spec"
     - name: monorepo-subdir
       value: "rpms/pcre2"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -5350,7 +5350,7 @@ spec:
       value: "popt.spec"
     - name: monorepo-subdir
       value: "rpms/popt"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -5414,7 +5414,7 @@ spec:
       value: "publicsuffix-list.spec"
     - name: monorepo-subdir
       value: "rpms/publicsuffix-list"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -5478,7 +5478,7 @@ spec:
       value: "readline.spec"
     - name: monorepo-subdir
       value: "rpms/readline"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -5542,7 +5542,7 @@ spec:
       value: "rootfiles.spec"
     - name: monorepo-subdir
       value: "rpms/rootfiles"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -5606,7 +5606,7 @@ spec:
       value: "rpm.spec"
     - name: monorepo-subdir
       value: "rpms/rpm"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -5670,7 +5670,7 @@ spec:
       value: "sdbus-cpp.spec"
     - name: monorepo-subdir
       value: "rpms/sdbus-cpp"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -5734,7 +5734,7 @@ spec:
       value: "sed.spec"
     - name: monorepo-subdir
       value: "rpms/sed"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -5798,7 +5798,7 @@ spec:
       value: "setup.spec"
     - name: monorepo-subdir
       value: "rpms/setup"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -5862,7 +5862,7 @@ spec:
       value: "shadow-utils.spec"
     - name: monorepo-subdir
       value: "rpms/shadow-utils"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -5926,7 +5926,7 @@ spec:
       value: "sqlite.spec"
     - name: monorepo-subdir
       value: "rpms/sqlite"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -5990,7 +5990,7 @@ spec:
       value: "systemd-stub.spec"
     - name: monorepo-subdir
       value: "rpms/systemd-stub"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -6054,7 +6054,7 @@ spec:
       value: "tar.spec"
     - name: monorepo-subdir
       value: "rpms/tar"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -6118,7 +6118,7 @@ spec:
       value: "texinfo.spec"
     - name: monorepo-subdir
       value: "rpms/texinfo"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -6182,7 +6182,7 @@ spec:
       value: "tpm2-tss.spec"
     - name: monorepo-subdir
       value: "rpms/tpm2-tss"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -6246,7 +6246,7 @@ spec:
       value: "unzip.spec"
     - name: monorepo-subdir
       value: "rpms/unzip"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -6310,7 +6310,7 @@ spec:
       value: "util-linux.spec"
     - name: monorepo-subdir
       value: "rpms/util-linux"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -6374,7 +6374,7 @@ spec:
       value: "which.spec"
     - name: monorepo-subdir
       value: "rpms/which"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -6438,7 +6438,7 @@ spec:
       value: "xxhash.spec"
     - name: monorepo-subdir
       value: "rpms/xxhash"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -6502,7 +6502,7 @@ spec:
       value: "xz.spec"
     - name: monorepo-subdir
       value: "rpms/xz"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -6566,7 +6566,7 @@ spec:
       value: "yq.spec"
     - name: monorepo-subdir
       value: "rpms/yq"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -6630,7 +6630,7 @@ spec:
       value: "zchunk.spec"
     - name: monorepo-subdir
       value: "rpms/zchunk"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -6694,7 +6694,7 @@ spec:
       value: "zip.spec"
     - name: monorepo-subdir
       value: "rpms/zip"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -6758,7 +6758,7 @@ spec:
       value: "zlib-ng.spec"
     - name: monorepo-subdir
       value: "rpms/zlib-ng"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
@@ -6822,7 +6822,7 @@ spec:
       value: "zstd.spec"
     - name: monorepo-subdir
       value: "rpms/zstd"
-    - name: mock-config-template-file
+    - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
       value: "https://github.com/scoheb/rpmbuild-pipeline.git"
