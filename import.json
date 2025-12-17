@@ -510,6 +510,13 @@
     "source": "https://src.fedoraproject.org/rpms/npth.git",
     "version": "1.8"
   },
+  "oniguruma": {
+    "branch": "rawhide",
+    "release": "3",
+    "sha": "fcfa905419796bde85f9d531a7a9db3c3d0d2bbf",
+    "source": "https://src.fedoraproject.org/rpms/oniguruma.git",
+    "version": "6.9.10"
+  },
   "openldap": {
     "branch": "rawhide",
     "release": "4",
