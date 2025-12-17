@@ -41,7 +41,7 @@
 Summary:        Creates a common metadata repository
 Name:           createrepo_c
 Version:        %{package_version}
-Release:        3%{?dist}
+Release:        3%{?dist}.1
 License:        GPL-2.0-or-later
 URL:            https://github.com/rpm-software-management/createrepo_c
 Source0:        %{url}/archive/%{version}/%{name}-%{version}.tar.gz

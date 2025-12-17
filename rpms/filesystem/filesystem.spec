@@ -3,7 +3,7 @@
 Summary: The basic directory layout for a Linux system
 Name: filesystem
 Version: 3.18
-Release: %autorelease
+Release: %autorelease.1
 License: LicenseRef-Fedora-Public-Domain
 URL: https://pagure.io/filesystem
 Source1: https://pagure.io/filesystem/raw/master/f/lang-exceptions
