@@ -709,3 +709,41 @@ def test_update_releases(workdir: Path, dist_git_module) -> None:
             # EPEL should be filtered out (not FEDORA id_prefix)
         }
     }
+
+
+def test_update_of_rebuild(workdir: Path, upstream_repos: dict[str, Path]) -> None:
+    """Update proceeds when local changes only affect Release: field.
+
+    This commonly happens for rebuilds.
+    """
+    # Import vanilla
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["vanilla"]}'],
+        cwd=workdir, check=True,
+    )
+
+    # Modify the Release: field locally (bump it for a rebuild)
+    vanilla_spec = workdir / 'rpms' / 'vanilla' / 'vanilla.spec'
+    spec_content = vanilla_spec.read_text()
+    modified_content = spec_content.replace('Release: 1', 'Release: 2')
+    vanilla_spec.write_text(modified_content)
+    subprocess.run(['git', 'commit', '-a', '-m', 'Rebuild because reasons'], cwd=workdir, check=True)
+
+    # Add upstream commit with new version
+    new_sha = add_upstream_commit(upstream_repos["vanilla"], 'vanilla', '1.0', '2.0')
+
+    # Update should proceed despite local Release: modification
+    result = subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'update', '--skip-build-check', 'vanilla'],
+        cwd=workdir, capture_output=True, text=True, check=True,
+    )
+
+    # Updates successfully
+    assert "Updating vanilla" in result.stderr
+    assert "local modifications" not in result.stderr
+    import_json = json.loads((workdir / 'import.json').read_text())
+    assert import_json['vanilla']['sha'] == new_sha
+    assert import_json['vanilla']['version'] == '2.0'
+    subject, body = get_last_commit_info(workdir)
+    assert subject == 'Update vanilla to 2.0-1'
+    assert f"Upstream: {new_sha}" in body

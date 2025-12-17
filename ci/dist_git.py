@@ -7,7 +7,6 @@ into the local rpms/ directory while tracking metadata in import.json.
 """
 
 import argparse
-import filecmp
 import http.client
 import json
 import logging
@@ -103,20 +102,6 @@ def expand_url_shortcut(url: str) -> str:
         package = url.removeprefix('fedora/')
         return f'https://src.fedoraproject.org/rpms/{package}.git'
     return url
-
-
-def dirs_equal(dir1: Path, dir2: Path) -> bool:
-    """Recursively compare two directories."""
-    comparison = filecmp.dircmp(dir1, dir2)
-
-    if comparison.left_only or comparison.right_only or comparison.diff_files:
-        return False
-
-    for subdir in comparison.common_dirs:
-        if not dirs_equal(dir1 / subdir, dir2 / subdir):
-            return False
-
-    return True
 
 
 def update_releases() -> None:
@@ -285,7 +270,11 @@ def check_koji_build(package_name: str, version: str, release: str, expected_com
 
 
 def is_package_unmodified(package_name: str, metadata: PackageMetadata, upstream_dir: Path) -> bool:
-    """Check if package directory matches the imported version."""
+    """Check if package directory matches the imported version.
+
+    Local changes that only affect the Release: field in the spec file
+    (which we bump for rebuilds) are ignored.
+    """
     package_dir = ROOT_DIR / 'rpms' / package_name
 
     # Clone upstream_dir as we are going to checkout specific sha and remove .git/ for comparison
@@ -296,7 +285,19 @@ def is_package_unmodified(package_name: str, metadata: PackageMetadata, upstream
         run_git('checkout', '--quiet', metadata['sha'], cwd=temp_dir)
         shutil.rmtree(temp_dir / '.git')
 
-        return dirs_equal(package_dir, temp_dir)
+        # First, check all non-spec files are identical
+        if subprocess.run(
+            ['diff', '--recursive', '--exclude=*.spec', str(package_dir), str(temp_dir)],
+            stdout=subprocess.DEVNULL,
+        ).returncode != 0:
+            return False
+
+        # Then check including spec files, ignoring Release: lines
+        # This checks all other files again, but dist-gits are small and this is very robust
+        return subprocess.run(
+            ['diff', '--recursive', '--ignore-matching-lines=^Release:', str(package_dir), str(temp_dir)],
+            stdout=subprocess.DEVNULL,
+        ).returncode == 0
 
 
 def import_(url: str, branch: str, ref: str | None = None, dry_run: bool = False) -> None:
