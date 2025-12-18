@@ -100,7 +100,9 @@ EOF
 for path in "${rpms[@]}"; do
     dname=$(basename "${path}")
     # resource names must not contain underscores, but some package names do (like createrepo_c)
-    name=${dname//_/-}-${BRANCH}
+    # resource names must also be lowercase, but some package names have uppercase (like R-*)
+    component_name=${dname//_/-}
+    name=${component_name,,}-${BRANCH}
 
     (
         echo "name: ${name}"

@@ -67,12 +67,14 @@ discover:
         if [[ -n ${IMAGE_NAME:-} ]]; then
             package_name=${IMAGE_NAME%-main}
             # Handle packages where underscores were replaced with hyphens in IMAGE_NAME
+            # and where uppercase letters were replaced with lowercase in IMAGE_NAME
             # Use glob matching to find the actual package directory
             # Replace each hyphen with a pattern that matches either hyphen or underscore
             package_pattern=${package_name//-/[-_]}
-            shopt -s nullglob
+            # Enable case-insensitive globbing to match package names like R-*
+            shopt -s nullglob nocaseglob
             matches=(rpms/${package_pattern})
-            shopt -u nullglob
+            shopt -u nullglob nocaseglob
             if [[ ${#matches[@]} -eq 1 && -d ${matches[0]} ]]; then
                 package_name=$(basename "${matches[0]}")
             fi
