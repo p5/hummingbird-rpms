@@ -1,0 +1,7 @@
+summary: Test that conditional support for RUSTFLAGS works
+
+require:
+  - redhat-rpm-config
+  - rpm
+  - rust-packaging
+test: ./runtest.sh

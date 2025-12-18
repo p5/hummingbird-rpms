@@ -629,6 +629,13 @@
     "source": "https://src.fedoraproject.org/rpms/readline.git",
     "version": "8.3"
   },
+  "redhat-rpm-config": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "eb69ca5b90cfe7797a165ed794ceed510d880c4d",
+    "source": "https://src.fedoraproject.org/rpms/redhat-rpm-config.git",
+    "version": "343"
+  },
   "rootfiles": {
     "branch": "rawhide",
     "release": "1",
