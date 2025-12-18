@@ -1485,6 +1485,73 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/efi-rpm-macros/***, mock/mock.cfg]"
+  creationTimestamp: null
+  labels:
+    appstudio.openshift.io/application: rpms-main
+    appstudio.openshift.io/component: efi-rpm-macros-main
+    pipelines.appstudio.openshift.io/type: build
+  name: efi-rpm-macros-main-on-pull-request
+  namespace: hummingbird-tenant
+spec:
+  params:
+    - name: git-url
+      value: '{{source_url}}'
+    - name: revision
+      value: '{{revision}}'
+    - name: image-expires-after
+      value: 5d
+    - name: ociStorage
+      value: quay.io/redhat-user-workloads/hummingbird-tenant/efi-rpm-macros-main:on-mr-{{pull_request_number}}-{{revision}}
+    - name: package-name
+      value: efi-rpm-macros
+    - name: target-branch
+      value: '{{target_branch}}'
+    - name: build-architectures
+      value:
+        - aarch64
+        - x86_64
+    - name: specfile
+      value: "efi-rpm-macros.spec"
+    - name: monorepo-subdir
+      value: "rpms/efi-rpm-macros"
+    - name: mock-config-template-filename-in-sources
+      value: "mock/mock.cfg"
+    - name: self-ref-url
+      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+    - name: self-ref-revision
+      value: "fix-build-platforms"
+  pipelineRef:
+    resolver: git
+    params:
+      - name: url
+        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      - name: revision
+        value: "fix-build-platforms"
+      - name: pathInRepo
+        value: "pipeline/build-rpm-package.yaml"
+  taskRunTemplate:
+    serviceAccountName: build-pipeline-efi-rpm-macros-main
+  timeouts:
+    pipeline: 4h
+    tasks: 4h
+  workspaces:
+    - name: git-auth
+      secret:
+        secretName: '{{git_auth_secret}}'
+---
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  annotations:
+    build.appstudio.openshift.io/repo: https://gitlab.com/redhat/hummingbird/rpms/-/tree/{{revision}}
+    build.appstudio.redhat.com/commit_sha: '{{revision}}'
+    build.appstudio.redhat.com/pull_request_number: '{{pull_request_number}}'
+    build.appstudio.redhat.com/target_branch: '{{target_branch}}'
+    pipelinesascode.tekton.dev/on-target-branch: "[main]"
+    pipelinesascode.tekton.dev/cancel-in-progress: "true"
+    pipelinesascode.tekton.dev/max-keep-runs: "3"
+    pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/elfutils/***, mock/mock.cfg]"
   creationTimestamp: null
   labels:

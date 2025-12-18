@@ -153,6 +153,13 @@
     "source": "https://src.fedoraproject.org/rpms/ed.git",
     "version": "1.22.3"
   },
+  "efi-rpm-macros": {
+    "branch": "rawhide",
+    "release": "5",
+    "sha": "3b8dc74cc92df1da2241d838f002c0b77924cc2e",
+    "source": "https://src.fedoraproject.org/rpms/efi-rpm-macros.git",
+    "version": "6"
+  },
   "elfutils": {
     "branch": "rawhide",
     "release": "2",
