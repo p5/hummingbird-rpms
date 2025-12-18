@@ -1,6 +1,19 @@
 ---
 # Default tests for all default (runtime) rpms
 # These are minimal tests that should pass for all rpms
+hum-suffix-check:
+  command: |
+    # Verify the RPM was built with the Hummingbird dist suffix (.hum<N>)
+    # rather than the default Fedora suffix (.fc<NN>)
+    release=$(rpm -qp --queryformat '%{RELEASE}' "${TEST_RPM:?}")
+
+    # Check that release contains .hum<N> suffix
+    if [[ ! ${release} =~ \.hum[0-9]+$ ]]; then
+      TEST_FAIL "RPM release '${release}' does not have .hum<N> suffix - mock configuration may not be working correctly"
+    fi
+
+    echo "RPM release '${release}' has correct Hummingbird suffix"
+
 rpm-integrity-check:
   command: |
     rpm -K "${TEST_RPM:?}"
@@ -69,6 +82,25 @@ rpm-install:
     "${TEST_ENGINE}" rmi -f "${test_image}" 2>/dev/null || true
 
 # Source RPM tests (only run when --src-rpm is provided)
+src-rpm-hum-suffix-check:
+  command: |
+    # Only run if TEST_SRC_RPM is provided
+    if [[ -z ${TEST_SRC_RPM} ]]; then
+      echo "Skipping: No source RPM provided"
+      exit 0
+    fi
+
+    # Verify the source RPM was built with the Hummingbird dist suffix (.hum<N>)
+    # rather than the default Fedora suffix (.fc<NN>)
+    release=$(rpm -qp --queryformat '%{RELEASE}' "${TEST_SRC_RPM}")
+
+    # Check that release contains .hum<N> suffix
+    if [[ ! ${release} =~ \.hum[0-9]+$ ]]; then
+      TEST_FAIL "Source RPM release '${release}' does not have .hum<N> suffix - mock configuration may not be working correctly"
+    fi
+
+    echo "Source RPM release '${release}' has correct Hummingbird suffix"
+
 src-rpm-integrity-check:
   command: |
     # Only run if TEST_SRC_RPM is provided
