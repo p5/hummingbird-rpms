@@ -27,6 +27,13 @@
     "source": "https://src.fedoraproject.org/rpms/bash.git",
     "version": "5.3.0"
   },
+  "binutils": {
+    "branch": "rawhide",
+    "release": "11",
+    "sha": "300293f7e26a7a52f319aa8c682a1320a984599d",
+    "source": "https://src.fedoraproject.org/rpms/binutils.git",
+    "version": "2.45.50"
+  },
   "brotli": {
     "branch": "rawhide",
     "release": "1",

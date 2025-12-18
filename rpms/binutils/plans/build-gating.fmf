@@ -1,0 +1,26 @@
+#
+# Build/PR gating tests for binutils
+#
+
+/common:
+  plan:
+    import:
+      url: https://gitlab.com/redhat/centos-stream/tests/binutils.git
+      ref: main
+      name: /plans/build-gating/common
+
+/kernel-rebuild:
+  plan:
+    import:
+      url: https://gitlab.com/redhat/centos-stream/tests/binutils.git
+      ref: main
+      name: /plans/build-gating/kernel-rebuild
+
+adjust+:
+  - because: "Plan to be ran when executed locally, or executed by CI system to gate a build or PR."
+    # `commit` is used by Fedora CI, CentOS Stream CI, `build` by BaseOS CI
+    when: >-
+      trigger is defined
+      and trigger != commit
+      and trigger != build
+    enabled: false
