@@ -6,6 +6,13 @@
     "source": "https://src.fedoraproject.org/rpms/acl.git",
     "version": "2.3.2"
   },
+  "ansible-packaging": {
+    "branch": "rawhide",
+    "release": "18.1",
+    "sha": "dcb226da0bf4fb7b79dcdc74b4d8d1089aafc01f",
+    "source": "https://src.fedoraproject.org/rpms/ansible-packaging.git",
+    "version": "1"
+  },
   "attr": {
     "branch": "rawhide",
     "release": "6",
