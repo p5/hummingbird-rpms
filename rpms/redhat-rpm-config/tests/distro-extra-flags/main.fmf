@@ -1,0 +1,8 @@
+summary: >
+  Check that the %_distro_extra_* macros allow users to append new flags to the
+  list of default flags.
+
+require:
+  - rpm
+
+test: ./runtest.sh

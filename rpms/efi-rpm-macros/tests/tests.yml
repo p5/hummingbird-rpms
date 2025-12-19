@@ -1,0 +1,12 @@
+---
+- hosts: all
+  roles:
+    - role: standard-test-basic
+      tags:
+        - classic
+      required_packages:
+        - rpm-build
+      tests:
+        - rpm-macros:
+            dir: .
+            run: ./macros.efi-srpm_test.sh

@@ -18,6 +18,43 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+  name: r-rpm-macros-main
+spec:
+  application: rpms-main
+  componentName: r-rpm-macros-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/r-rpm-macros-main
+  source:
+    git:
+      context: rpms/R-rpm-macros
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: r-rpm-macros-main
+  name: r-rpm-macros-main
+spec:
+  image:
+    name: hummingbird-tenant/r-rpm-macros-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
   name: acl-main
 spec:
   application: rpms-main
@@ -39,6 +76,43 @@ metadata:
 spec:
   image:
     name: hummingbird-tenant/acl-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
+  name: ansible-packaging-main
+spec:
+  application: rpms-main
+  componentName: ansible-packaging-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/ansible-packaging-main
+  source:
+    git:
+      context: rpms/ansible-packaging
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: ansible-packaging-main
+  name: ansible-packaging-main
+spec:
+  image:
+    name: hummingbird-tenant/ansible-packaging-main
     visibility: public
   notifications:
   - config:
@@ -335,6 +409,43 @@ metadata:
 spec:
   image:
     name: hummingbird-tenant/chkconfig-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
+  name: cmake-main
+spec:
+  application: rpms-main
+  componentName: cmake-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/cmake-main
+  source:
+    git:
+      context: rpms/cmake
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: cmake-main
+  name: cmake-main
+spec:
+  image:
+    name: hummingbird-tenant/cmake-main
     visibility: public
   notifications:
   - config:
@@ -742,6 +853,43 @@ metadata:
 spec:
   image:
     name: hummingbird-tenant/ed-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
+  name: efi-rpm-macros-main
+spec:
+  application: rpms-main
+  componentName: efi-rpm-macros-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/efi-rpm-macros-main
+  source:
+    git:
+      context: rpms/efi-rpm-macros
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: efi-rpm-macros-main
+  name: efi-rpm-macros-main
+spec:
+  image:
+    name: hummingbird-tenant/efi-rpm-macros-main
     visibility: public
   notifications:
   - config:
@@ -3258,6 +3406,43 @@ metadata:
 spec:
   image:
     name: hummingbird-tenant/readline-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
+  name: redhat-rpm-config-main
+spec:
+  application: rpms-main
+  componentName: redhat-rpm-config-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/redhat-rpm-config-main
+  source:
+    git:
+      context: rpms/redhat-rpm-config
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: redhat-rpm-config-main
+  name: redhat-rpm-config-main
+spec:
+  image:
+    name: hummingbird-tenant/redhat-rpm-config-main
     visibility: public
   notifications:
   - config:

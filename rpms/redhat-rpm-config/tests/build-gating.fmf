@@ -1,0 +1,21 @@
+summary: Tests
+discover:
+  - name: redhat-rpm-config-tests
+    how: fmf
+  - name: gcc-fedora-flags
+    how: fmf
+    url: https://src.fedoraproject.org/tests/gcc.git
+    ref: main
+    test: fedora-flags
+  - name: clang-fedora-flags
+    how: fmf
+    url: https://src.fedoraproject.org/tests/clang.git
+    ref: main
+    test: fedora-flags
+  - name: clang-fedora-pie-rpm
+    how: fmf
+    url: https://src.fedoraproject.org/tests/clang.git
+    ref: main
+    test: pie-rpm
+execute:
+  how: tmt

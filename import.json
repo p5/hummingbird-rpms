@@ -1,10 +1,24 @@
 {
+  "R-rpm-macros": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "d59a493d254a6b9242f4b0b8568d9b0d3055f586",
+    "source": "https://src.fedoraproject.org/rpms/R-rpm-macros.git",
+    "version": "1.3.0"
+  },
   "acl": {
     "branch": "rawhide",
     "release": "4",
     "sha": "91824d85dd3d64316176e1fe9257896c1b42e530",
     "source": "https://src.fedoraproject.org/rpms/acl.git",
     "version": "2.3.2"
+  },
+  "ansible-packaging": {
+    "branch": "rawhide",
+    "release": "18.1",
+    "sha": "dcb226da0bf4fb7b79dcdc74b4d8d1089aafc01f",
+    "source": "https://src.fedoraproject.org/rpms/ansible-packaging.git",
+    "version": "1"
   },
   "attr": {
     "branch": "rawhide",
@@ -61,6 +75,13 @@
     "sha": "8358faf6403af6ad5abb7287309f0224e757395d",
     "source": "https://src.fedoraproject.org/rpms/chkconfig.git",
     "version": "1.33"
+  },
+  "cmake": {
+    "branch": "rawhide",
+    "release": "3",
+    "sha": "aaa289ec8e04448b1b35e24f7b5d9edf0fad135a",
+    "source": "https://src.fedoraproject.org/rpms/cmake.git",
+    "version": "3.31.10"
   },
   "coreutils": {
     "branch": "rawhide",
@@ -138,6 +159,13 @@
     "sha": "1054606bc5ac65d80b13325e7d5c14004e386597",
     "source": "https://src.fedoraproject.org/rpms/ed.git",
     "version": "1.22.3"
+  },
+  "efi-rpm-macros": {
+    "branch": "rawhide",
+    "release": "5",
+    "sha": "3b8dc74cc92df1da2241d838f002c0b77924cc2e",
+    "source": "https://src.fedoraproject.org/rpms/efi-rpm-macros.git",
+    "version": "6"
   },
   "elfutils": {
     "branch": "rawhide",
@@ -607,6 +635,13 @@
     "sha": "faef64fc003d6f8a2ff4c959d66810bac9a35ed1",
     "source": "https://src.fedoraproject.org/rpms/readline.git",
     "version": "8.3"
+  },
+  "redhat-rpm-config": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "eb69ca5b90cfe7797a165ed794ceed510d880c4d",
+    "source": "https://src.fedoraproject.org/rpms/redhat-rpm-config.git",
+    "version": "343"
   },
   "rootfiles": {
     "branch": "rawhide",

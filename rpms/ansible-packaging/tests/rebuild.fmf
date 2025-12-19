@@ -1,0 +1,16 @@
+summary: Rebuild dependents to ensure that builds pass
+discover:
+  - name: Rebuild collection packages
+    how: shell
+    tests:
+      - name: Rebuild ansible-collection-community-docker
+        test: tests/rebuild.sh ansible-collection-community-docker
+        require:
+          - ansible-core
+          - ansible-packaging
+          - ansible-srpm-macros
+          - fedpkg
+          - rpm-build
+          - sudo
+execute:
+  how: tmt

@@ -10,6 +10,70 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "false"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[push]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/R-rpm-macros/***, mock/mock.cfg]"
+  creationTimestamp: null
+  labels:
+    appstudio.openshift.io/application: rpms-main
+    appstudio.openshift.io/component: r-rpm-macros-main
+    pipelines.appstudio.openshift.io/type: build
+  name: r-rpm-macros-main-on-push
+  namespace: hummingbird-tenant
+spec:
+  params:
+    - name: git-url
+      value: '{{source_url}}'
+    - name: revision
+      value: '{{revision}}'
+    - name: ociStorage
+      value: quay.io/redhat-user-workloads/hummingbird-tenant/r-rpm-macros-main:{{revision}}
+    - name: package-name
+      value: R-rpm-macros
+    - name: target-branch
+      value: '{{target_branch}}'
+    - name: build-architectures
+      value:
+        - aarch64
+        - x86_64
+    - name: specfile
+      value: "R-rpm-macros.spec"
+    - name: monorepo-subdir
+      value: "rpms/R-rpm-macros"
+    - name: mock-config-template-filename-in-sources
+      value: "mock/mock.cfg"
+    - name: self-ref-url
+      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+    - name: self-ref-revision
+      value: "fix-build-platforms"
+  pipelineRef:
+    resolver: git
+    params:
+      - name: url
+        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      - name: revision
+        value: "fix-build-platforms"
+      - name: pathInRepo
+        value: "pipeline/build-rpm-package.yaml"
+  taskRunTemplate:
+    serviceAccountName: build-pipeline-r-rpm-macros-main
+  timeouts:
+    pipeline: 4h
+    tasks: 4h
+  workspaces:
+    - name: git-auth
+      secret:
+        secretName: '{{git_auth_secret}}'
+---
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  annotations:
+    build.appstudio.openshift.io/repo: https://gitlab.com/redhat/hummingbird/rpms/-/tree/{{revision}}
+    build.appstudio.redhat.com/commit_sha: '{{revision}}'
+    build.appstudio.redhat.com/target_branch: '{{target_branch}}'
+    pipelinesascode.tekton.dev/on-target-branch: "[main]"
+    pipelinesascode.tekton.dev/cancel-in-progress: "false"
+    pipelinesascode.tekton.dev/max-keep-runs: "3"
+    pipelinesascode.tekton.dev/on-event: "[push]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/acl/***, mock/mock.cfg]"
   creationTimestamp: null
   labels:
@@ -55,6 +119,70 @@ spec:
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
     serviceAccountName: build-pipeline-acl-main
+  timeouts:
+    pipeline: 4h
+    tasks: 4h
+  workspaces:
+    - name: git-auth
+      secret:
+        secretName: '{{git_auth_secret}}'
+---
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  annotations:
+    build.appstudio.openshift.io/repo: https://gitlab.com/redhat/hummingbird/rpms/-/tree/{{revision}}
+    build.appstudio.redhat.com/commit_sha: '{{revision}}'
+    build.appstudio.redhat.com/target_branch: '{{target_branch}}'
+    pipelinesascode.tekton.dev/on-target-branch: "[main]"
+    pipelinesascode.tekton.dev/cancel-in-progress: "false"
+    pipelinesascode.tekton.dev/max-keep-runs: "3"
+    pipelinesascode.tekton.dev/on-event: "[push]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/ansible-packaging/***, mock/mock.cfg]"
+  creationTimestamp: null
+  labels:
+    appstudio.openshift.io/application: rpms-main
+    appstudio.openshift.io/component: ansible-packaging-main
+    pipelines.appstudio.openshift.io/type: build
+  name: ansible-packaging-main-on-push
+  namespace: hummingbird-tenant
+spec:
+  params:
+    - name: git-url
+      value: '{{source_url}}'
+    - name: revision
+      value: '{{revision}}'
+    - name: ociStorage
+      value: quay.io/redhat-user-workloads/hummingbird-tenant/ansible-packaging-main:{{revision}}
+    - name: package-name
+      value: ansible-packaging
+    - name: target-branch
+      value: '{{target_branch}}'
+    - name: build-architectures
+      value:
+        - aarch64
+        - x86_64
+    - name: specfile
+      value: "ansible-packaging.spec"
+    - name: monorepo-subdir
+      value: "rpms/ansible-packaging"
+    - name: mock-config-template-filename-in-sources
+      value: "mock/mock.cfg"
+    - name: self-ref-url
+      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+    - name: self-ref-revision
+      value: "fix-build-platforms"
+  pipelineRef:
+    resolver: git
+    params:
+      - name: url
+        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      - name: revision
+        value: "fix-build-platforms"
+      - name: pathInRepo
+        value: "pipeline/build-rpm-package.yaml"
+  taskRunTemplate:
+    serviceAccountName: build-pipeline-ansible-packaging-main
   timeouts:
     pipeline: 4h
     tasks: 4h
@@ -567,6 +695,70 @@ spec:
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
     serviceAccountName: build-pipeline-chkconfig-main
+  timeouts:
+    pipeline: 4h
+    tasks: 4h
+  workspaces:
+    - name: git-auth
+      secret:
+        secretName: '{{git_auth_secret}}'
+---
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  annotations:
+    build.appstudio.openshift.io/repo: https://gitlab.com/redhat/hummingbird/rpms/-/tree/{{revision}}
+    build.appstudio.redhat.com/commit_sha: '{{revision}}'
+    build.appstudio.redhat.com/target_branch: '{{target_branch}}'
+    pipelinesascode.tekton.dev/on-target-branch: "[main]"
+    pipelinesascode.tekton.dev/cancel-in-progress: "false"
+    pipelinesascode.tekton.dev/max-keep-runs: "3"
+    pipelinesascode.tekton.dev/on-event: "[push]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/cmake/***, mock/mock.cfg]"
+  creationTimestamp: null
+  labels:
+    appstudio.openshift.io/application: rpms-main
+    appstudio.openshift.io/component: cmake-main
+    pipelines.appstudio.openshift.io/type: build
+  name: cmake-main-on-push
+  namespace: hummingbird-tenant
+spec:
+  params:
+    - name: git-url
+      value: '{{source_url}}'
+    - name: revision
+      value: '{{revision}}'
+    - name: ociStorage
+      value: quay.io/redhat-user-workloads/hummingbird-tenant/cmake-main:{{revision}}
+    - name: package-name
+      value: cmake
+    - name: target-branch
+      value: '{{target_branch}}'
+    - name: build-architectures
+      value:
+        - aarch64
+        - x86_64
+    - name: specfile
+      value: "cmake.spec"
+    - name: monorepo-subdir
+      value: "rpms/cmake"
+    - name: mock-config-template-filename-in-sources
+      value: "mock/mock.cfg"
+    - name: self-ref-url
+      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+    - name: self-ref-revision
+      value: "fix-build-platforms"
+  pipelineRef:
+    resolver: git
+    params:
+      - name: url
+        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      - name: revision
+        value: "fix-build-platforms"
+      - name: pathInRepo
+        value: "pipeline/build-rpm-package.yaml"
+  taskRunTemplate:
+    serviceAccountName: build-pipeline-cmake-main
   timeouts:
     pipeline: 4h
     tasks: 4h
@@ -1271,6 +1463,70 @@ spec:
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
     serviceAccountName: build-pipeline-ed-main
+  timeouts:
+    pipeline: 4h
+    tasks: 4h
+  workspaces:
+    - name: git-auth
+      secret:
+        secretName: '{{git_auth_secret}}'
+---
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  annotations:
+    build.appstudio.openshift.io/repo: https://gitlab.com/redhat/hummingbird/rpms/-/tree/{{revision}}
+    build.appstudio.redhat.com/commit_sha: '{{revision}}'
+    build.appstudio.redhat.com/target_branch: '{{target_branch}}'
+    pipelinesascode.tekton.dev/on-target-branch: "[main]"
+    pipelinesascode.tekton.dev/cancel-in-progress: "false"
+    pipelinesascode.tekton.dev/max-keep-runs: "3"
+    pipelinesascode.tekton.dev/on-event: "[push]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/efi-rpm-macros/***, mock/mock.cfg]"
+  creationTimestamp: null
+  labels:
+    appstudio.openshift.io/application: rpms-main
+    appstudio.openshift.io/component: efi-rpm-macros-main
+    pipelines.appstudio.openshift.io/type: build
+  name: efi-rpm-macros-main-on-push
+  namespace: hummingbird-tenant
+spec:
+  params:
+    - name: git-url
+      value: '{{source_url}}'
+    - name: revision
+      value: '{{revision}}'
+    - name: ociStorage
+      value: quay.io/redhat-user-workloads/hummingbird-tenant/efi-rpm-macros-main:{{revision}}
+    - name: package-name
+      value: efi-rpm-macros
+    - name: target-branch
+      value: '{{target_branch}}'
+    - name: build-architectures
+      value:
+        - aarch64
+        - x86_64
+    - name: specfile
+      value: "efi-rpm-macros.spec"
+    - name: monorepo-subdir
+      value: "rpms/efi-rpm-macros"
+    - name: mock-config-template-filename-in-sources
+      value: "mock/mock.cfg"
+    - name: self-ref-url
+      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+    - name: self-ref-revision
+      value: "fix-build-platforms"
+  pipelineRef:
+    resolver: git
+    params:
+      - name: url
+        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      - name: revision
+        value: "fix-build-platforms"
+      - name: pathInRepo
+        value: "pipeline/build-rpm-package.yaml"
+  taskRunTemplate:
+    serviceAccountName: build-pipeline-efi-rpm-macros-main
   timeouts:
     pipeline: 4h
     tasks: 4h
@@ -5623,6 +5879,70 @@ spec:
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
     serviceAccountName: build-pipeline-readline-main
+  timeouts:
+    pipeline: 4h
+    tasks: 4h
+  workspaces:
+    - name: git-auth
+      secret:
+        secretName: '{{git_auth_secret}}'
+---
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  annotations:
+    build.appstudio.openshift.io/repo: https://gitlab.com/redhat/hummingbird/rpms/-/tree/{{revision}}
+    build.appstudio.redhat.com/commit_sha: '{{revision}}'
+    build.appstudio.redhat.com/target_branch: '{{target_branch}}'
+    pipelinesascode.tekton.dev/on-target-branch: "[main]"
+    pipelinesascode.tekton.dev/cancel-in-progress: "false"
+    pipelinesascode.tekton.dev/max-keep-runs: "3"
+    pipelinesascode.tekton.dev/on-event: "[push]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/redhat-rpm-config/***, mock/mock.cfg]"
+  creationTimestamp: null
+  labels:
+    appstudio.openshift.io/application: rpms-main
+    appstudio.openshift.io/component: redhat-rpm-config-main
+    pipelines.appstudio.openshift.io/type: build
+  name: redhat-rpm-config-main-on-push
+  namespace: hummingbird-tenant
+spec:
+  params:
+    - name: git-url
+      value: '{{source_url}}'
+    - name: revision
+      value: '{{revision}}'
+    - name: ociStorage
+      value: quay.io/redhat-user-workloads/hummingbird-tenant/redhat-rpm-config-main:{{revision}}
+    - name: package-name
+      value: redhat-rpm-config
+    - name: target-branch
+      value: '{{target_branch}}'
+    - name: build-architectures
+      value:
+        - aarch64
+        - x86_64
+    - name: specfile
+      value: "redhat-rpm-config.spec"
+    - name: monorepo-subdir
+      value: "rpms/redhat-rpm-config"
+    - name: mock-config-template-filename-in-sources
+      value: "mock/mock.cfg"
+    - name: self-ref-url
+      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+    - name: self-ref-revision
+      value: "fix-build-platforms"
+  pipelineRef:
+    resolver: git
+    params:
+      - name: url
+        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      - name: revision
+        value: "fix-build-platforms"
+      - name: pathInRepo
+        value: "pipeline/build-rpm-package.yaml"
+  taskRunTemplate:
+    serviceAccountName: build-pipeline-redhat-rpm-config-main
   timeouts:
     pipeline: 4h
     tasks: 4h

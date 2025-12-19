@@ -1,0 +1,7 @@
+summary: Test that conditional support for frame pointers works
+
+require:
+  - grep
+  - redhat-rpm-config
+  - rpm
+test: ./runtest.sh

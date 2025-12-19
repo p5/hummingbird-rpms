@@ -1,0 +1,5 @@
+summary: Test that the extension builder flags contain the proper flags
+require:
+  - redhat-rpm-config
+test: ./runtest.sh
+
