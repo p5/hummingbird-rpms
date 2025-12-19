@@ -2,7 +2,7 @@
 
 Name:           nghttp3
 Version:        1.13.1
-Release:        1build1
+Release:        1.1%{?dist}
 Summary:        HTTP/3 library written in C
 
 License:        MIT
