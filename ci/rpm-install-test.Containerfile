@@ -10,7 +10,7 @@ ARG DNF_FLAGS="-y \
       --setopt=varsdir=${DNF_CACHE}"
 ARG LOCAL_REPO=""
 
-FROM quay.io/hummingbird-ci/builder:latest AS builder
+FROM quay.io/hummingbird-ci/builder:latest-hatchling AS builder
 ARG NEWROOT
 ARG DNF_CACHE
 ARG DNF_FLAGS
@@ -25,15 +25,23 @@ RUN rpmkeys --import /etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-rawhide-primary --root 
 # Copy the RPM to test
 COPY test.rpm /tmp/test.rpm
 
-# Configure Hummingbird repository for dependency resolution
+# Configure Rawhide repository for dependency resolution until our hatchling repo is complete
 RUN mkdir -p /etc/yum.repos.d/ && \
-    cat <<EOF > /etc/yum.repos.d/hummingbird.repo
-[hummingbird]
-name=Hummingbird - \$basearch
-baseurl=https://console.redhat.com/api/pulp-content/public-hummingbird/\$arch/
-gpgcheck=0
+    cat <<EOF > /etc/yum.repos.d/rawhide.repo
+[rawhide]
+name=Fedora - Rawhide - Developmental packages for the next Fedora release
+# do not use the generic download.fedoraproject.org URL here, as it may
+# redirect to a mirror that is unstable or out-of-date
+baseurl=https://download-ib01.fedoraproject.org/pub/fedora/linux/development/rawhide/Everything/\$basearch/os/
 enabled=1
-sslverify=1
+priority=99
+countme=1
+metadata_expire=6h
+repo_gpgcheck=0
+type=rpm
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-rawhide-$basearch
+skip_if_unavailable=False
 EOF
 
 # Copy local repository if present and configure it (only if LOCAL_REPO is set)
