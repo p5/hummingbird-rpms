@@ -75,11 +75,8 @@ template=.tekton/rpms-on-${RESOURCE_TYPE}.yaml.j2
 
 APPLICATION_NAME="rpms-${BRANCH}"
 
-# Temporarily using a fork of the rpmbuild-pipeline that supports build platforms
-# until the changes are merged into the main branch
-# https://github.com/konflux-ci/rpmbuild-pipeline/pull/128
-PIPELINE_URL="https://github.com/scoheb/rpmbuild-pipeline.git"
-PIPELINE_REVISION="fix-build-platforms"
+PIPELINE_URL="https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
+PIPELINE_REVISION="b8058148edd14453bc368d121248bd2bbbcf1bbd"
 PIPELINE_PATH="pipeline/build-rpm-package.yaml"
 
 # shellcheck disable=SC2312
