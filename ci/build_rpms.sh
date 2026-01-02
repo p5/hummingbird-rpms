@@ -50,10 +50,15 @@ mkdir -p results
 mkdir -p config
 mkdir -p sources
 
+# Create directory for mock buildroot on host filesystem (avoids overlayfs xattr issues)
+mkdir -p var_lib_mock
+
 # Allow mockbuilder (group mock) to read config and write results
 podman unshare setfacl -m g:135:rwx -m default:g:135:rwx "results"
 podman unshare setfacl -m g:135:rwx -m default:g:135:rwx "config"
 podman unshare setfacl -m g:135:rwx -m default:g:135:rwx "sources"
+podman unshare chgrp 135 "var_lib_mock"
+podman unshare chmod g+rwx "var_lib_mock"
 
 # Copy local source files to sources directory
 cp -f "${RPM_DIR}/${package_name}"/* "${workdir}/sources/" 2>/dev/null || true
@@ -81,6 +86,7 @@ podman run --rm -ti --privileged --init \
     -v "${workdir}/results:/results:z" \
     -v "${workdir}/config:/config:z" \
     -v "${workdir}/sources:/sources:z" \
+    -v "${workdir}/var_lib_mock:/var/lib/mock:z" \
     -v "${REPO_ROOT}:/repo:z" \
     -v "${bare_repo}:/bare:z" \
     "${image}" \
