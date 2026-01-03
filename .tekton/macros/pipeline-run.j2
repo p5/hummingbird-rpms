@@ -65,6 +65,7 @@ spec:
       - name: url
         value: "{{ pipeline_url }}"
       - name: revision
+        # renovate: datasource=git-refs depName={{ pipeline_url | replace('.git', '') }} versioning=git branch={{ pipeline_branch }}
         value: "{{ pipeline_revision }}"
       - name: pathInRepo
         value: "{{ pipeline_path }}"
