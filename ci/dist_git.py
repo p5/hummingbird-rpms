@@ -287,7 +287,7 @@ def is_package_unmodified(package_name: str, metadata: PackageMetadata, upstream
 
         # First, check all non-spec files are identical
         if subprocess.run(
-            ['diff', '--recursive', '--exclude=*.spec', str(package_dir), str(temp_dir)],
+            ['diff', '--recursive', '--ignore-trailing-space', '--ignore-blank-lines', '--exclude=*.spec', str(package_dir), str(temp_dir)],
             stdout=subprocess.DEVNULL,
         ).returncode != 0:
             return False
@@ -295,7 +295,7 @@ def is_package_unmodified(package_name: str, metadata: PackageMetadata, upstream
         # Then check including spec files, ignoring Release: lines
         # This checks all other files again, but dist-gits are small and this is very robust
         return subprocess.run(
-            ['diff', '--recursive', '--ignore-matching-lines=^Release:', str(package_dir), str(temp_dir)],
+            ['diff', '--recursive', '--ignore-trailing-space', '--ignore-blank-lines', '--ignore-matching-lines=^Release:', str(package_dir), str(temp_dir)],
             stdout=subprocess.DEVNULL,
         ).returncode == 0
 
