@@ -129,9 +129,10 @@ for path in "${rpms[@]}"; do
             extra_paths+=("test/rpms/${dname}.yml")
         fi
 
-        # Add ci/ path changes for canary rpm
+        # Add ci/ and mock/ path changes for canary rpm
         if [[ ${dname} == "${BUILD_TRIGGER_RPM_NAME}" && ${RESOURCE_TYPE} == pull-request ]]; then
             extra_paths+=("ci/***")
+            extra_paths+=("mock/***")
         fi
 
         if [[ ${#extra_paths[@]} -gt 0 ]]; then
