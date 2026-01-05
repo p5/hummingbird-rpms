@@ -11,7 +11,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/R-rpm-macros/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/R-rpm-macros/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -79,7 +79,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/acl/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/acl/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -147,7 +147,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/ansible-packaging/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/ansible-packaging/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -215,7 +215,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/attr/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/attr/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -283,7 +283,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/audit/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/audit/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -351,7 +351,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/bash/***, mock/mock.cfg, test/rpms/bash.yml]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/bash/***, test/rpms/bash.yml]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -419,7 +419,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/binutils/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/binutils/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -487,7 +487,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/brotli/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/brotli/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -555,7 +555,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/bzip2/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/bzip2/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -623,7 +623,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/ca-certificates/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/ca-certificates/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -691,7 +691,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/chkconfig/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/chkconfig/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -759,7 +759,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/cmake/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/cmake/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -827,7 +827,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/coreutils/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/coreutils/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -895,7 +895,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/cpio/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/cpio/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -963,7 +963,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/createrepo_c/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/createrepo_c/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -1031,7 +1031,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/crypto-policies/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/crypto-policies/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -1099,7 +1099,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/curl/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/curl/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -1167,7 +1167,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/cyrus-sasl/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/cyrus-sasl/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -1235,7 +1235,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/diffutils/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/diffutils/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -1303,7 +1303,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/dnf5/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/dnf5/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -1371,7 +1371,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/drpm/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/drpm/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -1439,7 +1439,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/e2fsprogs/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/e2fsprogs/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -1507,7 +1507,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/ed/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/ed/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -1575,7 +1575,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/efi-rpm-macros/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/efi-rpm-macros/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -1643,7 +1643,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/elfutils/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/elfutils/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -1711,7 +1711,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/fedora-repos/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/fedora-repos/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -1779,7 +1779,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/file/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/file/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -1847,7 +1847,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/filesystem/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/filesystem/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -1915,7 +1915,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/findutils/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/findutils/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -1983,7 +1983,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/fmt/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/fmt/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -2051,7 +2051,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/fsverity-utils/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/fsverity-utils/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -2119,7 +2119,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/gawk/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/gawk/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -2187,7 +2187,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/gdbm/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/gdbm/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -2255,7 +2255,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/glib2/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/glib2/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -2323,7 +2323,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/gmp/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/gmp/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -2391,7 +2391,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/gnupg2/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/gnupg2/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -2459,7 +2459,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/gnutls/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/gnutls/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -2527,7 +2527,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/grep/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/grep/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -2595,7 +2595,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/gzip/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/gzip/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -2663,7 +2663,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/hostname/***, mock/mock.cfg, test/rpms/hostname.yml]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/hostname/***, test/rpms/hostname.yml]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -2731,7 +2731,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/hummingbird-release/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/hummingbird-release/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -2799,7 +2799,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/ima-evm-utils/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/ima-evm-utils/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -2867,7 +2867,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/jq/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/jq/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -2935,7 +2935,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/json-c/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/json-c/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -3003,7 +3003,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/keyutils/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/keyutils/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -3071,7 +3071,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/libarchive/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/libarchive/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -3139,7 +3139,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/libassuan/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/libassuan/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -3207,7 +3207,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/libcap/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/libcap/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -3275,7 +3275,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/libcap-ng/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/libcap-ng/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -3343,7 +3343,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/libeconf/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/libeconf/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -3411,7 +3411,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/libevent/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/libevent/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -3479,7 +3479,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/libffi/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/libffi/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -3547,7 +3547,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/libgcrypt/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/libgcrypt/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -3615,7 +3615,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/libgpg-error/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/libgpg-error/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -3683,7 +3683,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/libidn2/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/libidn2/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -3751,7 +3751,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/libksba/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/libksba/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -3819,7 +3819,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/libmpc/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/libmpc/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -3887,7 +3887,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/libpsl/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/libpsl/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -3955,7 +3955,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/librepo/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/librepo/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -4023,7 +4023,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/libselinux/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/libselinux/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -4091,7 +4091,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/libsemanage/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/libsemanage/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -4159,7 +4159,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/libsepol/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/libsepol/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -4227,7 +4227,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/libsolv/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/libsolv/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -4295,7 +4295,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/libssh/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/libssh/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -4363,7 +4363,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/libtasn1/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/libtasn1/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -4431,7 +4431,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/libtool/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/libtool/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -4499,7 +4499,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/libunistring/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/libunistring/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -4567,7 +4567,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/libusb1/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/libusb1/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -4635,7 +4635,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/libverto/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/libverto/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -4703,7 +4703,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/libxcrypt/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/libxcrypt/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -4771,7 +4771,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/libxml2/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/libxml2/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -4839,7 +4839,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/libyaml/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/libyaml/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -4907,7 +4907,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/lua/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/lua/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -4975,7 +4975,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/lz4/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/lz4/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -5043,7 +5043,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/mpfr/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/mpfr/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -5111,7 +5111,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/ncurses/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/ncurses/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -5179,7 +5179,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/nettle/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/nettle/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -5247,7 +5247,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/nghttp2/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/nghttp2/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -5315,7 +5315,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/nghttp3/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/nghttp3/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -5383,7 +5383,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/ngtcp2/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/ngtcp2/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -5451,7 +5451,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/npth/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/npth/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -5519,7 +5519,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/oniguruma/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/oniguruma/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -5587,7 +5587,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/openldap/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/openldap/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -5655,7 +5655,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/openssl/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/openssl/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -5723,7 +5723,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/p11-kit/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/p11-kit/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -5791,7 +5791,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/pam/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/pam/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -5859,7 +5859,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/patch/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/patch/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -5927,7 +5927,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/pcre2/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/pcre2/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -5995,7 +5995,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/pkgconf/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/pkgconf/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -6063,7 +6063,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/popt/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/popt/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -6131,7 +6131,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/publicsuffix-list/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/publicsuffix-list/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -6199,7 +6199,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/readline/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/readline/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -6267,7 +6267,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/redhat-rpm-config/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/redhat-rpm-config/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -6335,7 +6335,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/rootfiles/***, mock/mock.cfg, test/rpms/rootfiles.yml]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/rootfiles/***, test/rpms/rootfiles.yml]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -6403,7 +6403,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/rpm/***, mock/mock.cfg, test/rpms/rpm.yml]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/rpm/***, test/rpms/rpm.yml]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -6471,7 +6471,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/sdbus-cpp/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/sdbus-cpp/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -6539,7 +6539,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/sed/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/sed/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -6607,7 +6607,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/setup/***, mock/mock.cfg, test/rpms/setup.yml, ci/***]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/setup/***, test/rpms/setup.yml, ci/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -6675,7 +6675,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/shadow-utils/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/shadow-utils/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -6743,7 +6743,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/sqlite/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/sqlite/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -6811,7 +6811,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/systemd-stub/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/systemd-stub/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -6879,7 +6879,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/tar/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/tar/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -6947,7 +6947,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/texinfo/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/texinfo/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -7015,7 +7015,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/tpm2-tss/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/tpm2-tss/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -7083,7 +7083,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/unzip/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/unzip/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -7151,7 +7151,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/util-linux/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/util-linux/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -7219,7 +7219,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/which/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/which/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -7287,7 +7287,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/xxhash/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/xxhash/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -7355,7 +7355,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/xz/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/xz/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -7423,7 +7423,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/yq/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/yq/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -7491,7 +7491,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/zchunk/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/zchunk/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -7559,7 +7559,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/zip/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/zip/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -7627,7 +7627,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/zlib-ng/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/zlib-ng/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -7695,7 +7695,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "true"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/zstd/***, mock/mock.cfg]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/zstd/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
