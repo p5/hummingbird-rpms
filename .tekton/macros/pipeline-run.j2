@@ -14,7 +14,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "{{ cancel_in_progress }}"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[{{ event_type }}]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/{{ rpm.dname }}/***, mock/mock.cfg{%- for path in extra_path_changes %}, {{ path }}{%- endfor %}]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/{{ rpm.dname }}/***{%- for path in extra_path_changes %}, {{ path }}{%- endfor %}]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: {{ application_name }}
