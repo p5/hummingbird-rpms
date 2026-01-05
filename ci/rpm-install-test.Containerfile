@@ -30,9 +30,8 @@ RUN mkdir -p /etc/yum.repos.d/ && \
     cat <<EOF > /etc/yum.repos.d/rawhide.repo
 [rawhide]
 name=Fedora - Rawhide - Developmental packages for the next Fedora release
-# do not use the generic download.fedoraproject.org URL here, as it may
-# redirect to a mirror that is unstable or out-of-date
-baseurl=https://download-ib01.fedoraproject.org/pub/fedora/linux/development/rawhide/Everything/\$basearch/os/
+# Route through S3 cache for RPM caching; repodata passes through transparently
+baseurl=https://koji-s3-cache.hummingbird-project.io/download-ib01.fedoraproject.org/pub/fedora/linux/development/rawhide/Everything/\$basearch/os/
 enabled=1
 priority=99
 countme=1
