@@ -1,0 +1,31 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Update PIPELINE_BRANCH and PIPELINE_REVISION in generate_pac_resources.sh",
+      "managerFilePatterns": ["/ci/generate_pac_resources\\.sh$/"],
+      "matchStrings": [
+        "PIPELINE_URL=\"(?<depName>https://github\\.com/[^\"]+)\\.git\"\\nPIPELINE_PATH=\"[^\"]+\"\\nPIPELINE_BRANCH=\"(?<currentValue>[^\"]+)\"\\nPIPELINE_REVISION=\"(?<currentDigest>[^\"]+)\""
+      ],
+      "datasourceTemplate": "git-refs",
+      "versioningTemplate": "git"
+    },
+    {
+      "customType": "regex",
+      "description": "Update Tekton git resolver references in YAML files",
+      "managerFilePatterns": ["/\\.tekton/.+\\.ya?ml$/"],
+      "matchStrings": [
+        "#\\s*renovate:\\s*datasource=(?<datasource>\\S+)\\s+depName=(?<depName>\\S+)(\\s+versioning=(?<versioning>\\S+))?\\s+branch=(?<currentValue>\\S+)\\n\\s*value:\\s*\"(?<currentDigest>[^\"]+)\""
+      ],
+      "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}git{{/if}}"
+    }
+  ],
+  "packageRules": [
+    {
+      "description": "Group all rpmbuild-pipeline updates together",
+      "matchPackageNames": ["/rpmbuild-pipeline/"],
+      "groupName": "rpmbuild-pipeline"
+    }
+  ]
+}
