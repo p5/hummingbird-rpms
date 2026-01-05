@@ -44,16 +44,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -111,16 +111,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -178,16 +178,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -245,16 +245,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -312,16 +312,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -379,16 +379,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -446,16 +446,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -513,16 +513,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -580,16 +580,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -647,16 +647,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -714,16 +714,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -781,16 +781,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -848,16 +848,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -915,16 +915,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -982,16 +982,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -1049,16 +1049,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -1116,16 +1116,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -1183,16 +1183,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -1250,16 +1250,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -1317,16 +1317,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -1384,16 +1384,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -1451,16 +1451,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -1518,16 +1518,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -1585,16 +1585,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -1652,16 +1652,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -1719,16 +1719,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -1786,16 +1786,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -1853,16 +1853,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -1920,16 +1920,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -1987,16 +1987,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -2054,16 +2054,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -2121,16 +2121,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -2188,16 +2188,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -2255,16 +2255,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -2322,16 +2322,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -2389,16 +2389,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -2456,16 +2456,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -2523,16 +2523,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -2590,16 +2590,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -2657,16 +2657,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -2724,16 +2724,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -2791,16 +2791,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -2858,16 +2858,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -2925,16 +2925,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -2992,16 +2992,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -3059,16 +3059,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -3126,16 +3126,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -3193,16 +3193,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -3260,16 +3260,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -3327,16 +3327,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -3394,16 +3394,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -3461,16 +3461,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -3528,16 +3528,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -3595,16 +3595,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -3662,16 +3662,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -3729,16 +3729,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -3796,16 +3796,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -3863,16 +3863,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -3930,16 +3930,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -3997,16 +3997,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -4064,16 +4064,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -4131,16 +4131,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -4198,16 +4198,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -4265,16 +4265,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -4332,16 +4332,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -4399,16 +4399,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -4466,16 +4466,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -4533,16 +4533,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -4600,16 +4600,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -4667,16 +4667,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -4734,16 +4734,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -4801,16 +4801,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -4868,16 +4868,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -4935,16 +4935,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -5002,16 +5002,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -5069,16 +5069,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -5136,16 +5136,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -5203,16 +5203,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -5270,16 +5270,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -5337,16 +5337,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -5404,16 +5404,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -5471,16 +5471,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -5538,16 +5538,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -5605,16 +5605,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -5672,16 +5672,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -5739,16 +5739,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -5806,16 +5806,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -5873,16 +5873,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -5940,16 +5940,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -6007,16 +6007,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -6074,16 +6074,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -6141,16 +6141,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -6208,16 +6208,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -6275,16 +6275,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -6342,16 +6342,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -6409,16 +6409,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -6476,16 +6476,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -6543,16 +6543,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -6610,16 +6610,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -6677,16 +6677,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -6744,16 +6744,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -6811,16 +6811,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -6878,16 +6878,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -6945,16 +6945,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -7012,16 +7012,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -7079,16 +7079,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -7146,16 +7146,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -7213,16 +7213,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -7280,16 +7280,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -7347,16 +7347,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -7414,16 +7414,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -7481,16 +7481,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -7548,16 +7548,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -7615,16 +7615,16 @@ spec:
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
     - name: self-ref-url
-      value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
-      value: "fix-build-platforms"
+      value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
     params:
       - name: url
-        value: "https://github.com/scoheb/rpmbuild-pipeline.git"
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
-        value: "fix-build-platforms"
+        value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
