@@ -58,10 +58,11 @@ EOT
 fi
 EOF
 
-# Install the RPM using dnf-installroot, including additional dependencies for validation
-RUN dnf-installroot ${NEWROOT} ${DNF_FLAGS} install \
-      /tmp/test.rpm \
-      rpm
+# Install rpm CLI for validation
+RUN dnf-installroot ${NEWROOT} ${DNF_FLAGS} install rpm
+
+# Install the test RPM (will upgrade rpm if test RPM is the rpm package)
+RUN dnf-installroot ${NEWROOT} ${DNF_FLAGS} install /tmp/test.rpm
 
 # Verify the package was installed in the new root
 RUN rpm --root ${NEWROOT} -qa | grep -q . || { echo "Error: No packages installed in ${NEWROOT}"; exit 1; }
