@@ -2,7 +2,7 @@
 
 Name:           hummingbird-release
 Version:        20251124
-Release:        1%{?dist}
+Release:        1.1%{?dist}
 Summary:        %{distro} release files
 License:        GPL-2.0-or-later
 URL:            https://hummingbird-project.io/
