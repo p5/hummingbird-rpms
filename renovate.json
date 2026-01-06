@@ -6,7 +6,7 @@
       "description": "Update PIPELINE_BRANCH and PIPELINE_REVISION in generate_pac_resources.sh",
       "managerFilePatterns": ["/ci/generate_pac_resources\\.sh$/"],
       "matchStrings": [
-        "PIPELINE_URL=\"(?<depName>https://github\\.com/[^\"]+)\\.git\"\\nPIPELINE_PATH=\"[^\"]+\"\\nPIPELINE_BRANCH=\"(?<currentValue>[^\"]+)\"\\nPIPELINE_REVISION=\"(?<currentDigest>[^\"]+)\""
+        "PIPELINE_URL=\"(?<depName>https://[^\"]+)\\.git\"\\nPIPELINE_PATH=\"[^\"]+\"\\nPIPELINE_BRANCH=\"(?<currentValue>[^\"]+)\"\\nPIPELINE_REVISION=\"(?<currentDigest>[^\"]+)\""
       ],
       "datasourceTemplate": "git-refs",
       "versioningTemplate": "git"
