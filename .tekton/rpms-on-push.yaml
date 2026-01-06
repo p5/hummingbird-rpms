@@ -43,6 +43,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -108,6 +109,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -173,6 +175,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -238,6 +241,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -303,6 +307,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -368,6 +373,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -433,6 +439,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -498,6 +505,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -563,6 +571,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -628,6 +637,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -693,6 +703,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -758,6 +769,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -823,6 +835,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -888,6 +901,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -953,6 +967,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -1018,6 +1033,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -1083,6 +1099,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -1148,6 +1165,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -1213,6 +1231,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -1278,6 +1297,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -1343,6 +1363,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -1408,6 +1429,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -1473,6 +1495,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -1538,6 +1561,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -1603,6 +1627,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -1668,6 +1693,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -1733,6 +1759,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -1798,6 +1825,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -1863,6 +1891,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -1928,6 +1957,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -1993,6 +2023,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -2058,6 +2089,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -2123,6 +2155,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -2188,6 +2221,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -2253,6 +2287,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -2318,6 +2353,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -2383,6 +2419,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -2448,6 +2485,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -2513,6 +2551,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -2578,6 +2617,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -2643,6 +2683,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -2708,6 +2749,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -2773,6 +2815,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -2838,6 +2881,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -2903,6 +2947,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -2968,6 +3013,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -3033,6 +3079,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -3098,6 +3145,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -3163,6 +3211,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -3228,6 +3277,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -3293,6 +3343,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -3358,6 +3409,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -3423,6 +3475,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -3488,6 +3541,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -3553,6 +3607,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -3618,6 +3673,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -3683,6 +3739,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -3748,6 +3805,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -3813,6 +3871,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -3878,6 +3937,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -3943,6 +4003,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -4008,6 +4069,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -4073,6 +4135,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -4138,6 +4201,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -4203,6 +4267,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -4268,6 +4333,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -4333,6 +4399,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -4398,6 +4465,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -4463,6 +4531,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -4528,6 +4597,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -4593,6 +4663,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -4658,6 +4729,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -4723,6 +4795,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -4788,6 +4861,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -4853,6 +4927,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -4918,6 +4993,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -4983,6 +5059,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -5048,6 +5125,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -5113,6 +5191,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -5178,6 +5257,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -5243,6 +5323,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -5308,6 +5389,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -5373,6 +5455,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -5438,6 +5521,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -5503,6 +5587,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -5568,6 +5653,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -5633,6 +5719,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -5698,6 +5785,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -5763,6 +5851,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -5828,6 +5917,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -5893,6 +5983,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -5958,6 +6049,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -6023,6 +6115,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -6088,6 +6181,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -6153,6 +6247,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -6218,6 +6313,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -6283,6 +6379,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -6348,6 +6445,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -6413,6 +6511,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -6478,6 +6577,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -6543,6 +6643,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -6608,6 +6709,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -6673,6 +6775,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -6738,6 +6841,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -6803,6 +6907,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -6868,6 +6973,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -6933,6 +7039,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -6998,6 +7105,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -7063,6 +7171,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -7128,6 +7237,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -7193,6 +7303,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -7258,6 +7369,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -7323,6 +7435,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git
@@ -7388,6 +7501,7 @@ spec:
     - name: self-ref-url
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
       value: "b8058148edd14453bc368d121248bd2bbbcf1bbd"
   pipelineRef:
     resolver: git

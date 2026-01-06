@@ -58,6 +58,7 @@ spec:
     - name: self-ref-url
       value: "{{ pipeline_url }}"
     - name: self-ref-revision
+      # renovate: datasource=git-refs depName={{ pipeline_url | replace('.git', '') }} versioning=git branch={{ pipeline_branch }}
       value: "{{ pipeline_revision }}"
   pipelineRef:
     resolver: git
