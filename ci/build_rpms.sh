@@ -89,8 +89,12 @@ podman run --rm -ti --privileged --init \
     -v "${workdir}/var_lib_mock:/var/lib/mock:z" \
     -v "${REPO_ROOT}:/repo:z" \
     -v "${bare_repo}:/bare:z" \
+    -e "CURL_HOME=/tmp" \
     "${image}" \
 bash -euo pipefail -c "
+# Configure curl's header until https://github.com/release-engineering/dist-git/issues/88 is fixed
+echo 'header = \"Accept-Encoding: identity\"' > /tmp/.curlrc
+
 # Download sources using dist-git-client
 # Copy package to writable location and set up .git for dist-git-client
 cp -r /repo/rpms/${package_name} /tmp/package
