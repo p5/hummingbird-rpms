@@ -25,23 +25,9 @@ RUN rpmkeys --import /etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-rawhide-primary --root 
 # Copy the RPM to test
 COPY test.rpm /tmp/test.rpm
 
-# Configure Rawhide repository for dependency resolution until our hatchling repo is complete
-RUN mkdir -p /etc/yum.repos.d/ && \
-    cat <<EOF > /etc/yum.repos.d/rawhide.repo
-[rawhide]
-name=Fedora - Rawhide - Developmental packages for the next Fedora release
-# Route through S3 cache for RPM caching; repodata passes through transparently
-baseurl=https://koji-s3-cache.hummingbird-project.io/download-ib01.fedoraproject.org/pub/fedora/linux/development/rawhide/Everything/\$basearch/os/
-enabled=1
-priority=99
-countme=1
-metadata_expire=6h
-repo_gpgcheck=0
-type=rpm
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-rawhide-$basearch
-skip_if_unavailable=False
-EOF
+# Configure repositories
+COPY repos/rawhide.repo /etc/yum.repos.d/rawhide.repo
+COPY repos/hummingbird.repo /etc/yum.repos.d/hummingbird.repo
 
 # Copy local repository if present and configure it (only if LOCAL_REPO is set)
 COPY local-repo /tmp/local-repo/
@@ -61,7 +47,7 @@ EOF
 # Install rpm CLI for validation
 RUN dnf-installroot ${NEWROOT} ${DNF_FLAGS} install rpm
 
-# Install the test RPM (will upgrade rpm if test RPM is the rpm package)
+# Install the test RPM
 RUN dnf-installroot ${NEWROOT} ${DNF_FLAGS} install /tmp/test.rpm
 
 # Verify the package was installed in the new root

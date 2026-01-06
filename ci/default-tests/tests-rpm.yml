@@ -55,6 +55,9 @@ rpm-install:
     # Copy the Containerfile to the build context
     cp ../rpm-install-test.Containerfile "${build_dir}/Containerfile"
 
+    # Copy repo configs to the build context
+    cp -r ../repos "${build_dir}/repos"
+
     # Create local-repo directory in build context
     mkdir -p "${build_dir}/local-repo"
 
