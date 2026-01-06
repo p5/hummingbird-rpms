@@ -1,8 +1,11 @@
 %global distro  Hummingbird OS
 
+# Fedora version we're tracking
+%global fedora_version 44
+
 Name:           hummingbird-release
 Version:        20251124
-Release:        1.1%{?dist}
+Release:        1.2%{?dist}
 Summary:        %{distro} release files
 License:        GPL-2.0-or-later
 URL:            https://hummingbird-project.io/
@@ -125,6 +128,10 @@ cat > %{buildroot}%{_rpmmacrodir}/macros.dist << EOF
 %%dist_home_url       %{dist_home_url}
 %%dist_bug_report_url %{dist_bug_report_url}
 %%dist_debuginfod_url %{dist_debuginfod_url}
+
+# Fedora compatibility macros - enables %%{?fedora} conditionals in spec files
+%%fedora              %{fedora_version}
+%%fc%{fedora_version} 1
 EOF
 
 # use unbranded datadir
