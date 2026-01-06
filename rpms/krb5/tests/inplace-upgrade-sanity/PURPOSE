@@ -1,0 +1,3 @@
+PURPOSE of /CoreOS/krb5/Sanity/inplace-upgrade-sanity-test
+Description: Verifies basic scenarios which should work after inplace upgrade.
+Author: Patrik Kis <pkis@redhat.com>

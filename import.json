@@ -307,6 +307,13 @@
     "source": "https://src.fedoraproject.org/rpms/keyutils.git",
     "version": "1.6.3"
   },
+  "krb5": {
+    "branch": "rawhide",
+    "release": "11",
+    "sha": "c2ce5811ff90bf800aa4db73e08d3c4759c3007a",
+    "source": "https://src.fedoraproject.org/rpms/krb5.git",
+    "version": "1.21.3"
+  },
   "libarchive": {
     "branch": "rawhide",
     "release": "1",

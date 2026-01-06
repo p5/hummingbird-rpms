@@ -1,0 +1,17 @@
+---
+inspections:
+  # https://bugzilla.redhat.com/show_bug.cgi?id=1956479
+  badfuncs: off
+
+  # Not a Java package
+  javabytecode: off
+
+  # I need to be able to *add* functions, and also we export internal
+  # functions that are not considered part of our ABI.
+  abidiff: off
+  
+  # These just flag when things change "too much"
+  changedfiles: off
+  filesize: off
+  patches: off
+  upstream: off

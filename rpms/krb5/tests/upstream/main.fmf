@@ -1,0 +1,7 @@
+summary: Run upstream tests
+test: ./test.sh
+enabled: true
+path: /tests/upstream
+require:
+- krb5-tests
+duration: 20m

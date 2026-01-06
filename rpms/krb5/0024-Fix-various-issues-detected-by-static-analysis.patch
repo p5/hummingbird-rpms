@@ -1,0 +1,265 @@
+From 3999883b9745bfd7065d41ff05b19e56bcb2e791 Mon Sep 17 00:00:00 2001
+From: Julien Rische <jrische@redhat.com>
+Date: Fri, 6 Sep 2024 17:18:11 +0200
+Subject: [PATCH] Fix various issues detected by static analysis
+
+In klists's show_credential(), ensure that the column counter doesn't
+decrease if printf() fails.
+
+In process_k5beta7_princ(), bounds-check the e_length field.
+
+In ndr_enc_delegation_info(), initialize b so it is always valid for
+the cleanup handler.
+
+In krb5_dbe_def_decrypt_key_data(), change the flow control so ret is
+always set by the end of the function.  Return KRB5_KDB_INVALIDKEYSIZE
+if there isn't enough data in the first key_data_contents field or if
+the serialized key length is invalid.
+
+In svcauth_gss_validate(), expand rpchdr to accomodate the header plus
+MAX_AUTH_BYTES.
+
+In svcudp_reply(), change slen to unsigned to match the return type of
+XDR_GETPOS() and eliminate an unnecessary check for slen >= 0.
+
+In krb5int_pthread_loaded()(), remove pthread_equal() from the weak
+symbol checks.  It is implemented as an inline function in some glibc
+versions, which makes the comparison "&pthread_equal == 0" always
+false.
+
+[ghudson@mit.edu: further modified krb5_dbe_def_decrypt_key_data() for
+clarity; added detail to commit message]
+
+(cherry picked from commit a96541981ee34c8642ddeb6101b98e883e41c6e5)
+---
+ src/clients/klist/klist.c  | 12 ++++-----
+ src/kadmin/dbutil/dump.c   |  5 ++++
+ src/kdc/ndr.c              |  2 +-
+ src/lib/kdb/decrypt_key.c  | 54 ++++++++++++++++++++------------------
+ src/lib/rpc/svc_auth_gss.c |  5 +++-
+ src/lib/rpc/svc_udp.c      | 13 ++++-----
+ src/util/support/threads.c |  2 --
+ 7 files changed, 51 insertions(+), 42 deletions(-)
+
+diff --git a/src/clients/klist/klist.c b/src/clients/klist/klist.c
+index b5808e5c93..ba9539fd23 100644
+--- a/src/clients/klist/klist.c
++++ b/src/clients/klist/klist.c
+@@ -681,7 +681,7 @@ show_credential(krb5_creds *cred, const char *defname)
+     krb5_error_code ret;
+     krb5_ticket *tkt = NULL;
+     char *name = NULL, *sname = NULL, *tktsname, *flags;
+-    int extra_field = 0, ccol = 0, i;
++    int extra_field = 0, ccol = 0, i, r;
+     krb5_boolean is_config = krb5_is_config_principal(context, cred->server);
+ 
+     ret = krb5_unparse_name(context, cred->client, &name);
+@@ -711,11 +711,11 @@ show_credential(krb5_creds *cred, const char *defname)
+         fputs("config: ", stdout);
+         ccol = 8;
+         for (i = 1; i < cred->server->length; i++) {
+-            ccol += printf("%s%.*s%s",
+-                           i > 1 ? "(" : "",
+-                           (int)cred->server->data[i].length,
+-                           cred->server->data[i].data,
+-                           i > 1 ? ")" : "");
++            r = printf("%s%.*s%s", i > 1 ? "(" : "",
++                       (int)cred->server->data[i].length,
++                       cred->server->data[i].data, i > 1 ? ")" : "");
++            if (r >= 0)
++                ccol += r;
+         }
+         fputs(" = ", stdout);
+         ccol += 3;
+diff --git a/src/kadmin/dbutil/dump.c b/src/kadmin/dbutil/dump.c
+index 4d6cc0bdf9..feb053d834 100644
+--- a/src/kadmin/dbutil/dump.c
++++ b/src/kadmin/dbutil/dump.c
+@@ -704,6 +704,11 @@ process_k5beta7_princ(krb5_context context, const char *fname, FILE *filep,
+ 
+     dbentry->len = u1;
+     dbentry->n_key_data = u4;
++
++    if (u5 > UINT16_MAX) {
++        load_err(fname, *linenop, _("invalid principal extra data size"));
++        goto fail;
++    }
+     dbentry->e_length = u5;
+ 
+     if (kp != NULL) {
+diff --git a/src/kdc/ndr.c b/src/kdc/ndr.c
+index d438408ee2..38be9fe42a 100644
+--- a/src/kdc/ndr.c
++++ b/src/kdc/ndr.c
+@@ -242,7 +242,7 @@ ndr_enc_delegation_info(struct pac_s4u_delegation_info *in, krb5_data *out)
+ {
+     krb5_error_code ret;
+     size_t i;
+-    struct k5buf b;
++    struct k5buf b = EMPTY_K5BUF;
+     struct encoded_wchars pt_encoded = { 0 }, *tss_encoded = NULL;
+     uint32_t pointer = 0;
+ 
+diff --git a/src/lib/kdb/decrypt_key.c b/src/lib/kdb/decrypt_key.c
+index 82bbed6312..21aa3742b1 100644
+--- a/src/lib/kdb/decrypt_key.c
++++ b/src/lib/kdb/decrypt_key.c
+@@ -60,7 +60,7 @@ krb5_dbe_def_decrypt_key_data(krb5_context context, const krb5_keyblock *mkey,
+                               krb5_keyblock *dbkey_out,
+                               krb5_keysalt *keysalt_out)
+ {
+-    krb5_error_code ret;
++    krb5_error_code ret = KRB5_CRYPTO_INTERNAL;
+     int16_t keylen;
+     krb5_enc_data cipher;
+     krb5_data plain = empty_data();
+@@ -74,36 +74,38 @@ krb5_dbe_def_decrypt_key_data(krb5_context context, const krb5_keyblock *mkey,
+     if (mkey == NULL)
+         return KRB5_KDB_BADSTORED_MKEY;
+ 
+-    if (kd->key_data_contents[0] != NULL && kd->key_data_length[0] >= 2) {
+-        keylen = load_16_le(kd->key_data_contents[0]);
+-        if (keylen < 0)
+-            return EINVAL;
+-        cipher.enctype = ENCTYPE_UNKNOWN;
+-        cipher.ciphertext = make_data(kd->key_data_contents[0] + 2,
+-                                      kd->key_data_length[0] - 2);
+-        ret = alloc_data(&plain, kd->key_data_length[0] - 2);
+-        if (ret)
+-            goto cleanup;
++    if (kd->key_data_contents[0] == NULL || kd->key_data_length[0] < 2)
++        return KRB5_KDB_INVALIDKEYSIZE;
+ 
+-        ret = krb5_c_decrypt(context, mkey, 0, 0, &cipher, &plain);
+-        if (ret)
+-            goto cleanup;
++    keylen = load_16_le(kd->key_data_contents[0]);
++    if (keylen < 0)
++        return KRB5_KDB_INVALIDKEYSIZE;
+ 
+-        /* Make sure the plaintext has at least as many bytes as the true ke
+-         * length (it may have more due to padding). */
+-        if ((unsigned int)keylen > plain.length) {
+-            ret = KRB5_CRYPTO_INTERNAL;
+-            if (ret)
+-                goto cleanup;
+-        }
++    cipher.enctype = ENCTYPE_UNKNOWN;
++    cipher.ciphertext = make_data(kd->key_data_contents[0] + 2,
++                                  kd->key_data_length[0] - 2);
++    ret = alloc_data(&plain, kd->key_data_length[0] - 2);
++    if (ret)
++        goto cleanup;
+ 
+-        kb.magic = KV5M_KEYBLOCK;
+-        kb.enctype = kd->key_data_type[0];
+-        kb.length = keylen;
+-        kb.contents = (uint8_t *)plain.data;
+-        plain = empty_data();
++    ret = krb5_c_decrypt(context, mkey, 0, 0, &cipher, &plain);
++    if (ret)
++        goto cleanup;
++
++    /* Make sure the plaintext has at least as many bytes as the true key
++     * length (it may have more due to padding). */
++    if ((unsigned int)keylen > plain.length) {
++        ret = KRB5_CRYPTO_INTERNAL;
++        if (ret)
++            goto cleanup;
+     }
+ 
++    kb.magic = KV5M_KEYBLOCK;
++    kb.enctype = kd->key_data_type[0];
++    kb.length = keylen;
++    kb.contents = (uint8_t *)plain.data;
++    plain = empty_data();
++
+     /* Decode salt data. */
+     if (keysalt_out != NULL) {
+         if (kd->key_data_ver == 2) {
+diff --git a/src/lib/rpc/svc_auth_gss.c b/src/lib/rpc/svc_auth_gss.c
+index 98d601c8ab..4f1d2911b0 100644
+--- a/src/lib/rpc/svc_auth_gss.c
++++ b/src/lib/rpc/svc_auth_gss.c
+@@ -297,7 +297,7 @@ svcauth_gss_validate(struct svc_req *rqst, struct svc_rpc_gss_data *gd, struct r
+ 	struct opaque_auth	*oa;
+ 	gss_buffer_desc		 rpcbuf, checksum;
+ 	OM_uint32		 maj_stat, min_stat, qop_state;
+-	u_char			 rpchdr[128];
++	u_char			 rpchdr[32 + MAX_AUTH_BYTES];
+ 	int32_t			*buf;
+ 
+ 	log_debug("in svcauth_gss_validate()");
+@@ -315,6 +315,8 @@ svcauth_gss_validate(struct svc_req *rqst, struct svc_rpc_gss_data *gd, struct r
+ 		return (FALSE);
+ 
+ 	buf = (int32_t *)(void *)rpchdr;
++
++	/* Write the 32 first bytes of the header. */
+ 	IXDR_PUT_LONG(buf, msg->rm_xid);
+ 	IXDR_PUT_ENUM(buf, msg->rm_direction);
+ 	IXDR_PUT_LONG(buf, msg->rm_call.cb_rpcvers);
+@@ -323,6 +325,7 @@ svcauth_gss_validate(struct svc_req *rqst, struct svc_rpc_gss_data *gd, struct r
+ 	IXDR_PUT_LONG(buf, msg->rm_call.cb_proc);
+ 	IXDR_PUT_ENUM(buf, oa->oa_flavor);
+ 	IXDR_PUT_LONG(buf, oa->oa_length);
++
+ 	if (oa->oa_length) {
+ 		memcpy((caddr_t)buf, oa->oa_base, oa->oa_length);
+ 		buf += RNDUP(oa->oa_length) / sizeof(int32_t);
+diff --git a/src/lib/rpc/svc_udp.c b/src/lib/rpc/svc_udp.c
+index 8ecbdf2b33..3aff277eb7 100644
+--- a/src/lib/rpc/svc_udp.c
++++ b/src/lib/rpc/svc_udp.c
+@@ -248,8 +248,9 @@ static bool_t svcudp_reply(
+ {
+      struct svcudp_data *su = su_data(xprt);
+      XDR *xdrs = &su->su_xdrs;
+-     int slen;
++     u_int slen;
+      bool_t stat = FALSE;
++     ssize_t r;
+ 
+      xdrproc_t xdr_results = NULL;
+      caddr_t xdr_location = 0;
+@@ -272,12 +273,12 @@ static bool_t svcudp_reply(
+      if (xdr_replymsg(xdrs, msg) &&
+ 	 (!has_args ||
+ 	  (SVCAUTH_WRAP(xprt->xp_auth, xdrs, xdr_results, xdr_location)))) {
+-	  slen = (int)XDR_GETPOS(xdrs);
+-	  if (sendto(xprt->xp_sock, rpc_buffer(xprt), slen, 0,
+-		     (struct sockaddr *)&(xprt->xp_raddr), xprt->xp_addrlen)
+-	      == slen) {
++	  slen = XDR_GETPOS(xdrs);
++	  r = sendto(xprt->xp_sock, rpc_buffer(xprt), slen, 0,
++		     (struct sockaddr *)&(xprt->xp_raddr), xprt->xp_addrlen);
++	  if (r >= 0 && (u_int)r == slen) {
+ 	       stat = TRUE;
+-	       if (su->su_cache && slen >= 0) {
++	       if (su->su_cache) {
+ 		    cache_set(xprt, (uint32_t) slen);
+ 	       }
+ 	  }
+diff --git a/src/util/support/threads.c b/src/util/support/threads.c
+index be7e4c2e3f..4ded805b79 100644
+--- a/src/util/support/threads.c
++++ b/src/util/support/threads.c
+@@ -118,7 +118,6 @@ struct tsd_block {
+ # pragma weak pthread_mutex_destroy
+ # pragma weak pthread_mutex_init
+ # pragma weak pthread_self
+-# pragma weak pthread_equal
+ # pragma weak pthread_getspecific
+ # pragma weak pthread_setspecific
+ # pragma weak pthread_key_create
+@@ -151,7 +150,6 @@ int krb5int_pthread_loaded (void)
+         || &pthread_mutex_destroy == 0
+         || &pthread_mutex_init == 0
+         || &pthread_self == 0
+-        || &pthread_equal == 0
+         /* Any program that's really multithreaded will have to be
+            able to create threads.  */
+         || &pthread_create == 0
+-- 
+2.46.0
+

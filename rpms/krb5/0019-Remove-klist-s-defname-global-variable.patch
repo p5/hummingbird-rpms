@@ -1,0 +1,71 @@
+From 05bb6d9c729a3c6a4ba35270368bc0f6e1875ad0 Mon Sep 17 00:00:00 2001
+From: Julien Rische <jrische@redhat.com>
+Date: Mon, 8 Jan 2024 16:52:27 +0100
+Subject: [PATCH] Remove klist's defname global variable
+
+Addition of a "cleanup" section in kinit's show_ccache() function as
+part of commit 6c5471176f5266564fbc8a7e02f03b4b042202f8 introduced a
+double-free bug, because defname is a global variable.  After the
+first call, successive calls may take place with a dangling pointer in
+defname, which will be freed if krb5_cc_get_principal() fails.
+
+Convert "defname" to a local variable initialized at the beginning of
+show_ccache().
+
+[ghudson@mit.edu: edited commit message]
+
+(cherry picked from commit 5b00197227231943bd2305328c8260dd0b0dbcf0)
+---
+ src/clients/klist/klist.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/src/clients/klist/klist.c b/src/clients/klist/klist.c
+index b5ae96a843..b5808e5c93 100644
+--- a/src/clients/klist/klist.c
++++ b/src/clients/klist/klist.c
+@@ -53,7 +53,6 @@ int show_flags = 0, show_time = 0, status_only = 0, show_keys = 0;
+ int show_etype = 0, show_addresses = 0, no_resolve = 0, print_version = 0;
+ int show_adtype = 0, show_all = 0, list_all = 0, use_client_keytab = 0;
+ int show_config = 0;
+-char *defname;
+ char *progname;
+ krb5_timestamp now;
+ unsigned int timestamp_width;
+@@ -62,7 +61,7 @@ krb5_context context;
+ 
+ static krb5_boolean is_local_tgt(krb5_principal princ, krb5_data *realm);
+ static char *etype_string(krb5_enctype );
+-static void show_credential(krb5_creds *);
++static void show_credential(krb5_creds *, const char *);
+ 
+ static void list_all_ccaches(void);
+ static int list_ccache(krb5_ccache);
+@@ -473,6 +472,7 @@ show_ccache(krb5_ccache cache)
+     krb5_creds creds;
+     krb5_principal princ = NULL;
+     krb5_error_code ret;
++    char *defname = NULL;
+     int status = 1;
+ 
+     ret = krb5_cc_get_principal(context, cache, &princ);
+@@ -503,7 +503,7 @@ show_ccache(krb5_ccache cache)
+     }
+     while ((ret = krb5_cc_next_cred(context, cache, &cur, &creds)) == 0) {
+         if (show_config || !krb5_is_config_principal(context, creds.server))
+-            show_credential(&creds);
++            show_credential(&creds, defname);
+         krb5_free_cred_contents(context, &creds);
+     }
+     if (ret == KRB5_CC_END) {
+@@ -676,7 +676,7 @@ print_config_data(int col, krb5_data *data)
+ }
+ 
+ static void
+-show_credential(krb5_creds *cred)
++show_credential(krb5_creds *cred, const char *defname)
+ {
+     krb5_error_code ret;
+     krb5_ticket *tkt = NULL;
+-- 
+2.45.1
+

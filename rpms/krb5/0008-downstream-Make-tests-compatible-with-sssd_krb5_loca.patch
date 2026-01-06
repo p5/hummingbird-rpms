@@ -1,0 +1,41 @@
+From 1da88bea558348be2974470774aa688f8be634c0 Mon Sep 17 00:00:00 2001
+From: Julien Rische <jrische@redhat.com>
+Date: Wed, 7 Dec 2022 13:22:42 +0100
+Subject: [PATCH] [downstream] Make tests compatible with
+ sssd_krb5_locator_plugin.so
+
+The sssd_krb5_locator_plugin.so plugin provided by sssd-client conflicts
+with the upstream test t_discover_uri.py. The test has to be modified in
+order to avoid false positive.
+---
+ src/lib/krb5/os/t_discover_uri.py | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/src/lib/krb5/os/t_discover_uri.py b/src/lib/krb5/os/t_discover_uri.py
+index 87bac17929..26bc95a8dc 100644
+--- a/src/lib/krb5/os/t_discover_uri.py
++++ b/src/lib/krb5/os/t_discover_uri.py
+@@ -1,3 +1,4 @@
++from os.path import exists
+ from k5test import *
+ 
+ entries = ('URI _kerberos.TEST krb5srv::kkdcp:https://kdc1 1 1\n',
+@@ -37,8 +38,14 @@ realm.env['RESOLV_WRAPPER_HOSTS'] = hosts_filename
+ out = realm.run(['./t_locate_kdc', 'TEST'], env=realm.env)
+ l = out.splitlines()
+ 
++if (exists('/usr/lib/krb5/plugins/libkrb5/sssd_krb5_locator_plugin.so')
++    or exists('/usr/lib64/krb5/plugins/libkrb5/sssd_krb5_locator_plugin.so')):
++    line_range = range(6, 14)
++else:
++    line_range = range(4, 12)
++
+ j = 0
+-for i in range(4, 12):
++for i in line_range:
+     if l[i].strip() != expected[j]:
+         fail('URI answers do not match')
+     j += 1
+-- 
+2.45.1
+

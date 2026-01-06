@@ -1,0 +1,19 @@
+summary: Verifies basic scenarios which should work after inplace upgrade.
+enabled: true
+contact: Filip Dvorak <fdvorak@redhat.com>
+component:
+- krb5
+test: ./runtest.sh
+path: /tests/inplace-upgrade-sanity
+framework: beakerlib
+require:
+- expect
+- krb5-server
+- krb5-workstation
+- openssh-clients
+- openssh-server
+- rng-tools
+- setools-console
+duration: 20m
+extra-summary: /CoreOS/krb5/Sanity/inplace-upgrade-sanity-test
+extra-task: /CoreOS/krb5/Sanity/inplace-upgrade-sanity-test

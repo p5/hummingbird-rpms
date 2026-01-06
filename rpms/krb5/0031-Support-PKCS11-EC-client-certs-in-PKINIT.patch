@@ -1,0 +1,1768 @@
+From e7172ce0283b06f5208237535a086424d71d846b Mon Sep 17 00:00:00 2001
+From: Greg Hudson <ghudson@mit.edu>
+Date: Wed, 21 Feb 2024 15:29:02 -0500
+Subject: [PATCH] Support PKCS11 EC client certs in PKINIT
+
+Move the digest computation and DigestInfo encoding from
+cms_signeddata_create() to pkinit_sign_data_pkcs11(), and
+conditionalize the DigestInfo encoding on the key type.  Use CKM_ECDSA
+instead of CKM_RSA_PKCS for EC keys, and convert the resulting
+signature from the PKS11 encoding to the ASN.1 encoding required by
+CMS.
+
+Regenerate the test certificates with an additional EC client cert.
+Add test cases for EC client certs with and without PKCS11.
+
+ticket: 9112 (new)
+(cherry picked from commit f745c9a9bd6c0c73b944182173f1ac305d03dc3a)
+---
+ .../preauth/pkinit/pkinit_crypto_openssl.c    | 319 +++++++++++-------
+ src/tests/pkinit-certs/ca.pem                 |  32 +-
+ src/tests/pkinit-certs/eckey.pem              |   5 +
+ src/tests/pkinit-certs/ecuser.pem             |  24 ++
+ src/tests/pkinit-certs/generic.p12            | Bin 2469 -> 2560 bytes
+ src/tests/pkinit-certs/generic.pem            |  38 +--
+ src/tests/pkinit-certs/kdc.pem                |  32 +-
+ src/tests/pkinit-certs/make-certs.sh          |  11 +-
+ src/tests/pkinit-certs/privkey-enc.pem        |  60 ++--
+ src/tests/pkinit-certs/privkey.pem            |  55 +--
+ src/tests/pkinit-certs/user-enc.p12           | Bin 2829 -> 2920 bytes
+ src/tests/pkinit-certs/user-upn.p12           | Bin 2821 -> 2912 bytes
+ src/tests/pkinit-certs/user-upn.pem           |  32 +-
+ src/tests/pkinit-certs/user-upn2.p12          | Bin 2805 -> 2896 bytes
+ src/tests/pkinit-certs/user-upn2.pem          |  34 +-
+ src/tests/pkinit-certs/user-upn3.p12          | Bin 2821 -> 2912 bytes
+ src/tests/pkinit-certs/user-upn3.pem          |  32 +-
+ src/tests/pkinit-certs/user.p12               | Bin 2829 -> 2920 bytes
+ src/tests/pkinit-certs/user.pem               |  30 +-
+ src/tests/t_pkinit.py                         |  20 ++
+ 20 files changed, 437 insertions(+), 287 deletions(-)
+ create mode 100644 src/tests/pkinit-certs/eckey.pem
+ create mode 100644 src/tests/pkinit-certs/ecuser.pem
+
+diff --git a/src/plugins/preauth/pkinit/pkinit_crypto_openssl.c b/src/plugins/preauth/pkinit/pkinit_crypto_openssl.c
+index da59cb1e02..4accfc2664 100644
+--- a/src/plugins/preauth/pkinit/pkinit_crypto_openssl.c
++++ b/src/plugins/preauth/pkinit/pkinit_crypto_openssl.c
+@@ -93,7 +93,6 @@ struct _pkinit_identity_crypto_context {
+     CK_FUNCTION_LIST_PTR p11;
+     uint8_t *cert_id;
+     size_t cert_id_len;
+-    CK_MECHANISM_TYPE mech;
+ #endif
+     krb5_boolean defer_id_prompt;
+     pkinit_deferred_id *deferred_ids;
+@@ -283,7 +282,6 @@ compat_get0_EC(const EVP_PKEY *pkey)
+ #if OPENSSL_VERSION_NUMBER < 0x30000000L
+ /* OpenSSL 3.0 changes several preferred function names. */
+ #define EVP_PKEY_parameters_eq EVP_PKEY_cmp_parameters
+-#define EVP_MD_CTX_get0_md EVP_MD_CTX_md
+ #define EVP_PKEY_get_size EVP_PKEY_size
+ #define EVP_PKEY_get_bits EVP_PKEY_bits
+ 
+@@ -1683,17 +1681,12 @@ cms_signeddata_create(krb5_context context,
+     STACK_OF(X509) * cert_stack = NULL;
+     ASN1_OCTET_STRING *digest_attr = NULL;
+     EVP_MD_CTX *ctx;
+-    const EVP_MD *md_tmp = NULL;
+-    unsigned char md_data[EVP_MAX_MD_SIZE], md_data2[EVP_MAX_MD_SIZE];
+-    unsigned char *digestInfo_buf = NULL, *abuf = NULL;
+-    unsigned int md_len, md_len2, alen, digestInfo_len;
++    unsigned char md_data[EVP_MAX_MD_SIZE], *abuf = NULL;
++    unsigned int md_len, alen;
+     STACK_OF(X509_ATTRIBUTE) * sk;
+     unsigned char *sig = NULL;
+     unsigned int sig_len = 0;
+     X509_ALGOR *alg = NULL;
+-    ASN1_OCTET_STRING *digest = NULL;
+-    unsigned int alg_len = 0, digest_len = 0;
+-    unsigned char *y = NULL;
+     ASN1_OBJECT *oid = NULL, *oid_copy;
+ 
+     /* Start creating PKCS7 data. */
+@@ -1795,7 +1788,6 @@ cms_signeddata_create(krb5_context context,
+             goto cleanup;
+         EVP_DigestInit_ex(ctx, EVP_sha256(), NULL);
+         EVP_DigestUpdate(ctx, data, data_len);
+-        md_tmp = EVP_MD_CTX_get0_md(ctx);
+         EVP_DigestFinal_ex(ctx, md_data, &md_len);
+         EVP_MD_CTX_free(ctx);
+ 
+@@ -1820,63 +1812,8 @@ cms_signeddata_create(krb5_context context,
+         if (abuf == NULL)
+             goto cleanup2;
+ 
+-#ifndef WITHOUT_PKCS11
+-        /*
+-         * Some tokens can only do RSAEncryption without a hash.  To compute
+-         * sha256WithRSAEncryption, encode the algorithm ID for the hash
+-         * function and the hash value into an ASN.1 value of type DigestInfo:
+-         * DigestInfo ::= SEQUENCE {
+-         *   digestAlgorithm  AlgorithmIdentifier,
+-         *   digest  OCTET STRING
+-         * }
+-         */
+-        if (id_cryptoctx->pkcs11_method == 1 &&
+-            id_cryptoctx->mech == CKM_RSA_PKCS) {
+-            pkiDebug("mech = CKM_RSA_PKCS\n");
+-            ctx = EVP_MD_CTX_new();
+-            if (ctx == NULL)
+-                goto cleanup;
+-            EVP_DigestInit_ex(ctx, md_tmp, NULL);
+-            EVP_DigestUpdate(ctx, abuf, alen);
+-            EVP_DigestFinal_ex(ctx, md_data2, &md_len2);
+-            EVP_MD_CTX_free(ctx);
+-
+-            alg = X509_ALGOR_new();
+-            if (alg == NULL)
+-                goto cleanup2;
+-            X509_ALGOR_set0(alg, OBJ_nid2obj(NID_sha256), V_ASN1_NULL, NULL);
+-            alg_len = i2d_X509_ALGOR(alg, NULL);
+-
+-            digest = ASN1_OCTET_STRING_new();
+-            if (digest == NULL)
+-                goto cleanup2;
+-            ASN1_OCTET_STRING_set(digest, md_data2, (int)md_len2);
+-            digest_len = i2d_ASN1_OCTET_STRING(digest, NULL);
+-
+-            digestInfo_len = ASN1_object_size(1, (int)(alg_len + digest_len),
+-                                              V_ASN1_SEQUENCE);
+-            y = digestInfo_buf = malloc(digestInfo_len);
+-            if (digestInfo_buf == NULL)
+-                goto cleanup2;
+-            ASN1_put_object(&y, 1, (int)(alg_len + digest_len), V_ASN1_SEQUENCE,
+-                            V_ASN1_UNIVERSAL);
+-            i2d_X509_ALGOR(alg, &y);
+-            i2d_ASN1_OCTET_STRING(digest, &y);
+-#ifdef DEBUG_SIG
+-            pkiDebug("signing buffer\n");
+-            print_buffer(digestInfo_buf, digestInfo_len);
+-            print_buffer_bin(digestInfo_buf, digestInfo_len, "/tmp/pkcs7_tosign");
+-#endif
+-            retval = pkinit_sign_data(context, id_cryptoctx, digestInfo_buf,
+-                                      digestInfo_len, &sig, &sig_len);
+-        } else
+-#endif
+-        {
+-            pkiDebug("mech = %s\n",
+-                     id_cryptoctx->pkcs11_method == 1 ? "CKM_SHA256_RSA_PKCS" : "FS");
+-            retval = pkinit_sign_data(context, id_cryptoctx, abuf, alen,
+-                                      &sig, &sig_len);
+-        }
++        retval = pkinit_sign_data(context, id_cryptoctx, abuf, alen,
++                                  &sig, &sig_len);
+ #ifdef DEBUG_SIG
+         print_buffer(sig, sig_len);
+ #endif
+@@ -1930,14 +1867,6 @@ cms_signeddata_create(krb5_context context,
+ 
+ cleanup2:
+     if (p7si) {
+-#ifndef WITHOUT_PKCS11
+-        if (id_cryptoctx->pkcs11_method == 1 &&
+-            id_cryptoctx->mech == CKM_RSA_PKCS) {
+-            free(digestInfo_buf);
+-            if (digest != NULL)
+-                ASN1_OCTET_STRING_free(digest);
+-        }
+-#endif
+         if (alg != NULL)
+             X509_ALGOR_free(alg);
+     }
+@@ -3657,8 +3586,7 @@ cleanup:
+  * Look for a key that's:
+  * 1. private
+  * 2. capable of the specified operation (usually signing or decrypting)
+- * 3. RSA (this may be wrong but it's all we can do for now)
+- * 4. matches the id of the cert we chose
++ * 3. matches the id of the cert we chose
+  *
+  * You must call pkinit_get_certs before calling pkinit_find_private_key
+  * (that's because we need the ID of the private key)
+@@ -3678,7 +3606,6 @@ pkinit_find_private_key(pkinit_identity_crypto_context id_cryptoctx,
+     CK_OBJECT_CLASS cls;
+     CK_ATTRIBUTE attrs[4];
+     CK_ULONG count;
+-    CK_KEY_TYPE keytype;
+     unsigned int nattrs = 0;
+     int r;
+ #ifdef PKINIT_USE_KEY_USAGE
+@@ -3705,12 +3632,6 @@ pkinit_find_private_key(pkinit_identity_crypto_context id_cryptoctx,
+     nattrs++;
+ #endif
+ 
+-    keytype = CKK_RSA;
+-    attrs[nattrs].type = CKA_KEY_TYPE;
+-    attrs[nattrs].pValue = &keytype;
+-    attrs[nattrs].ulValueLen = sizeof keytype;
+-    nattrs++;
+-
+     attrs[nattrs].type = CKA_ID;
+     attrs[nattrs].pValue = id_cryptoctx->cert_id;
+     attrs[nattrs].ulValueLen = id_cryptoctx->cert_id_len;
+@@ -3749,6 +3670,116 @@ pkinit_sign_data_fs(krb5_context context,
+ }
+ 
+ #ifndef WITHOUT_PKCS11
++/*
++ * DER-encode a DigestInfo sequence containing the algorithm md and the digest
++ * mdbytes.
++ *
++ * DigestInfo ::= SEQUENCE {
++ *   digestAlgorithm  AlgorithmIdentifier,
++ *   digest  OCTET STRING
++ * }
++ */
++static krb5_error_code
++encode_digestinfo(krb5_context context, const EVP_MD *md,
++                  const uint8_t *mdbytes, size_t mdlen,
++                  uint8_t **encoding_out, size_t *len_out)
++{
++    krb5_boolean ok = FALSE;
++    X509_ALGOR *alg = NULL;
++    ASN1_OCTET_STRING *digest = NULL;
++    uint8_t *buf, *p;
++    int alg_len, digest_len, len;
++
++    *encoding_out = NULL;
++    *len_out = 0;
++
++    alg = X509_ALGOR_new();
++    if (alg == NULL ||
++        !X509_ALGOR_set0(alg, OBJ_nid2obj(EVP_MD_nid(md)), V_ASN1_NULL, NULL))
++        goto cleanup;
++    alg_len = i2d_X509_ALGOR(alg, NULL);
++    if (alg_len < 0)
++        goto cleanup;
++
++    digest = ASN1_OCTET_STRING_new();
++    if (digest == NULL || !ASN1_OCTET_STRING_set(digest, mdbytes, mdlen))
++        goto cleanup;
++    digest_len = i2d_ASN1_OCTET_STRING(digest, NULL);
++    if (digest_len < 0)
++        goto cleanup;
++
++    len = ASN1_object_size(1, alg_len + digest_len, V_ASN1_SEQUENCE);
++    p = buf = malloc(len);
++    if (buf == NULL)
++        goto cleanup;
++    ASN1_put_object(&p, 1, alg_len + digest_len, V_ASN1_SEQUENCE,
++                    V_ASN1_UNIVERSAL);
++    i2d_X509_ALGOR(alg, &p);
++    i2d_ASN1_OCTET_STRING(digest, &p);
++
++    *encoding_out = buf;
++    *len_out = len;
++    ok = TRUE;
++
++cleanup:
++    X509_ALGOR_free(alg);
++    ASN1_OCTET_STRING_free(digest);
++    if (!ok)
++        return oerr(context, 0, _("Failed to DER encode DigestInfo"));
++    return 0;
++}
++
++/* Extract the r and s values from a PKCS11 ECDSA signature and re-encode them
++ * in the DER representation of an ECDSA-Sig-Value for use in CMS. */
++static krb5_error_code
++convert_pkcs11_ecdsa_sig(krb5_context context,
++                         const uint8_t *p11sig, unsigned int p11siglen,
++                         uint8_t **sig_out, unsigned int *sig_len_out)
++{
++    krb5_boolean ok = FALSE;
++    BIGNUM *r = NULL, *s = NULL;
++    ECDSA_SIG *sig = NULL;
++    int len;
++    uint8_t *p;
++
++    *sig_out = NULL;
++    *sig_len_out = 0;
++
++    if (p11siglen % 2 != 0)
++        return EINVAL;
++
++    /* Extract the r and s values from the PKCS11 signature. */
++    r = BN_bin2bn(p11sig, p11siglen / 2, NULL);
++    s = BN_bin2bn(p11sig + p11siglen / 2, p11siglen / 2, NULL);
++    if (r == NULL || s == NULL)
++        goto cleanup;
++
++    /* Create an ECDSA-Sig-Value object and transfer ownership of r and s. */
++    sig = ECDSA_SIG_new();
++    if (sig == NULL || !ECDSA_SIG_set0(sig, r, s))
++        goto cleanup;
++    r = s = NULL;
++
++    /* DER-encode the ECDSA-Sig-Value object. */
++    len = i2d_ECDSA_SIG(sig, NULL);
++    if (len < 0)
++        goto cleanup;
++    p = *sig_out = malloc(len);
++    if (*sig_out == NULL)
++        goto cleanup;
++    *sig_len_out = len;
++    i2d_ECDSA_SIG(sig, &p);
++    ok = TRUE;
++
++cleanup:
++    BN_free(r);
++    BN_free(s);
++    ECDSA_SIG_free(sig);
++    if (!ok)
++        return oerr(context, 0, _("Failed to convert PKCS11 ECDSA signature"));
++    return 0;
++}
++
+ static krb5_error_code
+ pkinit_sign_data_pkcs11(krb5_context context,
+                         pkinit_identity_crypto_context id_cryptoctx,
+@@ -3757,27 +3788,88 @@ pkinit_sign_data_pkcs11(krb5_context context,
+                         unsigned char **sig,
+                         unsigned int *sig_len)
+ {
++    krb5_error_code ret;
+     CK_OBJECT_HANDLE obj;
+     CK_ULONG len;
+     CK_MECHANISM mech;
+-    unsigned char *cp;
++    CK_SESSION_HANDLE session;
++    CK_FUNCTION_LIST_PTR p11;
++    CK_ATTRIBUTE attr;
++    CK_KEY_TYPE keytype;
++    EVP_MD_CTX *ctx;
++    const EVP_MD *md = EVP_sha256();
++    unsigned int mdlen;
++    uint8_t mdbuf[EVP_MAX_MD_SIZE], *dinfo = NULL, *sigbuf = NULL, *input;
++    size_t dinfo_len, input_len;
+     int r;
+ 
++    *sig = NULL;
++    *sig_len = 0;
++
+     if (pkinit_open_session(context, id_cryptoctx)) {
+         pkiDebug("can't open pkcs11 session\n");
+         return KRB5KDC_ERR_PREAUTH_FAILED;
+     }
++    p11 = id_cryptoctx->p11;
++    session = id_cryptoctx->session;
+ 
+-    pkinit_find_private_key(id_cryptoctx, CKA_SIGN, &obj);
++    ret = pkinit_find_private_key(id_cryptoctx, CKA_SIGN, &obj);
++    if (ret)
++        return ret;
++
++    attr.type = CKA_KEY_TYPE;
++    attr.pValue = &keytype;
++    attr.ulValueLen = sizeof(keytype);
++    r = p11->C_GetAttributeValue(session, obj, &attr, 1);
++    if (r) {
++        pkiDebug("C_GetAttributeValue: %s\n", pkcs11err(r));
++        ret = KRB5KDC_ERR_PREAUTH_FAILED;
++        goto cleanup;
++    }
++
++    /*
++     * We would ideally use CKM_SHA256_RSA_PKCS and CKM_ECDSA_SHA256, but
++     * historically many cards seem to be confused about whether they are
++     * capable of mechanisms or not.  To be safe we compute the digest
++     * ourselves and use CKM_RSA_PKCS and CKM_ECDSA.
++     */
++    ctx = EVP_MD_CTX_new();
++    if (ctx == NULL) {
++        ret = KRB5KDC_ERR_PREAUTH_FAILED;
++        goto cleanup;
++    }
++    EVP_DigestInit_ex(ctx, EVP_sha256(), NULL);
++    EVP_DigestUpdate(ctx, data, data_len);
++    EVP_DigestFinal_ex(ctx, mdbuf, &mdlen);
++    EVP_MD_CTX_free(ctx);
+ 
+-    mech.mechanism = id_cryptoctx->mech;
++    if (keytype == CKK_RSA) {
++        /* For RSA we must also encode the digest in a DigestInfo sequence. */
++        mech.mechanism = CKM_RSA_PKCS;
++        ret = encode_digestinfo(context, md, mdbuf, mdlen, &dinfo, &dinfo_len);
++        if (ret)
++            goto cleanup;
++        input = dinfo;
++        input_len = dinfo_len;
++    } else if (keytype == CKK_EC) {
++        mech.mechanism = CKM_ECDSA;
++        input = mdbuf;
++        input_len = mdlen;
++    } else {
++        ret = KRB5KDC_ERR_PREAUTH_FAILED;
++        k5_setmsg(context, ret,
++                  _("PKCS11 certificate has unsupported key type %lu"),
++                  keytype);
++        goto cleanup;
++    }
+     mech.pParameter = NULL;
+     mech.ulParameterLen = 0;
+ 
+-    if ((r = id_cryptoctx->p11->C_SignInit(id_cryptoctx->session, &mech,
+-                                           obj)) != CKR_OK) {
++    r = p11->C_SignInit(session, &mech, obj);
++    if (r != CKR_OK) {
+         pkiDebug("C_SignInit: %s\n", pkcs11err(r));
+-        return KRB5KDC_ERR_PREAUTH_FAILED;
++        ret = KRB5KDC_ERR_PREAUTH_FAILED;
++        goto cleanup;
+     }
+ 
+     /*
+@@ -3785,28 +3877,38 @@ pkinit_sign_data_pkcs11(krb5_context context,
+      * get that. So guess, and if it's too small, re-malloc.
+      */
+     len = PK_SIGLEN_GUESS;
+-    cp = malloc((size_t) len);
+-    if (cp == NULL)
+-        return ENOMEM;
++    sigbuf = k5alloc(len, &ret);
++    if (sigbuf == NULL)
++        goto cleanup;
+ 
+-    r = id_cryptoctx->p11->C_Sign(id_cryptoctx->session, data,
+-                                  (CK_ULONG) data_len, cp, &len);
++    r = p11->C_Sign(session, input, input_len, sigbuf, &len);
+     if (r == CKR_BUFFER_TOO_SMALL || (r == CKR_OK && len >= PK_SIGLEN_GUESS)) {
+-        free(cp);
++        free(sigbuf);
+         pkiDebug("C_Sign realloc %d\n", (int) len);
+-        cp = malloc((size_t) len);
+-        r = id_cryptoctx->p11->C_Sign(id_cryptoctx->session, data,
+-                                      (CK_ULONG) data_len, cp, &len);
++        sigbuf = k5alloc(len, &ret);
++        if (sigbuf == NULL)
++            goto cleanup;
++        r = p11->C_Sign(session, input, input_len, sigbuf, &len);
+     }
+     if (r != CKR_OK) {
+         pkiDebug("C_Sign: %s\n", pkcs11err(r));
+-        return KRB5KDC_ERR_PREAUTH_FAILED;
++        ret = KRB5KDC_ERR_PREAUTH_FAILED;
++        goto cleanup;
+     }
+-    pkiDebug("sign %d -> %d\n", (int) data_len, (int) len);
+-    *sig_len = len;
+-    *sig = cp;
+ 
+-    return 0;
++    if (keytype == CKK_EC) {
++        /* PKCS11 ECDSA signatures must be re-encoded for CMS. */
++        ret = convert_pkcs11_ecdsa_sig(context, sigbuf, len, sig, sig_len);
++    } else {
++        *sig_len = len;
++        *sig = sigbuf;
++        sigbuf = NULL;
++    }
++
++cleanup:
++    free(dinfo);
++    free(sigbuf);
++    return ret;
+ }
+ #endif
+ 
+@@ -4388,15 +4490,6 @@ pkinit_get_certs_pkcs11(krb5_context context,
+         return 0;
+     }
+ 
+-    /*
+-     * We'd like to use CKM_SHA256_RSA_PKCS for signing if it's available, but
+-     * historically many cards seem to be confused about whether they are
+-     * capable of mechanisms or not. The safe thing seems to be to ignore the
+-     * mechanism list, always use CKM_RSA_PKCS and calculate the sha256 digest
+-     * ourselves.
+-     */
+-    id_cryptoctx->mech = CKM_RSA_PKCS;
+-
+     cls = CKO_CERTIFICATE;
+     attrs[0].type = CKA_CLASS;
+     attrs[0].pValue = &cls;
+diff --git a/src/tests/pkinit-certs/ca.pem b/src/tests/pkinit-certs/ca.pem
+index 63d31c1f5f..6c782bcde5 100644
+--- a/src/tests/pkinit-certs/ca.pem
++++ b/src/tests/pkinit-certs/ca.pem
+@@ -3,27 +3,27 @@ MIIE5TCCA82gAwIBAgIBATANBgkqhkiG9w0BAQsFADCBpzELMAkGA1UEBhMCVVMx
+ FjAUBgNVBAgMDU1hc3NhY2h1c2V0dHMxEjAQBgNVBAcMCUNhbWJyaWRnZTEMMAoG
+ A1UECgwDTUlUMSkwJwYDVQQLDCBJbnNlY3VyZSBQS0lOSVQgS2VyYmVyb3MgdGVz
+ dCBDQTEzMDEGA1UEAwwqcGtpbml0IHRlc3Qgc3VpdGUgQ0E7IGRvIG5vdCB1c2Ug
+-b3RoZXJ3aXNlMB4XDTIxMTAwODIxMTEzMFoXDTMyMDkyMDIxMTEzMFowgacxCzAJ
++b3RoZXJ3aXNlMB4XDTI0MDIxNTA0NTkwN1oXDTM1MDEyODA0NTkwN1owgacxCzAJ
+ BgNVBAYTAlVTMRYwFAYDVQQIDA1NYXNzYWNodXNldHRzMRIwEAYDVQQHDAlDYW1i
+ cmlkZ2UxDDAKBgNVBAoMA01JVDEpMCcGA1UECwwgSW5zZWN1cmUgUEtJTklUIEtl
+ cmJlcm9zIHRlc3QgQ0ExMzAxBgNVBAMMKnBraW5pdCB0ZXN0IHN1aXRlIENBOyBk
+ byBub3QgdXNlIG90aGVyd2lzZTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoC
+-ggEBAM+lV5iaVats0yBFN4FBe6bovloNe3d0F9qMuhKqlECv6cFra75gSGmHJz6t
+-GTK8zITU7sni429azTZC9IQnUt/2lW8dWzpZD1T5Vt1DYvYFqVzjhNfzeEDK88ig
+-ENfzaX/cY2P76arJr0cewGaauzaux8heYW1CjBxWmk6kWq4aD+5jggchvBeOGEE2
+-NkV3MPbXut8fu+3NzuuIG7Z0ilwQv+KUvQ8QQb9VCwdsDh/ERsQ4loC9P4jtuWCJ
+-ikIE78GxDcOMoC1ftJtW/mBCS2iCHipXrp2BDDJMyHxZjHpl0VoDR7koWGtD3sos
+-EwUkXVvWIuKs432h2dXQ+u8HaBsCAwEAAaOCARgwggEUMB0GA1UdDgQWBBT0F6X7
+-1QRftDiSeNSY3bks3nK0IzCB1AYDVR0jBIHMMIHJgBT0F6X71QRftDiSeNSY3bks
+-3nK0I6GBraSBqjCBpzELMAkGA1UEBhMCVVMxFjAUBgNVBAgMDU1hc3NhY2h1c2V0
++ggEBAJv9Sbc2QSbHWnZjk55JfeOdPGUsmKOcT/N7C0/0mOQq4tUCmha7ntpBoIJd
++UBDhMQayG3QHruQX7aogtOx8hoLoLUaNKgxzEZ0OLbDRMc2M+vTDpBROITGI1KPv
++QtthlS4ocqKvqBCze66N9LufzAju61CyKdB3pCykPrgDVVScfsZ1t2zCbK0SF2cf
++ZAdIyCLoGLeQ95/NL3SIx0CX9gU47AVmBkSQ+LExJRhbUSIg+puKbqJ0XVILR1B2
++ezgik2ObFND0hsRUS4v8pKnIDz0HXR2AneTESY+atjbzzelGA2zH86p4tLg0PanQ
++4x4+gpkQhzSr5Cmi3QX4XahSrmUCAwEAAaOCARgwggEUMB0GA1UdDgQWBBSSP/pz
++leX5zVcZ9hpI5GG2eQ+pqjCB1AYDVR0jBIHMMIHJgBSSP/pzleX5zVcZ9hpI5GG2
++eQ+pqqGBraSBqjCBpzELMAkGA1UEBhMCVVMxFjAUBgNVBAgMDU1hc3NhY2h1c2V0
+ dHMxEjAQBgNVBAcMCUNhbWJyaWRnZTEMMAoGA1UECgwDTUlUMSkwJwYDVQQLDCBJ
+ bnNlY3VyZSBQS0lOSVQgS2VyYmVyb3MgdGVzdCBDQTEzMDEGA1UEAwwqcGtpbml0
+ IHRlc3Qgc3VpdGUgQ0E7IGRvIG5vdCB1c2Ugb3RoZXJ3aXNlggEBMAsGA1UdDwQE
+-AwIB/jAPBgNVHRMBAf8EBTADAQH/MA0GCSqGSIb3DQEBCwUAA4IBAQBT2FJVPS+U
+-0MXa1HUOETuUPrVff7VeIvyAPm9IgX1zNbCvktCc4d7ErNB3P5ng8aZz4MKqwzuX
+-HVhUxbF7JKfyUI41lcixPG+k+U9mzBJaozWT+K1OhdUF//mGPxaxe5jyUhDiQArD
+-/6vulX0/B+1iuIa1sCfoeelzqQcYHqhZdWn6bBdcDWNARHIXWs5zPeKA975+d5TW
+-rofE7T8nNQJvcZoVjCSfcYXhP82D/0sA+wPCt3fgbBZdvJ89xwvIlzBtiwC++Zbe
+-37Rt5av0+ykpR7nmh2jyG+ItzE73nYKdBrUI5J6JLSbUcQTw4jeXHwDULUHZ6fXg
+-TBEM2v1VW4Df
++AwIB/jAPBgNVHRMBAf8EBTADAQH/MA0GCSqGSIb3DQEBCwUAA4IBAQAfx04Uqh0D
++myOR1PSqEEbMWJxZXYoESnjjH4Co4doceVBTuKix/2lplD4wcvA7aMXpmkvGfP38
++dPrN1jvGd4bi/djTuxab9qB7rOeswAt+NyVHReUmuIMwgcW1UD7HXErg4EsOMjGD
++2XGhJYxGnwdURmnFwoO3yLLwo5K+C4rqPm3PbnI3W0sCA+IXepQTxuXK3dSplMMm
++0Pejw3es2s3oI9WaD2JRXvFuylw4UWYX+cyFRb+wN55Gh0rPVdxDhKCkbWNt/gTi
++/DbC+5pyQXkmy07OEGrmh4+5ae9hwejr9AukF2IZJB+oFP4i1mt9xyAOXImnWOzB
++SdHD08WHl5Gq
+ -----END CERTIFICATE-----
+diff --git a/src/tests/pkinit-certs/eckey.pem b/src/tests/pkinit-certs/eckey.pem
+new file mode 100644
+index 0000000000..14c2efd2ac
+--- /dev/null
++++ b/src/tests/pkinit-certs/eckey.pem
+@@ -0,0 +1,5 @@
++-----BEGIN PRIVATE KEY-----
++MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQgSB3T7ihe3JUeIKZI
++PCDqATKN/dNugQsaC5AKiBPC6ymhRANCAAQy0E88e1CX16/2wL2T+nE0pmlb7wBM
++0hOh6m3m2uDbVsAIRJfhEjHWsT2ODCoBvGDV6vBeIOUjE/Ro9EwnYBW5
++-----END PRIVATE KEY-----
+diff --git a/src/tests/pkinit-certs/ecuser.pem b/src/tests/pkinit-certs/ecuser.pem
+new file mode 100644
+index 0000000000..585e53d8c5
+--- /dev/null
++++ b/src/tests/pkinit-certs/ecuser.pem
+@@ -0,0 +1,24 @@
++-----BEGIN CERTIFICATE-----
++MIIECDCCAvCgAwIBAgIBBDANBgkqhkiG9w0BAQsFADCBpzELMAkGA1UEBhMCVVMx
++FjAUBgNVBAgMDU1hc3NhY2h1c2V0dHMxEjAQBgNVBAcMCUNhbWJyaWRnZTEMMAoG
++A1UECgwDTUlUMSkwJwYDVQQLDCBJbnNlY3VyZSBQS0lOSVQgS2VyYmVyb3MgdGVz
++dCBDQTEzMDEGA1UEAwwqcGtpbml0IHRlc3Qgc3VpdGUgQ0E7IGRvIG5vdCB1c2Ug
++b3RoZXJ3aXNlMB4XDTI0MDIxNTA0NTkwN1oXDTM1MDEyODA0NTkwN1owSjELMAkG
++A1UEBhMCVVMxFjAUBgNVBAgMDU1hc3NhY2h1c2V0dHMxFDASBgNVBAoMC0tSQlRF
++U1QuQ09NMQ0wCwYDVQQDDAR1c2VyMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE
++MtBPPHtQl9ev9sC9k/pxNKZpW+8ATNIToept5trg21bACESX4RIx1rE9jgwqAbxg
++1erwXiDlIxP0aPRMJ2AVuaOCAWQwggFgMB0GA1UdDgQWBBR5MaRx7ub5YBwsS0CF
++Li18nsl49zCB1AYDVR0jBIHMMIHJgBSSP/pzleX5zVcZ9hpI5GG2eQ+pqqGBraSB
++qjCBpzELMAkGA1UEBhMCVVMxFjAUBgNVBAgMDU1hc3NhY2h1c2V0dHMxEjAQBgNV
++BAcMCUNhbWJyaWRnZTEMMAoGA1UECgwDTUlUMSkwJwYDVQQLDCBJbnNlY3VyZSBQ
++S0lOSVQgS2VyYmVyb3MgdGVzdCBDQTEzMDEGA1UEAwwqcGtpbml0IHRlc3Qgc3Vp
++dGUgQ0E7IGRvIG5vdCB1c2Ugb3RoZXJ3aXNlggEBMAsGA1UdDwQEAwID6DAMBgNV
++HRMBAf8EAjAAMDkGA1UdEQQyMDCgLgYGKwYBBQICoCQwIqANGwtLUkJURVNULkNP
++TaERMA+gAwIBAaEIMAYbBHVzZXIwEgYDVR0lBAswCQYHKwYBBQIDBDANBgkqhkiG
++9w0BAQsFAAOCAQEAfwlONLYPo0BNN2NyQZM3wkoldvFqidcoZiYALOcBcmllMP7H
++XQ/+en4TmbKR0RUJN6AjR9yEo92fHAYOB2L7AzR8AkOiRLjp/Pdg5kUHFTdKenTK
++DvpeiJELz9chk/vaMv1T9qvOwH2bVAyS8GrUc5n0ui5F61PrquLAmm+dpKyHDY60
++DdFaebS2gYsmy4bBv0mgcMZ+ZXnzXYmLNtdVQ3SgVGO7M8eyCqPbe/o0Lw4Gz+l0
++xgpFkptdlEogsOaJBzjrgWyBnWw6MkyyLiSY+iOxFpBGkwCxi1gtQwbcp4gMwaxc
++p5+JPM/JBfglBX1lpRhhxL8EGQvpryN9MT530w==
++-----END CERTIFICATE-----
+diff --git a/src/tests/pkinit-certs/generic.p12 b/src/tests/pkinit-certs/generic.p12
+index 35c27415bcb07c479990133882655bce3fe3bd72..55a248137ca7b82654252808422e97337ed95a6a 100644
+GIT binary patch
+delta 2529
+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
+
+delta 2437
+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
+Dy-<?g
+
+diff --git a/src/tests/pkinit-certs/generic.pem b/src/tests/pkinit-certs/generic.pem
+index 55ebb3dbff..dde7f31a70 100644
+--- a/src/tests/pkinit-certs/generic.pem
++++ b/src/tests/pkinit-certs/generic.pem
+@@ -1,21 +1,21 @@
+ -----BEGIN CERTIFICATE-----
+-MIIDazCCAlOgAwIBAgIBBzANBgkqhkiG9w0BAQsFADCBpzELMAkGA1UEBhMCVVMx
+-FjAUBgNVBAgMDU1hc3NhY2h1c2V0dHMxEjAQBgNVBAcMCUNhbWJyaWRnZTEMMAoG
+-A1UECgwDTUlUMSkwJwYDVQQLDCBJbnNlY3VyZSBQS0lOSVQgS2VyYmVyb3MgdGVz
+-dCBDQTEzMDEGA1UEAwwqcGtpbml0IHRlc3Qgc3VpdGUgQ0E7IGRvIG5vdCB1c2Ug
+-b3RoZXJ3aXNlMB4XDTIxMTAwODIxMTEzMVoXDTMyMDkyMDIxMTEzMVowSjELMAkG
+-A1UEBhMCVVMxFjAUBgNVBAgMDU1hc3NhY2h1c2V0dHMxFDASBgNVBAoMC0tSQlRF
+-U1QuQ09NMQ0wCwYDVQQDDAR1c2VyMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIB
+-CgKCAQEAz6VXmJpVq2zTIEU3gUF7pui+Wg17d3QX2oy6EqqUQK/pwWtrvmBIaYcn
+-Pq0ZMrzMhNTuyeLjb1rNNkL0hCdS3/aVbx1bOlkPVPlW3UNi9gWpXOOE1/N4QMrz
+-yKAQ1/Npf9xjY/vpqsmvRx7AZpq7Nq7HyF5hbUKMHFaaTqRarhoP7mOCByG8F44Y
+-QTY2RXcw9te63x+77c3O64gbtnSKXBC/4pS9DxBBv1ULB2wOH8RGxDiWgL0/iO25
+-YImKQgTvwbENw4ygLV+0m1b+YEJLaIIeKleunYEMMkzIfFmMemXRWgNHuShYa0Pe
+-yiwTBSRdW9Yi4qzjfaHZ1dD67wdoGwIDAQABMA0GCSqGSIb3DQEBCwUAA4IBAQCS
+-OTfZununxFDxuThhIFDWEZ9p2qSqTrxKtKx4CDvdckz4kaKybiNZTW7Dlh6IwWta
+-60eq98WrMHXYlSaN87r95lU0ug2RFJh4uLdq3a5NM/daIIjO0Bo86oC+8EBM961Q
+-mCMe7dn9ngFK92msdqO+wfpAfvhSpBPtAjQovigirheiEoER/ov9t9/3mRi5OTkY
+-8YfKT/z6XJrnOUIB3AgCdGyzSRvWLqLrbh7iAFVrm6Pq6D2nNr+mE9r5u7uFl3r8
+-QeDgp0Unwd1ISWTHZlrP4bq29w7y2O+/2KV04Og8z+4zoGD4nRinuJBUdNqwAXVz
+-dz6pXFWgLRD+9ddI5jB0
++MIIDZjCCAk4CAQgwDQYJKoZIhvcNAQELBQAwgacxCzAJBgNVBAYTAlVTMRYwFAYD
++VQQIDA1NYXNzYWNodXNldHRzMRIwEAYDVQQHDAlDYW1icmlkZ2UxDDAKBgNVBAoM
++A01JVDEpMCcGA1UECwwgSW5zZWN1cmUgUEtJTklUIEtlcmJlcm9zIHRlc3QgQ0Ex
++MzAxBgNVBAMMKnBraW5pdCB0ZXN0IHN1aXRlIENBOyBkbyBub3QgdXNlIG90aGVy
++d2lzZTAeFw0yNDAyMTUwNDU5MDdaFw0zNTAxMjgwNDU5MDdaMEoxCzAJBgNVBAYT
++AlVTMRYwFAYDVQQIDA1NYXNzYWNodXNldHRzMRQwEgYDVQQKDAtLUkJURVNULkNP
++TTENMAsGA1UEAwwEdXNlcjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEB
++AJv9Sbc2QSbHWnZjk55JfeOdPGUsmKOcT/N7C0/0mOQq4tUCmha7ntpBoIJdUBDh
++MQayG3QHruQX7aogtOx8hoLoLUaNKgxzEZ0OLbDRMc2M+vTDpBROITGI1KPvQtth
++lS4ocqKvqBCze66N9LufzAju61CyKdB3pCykPrgDVVScfsZ1t2zCbK0SF2cfZAdI
++yCLoGLeQ95/NL3SIx0CX9gU47AVmBkSQ+LExJRhbUSIg+puKbqJ0XVILR1B2ezgi
++k2ObFND0hsRUS4v8pKnIDz0HXR2AneTESY+atjbzzelGA2zH86p4tLg0PanQ4x4+
++gpkQhzSr5Cmi3QX4XahSrmUCAwEAATANBgkqhkiG9w0BAQsFAAOCAQEAau8fw4h1
++hp4/gp7l+AXvq+9E/a2y2Np+H8BmlRIg8ZLyKjRR6iPjcUwFWUteSSBsFzcc+/5V
++/Qs9gAW4nRIb9zY/sPO3KMAjJGKaP3u8xWkrfVZzaqPkfOWa5RDkh9AtvpN/fVLH
++dC+hC1xlXtjJ/YugJD6OA66sxdyTjR/v++0mqaTQyTI29HqtTc9LUcpbC1OYzxS3
++8vlZZgieRU0UlBvpsR0AqCaTZPgcrIvJ0EVIk6XzgOWJAptAe3tFEVrHtZJAQG04
++TI7NN/zw17O9Sn8NVEB4RSw6CFZeEVBBfCZL99HveEd8WPU0zgYceuVl/UCpQFNi
++Av6/+n+/6KwHXg==
+ -----END CERTIFICATE-----
+diff --git a/src/tests/pkinit-certs/kdc.pem b/src/tests/pkinit-certs/kdc.pem
+index e46afc177f..4f7785854c 100644
+--- a/src/tests/pkinit-certs/kdc.pem
++++ b/src/tests/pkinit-certs/kdc.pem
+@@ -3,27 +3,27 @@ MIIE4TCCA8mgAwIBAgIBAjANBgkqhkiG9w0BAQsFADCBpzELMAkGA1UEBhMCVVMx
+ FjAUBgNVBAgMDU1hc3NhY2h1c2V0dHMxEjAQBgNVBAcMCUNhbWJyaWRnZTEMMAoG
+ A1UECgwDTUlUMSkwJwYDVQQLDCBJbnNlY3VyZSBQS0lOSVQgS2VyYmVyb3MgdGVz
+ dCBDQTEzMDEGA1UEAwwqcGtpbml0IHRlc3Qgc3VpdGUgQ0E7IGRvIG5vdCB1c2Ug
+-b3RoZXJ3aXNlMB4XDTIxMTAwODIxMTEzMFoXDTMyMDkyMDIxMTEzMFowSTELMAkG
++b3RoZXJ3aXNlMB4XDTI0MDIxNTA0NTkwN1oXDTM1MDEyODA0NTkwN1owSTELMAkG
+ A1UEBhMCVVMxFjAUBgNVBAgMDU1hc3NhY2h1c2V0dHMxFDASBgNVBAoMC0tSQlRF
+ U1QuQ09NMQwwCgYDVQQDDANLREMwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEK
+-AoIBAQDPpVeYmlWrbNMgRTeBQXum6L5aDXt3dBfajLoSqpRAr+nBa2u+YEhphyc+
+-rRkyvMyE1O7J4uNvWs02QvSEJ1Lf9pVvHVs6WQ9U+VbdQ2L2Balc44TX83hAyvPI
+-oBDX82l/3GNj++mqya9HHsBmmrs2rsfIXmFtQowcVppOpFquGg/uY4IHIbwXjhhB
+-NjZFdzD217rfH7vtzc7riBu2dIpcEL/ilL0PEEG/VQsHbA4fxEbEOJaAvT+I7blg
+-iYpCBO/BsQ3DjKAtX7SbVv5gQktogh4qV66dgQwyTMh8WYx6ZdFaA0e5KFhrQ97K
+-LBMFJF1b1iLirON9odnV0PrvB2gbAgMBAAGjggFzMIIBbzAdBgNVHQ4EFgQU9Bel
+-+9UEX7Q4knjUmN25LN5ytCMwgdQGA1UdIwSBzDCByYAU9Bel+9UEX7Q4knjUmN25
+-LN5ytCOhga2kgaowgacxCzAJBgNVBAYTAlVTMRYwFAYDVQQIDA1NYXNzYWNodXNl
++AoIBAQCb/Um3NkEmx1p2Y5OeSX3jnTxlLJijnE/zewtP9JjkKuLVApoWu57aQaCC
++XVAQ4TEGsht0B67kF+2qILTsfIaC6C1GjSoMcxGdDi2w0THNjPr0w6QUTiExiNSj
++70LbYZUuKHKir6gQs3uujfS7n8wI7utQsinQd6QspD64A1VUnH7GdbdswmytEhdn
++H2QHSMgi6Bi3kPefzS90iMdAl/YFOOwFZgZEkPixMSUYW1EiIPqbim6idF1SC0dQ
++dns4IpNjmxTQ9IbEVEuL/KSpyA89B10dgJ3kxEmPmrY2883pRgNsx/OqeLS4ND2p
++0OMePoKZEIc0q+Qpot0F+F2oUq5lAgMBAAGjggFzMIIBbzAdBgNVHQ4EFgQUkj/6
++c5Xl+c1XGfYaSORhtnkPqaowgdQGA1UdIwSBzDCByYAUkj/6c5Xl+c1XGfYaSORh
++tnkPqaqhga2kgaowgacxCzAJBgNVBAYTAlVTMRYwFAYDVQQIDA1NYXNzYWNodXNl
+ dHRzMRIwEAYDVQQHDAlDYW1icmlkZ2UxDDAKBgNVBAoMA01JVDEpMCcGA1UECwwg
+ SW5zZWN1cmUgUEtJTklUIEtlcmJlcm9zIHRlc3QgQ0ExMzAxBgNVBAMMKnBraW5p
+ dCB0ZXN0IHN1aXRlIENBOyBkbyBub3QgdXNlIG90aGVyd2lzZYIBATALBgNVHQ8E
+ BAMCA+gwDAYDVR0TAQH/BAIwADBIBgNVHREEQTA/oD0GBisGAQUCAqAzMDGgDRsL
+ S1JCVEVTVC5DT02hIDAeoAMCAQKhFzAVGwZrcmJ0Z3QbC0tSQlRFU1QuQ09NMBIG
+-A1UdJQQLMAkGBysGAQUCAwUwDQYJKoZIhvcNAQELBQADggEBAJZd7v5ZOMs8Y3ht
+-Kmtql8rKs0Jee73gVHYw3LXxJfHjIiNGdexxuWJ6Hy9gFnfwSco+15HP3MxMBkau
+-TKo3i1+Kwf+lc7gIZ0g/CEnYOx2smHGd9yGudWypunYLjGWfH/2M8/Wu1gZDTxQ1
+-pNMQZ2pPLL/C6c6vYpVQJ5cA0RSh/SC5IbOESUpZaFFMYxF5TNz+28/lDr/rN41O
+-miklos6cH5EkJyI0WUqJMk04HHjREl/9RTak8mo/eaqjUMTAOyweSwpaYRCddBOo
+-y1ix9yH0fSBib1+WQ3MAHZHgbgVnu7V2GnB6qMNqRLHoGa03x+5Q1X0QuKxP6iYo
+-9tiGt3k=
++A1UdJQQLMAkGBysGAQUCAwUwDQYJKoZIhvcNAQELBQADggEBAHGR7TUjyGt7IbqD
++MW/MfOkLtvpv1f3MhbRSmYDweGKejh2xQIONC/BlaBA2RWmhJIYTdc8wPRlcC76D
++2HLhBmGyOSy+ZTX/txGhtXm+xzNuhLF95VKDd2Z+06CMe1CptH1fvnf5YaZsUgv4
++nXmRN2i4WWrVHoWsAFCcEM6PqT9j/2485DbjtmoS7nVNvO0UKJs2vGgZYuxgYQsl
++S387YJnSbC3/VjTHGBh+R7oRZ0cBvpviWyp5Xak0kNcWAUSu3Oa1FRYDz6Cw/r7/
++wrTWxMA9W3Ygzeh+JFpYZkj5BNrwFem8UxrM/g2ZvXVS81dKGfA5spEZ/cEsAkU1
++8mWgcJY=
+ -----END CERTIFICATE-----
+diff --git a/src/tests/pkinit-certs/make-certs.sh b/src/tests/pkinit-certs/make-certs.sh
+index 5284f42599..9fb3e41412 100755
+--- a/src/tests/pkinit-certs/make-certs.sh
++++ b/src/tests/pkinit-certs/make-certs.sh
+@@ -116,17 +116,21 @@ extendedKeyUsage = $CLIENT_EKU_LIST
+ [exts_none]
+ EOF
+ 
+-# Generate a private key.
++# Generate an RSA private key and a password-protected PEM file for it..
+ openssl genrsa $KEYSIZE > privkey.pem
+ openssl rsa -in privkey.pem -out privkey-enc.pem -des3 -passout pass:encrypted
+ 
++# Generate an EC private key.
++openssl genpkey -algorithm EC -pkeyopt ec_paramgen_curve:P-256 > eckey.pem
++
+ # Generate a "CA" certificate.
+ SUBJECT=ca openssl req -config openssl.cnf -new -x509 -extensions exts_ca \
+     -set_serial 1 -days $DAYS -key privkey.pem -out ca.pem
+ 
+ serial=2
+ gen_cert() {
+-    SUBJECT=$1 openssl req -config openssl.cnf -new -key privkey.pem -out csr
++    keyfile=${4-privkey.pem}
++    SUBJECT=$1 openssl req -config openssl.cnf -new -key $keyfile -out csr
+     SUBJECT=$1 openssl x509 -extfile openssl.cnf -extensions $2 \
+            -set_serial $serial -days $DAYS -req -CA ca.pem -CAkey privkey.pem \
+            -in csr -out $3
+@@ -152,6 +156,9 @@ gen_cert user exts_client user.pem
+ gen_pkcs12 user.pem user.p12
+ gen_pkcs12 user.pem user-enc.p12 encrypted
+ 
++# Generate an EC client certificate.
++gen_cert user exts_client ecuser.pem eckey.pem
++
+ # Generate a client certificate and PKCS#12 bundle with a UPN SAN.
+ gen_cert user exts_upn_client user-upn.pem
+ gen_pkcs12 user-upn.pem user-upn.p12
+diff --git a/src/tests/pkinit-certs/privkey-enc.pem b/src/tests/pkinit-certs/privkey-enc.pem
+index 29d2f3d38c..fd36246ed4 100644
+--- a/src/tests/pkinit-certs/privkey-enc.pem
++++ b/src/tests/pkinit-certs/privkey-enc.pem
+@@ -1,30 +1,30 @@
+------BEGIN RSA PRIVATE KEY-----
+-Proc-Type: 4,ENCRYPTED
+-DEK-Info: DES-EDE3-CBC,5FFF1E71BFFB65E3
+-
+-p89x5YEL+Mb6IPZXEkkr0KC4Wj+JtgE3VKdTT0wEcRD74QVv+dbbZt62WgmpJtId
+-ph0Ial2z5Mws8L/aTkPdW2H/bEroApLu4TfUV+w67KcWgrc8gOg73d6gEObqx8li
+-qGbs7FC1cI1WfDfnNOnCbD66e5+bTI8fDuchaieNRqzROd9RHhmlBHgylTmf55us
+-laGuwLq2cZk/+Xz0M8PPx07uauGkAK0fyfifn/JR3PsGsE9s334osVQMjbjyT0VE
+-rm8HGm3PvZHHDUnkOh7AGKyEtsIa5fJAULUjugp2lQJqOigC4HVn8a33xfLI0F1+
+-2nH9MZ+Ap1rtI1cJX8CDn/Ij9oFt01scLxynYekYej11zFiR6qHC0sspxu0Yi8l0
+-puBPXCI0GzyF9I53ukjGeibTtssz5yw1r+2oVasR4bvfXczPjqTQCBsPSUayNNhw
+-RgT7k4QTY2OlrK/5XdILBzBlsvfndXgGOwEDw4YE7PMzMmz69vPMK7CfedUqtuXq
+-bGBks58tzeOa4NSfVDOuFLI+LMkoYWMSjPGD/I0trX41xCU+O6PZOnDyt5ZWl1Tm
+-klJpsB7rUcwsP8d4w4QGhyyV6Mo2MTlnTILr4CwwvmDMBch3yzwbfKdeywsFQh0S
+-NMrG3aYNO7csRRTD6aGvYcBCbavWq7Ujsb/fV7SOIS26f4VEqewvOFlFEXm66zaz
+-GJ0IcjtNHYNIIIW4690djxPqlGgbIZTblBSBlT+iOW5HrhXvrLeMmwAPxInU5dK+
+-ypk2MGc4SzemkDi8H9jDW3dwbgcvVD9wn0glhVLQKWvP6F73UUdVEXMCZ+960xnR
+-gxeEwDdIpzXNadWdON1kRbqI2KesRY/XQErGHDOvf2gNSM9V2gPz+5humvcu3mXY
+-r4537On4+IdzetEVtI7D0slgojs+jN8waigpkLFB5RVl8PnzblMuWOkHNA86rrp+
+-h6wNqv9kHLgPjpAyB1l/7w4VqXLXeC4PdaGc2fcpdNWOncUnHROmDmYvdTocqhIF
+-bAsEFV7QZoTgDB7J6vLsmbtfawtHMSb81V/wTJWRrtY/gJCrkJXR2pTYAZlPX6vK
+-aK7K2NuhJFMnrQD+kxsrloSEyfsZmHtk0mAVXJw4wSxlH3eGQ+Jphb/M2wtsnWV1
+-w0fehxL2Vd5SyBBctAGhUirhRngbOO/E8IioymrziQ88vJZs2DxvbuNG4WKTuTwj
+-CIggXohCNKdqrwL2HAynm2FVEWhbKrQwe4kjZc64WjccR4cy9vv+dxFfrKl+vZ1o
+-Wvb0WXND7fiSBrPo7OfaYM5HjrcvIRP1AtMuArhuQYVARmawUG0l7dFLN97Rh9M+
+-Ud9vBIfQYlubnTGVVm/5xrUh2isQbp2vrZLfMrUNXMQm0vSxKgGkAxqNUuklJC06
+-LvCtEWMYXiBmB1zP4khwCHmHB+/E1gHBAutCzhpPu86ayEtNHBHIFkqKvZSg/UuZ
+-+ygDdTJV00I2neIdeQcyG+vPg6huIDIHpG5u6eQn5sLqVkhr+apeNcskMWpdkpFS
+-Lo62KUZDR3yB83ne63c3IGex0hWhVojJOAxykpGp6OD9uFn6Xn7x2Q==
+------END RSA PRIVATE KEY-----
++-----BEGIN ENCRYPTED PRIVATE KEY-----
++MIIFHDBOBgkqhkiG9w0BBQ0wQTApBgkqhkiG9w0BBQwwHAQIBw7aG13XYxwCAggA
++MAwGCCqGSIb3DQIJBQAwFAYIKoZIhvcNAwcECPWyEPoKz4WhBIIEyKHdx+pkDxax
++dCCUZHsJ54boZxh+7f7xmO9Rjm+6+3cE+WCjPsiGHPUDtOXLxWwcrG0RAmA1GmrE
++yZbclwEMF8LcWQ3EUDMCJXBs7CEtA4XDH+EW1KsZwP+cA53ZFFikGj3sW6Ix5GLi
++Df311Eumhp3GABU57siNn+tMZJAorInth5lXBJFQoE3KJbBrSN9iQKZTOpgr4G3B
++G+qzBwrUKnZrGIp42t8op4VkB8sA6xoHh/huJB5pNygt9OZUQ+xdxvNQq+5/kJ2I
++mP/JRPSuN4GtnNA4fBB6tPv8t0L8hActkWlQ1rSJwWnWge3t4r5/3FBcAbl+zq3k
++t8A0LWgjsiQRmlKRN7GrzorOUKFv+7YAq6rc1Ek79qitUgEiFkwZZySt5+yPstMW
++vpaq2V0yDHf5Ds9uXffprhSAjnfXdT4NTg5eMeH65OEedUpVVzHauoGfFkDGaq8L
++8XgWPZPaz6GQFpU5SGk8FZn0OLLJHnHQDYo+ViL2XSuuqY8Jd7fmpzqVoHOU8k9Q
++/ONKW+E6uvkpNH6NbknceA/ip1bcdfwA/uRBckXjCc5uR0oB18M4UQPuKlcGev39
++mcdlvzQJxl2EWbB8ULazzuzOVfCAEwKc96qOkDAY94CB69f/KhBOd2QqHzdxrQ+3
+++K+YduhbfP49Vxaq4NIklS/kSSv4GEBHzEwtFxX4oqN4Er+UkBSB423nvlkSLd1g
++tR4M30lJyzmHtOEpSOZYLakviz36ZOCV/DsxrfziNG/0RB/mPLm/B5L+StqjJrTY
++Pjo3QHKb+6ShhTi+jZ8tqXa68+TZO3Q7eTgqrcn8mq9jfama0KQF/13kmUsrFXTS
++wk/nbSP10z+MhO68z7o3j+Q0Co/cXkQke4slvc3DqLNvpQdDMPLKQVxtkPBq5czr
++dbk5K2GYFLNWO5Tv2RgBGomznoAGSolz5ozIqxffVHAK4NGfhihgLO/6GujDANVz
++EX/2/IacRg0L0x7//O/GHomiFvWYnDbHhRNicERe/ji1TCxJ5glqntFjOXDumwi6
++f+mQWNWlQWtKq0IOnlHrBB+vqykAj+e+FROqJjuNI6hu4CNnrBK3Hf+NY+rXdn7l
++iCTD3ojdufqo0JDZe8dXea+B7Zu7WNAxnpW8D018DJxR2hoBvT4Po1CBaHLfxAkT
++ZGeXMjp1vZ348xBSppFpIpYjFRQBeBgSezzA66o3YIcDeHu2bTzg73DiUXNgV3RG
++OyJHmsOmN9Gax/Cx4z6/Ff7seisXpIMRU9TDrRCFKAcPHXAl3R4L6guK0I5OGwz3
++GSMxsx3PGitj0x+1ynW/Tf+EJQD33ognc+kuQfNL0XW2tNJoibZIs1WgdbDwD9RD
++X7rbb9GfSJlQUnBFG/EKU7SGmFZUVMz7we8vckZ1PfeIKfH7OWrZ2i1WxIF2WO1K
++BX4TXp0KKt+aCwf1GInQ/6aYgh5g8W2iKuz2HJeZIN+ohciNmpOynsFmHGXdbvnO
++Kw+msZEQb5AvhXf4ToiSwZLSwq3qAILN8fOQQ9ta1DjJuUtITpe6ys9xhlnriUkm
++KrY50GkimLdD6XszC2uNulAuh3o0nZplqxC9IOLh+uasEU/+xqtwTaaYBljTpH2C
++8FPAEFFUVy6lsngJEQvdjw==
++-----END ENCRYPTED PRIVATE KEY-----
+diff --git a/src/tests/pkinit-certs/privkey.pem b/src/tests/pkinit-certs/privkey.pem
+index 007b6275df..2a25dc19cf 100644
+--- a/src/tests/pkinit-certs/privkey.pem
++++ b/src/tests/pkinit-certs/privkey.pem
+@@ -1,27 +1,28 @@
+------BEGIN RSA PRIVATE KEY-----
+-MIIEoAIBAAKCAQEAz6VXmJpVq2zTIEU3gUF7pui+Wg17d3QX2oy6EqqUQK/pwWtr
+-vmBIaYcnPq0ZMrzMhNTuyeLjb1rNNkL0hCdS3/aVbx1bOlkPVPlW3UNi9gWpXOOE
+-1/N4QMrzyKAQ1/Npf9xjY/vpqsmvRx7AZpq7Nq7HyF5hbUKMHFaaTqRarhoP7mOC
+-ByG8F44YQTY2RXcw9te63x+77c3O64gbtnSKXBC/4pS9DxBBv1ULB2wOH8RGxDiW
+-gL0/iO25YImKQgTvwbENw4ygLV+0m1b+YEJLaIIeKleunYEMMkzIfFmMemXRWgNH
+-uShYa0PeyiwTBSRdW9Yi4qzjfaHZ1dD67wdoGwIDAQABAoIBAEpnKYMR0h6xyNjo
+-VGIpT6BYB1UHPbVo0N9Ly6TCoIqpPe5DioDVyTye5A4OQlgu1G3ISqPme6478ApA
+-ZZMw7/42QgdlknnOzbKaAWkZK02Sa8RP9hrXL8CvuDisOjzXCHd7RdXevzSmPfsS
+-5sgdK3YFnKqMPwbCcKf61CHXvHJjWGuTIHIRh8P7gJelA4ahO0kYQ8aRXv3ldquO
+-ukSI5gyk9CN+aAHqt25kEmt9oOgk+8kfKpnk+5gkOCY2YOFDDckD7nL1VIIrDxwG
+-SmU598qjVwycDairWUY8uSuPCOLgbvDM9N8cERDMsyNQL63GE8ZZyHZsJ3Pbwdfs
+-JVHh5ekCgYEA/CwhaT9D0WQ49GQdeI7aqazHEYDmqPdE2/qbmr67tPMZzX8AAk9j
+-r4aMT+oIdtIMPdoQNNcBP6NYZLlAoMbLoAzHmWJnF5/YWLnS2Wg9OuXUOBn3jk1l
+-SWelJfAKGeBld5fpSLTdHjRAwJrNCX+mc0IZIiEw2IvGUPgKGX08bX8CgYEA0swx
+-xCDgvfoaKueInw/rUIcKxrSxK3pDhaR01Dg2pwSo7Vj9W01zf33qe+mjma6+U2SB
+-fk+/O2VXDuEOmVDLwvp6PkmUeRE5PyH7urTMEjy5ELNGiZd9zHoG/zJnRgPwTjuW
+-yguvjVGJwI1IvmODuA7Xc7iHFlvGNuxXZjPkS2UCgYA0nFxoIdvbTsaXLl/7rAow
+-xixOGY+GBvil0HYwZcSxrtpeRjXRRZDtqOuTLKeRaqdFLD6fV5AaH9EsSn4STQdk
+-n+XwuVf61M2FTVeRJi9IH3UUM06zsLAGDYqmDJt+5JMmzVnNYnaTe6FazbEjXy9x
+-8oNd3IDdXOQGNomc4cT+rwKBgBbABOr25Wp7cJGK1XrdO/c/69DQNYLMujbVLeqt
+-enCCFz0uaoGNFVcAHutqpsZyToYvha49KxVc9Y1cirfPOX58i+7nAAgk7Lm8kC9x
+-Tcj2Fr8PqiA1YlVMIi8uoGi1Ch1XXwnFQxgMYcKPPPeXQ+L8bxJFKwcltnm8/h3A
+-ofXlAn9AW6fYZLSzOfNQTMnuukhuAtZcEW9NlJHbej305zK89J66S8wroQs5iOla
+-5GG+S4YaZh5sVGw+mnS+FCw7cQCUk40kXwX3yTrxlX1qGSCFCQnFdJow+5NVg4D+
+-dzDKzniH71OZZFxTqiiz76XxiaW/rS1uOfP/WSVR9NBLpV5n
+------END RSA PRIVATE KEY-----
++-----BEGIN PRIVATE KEY-----
++MIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQCb/Um3NkEmx1p2
++Y5OeSX3jnTxlLJijnE/zewtP9JjkKuLVApoWu57aQaCCXVAQ4TEGsht0B67kF+2q
++ILTsfIaC6C1GjSoMcxGdDi2w0THNjPr0w6QUTiExiNSj70LbYZUuKHKir6gQs3uu
++jfS7n8wI7utQsinQd6QspD64A1VUnH7GdbdswmytEhdnH2QHSMgi6Bi3kPefzS90
++iMdAl/YFOOwFZgZEkPixMSUYW1EiIPqbim6idF1SC0dQdns4IpNjmxTQ9IbEVEuL
++/KSpyA89B10dgJ3kxEmPmrY2883pRgNsx/OqeLS4ND2p0OMePoKZEIc0q+Qpot0F
+++F2oUq5lAgMBAAECggEADwzB9vY6FPa46KE01dm7VqGN+SjzVR24rQIbFkzAD4t/
++tRN6MGVLrz0TsmA0YFyJsV6vvWMcYY9Zc8eSDRr6k1i5PYxTGT5k3aVHjT6xsmY+
++tCzIANmE5FWSRnrIFYh1ry1h2gZejbXzYeT6TrvdIKOEepWl6SIR6eiy0Ggp7G7C
++SjlpT96ZtdE2RnlvcxcACtwhe3vPbkLmTCOEqeZ6LHCHIHiK4KdJgJ08OjU7Kgsr
+++vmnwTJsH5s0b5IIznfWajO4JNOpqjzFDjDctGYBwp5xF4zu3u4bKe9aleM0q/jl
++ZkibxLsFAh3Xkh89nxr3E6oBLm0F8r8M7PK5wpMShQKBgQDAipf6T6XUY+ugkKw+
++301LyoAch6WV9oT6uOJsAttmcUpUr6NXhRT3OM4oqyYsAc5JW2wbz+n6lED3j6Ez
++QEKSIFrYpjrYr9D7hqvISI9JT0PhVSPXECfifEyIR9xmLvV9WQq7NRCJMi26X9ab
++Grqpw1HNlPA/rdcc/dY0p25DlwKBgQDPZqxSnwnTa6X+r0UdR8l6kc9VuESotpbE
++0ziF222bpXmZ2GKiEU1buFORHih/e3yDvKvq+p2apyUKnEEVQg/TL8/Jzya7fEOI
++lTXcNQ/f78ef+nwEAxdRVQkWXFWHvvKUHm1rGCIY7zeOLnQ9JjBQkgG8zhUamAP1
++owLBBTstYwKBgQC+yNX9Du0HvpbdfF1g0025OwekvXiDV0m/UnHxiwcxxDJeJceZ
++0mHK8nu9apGha4ynvbIrAOMdC8gwRh76NMOCHhNGt7h5vAU9Jt2S0OtCPgvJ/N5N
++nVGYJ4iCRYqLqh5QvWlXxSYEfDc5hPuWp26tBsBJEDrbLnuH27JkbD9jMwKBgQCM
++f1VFMw+I9WehvEHpr/PA4H2/5/A7ClXgR+YGZ7s8sUBLA9btSyNIevnBWNi+Y3za
++ETm1GMkjNw9UvL0qFXJ68eylHXtzjp6BK/MslZWHcfudWCYi4aUuJ5jcWPhn2Oaj
++iGk/Hz4Z/hN4cee0dOZN7lrW+BQ7y7cC88at00lfWQKBgQC7YeW02aUPw9jMJh1x
++lDfBh+E5sdRwRQIvh3BuyTd+m/LI+3b9RSy+LIL2KFJucwKm9zR9fy33tHF2S5En
++Q+inhyXfOEygal5Rzxe3Pfx+pGZbzr6IXkhquHtjuFBwJJCrSeR66V2xDmzJfCj4
++TY+CzwOJ/EltH4ZjPwEmE0S7+w==
++-----END PRIVATE KEY-----
+diff --git a/src/tests/pkinit-certs/user-enc.p12 b/src/tests/pkinit-certs/user-enc.p12
+index 1cc3aa3da67160fd9298b9e2d624a80c5225245b..69780bf82d1452d5dcac91e5be550f5eee876583 100644
+GIT binary patch
+delta 2892
+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
+
+delta 2800
+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
+Cv^tIe
+
+diff --git a/src/tests/pkinit-certs/user-upn.p12 b/src/tests/pkinit-certs/user-upn.p12
+index bf47384a8a654fa77d9d9161c801292292ccf4ab..e91cc8a0c04869d6cf9d66f5b1b051e9f3f6ac58 100644
+GIT binary patch
+delta 2884
+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
+
+delta 2792
+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
+
+diff --git a/src/tests/pkinit-certs/user-upn.pem b/src/tests/pkinit-certs/user-upn.pem
+index 14a11831d7..7dcd716cbb 100644
+--- a/src/tests/pkinit-certs/user-upn.pem
++++ b/src/tests/pkinit-certs/user-upn.pem
+@@ -1,28 +1,28 @@
+ -----BEGIN CERTIFICATE-----
+-MIIExTCCA62gAwIBAgIBBDANBgkqhkiG9w0BAQsFADCBpzELMAkGA1UEBhMCVVMx
++MIIExTCCA62gAwIBAgIBBTANBgkqhkiG9w0BAQsFADCBpzELMAkGA1UEBhMCVVMx
+ FjAUBgNVBAgMDU1hc3NhY2h1c2V0dHMxEjAQBgNVBAcMCUNhbWJyaWRnZTEMMAoG
+ A1UECgwDTUlUMSkwJwYDVQQLDCBJbnNlY3VyZSBQS0lOSVQgS2VyYmVyb3MgdGVz
+ dCBDQTEzMDEGA1UEAwwqcGtpbml0IHRlc3Qgc3VpdGUgQ0E7IGRvIG5vdCB1c2Ug
+-b3RoZXJ3aXNlMB4XDTIxMTAwODIxMTEzMVoXDTMyMDkyMDIxMTEzMVowSjELMAkG
++b3RoZXJ3aXNlMB4XDTI0MDIxNTA0NTkwN1oXDTM1MDEyODA0NTkwN1owSjELMAkG
+ A1UEBhMCVVMxFjAUBgNVBAgMDU1hc3NhY2h1c2V0dHMxFDASBgNVBAoMC0tSQlRF
+ U1QuQ09NMQ0wCwYDVQQDDAR1c2VyMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIB
+-CgKCAQEAz6VXmJpVq2zTIEU3gUF7pui+Wg17d3QX2oy6EqqUQK/pwWtrvmBIaYcn
+-Pq0ZMrzMhNTuyeLjb1rNNkL0hCdS3/aVbx1bOlkPVPlW3UNi9gWpXOOE1/N4QMrz
+-yKAQ1/Npf9xjY/vpqsmvRx7AZpq7Nq7HyF5hbUKMHFaaTqRarhoP7mOCByG8F44Y
+-QTY2RXcw9te63x+77c3O64gbtnSKXBC/4pS9DxBBv1ULB2wOH8RGxDiWgL0/iO25
+-YImKQgTvwbENw4ygLV+0m1b+YEJLaIIeKleunYEMMkzIfFmMemXRWgNHuShYa0Pe
+-yiwTBSRdW9Yi4qzjfaHZ1dD67wdoGwIDAQABo4IBVjCCAVIwHQYDVR0OBBYEFPQX
+-pfvVBF+0OJJ41JjduSzecrQjMIHUBgNVHSMEgcwwgcmAFPQXpfvVBF+0OJJ41Jjd
+-uSzecrQjoYGtpIGqMIGnMQswCQYDVQQGEwJVUzEWMBQGA1UECAwNTWFzc2FjaHVz
++CgKCAQEAm/1JtzZBJsdadmOTnkl94508ZSyYo5xP83sLT/SY5Cri1QKaFrue2kGg
++gl1QEOExBrIbdAeu5BftqiC07HyGgugtRo0qDHMRnQ4tsNExzYz69MOkFE4hMYjU
++o+9C22GVLihyoq+oELN7ro30u5/MCO7rULIp0HekLKQ+uANVVJx+xnW3bMJsrRIX
++Zx9kB0jIIugYt5D3n80vdIjHQJf2BTjsBWYGRJD4sTElGFtRIiD6m4puonRdUgtH
++UHZ7OCKTY5sU0PSGxFRLi/ykqcgPPQddHYCd5MRJj5q2NvPN6UYDbMfzqni0uDQ9
++qdDjHj6CmRCHNKvkKaLdBfhdqFKuZQIDAQABo4IBVjCCAVIwHQYDVR0OBBYEFJI/
+++nOV5fnNVxn2GkjkYbZ5D6mqMIHUBgNVHSMEgcwwgcmAFJI/+nOV5fnNVxn2Gkjk
++YbZ5D6mqoYGtpIGqMIGnMQswCQYDVQQGEwJVUzEWMBQGA1UECAwNTWFzc2FjaHVz
+ ZXR0czESMBAGA1UEBwwJQ2FtYnJpZGdlMQwwCgYDVQQKDANNSVQxKTAnBgNVBAsM
+ IEluc2VjdXJlIFBLSU5JVCBLZXJiZXJvcyB0ZXN0IENBMTMwMQYDVQQDDCpwa2lu
+ aXQgdGVzdCBzdWl0ZSBDQTsgZG8gbm90IHVzZSBvdGhlcndpc2WCAQEwCwYDVR0P
+ BAQDAgPoMAwGA1UdEwEB/wQCMAAwKwYDVR0RBCQwIqAgBgorBgEEAYI3FAIDoBIM
+ EHVzZXJAa3JidGVzdC5jb20wEgYDVR0lBAswCQYHKwYBBQIDBDANBgkqhkiG9w0B
+-AQsFAAOCAQEAYTW8tzURX2s8vuDawXEJt2as5q2MnvhUmG0YPIvK4n2fODkMW/I9
+-XENFhK8wwQJNdzvBUwXUXzEGjFcGPs672ZVzykRb7sAfGlNu1f15z0KrjyUj82oz
+-/gWoLwdYwZnO8jqtKjGtnLi2MeWjVCoiUW5ypUGwtEdcyZUG0PeRUrdrZu5cm+iZ
+-1B1exR4lepR1iSAPYTNhp5VF6T8BSLf2BO2IKTgFnF4Xx1vyZZTsY10mruZ8S1ZR
+-XiajBVdHkN1BpWWyFKt1BCt0dpRx9W7CihC3Ln9fBCsY8QA969EjRhszG2i09Xxw
+-0M6/UgIQRU6hy7QTlcmehDKY0zvVJ2/RLw==
++AQsFAAOCAQEAbe5/xDlFplE/h6BSqXSftjyiPgRlmPPkuTwiKHfmHYHv+KXHBDFY
++wuGDu4Tdh/qisskXJGoKYfRsOox6AW3ZTcklkjvVw0V73nPo+98USWYTzKq7NriF
++rJ9skYALu/Yv6q8iEoziOyDG55LppWne5KH0Of5ctikZVthxDnjm/saSR1lNa+8A
++gB6x9uid73qw+seg1/DoOdb+uHGnKBeSUrJC9vtdfodYdeatNFDDNoxqjGPajDNT
++TGI2ace2yZAgD/ic1MzI/s2eTHfzzO+puJIPzLScdy80RYMeILQs9g+x5NhOUuMz
++YMVFE0PAQLshVggtJ9l8fmHmrrJXP9BAWw==
+ -----END CERTIFICATE-----
+diff --git a/src/tests/pkinit-certs/user-upn2.p12 b/src/tests/pkinit-certs/user-upn2.p12
+index 69ca648aab9f1c5ffe34387459d45eb45bb04922..e29ff5412baae7789086283866a5c44bf2419ea3 100644
+GIT binary patch
+delta 2868
+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
+S1PFt)bqU_LN^6M%0tf&&^grJK
+
+delta 2776
+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
+
+diff --git a/src/tests/pkinit-certs/user-upn2.pem b/src/tests/pkinit-certs/user-upn2.pem
+index baef41a5ac..b2d8c1dd81 100644
+--- a/src/tests/pkinit-certs/user-upn2.pem
++++ b/src/tests/pkinit-certs/user-upn2.pem
+@@ -1,28 +1,28 @@
+ -----BEGIN CERTIFICATE-----
+-MIIEuTCCA6GgAwIBAgIBBTANBgkqhkiG9w0BAQsFADCBpzELMAkGA1UEBhMCVVMx
++MIIEuTCCA6GgAwIBAgIBBjANBgkqhkiG9w0BAQsFADCBpzELMAkGA1UEBhMCVVMx
+ FjAUBgNVBAgMDU1hc3NhY2h1c2V0dHMxEjAQBgNVBAcMCUNhbWJyaWRnZTEMMAoG
+ A1UECgwDTUlUMSkwJwYDVQQLDCBJbnNlY3VyZSBQS0lOSVQgS2VyYmVyb3MgdGVz
+ dCBDQTEzMDEGA1UEAwwqcGtpbml0IHRlc3Qgc3VpdGUgQ0E7IGRvIG5vdCB1c2Ug
+-b3RoZXJ3aXNlMB4XDTIxMTAwODIxMTEzMVoXDTMyMDkyMDIxMTEzMVowSjELMAkG
++b3RoZXJ3aXNlMB4XDTI0MDIxNTA0NTkwN1oXDTM1MDEyODA0NTkwN1owSjELMAkG
+ A1UEBhMCVVMxFjAUBgNVBAgMDU1hc3NhY2h1c2V0dHMxFDASBgNVBAoMC0tSQlRF
+ U1QuQ09NMQ0wCwYDVQQDDAR1c2VyMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIB
+-CgKCAQEAz6VXmJpVq2zTIEU3gUF7pui+Wg17d3QX2oy6EqqUQK/pwWtrvmBIaYcn
+-Pq0ZMrzMhNTuyeLjb1rNNkL0hCdS3/aVbx1bOlkPVPlW3UNi9gWpXOOE1/N4QMrz
+-yKAQ1/Npf9xjY/vpqsmvRx7AZpq7Nq7HyF5hbUKMHFaaTqRarhoP7mOCByG8F44Y
+-QTY2RXcw9te63x+77c3O64gbtnSKXBC/4pS9DxBBv1ULB2wOH8RGxDiWgL0/iO25
+-YImKQgTvwbENw4ygLV+0m1b+YEJLaIIeKleunYEMMkzIfFmMemXRWgNHuShYa0Pe
+-yiwTBSRdW9Yi4qzjfaHZ1dD67wdoGwIDAQABo4IBSjCCAUYwHQYDVR0OBBYEFPQX
+-pfvVBF+0OJJ41JjduSzecrQjMIHUBgNVHSMEgcwwgcmAFPQXpfvVBF+0OJJ41Jjd
+-uSzecrQjoYGtpIGqMIGnMQswCQYDVQQGEwJVUzEWMBQGA1UECAwNTWFzc2FjaHVz
++CgKCAQEAm/1JtzZBJsdadmOTnkl94508ZSyYo5xP83sLT/SY5Cri1QKaFrue2kGg
++gl1QEOExBrIbdAeu5BftqiC07HyGgugtRo0qDHMRnQ4tsNExzYz69MOkFE4hMYjU
++o+9C22GVLihyoq+oELN7ro30u5/MCO7rULIp0HekLKQ+uANVVJx+xnW3bMJsrRIX
++Zx9kB0jIIugYt5D3n80vdIjHQJf2BTjsBWYGRJD4sTElGFtRIiD6m4puonRdUgtH
++UHZ7OCKTY5sU0PSGxFRLi/ykqcgPPQddHYCd5MRJj5q2NvPN6UYDbMfzqni0uDQ9
++qdDjHj6CmRCHNKvkKaLdBfhdqFKuZQIDAQABo4IBSjCCAUYwHQYDVR0OBBYEFJI/
+++nOV5fnNVxn2GkjkYbZ5D6mqMIHUBgNVHSMEgcwwgcmAFJI/+nOV5fnNVxn2Gkjk
++YbZ5D6mqoYGtpIGqMIGnMQswCQYDVQQGEwJVUzEWMBQGA1UECAwNTWFzc2FjaHVz
+ ZXR0czESMBAGA1UEBwwJQ2FtYnJpZGdlMQwwCgYDVQQKDANNSVQxKTAnBgNVBAsM
+ IEluc2VjdXJlIFBLSU5JVCBLZXJiZXJvcyB0ZXN0IENBMTMwMQYDVQQDDCpwa2lu
+ aXQgdGVzdCBzdWl0ZSBDQTsgZG8gbm90IHVzZSBvdGhlcndpc2WCAQEwCwYDVR0P
+ BAQDAgPoMAwGA1UdEwEB/wQCMAAwHwYDVR0RBBgwFqAUBgorBgEEAYI3FAIDoAYM
+-BHVzZXIwEgYDVR0lBAswCQYHKwYBBQIDBDANBgkqhkiG9w0BAQsFAAOCAQEAAsGC
+-LvikD/nW3eOym4f/uuKBscOGSByP9/HoP8QwvnLYU00i5n+zXSTQctotHIifsRc4
+-xHLO8xemJp7rm0h/27C1Wo5AVxJ0cmnDKQf8Ast+QXsz9ZeaeKLa5D8sDOfnZXJB
+-aMTb8ChjyZz+KLjXV0VbaVkY95mfqsOoJQcl9wHhNdDOygnSucvA5Svlrbo2rlKt
+-75OJZJJWrZxuaBuuSYNpCKyyg61t69hPoDKDQZ8QJZHGugWqQ2swYe9dZpUYy5xV
+-CGTLCAk9ZOn8hTCC6xbNaJFjflIjcjpwabw0r986/9GeAF6KqSNbMXKaY4LLuk/8
+-5FH9S8/3F56ZCNxbZQ==
++BHVzZXIwEgYDVR0lBAswCQYHKwYBBQIDBDANBgkqhkiG9w0BAQsFAAOCAQEAFN2R
++gVMM5HNoXuwBPcpNsP5AVSoQRTAv6UUxAjTPLGH5mE6LGW8/JxM0R5x0PdVyU3u7
++zq4qa10XdGJpSt94cD6m7R61Sw6ru9PBtHmB0oUfkWRa2+SJpjmcwyc86W0XRBhr
++OhD0QGOnF1hGyTYzPViGxRZFVMiqXsWuAJ4i6uTyyPeeN+UuehQ3SsVEA1csrKMy
++dNT7FKQBvUTBnSZ9rxphGBrw/NZQyG74KxG5W3Nsnq89VK6+ESJcsUOT55WrHRwE
++CwKoeX+otyj8ptOwKaaje0DZnSXTXqEag4G4PgH4ovd+ehad0JaE4jtQTm+Vy15W
++cwHSMGSA+Kq1Hsqhhw==
+ -----END CERTIFICATE-----
+diff --git a/src/tests/pkinit-certs/user-upn3.p12 b/src/tests/pkinit-certs/user-upn3.p12
+index 9aabc3a897b48600e25bd7513579b258bc1d46ed..93a30422bde5576dd03b9b04cb4686b470ba4292 100644
+GIT binary patch
+delta 2884
+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
+
+delta 2792
+zcmV<E3K#X@7KIifFoFvK0s#Xsf(pk52`Yw2hW8Bt2LYgh3b+J<3bZhS3b2tPJAZf9
+zI=UuMTHFEx2mpYB1t=3txK!FOZvGINz!^t~^pShD-<Eqzi`e#g5K#q@!I4NI3qaG2
+z*qD=hc1{@;%M2?2EVndQsh5U2FU2y>_>MN{htcbO{qC=J&uM?~NGanbgE-J*^bff<
+zUL85U4k$LojjclJ{^#hk69ix0P=6p3{W=cW@;J}jXSEPY*K)tO<RY~btdV5Mp0mEi
+zd-BTF-exYG?Tc)i@%b4z-?T+5qBB$NXunnu7W!j)gY~GHuT^v~OQJhguRE#>5KXO=
+zDp34gOZf$JI>T(od;fQLTl{d}D?LMSYm|boNM<?~$LJ`%{=d#9I|(Jj@_#=LD<y_~
+zPG(YC4aeuj$}4&S8Ms)oAIi-Y$FwNY*~e8x?gX>-&DpOI*gNxdhZ}bdPsP-V3jIx6
+zS#YC|Y%#Qcz2<ygbGI-oR&uHuuIoTtgDWYC{r;wfp<^gdgozK3aw-!>$cGZXgSwA(
+zp^gh0BF&;oP;t5r`vDq}MSpv(oTT?XWo$BF3HTfG#Cm-G$X#COyar;r`l_yWRsuyp
+zjrLZxM$<L0lY0-2|JicpodEhW-KIA(I*oC@?3bTiPH<*_SJa>trJR(FC|;&F1_fvv
+zlT~jFp~Eovc#$rZ%#NJT+P;E<dxrqN4lUeDZ@Qu@BLHFc*DM}4%YW9#>f80Oaf9R{
+zOpW_P@)6@t2VYKWW}3x8$#CYa;%anc&G^~Ur2V-rd#L>n7J)~*jORUD0N#m1LiDFl
+zB&?Q*64N(fqjrGx*oF|qZ|R<>da*~kLSkj=XRG<@r3LG9Z`*3FTNX%lmC5B4T~(J>
+zFv-n}iKXB3?7ZeYuYc&9GS74XBxDCRdBBF|yIE$fUxbe0K(Obu;3tumH)59PWVH*+
+zz+FmMZ^+~l+V!l1r0ZO}N2<6B_PMH&?VYqs=-<hSIPDKQ?7~$?6Iu4+B+^H7(}Q~{
+zt;xxa>LS%mX1X@sp)x{beSD;A)~7{YY~TU-k$-{C;hMVpNq;mVqC$gb{2Xtz#6@FT
+z{VWSY?mme#0Q8+1Z2R$5&R0^uNckWNtn&l62raaz_Rv@fJ}H`<mZK@33>6N<Gz5T8
+z5o!$^TOKwIEV_!?rBCl2B57S!w&DtV@@T=n&(;yfV7HPHv>6&t$-qmQZi<VqWQ&4i
+zU%vLxsY^{qY=5$tN%ovTxH&bfW$Js*hdi3y&p)tR!WjC*)|Ds<_<NGx+?`gs=dx&X
+zPAQ8HZtYf<v<GLcOMnbMo%C?{+YCtCznX5u+sCadPaAGVt+vhmleJqNWYE>`0V~WS
+z!noU8xPAZ|(OodN!Y_ylW^%s>!I$n`^*O|{`Nql$VSjtzYgo;WtVGwfOGr;9?$|xB
+zcs%xxE&&}izyxcgm)2gfVyWCAT`*z4tvURt&T~Yv;4D~@cMQ$sbGeT!7+;p0p5QBw
+zMU{9IVf{eaHyT}&Q{kmv1!msC>y;CP;=8GdD!=>6MDu6%gpdLzN`zEs=jdV7SuMgm
+zSef9I4u8xGa&@P0{hVpaizD*w9ysr@;s~)?UPY$$=xMStm%-8_cVQq(W*E)bMfTx~
+ztiPTUhk1JJr{K03M<MKdz$Z-NM0`c}jkS!E*rjZ6hyZgL;))|jj$a3W!v7P<{&XdS
+za1RpAGt7afGNo?`XZ|&sUB3vWe9T$^=c4qEr+>HZ?_uNADjS{qhZS>Plq2pIDcZSe
+zpdVNTFx+6=J0GuhMj`dM%6hP<l<u!iusF_Bdbx<=ACp;@Y`s8x$D&CzFoFd+1_>&L
+zNQU<f0S5t~f(0rBf(0fpf(0Tlf(0H13o3?4hW8Bt3<?1Ppn?SEFoFc)FdPO7Duzgg
+z_kRrm3;_c$4g?7K%`T3l<@I6$0tf&Ef&{>r;S>kF`=lUV`cN+L-;%3g5Ai66u6H%n
+zyfg~`$Gs>R{QVz)tROl(k}JU-jqD62a~NzC212U{n)$nAgsnGjoPsM7R6NMA=VGH`
+z1j%@$TqOIpqreVYF{_P#Ld?sZIQVS;Qh)J`TkyOxjU_HwSFW=@1+yU&O+4(~e1pZW
+zdrC+`8zsTaGDfQt#7I&Pa#$O{DyBOl>_Jl1(9c*lL@BH;OO#5bXtm5nX3C~*Pn69s
+z(^4r6qXFwhf*ZDy)ZtW;)ENRkjc|#NpZ6iL<woUVtHh&|R?8g_qU5m-MkNYTet$(#
+zyJ!4TWt&hjHjmf%`BsYr73?qnuue8m>J2cnU$Z46(*w{@+^tC{nR=N4%9T-0{S0Vv
+zuITX0>W_bbsp#~8>rIdGj%n76kYuf?>yX)bEPeHczbHA2m#H;(n|w!Q4IVX6sU98{
+zOlrpj6Q_77iXS2=oFm3wmI_q=!GG|ZxMyJfm@W36)BqdDmFEysiCoWFs0h{Aeqqmk
+z8T93$tHeqtTnPI#ZNj;&P@qq&2+!E8(q%k0HF{#(jwR}m)3Lz()!)7BPi*u-*p#b3
+zrLNe1(4tB%&d^e8d{#t$ImMt?Vq-)VFbRK@T_Yiahm~7)-B&pd8gxPtU4O8w+P>aQ
+zP9X72&~lV9$Qpdl3;-#jyHYb%NM)NxL<bMhDMv%<wE4YutMjd%1W2hj`&XnAwJ8EC
+z*Agtv+loQIAh}><$lo(9#%8c!mweqK8`i&|Ky0)}^G8PW(W%*6#;qkrM4%*TGa!?K
+zU|cE2f76znLD#xzxyn;rmw)6%EH1ek2QS*J((#_RgTyYO#?@-CqoKDk8tM{t+BZ0R
+zg9e9H38hKach1c+6Xf9Da}2?$V5Rk*R98)aLVp2^8bXx7{A@Q2pHfZvEV%u|jMOGg
+z|5PWJ_$G1qmwVcOOVwerb<|Tx^TT^v%SaCo(O%3gTXbk?e!y16>VF;94g#dwH|PI-
+z&D1MMKVRu0{ryL$acyjbc`LtxcnT{VX0HU%g2@&XrH+ZW=-~P<pXDDe7JrPgw6)Mw
+zL68)m{RjfF?Tf2z7A{H+4d=U_y<XWLtalg9u+mwq72ZFFuJ_mu?ec1LlwlG<8~rER
+zcfn0S*cHAy8#iSU{eQ)swmP0(GgZjkY3S<li1kWcpx{dTu^UhU60?jCk_~3ugA1M{
+zPtaKDYH1~KB?jPDbrDBZt`FKM_*9D)kmSq$^Kc`Xg`XFY+J(Ua+`QY%x$2F8RJ%F?
+zd2?E|L^=KVN@V<v6=CRo;2@0XDY2W6LlNx@eh2eU%8n)_Xn#*49_%2NEFw7iei(x9
+z!-j441`ti6SA&WV`GV9+k*=c-<fuV!7f{)$mRgRj-F421B`EEbqo4*aE{bxUex6`M
+z6pJlov0XmMh$ToDRQne77!tmuWn3Yk<10lX8pTX>-Jc7{3rh)|t*!EFi!P9*YBAtW
+zbu`)yVVz9dAb+fy*IJEkVq7w={{*u3gh?3@!<u+^AmxIeZFVKT;=*CHnNqiJXxxR@
+zK;GVvS>K+(YG^T3vjiU}7w=Z08`s6Gaw5p<uny@|Zyi$#Hy4lH@z#IQJda-vcya@^
+zI;-6KF(oh~1_>&LNQU<f0SOf`76cS9@g^tl=&liDBR#MNfw;BX$Xi4$FflM8FbM_)
+uD-Ht!8U+9Z6v!4MIfn!wLYbfw(;^ds(gM9-V+07Ul!P?WIu(in0tf(rB|=XC
+
+diff --git a/src/tests/pkinit-certs/user-upn3.pem b/src/tests/pkinit-certs/user-upn3.pem
+index 000d567d87..618f005267 100644
+--- a/src/tests/pkinit-certs/user-upn3.pem
++++ b/src/tests/pkinit-certs/user-upn3.pem
+@@ -1,28 +1,28 @@
+ -----BEGIN CERTIFICATE-----
+-MIIExTCCA62gAwIBAgIBBjANBgkqhkiG9w0BAQsFADCBpzELMAkGA1UEBhMCVVMx
++MIIExTCCA62gAwIBAgIBBzANBgkqhkiG9w0BAQsFADCBpzELMAkGA1UEBhMCVVMx
+ FjAUBgNVBAgMDU1hc3NhY2h1c2V0dHMxEjAQBgNVBAcMCUNhbWJyaWRnZTEMMAoG
+ A1UECgwDTUlUMSkwJwYDVQQLDCBJbnNlY3VyZSBQS0lOSVQgS2VyYmVyb3MgdGVz
+ dCBDQTEzMDEGA1UEAwwqcGtpbml0IHRlc3Qgc3VpdGUgQ0E7IGRvIG5vdCB1c2Ug
+-b3RoZXJ3aXNlMB4XDTIxMTAwODIxMTEzMVoXDTMyMDkyMDIxMTEzMVowSjELMAkG
++b3RoZXJ3aXNlMB4XDTI0MDIxNTA0NTkwN1oXDTM1MDEyODA0NTkwN1owSjELMAkG
+ A1UEBhMCVVMxFjAUBgNVBAgMDU1hc3NhY2h1c2V0dHMxFDASBgNVBAoMC0tSQlRF
+ U1QuQ09NMQ0wCwYDVQQDDAR1c2VyMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIB
+-CgKCAQEAz6VXmJpVq2zTIEU3gUF7pui+Wg17d3QX2oy6EqqUQK/pwWtrvmBIaYcn
+-Pq0ZMrzMhNTuyeLjb1rNNkL0hCdS3/aVbx1bOlkPVPlW3UNi9gWpXOOE1/N4QMrz
+-yKAQ1/Npf9xjY/vpqsmvRx7AZpq7Nq7HyF5hbUKMHFaaTqRarhoP7mOCByG8F44Y
+-QTY2RXcw9te63x+77c3O64gbtnSKXBC/4pS9DxBBv1ULB2wOH8RGxDiWgL0/iO25
+-YImKQgTvwbENw4ygLV+0m1b+YEJLaIIeKleunYEMMkzIfFmMemXRWgNHuShYa0Pe
+-yiwTBSRdW9Yi4qzjfaHZ1dD67wdoGwIDAQABo4IBVjCCAVIwHQYDVR0OBBYEFPQX
+-pfvVBF+0OJJ41JjduSzecrQjMIHUBgNVHSMEgcwwgcmAFPQXpfvVBF+0OJJ41Jjd
+-uSzecrQjoYGtpIGqMIGnMQswCQYDVQQGEwJVUzEWMBQGA1UECAwNTWFzc2FjaHVz
++CgKCAQEAm/1JtzZBJsdadmOTnkl94508ZSyYo5xP83sLT/SY5Cri1QKaFrue2kGg
++gl1QEOExBrIbdAeu5BftqiC07HyGgugtRo0qDHMRnQ4tsNExzYz69MOkFE4hMYjU
++o+9C22GVLihyoq+oELN7ro30u5/MCO7rULIp0HekLKQ+uANVVJx+xnW3bMJsrRIX
++Zx9kB0jIIugYt5D3n80vdIjHQJf2BTjsBWYGRJD4sTElGFtRIiD6m4puonRdUgtH
++UHZ7OCKTY5sU0PSGxFRLi/ykqcgPPQddHYCd5MRJj5q2NvPN6UYDbMfzqni0uDQ9
++qdDjHj6CmRCHNKvkKaLdBfhdqFKuZQIDAQABo4IBVjCCAVIwHQYDVR0OBBYEFJI/
+++nOV5fnNVxn2GkjkYbZ5D6mqMIHUBgNVHSMEgcwwgcmAFJI/+nOV5fnNVxn2Gkjk
++YbZ5D6mqoYGtpIGqMIGnMQswCQYDVQQGEwJVUzEWMBQGA1UECAwNTWFzc2FjaHVz
+ ZXR0czESMBAGA1UEBwwJQ2FtYnJpZGdlMQwwCgYDVQQKDANNSVQxKTAnBgNVBAsM
+ IEluc2VjdXJlIFBLSU5JVCBLZXJiZXJvcyB0ZXN0IENBMTMwMQYDVQQDDCpwa2lu
+ aXQgdGVzdCBzdWl0ZSBDQTsgZG8gbm90IHVzZSBvdGhlcndpc2WCAQEwCwYDVR0P
+ BAQDAgPoMAwGA1UdEwEB/wQCMAAwKwYDVR0RBCQwIqAgBgorBgEEAYI3FAIDoBIM
+ EHVzZXJAS1JCVEVTVC5DT00wEgYDVR0lBAswCQYHKwYBBQIDBDANBgkqhkiG9w0B
+-AQsFAAOCAQEApwXjFJ86RLM4MzbScqk0JGqm+jzaFZ6h5oyt0rlaxdhOl7kqOmIE
+-sLhXtvZm75roA+UULZHumB6xg3Y0p7cc6VBAYYycWoNkhWXZMdQ8Q33vMos5cwLY
+-kXjl4oTDK53goh8IlriRMV7Tv/QpJ8wh+7iqQn3lak0Tv51JexYGwp5sJREYm8q5
+-rr3ChlgH7SWF8mhbu2EEiipm0whEqA4tlNKGBsTQBslnm8sK0VfVDcmLOGbMNjRs
+-r+Hkd8yVvhIJ9M+WAp/OeF2vUzPBJtAfIaJBxcZmKtNI5Jk8cK/vScJZboa0qAAz
+-2Y1uC9rP830mpOe0juhV2mMPron0hi1HaA==
++AQsFAAOCAQEASLN4+MiZUQwBzQ3ezt1B8Zx8jHL7a16s1H5v1J2Dwne/pM/risjg
++ZAlv65IlKEp2E6cqcmCPajlZ967vJr1qC+OSV2AZuL8HZlg+ISacoII9T97X9/UJ
++AJfOWBN6y0DQ7s6OLSunf0+mAw+LKmFoIQeO5+DvU4chEYkcs6NbbAos/He1Wgq/
++RTz9J3EhGuoDVgqq/avrTsgW9HyrHsG+Y/6n4cX2lq+VV7h8fG91hC073Rz9QMFY
++q/pBqFqIE/FrgA4YbpOrSx6m+eOyFSAWTLtmlJmROiNYo4ZuGmBtrDntet+YK75A
++8Rsfbapjn4SKJzgJseVgUbEEMOFcugQBfQ==
+ -----END CERTIFICATE-----
+diff --git a/src/tests/pkinit-certs/user.p12 b/src/tests/pkinit-certs/user.p12
+index e5520110248530c55338c80fd44414eaa262c4a8..0f854cae6f033d0630e8f49ad14e11f330c0ad6b 100644
+GIT binary patch
+delta 2892
+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
+
+delta 2800
+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
+Cp*q$8
+
+diff --git a/src/tests/pkinit-certs/user.pem b/src/tests/pkinit-certs/user.pem
+index 182ea599ac..7493de52c1 100644
+--- a/src/tests/pkinit-certs/user.pem
++++ b/src/tests/pkinit-certs/user.pem
+@@ -3,26 +3,26 @@ MIIE0zCCA7ugAwIBAgIBAzANBgkqhkiG9w0BAQsFADCBpzELMAkGA1UEBhMCVVMx
+ FjAUBgNVBAgMDU1hc3NhY2h1c2V0dHMxEjAQBgNVBAcMCUNhbWJyaWRnZTEMMAoG
+ A1UECgwDTUlUMSkwJwYDVQQLDCBJbnNlY3VyZSBQS0lOSVQgS2VyYmVyb3MgdGVz
+ dCBDQTEzMDEGA1UEAwwqcGtpbml0IHRlc3Qgc3VpdGUgQ0E7IGRvIG5vdCB1c2Ug
+-b3RoZXJ3aXNlMB4XDTIxMTAwODIxMTEzMFoXDTMyMDkyMDIxMTEzMFowSjELMAkG
++b3RoZXJ3aXNlMB4XDTI0MDIxNTA0NTkwN1oXDTM1MDEyODA0NTkwN1owSjELMAkG
+ A1UEBhMCVVMxFjAUBgNVBAgMDU1hc3NhY2h1c2V0dHMxFDASBgNVBAoMC0tSQlRF
+ U1QuQ09NMQ0wCwYDVQQDDAR1c2VyMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIB
+-CgKCAQEAz6VXmJpVq2zTIEU3gUF7pui+Wg17d3QX2oy6EqqUQK/pwWtrvmBIaYcn
+-Pq0ZMrzMhNTuyeLjb1rNNkL0hCdS3/aVbx1bOlkPVPlW3UNi9gWpXOOE1/N4QMrz
+-yKAQ1/Npf9xjY/vpqsmvRx7AZpq7Nq7HyF5hbUKMHFaaTqRarhoP7mOCByG8F44Y
+-QTY2RXcw9te63x+77c3O64gbtnSKXBC/4pS9DxBBv1ULB2wOH8RGxDiWgL0/iO25
+-YImKQgTvwbENw4ygLV+0m1b+YEJLaIIeKleunYEMMkzIfFmMemXRWgNHuShYa0Pe
+-yiwTBSRdW9Yi4qzjfaHZ1dD67wdoGwIDAQABo4IBZDCCAWAwHQYDVR0OBBYEFPQX
+-pfvVBF+0OJJ41JjduSzecrQjMIHUBgNVHSMEgcwwgcmAFPQXpfvVBF+0OJJ41Jjd
+-uSzecrQjoYGtpIGqMIGnMQswCQYDVQQGEwJVUzEWMBQGA1UECAwNTWFzc2FjaHVz
++CgKCAQEAm/1JtzZBJsdadmOTnkl94508ZSyYo5xP83sLT/SY5Cri1QKaFrue2kGg
++gl1QEOExBrIbdAeu5BftqiC07HyGgugtRo0qDHMRnQ4tsNExzYz69MOkFE4hMYjU
++o+9C22GVLihyoq+oELN7ro30u5/MCO7rULIp0HekLKQ+uANVVJx+xnW3bMJsrRIX
++Zx9kB0jIIugYt5D3n80vdIjHQJf2BTjsBWYGRJD4sTElGFtRIiD6m4puonRdUgtH
++UHZ7OCKTY5sU0PSGxFRLi/ykqcgPPQddHYCd5MRJj5q2NvPN6UYDbMfzqni0uDQ9
++qdDjHj6CmRCHNKvkKaLdBfhdqFKuZQIDAQABo4IBZDCCAWAwHQYDVR0OBBYEFJI/
+++nOV5fnNVxn2GkjkYbZ5D6mqMIHUBgNVHSMEgcwwgcmAFJI/+nOV5fnNVxn2Gkjk
++YbZ5D6mqoYGtpIGqMIGnMQswCQYDVQQGEwJVUzEWMBQGA1UECAwNTWFzc2FjaHVz
+ ZXR0czESMBAGA1UEBwwJQ2FtYnJpZGdlMQwwCgYDVQQKDANNSVQxKTAnBgNVBAsM
+ IEluc2VjdXJlIFBLSU5JVCBLZXJiZXJvcyB0ZXN0IENBMTMwMQYDVQQDDCpwa2lu
+ aXQgdGVzdCBzdWl0ZSBDQTsgZG8gbm90IHVzZSBvdGhlcndpc2WCAQEwCwYDVR0P
+ BAQDAgPoMAwGA1UdEwEB/wQCMAAwOQYDVR0RBDIwMKAuBgYrBgEFAgKgJDAioA0b
+ C0tSQlRFU1QuQ09NoREwD6ADAgEBoQgwBhsEdXNlcjASBgNVHSUECzAJBgcrBgEF
+-AgMEMA0GCSqGSIb3DQEBCwUAA4IBAQAOBeCDK6Eg6Cu8TZ7xeAw2AbTpaW04nNSV
+-Fmm0aIskMgLl2a5KEmalG7rnArRXv5IZVYFjJ6X0MzjOx+BgaGUCvN8jz1fuO3Hp
+-iGhxPDzKjFMWJeY/z5bQRueSI6RCC8DzH8iPdlPUQ8ZhnukhY1Vt47wqraf197uT
+-0XP21qQr1uRY+ZcLSBKZuKe9ZP3ijh57MOLvYDdAFxVp77JLznpk+oU18ujAtYgZ
+-7naIGYtSQRkIi970jk82hSpc9B/KN8UcDuo+DQHWPQaDf39s30qoxooZBoue5ipp
+-LQHuVaX5Hoi83cWbsVluce/JsW8GfbuC8+8CosAmzJly183f8++9
++AgMEMA0GCSqGSIb3DQEBCwUAA4IBAQBRWsxPb9miF9xf8rEIfVko0qBy8doEJsPE
++IVD9Jz/Ml/TBZRLbi1b94l15Fto/Z6XKf8jrnBs4krf6tU2D5PUZXZYZ6tr/2kkY
++IpmoOkEoQX8gtcZfaq2OJzsKHnAJT159EVydyYahHU66i4aNvho74oAafrVTyk8B
++PHCHFs0MUct8DoNwrbnfH0cjqEdVOmjjvBN0yA+RxOa543XnQqkSmCuIJKoD6pUa
++07rE372iERgIjDnzCogiEo9cCBBqDfgsbr0ah1QbWJTJvnsFuxT43tBNurRjNPoX
++Jj6xAzhQLCuvqtKtWlAUOHut18YbVGXVT+3tm7+C6iA44JvMl9m1
+ -----END CERTIFICATE-----
+diff --git a/src/tests/t_pkinit.py b/src/tests/t_pkinit.py
+index 4435746429..91d4630a0a 100755
+--- a/src/tests/t_pkinit.py
++++ b/src/tests/t_pkinit.py
+@@ -7,8 +7,10 @@ if not pkinit_enabled:
+ 
+ # Construct a krb5.conf fragment configuring pkinit.
+ user_pem = os.path.join(pkinit_certs, 'user.pem')
++ecuser_pem = os.path.join(pkinit_certs, 'ecuser.pem')
+ privkey_pem = os.path.join(pkinit_certs, 'privkey.pem')
+ privkey_enc_pem = os.path.join(pkinit_certs, 'privkey-enc.pem')
++privkey_ec_pem = os.path.join(pkinit_certs, 'eckey.pem')
+ user_p12 = os.path.join(pkinit_certs, 'user.p12')
+ user_enc_p12 = os.path.join(pkinit_certs, 'user-enc.p12')
+ user_upn_p12 = os.path.join(pkinit_certs, 'user-upn.p12')
+@@ -42,6 +44,7 @@ alias_kdc_conf = {'realms': {'$realm': {
+ 
+ file_identity = 'FILE:%s,%s' % (user_pem, privkey_pem)
+ file_enc_identity = 'FILE:%s,%s' % (user_pem, privkey_enc_pem)
++ec_identity = 'FILE:%s,%s' % (ecuser_pem, privkey_ec_pem)
+ dir_identity = 'DIR:%s' % path
+ dir_enc_identity = 'DIR:%s' % path_enc
+ dir_file_identity = 'FILE:%s,%s' % (os.path.join(path, 'user.crt'),
+@@ -177,6 +180,11 @@ for g in ('4096', 'P-256', 'P-384', 'P-521'):
+     realm.pkinit(realm.user_princ, expected_trace=('PKINIT using ' + g,),
+                  env=group_env)
+ 
++# Test with an EC client cert.
++mark('EC client cert')
++realm.kinit(realm.user_princ,
++            flags=['-X', 'X509_user_identity=%s' % ec_identity])
++
+ # Try using multiple configured pkinit_identities, to make sure we
+ # fall back to the second one when the first one cannot be read.
+ id_conf = {'realms': {'$realm': {'pkinit_identities': [file_identity + 'X',
+@@ -446,4 +454,16 @@ realm.run(['./responder', '-X', p11_attr,
+ realm.klist(realm.user_princ)
+ realm.run([kvno, realm.host_princ])
+ 
++mark('PKCS11 identity, EC client cert')
++shutil.rmtree(softhsm2_tokens)
++os.mkdir(softhsm2_tokens)
++realm.run(tool_cmd + ['--init-token', '--label', 'user',
++                      '--so-pin', 'sopin', '--init-pin', '--pin', 'userpin'])
++realm.run(tool_cmd + ['-w', ecuser_pem, '-y', 'cert'])
++realm.run(tool_cmd + ['-w', privkey_ec_pem, '-y', 'privkey',
++                      '-l', '--pin', 'userpin'])
++realm.kinit(realm.user_princ, flags=['-X', p11_attr], password='userpin')
++realm.klist(realm.user_princ)
++realm.run([kvno, realm.host_princ])
++
+ success('PKINIT tests')
+-- 
+2.47.1
+
