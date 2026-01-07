@@ -70,12 +70,11 @@ mkdir -p sources
 # Create directory for mock buildroot on host filesystem (avoids overlayfs xattr issues)
 mkdir -p var_lib_mock
 
-# Allow mockbuilder (group mock) to read config and write results
+# Allow mockbuilder (gid 135/mock) to read config and write results
 podman unshare setfacl -m g:135:rwx -m default:g:135:rwx "results"
 podman unshare setfacl -m g:135:rwx -m default:g:135:rwx "config"
 podman unshare setfacl -m g:135:rwx -m default:g:135:rwx "sources"
-podman unshare chgrp 135 "var_lib_mock"
-podman unshare chmod g+rwx "var_lib_mock"
+podman unshare setfacl -m g:135:rwx "var_lib_mock"
 
 # Copy local source files to sources directory
 cp -f "${RPM_DIR}/${package_name}"/* "${workdir}/sources/" 2>/dev/null || true
@@ -185,6 +184,10 @@ popd
 mkdir -p "${workdir}/RPMS" "${workdir}/SRPMS"
 mv -f "${workdir}"/results/*.src.rpm "${workdir}/SRPMS/" 2>/dev/null || true
 mv -f "${workdir}"/results/*.rpm "${workdir}/RPMS/" 2>/dev/null || true
+
+# Fix ownership of build outputs (container creates files as mapped uid)
+# Inside podman unshare, uid 0 maps to the host user
+podman unshare chown -R 0:0 "${workdir}"
 
 echo ""
 echo "Binary RPMs:"
