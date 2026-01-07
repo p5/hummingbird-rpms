@@ -30,12 +30,22 @@ Be respectful and constructive. By participating, you agree to uphold a professi
 
 ## Build locally
 
-Build a package’s SRPM and RPMs using the Konflux-aligned environment:
+Build a package's SRPM and RPMs using the Konflux-aligned environment:
 
 ```bash
 ./ci/build_rpms.sh <package_name>
 # Results are written to: /tmp/konflux-build-<package_name>-*/results/
 ```
+
+### Building in Lima VM
+
+When building inside a Lima VM (macOS users), use the `--build-dir` flag to specify a directory on the VM's native filesystem. This avoids permission issues with mock's bootstrap process on macOS mounts:
+
+```bash
+limactl shell fedora bash -c 'cd /path/to/repo && ./ci/build_rpms.sh --build-dir /tmp/rpm-build <package_name>'
+```
+
+The build directory must be on the VM's native filesystem (not a macOS mount) to ensure Linux file ownership, permissions, and symlinks work correctly with `/var/lib/mock`.
 
 ## Test locally (containerized)
 
