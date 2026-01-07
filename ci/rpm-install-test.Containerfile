@@ -44,11 +44,14 @@ EOT
 fi
 EOF
 
+# Install the test RPM first:
+# This ensures the package under test and its dependencies are installed
+# before adding verification tools, avoiding conflicts where the rpm package
+# might pull in alternatives (e.g., systemd-standalone-sysusers vs systemd-sysusers)
+RUN dnf-installroot ${NEWROOT} ${DNF_FLAGS} install /tmp/test.rpm
+
 # Install rpm CLI for validation
 RUN dnf-installroot ${NEWROOT} ${DNF_FLAGS} install rpm
-
-# Install the test RPM
-RUN dnf-installroot ${NEWROOT} ${DNF_FLAGS} install /tmp/test.rpm
 
 # Verify the package was installed in the new root
 RUN rpm --root ${NEWROOT} -qa | grep -q . || { echo "Error: No packages installed in ${NEWROOT}"; exit 1; }
