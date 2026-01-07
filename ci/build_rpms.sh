@@ -8,8 +8,9 @@
 # - Outputs source RPMs to builds/PACKAGE_NAME/SRPMS/
 #
 # Usage: ./ci/build_rpms.sh [OPTIONS] PACKAGE_NAME
-#   PACKAGE_NAME - Name of the package directory in rpms/
-#   --arch ARCH  - Target architecture (default: $(uname -m))
+#   PACKAGE_NAME      - Name of the package directory in rpms/
+#   --arch ARCH       - Target architecture (default: $(uname -m))
+#   --build-dir DIR   - Custom build directory (default: builds/PACKAGE_NAME)
 #
 # The built RPMs can be found in: builds/PACKAGE_NAME/RPMS/ and builds/PACKAGE_NAME/SRPMS/
 #
@@ -24,12 +25,17 @@ REPO_ROOT=${SCRIPT_DIR}/..
 
 image=quay.io/redhat-user-workloads/rpm-build-pipeline-tenant/environment:latest@sha256:56bde7a1040650bc14ee927534426a52d88de30d588048c6a08be7a8758372cb
 arch=$(uname -m)
+build_dir=""
 
 # Parse arguments
 while [[ $# -gt 0 ]]; do
     case $1 in
         --arch)
             arch="$2"
+            shift 2
+            ;;
+        --build-dir)
+            build_dir="$2"
             shift 2
             ;;
         *)
@@ -42,7 +48,11 @@ done
 test -n "${package_name}" || exit 1
 
 # Use builds directory as workdir for easier debugging
-workdir="${OUT_DIR}/${package_name}"
+if [[ -n "${build_dir}" ]]; then
+    workdir="${build_dir}"
+else
+    workdir="${OUT_DIR}/${package_name}"
+fi
 mkdir -p "${workdir}"
 
 cd "${workdir}"
