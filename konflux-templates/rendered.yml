@@ -1239,6 +1239,43 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+  name: git-main
+spec:
+  application: rpms-main
+  componentName: git-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/git-main
+  source:
+    git:
+      context: rpms/git
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: git-main
+  name: git-main
+spec:
+  image:
+    name: hummingbird-tenant/git-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
   name: glib2-main
 spec:
   application: rpms-main
@@ -1720,6 +1757,43 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+  name: less-main
+spec:
+  application: rpms-main
+  componentName: less-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/less-main
+  source:
+    git:
+      context: rpms/less
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: less-main
+  name: less-main
+spec:
+  image:
+    name: hummingbird-tenant/less-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
   name: libarchive-main
 spec:
   application: rpms-main
@@ -1868,6 +1942,43 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+  name: libcbor-main
+spec:
+  application: rpms-main
+  componentName: libcbor-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/libcbor-main
+  source:
+    git:
+      context: rpms/libcbor
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: libcbor-main
+  name: libcbor-main
+spec:
+  image:
+    name: hummingbird-tenant/libcbor-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
   name: libeconf-main
 spec:
   application: rpms-main
@@ -1889,6 +2000,43 @@ metadata:
 spec:
   image:
     name: hummingbird-tenant/libeconf-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
+  name: libedit-main
+spec:
+  application: rpms-main
+  componentName: libedit-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/libedit-main
+  source:
+    git:
+      context: rpms/libedit
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: libedit-main
+  name: libedit-main
+spec:
+  image:
+    name: hummingbird-tenant/libedit-main
     visibility: public
   notifications:
   - config:
@@ -1963,6 +2111,43 @@ metadata:
 spec:
   image:
     name: hummingbird-tenant/libffi-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
+  name: libfido2-main
+spec:
+  application: rpms-main
+  componentName: libfido2-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/libfido2-main
+  source:
+    git:
+      context: rpms/libfido2
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: libfido2-main
+  name: libfido2-main
+spec:
+  image:
+    name: hummingbird-tenant/libfido2-main
     visibility: public
   notifications:
   - config:
