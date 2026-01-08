@@ -356,6 +356,13 @@
     "source": "https://src.fedoraproject.org/rpms/libcap-ng.git",
     "version": "0.8.5"
   },
+  "libcbor": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "4b3f604b7a9b4547a6b7546554404dd047be6db3",
+    "source": "https://src.fedoraproject.org/rpms/libcbor.git",
+    "version": "0.13.0"
+  },
   "libeconf": {
     "branch": "rawhide",
     "release": "2",
