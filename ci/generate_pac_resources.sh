@@ -78,7 +78,7 @@ APPLICATION_NAME="rpms-${BRANCH}"
 PIPELINE_URL="https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
 PIPELINE_PATH="pipeline/build-rpm-package.yaml"
 PIPELINE_BRANCH="main"
-PIPELINE_REVISION="cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+PIPELINE_REVISION="9a99e8881b6af6225151c6d5f23e708d0cfee821"
 
 # shellcheck disable=SC2312
 mapfile -d '' rpms < <(find ./rpms -maxdepth 1 -mindepth 1 -type d -print0 | LC_ALL=C sort -z)
