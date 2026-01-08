@@ -195,6 +195,13 @@
     "source": "https://src.fedoraproject.org/rpms/elfutils.git",
     "version": "0.194"
   },
+  "expat": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "f69cfd6d511902ab44c67eb191a826c83c4d8787",
+    "source": "https://src.fedoraproject.org/rpms/expat.git",
+    "version": "2.7.3"
+  },
   "fedora-repos": {
     "branch": "rawhide",
     "release": "0.1",
