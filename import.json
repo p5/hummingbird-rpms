@@ -370,6 +370,13 @@
     "source": "https://src.fedoraproject.org/rpms/libeconf.git",
     "version": "0.7.9"
   },
+  "libedit": {
+    "branch": "rawhide",
+    "release": "57.20251016cvs",
+    "sha": "c51489c500f8884ed4932b5fbf31aab21ed8de08",
+    "source": "https://src.fedoraproject.org/rpms/libedit.git",
+    "version": "3.1"
+  },
   "libevent": {
     "branch": "rawhide",
     "release": "16",
