@@ -5,7 +5,7 @@
 
 Name:           hummingbird-release
 Version:        20251124
-Release:        1.2%{?dist}
+Release:        1.3%{?dist}
 Summary:        %{distro} release files
 License:        GPL-2.0-or-later
 URL:            https://hummingbird-project.io/
@@ -97,6 +97,7 @@ NAME="%{dist_name}"
 VERSION="%{version}"
 ID="hummingbird"
 ID_LIKE="fedora rhel"
+CPE_NAME="cpe:/a:redhat:hummingbird:1"
 HOME_URL="%{dist_home_url}"
 VENDOR_NAME="Hummingbird"
 VENDOR_URL="%{dist_home_url}"
@@ -106,6 +107,10 @@ EOF
 
 # Create the symlink for /etc/os-release
 ln -s ../usr/lib/os-release %{buildroot}%{_sysconfdir}/os-release
+
+# write cpe to /usr/lib/system-release-cpe and symlink to /etc/system-release-cpe
+echo "cpe:/a:redhat:hummingbird:1" > %{buildroot}%{_prefix}/lib/system-release-cpe
+ln -s ../lib/system-release-cpe %{buildroot}%{_sysconfdir}/system-release-cpe
 
 # create /etc/issue, /etc/issue.net and /etc/issue.d
 echo '\S' > %{buildroot}%{_sysconfdir}/issue
@@ -156,7 +161,8 @@ install -p -m 0644 %{SOURCE603} %{buildroot}%{_sysconfdir}/pki/rpm-gpg/
 %{_sysconfdir}/redhat-release
 %{_sysconfdir}/system-release
 %{_sysconfdir}/hummingbird-release
-%config(noreplace) %{_sysconfdir}/os-release
+%{_sysconfdir}/system-release-cpe
+%{_sysconfdir}/os-release
 %config(noreplace) %{_sysconfdir}/issue
 %config(noreplace) %{_sysconfdir}/issue.net
 %dir %{_sysconfdir}/issue.d
@@ -166,6 +172,7 @@ install -p -m 0644 %{SOURCE603} %{buildroot}%{_sysconfdir}/pki/rpm-gpg/
 %{_datadir}/redhat-release
 %{_datadir}/hummingbird-release
 %{_prefix}/lib/os-release
+%{_prefix}/lib/system-release-cpe
 
 %files -n hummingbird-repos
 %config(noreplace) %{_sysconfdir}/yum.repos.d/hummingbird.repo
