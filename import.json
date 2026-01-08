@@ -615,6 +615,13 @@
     "source": "https://src.fedoraproject.org/rpms/openldap.git",
     "version": "2.6.10"
   },
+  "openssh": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "be36f8dbd60f4d2e7e1e8b21c615a615f1182f84",
+    "source": "https://src.fedoraproject.org/rpms/openssh.git",
+    "version": "10.2p1"
+  },
   "openssl": {
     "branch": "rawhide",
     "release": "1",
