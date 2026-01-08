@@ -139,6 +139,13 @@
     "source": "https://src.fedoraproject.org/rpms/dbus.git",
     "version": "1.16.0"
   },
+  "dbus-broker": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "9e167c2308eefafef378519a498d2b74b0fe964f",
+    "source": "https://src.fedoraproject.org/rpms/dbus-broker.git",
+    "version": "37"
+  },
   "diffutils": {
     "branch": "rawhide",
     "release": "3",
