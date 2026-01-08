@@ -202,6 +202,13 @@
     "source": "https://src.fedoraproject.org/rpms/expat.git",
     "version": "2.7.3"
   },
+  "fedora-logos": {
+    "branch": "rawhide",
+    "release": "2",
+    "sha": "ed339551edbc52870c9c47a890610610c22191ae",
+    "source": "https://src.fedoraproject.org/rpms/fedora-logos.git",
+    "version": "42.0.1"
+  },
   "fedora-repos": {
     "branch": "rawhide",
     "release": "0.1",
