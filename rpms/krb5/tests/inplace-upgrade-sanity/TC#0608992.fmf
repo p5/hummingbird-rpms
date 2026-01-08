@@ -1,0 +1,14 @@
+tag:
+  - Fedora 31
+  - Fedora 32
+  - FedoraReady
+  - NoRHEL4
+  - NoRHEL5
+  - rhel_upgrade
+adjust:
+  - enabled: false
+    when: distro == rhel-4, rhel-5
+    continue: false
+manual: true
+extra-nitrate: TC#0608992
+extra-summary: /CoreOS/krb5/Sanity/inplace-upgrade-sanity-test-manual

@@ -1,0 +1,40 @@
+From ff580d9cf86202d45454a6b6f53accc22cb40b62 Mon Sep 17 00:00:00 2001
+From: Alexander Bokovoy <abokovoy@redhat.com>
+Date: Sun, 19 Oct 2025 18:14:29 +0300
+Subject: [PATCH] bail if prompter is not specified but required
+
+GSSAPI gss_init_sec_context() may trigger credential re-initialization
+if the cred in ccache is expired. If automatic FAST armor is in use,
+we'd request Anonymous PKINIT and use it as an armor and this will
+enable seeing pre-authentication methods which require armor presence.
+
+OTP is one of such methods and its use requires prompter to be set,
+but GSSAPI cannot specify a prompter and thus we should fail any
+pre-auth where a prompter wasn't passed.
+
+PKINIT PKCS11 and SAM-2 preauth methods use KRB5_LIBOS_CANTREADPWD while PKINIT
+and gic_pwd.c use EIO. Use EIO here because we technically attempt to read a
+PIN rather than a password.
+
+Signed-off-by: Alexander Bokovoy <abokovoy@redhat.com>
+---
+ src/lib/krb5/krb/preauth_otp.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/src/lib/krb5/krb/preauth_otp.c b/src/lib/krb5/krb/preauth_otp.c
+index 07ffc15c2..48003da62 100644
+--- a/src/lib/krb5/krb/preauth_otp.c
++++ b/src/lib/krb5/krb/preauth_otp.c
+@@ -479,6 +479,9 @@ doprompt(krb5_context context, krb5_prompter_fct prompter, void *prompter_data,
+     krb5_error_code retval;
+     krb5_prompt_type prompt_type = KRB5_PROMPT_TYPE_PREAUTH;
+ 
++    if (prompter == NULL)
++        return EIO;
++
+     if (prompttxt == NULL || out == NULL)
+         return EINVAL;
+ 
+-- 
+2.51.0
+

@@ -2980,6 +2980,72 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "false"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[push]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/krb5/***]"
+  creationTimestamp: null
+  labels:
+    appstudio.openshift.io/application: rpms-main
+    appstudio.openshift.io/component: krb5-main
+    pipelines.appstudio.openshift.io/type: build
+  name: krb5-main-on-push
+  namespace: hummingbird-tenant
+spec:
+  params:
+    - name: git-url
+      value: '{{source_url}}'
+    - name: revision
+      value: '{{revision}}'
+    - name: ociStorage
+      value: quay.io/redhat-user-workloads/hummingbird-tenant/krb5-main:{{revision}}
+    - name: package-name
+      value: krb5
+    - name: target-branch
+      value: '{{target_branch}}'
+    - name: build-architectures
+      value:
+        - aarch64
+        - x86_64
+    - name: specfile
+      value: "krb5.spec"
+    - name: monorepo-subdir
+      value: "rpms/krb5"
+    - name: mock-config-template-filename-in-sources
+      value: "mock/mock.cfg"
+    - name: self-ref-url
+      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
+    - name: self-ref-revision
+      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
+      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+  pipelineRef:
+    resolver: git
+    params:
+      - name: url
+        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
+      - name: revision
+        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
+        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      - name: pathInRepo
+        value: "pipeline/build-rpm-package.yaml"
+  taskRunTemplate:
+    serviceAccountName: build-pipeline-krb5-main
+  timeouts:
+    pipeline: 4h
+    tasks: 4h
+  workspaces:
+    - name: git-auth
+      secret:
+        secretName: '{{git_auth_secret}}'
+---
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  annotations:
+    build.appstudio.openshift.io/repo: https://gitlab.com/redhat/hummingbird/rpms/-/tree/{{revision}}
+    build.appstudio.redhat.com/commit_sha: '{{revision}}'
+    build.appstudio.redhat.com/target_branch: '{{target_branch}}'
+    pipelinesascode.tekton.dev/on-target-branch: "[main]"
+    pipelinesascode.tekton.dev/cancel-in-progress: "false"
+    pipelinesascode.tekton.dev/max-keep-runs: "3"
+    pipelinesascode.tekton.dev/on-event: "[push]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libarchive/***]"
   creationTimestamp: null
   labels:

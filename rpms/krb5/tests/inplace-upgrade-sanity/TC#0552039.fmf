@@ -1,0 +1,17 @@
+link:
+  - relates: https://bugzilla.redhat.com/show_bug.cgi?id=1394908
+tag:
+  - NoRHEL4
+  - NoRHEL5
+  - TIPpass
+  - TIPpass_Security
+  - Tier2
+tier: '2'
+adjust:
+  - enabled: false
+    when: distro == rhel-4, rhel-5, rhel-6
+    continue: false
+environment:
+    TEST_ENTROPY_SOURCE: yes
+extra-nitrate: TC#0552039
+extra-summary: 'BZ#1394908: Enable faster getrandom-based entropy system'

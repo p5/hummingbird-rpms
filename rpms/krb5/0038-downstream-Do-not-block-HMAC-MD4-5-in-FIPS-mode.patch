@@ -1,0 +1,381 @@
+From 33afd2a6cfdf87d153170b41fbabfb92be49c422 Mon Sep 17 00:00:00 2001
+From: Julien Rische <jrische@redhat.com>
+Date: Thu, 10 Apr 2025 10:04:22 +0200
+Subject: [PATCH] [downstream] Do not block HMAC-MD4/5 in FIPS mode
+
+To ensure RC4 HMAC-MD5 was not used in FIPS mode, access to HMAC-MD4/5
+was not allowed in this mode. However, since we provide the
+"radius_md5_fips_override" configuration parameter to allow using RADIUS
+regardless to the FIPS restrictions, we should allow HMAC-MD5 to be used
+too in this case, because it is required for the newly supported
+Message-Authenticator attribute.
+
+A FIPS mode check is added in calculate_mac() which will fail if
+"radius_md5_fips_override" is not true. It will not affect interactions
+between krb5kdc and ipa-otpd, because the Message-Authenticator
+attribute is not generated in this case.
+---
+ src/lib/crypto/krb/crypto_int.h               |  9 +++
+ src/lib/crypto/openssl/Makefile.in            |  9 ++-
+ src/lib/crypto/openssl/common.c               | 80 +++++++++++++++++++
+ .../crypto/openssl/hash_provider/hash_evp.c   | 62 ++------------
+ src/lib/crypto/openssl/hmac.c                 | 15 ++--
+ src/lib/krad/packet.c                         | 19 +++--
+ 6 files changed, 120 insertions(+), 74 deletions(-)
+ create mode 100644 src/lib/crypto/openssl/common.c
+
+diff --git a/src/lib/crypto/krb/crypto_int.h b/src/lib/crypto/krb/crypto_int.h
+index 1ee4b30e02..ff67b6bd35 100644
+--- a/src/lib/crypto/krb/crypto_int.h
++++ b/src/lib/crypto/krb/crypto_int.h
+@@ -36,6 +36,9 @@
+ 
+ #include <openssl/opensslv.h>
+ #if OPENSSL_VERSION_NUMBER >= 0x30000000L
++
++#include <openssl/provider.h>
++
+ /*
+  * OpenSSL 3.0 relegates MD4 and RC4 to the legacy provider, which must be
+  * explicitly loaded into a library context.  Performing this loading within a
+@@ -660,4 +663,10 @@ iov_cursor_advance(struct iov_cursor *c, size_t nblocks)
+     c->out_pos += nblocks * c->block_size;
+ }
+ 
++#if OPENSSL_VERSION_NUMBER >= 0x30000000L
++
++krb5_error_code k5_get_ossl_legacy_libctx(OSSL_LIB_CTX **libctx);
++
++#endif /* OPENSSL_VERSION_NUMBER >= 0x30000000L */
++
+ #endif /* CRYPTO_INT_H */
+diff --git a/src/lib/crypto/openssl/Makefile.in b/src/lib/crypto/openssl/Makefile.in
+index 8e4cdb8bbf..cc131000bd 100644
+--- a/src/lib/crypto/openssl/Makefile.in
++++ b/src/lib/crypto/openssl/Makefile.in
+@@ -8,21 +8,24 @@ STLIBOBJS=\
+ 	hmac.o	\
+ 	kdf.o	\
+ 	pbkdf2.o \
+-	sha256.o
++	sha256.o \
++	common.o
+ 
+ OBJS=\
+ 	$(OUTPRE)cmac.$(OBJEXT)	\
+ 	$(OUTPRE)hmac.$(OBJEXT)	\
+ 	$(OUTPRE)kdf.$(OBJEXT)	\
+ 	$(OUTPRE)pbkdf2.$(OBJEXT) \
+-	$(OUTPRE)sha256.$(OBJEXT)
++	$(OUTPRE)sha256.$(OBJEXT) \
++	$(OUTPRE)common.$(OBJEXT)
+ 
+ SRCS=\
+ 	$(srcdir)/cmac.c	\
+ 	$(srcdir)/hmac.c	\
+ 	$(srcdir)/kdf.c		\
+ 	$(srcdir)/pbkdf2.c	\
+-	$(srcdir)/sha256.c
++	$(srcdir)/sha256.c	\
++	$(srcdir)/common.c
+ 
+ SUBDIROBJLISTS= md4/OBJS.ST 		\
+ 		md5/OBJS.ST sha1/OBJS.ST sha2/OBJS.ST 	\
+diff --git a/src/lib/crypto/openssl/common.c b/src/lib/crypto/openssl/common.c
+new file mode 100644
+index 0000000000..ced43fd54c
+--- /dev/null
++++ b/src/lib/crypto/openssl/common.c
+@@ -0,0 +1,80 @@
++#include "crypto_int.h"
++
++#if OPENSSL_VERSION_NUMBER >= 0x30000000L
++
++#include <openssl/provider.h>
++#include <openssl/fips.h>
++#include <threads.h>
++#include <stdbool.h>
++
++typedef struct ossl_legacy_context {
++    bool initialized;
++    OSSL_LIB_CTX *libctx;
++    OSSL_PROVIDER *default_provider;
++    OSSL_PROVIDER *legacy_provider;
++} ossl_legacy_context_t;
++
++static thread_local ossl_legacy_context_t g_ossl_legacy_ctx;
++
++static krb5_error_code
++init_ossl_legacy_ctx(ossl_legacy_context_t *ctx)
++{
++    ctx->libctx = OSSL_LIB_CTX_new();
++    if (!ctx->libctx)
++        return KRB5_CRYPTO_INTERNAL;
++
++    /* Load both legacy and default provider as both may be needed. */
++    ctx->default_provider = OSSL_PROVIDER_load(ctx->libctx, "default");
++    ctx->legacy_provider = OSSL_PROVIDER_load(ctx->libctx, "legacy");
++
++    if (!(ctx->default_provider && ctx->legacy_provider))
++        return KRB5_CRYPTO_INTERNAL;
++
++    ctx->initialized = true;
++    return 0;
++}
++
++static void
++deinit_ossl_legacy_ctx(ossl_legacy_context_t *ctx)
++{
++    if (ctx->legacy_provider)
++        OSSL_PROVIDER_unload(ctx->legacy_provider);
++
++    if (ctx->default_provider)
++        OSSL_PROVIDER_unload(ctx->default_provider);
++
++    if (ctx->libctx)
++        OSSL_LIB_CTX_free(ctx->libctx);
++
++    ctx->initialized = false;
++}
++
++krb5_error_code
++k5_get_ossl_legacy_libctx(OSSL_LIB_CTX **libctx)
++{
++    krb5_error_code err;
++
++    if (!FIPS_mode()) {
++        if (libctx)
++            *libctx = NULL;
++        err = 0;
++        goto end;
++    }
++
++    if (!g_ossl_legacy_ctx.initialized) {
++        err = init_ossl_legacy_ctx(&g_ossl_legacy_ctx);
++        if (err) {
++            deinit_ossl_legacy_ctx(&g_ossl_legacy_ctx);
++            goto end;
++        }
++    }
++
++    if (libctx)
++        *libctx = g_ossl_legacy_ctx.libctx;
++    err = 0;
++
++end:
++    return err;
++}
++
++#endif /* OPENSSL_VERSION_NUMBER >= 0x30000000L */
+diff --git a/src/lib/crypto/openssl/hash_provider/hash_evp.c b/src/lib/crypto/openssl/hash_provider/hash_evp.c
+index eb2e693e9f..2fd5d383d6 100644
+--- a/src/lib/crypto/openssl/hash_provider/hash_evp.c
++++ b/src/lib/crypto/openssl/hash_provider/hash_evp.c
+@@ -44,48 +44,7 @@
+ #define EVP_MD_CTX_free EVP_MD_CTX_destroy
+ #endif
+ 
+-#include <openssl/provider.h>
+ #include <openssl/fips.h>
+-#include <threads.h>
+-
+-typedef struct ossl_lib_md_context {
+-    OSSL_LIB_CTX *libctx;
+-    OSSL_PROVIDER *default_provider;
+-    OSSL_PROVIDER *legacy_provider;
+-} ossl_md_context_t;
+-
+-static thread_local ossl_md_context_t *ossl_md_ctx = NULL;
+-
+-static krb5_error_code
+-init_ossl_md_ctx(ossl_md_context_t *ctx, const char *algo)
+-{
+-    ctx->libctx = OSSL_LIB_CTX_new();
+-    if (!ctx->libctx)
+-        return KRB5_CRYPTO_INTERNAL;
+-
+-    /* Load both legacy and default provider as both may be needed. */
+-    ctx->default_provider = OSSL_PROVIDER_load(ctx->libctx, "default");
+-    ctx->legacy_provider = OSSL_PROVIDER_load(ctx->libctx, "legacy");
+-
+-    if (!(ctx->default_provider && ctx->legacy_provider))
+-        return KRB5_CRYPTO_INTERNAL;
+-
+-    return 0;
+-}
+-
+-static void
+-deinit_ossl_ctx(ossl_md_context_t *ctx)
+-{
+-    if (ctx->legacy_provider)
+-        OSSL_PROVIDER_unload(ctx->legacy_provider);
+-
+-    if (ctx->default_provider)
+-        OSSL_PROVIDER_unload(ctx->default_provider);
+-
+-    if (ctx->libctx)
+-        OSSL_LIB_CTX_free(ctx->libctx);
+-}
+-
+ 
+ static krb5_error_code
+ hash_evp(const EVP_MD *type, const krb5_crypto_iov *data, size_t num_data,
+@@ -120,25 +79,14 @@ hash_legacy_evp(const char *algo, const krb5_crypto_iov *data, size_t num_data,
+                 krb5_data *output)
+ {
+     krb5_error_code err;
++    OSSL_LIB_CTX *ossl_libctx;
+     EVP_MD *md = NULL;
+ 
+-    if (!ossl_md_ctx) {
+-        ossl_md_ctx = malloc(sizeof(ossl_md_context_t));
+-        if (!ossl_md_ctx) {
+-            err = ENOMEM;
+-            goto end;
+-        }
+-
+-        err = init_ossl_md_ctx(ossl_md_ctx, algo);
+-        if (err) {
+-            deinit_ossl_ctx(ossl_md_ctx);
+-            free(ossl_md_ctx);
+-            ossl_md_ctx = NULL;
+-            goto end;
+-        }
+-    }
++    err = k5_get_ossl_legacy_libctx(&ossl_libctx);
++    if (err)
++        goto end;
+ 
+-    md = EVP_MD_fetch(ossl_md_ctx->libctx, algo, NULL);
++    md = EVP_MD_fetch(ossl_libctx, algo, NULL);
+     if (!md) {
+         err = KRB5_CRYPTO_INTERNAL;
+         goto end;
+diff --git a/src/lib/crypto/openssl/hmac.c b/src/lib/crypto/openssl/hmac.c
+index 25a419d73a..8f9e88fec9 100644
+--- a/src/lib/crypto/openssl/hmac.c
++++ b/src/lib/crypto/openssl/hmac.c
+@@ -59,7 +59,6 @@
+ #if OPENSSL_VERSION_NUMBER >= 0x30000000L
+ #include <openssl/params.h>
+ #include <openssl/core_names.h>
+-#include <openssl/fips.h>
+ #else
+ #include <openssl/hmac.h>
+ #endif
+@@ -112,11 +111,7 @@ map_digest(const struct krb5_hash_provider *hash)
+         return EVP_sha256();
+     else if (hash == &krb5int_hash_sha384)
+         return EVP_sha384();
+-
+-    if (FIPS_mode())
+-        return NULL;
+-
+-    if (hash == &krb5int_hash_md5)
++    else if (hash == &krb5int_hash_md5)
+         return EVP_md5();
+     else if (hash == &krb5int_hash_md4)
+         return EVP_md4();
+@@ -138,13 +133,19 @@ krb5int_hmac_keyblock(const struct krb5_hash_provider *hash,
+     EVP_MAC_CTX *ctx = NULL;
+     OSSL_PARAM params[2], *p = params;
+     size_t i = 0, md_len;
++    OSSL_LIB_CTX *ossl_libctx;
++    krb5_error_code err;
+ 
+     if (md == NULL || keyblock->length > hash->blocksize)
+         return KRB5_CRYPTO_INTERNAL;
+     if (output->length < hash->hashsize)
+         return KRB5_BAD_MSIZE;
+ 
+-    mac = EVP_MAC_fetch(NULL, "HMAC", NULL);
++    err = k5_get_ossl_legacy_libctx(&ossl_libctx);
++    if (err)
++        return err;
++
++    mac = EVP_MAC_fetch(ossl_libctx, "HMAC", NULL);
+     if (mac == NULL)
+         return KRB5_CRYPTO_INTERNAL;
+ 
+diff --git a/src/lib/krad/packet.c b/src/lib/krad/packet.c
+index 3c1a4d507e..b95c99df65 100644
+--- a/src/lib/krad/packet.c
++++ b/src/lib/krad/packet.c
+@@ -278,7 +278,7 @@ lookup_msgauth_addr(const krad_packet *pkt)
+  * auth, which may be from pkt or from a corresponding request.
+  */
+ static krb5_error_code
+-calculate_mac(const char *secret, const krad_packet *pkt,
++calculate_mac(krb5_context ctx, const char *secret, const krad_packet *pkt,
+               const uint8_t auth[AUTH_FIELD_SIZE],
+               uint8_t mac_out[MD5_DIGEST_SIZE])
+ {
+@@ -288,6 +288,10 @@ calculate_mac(const char *secret, const krad_packet *pkt,
+     krb5_crypto_iov input[5];
+     krb5_data ksecr, mac;
+ 
++    /* Do not use HMAC-MD5 if not explicitly allowed */
++    if (kr_use_fips(ctx))
++        return KRB5_CRYPTO_INTERNAL;
++
+     msgauth_attr = lookup_msgauth_addr(pkt);
+     if (msgauth_attr == NULL)
+         return EINVAL;
+@@ -393,7 +397,8 @@ krad_packet_new_request(krb5_context ctx, const char *secret, krad_code code,
+ 
+     if (msgauth_required) {
+         /* Calculate and set the Message-Authenticator MAC. */
+-        retval = calculate_mac(secret, pkt, pkt_auth(pkt), pkt_attr(pkt) + 2);
++        retval = calculate_mac(ctx, secret, pkt, pkt_auth(pkt),
++                               pkt_attr(pkt) + 2);
+         if (retval != 0)
+             goto error;
+     }
+@@ -454,7 +459,7 @@ krad_packet_new_response(krb5_context ctx, const char *secret, krad_code code,
+          * section 5.14, use the authenticator from the request, not from the
+          * response.
+          */
+-        retval = calculate_mac(secret, pkt, pkt_auth(request),
++        retval = calculate_mac(ctx, secret, pkt, pkt_auth(request),
+                                pkt_attr(pkt) + 2);
+         if (retval != 0)
+             goto error;
+@@ -476,7 +481,7 @@ error:
+ /* Verify the Message-Authenticator value in pkt, using the provided
+  * authenticator (which may be from pkt or from a corresponding request). */
+ static krb5_error_code
+-verify_msgauth(const char *secret, const krad_packet *pkt,
++verify_msgauth(krb5_context ctx, const char *secret, const krad_packet *pkt,
+                const uint8_t auth[AUTH_FIELD_SIZE])
+ {
+     uint8_t mac[MD5_DIGEST_SIZE];
+@@ -488,7 +493,7 @@ verify_msgauth(const char *secret, const krad_packet *pkt,
+     if (msgauth == NULL)
+         return ENODATA;
+ 
+-    retval = calculate_mac(secret, pkt, auth, mac);
++    retval = calculate_mac(ctx, secret, pkt, auth, mac);
+     if (retval)
+         return retval;
+ 
+@@ -561,7 +566,7 @@ krad_packet_decode_request(krb5_context ctx, const char *secret,
+ 
+     /* Verify Message-Authenticator if present. */
+     if (has_pkt_msgauth(req)) {
+-        retval = verify_msgauth(secret, req, pkt_auth(req));
++        retval = verify_msgauth(ctx, secret, req, pkt_auth(req));
+         if (retval) {
+             krad_packet_free(req);
+             return retval;
+@@ -613,7 +618,7 @@ krad_packet_decode_response(krb5_context ctx, const char *secret,
+ 
+             /* Verify Message-Authenticator if present. */
+             if (has_pkt_msgauth(*rsppkt)) {
+-                if (verify_msgauth(secret, *rsppkt, pkt_auth(tmp)) != 0)
++                if (verify_msgauth(ctx, secret, *rsppkt, pkt_auth(tmp)) != 0)
+                     continue;
+             }
+ 
+-- 
+2.49.0
+

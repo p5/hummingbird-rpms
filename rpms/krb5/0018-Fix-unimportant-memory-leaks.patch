@@ -1,0 +1,2316 @@
+From c8d8cab52172a934bdad1041448b43bc15acf441 Mon Sep 17 00:00:00 2001
+From: Steve Grubb <sgrubb@redhat.com>
+Date: Thu, 13 Jul 2023 16:22:30 -0400
+Subject: [PATCH] Fix unimportant memory leaks
+
+Eliminate memory leaks detected through static analysis and manual
+review.  These leaks are unlikely to happen repeatedly in long-running
+processes.
+
+[jrische@redhat.com: fixed many additional leaks]
+[ghudson@mit.edu: fixed additional leaks; edited for style; removed
+some unused ksu functions; rewrote commit message]
+
+(cherry picked from commit 6c5471176f5266564fbc8a7e02f03b4b042202f8)
+---
+ src/appl/gss-sample/gss-client.c              | 367 ++++++++----------
+ src/appl/gss-sample/gss-server.c              |   3 +-
+ src/clients/klist/klist.c                     |  59 +--
+ src/clients/ksu/authorization.c               | 134 +++----
+ src/clients/ksu/ccache.c                      | 283 +++++---------
+ src/clients/ksu/heuristic.c                   | 128 +++---
+ src/clients/ksu/krb_auth_su.c                 | 134 ++-----
+ src/clients/ksu/ksu.h                         |   6 -
+ src/clients/ksu/main.c                        |   3 +-
+ src/kadmin/cli/keytab.c                       |   6 +-
+ src/kadmin/ktutil/ktutil.c                    |   1 +
+ src/kprop/kpropd.c                            |  21 +-
+ src/lib/gssapi/krb5/export_cred.c             |   4 +-
+ src/lib/gssapi/krb5/val_cred.c                |   6 +-
+ src/lib/kadm5/srv/server_kdb.c                |   7 +-
+ src/lib/krb5/ccache/cc_kcm.c                  |   4 +
+ src/lib/krb5/ccache/ccfns.c                   |  12 +-
+ src/lib/krb5/keytab/kt_file.c                 |   3 +-
+ src/plugins/kdb/ldap/libkdb_ldap/ldap_realm.c |   8 +-
+ 19 files changed, 517 insertions(+), 672 deletions(-)
+
+diff --git a/src/appl/gss-sample/gss-client.c b/src/appl/gss-sample/gss-client.c
+index 0722ae196f..2cfcfc6cc5 100644
+--- a/src/appl/gss-sample/gss-client.c
++++ b/src/appl/gss-sample/gss-client.c
+@@ -182,180 +182,148 @@ client_establish_context(int s, char *service_name, OM_uint32 gss_flags,
+                          char *username, char *password,
+                          gss_ctx_id_t *gss_context, OM_uint32 *ret_flags)
+ {
+-    if (auth_flag) {
+-        gss_buffer_desc send_tok, recv_tok, *token_ptr;
+-        gss_name_t target_name;
+-        OM_uint32 maj_stat, min_stat, init_sec_min_stat;
+-        int token_flags;
+-        gss_cred_id_t cred = GSS_C_NO_CREDENTIAL;
+-        gss_name_t gss_username = GSS_C_NO_NAME;
+-        gss_OID_set_desc mechs, *mechsp = GSS_C_NO_OID_SET;
+-
+-        if (spnego) {
+-            mechs.elements = &gss_spnego_mechanism_oid_desc;
+-            mechs.count = 1;
+-            mechsp = &mechs;
+-        } else if (oid != GSS_C_NO_OID) {
+-            mechs.elements = oid;
+-            mechs.count = 1;
+-            mechsp = &mechs;
+-        } else {
+-            mechs.elements = NULL;
+-            mechs.count = 0;
+-        }
++    int result = -1, st;
++    gss_buffer_desc send_tok, recv_tok, pwbuf, *token_ptr;
++    gss_name_t target_name = GSS_C_NO_NAME, gss_username = GSS_C_NO_NAME;
++    OM_uint32 maj_stat, min_stat, init_sec_min_stat;
++    int token_flags;
++    gss_cred_id_t cred = GSS_C_NO_CREDENTIAL;
++    gss_OID_set_desc mechs, neg_mechs, *mechsp = GSS_C_NO_OID_SET;
++
++    if (!auth_flag)
++        return send_token(s, TOKEN_NOOP, empty_token);
++
++    if (spnego) {
++        mechs.elements = &gss_spnego_mechanism_oid_desc;
++        mechs.count = 1;
++        mechsp = &mechs;
++    } else if (oid != GSS_C_NO_OID) {
++        mechs.elements = oid;
++        mechs.count = 1;
++        mechsp = &mechs;
++    } else {
++        mechs.elements = NULL;
++        mechs.count = 0;
++    }
+ 
+-        if (username != NULL) {
+-            send_tok.value = username;
+-            send_tok.length = strlen(username);
++    if (username != NULL) {
++        send_tok.value = username;
++        send_tok.length = strlen(username);
+ 
+-            maj_stat = gss_import_name(&min_stat, &send_tok,
+-                                       (gss_OID) gss_nt_user_name,
+-                                       &gss_username);
+-            if (maj_stat != GSS_S_COMPLETE) {
+-                display_status("parsing client name", maj_stat, min_stat);
+-                return -1;
+-            }
+-        }
+-
+-        if (password != NULL) {
+-            gss_buffer_desc pwbuf;
+-
+-            pwbuf.value = password;
+-            pwbuf.length = strlen(password);
+-
+-            maj_stat = gss_acquire_cred_with_password(&min_stat,
+-                                                      gss_username,
+-                                                      &pwbuf, 0,
+-                                                      mechsp, GSS_C_INITIATE,
+-                                                      &cred, NULL, NULL);
+-        } else if (gss_username != GSS_C_NO_NAME) {
+-            maj_stat = gss_acquire_cred(&min_stat,
+-                                        gss_username, 0,
+-                                        mechsp, GSS_C_INITIATE,
+-                                        &cred, NULL, NULL);
+-        } else
+-            maj_stat = GSS_S_COMPLETE;
++        maj_stat = gss_import_name(&min_stat, &send_tok,
++                                   (gss_OID) gss_nt_user_name, &gss_username);
+         if (maj_stat != GSS_S_COMPLETE) {
+-            display_status("acquiring creds", maj_stat, min_stat);
+-            gss_release_name(&min_stat, &gss_username);
+-            return -1;
++            display_status("parsing client name", maj_stat, min_stat);
++            goto cleanup;
+         }
+-        if (spnego && oid != GSS_C_NO_OID) {
+-            gss_OID_set_desc neg_mechs;
+-
+-            neg_mechs.elements = oid;
+-            neg_mechs.count = 1;
++    }
+ 
+-            maj_stat = gss_set_neg_mechs(&min_stat, cred, &neg_mechs);
+-            if (maj_stat != GSS_S_COMPLETE) {
+-                display_status("setting neg mechs", maj_stat, min_stat);
+-                gss_release_name(&min_stat, &gss_username);
+-                gss_release_cred(&min_stat, &cred);
+-                return -1;
+-            }
+-        }
+-        gss_release_name(&min_stat, &gss_username);
+-
+-        /*
+-         * Import the name into target_name.  Use send_tok to save
+-         * local variable space.
+-         */
+-        send_tok.value = service_name;
+-        send_tok.length = strlen(service_name);
+-        maj_stat = gss_import_name(&min_stat, &send_tok,
+-                                   (gss_OID) gss_nt_service_name,
+-                                   &target_name);
++    if (password != NULL) {
++        pwbuf.value = password;
++        pwbuf.length = strlen(password);
++
++        maj_stat = gss_acquire_cred_with_password(&min_stat, gss_username,
++                                                  &pwbuf, 0, mechsp,
++                                                  GSS_C_INITIATE, &cred, NULL,
++                                                  NULL);
++    } else if (gss_username != GSS_C_NO_NAME) {
++        maj_stat = gss_acquire_cred(&min_stat, gss_username, 0, mechsp,
++                                    GSS_C_INITIATE, &cred, NULL, NULL);
++    } else {
++        maj_stat = GSS_S_COMPLETE;
++    }
++    if (maj_stat != GSS_S_COMPLETE) {
++        display_status("acquiring creds", maj_stat, min_stat);
++        goto cleanup;
++    }
++    if (spnego && oid != GSS_C_NO_OID) {
++        neg_mechs.elements = oid;
++        neg_mechs.count = 1;
++        maj_stat = gss_set_neg_mechs(&min_stat, cred, &neg_mechs);
+         if (maj_stat != GSS_S_COMPLETE) {
+-            display_status("parsing name", maj_stat, min_stat);
+-            return -1;
++            display_status("setting neg mechs", maj_stat, min_stat);
++            goto cleanup;
+         }
++    }
+ 
+-        if (!v1_format) {
+-            if (send_token(s, TOKEN_NOOP | TOKEN_CONTEXT_NEXT, empty_token) <
+-                0) {
+-                (void) gss_release_name(&min_stat, &target_name);
+-                return -1;
+-            }
+-        }
++    /* Import the name into target_name.  Use send_tok to save local variable
++     * space. */
++    send_tok.value = service_name;
++    send_tok.length = strlen(service_name);
++    maj_stat = gss_import_name(&min_stat, &send_tok,
++                               (gss_OID) gss_nt_service_name, &target_name);
++    if (maj_stat != GSS_S_COMPLETE) {
++        display_status("parsing name", maj_stat, min_stat);
++        goto cleanup;
++    }
+ 
+-        /*
+-         * Perform the context-establishement loop.
+-         *
+-         * On each pass through the loop, token_ptr points to the token
+-         * to send to the server (or GSS_C_NO_BUFFER on the first pass).
+-         * Every generated token is stored in send_tok which is then
+-         * transmitted to the server; every received token is stored in
+-         * recv_tok, which token_ptr is then set to, to be processed by
+-         * the next call to gss_init_sec_context.
+-         *
+-         * GSS-API guarantees that send_tok's length will be non-zero
+-         * if and only if the server is expecting another token from us,
+-         * and that gss_init_sec_context returns GSS_S_CONTINUE_NEEDED if
+-         * and only if the server has another token to send us.
+-         */
+-
+-        token_ptr = GSS_C_NO_BUFFER;
+-        *gss_context = GSS_C_NO_CONTEXT;
+-
+-        do {
+-            maj_stat = gss_init_sec_context(&init_sec_min_stat,
+-                                            cred, gss_context,
+-                                            target_name, mechs.elements,
+-                                            gss_flags, 0,
+-                                            NULL, /* channel bindings */
+-                                            token_ptr, NULL, /* mech type */
+-                                            &send_tok, ret_flags,
+-                                            NULL);  /* time_rec */
+-
+-            if (token_ptr != GSS_C_NO_BUFFER)
+-                free(recv_tok.value);
+-
+-            if (send_tok.length != 0) {
+-                if (verbose)
+-                    printf("Sending init_sec_context token (size=%d)...",
+-                           (int) send_tok.length);
+-                if (send_token(s, v1_format ? 0 : TOKEN_CONTEXT, &send_tok) <
+-                    0) {
+-                    (void) gss_release_buffer(&min_stat, &send_tok);
+-                    (void) gss_release_name(&min_stat, &target_name);
+-                    return -1;
+-                }
++    if (!v1_format) {
++        if (send_token(s, TOKEN_NOOP | TOKEN_CONTEXT_NEXT, empty_token) < 0)
++            goto cleanup;
++    }
++
++    /*
++     * Perform the context-establishment loop.
++     *
++     * On each pass through the loop, token_ptr points to the token to send to
++     * the server (or GSS_C_NO_BUFFER on the first pass).  Every generated
++     * token is stored in send_tok which is then transmitted to the server;
++     * every received token is stored in recv_tok, which token_ptr is then set
++     * to, to be processed by the next call to gss_init_sec_context.
++     *
++     * GSS-API guarantees that send_tok's length will be non-zero if and only
++     * if the server is expecting another token from us, and that
++     * gss_init_sec_context returns GSS_S_CONTINUE_NEEDED if and only if the
++     * server has another token to send us.
++     */
++
++    token_ptr = GSS_C_NO_BUFFER;
++    *gss_context = GSS_C_NO_CONTEXT;
++
++    do {
++        maj_stat = gss_init_sec_context(&init_sec_min_stat, cred, gss_context,
++                                        target_name, mechs.elements, gss_flags,
++                                        0, NULL, token_ptr, NULL, &send_tok,
++                                        ret_flags, NULL);
++
++        if (token_ptr != GSS_C_NO_BUFFER)
++            free(recv_tok.value);
++
++        if (send_tok.length > 0) {
++            if (verbose) {
++                printf("Sending init_sec_context token (size=%d)...",
++                       (int) send_tok.length);
+             }
++            st = send_token(s, v1_format ? 0 : TOKEN_CONTEXT, &send_tok);
+             (void) gss_release_buffer(&min_stat, &send_tok);
++            if (st < 0)
++                goto cleanup;
++        }
+ 
+-            if (maj_stat != GSS_S_COMPLETE
+-                && maj_stat != GSS_S_CONTINUE_NEEDED) {
+-                display_status("initializing context", maj_stat,
+-                               init_sec_min_stat);
+-                (void) gss_release_name(&min_stat, &target_name);
+-                (void) gss_release_cred(&min_stat, &cred);
+-                if (*gss_context != GSS_C_NO_CONTEXT)
+-                    gss_delete_sec_context(&min_stat, gss_context,
+-                                           GSS_C_NO_BUFFER);
+-                return -1;
+-            }
++        if (maj_stat != GSS_S_COMPLETE && maj_stat != GSS_S_CONTINUE_NEEDED) {
++            display_status("initializing context", maj_stat,
++                           init_sec_min_stat);
++            goto cleanup;
++        }
+ 
+-            if (maj_stat == GSS_S_CONTINUE_NEEDED) {
+-                if (verbose)
+-                    printf("continue needed...");
+-                if (recv_token(s, &token_flags, &recv_tok) < 0) {
+-                    (void) gss_release_name(&min_stat, &target_name);
+-                    return -1;
+-                }
+-                token_ptr = &recv_tok;
+-            }
++        if (maj_stat == GSS_S_CONTINUE_NEEDED) {
+             if (verbose)
+-                printf("\n");
+-        } while (maj_stat == GSS_S_CONTINUE_NEEDED);
++                printf("continue needed...");
++            if (recv_token(s, &token_flags, &recv_tok) < 0)
++                goto cleanup;
++            token_ptr = &recv_tok;
++        }
++        if (verbose)
++            printf("\n");
++    } while (maj_stat == GSS_S_CONTINUE_NEEDED);
+ 
+-        (void) gss_release_cred(&min_stat, &cred);
+-        (void) gss_release_name(&min_stat, &target_name);
+-    } else {
+-        if (send_token(s, TOKEN_NOOP, empty_token) < 0)
+-            return -1;
+-    }
++    result = 0;
+ 
+-    return 0;
++cleanup:
++    (void) gss_release_name(&min_stat, &gss_username);
++    (void) gss_release_cred(&min_stat, &cred);
++    (void) gss_release_name(&min_stat, &target_name);
++    return result;
+ }
+ 
+ static void
+@@ -436,11 +404,11 @@ call_server(char *host, u_short port, gss_OID oid, char *service_name,
+ {
+     gss_ctx_id_t context = GSS_C_NO_CONTEXT;
+     gss_buffer_desc in_buf, out_buf;
+-    int     s, state;
++    int     s = -1, result = -1, state;
+     OM_uint32 ret_flags;
+     OM_uint32 maj_stat, min_stat;
+-    gss_name_t src_name, targ_name;
+-    gss_buffer_desc sname, tname;
++    gss_name_t src_name = GSS_C_NO_NAME, targ_name = GSS_C_NO_NAME;
++    gss_buffer_desc sname = GSS_C_EMPTY_BUFFER, tname = GSS_C_EMPTY_BUFFER;
+     OM_uint32 lifetime;
+     gss_OID mechanism, name_type;
+     int     is_local;
+@@ -454,14 +422,13 @@ call_server(char *host, u_short port, gss_OID oid, char *service_name,
+ 
+     /* Open connection */
+     if ((s = connect_to_server(host, port)) < 0)
+-        return -1;
++        goto cleanup;
+ 
+     /* Establish context */
+     if (client_establish_context(s, service_name, gss_flags, auth_flag,
+                                  v1_format, oid, username, password,
+                                  &context, &ret_flags) < 0) {
+-        (void) closesocket(s);
+-        return -1;
++        goto cleanup;
+     }
+ 
+     if (auth_flag && verbose) {
+@@ -475,19 +442,19 @@ call_server(char *host, u_short port, gss_OID oid, char *service_name,
+                                        &is_local, &is_open);
+         if (maj_stat != GSS_S_COMPLETE) {
+             display_status("inquiring context", maj_stat, min_stat);
+-            return -1;
++            goto cleanup;
+         }
+ 
+         maj_stat = gss_display_name(&min_stat, src_name, &sname, &name_type);
+         if (maj_stat != GSS_S_COMPLETE) {
+             display_status("displaying source name", maj_stat, min_stat);
+-            return -1;
++            goto cleanup;
+         }
+         maj_stat = gss_display_name(&min_stat, targ_name, &tname,
+                                     (gss_OID *) NULL);
+         if (maj_stat != GSS_S_COMPLETE) {
+             display_status("displaying target name", maj_stat, min_stat);
+-            return -1;
++            goto cleanup;
+         }
+         printf("\"%.*s\" to \"%.*s\", lifetime %d, flags %x, %s, %s\n",
+                (int) sname.length, (char *) sname.value,
+@@ -496,15 +463,10 @@ call_server(char *host, u_short port, gss_OID oid, char *service_name,
+                (is_local) ? "locally initiated" : "remotely initiated",
+                (is_open) ? "open" : "closed");
+ 
+-        (void) gss_release_name(&min_stat, &src_name);
+-        (void) gss_release_name(&min_stat, &targ_name);
+-        (void) gss_release_buffer(&min_stat, &sname);
+-        (void) gss_release_buffer(&min_stat, &tname);
+-
+         maj_stat = gss_oid_to_str(&min_stat, name_type, &oid_name);
+         if (maj_stat != GSS_S_COMPLETE) {
+             display_status("converting oid->string", maj_stat, min_stat);
+-            return -1;
++            goto cleanup;
+         }
+         printf("Name type of source name is %.*s.\n",
+                (int) oid_name.length, (char *) oid_name.value);
+@@ -515,13 +477,13 @@ call_server(char *host, u_short port, gss_OID oid, char *service_name,
+                                               mechanism, &mech_names);
+         if (maj_stat != GSS_S_COMPLETE) {
+             display_status("inquiring mech names", maj_stat, min_stat);
+-            return -1;
++            goto cleanup;
+         }
+ 
+         maj_stat = gss_oid_to_str(&min_stat, mechanism, &oid_name);
+         if (maj_stat != GSS_S_COMPLETE) {
+             display_status("converting oid->string", maj_stat, min_stat);
+-            return -1;
++            goto cleanup;
+         }
+         printf("Mechanism %.*s supports %d names\n",
+                (int) oid_name.length, (char *) oid_name.value,
+@@ -533,7 +495,7 @@ call_server(char *host, u_short port, gss_OID oid, char *service_name,
+                                       &mech_names->elements[i], &oid_name);
+             if (maj_stat != GSS_S_COMPLETE) {
+                 display_status("converting oid->string", maj_stat, min_stat);
+-                return -1;
++                goto cleanup;
+             }
+             printf("  %d: %.*s\n", (int) i,
+                    (int) oid_name.length, (char *) oid_name.value);
+@@ -558,10 +520,7 @@ call_server(char *host, u_short port, gss_OID oid, char *service_name,
+                          &in_buf, &state, &out_buf);
+             if (maj_stat != GSS_S_COMPLETE) {
+                 display_status("wrapping message", maj_stat, min_stat);
+-                (void) closesocket(s);
+-                (void) gss_delete_sec_context(&min_stat, &context,
+-                                              GSS_C_NO_BUFFER);
+-                return -1;
++                goto cleanup;
+             } else if (encrypt_flag && !state) {
+                 fprintf(stderr, "Warning!  Message not encrypted.\n");
+             }
+@@ -575,22 +534,15 @@ call_server(char *host, u_short port, gss_OID oid, char *service_name,
+                               (wrap_flag ? TOKEN_WRAPPED : 0) |
+                               (encrypt_flag ? TOKEN_ENCRYPTED : 0) |
+                               (mic_flag ? TOKEN_SEND_MIC : 0))),
+-                       &out_buf) < 0) {
+-            (void) closesocket(s);
+-            (void) gss_delete_sec_context(&min_stat, &context,
+-                                          GSS_C_NO_BUFFER);
+-            return -1;
+-        }
++                       &out_buf) < 0)
++            goto cleanup;
++
+         if (out_buf.value != in_buf.value)
+             (void) gss_release_buffer(&min_stat, &out_buf);
+ 
+         /* Read signature block into out_buf */
+-        if (recv_token(s, &token_flags, &out_buf) < 0) {
+-            (void) closesocket(s);
+-            (void) gss_delete_sec_context(&min_stat, &context,
+-                                          GSS_C_NO_BUFFER);
+-            return -1;
+-        }
++        if (recv_token(s, &token_flags, &out_buf) < 0)
++            goto cleanup;
+ 
+         if (mic_flag) {
+             /* Verify signature block */
+@@ -598,10 +550,7 @@ call_server(char *host, u_short port, gss_OID oid, char *service_name,
+                                       &out_buf, &qop_state);
+             if (maj_stat != GSS_S_COMPLETE) {
+                 display_status("verifying signature", maj_stat, min_stat);
+-                (void) closesocket(s);
+-                (void) gss_delete_sec_context(&min_stat, &context,
+-                                              GSS_C_NO_BUFFER);
+-                return -1;
++                goto cleanup;
+             }
+ 
+             if (verbose)
+@@ -621,23 +570,17 @@ call_server(char *host, u_short port, gss_OID oid, char *service_name,
+     if (!v1_format)
+         (void) send_token(s, TOKEN_NOOP, empty_token);
+ 
+-    if (auth_flag) {
+-        /* Delete context */
+-        maj_stat = gss_delete_sec_context(&min_stat, &context, &out_buf);
+-        if (maj_stat != GSS_S_COMPLETE) {
+-            display_status("deleting context", maj_stat, min_stat);
+-            (void) closesocket(s);
+-            (void) gss_delete_sec_context(&min_stat, &context,
+-                                          GSS_C_NO_BUFFER);
+-            return -1;
+-        }
+-
+-        (void) gss_release_buffer(&min_stat, &out_buf);
+-    }
+-
+-    (void) closesocket(s);
++    result = 0;
+ 
+-    return 0;
++cleanup:
++    (void) gss_release_name(&min_stat, &src_name);
++    (void) gss_release_name(&min_stat, &targ_name);
++    (void) gss_release_buffer(&min_stat, &sname);
++    (void) gss_release_buffer(&min_stat, &tname);
++    (void) gss_delete_sec_context(&min_stat, &context, GSS_C_NO_BUFFER);
++    if (s >= 0)
++        (void) closesocket(s);
++    return result;
+ }
+ 
+ static void
+diff --git a/src/appl/gss-sample/gss-server.c b/src/appl/gss-sample/gss-server.c
+index 0e9c857e56..4ba864d9fb 100644
+--- a/src/appl/gss-sample/gss-server.c
++++ b/src/appl/gss-sample/gss-server.c
+@@ -138,13 +138,12 @@ server_acquire_creds(char *service_name, gss_OID mech,
+     }
+     maj_stat = gss_acquire_cred(&min_stat, server_name, 0, mechs, GSS_C_ACCEPT,
+                                 server_creds, NULL, NULL);
++    (void) gss_release_name(&min_stat, &server_name);
+     if (maj_stat != GSS_S_COMPLETE) {
+         display_status("acquiring credentials", maj_stat, min_stat);
+         return -1;
+     }
+ 
+-    (void) gss_release_name(&min_stat, &server_name);
+-
+     return 0;
+ }
+ 
+diff --git a/src/clients/klist/klist.c b/src/clients/klist/klist.c
+index c797b1698f..b5ae96a843 100644
+--- a/src/clients/klist/klist.c
++++ b/src/clients/klist/klist.c
+@@ -469,20 +469,21 @@ do_ccache()
+ static int
+ show_ccache(krb5_ccache cache)
+ {
+-    krb5_cc_cursor cur;
++    krb5_cc_cursor cur = NULL;
+     krb5_creds creds;
+-    krb5_principal princ;
++    krb5_principal princ = NULL;
+     krb5_error_code ret;
++    int status = 1;
+ 
+     ret = krb5_cc_get_principal(context, cache, &princ);
+     if (ret) {
+         com_err(progname, ret, "");
+-        return 1;
++        goto cleanup;
+     }
+     ret = krb5_unparse_name(context, princ, &defname);
+     if (ret) {
+         com_err(progname, ret, _("while unparsing principal name"));
+-        return 1;
++        goto cleanup;
+     }
+ 
+     printf(_("Ticket cache: %s:%s\nDefault principal: %s\n\n"),
+@@ -498,27 +499,33 @@ show_ccache(krb5_ccache cache)
+     ret = krb5_cc_start_seq_get(context, cache, &cur);
+     if (ret) {
+         com_err(progname, ret, _("while starting to retrieve tickets"));
+-        return 1;
++        goto cleanup;
+     }
+     while ((ret = krb5_cc_next_cred(context, cache, &cur, &creds)) == 0) {
+         if (show_config || !krb5_is_config_principal(context, creds.server))
+             show_credential(&creds);
+         krb5_free_cred_contents(context, &creds);
+     }
+-    krb5_free_principal(context, princ);
+-    krb5_free_unparsed_name(context, defname);
+-    defname = NULL;
+     if (ret == KRB5_CC_END) {
+         ret = krb5_cc_end_seq_get(context, cache, &cur);
++        cur = NULL;
+         if (ret) {
+             com_err(progname, ret, _("while finishing ticket retrieval"));
+-            return 1;
++            goto cleanup;
+         }
+-        return 0;
+     } else {
+         com_err(progname, ret, _("while retrieving a ticket"));
+-        return 1;
++        goto cleanup;
+     }
++
++    status = 0;
++
++cleanup:
++    if (cur != NULL)
++        (void)krb5_cc_end_seq_get(context, cache, &cur);
++    krb5_free_principal(context, princ);
++    krb5_free_unparsed_name(context, defname);
++    return status;
+ }
+ 
+ /* Return 0 if cache is accessible, present, and unexpired; return 1 if not. */
+@@ -526,15 +533,18 @@ static int
+ check_ccache(krb5_ccache cache)
+ {
+     krb5_error_code ret;
+-    krb5_cc_cursor cur;
++    krb5_cc_cursor cur = NULL;
+     krb5_creds creds;
+-    krb5_principal princ;
+-    krb5_boolean found_tgt, found_current_tgt, found_current_cred;
++    krb5_principal princ = NULL;
++    krb5_boolean found_tgt = FALSE, found_current_tgt = FALSE;
++    krb5_boolean found_current_cred = FALSE;
+ 
+-    if (krb5_cc_get_principal(context, cache, &princ) != 0)
+-        return 1;
+-    if (krb5_cc_start_seq_get(context, cache, &cur) != 0)
+-        return 1;
++    ret = krb5_cc_get_principal(context, cache, &princ);
++    if (ret)
++        goto cleanup;
++    ret = krb5_cc_start_seq_get(context, cache, &cur);
++    if (ret)
++        goto cleanup;
+     found_tgt = found_current_tgt = found_current_cred = FALSE;
+     while ((ret = krb5_cc_next_cred(context, cache, &cur, &creds)) == 0) {
+         if (is_local_tgt(creds.server, &princ->realm)) {
+@@ -547,12 +557,17 @@ check_ccache(krb5_ccache cache)
+         }
+         krb5_free_cred_contents(context, &creds);
+     }
+-    krb5_free_principal(context, princ);
+     if (ret != KRB5_CC_END)
+-        return 1;
+-    if (krb5_cc_end_seq_get(context, cache, &cur) != 0)
+-        return 1;
++        goto cleanup;
++    ret = krb5_cc_end_seq_get(context, cache, &cur);
++    cur = NULL;
+ 
++cleanup:
++    if (cur != NULL)
++        (void)krb5_cc_end_seq_get(context, cache, &cur);
++    krb5_free_principal(context, princ);
++    if (ret)
++        return 1;
+     /* If the cache contains at least one local TGT, require that it be
+      * current.  Otherwise accept any current cred. */
+     if (found_tgt)
+diff --git a/src/clients/ksu/authorization.c b/src/clients/ksu/authorization.c
+index 17a8a8f2f0..1f2650c2ab 100644
+--- a/src/clients/ksu/authorization.c
++++ b/src/clients/ksu/authorization.c
+@@ -28,7 +28,17 @@
+ 
+ #include "ksu.h"
+ 
+-static void auth_cleanup (FILE *, FILE *, char *);
++static void
++free_fcmd_list(char **list)
++{
++    size_t i;
++
++    if (list == NULL)
++        return;
++    for (i = 0; i < MAX_CMD && list[i] != NULL; i++)
++        free(list[i]);
++    free(list);
++}
+ 
+ krb5_boolean
+ fowner(FILE *fp, uid_t uid)
+@@ -52,10 +62,10 @@ fowner(FILE *fp, uid_t uid)
+ 
+ /*
+  * Given a Kerberos principal "principal", and a local username "luser",
+- * determine whether user is authorized to login according to the
+- * authorization files ~luser/.k5login" and ~luser/.k5users.  Returns TRUE
+- * if authorized, FALSE if not authorized.
+- *
++ * determine whether user is authorized to login according to the authorization
++ * files ~luser/.k5login" and ~luser/.k5users.  Set *ok to TRUE if authorized,
++ * FALSE if not authorized.  Return 0 if the authorization check succeeded
++ * (regardless of its result), non-zero if it encountered an error.
+  */
+ 
+ krb5_error_code
+@@ -64,7 +74,7 @@ krb5_authorization(krb5_context context, krb5_principal principal,
+                    char **out_fcmd)
+ {
+     struct passwd *pwd;
+-    char *princname;
++    char *princname = NULL;
+     int k5login_flag =0;
+     int k5users_flag =0;
+     krb5_boolean retbool =FALSE;
+@@ -76,7 +86,7 @@ krb5_authorization(krb5_context context, krb5_principal principal,
+ 
+     /* no account => no access */
+     if ((pwd = getpwnam(luser)) == NULL)
+-        return 0;
++        goto cleanup;
+ 
+     retval = krb5_unparse_name(context, principal, &princname);
+     if (retval)
+@@ -93,22 +103,19 @@ krb5_authorization(krb5_context context, krb5_principal principal,
+ 
+     /* k5login and k5users must be owned by target user or root */
+     if (!k5login_flag){
+-        if ((login_fp = fopen(k5login_path, "r")) == NULL)
+-            return 0;
+-        if ( fowner(login_fp, pwd->pw_uid) == FALSE) {
+-            fclose(login_fp);
+-            return 0;
+-        }
++        login_fp = fopen(k5login_path, "r");
++        if (login_fp == NULL)
++            goto cleanup;
++        if (fowner(login_fp, pwd->pw_uid) == FALSE)
++            goto cleanup;
+     }
+ 
+     if (!k5users_flag){
+-        if ((users_fp = fopen(k5users_path, "r")) == NULL) {
+-            return 0;
+-        }
+-        if ( fowner(users_fp, pwd->pw_uid) == FALSE){
+-            fclose(users_fp);
+-            return 0;
+-        }
++        users_fp = fopen(k5users_path, "r");
++        if (users_fp == NULL)
++            goto cleanup;
++        if (fowner(users_fp, pwd->pw_uid) == FALSE)
++            goto cleanup;
+     }
+ 
+     if (auth_debug){
+@@ -127,10 +134,8 @@ krb5_authorization(krb5_context context, krb5_principal principal,
+                     princname);
+ 
+         retval = k5login_lookup(login_fp,  princname, &retbool);
+-        if (retval) {
+-            auth_cleanup(users_fp, login_fp, princname);
+-            return retval;
+-        }
++        if (retval)
++            goto cleanup;
+         if (retbool) {
+             if (cmd)
+                 *out_fcmd = xstrdup(cmd);
+@@ -140,10 +145,8 @@ krb5_authorization(krb5_context context, krb5_principal principal,
+     if ((!k5users_flag) && (retbool == FALSE) ){
+         retval = k5users_lookup (users_fp, princname,
+                                  cmd, &retbool, out_fcmd);
+-        if(retval) {
+-            auth_cleanup(users_fp, login_fp, princname);
+-            return retval;
+-        }
++        if (retval)
++            goto cleanup;
+     }
+ 
+     if (k5login_flag && k5users_flag){
+@@ -159,8 +162,14 @@ krb5_authorization(krb5_context context, krb5_principal principal,
+     }
+ 
+     *ok =retbool;
+-    auth_cleanup(users_fp, login_fp, princname);
+-    return 0;
++
++cleanup:
++    if (users_fp != NULL)
++        fclose(users_fp);
++    if (login_fp != NULL)
++        fclose(login_fp);
++    free(princname);
++    return retval;
+ }
+ 
+ /***********************************************************
+@@ -320,10 +329,11 @@ krb5_boolean
+ fcmd_resolve(char *fcmd, char ***out_fcmd, char **out_err)
+ {
+     char * err;
+-    char ** tmp_fcmd;
++    char ** tmp_fcmd = NULL;
+     char * path_ptr, *path;
+     char * lp, * tc;
+     int i=0;
++    krb5_boolean ok = FALSE;
+ 
+     tmp_fcmd = (char **) xcalloc (MAX_CMD, sizeof(char *));
+ 
+@@ -331,7 +341,7 @@ fcmd_resolve(char *fcmd, char ***out_fcmd, char **out_err)
+         tmp_fcmd[0] = xstrdup(fcmd);
+         tmp_fcmd[1] = NULL;
+         *out_fcmd = tmp_fcmd;
+-        return TRUE;
++        tmp_fcmd = NULL;
+     }else{
+         /* must be either full path or just the cmd name */
+         if (strchr(fcmd, '/')){
+@@ -339,7 +349,7 @@ fcmd_resolve(char *fcmd, char ***out_fcmd, char **out_err)
+                              "either full path or just the cmd name\n"),
+                      fcmd, KRB5_USERS_NAME);
+             *out_err = err;
+-            return FALSE;
++            goto cleanup;
+         }
+ 
+ #ifndef CMD_PATH
+@@ -347,7 +357,7 @@ fcmd_resolve(char *fcmd, char ***out_fcmd, char **out_err)
+                          "the cmd name, CMD_PATH must be defined \n"),
+                  fcmd, KRB5_USERS_NAME, fcmd);
+         *out_err = err;
+-        return FALSE;
++        goto cleanup;
+ #else
+ 
+         path = xstrdup (CMD_PATH);
+@@ -361,7 +371,7 @@ fcmd_resolve(char *fcmd, char ***out_fcmd, char **out_err)
+             asprintf(&err, _("Error: bad entry - %s in %s file, CMD_PATH "
+                              "contains no paths \n"), fcmd, KRB5_USERS_NAME);
+             *out_err = err;
+-            return FALSE;
++            goto cleanup;
+         }
+ 
+         i=0;
+@@ -370,7 +380,7 @@ fcmd_resolve(char *fcmd, char ***out_fcmd, char **out_err)
+                 asprintf(&err, _("Error: bad path %s in CMD_PATH for %s must "
+                                  "start with '/' \n"), tc, KRB5_USERS_NAME );
+                 *out_err = err;
+-                return FALSE;
++                goto cleanup;
+             }
+ 
+             tmp_fcmd[i] = xasprintf("%s/%s", tc, fcmd);
+@@ -381,10 +391,15 @@ fcmd_resolve(char *fcmd, char ***out_fcmd, char **out_err)
+ 
+         tmp_fcmd[i] = NULL;
+         *out_fcmd = tmp_fcmd;
+-        return TRUE;
+-
++        tmp_fcmd = NULL;
+ #endif /* CMD_PATH */
+     }
++
++    ok = TRUE;
++
++cleanup:
++    free_fcmd_list(tmp_fcmd);
++    return ok;
+ }
+ 
+ /********************************************
+@@ -503,41 +518,42 @@ int
+ match_commands(char *fcmd, char *cmd, krb5_boolean *match,
+                char **cmd_out, char **err_out)
+ {
+-    char ** fcmd_arr;
++    char ** fcmd_arr = NULL;
+     char * err;
+     char * cmd_temp;
++    int result = 1;
+ 
+     if(fcmd_resolve(fcmd, &fcmd_arr, &err )== FALSE ){
+         *err_out = err;
+-        return 1;
++        goto cleanup;
+     }
+ 
+     if (cmd_single( cmd ) == TRUE){
+         if (!cmd_arr_cmp_postfix(fcmd_arr, cmd)){ /* found */
+-
+-            if(find_first_cmd_that_exists( fcmd_arr,&cmd_temp,&err)== TRUE){
+-                *match = TRUE;
+-                *cmd_out = cmd_temp;
+-                return 0;
+-            }else{
++            if (!find_first_cmd_that_exists(fcmd_arr, &cmd_temp, &err)) {
+                 *err_out = err;
+-                return 1;
++                goto cleanup;
+             }
+-        }else{
++
++            *match = TRUE;
++            *cmd_out = cmd_temp;
++        } else {
+             *match = FALSE;
+-            return 0;
+         }
+     }else{
+         if (!cmd_arr_cmp(fcmd_arr, cmd)){  /* found */
+             *match = TRUE;
+             *cmd_out = xstrdup(cmd);
+-            return 0;
+         } else{
+             *match = FALSE;
+-            return 0;
+         }
+     }
+ 
++    result = 0;
++
++cleanup:
++    free_fcmd_list(fcmd_arr);
++    return result;
+ }
+ 
+ /*********************************************************
+@@ -563,10 +579,7 @@ get_line(FILE *fp, char **out_line)
+         }
+         else {
+             chunk_count ++;
+-            if(!( line = (char *) realloc( line,
+-                                           chunk_count * sizeof(char) * BUFSIZ))){
+-                return  ENOMEM;
+-            }
++            line = xrealloc(line, chunk_count * BUFSIZ);
+ 
+             line_ptr = line + (BUFSIZ -1) *( chunk_count -1) ;
+         }
+@@ -652,17 +665,6 @@ get_next_token (char **lnext)
+     return out_ptr;
+ }
+ 
+-static void
+-auth_cleanup(FILE *users_fp, FILE *login_fp, char *princname)
+-{
+-
+-    free (princname);
+-    if (users_fp)
+-        fclose(users_fp);
+-    if (login_fp)
+-        fclose(login_fp);
+-}
+-
+ void
+ init_auth_names(char *pw_dir)
+ {
+diff --git a/src/clients/ksu/ccache.c b/src/clients/ksu/ccache.c
+index cca9ce2dfc..76cb1d6aa4 100644
+--- a/src/clients/ksu/ccache.c
++++ b/src/clients/ksu/ccache.c
+@@ -40,6 +40,18 @@ copies the default cache into the secondary cache,
+ 
+ ************************************************************************/
+ 
++static void
++free_creds_list(krb5_context context, krb5_creds **list)
++{
++    size_t i;
++
++    if (list == NULL)
++        return;
++    for (i = 0; list[i]; i++)
++        krb5_free_creds(context, list[i]);
++    free(list);
++}
++
+ void show_credential(krb5_context, krb5_creds *, krb5_ccache);
+ 
+ /* modifies only the cc_other, the algorithm may look a bit funny,
+@@ -53,20 +65,19 @@ krb5_ccache_copy(krb5_context context, krb5_ccache cc_def,
+                  krb5_boolean restrict_creds, krb5_principal primary_principal,
+                  krb5_boolean *stored)
+ {
+-    int i=0;
+     krb5_error_code retval=0;
+     krb5_creds ** cc_def_creds_arr = NULL;
+     krb5_creds ** cc_other_creds_arr = NULL;
+ 
+     if (ks_ccache_is_initialized(context, cc_def)) {
+-        if((retval = krb5_get_nonexp_tkts(context,cc_def,&cc_def_creds_arr))){
+-            return retval;
+-        }
++        retval = krb5_get_nonexp_tkts(context, cc_def, &cc_def_creds_arr);
++        if (retval)
++            goto cleanup;
+     }
+ 
+     retval = krb5_cc_initialize(context, cc_target, target_principal);
+     if (retval)
+-        return retval;
++        goto cleanup;
+ 
+     if (restrict_creds) {
+         retval = krb5_store_some_creds(context, cc_target, cc_def_creds_arr,
+@@ -79,22 +90,9 @@ krb5_ccache_copy(krb5_context context, krb5_ccache cc_def,
+                                       cc_other_creds_arr);
+     }
+ 
+-    if (cc_def_creds_arr){
+-        while (cc_def_creds_arr[i]){
+-            krb5_free_creds(context, cc_def_creds_arr[i]);
+-            i++;
+-        }
+-    }
+-
+-    i=0;
+-
+-    if(cc_other_creds_arr){
+-        while (cc_other_creds_arr[i]){
+-            krb5_free_creds(context, cc_other_creds_arr[i]);
+-            i++;
+-        }
+-    }
+-
++cleanup:
++    free_creds_list(context, cc_def_creds_arr);
++    free_creds_list(context, cc_other_creds_arr);
+     return retval;
+ }
+ 
+@@ -184,32 +182,29 @@ krb5_get_nonexp_tkts(krb5_context context, krb5_ccache cc,
+ {
+ 
+     krb5_creds creds, temp_tktq, temp_tkt;
+-    krb5_creds **temp_creds;
++    krb5_creds **temp_creds = NULL;
+     krb5_error_code retval=0;
+     krb5_cc_cursor cur;
+     int count = 0;
+     int chunk_count = 1;
+ 
+-    if ( ! ( temp_creds = (krb5_creds **) malloc( CHUNK * sizeof(krb5_creds *)))){
+-        return ENOMEM;
+-    }
+-
+-
++    temp_creds = xcalloc(CHUNK, sizeof(*temp_creds));
+     memset(&temp_tktq, 0, sizeof(temp_tktq));
+     memset(&temp_tkt, 0, sizeof(temp_tkt));
+     memset(&creds, 0, sizeof(creds));
+ 
+     /* initialize the cursor */
+-    if ((retval = krb5_cc_start_seq_get(context, cc, &cur))) {
+-        return retval;
+-    }
++    retval = krb5_cc_start_seq_get(context, cc, &cur);
++    if (retval)
++        goto cleanup;
+ 
+     while (!(retval = krb5_cc_next_cred(context, cc, &cur, &creds))){
+ 
+         if (!krb5_is_config_principal(context, creds.server) &&
+             (retval = krb5_check_exp(context, creds.times))){
++            krb5_free_cred_contents(context, &creds);
+             if (retval != KRB5KRB_AP_ERR_TKT_EXPIRED){
+-                return retval;
++                goto cleanup;
+             }
+             if (auth_debug){
+                 fprintf(stderr,"krb5_ccache_copy: CREDS EXPIRED:\n");
+@@ -219,19 +214,19 @@ krb5_get_nonexp_tkts(krb5_context context, krb5_ccache cc,
+             }
+         }
+         else {   /* these credentials didn't expire */
+-
+-            if ((retval = krb5_copy_creds(context, &creds,
+-                                          &temp_creds[count]))){
+-                return retval;
+-            }
++            retval = krb5_copy_creds(context, &creds, &temp_creds[count]);
++            krb5_free_cred_contents(context, &creds);
++            temp_creds[count+1] = NULL;
++            if (retval)
++                goto cleanup;
+             count ++;
+ 
+             if (count == (chunk_count * CHUNK -1)){
+                 chunk_count ++;
+-                if (!(temp_creds = (krb5_creds **) realloc(temp_creds,
+-                                                           chunk_count * CHUNK * sizeof(krb5_creds *)))){
+-                    return ENOMEM;
+-                }
++
++                temp_creds = xrealloc(temp_creds,
++                                      chunk_count * CHUNK *
++                                      sizeof(*temp_creds));
+             }
+         }
+ 
+@@ -239,13 +234,15 @@ krb5_get_nonexp_tkts(krb5_context context, krb5_ccache cc,
+ 
+     temp_creds[count] = NULL;
+     *creds_array   = temp_creds;
++    temp_creds = NULL;
+ 
+     if (retval == KRB5_CC_END) {
+         retval = krb5_cc_end_seq_get(context, cc, &cur);
+     }
+ 
++cleanup:
++    free_creds_list(context, temp_creds);
+     return retval;
+-
+ }
+ 
+ krb5_error_code
+@@ -315,122 +312,33 @@ printtime(krb5_timestamp ts)
+         printf("%s", fmtbuf);
+ }
+ 
+-
+-krb5_error_code
+-krb5_get_login_princ(const char *luser, char ***princ_list)
+-{
+-    struct stat sbuf;
+-    struct passwd *pwd;
+-    char pbuf[MAXPATHLEN];
+-    FILE *fp;
+-    char * linebuf;
+-    char *newline;
+-    int gobble, result;
+-    char ** buf_out;
+-    struct stat st_temp;
+-    int count = 0, chunk_count = 1;
+-
+-    /* no account => no access */
+-
+-    if ((pwd = getpwnam(luser)) == NULL) {
+-        return 0;
+-    }
+-    result = snprintf(pbuf, sizeof(pbuf), "%s/.k5login", pwd->pw_dir);
+-    if (SNPRINTF_OVERFLOW(result, sizeof(pbuf))) {
+-        fprintf(stderr, _("home directory path for %s too long\n"), luser);
+-        exit (1);
+-    }
+-
+-    if (stat(pbuf, &st_temp)) {  /* not accessible */
+-        return 0;
+-    }
+-
+-
+-    /* open ~/.k5login */
+-    if ((fp = fopen(pbuf, "r")) == NULL) {
+-        return 0;
+-    }
+-    /*
+-     * For security reasons, the .k5login file must be owned either by
+-     * the user himself, or by root.  Otherwise, don't grant access.
+-     */
+-    if (fstat(fileno(fp), &sbuf)) {
+-        fclose(fp);
+-        return 0;
+-    }
+-    if ((sbuf.st_uid != pwd->pw_uid) && sbuf.st_uid) {
+-        fclose(fp);
+-        return 0;
+-    }
+-
+-    /* check each line */
+-
+-
+-    if( !(linebuf = (char *) calloc (BUFSIZ, sizeof(char)))) return ENOMEM;
+-
+-    if (!(buf_out = (char **) malloc( CHUNK * sizeof(char *)))) return ENOMEM;
+-
+-    while ( fgets(linebuf, BUFSIZ, fp) != NULL) {
+-        /* null-terminate the input string */
+-        linebuf[BUFSIZ-1] = '\0';
+-        newline = NULL;
+-        /* nuke the newline if it exists */
+-        if ((newline = strchr(linebuf, '\n')))
+-            *newline = '\0';
+-
+-        buf_out[count] = linebuf;
+-        count ++;
+-
+-        if (count == (chunk_count * CHUNK -1)){
+-            chunk_count ++;
+-            if (!(buf_out = (char **) realloc(buf_out,
+-                                              chunk_count * CHUNK * sizeof(char *)))){
+-                return ENOMEM;
+-            }
+-        }
+-
+-        /* clean up the rest of the line if necessary */
+-        if (!newline)
+-            while (((gobble = getc(fp)) != EOF) && gobble != '\n');
+-
+-        if( !(linebuf = (char *) calloc (BUFSIZ, sizeof(char)))) return ENOMEM;
+-    }
+-
+-    buf_out[count] = NULL;
+-    *princ_list = buf_out;
+-    fclose(fp);
+-    return 0;
+-}
+-
+ void
+ show_credential(krb5_context context, krb5_creds *cred, krb5_ccache cc)
+ {
+     krb5_error_code retval;
+-    char *name, *sname, *flags;
++    char *name = NULL, *sname = NULL, *defname = NULL, *flags;
+     int first = 1;
+-    krb5_principal princ;
+-    char * defname;
++    krb5_principal princ = NULL;
+     int show_flags =1;
+ 
+     retval = krb5_unparse_name(context, cred->client, &name);
+     if (retval) {
+         com_err(prog_name, retval, _("while unparsing client name"));
+-        return;
++        goto cleanup;
+     }
+     retval = krb5_unparse_name(context, cred->server, &sname);
+     if (retval) {
+         com_err(prog_name, retval, _("while unparsing server name"));
+-        free(name);
+-        return;
++        goto cleanup;
+     }
+ 
+     if ((retval = krb5_cc_get_principal(context, cc, &princ))) {
+         com_err(prog_name, retval, _("while retrieving principal name"));
+-        return;
++        goto cleanup;
+     }
+     if ((retval = krb5_unparse_name(context, princ, &defname))) {
+         com_err(prog_name, retval, _("while unparsing principal name"));
+-        return;
++        goto cleanup;
+     }
+ 
+     if (!cred->times.starttime)
+@@ -468,8 +376,12 @@ show_credential(krb5_context context, krb5_creds *cred, krb5_ccache cc)
+         }
+     }
+     putchar('\n');
++
++cleanup:
+     free(name);
+     free(sname);
++    free(defname);
++    krb5_free_principal(context, princ);
+ }
+ 
+ /* Create a random string suitable for a filename extension. */
+@@ -501,37 +413,26 @@ krb5_ccache_overwrite(krb5_context context, krb5_ccache ccs, krb5_ccache cct,
+                       krb5_principal primary_principal)
+ {
+     krb5_error_code retval=0;
+-    krb5_principal temp_principal;
++    krb5_principal defprinc = NULL, princ;
+     krb5_creds ** ccs_creds_arr = NULL;
+-    int i=0;
+ 
+     if (ks_ccache_is_initialized(context, ccs)) {
+-        if ((retval = krb5_get_nonexp_tkts(context,  ccs, &ccs_creds_arr))){
+-            return retval;
+-        }
++        retval = krb5_get_nonexp_tkts(context,  ccs, &ccs_creds_arr);
++        if (retval)
++            goto cleanup;
+     }
+ 
+-    if (ks_ccache_is_initialized(context, cct)) {
+-        if ((retval = krb5_cc_get_principal(context, cct, &temp_principal))){
+-            return retval;
+-        }
+-    }else{
+-        temp_principal = primary_principal;
+-    }
+-
+-    if ((retval = krb5_cc_initialize(context, cct, temp_principal))){
+-        return retval;
+-    }
++    retval = krb5_cc_get_principal(context, cct, &defprinc);
++    princ = (retval == 0) ? defprinc : primary_principal;
++    retval = krb5_cc_initialize(context, cct, princ);
++    if (retval)
++        goto cleanup;
+ 
+     retval = krb5_store_all_creds(context, cct, ccs_creds_arr, NULL);
+ 
+-    if (ccs_creds_arr){
+-        while (ccs_creds_arr[i]){
+-            krb5_free_creds(context, ccs_creds_arr[i]);
+-            i++;
+-        }
+-    }
+-
++cleanup:
++    free_creds_list(context, ccs_creds_arr);
++    krb5_free_principal(context, defprinc);
+     return retval;
+ }
+ 
+@@ -585,45 +486,40 @@ krb5_error_code
+ krb5_ccache_filter(krb5_context context, krb5_ccache cc, krb5_principal prst)
+ {
+ 
+-    int i=0;
+     krb5_error_code retval=0;
+-    krb5_principal temp_principal;
++    krb5_principal temp_principal = NULL;
+     krb5_creds ** cc_creds_arr = NULL;
+     const char * cc_name;
+     krb5_boolean stored;
+ 
+-    cc_name = krb5_cc_get_name(context, cc);
++    if (!ks_ccache_is_initialized(context, cc))
++        return 0;
+ 
+-    if (ks_ccache_is_initialized(context, cc)) {
+-        if (auth_debug) {
+-            fprintf(stderr,"putting cache %s through a filter for -z option\n",                     cc_name);
+-        }
++    if (auth_debug) {
++        cc_name = krb5_cc_get_name(context, cc);
++        fprintf(stderr, "putting cache %s through a filter for -z option\n",
++                cc_name);
++    }
+ 
+-        if ((retval = krb5_get_nonexp_tkts(context, cc, &cc_creds_arr))){
+-            return retval;
+-        }
++    retval = krb5_get_nonexp_tkts(context, cc, &cc_creds_arr);
++    if (retval)
++        goto cleanup;
+ 
+-        if ((retval = krb5_cc_get_principal(context, cc, &temp_principal))){
+-            return retval;
+-        }
++    retval = krb5_cc_get_principal(context, cc, &temp_principal);
++    if (retval)
++        goto cleanup;
+ 
+-        if ((retval = krb5_cc_initialize(context, cc, temp_principal))){
+-            return retval;
+-        }
++    retval = krb5_cc_initialize(context, cc, temp_principal);
++    if (retval)
++        goto cleanup;
+ 
+-        if ((retval = krb5_store_some_creds(context, cc, cc_creds_arr,
+-                                            NULL, prst, &stored))){
+-            return retval;
+-        }
++    retval = krb5_store_some_creds(context, cc, cc_creds_arr, NULL, prst,
++                                   &stored);
+ 
+-        if (cc_creds_arr){
+-            while (cc_creds_arr[i]){
+-                krb5_free_creds(context, cc_creds_arr[i]);
+-                i++;
+-            }
+-        }
+-    }
+-    return 0;
++cleanup:
++    free_creds_list(context, cc_creds_arr);
++    krb5_free_principal(context, temp_principal);
++    return retval;
+ }
+ 
+ krb5_boolean
+@@ -654,17 +550,20 @@ krb5_error_code
+ krb5_find_princ_in_cache(krb5_context context, krb5_ccache cc,
+                          krb5_principal princ, krb5_boolean *found)
+ {
+-    krb5_error_code retval;
++    krb5_error_code retval = 0;
+     krb5_creds ** creds_list = NULL;
+ 
+     if (ks_ccache_is_initialized(context, cc)) {
+-        if ((retval = krb5_get_nonexp_tkts(context, cc, &creds_list))){
+-            return retval;
+-        }
++        retval = krb5_get_nonexp_tkts(context, cc, &creds_list);
++        if (retval)
++            goto cleanup;
+     }
+ 
+     *found = krb5_find_princ_in_cred_list(context, creds_list, princ);
+-    return 0;
++
++cleanup:
++    free_creds_list(context, creds_list);
++    return retval;
+ }
+ 
+ krb5_boolean
+diff --git a/src/clients/ksu/heuristic.c b/src/clients/ksu/heuristic.c
+index e906de8ef0..6ed94eb887 100644
+--- a/src/clients/ksu/heuristic.c
++++ b/src/clients/ksu/heuristic.c
+@@ -149,28 +149,31 @@ filter(FILE *fp, char *cmd, char **k5users_list, char ***k5users_filt_list)
+ 
+     *k5users_filt_list = NULL;
+ 
+-    if (! k5users_list){
++    if (k5users_list == NULL)
+         return 0;
+-    }
+ 
+     while(k5users_list[i]){
++        free(out_cmd);
++        out_cmd = NULL;
+ 
+         retval= k5users_lookup(fp, k5users_list[i], cmd, &found, &out_cmd);
+         if (retval)
+-            return retval;
++            goto cleanup;
+ 
+         if (found == FALSE){
+             free (k5users_list[i]);
+             k5users_list[i] = NULL;
+-            if (out_cmd) gb_err = out_cmd;
++            if (out_cmd) {
++                gb_err = out_cmd;
++                out_cmd = NULL;
++            }
+         } else
+             found_count ++;
+ 
+         i++;
+     }
+ 
+-    if (! (temp_filt_list = (char **) calloc(found_count +1, sizeof (char*))))
+-        return ENOMEM;
++    temp_filt_list = xcalloc(found_count + 1, sizeof(*temp_filt_list));
+ 
+     for(j= 0, k=0; j < i; j++ ) {
+         if (k5users_list[j]){
+@@ -184,7 +187,10 @@ filter(FILE *fp, char *cmd, char **k5users_list, char ***k5users_filt_list)
+     free (k5users_list);
+ 
+     *k5users_filt_list = temp_filt_list;
+-    return 0;
++
++cleanup:
++    free(out_cmd);
++    return retval;
+ }
+ 
+ krb5_error_code
+@@ -318,7 +324,7 @@ get_closest_principal(krb5_context context, char **plist,
+ 
+         retval = krb5_parse_name(context, plist[i], &temp_client);
+         if (retval)
+-            return retval;
++            goto cleanup;
+ 
+         pnelem = krb5_princ_size(context, temp_client);
+ 
+@@ -346,6 +352,7 @@ get_closest_principal(krb5_context context, char **plist,
+                 if(best_client){
+                     if(krb5_princ_size(context, best_client) >
+                        krb5_princ_size(context, temp_client)){
++                        krb5_free_principal(context, best_client);
+                         best_client = temp_client;
+                     }
+                 }else
+@@ -358,9 +365,12 @@ get_closest_principal(krb5_context context, char **plist,
+     if (best_client) {
+         *found = TRUE;
+         *client = best_client;
++        best_client = NULL;
+     }
+ 
+-    return 0;
++cleanup:
++    krb5_free_principal(context, best_client);
++    return retval;
+ }
+ 
+ /****************************************************************
+@@ -471,6 +481,7 @@ find_princ_in_list(krb5_context context, krb5_principal princ, char **plist,
+         i++;
+     }
+ 
++    free(princname);
+     return 0;
+ 
+ }
+@@ -498,11 +509,9 @@ get_best_princ_for_target(krb5_context context, uid_t source_uid,
+ {
+ 
+     princ_info princ_trials[10];
+-    krb5_principal cc_def_princ = NULL;
+-    krb5_principal temp_client;
+-    krb5_principal target_client;
+-    krb5_principal source_client;
+-    krb5_principal end_server;
++    krb5_principal cc_def_princ = NULL, temp_client = NULL;
++    krb5_principal target_client = NULL, source_client = NULL;
++    krb5_principal end_server = NULL;
+     krb5_error_code retval;
+     char ** aplist =NULL;
+     krb5_boolean found = FALSE;
+@@ -519,54 +528,59 @@ get_best_princ_for_target(krb5_context context, uid_t source_uid,
+     if (ks_ccache_is_initialized(context, cc_source)) {
+         retval = krb5_cc_get_principal(context, cc_source, &cc_def_princ);
+         if (retval)
+-            return retval;
++            goto cleanup;
+     }
+ 
+     retval=krb5_parse_name(context, target_user, &target_client);
+     if (retval)
+-        return retval;
++        goto cleanup;
+ 
+     retval=krb5_parse_name(context, source_user, &source_client);
+     if (retval)
+-        return retval;
++        goto cleanup;
+ 
+-    if (source_uid == 0){
+-        if (target_uid != 0)
+-            *client = target_client; /* this will be used to restrict
+-                                        the cache copty */
+-        else {
+-            if(cc_def_princ)
+-                *client = cc_def_princ;
+-            else
+-                *client = target_client;
++    if (source_uid == 0) {
++        if (target_uid != 0) {
++            /* This will be used to restrict the cache copy. */
++            *client = target_client;
++            target_client = NULL;
++        } else if (cc_def_princ != NULL) {
++            *client = cc_def_princ;
++            cc_def_princ = NULL;
++        } else {
++            *client = target_client;
++            target_client = NULL;
+         }
+-
+         if (auth_debug)
+             printf(" GET_best_princ_for_target: via source_uid == 0\n");
+-
+-        return 0;
++        goto cleanup;
+     }
+ 
+     /* from here on, the code is for source_uid !=  0 */
+ 
+     if (source_uid && (source_uid == target_uid)){
+-        if(cc_def_princ)
++        if (cc_def_princ != NULL) {
+             *client = cc_def_princ;
+-        else
++            cc_def_princ = NULL;
++        } else {
+             *client = target_client;
++            target_client = NULL;
++        }
+         if (auth_debug)
+             printf("GET_best_princ_for_target: via source_uid == target_uid\n");
+-        return 0;
++        goto cleanup;
+     }
+ 
+     /* Become root, then target for looking at .k5login.*/
+     if (krb5_seteuid(0) || krb5_seteuid(target_uid) ) {
+-        return errno;
++        retval = errno;
++        goto cleanup;
+     }
+ 
+     /* if .k5users and .k5login do not exist */
+     if (stat(k5login_path, &tb) && stat(k5users_path, &tb) ){
+         *client = target_client;
++        target_client = NULL;
+ 
+         if (cmd)
+             *path_out = NOT_AUTHORIZED;
+@@ -574,26 +588,25 @@ get_best_princ_for_target(krb5_context context, uid_t source_uid,
+         if (auth_debug)
+             printf(" GET_best_princ_for_target: via no auth files path\n");
+ 
+-        return 0;
++        goto cleanup;
+     }else{
+         retval = get_authorized_princ_names(target_user, cmd, &aplist);
+         if (retval)
+-            return retval;
++            goto cleanup;
+ 
+         /* .k5users or .k5login exist, but no authorization */
+         if ((!aplist) || (!aplist[0])) {
+             *path_out = NOT_AUTHORIZED;
+             if (auth_debug)
+                 printf("GET_best_princ_for_target: via empty auth files path\n");
+-            return 0;
++            goto cleanup;
+         }
+     }
+ 
+     retval = krb5_sname_to_principal(context, hostname, NULL,
+                                      KRB5_NT_SRV_HST, &end_server);
+     if (retval)
+-        return retval;
+-
++        goto cleanup;
+ 
+     /* first see if default principal of the source cache
+      * can get us in, then the target_user@realm, then the
+@@ -616,7 +629,7 @@ get_best_princ_for_target(krb5_context context, uid_t source_uid,
+             retval= find_princ_in_list(context, princ_trials[i].p, aplist,
+                                        &found);
+             if (retval)
+-                return retval;
++                goto cleanup;
+ 
+             if (found == TRUE){
+                 princ_trials[i].found = TRUE;
+@@ -625,12 +638,13 @@ get_best_princ_for_target(krb5_context context, uid_t source_uid,
+                                              princ_trials[i].p,
+                                              end_server, &found);
+                 if (retval)
+-                    return retval;
++                    goto cleanup;
+                 if (found == TRUE){
+-                    *client = princ_trials[i].p;
++                    retval = krb5_copy_principal(context, princ_trials[i].p,
++                                                 client);
+                     if (auth_debug)
+                         printf("GET_best_princ_for_target: via ticket file, choice #%d\n", i);
+-                    return 0;
++                    goto cleanup;
+                 }
+             }
+         }
+@@ -643,21 +657,23 @@ get_best_princ_for_target(krb5_context context, uid_t source_uid,
+     while (aplist[i]){
+         retval = krb5_parse_name(context, aplist[i], &temp_client);
+         if (retval)
+-            return retval;
++            goto cleanup;
+ 
+         retval = find_either_ticket (context, cc_source, temp_client,
+                                      end_server, &found);
+         if (retval)
+-            return retval;
++            goto cleanup;
+ 
+         if (found == TRUE){
+             if (auth_debug)
+                 printf("GET_best_princ_for_target: via ticket file, choice: any ok ticket \n" );
+             *client = temp_client;
+-            return 0;
++            temp_client = NULL;
++            goto cleanup;
+         }
+ 
+         krb5_free_principal(context, temp_client);
++        temp_client = NULL;
+ 
+         i++;
+     }
+@@ -668,11 +684,11 @@ get_best_princ_for_target(krb5_context context, uid_t source_uid,
+ 
+     for (i=0; i < count; i ++){
+         if (princ_trials[i].found == TRUE){
+-            *client = princ_trials[i].p;
++            retval = krb5_copy_principal(context, princ_trials[i].p, client);
+ 
+             if (auth_debug)
+                 printf("GET_best_princ_for_target: via prompt passwd list choice #%d \n",i);
+-            return  0;
++            goto cleanup;
+         }
+     }
+ 
+@@ -682,7 +698,7 @@ get_best_princ_for_target(krb5_context context, uid_t source_uid,
+             retval=krb5_copy_principal(context, princ_trials[i].p,
+                                        &temp_client);
+             if(retval)
+-                return retval;
++                goto cleanup;
+ 
+             /* get the client name that is the closest
+                to the three princ in trials */
+@@ -690,15 +706,15 @@ get_best_princ_for_target(krb5_context context, uid_t source_uid,
+             retval=get_closest_principal(context, aplist, &temp_client,
+                                          &found);
+             if(retval)
+-                return retval;
++                goto cleanup;
+ 
+             if (found == TRUE){
+                 *client = temp_client;
++                temp_client = NULL;
+                 if (auth_debug)
+                     printf("GET_best_princ_for_target: via prompt passwd list choice: approximation of princ in trials # %d \n",i);
+-                return 0;
++                goto cleanup;
+             }
+-            krb5_free_principal(context, temp_client);
+         }
+     }
+ 
+@@ -709,5 +725,13 @@ get_best_princ_for_target(krb5_context context, uid_t source_uid,
+         printf( "GET_best_princ_for_target: out of luck, can't get appropriate default principal\n");
+ 
+     *path_out = NOT_AUTHORIZED;
+-    return 0;
++    retval = 0;
++
++cleanup:
++    krb5_free_principal(context, cc_def_princ);
++    krb5_free_principal(context, target_client);
++    krb5_free_principal(context, source_client);
++    krb5_free_principal(context, temp_client);
++    krb5_free_principal(context, end_server);
++    return retval;
+ }
+diff --git a/src/clients/ksu/krb_auth_su.c b/src/clients/ksu/krb_auth_su.c
+index db10251f95..68cfe6b0ed 100644
+--- a/src/clients/ksu/krb_auth_su.c
++++ b/src/clients/ksu/krb_auth_su.c
+@@ -37,33 +37,31 @@ krb5_auth_check(krb5_context context, krb5_principal client_pname,
+                 char *target_user, krb5_ccache cc, int *path_passwd,
+                 uid_t target_uid)
+ {
+-    krb5_principal client;
++    krb5_principal client = NULL;
+     krb5_verify_init_creds_opt vfy_opts;
+-    krb5_creds tgt, tgtq;
++    krb5_creds tgt = { 0 }, tgtq = { 0 };
+     krb5_error_code retval =0;
+     int got_it = 0;
+     krb5_boolean zero_password;
++    krb5_boolean ok = FALSE;
+ 
+     *path_passwd = 0;
+-    memset(&tgtq, 0, sizeof(tgtq));
+-    memset(&tgt, 0, sizeof(tgt));
+ 
+     if ((retval= krb5_copy_principal(context,  client_pname, &client))){
+         com_err(prog_name, retval, _("while copying client principal"));
+-        return (FALSE) ;
++        goto cleanup;
+     }
+ 
+     if ((retval= krb5_copy_principal(context,  client, &tgtq.client))){
+         com_err(prog_name, retval, _("while copying client principal"));
+-        return (FALSE) ;
++        goto cleanup;
+     }
+ 
+     if ((retval = ksu_tgtname(context,  krb5_princ_realm(context, client),
+                               krb5_princ_realm(context, client),
+                               &tgtq.server))){
+         com_err(prog_name, retval, _("while creating tgt for local realm"));
+-        krb5_free_principal(context, client);
+-        return (FALSE) ;
++        goto cleanup;
+     }
+ 
+     if (auth_debug){ dump_principal(context, "local tgt principal name", tgtq.server ); }
+@@ -77,7 +75,7 @@ krb5_auth_check(krb5_context context, krb5_principal client_pname,
+         if ((retval != KRB5_CC_NOTFOUND) &&
+             (retval != KRB5KRB_AP_ERR_TKT_EXPIRED)){
+             com_err(prog_name, retval, _("while retrieving creds from cache"));
+-            return (FALSE) ;
++            goto cleanup;
+         }
+     } else{
+         got_it = 1;
+@@ -88,7 +86,7 @@ krb5_auth_check(krb5_context context, krb5_principal client_pname,
+ #ifdef GET_TGT_VIA_PASSWD
+         if (krb5_seteuid(0)||krb5_seteuid(target_uid)) {
+             com_err("ksu", errno, _("while switching to target uid"));
+-            return FALSE;
++            goto cleanup;
+         }
+ 
+ 
+@@ -102,19 +100,19 @@ krb5_auth_check(krb5_context context, krb5_principal client_pname,
+                                    &tgt) == FALSE) {
+             krb5_seteuid(0);
+ 
+-            return FALSE;
++            goto cleanup;
+         }
+         *path_passwd = 1;
+         if (krb5_seteuid(0)) {
+             com_err("ksu", errno, _("while reclaiming root uid"));
+-            return FALSE;
++            goto cleanup;
+         }
+ 
+ #else
+         plain_dump_principal (context, client);
+         fprintf(stderr,
+                 _("does not have any appropriate tickets in the cache.\n"));
+-        return FALSE;
++        goto cleanup;
+ 
+ #endif /* GET_TGT_VIA_PASSWD */
+ 
+@@ -126,10 +124,16 @@ krb5_auth_check(krb5_context context, krb5_principal client_pname,
+                                     &vfy_opts);
+     if (retval) {
+         com_err(prog_name, retval, _("while verifying ticket for server"));
+-        return (FALSE);
++        goto cleanup;
+     }
+ 
+-    return (TRUE);
++    ok = TRUE;
++
++cleanup:
++    krb5_free_principal(context, client);
++    krb5_free_cred_contents(context, &tgt);
++    krb5_free_cred_contents(context, &tgtq);
++    return ok;
+ }
+ 
+ krb5_boolean
+@@ -137,11 +141,12 @@ ksu_get_tgt_via_passwd(krb5_context context, krb5_principal client,
+                        krb5_get_init_creds_opt *options,
+                        krb5_boolean *zero_password, krb5_creds *creds_out)
+ {
++    krb5_boolean ok = FALSE;
+     krb5_error_code code;
+-    krb5_creds creds;
++    krb5_creds creds = { 0 };
+     krb5_timestamp now;
+     unsigned int pwsize;
+-    char password[255], *client_name, prompt[255];
++    char password[255], prompt[255], *client_name = NULL;
+     int result;
+ 
+     *zero_password = FALSE;
+@@ -150,14 +155,14 @@ ksu_get_tgt_via_passwd(krb5_context context, krb5_principal client,
+ 
+     if ((code = krb5_unparse_name(context, client, &client_name))) {
+         com_err (prog_name, code, _("when unparsing name"));
+-        return (FALSE);
++        goto cleanup;
+     }
+ 
+     memset(&creds, 0, sizeof(creds));
+ 
+     if ((code = krb5_timeofday(context, &now))) {
+         com_err(prog_name, code, _("while getting time of day"));
+-        return (FALSE);
++        goto cleanup;
+     }
+ 
+     result = snprintf(prompt, sizeof(prompt), _("Kerberos password for %s: "),
+@@ -166,7 +171,7 @@ ksu_get_tgt_via_passwd(krb5_context context, krb5_principal client,
+         fprintf(stderr,
+                 _("principal name %s too long for internal buffer space\n"),
+                 client_name);
+-        return FALSE;
++        goto cleanup;
+     }
+ 
+     pwsize = sizeof(password);
+@@ -175,13 +180,13 @@ ksu_get_tgt_via_passwd(krb5_context context, krb5_principal client,
+     if (code ) {
+         com_err(prog_name, code, _("while reading password for '%s'\n"),
+                 client_name);
+-        return (FALSE);
++        goto cleanup;
+     }
+ 
+     if ( pwsize == 0) {
+         fprintf(stderr, _("No password given\n"));
+         *zero_password = TRUE;
+-        return (FALSE);
++        goto cleanup;
+     }
+ 
+     code = krb5_get_init_creds_password(context, &creds, client, password,
+@@ -195,13 +200,19 @@ ksu_get_tgt_via_passwd(krb5_context context, krb5_principal client,
+             fprintf(stderr, _("%s: Password incorrect\n"), prog_name);
+         else
+             com_err(prog_name, code, _("while getting initial credentials"));
+-        return (FALSE);
++        goto cleanup;
+     }
+-    if (creds_out != NULL)
++    if (creds_out != NULL) {
+         *creds_out = creds;
+-    else
+-        krb5_free_cred_contents(context, &creds);
+-    return (TRUE);
++        memset(&creds, 0, sizeof(creds));
++    }
++
++    ok = TRUE;
++
++cleanup:
++    krb5_free_cred_contents(context, &creds);
++    free(client_name);
++    return ok;
+ }
+ 
+ void
+@@ -213,8 +224,10 @@ dump_principal(krb5_context context, char *str, krb5_principal p)
+     if ((retval = krb5_unparse_name(context, p, &stname))) {
+         fprintf(stderr, _(" %s while unparsing name\n"),
+                 error_message(retval));
++        return;
+     }
+     fprintf(stderr, " %s: %s\n", str, stname);
++    free(stname);
+ }
+ 
+ void
+@@ -226,71 +239,8 @@ plain_dump_principal (krb5_context context, krb5_principal p)
+     if ((retval = krb5_unparse_name(context, p, &stname))) {
+         fprintf(stderr, _(" %s while unparsing name\n"),
+                 error_message(retval));
++        return;
+     }
+     fprintf(stderr, "%s ", stname);
+-}
+-
+-
+-/**********************************************************************
+-returns the principal that is closest to client. plist contains
+-a principal list obtained from .k5login and parhaps .k5users file.
+-This routine gets called before getting the password for a tgt.
+-A principal is picked that has the best chance of getting in.
+-
+-**********************************************************************/
+-
+-krb5_error_code
+-get_best_principal(krb5_context context, char **plist, krb5_principal *client)
+-{
+-    krb5_error_code retval =0;
+-    krb5_principal temp_client, best_client = NULL;
+-
+-    int i = 0, nelem;
+-
+-    if (! plist ) return 0;
+-
+-    nelem = krb5_princ_size(context, *client);
+-
+-    while(plist[i]){
+-
+-        if ((retval = krb5_parse_name(context, plist[i], &temp_client))){
+-            return retval;
+-        }
+-
+-        if (data_eq(*krb5_princ_realm(context, *client),
+-                    *krb5_princ_realm(context, temp_client))) {
+-
+-            if (nelem &&
+-                krb5_princ_size(context, *client) > 0 &&
+-                krb5_princ_size(context, temp_client) > 0) {
+-                krb5_data *p1 =
+-                    krb5_princ_component(context, *client, 0);
+-                krb5_data *p2 =
+-                    krb5_princ_component(context, temp_client, 0);
+-
+-                if (data_eq(*p1, *p2)) {
+-
+-                    if (auth_debug){
+-                        fprintf(stderr,
+-                                "get_best_principal: compare with %s\n",
+-                                plist[i]);
+-                    }
+-
+-                    if(best_client){
+-                        if(krb5_princ_size(context, best_client) >
+-                           krb5_princ_size(context, temp_client)){
+-                            best_client = temp_client;
+-                        }
+-                    }else{
+-                        best_client = temp_client;
+-                    }
+-                }
+-            }
+-
+-        }
+-        i++;
+-    }
+-
+-    if (best_client) *client = best_client;
+-    return 0;
++    free(stname);
+ }
+diff --git a/src/clients/ksu/ksu.h b/src/clients/ksu/ksu.h
+index 66fb4bcc6a..32ce11cb85 100644
+--- a/src/clients/ksu/ksu.h
++++ b/src/clients/ksu/ksu.h
+@@ -92,9 +92,6 @@ extern void plain_dump_principal
+ extern krb5_error_code krb5_parse_lifetime
+ (char *, long *);
+ 
+-extern krb5_error_code get_best_principal
+-(krb5_context, char **, krb5_principal *);
+-
+ /* ccache.c */
+ extern krb5_error_code krb5_ccache_copy
+ (krb5_context, krb5_ccache, krb5_principal, krb5_ccache,
+@@ -117,9 +114,6 @@ extern krb5_error_code krb5_check_exp
+ 
+ extern char *flags_string (krb5_creds *);
+ 
+-extern krb5_error_code krb5_get_login_princ
+-(const char *, char ***);
+-
+ extern void show_credential
+ (krb5_context, krb5_creds *, krb5_ccache);
+ 
+diff --git a/src/clients/ksu/main.c b/src/clients/ksu/main.c
+index 2a351662c8..77703a6a2b 100644
+--- a/src/clients/ksu/main.c
++++ b/src/clients/ksu/main.c
+@@ -1002,7 +1002,7 @@ resolve_target_cache(krb5_context context, krb5_principal princ,
+             if (retval) {
+                 com_err(prog_name, retval,
+                         _("while generating part of the target ccache name"));
+-                return retval;
++                goto cleanup;
+             }
+             if (asprintf(&ccname, "%s.%s", target, sym) < 0) {
+                 retval = ENOMEM;
+@@ -1014,6 +1014,7 @@ resolve_target_cache(krb5_context context, krb5_principal princ,
+             free(sym);
+         } while (ks_ccache_name_is_initialized(context, ccname));
+         retval = krb5_cc_resolve(context, ccname, &ccache);
++        free(ccname);
+     } else {
+         /* Look for a cache in the collection that we can reuse. */
+         retval = krb5_cc_cache_match(context, princ, &ccache);
+diff --git a/src/kadmin/cli/keytab.c b/src/kadmin/cli/keytab.c
+index 26f340af31..976c8969e8 100644
+--- a/src/kadmin/cli/keytab.c
++++ b/src/kadmin/cli/keytab.c
+@@ -363,7 +363,7 @@ remove_principal(char *keytab_str, krb5_keytab keytab,
+ {
+     krb5_principal princ = NULL;
+     krb5_keytab_entry entry;
+-    krb5_kt_cursor cursor;
++    krb5_kt_cursor cursor = NULL;
+     enum { UNDEF, SPEC, HIGH, ALL, OLD } mode;
+     int code, did_something;
+     krb5_kvno kvno;
+@@ -443,6 +443,7 @@ remove_principal(char *keytab_str, krb5_keytab keytab,
+                         _("while temporarily ending keytab scan"));
+                 goto cleanup;
+             }
++            cursor = NULL;
+             code = krb5_kt_remove_entry(context, keytab, &entry);
+             if (code != 0) {
+                 com_err(whoami, code, _("while deleting entry from keytab"));
+@@ -471,6 +472,7 @@ remove_principal(char *keytab_str, krb5_keytab keytab,
+         com_err(whoami, code, _("while ending keytab scan"));
+         goto cleanup;
+     }
++    cursor = NULL;
+ 
+     /*
+      * If !did_someting then mode must be OLD or we would have
+@@ -483,6 +485,8 @@ remove_principal(char *keytab_str, krb5_keytab keytab,
+     }
+ 
+ cleanup:
++    if (cursor != NULL)
++        (void)krb5_kt_end_seq_get(context, keytab, &cursor);
+     krb5_free_principal(context, princ);
+ }
+ 
+diff --git a/src/kadmin/ktutil/ktutil.c b/src/kadmin/ktutil/ktutil.c
+index 87a69ca145..a1c17d154d 100644
+--- a/src/kadmin/ktutil/ktutil.c
++++ b/src/kadmin/ktutil/ktutil.c
+@@ -254,6 +254,7 @@ ktutil_list(int argc, char *argv[])
+                                                buf, sizeof(buf)))) {
+                 com_err(argv[0], retval,
+                         _("While converting enctype to string"));
++                free(pname);
+                 return;
+             }
+             printf(" (%s) ", buf);
+diff --git a/src/kprop/kpropd.c b/src/kprop/kpropd.c
+index f883ae2df8..9a4826e441 100644
+--- a/src/kprop/kpropd.c
++++ b/src/kprop/kpropd.c
+@@ -1300,19 +1300,20 @@ static krb5_boolean
+ authorized_principal(krb5_context context, krb5_principal p,
+                      krb5_enctype auth_etype)
+ {
+-    char *name, *ptr, buf[1024];
++    krb5_boolean ok = FALSE;
++    char *name = NULL, *ptr, buf[1024];
+     krb5_error_code retval;
+-    FILE *acl_file;
++    FILE *acl_file = NULL;
+     int end;
+     krb5_enctype acl_etype;
+ 
+     retval = krb5_unparse_name(context, p, &name);
+     if (retval)
+-        return FALSE;
++        goto cleanup;
+ 
+     acl_file = fopen(acl_file_name, "r");
+     if (acl_file == NULL)
+-        return FALSE;
++        goto cleanup;
+ 
+     while (!feof(acl_file)) {
+         if (!fgets(buf, sizeof(buf), acl_file))
+@@ -1342,14 +1343,16 @@ authorized_principal(krb5_context context, krb5_principal p,
+                  (acl_etype != auth_etype)))
+                 continue;
+ 
+-            free(name);
+-            fclose(acl_file);
+-            return TRUE;
++            ok = TRUE;
++            goto cleanup;
+         }
+     }
++
++cleanup:
+     free(name);
+-    fclose(acl_file);
+-    return FALSE;
++    if (acl_file != NULL)
++        fclose(acl_file);
++    return ok;
+ }
+ 
+ static void
+diff --git a/src/lib/gssapi/krb5/export_cred.c b/src/lib/gssapi/krb5/export_cred.c
+index 96a408c237..bf5cede54a 100644
+--- a/src/lib/gssapi/krb5/export_cred.c
++++ b/src/lib/gssapi/krb5/export_cred.c
+@@ -447,8 +447,10 @@ krb5_gss_export_cred(OM_uint32 *minor_status, gss_cred_id_t cred_handle,
+ 
+     /* Validate and lock cred_handle. */
+     status = krb5_gss_validate_cred_1(minor_status, cred_handle, context);
+-    if (status != GSS_S_COMPLETE)
++    if (status != GSS_S_COMPLETE) {
++        krb5_free_context(context);
+         return status;
++    }
+     cred = (krb5_gss_cred_id_t)cred_handle;
+ 
+     if (json_kgcred(context, cred, &jcred))
+diff --git a/src/lib/gssapi/krb5/val_cred.c b/src/lib/gssapi/krb5/val_cred.c
+index 83e7634106..d4b070f8c0 100644
+--- a/src/lib/gssapi/krb5/val_cred.c
++++ b/src/lib/gssapi/krb5/val_cred.c
+@@ -35,6 +35,7 @@ krb5_gss_validate_cred_1(OM_uint32 *minor_status, gss_cred_id_t cred_handle,
+     krb5_gss_cred_id_t cred;
+     krb5_error_code code;
+     krb5_principal princ;
++    krb5_boolean same;
+ 
+     cred = (krb5_gss_cred_id_t) cred_handle;
+     k5_mutex_lock(&cred->lock);
+@@ -45,12 +46,13 @@ krb5_gss_validate_cred_1(OM_uint32 *minor_status, gss_cred_id_t cred_handle,
+             *minor_status = code;
+             return(GSS_S_DEFECTIVE_CREDENTIAL);
+         }
+-        if (!krb5_principal_compare(context, princ, cred->name->princ)) {
++        same = krb5_principal_compare(context, princ, cred->name->princ);
++        (void)krb5_free_principal(context, princ);
++        if (!same) {
+             k5_mutex_unlock(&cred->lock);
+             *minor_status = KG_CCACHE_NOMATCH;
+             return(GSS_S_DEFECTIVE_CREDENTIAL);
+         }
+-        (void)krb5_free_principal(context, princ);
+     }
+     *minor_status = 0;
+     return GSS_S_COMPLETE;
+diff --git a/src/lib/kadm5/srv/server_kdb.c b/src/lib/kadm5/srv/server_kdb.c
+index 2ec80a0f2b..4efcaf9941 100644
+--- a/src/lib/kadm5/srv/server_kdb.c
++++ b/src/lib/kadm5/srv/server_kdb.c
+@@ -67,11 +67,10 @@ krb5_error_code kdb_init_master(kadm5_server_handle_t handle,
+     if (ret)
+         goto done;
+ 
+-    if ((ret = krb5_db_fetch_mkey_list(handle->context, master_princ,
+-                                       &master_keyblock))) {
++    ret = krb5_db_fetch_mkey_list(handle->context, master_princ,
++                                  &master_keyblock);
++    if (ret)
+         krb5_db_fini(handle->context);
+-        return (ret);
+-    }
+ 
+ done:
+     if (r == NULL)
+diff --git a/src/lib/krb5/ccache/cc_kcm.c b/src/lib/krb5/ccache/cc_kcm.c
+index c93e7c78e5..1f917d49bb 100644
+--- a/src/lib/krb5/ccache/cc_kcm.c
++++ b/src/lib/krb5/ccache/cc_kcm.c
+@@ -992,10 +992,14 @@ kcm_start_seq_get(krb5_context context, krb5_ccache cache,
+     if (cursor == NULL)
+         goto cleanup;
+     cursor->uuids = uuids;
++    uuids = NULL;
+     cursor->creds = creds;
++    creds = NULL;
+     *cursor_out = (krb5_cc_cursor)cursor;
+ 
+ cleanup:
++    free_cred_list(creds);
++    free_uuid_list(uuids);
+     kcmreq_free(&req);
+     return ret;
+ }
+diff --git a/src/lib/krb5/ccache/ccfns.c b/src/lib/krb5/ccache/ccfns.c
+index e0eb39a612..9b755f0e36 100644
+--- a/src/lib/krb5/ccache/ccfns.c
++++ b/src/lib/krb5/ccache/ccfns.c
+@@ -198,18 +198,18 @@ k5_build_conf_principals(krb5_context context, krb5_ccache id,
+     if (principal) {
+         ret = krb5_unparse_name(context, principal, &pname);
+         if (ret)
+-            return ret;
++            goto cleanup;
+     }
+ 
+     ret = krb5_build_principal(context, &cred->server,
+                                sizeof(conf_realm) - 1, conf_realm,
+                                conf_name, name, pname, (char *)NULL);
+-    krb5_free_unparsed_name(context, pname);
+-    if (ret) {
+-        krb5_free_principal(context, client);
+-        return ret;
+-    }
++    if (ret)
++        goto cleanup;
+     ret = krb5_copy_principal(context, client, &cred->client);
++
++cleanup:
++    krb5_free_unparsed_name(context, pname);
+     krb5_free_principal(context, client);
+     return ret;
+ }
+diff --git a/src/lib/krb5/keytab/kt_file.c b/src/lib/krb5/keytab/kt_file.c
+index f3ea28c8ec..8fd1505115 100644
+--- a/src/lib/krb5/keytab/kt_file.c
++++ b/src/lib/krb5/keytab/kt_file.c
+@@ -456,15 +456,16 @@ krb5_ktfile_start_seq_get(krb5_context context, krb5_keytab id, krb5_kt_cursor *
+         return ENOMEM;
+     }
+     *fileoff = KTSTARTOFF(id);
+-    *cursorp = (krb5_kt_cursor)fileoff;
+     KTITERS(id)++;
+     if (KTITERS(id) == 0) {
+         /* Wrapped?!  */
+         KTITERS(id)--;
+         KTUNLOCK(id);
++        free(fileoff);
+         k5_setmsg(context, KRB5_KT_IOERR, "Too many keytab iterators active");
+         return KRB5_KT_IOERR;   /* XXX */
+     }
++    *cursorp = (krb5_kt_cursor)fileoff;
+     KTUNLOCK(id);
+ 
+     return 0;
+diff --git a/src/plugins/kdb/ldap/libkdb_ldap/ldap_realm.c b/src/plugins/kdb/ldap/libkdb_ldap/ldap_realm.c
+index 753929b06d..f7fad27867 100644
+--- a/src/plugins/kdb/ldap/libkdb_ldap/ldap_realm.c
++++ b/src/plugins/kdb/ldap/libkdb_ldap/ldap_realm.c
+@@ -271,16 +271,18 @@ krb5_ldap_delete_realm (krb5_context context, char *lrealm)
+         for (ent = ldap_first_entry (ld, result); ent != NULL;
+              ent = ldap_next_entry (ld, ent)) {
+             if ((values = ldap_get_values(ld, ent, "krbPrincipalName")) != NULL) {
+-                for (i = 0; values[i] != NULL; ++i) {
++                for (i = 0; values[i] != NULL && !st; ++i) {
+                     krb5_parse_name(context, values[i], &principal);
+                     if (principal_in_realm_2(principal, lrealm) == 0) {
+                         st=krb5_ldap_delete_principal(context, principal);
+-                        if (st && st != KRB5_KDB_NOENTRY)
+-                            goto cleanup;
++                        if (st == KRB5_KDB_NOENTRY)
++                            st = 0;
+                     }
+                     krb5_free_principal(context, principal);
+                 }
+                 ldap_value_free(values);
++                if (st)
++                    goto cleanup;
+             }
+         }
+     }
+-- 
+2.45.1
+

@@ -1,0 +1,21 @@
+tag:
+  - CI-Tier-1
+  - CI-Tier-1-krb5
+  - Fedora 31
+  - Fedora 32
+  - FedoraReady
+  - IDM-CI-gating
+  - NoRHEL4
+  - NoRHEL5
+  - TIPpass
+  - TIPpass_Security
+  - Tier1
+  - Tier1security
+  - rhel_upgrade
+tier: '1'
+adjust:
+  - enabled: false
+    when: distro == rhel-4, rhel-5
+    continue: false
+extra-nitrate: TC#0378369
+extra-summary: /CoreOS/krb5/Sanity/inplace-upgrade-sanity-test

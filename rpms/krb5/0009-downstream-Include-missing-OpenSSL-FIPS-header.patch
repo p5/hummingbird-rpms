@@ -1,0 +1,120 @@
+From 775ed8588cc21385fb16a4cec4a861f0d578ce04 Mon Sep 17 00:00:00 2001
+From: Julien Rische <jrische@redhat.com>
+Date: Thu, 5 Jan 2023 20:06:47 +0100
+Subject: [PATCH] [downstream] Include missing OpenSSL FIPS header
+
+The inclusion of openssl/fips.h, which provides the declaration of
+FIPS_mode(), was removed from openssl/crypto.h. As a consequence, this
+header file has to be included explicitly in krb5 code.
+---
+ src/lib/crypto/krb/prng.c                      | 4 +++-
+ src/lib/crypto/openssl/enc_provider/camellia.c | 1 +
+ src/lib/crypto/openssl/enc_provider/rc4.c      | 4 ++++
+ src/lib/crypto/openssl/hmac.c                  | 1 +
+ src/lib/krad/internal.h                        | 4 ++++
+ src/plugins/preauth/spake/spake_client.c       | 4 ++++
+ src/plugins/preauth/spake/spake_kdc.c          | 4 ++++
+ 7 files changed, 21 insertions(+), 1 deletion(-)
+
+diff --git a/src/lib/crypto/krb/prng.c b/src/lib/crypto/krb/prng.c
+index 9e80a03d21..ae37c77518 100644
+--- a/src/lib/crypto/krb/prng.c
++++ b/src/lib/crypto/krb/prng.c
+@@ -28,7 +28,9 @@
+ 
+ #include <openssl/rand.h>
+ 
+-#if OPENSSL_VERSION_NUMBER < 0x30000000L
++#if OPENSSL_VERSION_NUMBER >= 0x30000000L
++#include <openssl/fips.h>
++#else
+ #include <openssl/crypto.h>
+ #endif
+ 
+diff --git a/src/lib/crypto/openssl/enc_provider/camellia.c b/src/lib/crypto/openssl/enc_provider/camellia.c
+index d9f327add6..3dd3b0624f 100644
+--- a/src/lib/crypto/openssl/enc_provider/camellia.c
++++ b/src/lib/crypto/openssl/enc_provider/camellia.c
+@@ -32,6 +32,7 @@
+ #include <openssl/camellia.h>
+ #if OPENSSL_VERSION_NUMBER >= 0x30000000L
+ #include <openssl/core_names.h>
++#include <openssl/fips.h>
+ #else
+ #include <openssl/modes.h>
+ #endif
+diff --git a/src/lib/crypto/openssl/enc_provider/rc4.c b/src/lib/crypto/openssl/enc_provider/rc4.c
+index ce63cb5f1b..6a83f10d27 100644
+--- a/src/lib/crypto/openssl/enc_provider/rc4.c
++++ b/src/lib/crypto/openssl/enc_provider/rc4.c
+@@ -38,6 +38,10 @@
+ 
+ #include <openssl/evp.h>
+ 
++#if OPENSSL_VERSION_NUMBER >= 0x30000000L
++#include <openssl/fips.h>
++#endif
++
+ /*
+  * The loopback field is a pointer to the structure.  If the application copies
+  * the state (not a valid operation, but one which happens to works with some
+diff --git a/src/lib/crypto/openssl/hmac.c b/src/lib/crypto/openssl/hmac.c
+index f21e268f7f..25a419d73a 100644
+--- a/src/lib/crypto/openssl/hmac.c
++++ b/src/lib/crypto/openssl/hmac.c
+@@ -59,6 +59,7 @@
+ #if OPENSSL_VERSION_NUMBER >= 0x30000000L
+ #include <openssl/params.h>
+ #include <openssl/core_names.h>
++#include <openssl/fips.h>
+ #else
+ #include <openssl/hmac.h>
+ #endif
+diff --git a/src/lib/krad/internal.h b/src/lib/krad/internal.h
+index e123763954..a17b6f39b1 100644
+--- a/src/lib/krad/internal.h
++++ b/src/lib/krad/internal.h
+@@ -41,6 +41,10 @@
+ 
+ #include <openssl/crypto.h>
+ 
++#if OPENSSL_VERSION_NUMBER >= 0x30000000L
++#include <openssl/fips.h>
++#endif
++
+ #ifndef UCHAR_MAX
+ #define UCHAR_MAX 255
+ #endif
+diff --git a/src/plugins/preauth/spake/spake_client.c b/src/plugins/preauth/spake/spake_client.c
+index a3ce22b70f..13c699071f 100644
+--- a/src/plugins/preauth/spake/spake_client.c
++++ b/src/plugins/preauth/spake/spake_client.c
+@@ -40,6 +40,10 @@
+ 
+ #include <openssl/crypto.h>
+ 
++#if OPENSSL_VERSION_NUMBER >= 0x30000000L
++#include <openssl/fips.h>
++#endif
++
+ typedef struct reqstate_st {
+     krb5_pa_spake *msg;         /* set in prep_questions, used in process */
+     krb5_keyblock *initial_key;
+diff --git a/src/plugins/preauth/spake/spake_kdc.c b/src/plugins/preauth/spake/spake_kdc.c
+index 232e78bc05..3394f8a58e 100644
+--- a/src/plugins/preauth/spake/spake_kdc.c
++++ b/src/plugins/preauth/spake/spake_kdc.c
+@@ -43,6 +43,10 @@
+ 
+ #include <openssl/crypto.h>
+ 
++#if OPENSSL_VERSION_NUMBER >= 0x30000000L
++#include <openssl/fips.h>
++#endif
++
+ /*
+  * The SPAKE kdcpreauth module uses a secure cookie containing the following
+  * concatenated fields (all integer fields are big-endian):
+-- 
+2.45.1
+
