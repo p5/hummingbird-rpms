@@ -265,6 +265,13 @@
     "source": "https://src.fedoraproject.org/rpms/gnutls.git",
     "version": "3.8.11"
   },
+  "go-rpm-macros": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "5db95fff66d5e2d52b064964561cfd961e7c6559",
+    "source": "https://src.fedoraproject.org/rpms/go-rpm-macros.git",
+    "version": "3.8.0"
+  },
   "grep": {
     "branch": "rawhide",
     "release": "2",
