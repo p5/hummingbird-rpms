@@ -69,6 +69,13 @@
     "source": "https://src.fedoraproject.org/rpms/ca-certificates.git",
     "version": "2025.2.80_v9.0.304"
   },
+  "caddy": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "c364159f1a43395b33df06fb17aad705d0de76f8",
+    "source": "https://src.fedoraproject.org/rpms/caddy.git",
+    "version": "2.10.2"
+  },
   "chkconfig": {
     "branch": "rawhide",
     "release": "3",

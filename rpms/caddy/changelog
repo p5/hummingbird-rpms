@@ -1,0 +1,285 @@
+* Wed Jan 22 2025 Carl George <carlwgeorge@fedoraproject.org> - 2.9.1-3
+- Run tests with -short flag like upstream to avoid test failures
+- Resolves FTBFS rhbz#2339573 rhbz#2339954
+
+* Thu Jan 16 2025 Fedora Release Engineering <releng@fedoraproject.org> - 2.9.1-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_42_Mass_Rebuild
+
+* Wed Jan 08 2025 Carl George <carlwgeorge@fedoraproject.org> - 2.9.1-1
+- Update to version 2.9.1 rhbz#2336409
+
+* Wed Jan 01 2025 Carl George <carlwgeorge@fedoraproject.org> - 2.9.0-1
+- Update to version 2.9.0 rhbz#2316289
+
+* Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.8.4-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
+
+* Fri Jul 05 2024 Carl George <carlwgeorge@fedoraproject.org> - 2.8.4-1
+- Update to version 2.8.4 rhbz#2278549
+- Resolves CVE-2023-49295 rhbz#2257829
+- Resolves CVE-2024-27304 rhbz#2268278
+- Resolves CVE-2024-27289 rhbz#2268468
+- Resolves CVE-2024-28180 rhbz#2268877
+- Resolves CVE-2024-22189 rhbz#2273517
+- Remove LimitNPROC from systemd unit files
+
+* Sun Feb 11 2024 Maxwell G <maxwell@gtmx.me> - 2.7.6-2
+- Rebuild for golang 1.22.0
+
+* Fri Feb 09 2024 Carl George <carlwgeorge@fedoraproject.org> - 2.7.6-1
+- Update to version 2.7.6 rhbz#2253698
+- Includes fix for CVE-2023-45142 rhbz#2246587
+
+* Tue Jan 23 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.7.5-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
+
+* Fri Jan 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.7.5-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
+
+* Mon Oct 30 2023 Carl George <carlwgeorge@fedoraproject.org> - 2.7.5-1
+- Update to version 2.7.5
+- Update poweredby logos
+- Add symlink for system_noindex_logo.png on EL9
+- Symlink directly to fedora-testpage directory on Fedora
+
+* Thu Aug 17 2023 Carl George <carlwgeorge@fedoraproject.org> - 2.7.4-1
+- Update to version 2.7.4, resolves rhbz#2232696
+- Fix CVE-2023-3978, resolves rhbz#2229582
+
+* Tue Aug 08 2023 Carl George <carl@george.computer> - 2.7.3-1
+- Update to version 2.7.3, resolves rhbz#2229638
+
+* Thu Aug 03 2023 Carl George <carl@george.computer> - 2.7.2-1
+- Update to version 2.7.2, resolves rhbz#2228776
+
+* Thu Jul 27 2023 Carl George <carl@george.computer> - 2.7.0~beta2-1
+- Update to version 2.7.0~beta2, resolves rhbz#2225732 rhbz#2124366
+- Resolves CVE-2022-41717 rhbz#2164315
+- Resolves CVE-2022-41723 rhbz#2178412
+- Add man pages
+- Use generated shell completion files instead of static ones
+- Add fish shell completions
+- Switch to systemd sysusers
+
+* Wed Jul 19 2023 Fedora Release Engineering <releng@fedoraproject.org> - 2.5.2-4
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_39_Mass_Rebuild
+
+* Tue Jan 24 2023 Carl George <carl@george.computer> - 2.5.2-3
+- Rebuild for CVE-2022-41717 in golang
+
+* Wed Jan 18 2023 Fedora Release Engineering <releng@fedoraproject.org> - 2.5.2-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_38_Mass_Rebuild
+
+* Tue Aug 09 2022 Carl George <carl@george.computer> - 2.5.2-1
+- Latest upstream, resolves rhbz#2062499 rhbz#2113136
+
+* Wed Jul 20 2022 Fedora Release Engineering <releng@fedoraproject.org> - 2.4.6-5
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_37_Mass_Rebuild
+
+* Tue Jul 19 2022 Maxwell G <gotmax@e.email> - 2.4.6-4
+- Rebuild for CVE-2022-{1705,32148,30631,30633,28131,30635,30632,30630,1962} in
+  golang
+
+* Fri Jun 17 2022 Robert-André Mauchin <zebob.m@gmail.com> - 2.4.6-3
+- Rebuilt for CVE-2022-1996, CVE-2022-24675, CVE-2022-28327, CVE-2022-27191,
+  CVE-2022-29526, CVE-2022-30629
+
+* Fri Feb 25 2022 Carl George <carl@george.computer> - 2.4.6-2
+- Update welcome page symlink and image to work on both Fedora and EPEL
+
+* Wed Feb 16 2022 Carl George <carl@george.computer> - 2.4.6-1
+- Latest upstream rhbz#1984163
+
+* Wed Jan 19 2022 Fedora Release Engineering <releng@fedoraproject.org> - 2.3.0-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_36_Mass_Rebuild
+
+* Wed Jul 21 2021 Fedora Release Engineering <releng@fedoraproject.org> - 2.3.0-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_35_Mass_Rebuild
+
+* Wed Mar 03 2021 Carl George <carl@george.computer> - 2.3.0-1
+- Latest upstream
+- Fix vendored license handling
+- Switch to white logo rhbz#1934864
+
+* Tue Mar 02 2021 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 2.2.1-3
+- Rebuilt for updated systemd-rpm-macros
+  See https://pagure.io/fesco/issue/2583.
+
+* Tue Jan 26 2021 Fedora Release Engineering <releng@fedoraproject.org> - 2.2.1-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_34_Mass_Rebuild
+
+* Fri Oct 30 2020 Carl George <carl@george.computer> - 2.2.1-1
+- Latest upstream
+
+* Sat Sep 26 2020 Carl George <carl@george.computer> - 2.2.0-1
+- Latest upstream
+
+* Sat Sep 19 2020 Carl George <carl@george.computer> - 2.2.0~rc3-1
+- Latest upstream
+
+* Fri Aug 14 2020 Carl George <carl@george.computer> - 2.1.1-2
+- Add bash and zsh completion support
+
+* Sun Aug 09 2020 Carl George <carl@george.computer> - 2.1.1-1
+- Update to Caddy v2
+- Remove all v1 plugins
+- Use vendored dependencies
+- Remove devel subpackage
+- Rename config file per upstream request
+- Use webserver test page from system-logos-httpd
+
+* Sat Aug 01 2020 Fedora Release Engineering <releng@fedoraproject.org> - 1.0.4-3
+- Second attempt - Rebuilt for
+  https://fedoraproject.org/wiki/Fedora_33_Mass_Rebuild
+
+* Mon Jul 27 2020 Fedora Release Engineering <releng@fedoraproject.org> - 1.0.4-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_33_Mass_Rebuild
+
+* Tue Jul 07 20:56:10 CEST 2020 Robert-André Mauchin <zebob.m@gmail.com> - 1.0.4-1
+- Update to 1.0.4 (#1803691)
+
+* Mon Feb 17 2020 Elliott Sales de Andrade <quantum.analyst@gmail.com> - 1.0.3-3
+- Rebuilt for GHSA-jf24-p9p9-4rjh
+
+* Tue Jan 28 2020 Fedora Release Engineering <releng@fedoraproject.org> - 1.0.3-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild
+
+* Sat Sep 07 2019 Carl George <carl@george.computer> - 1.0.3-1
+- Latest upstream
+- Remove bundled lego and plugins
+- Remove dyn, gandi, namecheap, and rfc2136 dns providers
+- Add patch0 to fix `-version` flag
+- Add patch1 to adjust blackfriday import path
+- Add devel subpackages
+- Run test suite
+
+* Wed Jul 24 2019 Fedora Release Engineering <releng@fedoraproject.org> - 0.11.4-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_31_Mass_Rebuild
+
+* Thu May 09 2019 Carl George <carl@george.computer> - 0.11.4-2
+- Switch unit file from ProtectSystem strict to full rhbz#1706651
+
+* Wed Mar 06 2019 Carl George <carl@george.computer> - 0.11.4-1
+- Latest upstream
+- Update bundled dnsproviders to 0.1.3
+- Update bundled lego to 2.2.0
+- Enable googlecloud, route53, and azure dns providers on epel7
+- Allow custom http port with default config file rhbz#1685446
+
+* Thu Jan 31 2019 Fedora Release Engineering <releng@fedoraproject.org> - 0.11.1-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
+
+* Wed Nov 14 2018 Carl George <carl@george.computer> - 0.11.1-2
+- Buildrequires at least golang 1.10
+
+* Tue Nov 13 2018 Carl George <carl@george.computer> - 0.11.1-1
+- Latest upstream
+- Update bundled geoip
+
+* Fri Oct 19 2018 Carl George <carl@george.computer> - 0.11.0-3
+- Enable httpd_can_network_connect selinux boolean to connect to ACME endpoint rhbz#1641158
+- Define UDP 80/443 as selinux http_port_t for QUIC rhbz#1608548
+- Define TCP 5033 as selinux http_port_t for HTTP challenge rhbz#1641160
+
+* Thu Jul 12 2018 Fedora Release Engineering <releng@fedoraproject.org> - 0.11.0-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
+
+* Sat May 12 2018 Carl George <carl@george.computer> - 0.11.0-1
+- Latest upstream
+
+* Sat Apr 21 2018 Carl George <carl@george.computer> - 0.10.14-1
+- Latest upstream
+- Overhaul %%prep to extract everything with %%setup
+- Edit lego providers to require acmev2 instead of acme
+- Add provides for specific providers from %%import_path_dnsproviders and %%import_path_lego
+- Add azure dns provider on f28+
+
+* Fri Apr 20 2018 Carl George <carl@george.computer> - 0.10.11-6
+- Enable geoip plugin on EL7
+- Only provide bundled geoip/realip/dnsproviders/lego when the respective plugin is enabled
+
+* Wed Apr 18 2018 Carl George <carl@george.computer> - 0.10.11-5
+- Add geoip plugin
+
+* Tue Apr 17 2018 Carl George <carl@george.computer> - 0.10.11-4
+- Correct ExclusiveArch fallback
+
+* Mon Apr 16 2018 Carl George <carl@george.computer> - 0.10.11-3
+- Enable s390x
+- Disable googlecloud and route53 dns providers on EL7 due to dependency issues
+
+* Fri Mar 30 2018 Carl George <carl@george.computer> - 0.10.11-2
+- Add googlecloud dns provider
+- Add route53 dns provider
+- Set minimum golang version to 1.9
+- Set selinux labels in scriptlets
+
+* Sat Feb 24 2018 Carl George <carl@george.computer> - 0.10.11-1
+- Latest upstream
+
+* Sat Feb 24 2018 Carl George <carl@george.computer> - 0.10.10-4
+- Change ProtectSystem from strict to full in unit file on RHEL
+
+* Wed Feb 07 2018 Fedora Release Engineering <releng@fedoraproject.org> - 0.10.10-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_28_Mass_Rebuild
+
+* Thu Jan 11 2018 Carl George <carl@george.computer> - 0.10.10-2
+- Add powerdns provider
+
+* Mon Oct 09 2017 Carl George <carl@george.computer> - 0.10.10-1
+- Latest upstream
+
+* Mon Oct 02 2017 Carl George <carl@george.computer> - 0.10.9-6
+- Add provides for bundled libraries
+
+* Mon Oct 02 2017 Carl George <carl@george.computer> - 0.10.9-5
+- Enable rfc2136 dns provider
+- List plugins in description
+
+* Mon Sep 18 2017 Carl George <carl@george.computer> - 0.10.9-4
+- Exclude s390x
+
+* Sun Sep 17 2017 Carl George <carl@george.computer> - 0.10.9-3
+- Add realip plugin
+- Add conditionals for plugins
+
+* Sat Sep 16 2017 Carl George <carl@george.computer> - 0.10.9-2
+- Add sources for caddyserver/dnsproviders and xenolf/lego
+- Disable all dns providers that require additional libraries (dnsimple, dnspod, googlecloud, linode, ovh, route53, vultr)
+- Rewrite default index.html
+
+* Tue Sep 12 2017 Carl George <carl@george.computer> - 0.10.9-1
+- Latest upstream
+- Add config validation to unit file
+- Disable exoscale dns provider https://github.com/xenolf/lego/issues/429
+
+* Fri Sep 08 2017 Carl George <carl@george.computer> - 0.10.8-1
+- Latest upstream
+- Build with %%gobuild macro
+- Move config subdirectory from /etc/caddy/caddy.conf.d to /etc/caddy/conf.d
+
+* Tue Aug 29 2017 Carl George <carl@george.computer> - 0.10.7-1
+- Latest upstream
+
+* Fri Aug 25 2017 Carl George <carl@george.computer> - 0.10.6-2
+- Use SIQQUIT to stop service
+- Increase the process limit from 64 to 512
+- Only `go get` in caddy/caddymain
+
+* Fri Aug 11 2017 Carl George <carl@george.computer> - 0.10.6-1
+- Latest upstream
+- Add webserver virtual provides
+- Drop tmpfiles and just own /var/lib/caddy directly
+- Remove PrivateDevices setting from unit file, it prevents selinux process transitions
+- Disable rfc2136 dns provider https://github.com/caddyserver/dnsproviders/issues/11
+
+* Sat Jun 03 2017 Carl George <carl.george@rackspace.com> - 0.10.3-2
+- Rename Envfile to envfile
+- Rename Caddyfile to caddy.conf
+- Include additional configs from caddy.conf.d directory
+
+* Fri May 19 2017 Carl George <carl.george@rackspace.com> - 0.10.3-1
+- Latest upstream
+
+* Mon May 15 2017 Carl George <carl.george@rackspace.com> - 0.10.2-1
+- Initial package
