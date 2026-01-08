@@ -552,6 +552,13 @@
     "source": "https://src.fedoraproject.org/rpms/lz4.git",
     "version": "1.10.0"
   },
+  "make": {
+    "branch": "rawhide",
+    "release": "11",
+    "sha": "992bd106a5b6d91a368925646441d63898d98ec7",
+    "source": "https://src.fedoraproject.org/rpms/make.git",
+    "version": "4.4.1"
+  },
   "mpfr": {
     "branch": "rawhide",
     "release": "2",
