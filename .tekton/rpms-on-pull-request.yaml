@@ -47,7 +47,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -55,7 +55,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -116,7 +116,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -124,7 +124,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -185,7 +185,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -193,7 +193,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -254,7 +254,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -262,7 +262,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -323,7 +323,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -331,7 +331,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -392,7 +392,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -400,7 +400,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -461,7 +461,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -469,7 +469,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -530,7 +530,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -538,7 +538,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -599,7 +599,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -607,7 +607,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -668,7 +668,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -676,7 +676,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -737,7 +737,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -745,7 +745,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -806,7 +806,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -814,7 +814,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -875,7 +875,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -883,7 +883,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -944,7 +944,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -952,7 +952,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -1013,7 +1013,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -1021,7 +1021,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -1082,7 +1082,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -1090,7 +1090,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -1151,7 +1151,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -1159,7 +1159,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -1220,7 +1220,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -1228,7 +1228,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -1289,7 +1289,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -1297,7 +1297,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -1358,7 +1358,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -1366,7 +1366,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -1427,7 +1427,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -1435,7 +1435,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -1496,7 +1496,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -1504,7 +1504,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -1565,7 +1565,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -1573,7 +1573,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -1634,7 +1634,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -1642,7 +1642,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -1703,7 +1703,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -1711,7 +1711,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -1772,7 +1772,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -1780,7 +1780,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -1841,7 +1841,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -1849,7 +1849,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -1910,7 +1910,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -1918,7 +1918,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -1979,7 +1979,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -1987,7 +1987,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -2048,7 +2048,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -2056,7 +2056,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -2117,7 +2117,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -2125,7 +2125,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -2186,7 +2186,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -2194,7 +2194,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -2255,7 +2255,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -2263,7 +2263,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -2324,7 +2324,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -2332,7 +2332,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -2393,7 +2393,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -2401,7 +2401,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -2462,7 +2462,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -2470,7 +2470,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -2531,7 +2531,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -2539,7 +2539,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -2600,7 +2600,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -2608,7 +2608,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -2669,7 +2669,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -2677,7 +2677,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -2738,7 +2738,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -2746,7 +2746,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -2807,7 +2807,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -2815,7 +2815,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -2876,7 +2876,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -2884,7 +2884,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -2945,7 +2945,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -2953,7 +2953,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -3014,7 +3014,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -3022,7 +3022,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -3083,7 +3083,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -3091,7 +3091,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -3152,7 +3152,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -3160,7 +3160,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -3221,7 +3221,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -3229,7 +3229,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -3290,7 +3290,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -3298,7 +3298,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -3359,7 +3359,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -3367,7 +3367,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -3428,7 +3428,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -3436,7 +3436,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -3497,7 +3497,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -3505,7 +3505,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -3566,7 +3566,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -3574,7 +3574,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -3635,7 +3635,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -3643,7 +3643,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -3704,7 +3704,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -3712,7 +3712,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -3773,7 +3773,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -3781,7 +3781,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -3842,7 +3842,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -3850,7 +3850,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -3911,7 +3911,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -3919,7 +3919,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -3980,7 +3980,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -3988,7 +3988,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -4049,7 +4049,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -4057,7 +4057,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -4118,7 +4118,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -4126,7 +4126,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -4187,7 +4187,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -4195,7 +4195,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -4256,7 +4256,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -4264,7 +4264,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -4325,7 +4325,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -4333,7 +4333,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -4394,7 +4394,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -4402,7 +4402,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -4463,7 +4463,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -4471,7 +4471,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -4532,7 +4532,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -4540,7 +4540,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -4601,7 +4601,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -4609,7 +4609,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -4670,7 +4670,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -4678,7 +4678,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -4739,7 +4739,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -4747,7 +4747,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -4808,7 +4808,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -4816,7 +4816,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -4877,7 +4877,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -4885,7 +4885,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -4946,7 +4946,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -4954,7 +4954,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -5015,7 +5015,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -5023,7 +5023,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -5084,7 +5084,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -5092,7 +5092,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -5153,7 +5153,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -5161,7 +5161,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -5222,7 +5222,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -5230,7 +5230,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -5291,7 +5291,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -5299,7 +5299,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -5360,7 +5360,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -5368,7 +5368,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -5429,7 +5429,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -5437,7 +5437,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -5498,7 +5498,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -5506,7 +5506,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -5567,7 +5567,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -5575,7 +5575,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -5636,7 +5636,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -5644,7 +5644,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -5705,7 +5705,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -5713,7 +5713,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -5774,7 +5774,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -5782,7 +5782,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -5843,7 +5843,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -5851,7 +5851,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -5912,7 +5912,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -5920,7 +5920,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -5981,7 +5981,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -5989,7 +5989,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -6050,7 +6050,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -6058,7 +6058,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -6119,7 +6119,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -6127,7 +6127,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -6188,7 +6188,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -6196,7 +6196,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -6257,7 +6257,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -6265,7 +6265,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -6326,7 +6326,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -6334,7 +6334,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -6395,7 +6395,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -6403,7 +6403,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -6464,7 +6464,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -6472,7 +6472,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -6533,7 +6533,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -6541,7 +6541,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -6602,7 +6602,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -6610,7 +6610,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -6671,7 +6671,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -6679,7 +6679,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -6740,7 +6740,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -6748,7 +6748,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -6809,7 +6809,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -6817,7 +6817,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -6878,7 +6878,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -6886,7 +6886,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -6947,7 +6947,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -6955,7 +6955,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -7016,7 +7016,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -7024,7 +7024,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -7085,7 +7085,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -7093,7 +7093,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -7154,7 +7154,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -7162,7 +7162,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -7223,7 +7223,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -7231,7 +7231,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -7292,7 +7292,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -7300,7 +7300,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -7361,7 +7361,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -7369,7 +7369,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -7430,7 +7430,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -7438,7 +7438,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -7499,7 +7499,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -7507,7 +7507,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -7568,7 +7568,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -7576,7 +7576,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -7637,7 +7637,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -7645,7 +7645,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -7706,7 +7706,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -7714,7 +7714,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -7775,7 +7775,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -7783,7 +7783,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -7844,7 +7844,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -7852,7 +7852,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -7913,7 +7913,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -7921,7 +7921,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -7982,7 +7982,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -7990,7 +7990,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
@@ -8051,7 +8051,7 @@ spec:
       value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
     - name: self-ref-revision
       # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+      value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
   pipelineRef:
     resolver: git
     params:
@@ -8059,7 +8059,7 @@ spec:
         value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
       - name: revision
         # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "cfe83b1325223c61db0506bd4f96d6bf4e8ad803"
+        value: "9a99e8881b6af6225151c6d5f23e708d0cfee821"
       - name: pathInRepo
         value: "pipeline/build-rpm-package.yaml"
   taskRunTemplate:
