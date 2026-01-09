@@ -1,0 +1,6 @@
+summary: Test build a simple RPM package to ensure package notes are working
+require:
+  - dnf
+  - dnf-plugins-core
+  - rpm-build
+test: ./runtest.sh

@@ -1,0 +1,57 @@
+* Tue Aug 16 2022 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 0.5-3
+- Switch to --package-metadata also with lld (#2051597)
+
+* Tue Aug 09 2022 Luca Boccassi <bluca@debian.org> - 0.5-1
+- Switch to --package-metadata (#2055863, #2083878, #2099999, #2059858, #2055458)
+
+* Sat Aug 06 2022 Tom Stellard <tstellar@redhat.com> - 0.4-17
+- Add CI test
+
+* Fri Jul 22 2022 Fedora Release Engineering <releng@fedoraproject.org> - 0.4-16
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_37_Mass_Rebuild
+
+* Sat Mar 26 2022 Luca Boccassi <bluca@debian.org> - 0.4-15
+- Fix wrong binary fields on big endian
+
+* Tue Jan 25 2022 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 0.4-14
+- Disable notes when clang toolchain is used on arm
+
+* Mon Jan 24 2022 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 0.4-13
+- Disable notes with linkers other than bfd
+
+* Mon Jan 24 2022 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 0.4-12
+- Add --insert-after param to the note generation script
+
+* Sat Jan 22 2022 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 0.4-11
+- Add %%_package_note_linker and document everything (rhbz#2043178,
+  rhbz#2043368)
+
+* Sat Jan 22 2022 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 0.4-10
+- Allow unsetting %%_package_note_readonly to drop the READONLY attribute
+
+* Fri Jan 21 2022 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 0.4-9
+- Use %%{buildsubdir} in %%_package_note_file if defined
+
+* Fri Jan 21 2022 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 0.4-8
+- Also voidify the macros if we're on a noarch build
+
+* Fri Jan 21 2022 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 0.4-7
+- Use $RPM_PACKAGE_VERSION variable to refer to the package version
+
+* Fri Jan 21 2022 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 0.4-6
+- Make _generate_package_note_file always recreate the file
+
+* Fri Jan 21 2022 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 0.4-5
+- Conditionalize all macros on %%_package_note_file being defined
+
+* Thu Jan 20 2022 Fedora Release Engineering <releng@fedoraproject.org> - 0.4-4
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_36_Mass_Rebuild
+
+* Fri Jan 14 2022 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 0.4-3
+- Rename srpm macros file
+
+* Fri Jan 14 2022 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 0.4-2
+- Add package-notes-srpm-macros subpackage to configure rpm builds
+
+* Tue Nov 16 2021 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 0.4-1
+- Version 0.4
