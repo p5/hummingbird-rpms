@@ -1,0 +1,41 @@
+specfile_path: golang.spec
+files_to_sync:
+  - golang.spec
+  - .packit.yaml
+upstream_package_name: go
+upstream_project_url: https://github.com/golang/go
+downstream_package_name: golang
+upstream_tag_template: go{version}
+
+actions:
+  changelog-entry:
+    - bash -c "echo - New release ${PACKIT_PROJECT_VERSION}"
+
+jobs:
+  # Fedora 42 follows Go 1.24
+  - job: pull_from_upstream
+    trigger: release
+    dist_git_branches: fedora-42
+    upstream_tag_include: "^go1.24.+"
+
+  # Fedora 43 follows Go 1.25
+  - job: pull_from_upstream
+    trigger: release
+    dist_git_branches: fedora-43
+    upstream_tag_include: "^go1.25.+"
+
+  # Fedora Rawhide follows the latest version
+  - job: pull_from_upstream
+    trigger: release
+    dist_git_branches: fedora-rawhide
+    upstream_tag_include: "^go1.26.+"
+
+  # Run Koji builds when Packit pull requests are merged
+  - job: koji_build
+    trigger: commit
+    dist_git_branches: fedora-all
+
+  # Create Bodhi updates in all Fedora stable versions
+  - job: bodhi_update
+    trigger: commit
+    dist_git_branches: fedora-all

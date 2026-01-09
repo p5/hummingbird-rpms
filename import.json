@@ -307,6 +307,13 @@
     "source": "https://src.fedoraproject.org/rpms/go-rpm-macros.git",
     "version": "3.8.0"
   },
+  "golang": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "30f6caf69bce62c0317748568e3c82ded2e7feb2",
+    "source": "https://src.fedoraproject.org/rpms/golang.git",
+    "version": "1.26~rc1"
+  },
   "grep": {
     "branch": "rawhide",
     "release": "2",
