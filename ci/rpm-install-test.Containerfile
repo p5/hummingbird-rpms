@@ -8,62 +8,47 @@ ARG DNF_FLAGS="-y \
       --setopt=system_cachedir=${DNF_CACHE} \
       --setopt=logdir=${DNF_CACHE} \
       --setopt=varsdir=${DNF_CACHE}"
-ARG LOCAL_REPO=""
+ARG PACKAGE_NAME
 
 FROM quay.io/hummingbird-ci/builder:latest-hatchling AS builder
 ARG NEWROOT
 ARG DNF_CACHE
 ARG DNF_FLAGS
-ARG LOCAL_REPO
+ARG PACKAGE_NAME
 
-# Create the new root and cache directories
-RUN mkdir -p ${NEWROOT} ${DNF_CACHE}
+# Create the new root directory
+RUN mkdir -p ${NEWROOT}
 
 # Import the fedora GPG key
 RUN rpmkeys --import /etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-rawhide-primary --root "${NEWROOT}"
 
-# Copy the RPM to test
-COPY test.rpm /tmp/test.rpm
-
 # Configure repositories
-COPY repos/rawhide.repo /etc/yum.repos.d/rawhide.repo
-COPY repos/hummingbird.repo /etc/yum.repos.d/hummingbird.repo
+COPY repos/rawhide.repo repos/hummingbird.repo /etc/yum.repos.d/
 
-# Copy local repository if present and configure it (only if LOCAL_REPO is set)
+# Copy and configure local repository (contains built RPMs to test)
 COPY local-repo /tmp/local-repo/
-RUN <<EOF
-if [ -n "${LOCAL_REPO}" ]; then
-    mkdir -p /etc/yum.repos.d/
-    cat <<EOT >> /etc/yum.repos.d/local.repo
+RUN cat <<EOT >> /etc/yum.repos.d/local.repo
 [local-repo]
 name=Local Repository
 baseurl=file:///tmp/local-repo
 enabled=1
 gpgcheck=0
+priority=1
 EOT
-fi
-EOF
 
-# Install the test RPM first:
-# This ensures the package under test and its dependencies are installed
-# before adding verification tools, avoiding conflicts where the rpm package
-# might pull in alternatives (e.g., systemd-standalone-sysusers vs systemd-sysusers)
-RUN dnf-installroot ${NEWROOT} ${DNF_FLAGS} install /tmp/test.rpm
+# Install filesystem first, then the test package.
+# The local-repo has priority=1 to ensure it takes precedence over other repos.
+# Dependencies may come from other repos (rawhide, hummingbird) as needed.
+# Cache mount persists dnf downloads across builds for faster repeated runs.
+RUN --mount=type=cache,target=/tmp/dnf-cache \
+    dnf-installroot ${NEWROOT} ${DNF_FLAGS} install filesystem && \
+    dnf-installroot ${NEWROOT} ${DNF_FLAGS} install ${PACKAGE_NAME}
 
-# Install rpm CLI for validation
-RUN dnf-installroot ${NEWROOT} ${DNF_FLAGS} install rpm
-
-# Verify the package was installed in the new root
-RUN rpm --root ${NEWROOT} -qa | grep -q . || { echo "Error: No packages installed in ${NEWROOT}"; exit 1; }
-
-# Drop any cache; source of irreproducibility.
-# Also, some of our containers ship systemd for now, which creates a unique machine ID; nuke that.
-RUN rm -rf \
-      ${NEWROOT}/usr/share/licenses \
-      ${NEWROOT}/usr/share/locale \
-      ${NEWROOT}/var/cache/* \
-      ${NEWROOT}/etc/machine-id
-
-FROM scratch
-ARG NEWROOT
-COPY --from=builder ${NEWROOT} /
+# Verify the package was installed from local-repo
+RUN install_repo=$(dnf --installroot=${NEWROOT} info --installed ${PACKAGE_NAME} 2>/dev/null | \
+      grep "^From repo" | cut -d: -f2 | tr -d ' ') && \
+    if [ "${install_repo}" != "local-repo" ]; then \
+      echo "Error: Package '${PACKAGE_NAME}' was not installed from local-repo (got: ${install_repo:-unknown})"; \
+      exit 1; \
+    fi && \
+    echo "Verified: ${PACKAGE_NAME} installed from local-repo"
