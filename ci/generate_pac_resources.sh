@@ -95,7 +95,9 @@ for path in "${rpms[@]}"; do
     dname=$(basename "${path}")
     # resource names must not contain underscores, but some package names do (like createrepo_c)
     # resource names must also be lowercase, but some package names have uppercase (like R-*)
+    # resource names must not contain '+', but some package names do (like perl-Text-Tabs+Wrap)
     component_name=${dname//_/-}
+    component_name=${component_name//+/-}
     name=${component_name,,}-${BRANCH}
 
     (

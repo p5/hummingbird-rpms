@@ -76,7 +76,9 @@ for path in "${rpms[@]}"; do
         echo "name: ${name}"
         # resource names must not contain underscores, but some package names do (like createrepo_c)
         # resource names must also be lowercase, but some package names have uppercase (like R-*)
+        # resource names must not contain '+', but some package names do (like perl-Text-Tabs+Wrap)
         component_name="${name//_/-}"
+        component_name="${component_name//+/-}"
         echo "component_name: ${component_name,,}-${BRANCH}"
         echo "repository: ${name}"
         echo "tags: [latest]"
