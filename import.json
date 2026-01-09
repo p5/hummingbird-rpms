@@ -177,9 +177,9 @@
   "ed": {
     "branch": "rawhide",
     "release": "1",
-    "sha": "1054606bc5ac65d80b13325e7d5c14004e386597",
+    "sha": "4cab9b71128c85f410021701294581ef9d524736",
     "source": "https://src.fedoraproject.org/rpms/ed.git",
-    "version": "1.22.3"
+    "version": "1.22.4"
   },
   "efi-rpm-macros": {
     "branch": "rawhide",
