@@ -300,6 +300,13 @@
     "source": "https://src.fedoraproject.org/rpms/gnutls.git",
     "version": "3.8.11"
   },
+  "go-rpm-macros": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "5db95fff66d5e2d52b064964561cfd961e7c6559",
+    "source": "https://src.fedoraproject.org/rpms/go-rpm-macros.git",
+    "version": "3.8.0"
+  },
   "grep": {
     "branch": "rawhide",
     "release": "2",
@@ -328,6 +335,13 @@
     "source": "https://src.fedoraproject.org/rpms/ima-evm-utils.git",
     "version": "1.6.2"
   },
+  "jansson": {
+    "branch": "rawhide",
+    "release": "3",
+    "sha": "59d94a3ff73c61f1461cb29df9c58dd1c9846509",
+    "source": "https://src.fedoraproject.org/rpms/jansson.git",
+    "version": "2.14"
+  },
   "jq": {
     "branch": "rawhide",
     "release": "1",
@@ -341,6 +355,13 @@
     "sha": "2b1531aee7d2ec510cb81d9b3bf4a997eb58045f",
     "source": "https://src.fedoraproject.org/rpms/json-c.git",
     "version": "0.18"
+  },
+  "kernel-headers": {
+    "branch": "rawhide",
+    "release": "0.rc4.3609fa95fb0f.31",
+    "sha": "91b3296f9575d26645f436de8f489f68e0ed3627",
+    "source": "https://src.fedoraproject.org/rpms/kernel-headers.git",
+    "version": "6.19.0"
   },
   "keyutils": {
     "branch": "rawhide",
@@ -594,6 +615,13 @@
     "source": "https://src.fedoraproject.org/rpms/lz4.git",
     "version": "1.10.0"
   },
+  "make": {
+    "branch": "rawhide",
+    "release": "11",
+    "sha": "992bd106a5b6d91a368925646441d63898d98ec7",
+    "source": "https://src.fedoraproject.org/rpms/make.git",
+    "version": "4.4.1"
+  },
   "mpfr": {
     "branch": "rawhide",
     "release": "2",
@@ -656,6 +684,13 @@
     "sha": "d2ffb525852e4517da4e0f6373302cc10e66cf01",
     "source": "https://src.fedoraproject.org/rpms/openldap.git",
     "version": "2.6.10"
+  },
+  "openssh": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "be36f8dbd60f4d2e7e1e8b21c615a615f1182f84",
+    "source": "https://src.fedoraproject.org/rpms/openssh.git",
+    "version": "10.2p1"
   },
   "openssl": {
     "branch": "rawhide",
