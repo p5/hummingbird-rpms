@@ -1,4 +1,4 @@
-{%- macro pipeline_run(rpm, event_type, cancel_in_progress, output_image_tag, extra_params={}, extra_annotations={}, extra_path_changes=[], timeout_hours=4, build_platforms=None) -%}
+{%- macro pipeline_run(rpm, event_type, cancel_in_progress, output_image_tag, extra_params={}, extra_annotations={}, extra_path_changes=[], timeout_hours=4, build_platforms=None, task_run_specs=None) -%}
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -70,6 +70,7 @@ spec:
         value: "{{ pipeline_revision }}"
       - name: pathInRepo
         value: "{{ pipeline_path }}"
+{{- task_run_specs_block(task_run_specs) }}
   taskRunTemplate:
     serviceAccountName: build-pipeline-{{ rpm.name }}
   timeouts:

@@ -122,6 +122,12 @@ for path in "${rpms[@]}"; do
             done
         fi
 
+        # Only include task_run_specs if overridden in the config file
+        if yq -e ".${dname}.task_run_specs" "${PACKAGE_CONFIG}" &>/dev/null; then
+            echo "task_run_specs:"
+            yq ".${dname}.task_run_specs" "${PACKAGE_CONFIG}" | sed 's/^/  /'
+        fi
+
         extra_paths=()
 
         # Add package-specific test file if it exists

@@ -1,0 +1,44 @@
+{%- macro task_run_specs_block(task_run_specs) -%}
+{%- if task_run_specs %}
+  taskRunSpecs:
+{%- for spec in task_run_specs %}
+    - pipelineTaskName: {{ spec.pipelineTaskName }}
+{%- if spec.stepSpecs is defined %}
+      stepSpecs:
+{%- for step_spec in spec.stepSpecs %}
+        - name: {{ step_spec.name }}
+{%- if step_spec.computeResources is defined %}
+          computeResources:
+{%- if step_spec.computeResources.requests is defined %}
+            requests:
+{%- for key, value in step_spec.computeResources.requests.items() %}
+              {{ key }}: {{ value }}
+{%- endfor %}
+{%- endif %}
+{%- if step_spec.computeResources.limits is defined %}
+            limits:
+{%- for key, value in step_spec.computeResources.limits.items() %}
+              {{ key }}: {{ value }}
+{%- endfor %}
+{%- endif %}
+{%- endif %}
+{%- endfor %}
+{%- endif %}
+{%- if spec.computeResources is defined %}
+      computeResources:
+{%- if spec.computeResources.requests is defined %}
+        requests:
+{%- for key, value in spec.computeResources.requests.items() %}
+          {{ key }}: {{ value }}
+{%- endfor %}
+{%- endif %}
+{%- if spec.computeResources.limits is defined %}
+        limits:
+{%- for key, value in spec.computeResources.limits.items() %}
+          {{ key }}: {{ value }}
+{%- endfor %}
+{%- endif %}
+{%- endif %}
+{%- endfor %}
+{%- endif %}
+{%- endmacro -%}
