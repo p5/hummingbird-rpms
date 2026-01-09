@@ -120,10 +120,10 @@
   },
   "curl": {
     "branch": "rawhide",
-    "release": "5",
-    "sha": "fe73859ecd63f56854b599eda9bc8d991c933d8b",
+    "release": "1",
+    "sha": "3c4947ef9777ff0e270d3680b23a3e10134ee68f",
     "source": "https://src.fedoraproject.org/rpms/curl.git",
-    "version": "8.17.0"
+    "version": "8.18.0"
   },
   "cyrus-sasl": {
     "branch": "rawhide",
