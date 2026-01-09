@@ -2,9 +2,9 @@
   "R-rpm-macros": {
     "branch": "rawhide",
     "release": "1",
-    "sha": "d59a493d254a6b9242f4b0b8568d9b0d3055f586",
+    "sha": "bad36ae3ab4eacce668ddb086741d85f0c9cd6d6",
     "source": "https://src.fedoraproject.org/rpms/R-rpm-macros.git",
-    "version": "1.3.0"
+    "version": "1.3.3"
   },
   "acl": {
     "branch": "rawhide",
@@ -36,15 +36,15 @@
   },
   "bash": {
     "branch": "rawhide",
-    "release": "2",
-    "sha": "80dab1fcd899428cda77c1a5081077a433242f5d",
+    "release": "1",
+    "sha": "749fca24d2a64ba526218f17a8eb5669ba65f129",
     "source": "https://src.fedoraproject.org/rpms/bash.git",
-    "version": "5.3.0"
+    "version": "5.3.9"
   },
   "binutils": {
     "branch": "rawhide",
-    "release": "11",
-    "sha": "300293f7e26a7a52f319aa8c682a1320a984599d",
+    "release": "13",
+    "sha": "d7078a903f45f89a34ef0866efa7440f378412cb",
     "source": "https://src.fedoraproject.org/rpms/binutils.git",
     "version": "2.45.50"
   },
@@ -120,10 +120,10 @@
   },
   "curl": {
     "branch": "rawhide",
-    "release": "5",
-    "sha": "fe73859ecd63f56854b599eda9bc8d991c933d8b",
+    "release": "1",
+    "sha": "3c4947ef9777ff0e270d3680b23a3e10134ee68f",
     "source": "https://src.fedoraproject.org/rpms/curl.git",
-    "version": "8.17.0"
+    "version": "8.18.0"
   },
   "cyrus-sasl": {
     "branch": "rawhide",
@@ -177,9 +177,9 @@
   "ed": {
     "branch": "rawhide",
     "release": "1",
-    "sha": "1054606bc5ac65d80b13325e7d5c14004e386597",
+    "sha": "4cab9b71128c85f410021701294581ef9d524736",
     "source": "https://src.fedoraproject.org/rpms/ed.git",
-    "version": "1.22.3"
+    "version": "1.22.4"
   },
   "efi-rpm-macros": {
     "branch": "rawhide",
@@ -288,10 +288,10 @@
   },
   "gnupg2": {
     "branch": "rawhide",
-    "release": "4",
-    "sha": "a695c22242619f17f0690c4eb368cde32b288613",
+    "release": "1",
+    "sha": "23d47e726eddebf44a68f733e28a0c6b0236f99c",
     "source": "https://src.fedoraproject.org/rpms/gnupg2.git",
-    "version": "2.4.8"
+    "version": "2.4.9"
   },
   "gnutls": {
     "branch": "rawhide",
@@ -331,9 +331,9 @@
   "jq": {
     "branch": "rawhide",
     "release": "1",
-    "sha": "f46cbe4c15a9dab9a6cef5559de6483fb704630c",
+    "sha": "6608a6f22087eb7b888b71f1f9be9befba3eaed3",
     "source": "https://src.fedoraproject.org/rpms/jq.git",
-    "version": "1.7.1"
+    "version": "1.8.1"
   },
   "json-c": {
     "branch": "rawhide",
@@ -491,8 +491,8 @@
   },
   "libselinux": {
     "branch": "rawhide",
-    "release": "5",
-    "sha": "466af9d9e61879347e77c74373eafdb55b521144",
+    "release": "6",
+    "sha": "cd8a8113177b8fdd1c39432dbe31ebd5afda252e",
     "source": "https://src.fedoraproject.org/rpms/libselinux.git",
     "version": "3.9"
   },
@@ -625,16 +625,16 @@
   "nghttp3": {
     "branch": "rawhide",
     "release": "1",
-    "sha": "0855053d5dd934d8d908fb5a9687b6814c8eb8b5",
+    "sha": "6ab12ec6c084492f7def67b76d93e0077b6ce383",
     "source": "https://src.fedoraproject.org/rpms/nghttp3.git",
-    "version": "1.13.1"
+    "version": "1.14.0"
   },
   "ngtcp2": {
     "branch": "rawhide",
     "release": "1",
-    "sha": "3d4a85a9fa84a9e4ef9d6a7ecb50e1272bf28c8b",
+    "sha": "2bbca70b1bfaa15ab52ea2bd116e28dda0c007cb",
     "source": "https://src.fedoraproject.org/rpms/ngtcp2.git",
-    "version": "1.18.0"
+    "version": "1.19.0"
   },
   "npth": {
     "branch": "rawhide",
@@ -722,8 +722,8 @@
   },
   "readline": {
     "branch": "rawhide",
-    "release": "2",
-    "sha": "faef64fc003d6f8a2ff4c959d66810bac9a35ed1",
+    "release": "3",
+    "sha": "2d4bee1fb28f7b42926ba54fd39973d2ee8720b4",
     "source": "https://src.fedoraproject.org/rpms/readline.git",
     "version": "8.3"
   },
@@ -848,10 +848,10 @@
   },
   "xz": {
     "branch": "rawhide",
-    "release": "4",
-    "sha": "4dbfb6665e5f3442572c735c859a245125bd563f",
+    "release": "1",
+    "sha": "8829c783ae6726a78d030f5be0ae76c0970ff696",
     "source": "https://src.fedoraproject.org/rpms/xz.git",
-    "version": "5.8.1"
+    "version": "5.8.2"
   },
   "yq": {
     "branch": "rawhide",

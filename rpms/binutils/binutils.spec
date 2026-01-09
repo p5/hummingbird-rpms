@@ -7,7 +7,7 @@ Name: binutils%{?_with_debug:-debug}
 # The variable %%{source} (see below) should be set to indicate which of these
 # origins is being used.
 Version: 2.45.50
-Release: 11%{?dist}
+Release: 13%{?dist}
 License: GPL-3.0-or-later AND (GPL-3.0-or-later WITH Bison-exception-2.2) AND (LGPL-2.0-or-later WITH GCC-exception-2.0) AND BSD-3-Clause AND GFDL-1.3-or-later AND GPL-2.0-or-later AND LGPL-2.1-or-later AND LGPL-2.0-or-later
 URL: https://sourceware.org/binutils
 
@@ -121,7 +121,7 @@ URL: https://sourceware.org/binutils
 # correctly.  Note %%(echo) is used because you cannot directly set a
 # spec variable to a hexadecimal string value.
 
-%define commit_id %(echo "8e992ccb1e4")
+%define commit_id %(echo "be970c68891")
 
 #----End of Configure Options------------------------------------------------
 
@@ -213,7 +213,7 @@ Source0: https://ftp.gnu.org/gnu/binutils/binutils-%{version}.tar.xz
 Source0: binutils-%{version}.tar.xz
 %endif
 %if "%{source}" == "snapshot"
-Source0: binutils-with-gold-%{version}-%{commit_id}.tar.xz
+Source0: binutils-with-gold-%{version}-%{commit_id}.tar.gz
 %endif
 %if "%{source}" == "tarball"
 Source0: binutils-%{version}-%{commit_id}.tar.xz
@@ -333,10 +333,10 @@ Patch19: binutils-gold-empty-dwp.patch
 
 #----------------------------------------------------------------------------
 
-# Purpose:  Fix a recently added check to readelf for local symbols that point
-#            beyond the end of a mergeable section.
-# Lifetime: Fixed in 2.46
-Patch96: binutils-readelf-local-syms.patch
+# Purpose:  Change the Risc-V assembler's default behaviour to not enabling
+#            relaxation (as this is suspected of causing DWARF debug info problems).
+# Lifetime: Fixed in 2.46 (maybe)
+Patch95: binutils-riscv-gas-default-no-relax.patch
 
 # Purpose:  Revert the fixes for PR33577 which introduce a change into the
 #            behaviour of symbol versioning - a behaviour not expected by
@@ -1485,6 +1485,13 @@ exit 0
 
 #----------------------------------------------------------------------------
 %changelog
+* Mon Jan 05 2026 Nick Clifton <nickc@redhat.com> - 2.45.50-13
+- Rebase to commit be970c68891
+
+* Thu Dec 18 2025 Nick Clifton <nickc@redhat.com> - 2.45.50-12
+- Fix compile time warning messages about discarded qualifiers.
+- Change Risc-V assembler to default to disabling relaxation.
+
 * Mon Dec 08 2025 Nick Clifton <nickc@redhat.com> - 2.45.50-11
 - Rebase to commit 8e992ccb1e4
 
