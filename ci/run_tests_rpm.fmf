@@ -58,6 +58,7 @@ discover:
   sync-repo: true
   tests:
     - name: Podman
+      duration: 8h
       test: |
         #!/bin/bash
         set -euo pipefail
