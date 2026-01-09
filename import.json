@@ -331,9 +331,9 @@
   "jq": {
     "branch": "rawhide",
     "release": "1",
-    "sha": "f46cbe4c15a9dab9a6cef5559de6483fb704630c",
+    "sha": "6608a6f22087eb7b888b71f1f9be9befba3eaed3",
     "source": "https://src.fedoraproject.org/rpms/jq.git",
-    "version": "1.7.1"
+    "version": "1.8.1"
   },
   "json-c": {
     "branch": "rawhide",
