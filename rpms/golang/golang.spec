@@ -158,6 +158,8 @@ Patch6:         0006-Default-to-ld.bfd-on-ARM64.patch
 Patch8:         fix_cgo_panic-with-gcc15-in-368.patch
 # Related to https://github.com/golang/go/issues/74476
 Patch9:         skip_lsan_tests.patch
+# TestTerminalSignal hangs in mock (podman --init)
+Patch10:        0010-Skip-TestTerminalSignal.patch
 
 # Having documentation separate was broken
 Obsoletes:      %{name}-docs < 1.1-4
