@@ -75,10 +75,8 @@ template=.tekton/rpms-on-${RESOURCE_TYPE}.yaml.j2
 
 APPLICATION_NAME="rpms-${BRANCH}"
 
-PIPELINE_URL="https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-PIPELINE_PATH="pipeline/build-rpm-package.yaml"
-PIPELINE_BRANCH="main"
-PIPELINE_REVISION="c819343553f231da12bf5a35343836ec7266111d"
+# renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+PIPELINE_BUNDLE="quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
 
 # shellcheck disable=SC2312
 mapfile -d '' rpms < <(find ./rpms -maxdepth 1 -mindepth 1 -type d -print0 | LC_ALL=C sort -z)
@@ -88,10 +86,7 @@ cat > "${temp_variables}" << EOF
 ---
 branch: ${BRANCH}
 application_name: ${APPLICATION_NAME}
-pipeline_url: ${PIPELINE_URL}
-pipeline_branch: ${PIPELINE_BRANCH}
-pipeline_revision: ${PIPELINE_REVISION}
-pipeline_path: ${PIPELINE_PATH}
+pipeline_bundle: ${PIPELINE_BUNDLE}
 tenant: ${TENANT}
 rpms: []
 EOF

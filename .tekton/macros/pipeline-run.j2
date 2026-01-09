@@ -55,21 +55,16 @@ spec:
       value: "rpms/{{ rpm.dname }}"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "{{ pipeline_url }}"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName={{ pipeline_url | replace('.git', '') }} versioning=git branch={{ pipeline_branch }}
-      value: "{{ pipeline_revision }}"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "{{ pipeline_url }}"
-      - name: revision
-        # renovate: datasource=git-refs depName={{ pipeline_url | replace('.git', '') }} versioning=git branch={{ pipeline_branch }}
-        value: "{{ pipeline_revision }}"
-      - name: pathInRepo
-        value: "{{ pipeline_path }}"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "{{ pipeline_bundle }}"
 {{- task_run_specs_block(task_run_specs) }}
   taskRunTemplate:
     serviceAccountName: build-pipeline-{{ rpm.name }}
