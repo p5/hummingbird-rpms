@@ -36,10 +36,10 @@
   },
   "bash": {
     "branch": "rawhide",
-    "release": "2",
-    "sha": "80dab1fcd899428cda77c1a5081077a433242f5d",
+    "release": "1",
+    "sha": "749fca24d2a64ba526218f17a8eb5669ba65f129",
     "source": "https://src.fedoraproject.org/rpms/bash.git",
-    "version": "5.3.0"
+    "version": "5.3.9"
   },
   "binutils": {
     "branch": "rawhide",
