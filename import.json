@@ -491,8 +491,8 @@
   },
   "libselinux": {
     "branch": "rawhide",
-    "release": "5",
-    "sha": "466af9d9e61879347e77c74373eafdb55b521144",
+    "release": "6",
+    "sha": "cd8a8113177b8fdd1c39432dbe31ebd5afda252e",
     "source": "https://src.fedoraproject.org/rpms/libselinux.git",
     "version": "3.9"
   },
