@@ -841,10 +841,10 @@
   },
   "xz": {
     "branch": "rawhide",
-    "release": "4",
-    "sha": "4dbfb6665e5f3442572c735c859a245125bd563f",
+    "release": "1",
+    "sha": "8829c783ae6726a78d030f5be0ae76c0970ff696",
     "source": "https://src.fedoraproject.org/rpms/xz.git",
-    "version": "5.8.1"
+    "version": "5.8.2"
   },
   "yq": {
     "branch": "rawhide",
