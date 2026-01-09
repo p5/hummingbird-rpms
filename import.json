@@ -715,8 +715,8 @@
   },
   "readline": {
     "branch": "rawhide",
-    "release": "2",
-    "sha": "faef64fc003d6f8a2ff4c959d66810bac9a35ed1",
+    "release": "3",
+    "sha": "2d4bee1fb28f7b42926ba54fd39973d2ee8720b4",
     "source": "https://src.fedoraproject.org/rpms/readline.git",
     "version": "8.3"
   },
