@@ -2,9 +2,9 @@
   "R-rpm-macros": {
     "branch": "rawhide",
     "release": "1",
-    "sha": "d59a493d254a6b9242f4b0b8568d9b0d3055f586",
+    "sha": "bad36ae3ab4eacce668ddb086741d85f0c9cd6d6",
     "source": "https://src.fedoraproject.org/rpms/R-rpm-macros.git",
-    "version": "1.3.0"
+    "version": "1.3.3"
   },
   "acl": {
     "branch": "rawhide",
