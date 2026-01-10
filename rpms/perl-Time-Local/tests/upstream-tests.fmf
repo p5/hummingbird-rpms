@@ -1,0 +1,4 @@
+summary: Upstream tests
+component: perl-Time-Local
+require: perl-Time-Local-tests
+test: /usr/libexec/perl-Time-Local/test
