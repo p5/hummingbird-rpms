@@ -825,6 +825,13 @@
     "source": "https://src.fedoraproject.org/rpms/perl-IO-Socket-IP.git",
     "version": "0.43"
   },
+  "perl-IO-Socket-SSL": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "e5ac3e648ae436528a40824a333218b9b4208bae",
+    "source": "https://src.fedoraproject.org/rpms/perl-IO-Socket-SSL.git",
+    "version": "2.098"
+  },
   "pkgconf": {
     "branch": "rawhide",
     "release": "3",
