@@ -1,0 +1,4 @@
+summary: Upstream tests
+component: perl-constant
+require: perl-constant-tests
+test: /usr/libexec/perl-constant/test

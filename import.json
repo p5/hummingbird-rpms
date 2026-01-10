@@ -958,6 +958,13 @@
     "source": "https://src.fedoraproject.org/rpms/perl-URI.git",
     "version": "5.34"
   },
+  "perl-constant": {
+    "branch": "rawhide",
+    "release": "521",
+    "sha": "503267b7b65bad902c432c2baeaf3f69fb8b4b4d",
+    "source": "https://src.fedoraproject.org/rpms/perl-constant.git",
+    "version": "1.33"
+  },
   "pkgconf": {
     "branch": "rawhide",
     "release": "3",
