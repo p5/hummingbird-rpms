@@ -1,0 +1,4 @@
+summary: Upstream tests
+component: perl-Storable
+require: perl-Storable-tests
+test: /usr/libexec/perl-Storable/test
