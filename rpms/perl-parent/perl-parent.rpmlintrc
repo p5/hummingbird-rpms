@@ -1,0 +1,2 @@
+# Perl quoting
+addFilter(" spelling-error \('qw',")

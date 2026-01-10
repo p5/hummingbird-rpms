@@ -1,0 +1,4 @@
+summary: Upstream tests
+component: perl-Data-Dumper
+require: perl-Data-Dumper-tests
+test: /usr/libexec/perl-Data-Dumper/test

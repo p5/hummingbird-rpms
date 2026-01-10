@@ -1,0 +1,4 @@
+summary: Upstream tests
+component: perl-MIME-Base64
+require: perl-MIME-Base64-tests
+test: /usr/libexec/perl-MIME-Base64/test

@@ -1,0 +1,4 @@
+summary: Upstream tests
+component: perl-Digest
+require: perl-Digest-tests
+test: /usr/libexec/perl-Digest/test

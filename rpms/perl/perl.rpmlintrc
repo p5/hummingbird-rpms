@@ -1,0 +1,7 @@
+from Config import *
+addFilter("spelling-error .* (autoloaded|awk|cacheout|closedir|decrement|exe|explicative|gdbm|getgr|gethost|getnet|getproto|getpw|getserv|globbing|gmtime|groff|ithreads|lexically|libnet|localtime|lstat|Memoizing|metapackage|ndbm|Nestable|nonprintable|odbm|opcodes|opendir|perlbug|perldoc|perlfunc|perlglob|perllocale|perldiag|perlmain|perlpod|perlsub|Pragma|prebuilt|predeclare|printables|reachability|readdir|redispatch|rewinddir|rpmbuild|sdbm|sed|splain|truncations|usr|writemain)");
+addFilter("unexpanded-macro %description .* %(Extensions|INC)");
+# POSIX module provides wrappers for libc functions
+addFilter("missing-call-to-setgroups-before-setuid .*/auto/POSIX/POSIX.so");
+# Applied with "git am"
+addFilter("patch-not-applied Patch58: perl-5.30.0-PATCH-perl-134329-Use-after-free-in-regcomp.c.patch");

@@ -741,6 +741,258 @@
     "source": "https://src.fedoraproject.org/rpms/pcre2.git",
     "version": "10.47"
   },
+  "perl": {
+    "branch": "rawhide",
+    "release": "520",
+    "sha": "a8ff590c732b326216ab1499780e5964e4b03ddf",
+    "source": "https://src.fedoraproject.org/rpms/perl.git",
+    "version": "5.42.0"
+  },
+  "perl-Carp": {
+    "branch": "rawhide",
+    "release": "520",
+    "sha": "416eb497aae47c02674a10011cb280c937e64777",
+    "source": "https://src.fedoraproject.org/rpms/perl-Carp.git",
+    "version": "1.54"
+  },
+  "perl-Data-Dumper": {
+    "branch": "rawhide",
+    "release": "521",
+    "sha": "189cc7c25448db8e63678a3be934393d845a971a",
+    "source": "https://src.fedoraproject.org/rpms/perl-Data-Dumper.git",
+    "version": "2.191"
+  },
+  "perl-Digest": {
+    "branch": "rawhide",
+    "release": "520",
+    "sha": "057e2c4724bae93c85109cde03c0714631dd0ac1",
+    "source": "https://src.fedoraproject.org/rpms/perl-Digest.git",
+    "version": "1.20"
+  },
+  "perl-Digest-MD5": {
+    "branch": "rawhide",
+    "release": "520",
+    "sha": "9b20e22f3534528c995ffd1c8331a7a95d3c4bf0",
+    "source": "https://src.fedoraproject.org/rpms/perl-Digest-MD5.git",
+    "version": "2.59"
+  },
+  "perl-Encode": {
+    "branch": "rawhide",
+    "release": "520",
+    "sha": "7ac087592562782133f4a85aeaa2481cd35a7bd0",
+    "source": "https://src.fedoraproject.org/rpms/perl-Encode.git",
+    "version": "3.21"
+  },
+  "perl-Exporter": {
+    "branch": "rawhide",
+    "release": "520",
+    "sha": "83ca36ab12ac07acd14469fcf699ef8787d6d42f",
+    "source": "https://src.fedoraproject.org/rpms/perl-Exporter.git",
+    "version": "5.79"
+  },
+  "perl-File-Path": {
+    "branch": "rawhide",
+    "release": "521",
+    "sha": "ef80a9380177944da710d8d67af40fab9b385253",
+    "source": "https://src.fedoraproject.org/rpms/perl-File-Path.git",
+    "version": "2.18"
+  },
+  "perl-File-Temp": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "21d0169218e531142152461772b515f3653dce7b",
+    "source": "https://src.fedoraproject.org/rpms/perl-File-Temp.git",
+    "version": "0.231.200"
+  },
+  "perl-Getopt-Long": {
+    "branch": "rawhide",
+    "release": "520",
+    "sha": "eb160dcde4f1e6a0239a26d022a299adbdf2412e",
+    "source": "https://src.fedoraproject.org/rpms/perl-Getopt-Long.git",
+    "version": "2.58"
+  },
+  "perl-HTTP-Tiny": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "8571450e099e72110eece7efcd7d0280cd0273b1",
+    "source": "https://src.fedoraproject.org/rpms/perl-HTTP-Tiny.git",
+    "version": "0.092"
+  },
+  "perl-IO-Socket-IP": {
+    "branch": "rawhide",
+    "release": "521",
+    "sha": "436d05e1c8f251232acc42e8cab528ebfbbe9973",
+    "source": "https://src.fedoraproject.org/rpms/perl-IO-Socket-IP.git",
+    "version": "0.43"
+  },
+  "perl-IO-Socket-SSL": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "e5ac3e648ae436528a40824a333218b9b4208bae",
+    "source": "https://src.fedoraproject.org/rpms/perl-IO-Socket-SSL.git",
+    "version": "2.098"
+  },
+  "perl-MIME-Base32": {
+    "branch": "rawhide",
+    "release": "24",
+    "sha": "ea550d337a3a5388abb05e3df86101d772bf0e7a",
+    "source": "https://src.fedoraproject.org/rpms/perl-MIME-Base32.git",
+    "version": "1.303"
+  },
+  "perl-MIME-Base64": {
+    "branch": "rawhide",
+    "release": "520",
+    "sha": "21c2f4f5c27a5b087552f64faf0a6abaabe6d343",
+    "source": "https://src.fedoraproject.org/rpms/perl-MIME-Base64.git",
+    "version": "3.16"
+  },
+  "perl-Net-SSLeay": {
+    "branch": "rawhide",
+    "release": "11",
+    "sha": "f1aed2b9dcec5f7ed73fef13650375ebf92e0269",
+    "source": "https://src.fedoraproject.org/rpms/perl-Net-SSLeay.git",
+    "version": "1.94"
+  },
+  "perl-PathTools": {
+    "branch": "rawhide",
+    "release": "520",
+    "sha": "d081f89e4e1e43471082d1739d7b6a52c4e90396",
+    "source": "https://src.fedoraproject.org/rpms/perl-PathTools.git",
+    "version": "3.94"
+  },
+  "perl-Pod-Escapes": {
+    "branch": "rawhide",
+    "release": "520",
+    "sha": "a32319d42d8e198e670b79aadda37126723d76a2",
+    "source": "https://src.fedoraproject.org/rpms/perl-Pod-Escapes.git",
+    "version": "1.07"
+  },
+  "perl-Pod-Perldoc": {
+    "branch": "rawhide",
+    "release": "521",
+    "sha": "dbf3b3323c8e15cf5c357b3b719d595576b8ced1",
+    "source": "https://src.fedoraproject.org/rpms/perl-Pod-Perldoc.git",
+    "version": "3.28.01"
+  },
+  "perl-Pod-Simple": {
+    "branch": "rawhide",
+    "release": "3",
+    "sha": "9d6ad38d0d3078aeaa2408cdd1528e601974f433",
+    "source": "https://src.fedoraproject.org/rpms/perl-Pod-Simple.git",
+    "version": "3.47"
+  },
+  "perl-Pod-Usage": {
+    "branch": "rawhide",
+    "release": "520",
+    "sha": "65d3a2323457728295f030dc475ad61ee6727bde",
+    "source": "https://src.fedoraproject.org/rpms/perl-Pod-Usage.git",
+    "version": "2.05"
+  },
+  "perl-Scalar-List-Utils": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "0d1a67d32474df1248a5fa1eda9a9ff4dbb45433",
+    "source": "https://src.fedoraproject.org/rpms/perl-Scalar-List-Utils.git",
+    "version": "1.70"
+  },
+  "perl-Socket": {
+    "branch": "rawhide",
+    "release": "2",
+    "sha": "9a05f3407243f41eecdf0392e5dc23a5094bcaba",
+    "source": "https://src.fedoraproject.org/rpms/perl-Socket.git",
+    "version": "2.040"
+  },
+  "perl-Storable": {
+    "branch": "rawhide",
+    "release": "521",
+    "sha": "c4e2ec7c7524fae396b51d4bbc3080774934c5ce",
+    "source": "https://src.fedoraproject.org/rpms/perl-Storable.git",
+    "version": "3.37"
+  },
+  "perl-Term-ANSIColor": {
+    "branch": "rawhide",
+    "release": "521",
+    "sha": "097f56882a58ce9f99b2dcb7c82d3b06f854bbeb",
+    "source": "https://src.fedoraproject.org/rpms/perl-Term-ANSIColor.git",
+    "version": "5.01"
+  },
+  "perl-Term-Cap": {
+    "branch": "rawhide",
+    "release": "520",
+    "sha": "e5c8d129875923a2730da742f3ad795095752620",
+    "source": "https://src.fedoraproject.org/rpms/perl-Term-Cap.git",
+    "version": "1.18"
+  },
+  "perl-Text-ParseWords": {
+    "branch": "rawhide",
+    "release": "520",
+    "sha": "21973df9c28fbfeeebc5b7390e8c2f8ed74e128b",
+    "source": "https://src.fedoraproject.org/rpms/perl-Text-ParseWords.git",
+    "version": "3.31"
+  },
+  "perl-Text-Tabs+Wrap": {
+    "branch": "rawhide",
+    "release": "520",
+    "sha": "73f4c2ea4b700d88d6ad40c7713942f1f8adea86",
+    "source": "https://src.fedoraproject.org/rpms/perl-Text-Tabs+Wrap.git",
+    "version": "2024.001"
+  },
+  "perl-Time-HiRes": {
+    "branch": "rawhide",
+    "release": "520",
+    "sha": "006007167370ebe48bc872fbb0217ba6d6b2f5c2",
+    "source": "https://src.fedoraproject.org/rpms/perl-Time-HiRes.git",
+    "version": "1.9778"
+  },
+  "perl-Time-Local": {
+    "branch": "rawhide",
+    "release": "520",
+    "sha": "c7b8d700412ecd7558faa320b20bfc9bd2abd985",
+    "source": "https://src.fedoraproject.org/rpms/perl-Time-Local.git",
+    "version": "1.350"
+  },
+  "perl-URI": {
+    "branch": "rawhide",
+    "release": "2",
+    "sha": "21bdb752afed7b868513eb9b9ce95516a6742fff",
+    "source": "https://src.fedoraproject.org/rpms/perl-URI.git",
+    "version": "5.34"
+  },
+  "perl-constant": {
+    "branch": "rawhide",
+    "release": "521",
+    "sha": "503267b7b65bad902c432c2baeaf3f69fb8b4b4d",
+    "source": "https://src.fedoraproject.org/rpms/perl-constant.git",
+    "version": "1.33"
+  },
+  "perl-libnet": {
+    "branch": "rawhide",
+    "release": "521",
+    "sha": "3fda6835b8956ff18c9a86d7b1d39b32b2bafdf3",
+    "source": "https://src.fedoraproject.org/rpms/perl-libnet.git",
+    "version": "3.15"
+  },
+  "perl-parent": {
+    "branch": "rawhide",
+    "release": "520",
+    "sha": "f6edd5adb19038df25a1a2fe2aa6301a952a39a2",
+    "source": "https://src.fedoraproject.org/rpms/perl-parent.git",
+    "version": "0.244"
+  },
+  "perl-podlators": {
+    "branch": "rawhide",
+    "release": "520",
+    "sha": "a0b04084b32bfbbc04e45b5b070fff618cb8d453",
+    "source": "https://src.fedoraproject.org/rpms/perl-podlators.git",
+    "version": "6.0.2"
+  },
+  "perl-srpm-macros": {
+    "branch": "rawhide",
+    "release": "60",
+    "sha": "cae0d62cfe78bd61bfedb49c2c6bbfc8aeee8292",
+    "source": "https://src.fedoraproject.org/rpms/perl-srpm-macros.git",
+    "version": "1"
+  },
   "pkgconf": {
     "branch": "rawhide",
     "release": "3",

@@ -1,0 +1,4 @@
+summary: Upstream tests
+component: perl-Pod-Simple
+require: perl-Pod-Simple-tests
+test: /usr/libexec/perl-Pod-Simple/test

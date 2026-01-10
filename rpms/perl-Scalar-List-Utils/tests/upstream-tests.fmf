@@ -1,0 +1,11 @@
+summary: Upstream tests
+component: perl-Scalar-List-Utils
+require: perl-Scalar-List-Utils-tests
+test: /usr/libexec/perl-Scalar-List-Utils/test
+enabled: true
+tag:
+  - rhel-buildroot
+adjust:
+  - enabled: false
+    when: distro < rhel-10 or distro < centos-stream-10
+    continue: false

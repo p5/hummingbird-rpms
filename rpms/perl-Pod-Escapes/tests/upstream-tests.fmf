@@ -1,0 +1,4 @@
+summary: Upstream tests
+component: perl-Pod-Escapes
+require: perl-Pod-Escapes-tests
+test: /usr/libexec/perl-Pod-Escapes/test

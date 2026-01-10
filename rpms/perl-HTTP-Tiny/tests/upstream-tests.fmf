@@ -1,0 +1,4 @@
+summary: Upstream tests
+component: perl-HTTP-Tiny
+require: perl-HTTP-Tiny-tests
+test: /usr/libexec/perl-HTTP-Tiny/test

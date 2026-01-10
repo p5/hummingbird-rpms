@@ -1,0 +1,4 @@
+summary: Upstream tests
+component: perl-Carp
+require: perl-Carp-tests
+test: /usr/libexec/perl-Carp/test

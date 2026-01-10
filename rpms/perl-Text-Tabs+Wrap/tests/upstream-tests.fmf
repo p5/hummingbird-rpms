@@ -1,0 +1,4 @@
+summary: Upstream tests
+component: perl-Text-Tabs+Wrap
+require: perl-Text-Tabs+Wrap-tests
+test: /usr/libexec/perl-Text-Tabs+Wrap/test

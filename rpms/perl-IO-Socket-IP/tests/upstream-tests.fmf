@@ -1,0 +1,4 @@
+summary: Upstream tests
+component: perl-IO-Socket-IP
+require: perl-IO-Socket-IP-tests
+test: /usr/libexec/perl-IO-Socket-IP/test
