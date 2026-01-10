@@ -818,6 +818,13 @@
     "source": "https://src.fedoraproject.org/rpms/perl-HTTP-Tiny.git",
     "version": "0.092"
   },
+  "perl-IO-Socket-IP": {
+    "branch": "rawhide",
+    "release": "521",
+    "sha": "436d05e1c8f251232acc42e8cab528ebfbbe9973",
+    "source": "https://src.fedoraproject.org/rpms/perl-IO-Socket-IP.git",
+    "version": "0.43"
+  },
   "pkgconf": {
     "branch": "rawhide",
     "release": "3",
