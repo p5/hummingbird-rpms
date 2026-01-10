@@ -1,0 +1,4 @@
+summary: Upstream tests
+component: perl-Text-ParseWords
+require: perl-Text-ParseWords-tests
+test: /usr/libexec/perl-Text-ParseWords/test

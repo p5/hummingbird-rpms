@@ -923,6 +923,13 @@
     "source": "https://src.fedoraproject.org/rpms/perl-Term-Cap.git",
     "version": "1.18"
   },
+  "perl-Text-ParseWords": {
+    "branch": "rawhide",
+    "release": "520",
+    "sha": "21973df9c28fbfeeebc5b7390e8c2f8ed74e128b",
+    "source": "https://src.fedoraproject.org/rpms/perl-Text-ParseWords.git",
+    "version": "3.31"
+  },
   "pkgconf": {
     "branch": "rawhide",
     "release": "3",
