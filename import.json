@@ -930,6 +930,13 @@
     "source": "https://src.fedoraproject.org/rpms/perl-Text-ParseWords.git",
     "version": "3.31"
   },
+  "perl-Text-Tabs+Wrap": {
+    "branch": "rawhide",
+    "release": "520",
+    "sha": "73f4c2ea4b700d88d6ad40c7713942f1f8adea86",
+    "source": "https://src.fedoraproject.org/rpms/perl-Text-Tabs+Wrap.git",
+    "version": "2024.001"
+  },
   "pkgconf": {
     "branch": "rawhide",
     "release": "3",
