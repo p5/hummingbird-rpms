@@ -4754,6 +4754,43 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+  name: perl-scalar-list-utils-main
+spec:
+  application: rpms-main
+  componentName: perl-scalar-list-utils-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/perl-scalar-list-utils-main
+  source:
+    git:
+      context: rpms/perl-Scalar-List-Utils
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: perl-scalar-list-utils-main
+  name: perl-scalar-list-utils-main
+spec:
+  image:
+    name: hummingbird-tenant/perl-scalar-list-utils-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
   name: pkgconf-main
 spec:
   application: rpms-main
