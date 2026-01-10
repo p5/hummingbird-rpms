@@ -1,0 +1,4 @@
+summary: Upstream tests
+component: perl-Digest-MD5
+require: perl-Digest-MD5-tests
+test: /usr/libexec/perl-Digest-MD5/test

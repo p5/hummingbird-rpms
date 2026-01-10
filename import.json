@@ -769,6 +769,13 @@
     "source": "https://src.fedoraproject.org/rpms/perl-Digest.git",
     "version": "1.20"
   },
+  "perl-Digest-MD5": {
+    "branch": "rawhide",
+    "release": "520",
+    "sha": "9b20e22f3534528c995ffd1c8331a7a95d3c4bf0",
+    "source": "https://src.fedoraproject.org/rpms/perl-Digest-MD5.git",
+    "version": "2.59"
+  },
   "pkgconf": {
     "branch": "rawhide",
     "release": "3",
