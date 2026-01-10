@@ -1,0 +1,4 @@
+summary: Upstream tests
+component: perl-Exporter
+require: perl-Exporter-tests
+test: /usr/libexec/perl-Exporter/test
