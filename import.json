@@ -916,6 +916,13 @@
     "source": "https://src.fedoraproject.org/rpms/perl-Term-ANSIColor.git",
     "version": "5.01"
   },
+  "perl-Term-Cap": {
+    "branch": "rawhide",
+    "release": "520",
+    "sha": "e5c8d129875923a2730da742f3ad795095752620",
+    "source": "https://src.fedoraproject.org/rpms/perl-Term-Cap.git",
+    "version": "1.18"
+  },
   "pkgconf": {
     "branch": "rawhide",
     "release": "3",

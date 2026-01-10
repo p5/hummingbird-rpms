@@ -1,0 +1,4 @@
+summary: Upstream tests
+component: perl-Term-Cap
+require: perl-Term-Cap-tests
+test: /usr/libexec/perl-Term-Cap/test
