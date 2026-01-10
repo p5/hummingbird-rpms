@@ -3,22 +3,22 @@
   "customManagers": [
     {
       "customType": "regex",
-      "description": "Update PIPELINE_BRANCH and PIPELINE_REVISION in generate_pac_resources.sh",
+      "description": "Update PIPELINE_BUNDLE digest in generate_pac_resources.sh",
       "managerFilePatterns": ["/ci/generate_pac_resources\\.sh$/"],
       "matchStrings": [
-        "PIPELINE_URL=\"(?<depName>https://[^\"]+)\\.git\"\\nPIPELINE_PATH=\"[^\"]+\"\\nPIPELINE_BRANCH=\"(?<currentValue>[^\"]+)\"\\nPIPELINE_REVISION=\"(?<currentDigest>[^\"]+)\""
+        "#\\s*renovate:\\s*datasource=(?<datasource>\\S+)\\s+depName=(?<depName>\\S+)\\n\\s*PIPELINE_BUNDLE=\"[^:]+:(?<currentValue>[^@]+)@(?<currentDigest>sha256:[a-f0-9]+)\""
       ],
-      "datasourceTemplate": "git-refs",
-      "versioningTemplate": "git"
+      "datasourceTemplate": "docker",
+      "versioningTemplate": "docker"
     },
     {
       "customType": "regex",
-      "description": "Update Tekton git resolver references in YAML files",
+      "description": "Update pipeline bundle references in rendered Tekton YAML files",
       "managerFilePatterns": ["/\\.tekton/.+\\.ya?ml$/"],
       "matchStrings": [
-        "#\\s*renovate:\\s*datasource=(?<datasource>\\S+)\\s+depName=(?<depName>\\S+)(\\s+versioning=(?<versioning>\\S+))?\\s+branch=(?<currentValue>\\S+)\\n\\s*value:\\s*\"(?<currentDigest>[^\"]+)\""
+        "#\\s*renovate:\\s*datasource=(?<datasource>\\S+)\\s+depName=(?<depName>\\S+)\\n\\s*value:\\s*\"[^:]+:(?<currentValue>[^@]+)@(?<currentDigest>sha256:[a-f0-9]+)\""
       ],
-      "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}git{{/if}}"
+      "versioningTemplate": "docker"
     }
   ],
   "packageRules": [

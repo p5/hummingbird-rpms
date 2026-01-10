@@ -43,21 +43,16 @@ spec:
       value: "rpms/R-rpm-macros"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-r-rpm-macros-main
   timeouts:
@@ -112,21 +107,16 @@ spec:
       value: "rpms/acl"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-acl-main
   timeouts:
@@ -181,21 +171,16 @@ spec:
       value: "rpms/ansible-packaging"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-ansible-packaging-main
   timeouts:
@@ -250,21 +235,16 @@ spec:
       value: "rpms/attr"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-attr-main
   timeouts:
@@ -319,21 +299,16 @@ spec:
       value: "rpms/audit"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-audit-main
   timeouts:
@@ -388,21 +363,16 @@ spec:
       value: "rpms/bash"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-bash-main
   timeouts:
@@ -457,21 +427,16 @@ spec:
       value: "rpms/binutils"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-binutils-main
   timeouts:
@@ -526,21 +491,16 @@ spec:
       value: "rpms/brotli"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-brotli-main
   timeouts:
@@ -595,21 +555,16 @@ spec:
       value: "rpms/bzip2"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-bzip2-main
   timeouts:
@@ -664,21 +619,16 @@ spec:
       value: "rpms/ca-certificates"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-ca-certificates-main
   timeouts:
@@ -733,21 +683,16 @@ spec:
       value: "rpms/caddy"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-caddy-main
   timeouts:
@@ -802,21 +747,16 @@ spec:
       value: "rpms/chkconfig"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-chkconfig-main
   timeouts:
@@ -871,21 +811,16 @@ spec:
       value: "rpms/cmake"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-cmake-main
   timeouts:
@@ -940,21 +875,16 @@ spec:
       value: "rpms/coreutils"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-coreutils-main
   timeouts:
@@ -1009,21 +939,16 @@ spec:
       value: "rpms/cpio"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-cpio-main
   timeouts:
@@ -1078,21 +1003,16 @@ spec:
       value: "rpms/createrepo_c"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-createrepo-c-main
   timeouts:
@@ -1147,21 +1067,16 @@ spec:
       value: "rpms/crypto-policies"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-crypto-policies-main
   timeouts:
@@ -1216,21 +1131,16 @@ spec:
       value: "rpms/curl"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-curl-main
   timeouts:
@@ -1285,21 +1195,16 @@ spec:
       value: "rpms/cyrus-sasl"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-cyrus-sasl-main
   timeouts:
@@ -1354,21 +1259,16 @@ spec:
       value: "rpms/dbus"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-dbus-main
   timeouts:
@@ -1423,21 +1323,16 @@ spec:
       value: "rpms/dbus-broker"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-dbus-broker-main
   timeouts:
@@ -1492,21 +1387,16 @@ spec:
       value: "rpms/diffutils"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-diffutils-main
   timeouts:
@@ -1561,21 +1451,16 @@ spec:
       value: "rpms/dnf5"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-dnf5-main
   timeouts:
@@ -1630,21 +1515,16 @@ spec:
       value: "rpms/drpm"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-drpm-main
   timeouts:
@@ -1699,21 +1579,16 @@ spec:
       value: "rpms/e2fsprogs"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-e2fsprogs-main
   timeouts:
@@ -1768,21 +1643,16 @@ spec:
       value: "rpms/ed"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-ed-main
   timeouts:
@@ -1837,21 +1707,16 @@ spec:
       value: "rpms/efi-rpm-macros"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-efi-rpm-macros-main
   timeouts:
@@ -1906,21 +1771,16 @@ spec:
       value: "rpms/elfutils"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-elfutils-main
   timeouts:
@@ -1975,21 +1835,16 @@ spec:
       value: "rpms/expat"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-expat-main
   timeouts:
@@ -2044,21 +1899,16 @@ spec:
       value: "rpms/fedora-logos"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-fedora-logos-main
   timeouts:
@@ -2113,21 +1963,16 @@ spec:
       value: "rpms/fedora-repos"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-fedora-repos-main
   timeouts:
@@ -2182,21 +2027,16 @@ spec:
       value: "rpms/file"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-file-main
   timeouts:
@@ -2251,21 +2091,16 @@ spec:
       value: "rpms/filesystem"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-filesystem-main
   timeouts:
@@ -2320,21 +2155,16 @@ spec:
       value: "rpms/findutils"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-findutils-main
   timeouts:
@@ -2389,21 +2219,16 @@ spec:
       value: "rpms/fmt"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-fmt-main
   timeouts:
@@ -2458,21 +2283,16 @@ spec:
       value: "rpms/fsverity-utils"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-fsverity-utils-main
   timeouts:
@@ -2527,21 +2347,16 @@ spec:
       value: "rpms/gawk"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-gawk-main
   timeouts:
@@ -2596,21 +2411,16 @@ spec:
       value: "rpms/gdbm"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-gdbm-main
   timeouts:
@@ -2665,21 +2475,16 @@ spec:
       value: "rpms/git"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-git-main
   timeouts:
@@ -2734,21 +2539,16 @@ spec:
       value: "rpms/glib2"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-glib2-main
   timeouts:
@@ -2803,21 +2603,16 @@ spec:
       value: "rpms/gmp"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-gmp-main
   timeouts:
@@ -2872,21 +2667,16 @@ spec:
       value: "rpms/gnupg2"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-gnupg2-main
   timeouts:
@@ -2941,21 +2731,16 @@ spec:
       value: "rpms/gnutls"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-gnutls-main
   timeouts:
@@ -3010,21 +2795,16 @@ spec:
       value: "rpms/go-rpm-macros"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-go-rpm-macros-main
   timeouts:
@@ -3079,21 +2859,16 @@ spec:
       value: "rpms/golang"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-golang-main
   timeouts:
@@ -3148,21 +2923,16 @@ spec:
       value: "rpms/grep"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-grep-main
   timeouts:
@@ -3217,21 +2987,16 @@ spec:
       value: "rpms/gzip"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-gzip-main
   timeouts:
@@ -3286,21 +3051,16 @@ spec:
       value: "rpms/hostname"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-hostname-main
   timeouts:
@@ -3355,21 +3115,16 @@ spec:
       value: "rpms/hummingbird-release"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-hummingbird-release-main
   timeouts:
@@ -3424,21 +3179,16 @@ spec:
       value: "rpms/ima-evm-utils"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-ima-evm-utils-main
   timeouts:
@@ -3493,21 +3243,16 @@ spec:
       value: "rpms/jansson"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-jansson-main
   timeouts:
@@ -3562,21 +3307,16 @@ spec:
       value: "rpms/jq"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-jq-main
   timeouts:
@@ -3631,21 +3371,16 @@ spec:
       value: "rpms/json-c"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-json-c-main
   timeouts:
@@ -3700,21 +3435,16 @@ spec:
       value: "rpms/kernel-headers"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-kernel-headers-main
   timeouts:
@@ -3769,21 +3499,16 @@ spec:
       value: "rpms/keyutils"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-keyutils-main
   timeouts:
@@ -3838,21 +3563,16 @@ spec:
       value: "rpms/krb5"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-krb5-main
   timeouts:
@@ -3907,21 +3627,16 @@ spec:
       value: "rpms/less"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-less-main
   timeouts:
@@ -3976,21 +3691,16 @@ spec:
       value: "rpms/libarchive"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-libarchive-main
   timeouts:
@@ -4045,21 +3755,16 @@ spec:
       value: "rpms/libassuan"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-libassuan-main
   timeouts:
@@ -4114,21 +3819,16 @@ spec:
       value: "rpms/libcap"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-libcap-main
   timeouts:
@@ -4183,21 +3883,16 @@ spec:
       value: "rpms/libcap-ng"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-libcap-ng-main
   timeouts:
@@ -4252,21 +3947,16 @@ spec:
       value: "rpms/libcbor"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-libcbor-main
   timeouts:
@@ -4321,21 +4011,16 @@ spec:
       value: "rpms/libeconf"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-libeconf-main
   timeouts:
@@ -4390,21 +4075,16 @@ spec:
       value: "rpms/libedit"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-libedit-main
   timeouts:
@@ -4459,21 +4139,16 @@ spec:
       value: "rpms/libevent"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-libevent-main
   timeouts:
@@ -4528,21 +4203,16 @@ spec:
       value: "rpms/libffi"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-libffi-main
   timeouts:
@@ -4597,21 +4267,16 @@ spec:
       value: "rpms/libfido2"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-libfido2-main
   timeouts:
@@ -4666,21 +4331,16 @@ spec:
       value: "rpms/libgcrypt"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-libgcrypt-main
   timeouts:
@@ -4735,21 +4395,16 @@ spec:
       value: "rpms/libgpg-error"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-libgpg-error-main
   timeouts:
@@ -4804,21 +4459,16 @@ spec:
       value: "rpms/libidn2"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-libidn2-main
   timeouts:
@@ -4873,21 +4523,16 @@ spec:
       value: "rpms/libksba"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-libksba-main
   timeouts:
@@ -4942,21 +4587,16 @@ spec:
       value: "rpms/libmpc"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-libmpc-main
   timeouts:
@@ -5011,21 +4651,16 @@ spec:
       value: "rpms/libpsl"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-libpsl-main
   timeouts:
@@ -5080,21 +4715,16 @@ spec:
       value: "rpms/librepo"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-librepo-main
   timeouts:
@@ -5149,21 +4779,16 @@ spec:
       value: "rpms/libseccomp"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-libseccomp-main
   timeouts:
@@ -5218,21 +4843,16 @@ spec:
       value: "rpms/libselinux"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-libselinux-main
   timeouts:
@@ -5287,21 +4907,16 @@ spec:
       value: "rpms/libsemanage"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-libsemanage-main
   timeouts:
@@ -5356,21 +4971,16 @@ spec:
       value: "rpms/libsepol"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-libsepol-main
   timeouts:
@@ -5425,21 +5035,16 @@ spec:
       value: "rpms/libsolv"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-libsolv-main
   timeouts:
@@ -5494,21 +5099,16 @@ spec:
       value: "rpms/libssh"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-libssh-main
   timeouts:
@@ -5563,21 +5163,16 @@ spec:
       value: "rpms/libtasn1"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-libtasn1-main
   timeouts:
@@ -5632,21 +5227,16 @@ spec:
       value: "rpms/libtool"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-libtool-main
   timeouts:
@@ -5701,21 +5291,16 @@ spec:
       value: "rpms/libunistring"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-libunistring-main
   timeouts:
@@ -5770,21 +5355,16 @@ spec:
       value: "rpms/libusb1"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-libusb1-main
   timeouts:
@@ -5839,21 +5419,16 @@ spec:
       value: "rpms/libverto"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-libverto-main
   timeouts:
@@ -5908,21 +5483,16 @@ spec:
       value: "rpms/libxcrypt"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-libxcrypt-main
   timeouts:
@@ -5977,21 +5547,16 @@ spec:
       value: "rpms/libxml2"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-libxml2-main
   timeouts:
@@ -6046,21 +5611,16 @@ spec:
       value: "rpms/libyaml"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-libyaml-main
   timeouts:
@@ -6115,21 +5675,16 @@ spec:
       value: "rpms/lua"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-lua-main
   timeouts:
@@ -6184,21 +5739,16 @@ spec:
       value: "rpms/lz4"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-lz4-main
   timeouts:
@@ -6253,21 +5803,16 @@ spec:
       value: "rpms/make"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-make-main
   timeouts:
@@ -6322,21 +5867,16 @@ spec:
       value: "rpms/mpfr"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-mpfr-main
   timeouts:
@@ -6391,21 +5931,16 @@ spec:
       value: "rpms/ncurses"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-ncurses-main
   timeouts:
@@ -6460,21 +5995,16 @@ spec:
       value: "rpms/nettle"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-nettle-main
   timeouts:
@@ -6529,21 +6059,16 @@ spec:
       value: "rpms/nghttp2"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-nghttp2-main
   timeouts:
@@ -6598,21 +6123,16 @@ spec:
       value: "rpms/nghttp3"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-nghttp3-main
   timeouts:
@@ -6667,21 +6187,16 @@ spec:
       value: "rpms/ngtcp2"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-ngtcp2-main
   timeouts:
@@ -6736,21 +6251,16 @@ spec:
       value: "rpms/npth"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-npth-main
   timeouts:
@@ -6805,21 +6315,16 @@ spec:
       value: "rpms/oniguruma"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-oniguruma-main
   timeouts:
@@ -6874,21 +6379,16 @@ spec:
       value: "rpms/openldap"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-openldap-main
   timeouts:
@@ -6943,21 +6443,16 @@ spec:
       value: "rpms/openssh"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-openssh-main
   timeouts:
@@ -7012,21 +6507,16 @@ spec:
       value: "rpms/openssl"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-openssl-main
   timeouts:
@@ -7081,21 +6571,16 @@ spec:
       value: "rpms/p11-kit"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-p11-kit-main
   timeouts:
@@ -7150,21 +6635,16 @@ spec:
       value: "rpms/package-notes"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-package-notes-main
   timeouts:
@@ -7219,21 +6699,16 @@ spec:
       value: "rpms/pam"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-pam-main
   timeouts:
@@ -7288,21 +6763,16 @@ spec:
       value: "rpms/patch"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-patch-main
   timeouts:
@@ -7357,21 +6827,16 @@ spec:
       value: "rpms/pcre2"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-pcre2-main
   timeouts:
@@ -7426,21 +6891,16 @@ spec:
       value: "rpms/pkgconf"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-pkgconf-main
   timeouts:
@@ -7495,21 +6955,16 @@ spec:
       value: "rpms/popt"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-popt-main
   timeouts:
@@ -7564,21 +7019,16 @@ spec:
       value: "rpms/publicsuffix-list"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-publicsuffix-list-main
   timeouts:
@@ -7633,21 +7083,16 @@ spec:
       value: "rpms/readline"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-readline-main
   timeouts:
@@ -7702,21 +7147,16 @@ spec:
       value: "rpms/redhat-rpm-config"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-redhat-rpm-config-main
   timeouts:
@@ -7771,21 +7211,16 @@ spec:
       value: "rpms/rootfiles"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-rootfiles-main
   timeouts:
@@ -7840,21 +7275,16 @@ spec:
       value: "rpms/rpm"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-rpm-main
   timeouts:
@@ -7909,21 +7339,16 @@ spec:
       value: "rpms/rust-rpm-sequoia"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-rust-rpm-sequoia-main
   timeouts:
@@ -7978,21 +7403,16 @@ spec:
       value: "rpms/sdbus-cpp"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-sdbus-cpp-main
   timeouts:
@@ -8047,21 +7467,16 @@ spec:
       value: "rpms/sed"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-sed-main
   timeouts:
@@ -8116,21 +7531,16 @@ spec:
       value: "rpms/setup"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-setup-main
   timeouts:
@@ -8185,21 +7595,16 @@ spec:
       value: "rpms/shadow-utils"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-shadow-utils-main
   timeouts:
@@ -8254,21 +7659,16 @@ spec:
       value: "rpms/sqlite"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-sqlite-main
   timeouts:
@@ -8323,21 +7723,16 @@ spec:
       value: "rpms/systemd"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-systemd-main
   timeouts:
@@ -8392,21 +7787,16 @@ spec:
       value: "rpms/systemd-stub"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-systemd-stub-main
   timeouts:
@@ -8461,21 +7851,16 @@ spec:
       value: "rpms/tar"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-tar-main
   timeouts:
@@ -8530,21 +7915,16 @@ spec:
       value: "rpms/texinfo"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-texinfo-main
   timeouts:
@@ -8599,21 +7979,16 @@ spec:
       value: "rpms/tpm2-tss"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-tpm2-tss-main
   timeouts:
@@ -8668,21 +8043,16 @@ spec:
       value: "rpms/unzip"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-unzip-main
   timeouts:
@@ -8737,21 +8107,16 @@ spec:
       value: "rpms/util-linux"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-util-linux-main
   timeouts:
@@ -8806,21 +8171,16 @@ spec:
       value: "rpms/which"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-which-main
   timeouts:
@@ -8875,21 +8235,16 @@ spec:
       value: "rpms/xxhash"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-xxhash-main
   timeouts:
@@ -8944,21 +8299,16 @@ spec:
       value: "rpms/xz"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-xz-main
   timeouts:
@@ -9013,21 +8363,16 @@ spec:
       value: "rpms/yq"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-yq-main
   timeouts:
@@ -9082,21 +8427,16 @@ spec:
       value: "rpms/zchunk"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-zchunk-main
   timeouts:
@@ -9151,21 +8491,16 @@ spec:
       value: "rpms/zip"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-zip-main
   timeouts:
@@ -9220,21 +8555,16 @@ spec:
       value: "rpms/zlib-ng"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-zlib-ng-main
   timeouts:
@@ -9289,21 +8619,16 @@ spec:
       value: "rpms/zstd"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: self-ref-url
-      value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-    - name: self-ref-revision
-      # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-      value: "c819343553f231da12bf5a35343836ec7266111d"
   pipelineRef:
-    resolver: git
+    resolver: bundles
     params:
-      - name: url
-        value: "https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline.git"
-      - name: revision
-        # renovate: datasource=git-refs depName=https://gitlab.com/redhat/hummingbird/pipelines/rpmbuild-pipeline versioning=git branch=main
-        value: "c819343553f231da12bf5a35343836ec7266111d"
-      - name: pathInRepo
-        value: "pipeline/build-rpm-package.yaml"
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
   taskRunTemplate:
     serviceAccountName: build-pipeline-zstd-main
   timeouts:
