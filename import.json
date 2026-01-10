@@ -895,6 +895,13 @@
     "source": "https://src.fedoraproject.org/rpms/perl-Scalar-List-Utils.git",
     "version": "1.70"
   },
+  "perl-Socket": {
+    "branch": "rawhide",
+    "release": "2",
+    "sha": "9a05f3407243f41eecdf0392e5dc23a5094bcaba",
+    "source": "https://src.fedoraproject.org/rpms/perl-Socket.git",
+    "version": "2.040"
+  },
   "pkgconf": {
     "branch": "rawhide",
     "release": "3",
