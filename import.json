@@ -874,6 +874,13 @@
     "source": "https://src.fedoraproject.org/rpms/perl-Pod-Perldoc.git",
     "version": "3.28.01"
   },
+  "perl-Pod-Simple": {
+    "branch": "rawhide",
+    "release": "3",
+    "sha": "9d6ad38d0d3078aeaa2408cdd1528e601974f433",
+    "source": "https://src.fedoraproject.org/rpms/perl-Pod-Simple.git",
+    "version": "3.47"
+  },
   "pkgconf": {
     "branch": "rawhide",
     "release": "3",
