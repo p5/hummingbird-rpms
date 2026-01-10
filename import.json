@@ -979,6 +979,13 @@
     "source": "https://src.fedoraproject.org/rpms/perl-parent.git",
     "version": "0.244"
   },
+  "perl-podlators": {
+    "branch": "rawhide",
+    "release": "520",
+    "sha": "a0b04084b32bfbbc04e45b5b070fff618cb8d453",
+    "source": "https://src.fedoraproject.org/rpms/perl-podlators.git",
+    "version": "6.0.2"
+  },
   "pkgconf": {
     "branch": "rawhide",
     "release": "3",

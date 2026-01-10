@@ -1,0 +1,4 @@
+summary: Upstream tests
+component: perl-podlators
+require: perl-podlators-tests
+test: /usr/libexec/perl-podlators/test
