@@ -1,0 +1,4 @@
+summary: Upstream tests
+component: perl-File-Path
+require: perl-File-Path-tests
+test: /usr/libexec/perl-File-Path/test
