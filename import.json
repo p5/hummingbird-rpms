@@ -867,6 +867,13 @@
     "source": "https://src.fedoraproject.org/rpms/perl-Pod-Escapes.git",
     "version": "1.07"
   },
+  "perl-Pod-Perldoc": {
+    "branch": "rawhide",
+    "release": "521",
+    "sha": "dbf3b3323c8e15cf5c357b3b719d595576b8ced1",
+    "source": "https://src.fedoraproject.org/rpms/perl-Pod-Perldoc.git",
+    "version": "3.28.01"
+  },
   "pkgconf": {
     "branch": "rawhide",
     "release": "3",
