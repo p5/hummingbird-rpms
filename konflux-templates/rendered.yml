@@ -4495,6 +4495,43 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+  name: perl-mime-base64-main
+spec:
+  application: rpms-main
+  componentName: perl-mime-base64-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/perl-mime-base64-main
+  source:
+    git:
+      context: rpms/perl-MIME-Base64
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: perl-mime-base64-main
+  name: perl-mime-base64-main
+spec:
+  image:
+    name: hummingbird-tenant/perl-mime-base64-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
   name: pkgconf-main
 spec:
   application: rpms-main
