@@ -881,6 +881,13 @@
     "source": "https://src.fedoraproject.org/rpms/perl-Pod-Simple.git",
     "version": "3.47"
   },
+  "perl-Pod-Usage": {
+    "branch": "rawhide",
+    "release": "520",
+    "sha": "65d3a2323457728295f030dc475ad61ee6727bde",
+    "source": "https://src.fedoraproject.org/rpms/perl-Pod-Usage.git",
+    "version": "2.05"
+  },
   "pkgconf": {
     "branch": "rawhide",
     "release": "3",
