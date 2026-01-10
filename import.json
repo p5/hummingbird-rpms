@@ -755,6 +755,13 @@
     "source": "https://src.fedoraproject.org/rpms/perl-Carp.git",
     "version": "1.54"
   },
+  "perl-Data-Dumper": {
+    "branch": "rawhide",
+    "release": "521",
+    "sha": "189cc7c25448db8e63678a3be934393d845a971a",
+    "source": "https://src.fedoraproject.org/rpms/perl-Data-Dumper.git",
+    "version": "2.191"
+  },
   "pkgconf": {
     "branch": "rawhide",
     "release": "3",
