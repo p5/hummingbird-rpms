@@ -762,6 +762,13 @@
     "source": "https://src.fedoraproject.org/rpms/perl-Data-Dumper.git",
     "version": "2.191"
   },
+  "perl-Digest": {
+    "branch": "rawhide",
+    "release": "520",
+    "sha": "057e2c4724bae93c85109cde03c0714631dd0ac1",
+    "source": "https://src.fedoraproject.org/rpms/perl-Digest.git",
+    "version": "1.20"
+  },
   "pkgconf": {
     "branch": "rawhide",
     "release": "3",
