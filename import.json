@@ -811,6 +811,13 @@
     "source": "https://src.fedoraproject.org/rpms/perl-Getopt-Long.git",
     "version": "2.58"
   },
+  "perl-HTTP-Tiny": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "8571450e099e72110eece7efcd7d0280cd0273b1",
+    "source": "https://src.fedoraproject.org/rpms/perl-HTTP-Tiny.git",
+    "version": "0.092"
+  },
   "pkgconf": {
     "branch": "rawhide",
     "release": "3",
