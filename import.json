@@ -986,6 +986,13 @@
     "source": "https://src.fedoraproject.org/rpms/perl-podlators.git",
     "version": "6.0.2"
   },
+  "perl-srpm-macros": {
+    "branch": "rawhide",
+    "release": "60",
+    "sha": "cae0d62cfe78bd61bfedb49c2c6bbfc8aeee8292",
+    "source": "https://src.fedoraproject.org/rpms/perl-srpm-macros.git",
+    "version": "1"
+  },
   "pkgconf": {
     "branch": "rawhide",
     "release": "3",
