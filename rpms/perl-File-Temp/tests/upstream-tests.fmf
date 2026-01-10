@@ -1,0 +1,4 @@
+summary: Upstream tests
+component: perl-File-Temp
+require: perl-File-Temp-tests
+test: /usr/libexec/perl-File-Temp/test

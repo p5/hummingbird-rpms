@@ -797,6 +797,13 @@
     "source": "https://src.fedoraproject.org/rpms/perl-File-Path.git",
     "version": "2.18"
   },
+  "perl-File-Temp": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "21d0169218e531142152461772b515f3653dce7b",
+    "source": "https://src.fedoraproject.org/rpms/perl-File-Temp.git",
+    "version": "0.231.200"
+  },
   "pkgconf": {
     "branch": "rawhide",
     "release": "3",
