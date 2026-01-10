@@ -1,0 +1,4 @@
+summary: Upstream tests
+component: perl-Term-ANSIColor
+require: perl-Term-ANSIColor-tests
+test: /usr/libexec/perl-Term-ANSIColor/test
