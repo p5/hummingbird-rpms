@@ -776,6 +776,13 @@
     "source": "https://src.fedoraproject.org/rpms/perl-Digest-MD5.git",
     "version": "2.59"
   },
+  "perl-Encode": {
+    "branch": "rawhide",
+    "release": "520",
+    "sha": "7ac087592562782133f4a85aeaa2481cd35a7bd0",
+    "source": "https://src.fedoraproject.org/rpms/perl-Encode.git",
+    "version": "3.21"
+  },
   "pkgconf": {
     "branch": "rawhide",
     "release": "3",

@@ -1,0 +1,4 @@
+summary: Upstream tests
+component: perl-Encode
+require: perl-Encode-tests
+test: /usr/libexec/perl-Encode/test
