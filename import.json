@@ -860,6 +860,13 @@
     "source": "https://src.fedoraproject.org/rpms/perl-PathTools.git",
     "version": "3.94"
   },
+  "perl-Pod-Escapes": {
+    "branch": "rawhide",
+    "release": "520",
+    "sha": "a32319d42d8e198e670b79aadda37126723d76a2",
+    "source": "https://src.fedoraproject.org/rpms/perl-Pod-Escapes.git",
+    "version": "1.07"
+  },
   "pkgconf": {
     "branch": "rawhide",
     "release": "3",
