@@ -104,6 +104,13 @@
     "source": "https://src.fedoraproject.org/rpms/binutils.git",
     "version": "2.45.50"
   },
+  "boost": {
+    "branch": "rawhide",
+    "release": "17",
+    "sha": "403199971d68ea1dd634043f6cc0eafcf5216bf1",
+    "source": "https://src.fedoraproject.org/rpms/boost.git",
+    "version": "1.83.0"
+  },
   "brotli": {
     "branch": "rawhide",
     "release": "1",

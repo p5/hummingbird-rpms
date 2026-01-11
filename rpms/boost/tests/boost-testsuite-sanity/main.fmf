@@ -1,0 +1,16 @@
+summary: boost testing by upstream testsuite
+description: ''
+contact:
+- Michal Kolar <mkolar@redhat.com>
+component:
+- boost
+test: ./runtest.sh
+framework: beakerlib
+recommend:
+- boost
+- dnf-utils
+- rpm-build
+- boost-b2
+duration: 1h
+extra-summary: /tools/boost/Sanity/boost-testsuite-sanity
+extra-task: /tools/boost/Sanity/boost-testsuite-sanity
