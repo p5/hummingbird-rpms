@@ -6,6 +6,13 @@
     "source": "https://src.fedoraproject.org/rpms/R-rpm-macros.git",
     "version": "1.3.3"
   },
+  "abattis-cantarell-fonts": {
+    "branch": "rawhide",
+    "release": "15",
+    "sha": "612db90205f90b5a5d22d6138485a6bbbaab1df2",
+    "source": "https://src.fedoraproject.org/rpms/abattis-cantarell-fonts.git",
+    "version": "0.301"
+  },
   "acl": {
     "branch": "rawhide",
     "release": "4",
