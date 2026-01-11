@@ -1,0 +1,6 @@
+gdb-test-show-version.patch
+gdb-add-index.patch
+gdb-rpm-suggestion-script.patch
+gdb-rhbz2424325-c23-const-build-warnings.patch
+gdb-rhbz2424325-c23-more-const-fixes.patch
+gdb-rhbz2424325-c++20-implicit-lambda-capture.patch

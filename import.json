@@ -460,6 +460,13 @@
     "source": "https://src.fedoraproject.org/rpms/gawk.git",
     "version": "5.3.2"
   },
+  "gdb": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "cdcbfd69f7c739b9d192296b7ba358db2bbc80c0",
+    "source": "https://src.fedoraproject.org/rpms/gdb.git",
+    "version": "17.1"
+  },
   "gdbm": {
     "branch": "rawhide",
     "release": "10",

@@ -1,0 +1,33 @@
+# Check distro name is included in the version output.
+Patch001: gdb-test-show-version.patch
+
+# Update gdb-add-index.sh such that, when the GDB environment
+# variable is not set, the script is smarter than just looking for
+# 'gdb' in the $PATH.
+#
+# The actual search order is now: /usr/bin/gdb.minimal, gdb (in the
+# $PATH), then /usr/libexec/gdb.
+#
+# For the rationale of looking for gdb.minimal see:
+#
+#   https://fedoraproject.org/wiki/Changes/Minimal_GDB_in_buildroot
+#
+#=fedora
+Patch002: gdb-add-index.patch
+
+# Not a backport.  Add a new script which hooks into GDB and suggests
+# RPMs to install when GDB finds an objfile with no debug info.
+Patch003: gdb-rpm-suggestion-script.patch
+
+# Backport Guinevere Larsen's build warning fixes (RH BZ 2424325).
+Patch004: gdb-rhbz2424325-c23-const-build-warnings.patch
+
+# Backport Keith Seitz's C23 const-correctness fixes (pending upstream review).
+# Mailing list: https://sourceware.org/pipermail/binutils/2026-January/...
+# Posted 2026-01-07, not yet approved.
+Patch005: gdb-rhbz2424325-c23-more-const-fixes.patch
+
+# Backport Tom de Vries fix regarding implicit lambda captures
+# (RH BZ 2424325).
+Patch006: gdb-rhbz2424325-c++20-implicit-lambda-capture.patch
+
