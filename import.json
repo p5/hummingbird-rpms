@@ -432,6 +432,13 @@
     "source": "https://src.fedoraproject.org/rpms/fpc-srpm-macros.git",
     "version": "1.3"
   },
+  "freetype": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "e6cc53fb5f04e16f208ec3b9ae9ee802d2157699",
+    "source": "https://src.fedoraproject.org/rpms/freetype.git",
+    "version": "2.14.1"
+  },
   "fsverity-utils": {
     "branch": "rawhide",
     "release": "3",
