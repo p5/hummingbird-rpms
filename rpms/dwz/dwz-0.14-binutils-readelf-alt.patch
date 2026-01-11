@@ -1,0 +1,16 @@
+diff --git a/testsuite/dwz.tests/odr-struct-multifile.sh b/testsuite/dwz.tests/odr-struct-multifile.sh
+old mode 100644
+new mode 100755
+index 159cbc3..5961abf
+--- a/testsuite/dwz.tests/odr-struct-multifile.sh
++++ b/testsuite/dwz.tests/odr-struct-multifile.sh
+@@ -44,6 +44,9 @@ for name in member_one member_two member_three member_four; do
+     [ $cnt -eq 1 ]
+ done
+ 
++# Even with -wN readelf 2.38-15.fc37 follows and prints the contents
++# of the alt file. So make sure it cannot do that by removing it.
++rm 3
+ 
+ for name in aaa bbb ccc; do
+     cnt=$(readelf -wi $readelf_flags 1 | grep -c "DW_AT_name.*:.*$name" || true)

@@ -1,0 +1,80 @@
+commit b1f26dc76158e1f3364836d8b540b17a7a1ccb3d
+Author: Tom de Vries <tdevries@suse.de>
+Date:   Sat Mar 20 09:37:31 2021 +0100
+
+    [testsuite] Handle readelf following links by default
+    
+    Since binutils commit c46b706620e "Change the readelf and objdump programs so
+    that they will automatically follow links to separate debug info files" there
+    are a few FAILs in the dwz testsuite.
+    
+    This is just due to changing the default behaviour for readelf.
+    
+    Fix this by testing whether the new -Wn readelf flag is supported,
+    and if so, adding it to the readelf call.
+    
+    2021-03-20  Tom de Vries  <tdevries@suse.de>
+    
+            PR dwz/27592
+            * testsuite/dwz.tests/odr-struct-multifile.sh: Call readelf with -wN
+            if supported.
+            * testsuite/dwz.tests/cycle.sh: Same.
+
+diff --git a/testsuite/dwz.tests/odr-struct-multifile.sh b/testsuite/dwz.tests/odr-struct-multifile.sh
+index cc462c9..20b682b 100644
+--- a/testsuite/dwz.tests/odr-struct-multifile.sh
++++ b/testsuite/dwz.tests/odr-struct-multifile.sh
+@@ -2,6 +2,11 @@ if ! $execs/dwz-for-test --odr -v 2>/dev/null; then
+     exit 77
+ fi
+ 
++readelf_flags=""
++if readelf -h 2>&1 | grep -q "\-wN,"; then
++    readelf_flags=-wN
++fi
++
+ cp $execs/odr-struct 1
+ cp 1 2
+ 
+@@ -41,12 +46,12 @@ done
+ 
+ 
+ for name in aaa bbb ccc; do
+-    cnt=$(readelf -wi 1 | grep -c "DW_AT_name.*:.*$name" || true)
++    cnt=$(readelf -wi $readelf_flags 1 | grep -c "DW_AT_name.*:.*$name" || true)
+     [ $cnt -eq 0 ]
+ done
+ 
+ for name in member_one member_two member_three member_four; do
+-    cnt=$(readelf -wi 1 | grep -c "DW_AT_name.*:.*$name" || true)
++    cnt=$(readelf -wi $readelf_flags 1 | grep -c "DW_AT_name.*:.*$name" || true)
+     [ $cnt -eq 0 ]
+ done
+ 
+commit 2b3711fef3438ca83db8eabed3715b6c45924511
+Author: Lv Ying via Dwz <dwz@sourceware.org>
+Date:   Thu Jan 13 05:29:44 2022 +0800
+
+    fix Handle readelf following links by default(b1f26dc76158e)
+    
+    The two testcases still failed when using newer readelf(binutils commit c46b706620e):
+    testsuite/dwz.tests/odr-struct-multifile.sh
+    testsuite/dwz.tests/cycle.sh
+    
+    fix the new -Wn readelf flag test
+    
+    Signed-off-by: Lv Ying <lvying6@huawei.com>
+
+diff --git a/testsuite/dwz.tests/odr-struct-multifile.sh b/testsuite/dwz.tests/odr-struct-multifile.sh
+index 20b682b..159cbc3 100644
+--- a/testsuite/dwz.tests/odr-struct-multifile.sh
++++ b/testsuite/dwz.tests/odr-struct-multifile.sh
+@@ -3,7 +3,7 @@ if ! $execs/dwz-for-test --odr -v 2>/dev/null; then
+ fi
+ 
+ readelf_flags=""
+-if readelf -h 2>&1 | grep -q "\-wN,"; then
++if readelf -h 2>&1 | grep -q "\-wN"; then
+     readelf_flags=-wN
+ fi
+ 

@@ -1,0 +1,26 @@
+commit 5cb60631fad2827d5d337fce0c1cd03c894d6f8c
+Author: Mark Wielaard <mark@klomp.org>
+Date:   Sat Jul 2 00:57:38 2022 +0200
+
+    Redirect stder in gdb-add-index.sh test
+    
+    gdb-add-index might produce an error message on stderr when trying to
+    disable debuginfod support. Any message to stderr makes the testcase
+    fail. This looks like a gdb bug:
+    https://sourceware.org/bugzilla/show_bug.cgi?id=29316
+    But it is easy to workaround by redirecting stderr to stdout.
+
+diff --git a/testsuite/dwz.tests/gdb-add-index.sh b/testsuite/dwz.tests/gdb-add-index.sh
+index 5a91b23..3095efb 100644
+--- a/testsuite/dwz.tests/gdb-add-index.sh
++++ b/testsuite/dwz.tests/gdb-add-index.sh
+@@ -1,6 +1,8 @@
+ cp $execs/hello 1
+ 
+-gdb-add-index 1
++# Redirect gdb-add-index stderr to stdout.
++# https://sourceware.org/bugzilla/show_bug.cgi?id=29316
++gdb-add-index 1 2>&1
+ 
+ readelf -S 1 | grep -q '\.gdb_index'
+ 
