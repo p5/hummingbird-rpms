@@ -1,0 +1,3 @@
+PURPOSE of /CoreOS/cracklib/Sanity/Localization
+Description: Check if package localization is correct
+Author: Hubert Kario <hkario@redhat.com>
