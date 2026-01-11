@@ -502,6 +502,13 @@
     "source": "https://src.fedoraproject.org/rpms/gmp.git",
     "version": "6.3.0"
   },
+  "gnat-srpm-macros": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "7402568218327483986dd79f9ac328d2a1d8f820",
+    "source": "https://src.fedoraproject.org/rpms/gnat-srpm-macros.git",
+    "version": "7"
+  },
   "gnupg2": {
     "branch": "rawhide",
     "release": "1",
