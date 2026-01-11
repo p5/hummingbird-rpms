@@ -244,6 +244,13 @@
     "source": "https://src.fedoraproject.org/rpms/ctags.git",
     "version": "6.2.1"
   },
+  "cups": {
+    "branch": "rawhide",
+    "release": "4",
+    "sha": "606ad285bdde96387dd28a24145abf9b619af528",
+    "source": "https://src.fedoraproject.org/rpms/cups.git",
+    "version": "2.4.16"
+  },
   "curl": {
     "branch": "rawhide",
     "release": "1",
