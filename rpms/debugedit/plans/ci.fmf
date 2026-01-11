@@ -1,0 +1,8 @@
+summary: CI Gating Plan
+discover:
+    how: fmf
+    url: https://src.fedoraproject.org/tests/debugedit-gating.git
+    ref: main
+    directory: tests
+execute:
+    how: tmt
