@@ -1,0 +1,14 @@
+# Whitelist known warnings that can not be fixed
+addFilter("authselect.*: W: package-with-huge-docs 70%");
+addFilter("authselect.*: W: obsolete-not-provided authconfig");
+addFilter("authselect.*: W: obsolete-not-provided authselect-compat");
+addFilter("authselect.*: W: non-conffile-in-etc /etc/bash_completion.d/authselect-completion.sh");
+addFilter("authselect-devel.*: W: no-documentation");
+addFilter("authselect-libs.*: W: files-duplicate /usr/share/authselect/default/winbind/dconf-locks /usr/share/authselect/default/minimal/dconf-locks:/usr/share/authselect/default/nis/dconf-locks");
+addFilter("authselect-libs.*: W: files-duplicate /usr/share/authselect/default/winbind/smartcard-auth /usr/share/authselect/default/minimal/fingerprint-auth:/usr/share/authselect/default/minimal/smartcard-auth:/usr/share/authselect/default/nis/smartcard-auth");
+addFilter("authselect-libs.*: W: files-duplicate /usr/share/authselect/default/minimal/system-auth /usr/share/authselect/default/minimal/password-auth");
+addFilter("authselect-libs.*: W: files-duplicate /usr/share/authselect/default/winbind/postlogin /usr/share/authselect/default/minimal/postlogin:/usr/share/authselect/default/nis/postlogin:/usr/share/authselect/default/sssd/postlogin");
+addFilter("authselect-libs.*: W: files-duplicate /usr/share/authselect/default/winbind/dconf-db /usr/share/authselect/default/nis/dconf-db");
+addFilter("authselect-libs.*: W: files-duplicate /usr/share/doc/authselect/README.md /usr/share/doc/authselect-libs/README.md");
+addFilter("authselect-libs.*: W: files-duplicate /usr/share/licenses/authselect-libs/COPYING /usr/share/doc/authselect/COPYING");
+addFilter("authselect-libs.*: W: dangerous-command-in-%posttrans rm");
