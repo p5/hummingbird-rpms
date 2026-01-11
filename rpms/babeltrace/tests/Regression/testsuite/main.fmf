@@ -1,0 +1,24 @@
+summary: testsuite
+description: ''
+contact: Martin Cermak <mcermak@redhat.com>
+component:
+- babeltrace
+test: ./runtest.sh
+framework: beakerlib
+recommend:
+- babeltrace
+- autoconf
+- automake
+- bison
+- elfutils-devel
+- flex
+- glib2-devel
+- libtool
+- libuuid-devel
+- perl-Test-Harness
+- popt-devel
+- python3-devel
+- rpm-build
+duration: 48h
+extra-summary: /tools/babeltrace/Regression/testsuite
+extra-task: /tools/babeltrace/Regression/testsuite
