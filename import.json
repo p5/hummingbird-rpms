@@ -181,6 +181,13 @@
     "source": "https://src.fedoraproject.org/rpms/cmake.git",
     "version": "3.31.10"
   },
+  "composer": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "37be2c86fa224089736cb0de23b30bc85df20471",
+    "source": "https://src.fedoraproject.org/rpms/composer.git",
+    "version": "2.9.3"
+  },
   "coreutils": {
     "branch": "rawhide",
     "release": "1",
