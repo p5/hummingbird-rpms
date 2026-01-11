@@ -118,6 +118,13 @@
     "source": "https://src.fedoraproject.org/rpms/brotli.git",
     "version": "1.2.0"
   },
+  "busybox": {
+    "branch": "rawhide",
+    "release": "5",
+    "sha": "4eab778df4ee5d34e9042ad2a04b20f38d01acf5",
+    "source": "https://src.fedoraproject.org/rpms/busybox.git",
+    "version": "1.37.0"
+  },
   "bzip2": {
     "branch": "rawhide",
     "release": "21",
