@@ -160,6 +160,13 @@
     "source": "https://src.fedoraproject.org/rpms/capstone.git",
     "version": "5.0.6"
   },
+  "cargo-rpm-macros": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "998b932022691b3e6f36aab417ea59c8261470a8",
+    "source": "https://src.fedoraproject.org/rpms/cargo-rpm-macros.git",
+    "version": "28.4"
+  },
   "chkconfig": {
     "branch": "rawhide",
     "release": "3",
