@@ -1,0 +1,13 @@
+summary: Run tests in all contexts
+description: ''
+contact: Than Ngo <than@redhat.com>
+component:
+  - ctags
+test: ./runtest.sh
+framework: beakerlib
+recommend:
+  - ctags
+  - man-db
+duration: 5m
+extra-summary: /CoreOS/ctags/Sanity-test-for-ctags
+extra-task: /CoreOS/ctags/Sanity-test-for-ctags
