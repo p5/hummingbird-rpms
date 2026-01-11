@@ -1,0 +1,34 @@
+require:
+    - attr
+    - container-selinux
+    - podman-tests
+    - policycoreutils
+recommend:
+    - bats
+
+/basic_check:
+    summary: Run basic checks
+    test: |
+        semodule --list=full | grep container
+        semodule -B
+        rpm -Vqf /var/lib/selinux/*/active/modules/200/container
+
+/podman_rootful_system:
+    summary: Run SELinux specific Podman system tests
+    test: bash ./podman-rootful-tests.sh
+
+/podman_rootless_system:
+    summary: Run rootless Podman system tests
+    test: bash ./podman-rootless-tests.sh
+    require+:
+        - passt
+        - passt-selinux
+    environment:
+        ROOTLESS_USER: "fedora"
+    adjust:
+        - when: distro == centos-stream
+          environment+:
+            ROOTLESS_USER: "ec2-user"
+        - when: distro == rhel
+          environment+:
+            ROOTLESS_USER: "cloud-user"
