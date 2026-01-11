@@ -474,6 +474,13 @@
     "source": "https://src.fedoraproject.org/rpms/gdbm.git",
     "version": "1.23"
   },
+  "ghc-srpm-macros": {
+    "branch": "rawhide",
+    "release": "3",
+    "sha": "0a6852c350c40ed6a4bdd6fe22b29614271cf0fb",
+    "source": "https://src.fedoraproject.org/rpms/ghc-srpm-macros.git",
+    "version": "1.9.2"
+  },
   "git": {
     "branch": "rawhide",
     "release": "1",
