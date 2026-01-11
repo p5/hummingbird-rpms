@@ -27,6 +27,13 @@
     "source": "https://src.fedoraproject.org/rpms/alsa-lib.git",
     "version": "1.2.15.2"
   },
+  "annobin": {
+    "branch": "rawhide",
+    "release": "3",
+    "sha": "2576bee0595e0914e0d1292b2b7bace379d23648",
+    "source": "https://src.fedoraproject.org/rpms/annobin.git",
+    "version": "13.04"
+  },
   "ansible-packaging": {
     "branch": "rawhide",
     "release": "18.1",
