@@ -607,6 +607,13 @@
     "source": "https://src.fedoraproject.org/rpms/haproxy.git",
     "version": "3.0.5"
   },
+  "harfbuzz": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "911e8d14640b7db83b7b6cda0213049f3799833d",
+    "source": "https://src.fedoraproject.org/rpms/harfbuzz.git",
+    "version": "12.3.0"
+  },
   "hostname": {
     "branch": "rawhide",
     "release": "1",
