@@ -5,7 +5,7 @@
 Summary:	Font configuration and customization library
 Name:		fontconfig
 Version:	2.17.0
-Release:	3%{?dist}
+Release:	4%{?dist}
 # src/ftglue.[ch] is in Public Domain
 # src/fccache.c contains Public Domain code
 ## https://gitlab.com/fedora/legal/fedora-license-data/-/issues/177
@@ -23,6 +23,8 @@ Patch4:		%{name}-drop-lang-from-pkgkit-format.patch
 Patch5:		%{name}-disable-network-required-test.patch
 Patch6:		%{name}-lower-nonlatin-conf.patch
 Patch7:		%{name}-fix-crash.patch
+# Disable bwrap test - requires user namespaces not available in container builds
+Patch8:		%{name}-disable-bwrap-test.patch
 
 BuildRequires:	libxml2-devel
 BuildRequires:	freetype-devel >= %{freetype_version}
@@ -204,6 +206,9 @@ fi
 %doc fontconfig-devel.txt fontconfig-devel.html
 
 %changelog
+* Mon Jan 12 2026 Prarit Bhargava <prarit@redhat.com> - 2.17.0-4
+- Disable test due to namespace permissions
+
 * Wed Jul 23 2025 Fedora Release Engineering <releng@fedoraproject.org> - 2.17.0-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_43_Mass_Rebuild
 
