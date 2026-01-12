@@ -5,6 +5,8 @@ apiVersion: appstudio.redhat.com/v1beta2
 kind: IntegrationTestScenario
 metadata:
   name: {{ application_name + "-testing-farm-" + arch.replace("_", "-") }}
+  annotations:
+    test.appstudio.openshift.io/pipeline_timeout: 8h30m
 spec:
   application: {{ application_name }}
   contexts:

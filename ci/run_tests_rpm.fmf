@@ -58,6 +58,8 @@ discover:
   sync-repo: true
   tests:
     - name: Podman
+      # When increasing the timeout, also increase the value inside
+      # the IntegrationTestScenario resource
       duration: 8h
       test: |
         #!/bin/bash

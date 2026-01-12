@@ -7267,6 +7267,8 @@ apiVersion: appstudio.redhat.com/v1beta2
 kind: IntegrationTestScenario
 metadata:
   name: rpms-main-testing-farm-x86-64
+  annotations:
+    test.appstudio.openshift.io/pipeline_timeout: 8h30m
 spec:
   application: rpms-main
   contexts:
@@ -7296,6 +7298,8 @@ apiVersion: appstudio.redhat.com/v1beta2
 kind: IntegrationTestScenario
 metadata:
   name: rpms-main-testing-farm-aarch64
+  annotations:
+    test.appstudio.openshift.io/pipeline_timeout: 8h30m
 spec:
   application: rpms-main
   contexts:
@@ -7385,6 +7389,6 @@ spec:
       resolver: git
     serviceAccountName: hummingbird-rpm-release
     timeouts:
-      pipeline: 8h30m0s
-      tasks: 8h30m0s
+      pipeline: 4h0m0s
+      tasks: 4h0m0s
   policy: registry-hummingbird
