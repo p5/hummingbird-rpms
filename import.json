@@ -475,6 +475,13 @@
     "source": "https://src.fedoraproject.org/rpms/golang.git",
     "version": "1.26~rc1"
   },
+  "google-noto-fonts": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "6a99bd15250acc5fb1d161fcec029090d08229ef",
+    "source": "https://src.fedoraproject.org/rpms/google-noto-fonts.git",
+    "version": "20251201"
+  },
   "grep": {
     "branch": "rawhide",
     "release": "2",
