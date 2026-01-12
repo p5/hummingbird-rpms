@@ -1,0 +1,5 @@
+summary: gpgverify testcase, bad signer
+
+environment:
+    test_kind:       "negative"
+    required_output: "gpgverify: Signature verification failed."

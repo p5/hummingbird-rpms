@@ -1,0 +1,5 @@
+summary: gpgverify testcase, clearsigned text file
+
+environment:
+    required_output:  "This file represents a clearsigned text file."
+    forbidden_output: "garbage"

@@ -1,0 +1,8 @@
+# Something in the testing machinery demands a "plan", and it must be kept
+# separate from the testcases, so here's a file that makes two defaults
+# explicit.
+
+discover:
+    how: fmf
+execute:
+    how: tmt

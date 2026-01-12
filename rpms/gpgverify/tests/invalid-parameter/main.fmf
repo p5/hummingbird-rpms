@@ -1,0 +1,5 @@
+summary: gpgverify testcase, invalid parameter
+
+environment:
+    test_kind:       "negative"
+    required_output: "gpgverify: Unknown parameter: \"0\""
