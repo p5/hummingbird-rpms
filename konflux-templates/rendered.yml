@@ -7311,6 +7311,6 @@ spec:
       resolver: git
     serviceAccountName: hummingbird-rpm-release
     timeouts:
-      pipeline: 4h0m0s
-      tasks: 4h0m0s
+      pipeline: 8h30m0s
+      tasks: 8h30m0s
   policy: registry-hummingbird
