@@ -1,0 +1,3 @@
+PURPOSE of /CoreOS/iproute/Sanity/ip-netns-sanity-test
+Description: Test basic ip netns funcionality
+Author: Susant Sahani <susant@redhat.com>

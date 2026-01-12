@@ -642,6 +642,13 @@
     "source": "https://src.fedoraproject.org/rpms/ima-evm-utils.git",
     "version": "1.6.2"
   },
+  "iproute": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "e2fb4f806782daf154762a8e4b63ebaae16349f8",
+    "source": "https://src.fedoraproject.org/rpms/iproute.git",
+    "version": "6.17.0"
+  },
   "jansson": {
     "branch": "rawhide",
     "release": "3",

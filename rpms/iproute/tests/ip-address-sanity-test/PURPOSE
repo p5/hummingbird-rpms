@@ -1,0 +1,3 @@
+PURPOSE of /CoreOS/iproute/Sanity/ip-address-sanity-test
+Description: Test basic ip address funcionality
+Author: Susant Sahani <susant@redhat.com>

@@ -1,0 +1,3 @@
+PURPOSE of /CoreOS/iproute/Sanity/ip-token-sanity-test
+Description: Test basic ip token funcionality
+Author: Susant Sahani <susant@redhat.com>

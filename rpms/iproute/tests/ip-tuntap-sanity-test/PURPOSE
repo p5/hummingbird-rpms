@@ -1,0 +1,3 @@
+PURPOSE of /CoreOS/iproute/Sanity/ip-tuntap-sanity-test
+Description: Test basic ip tuntap funcionality
+Author: Susant Sahani <susant@redhat.com>

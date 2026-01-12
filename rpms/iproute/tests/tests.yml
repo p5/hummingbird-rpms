@@ -1,0 +1,27 @@
+---
+# Tests that run in all contexts
+- hosts: localhost
+  roles:
+  - role: standard-test-beakerlib
+    tags:
+    - classic
+    - atomic
+    tests:
+    - ip-neigh-sanity-test
+    - ip-rule-sanity-test
+    - bridge-utility
+    - ip-link-sanity-test
+    - ip-address-sanity-test
+    - ip-address-label-sanity-test
+    - ip-fou-sanity-test
+    - ip-token-sanity-test
+    - ip-tuntap-sanity-test
+    - ip-tunnel-sanity-test
+    - ip-l2tp-sanity-test
+    - ip-netns-sanity-test
+    - ip-route-sanity-test
+    - ip-neighbor-sanity-test
+    required_packages:
+    - iproute
+    - bridge-utils
+    - python3

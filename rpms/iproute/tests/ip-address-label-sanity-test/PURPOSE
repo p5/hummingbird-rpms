@@ -1,0 +1,3 @@
+PURPOSE of /CoreOS/iproute/Sanity/ip-address-label-sanity-test
+Description: Test basic ip address label funcionality
+Author: Susant Sahani <susant@redhat.com>

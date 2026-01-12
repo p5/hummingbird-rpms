@@ -1,0 +1,3 @@
+PURPOSE of /CoreOS/iproute/Sanity/ip-neigh-sanity-test
+Description: Test basic ip neigh funcionality
+Author: Jaroslav Aster <jaster@redhat.com>
