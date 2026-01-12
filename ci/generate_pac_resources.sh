@@ -76,7 +76,7 @@ template=.tekton/rpms-on-${RESOURCE_TYPE}.yaml.j2
 APPLICATION_NAME="rpms-${BRANCH}"
 
 # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-PIPELINE_BUNDLE="quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:2a2e8ed52aa55c13fb7b919992a690c1da56470394ea95460793d52324bb6b3f"
+PIPELINE_BUNDLE="quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:1976f39ea00eb5f8991c48c0ad182f908ac049c56d3a2e2ccda1142c8ae3c444"
 
 # shellcheck disable=SC2312
 mapfile -d '' rpms < <(find ./rpms -maxdepth 1 -mindepth 1 -type d -print0 | LC_ALL=C sort -z)
