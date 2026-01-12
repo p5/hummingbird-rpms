@@ -1,0 +1,23 @@
+---
+summary: Package test suite
+discover:
+  how: fmf
+  url: https://gitlab.com/redhat/centos-stream/tests/nodejs
+  filter: "component:nodejs20"
+environment:
+  NODEJS_MAIN_PACKAGE: nodejs20
+  NODEJS_DEVEL_PACKAGE: nodejs20-devel
+  NODE_BIN: /usr/bin/node-20
+  NPM_BIN: /usr/bin/npm-20
+  NODE_INCLUDE_PATH: /usr/include/node
+provision:
+  - name: test-machine
+    how: container
+    image: 'fedora:rawhide'
+prepare:
+  - name: install tested packages
+    how: install
+    package: ['${NODEJS_MAIN_PACKAGE}', '${NODEJS_DEVEL_PACKAGE}' ]
+execute:
+  how: tmt
+...

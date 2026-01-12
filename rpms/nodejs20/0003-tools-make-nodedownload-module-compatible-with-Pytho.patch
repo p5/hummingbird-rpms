@@ -1,0 +1,57 @@
+From 9021029a430755ac1dff268344842e3a78321c00 Mon Sep 17 00:00:00 2001
+From: Lumir Balhar <lbalhar@redhat.com>
+Date: Wed, 18 Jun 2025 09:43:17 +0200
+Subject: [PATCH] tools: make nodedownload module compatible with Python 3.14
+
+FancyURLopener and URLopener have been deprecated since
+Python 3.3 and they are removed completely from 3.14.
+
+Fixes: https://github.com/nodejs/node/issues/58740
+Signed-off-by: rpm-build <rpm-build>
+---
+ tools/configure.d/nodedownload.py | 15 +++++----------
+ 1 file changed, 5 insertions(+), 10 deletions(-)
+
+diff --git a/tools/configure.d/nodedownload.py b/tools/configure.d/nodedownload.py
+index 4f144e0..0d65c33 100644
+--- a/tools/configure.d/nodedownload.py
++++ b/tools/configure.d/nodedownload.py
+@@ -7,10 +7,7 @@ import sys
+ import zipfile
+ import tarfile
+ import contextlib
+-try:
+-    from urllib.request import FancyURLopener, URLopener
+-except ImportError:
+-    from urllib import FancyURLopener, URLopener
++from urllib.request import build_opener, install_opener, urlretrieve
+ 
+ def formatSize(amt):
+     """Format a size as a string in MB"""
+@@ -21,11 +18,6 @@ def spin(c):
+     spin = ".:|'"
+     return (spin[c % len(spin)])
+ 
+-class ConfigOpener(FancyURLopener):
+-    """fancy opener used by retrievefile. Set a UA"""
+-    # append to existing version (UA)
+-    version = '%s node.js/configure' % URLopener.version
+-
+ def reporthook(count, size, total):
+     """internal hook used by retrievefile"""
+     sys.stdout.write(' Fetch: %c %sMB total, %sMB downloaded   \r' %
+@@ -38,7 +30,10 @@ def retrievefile(url, targetfile):
+     try:
+         sys.stdout.write(' <%s>\nConnecting...\r' % url)
+         sys.stdout.flush()
+-        ConfigOpener().retrieve(url, targetfile, reporthook=reporthook)
++        opener = build_opener()
++        opener.addheaders = [('User-agent', f'Python-urllib/{sys.version_info.major}.{sys.version_info.minor} node.js/configure')]
++        install_opener(opener)
++        urlretrieve(url, targetfile, reporthook=reporthook)
+         print('')  # clear the line
+         return targetfile
+     except IOError as err:
+-- 
+2.49.0
+
