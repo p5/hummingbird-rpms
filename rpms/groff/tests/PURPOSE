@@ -1,0 +1,6 @@
+This test whether groff can display Unicode characters correctly.
+
+It pipes the content of a Japanese manpage through troff and grotty and checks
+if grotty does segfault in the process  - see RH BZ#176904
+
+It can be also used as a smoke test for groff.

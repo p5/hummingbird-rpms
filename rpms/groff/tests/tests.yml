@@ -1,0 +1,15 @@
+---
+# Tests that run in all contexts
+- hosts: localhost
+  vars:
+    use_beakerlib_libraries: false
+  roles:
+  - role: standard-test-rhts
+    tags:
+    - classic
+    - container
+    tests:
+    - unicode-segfault
+    required_packages:
+    - findutils         # beakerlib needs find command
+    - gzip              # required by unicode-segafault test
