@@ -1646,11 +1646,11 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
-  name: dotnet10.0-main
+  name: dotnet10-0-main
 spec:
   application: rpms-main
-  componentName: dotnet10.0-main
-  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/dotnet10.0-main
+  componentName: dotnet10-0-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/dotnet10-0-main
   source:
     git:
       context: rpms/dotnet10.0
@@ -1662,11 +1662,11 @@ kind: ImageRepository
 metadata:
   labels:
     appstudio.redhat.com/application: rpms-main
-    appstudio.redhat.com/component: dotnet10.0-main
-  name: dotnet10.0-main
+    appstudio.redhat.com/component: dotnet10-0-main
+  name: dotnet10-0-main
 spec:
   image:
-    name: hummingbird-tenant/dotnet10.0-main
+    name: hummingbird-tenant/dotnet10-0-main
     visibility: public
   notifications:
   - config:

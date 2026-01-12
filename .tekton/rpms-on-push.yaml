@@ -2698,9 +2698,9 @@ metadata:
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
-    appstudio.openshift.io/component: dotnet10.0-main
+    appstudio.openshift.io/component: dotnet10-0-main
     pipelines.appstudio.openshift.io/type: build
-  name: dotnet10.0-main-on-push
+  name: dotnet10-0-main-on-push
   namespace: hummingbird-tenant
 spec:
   params:
@@ -2709,7 +2709,7 @@ spec:
     - name: revision
       value: '{{revision}}'
     - name: ociStorage
-      value: quay.io/redhat-user-workloads/hummingbird-tenant/dotnet10.0-main:{{revision}}
+      value: quay.io/redhat-user-workloads/hummingbird-tenant/dotnet10-0-main:{{revision}}
     - name: package-name
       value: dotnet10.0
     - name: target-branch
@@ -2735,7 +2735,7 @@ spec:
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
         value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
   taskRunTemplate:
-    serviceAccountName: build-pipeline-dotnet10.0-main
+    serviceAccountName: build-pipeline-dotnet10-0-main
   timeouts:
     pipeline: 4h
     tasks: 4h
