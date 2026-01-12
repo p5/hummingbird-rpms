@@ -9,11 +9,19 @@ aliases: [/l/rebuilding-packages]
 
 ## Overview
 
-A no-change rebuild bumps the Release: field to trigger a new build without
-modifying the package sources, using the `.N` numeric suffix pattern described
-below.
+This document covers two scenarios for triggering a new package build:
 
-## Workflow
+1. **No-change rebuild**: Bump the Release field to rebuild with identical
+   sources (e.g., to fix a faulty published RPM or pick up toolchain changes).
+
+2. **Backporting a patch**: Add an upstream patch that hasn't yet landed in
+   Fedora to fast-track a fix or feature.
+
+Both scenarios use the `.N` release suffix pattern to ensure our builds sort
+higher than the upstream Fedora release while remaining lower than the next
+upstream version.
+
+## No-Change Rebuild
 
 ### 1. Identify the package to rebuild
 
@@ -28,8 +36,8 @@ podman run --rm quay.io/hummingbird-ci/builder:latest-hatchling \
   dnf5 repoquery --queryformat '%{SOURCERPM}' <binary-package> 2>/dev/null
 ```
 
-Example: `ncurses-libs-6.5-8.20250614.hum1` → SRPM `ncurses-6.5-8.20250614.hum1.src.rpm`
-→ spec file at `rpms/ncurses/ncurses.spec`
+Example: `ncurses-libs-6.5-8.20250614.hum1` -> SRPM `ncurses-6.5-8.20250614.hum1.src.rpm`
+-> spec file at `rpms/ncurses/ncurses.spec`
 
 ### 2. Determine the Release bump pattern
 
@@ -128,6 +136,88 @@ Expected output should show exactly 1 insertion and 1 deletion:
 ```
 
 If the commit shows more changes, amend or reset and redo the change using `sed`.
+
+## Backporting a Patch
+
+Use this workflow when you need to fast-track an upstream fix or feature that
+hasn't yet been released in Fedora.
+
+### 1. Obtain the patch
+
+Fetch the patch from the upstream repository. For GitHub PRs, append `.patch`
+to the PR URL:
+
+```bash
+curl -L https://github.com/<org>/<repo>/pull/<number>.patch \
+  > rpms/<package>/<NNNN>-<short-description>.patch
+```
+
+Name the patch file with a numeric prefix matching the next available `PatchN:`
+slot in the spec file (e.g., `0004-fix-foo.patch` if Patch1-3 already exist).
+
+### 2. Add the patch to the spec file
+
+Add a `PatchN:` declaration after the existing patches:
+
+```spec
+Patch3:         0003-existing-patch.patch
+Patch4:         0004-fix-foo.patch
+```
+
+The patch will be applied automatically if the spec uses `%autosetup -p1`.
+If the spec uses explicit `%patchN` macros, add the corresponding apply line
+in the `%prep` section.
+
+### 3. Bump the Release
+
+Follow the same `.N` suffix pattern as no-change rebuilds:
+
+```diff
+- Release: 3%{?dist}
++ Release: 3.1%{?dist}
+```
+
+### 4. Add a changelog entry
+
+Add a new changelog entry at the top of the `%changelog` section:
+
+```spec
+%changelog
+* Wed Jan 08 2026 Your Name <email@example.com> - 1.2.3-3.1
+- Backport upstream PR#1234: short description of the fix
+
+* Mon Jan 06 2026 Previous Maintainer <prev@example.com> - 1.2.3-3
+- Previous changelog entry
+```
+
+### 5. Commit the change
+
+Use this commit message format:
+
+```text
+<package>: backport <short description>
+
+Upstream: <link to PR or commit>
+<ticket link if applicable>
+```
+
+Example:
+
+```text
+dnf5: backport reproducible build sorting fix
+
+Upstream: https://github.com/rpm-software-management/dnf5/pull/2522
+```
+
+### 6. Test the build locally (optional)
+
+Build the package locally to verify the patch applies cleanly:
+
+```bash
+./ci/build_rpms.sh <package>
+```
+
+Built RPMs will be in `builds/<package>/RPMS/`.
 
 ## Related Operations
 
