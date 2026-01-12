@@ -839,6 +839,23 @@
     "source": "https://src.fedoraproject.org/rpms/nodejs20.git",
     "version": "20.19.6"
   },
+<<<<<<< HEAD
+=======
+  "nodejs22": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "47c75eb47c5380f5145ae9354152421271f5cf1f",
+    "source": "https://src.fedoraproject.org/rpms/nodejs22.git",
+    "version": "22.21.1"
+  },
+  "nodejs24": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "2a7983550d0da425407c7db43b492fc0da5cc600",
+    "source": "https://src.fedoraproject.org/rpms/nodejs24.git",
+    "version": "24.11.1"
+  },
+>>>>>>> d957205 (Import nodejs24-24.11.1-1)
   "npth": {
     "branch": "rawhide",
     "release": "1",
