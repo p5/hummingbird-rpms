@@ -600,6 +600,13 @@
     "source": "https://src.fedoraproject.org/rpms/gzip.git",
     "version": "1.14"
   },
+  "haproxy": {
+    "branch": "rawhide",
+    "release": "4",
+    "sha": "8b9b0c59f3a47c87d5bd7f9844a5267080a607fa",
+    "source": "https://src.fedoraproject.org/rpms/haproxy.git",
+    "version": "3.0.5"
+  },
   "hostname": {
     "branch": "rawhide",
     "release": "1",
