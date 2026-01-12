@@ -558,6 +558,13 @@
     "source": "https://src.fedoraproject.org/rpms/gperftools.git",
     "version": "2.17.2"
   },
+  "gpgme": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "a98e348fb9e801f7ea20f6add417a177f415a3c2",
+    "source": "https://src.fedoraproject.org/rpms/gpgme.git",
+    "version": "2.0.1"
+  },
   "grep": {
     "branch": "rawhide",
     "release": "2",
