@@ -1,0 +1,37 @@
+From 5abc5721300463b7f05a34b4c95cf45664103b50 Mon Sep 17 00:00:00 2001
+From: Aliaksey Kandratsenka <alkondratenko@gmail.com>
+Date: Thu, 4 Jan 2024 19:33:18 -0500
+Subject: [PATCH] move dynamic_annotations.cc under libsysinfo.la
+
+See github issue #1474 for immediate reason.
+
+Note, this entire idea of number of convenience libraries is likely
+simply artifact of Google's codebase past. We don't really need this
+complexity. But I am holding big reorganization of this for after API
+and ABI work. For now, simply moving dynamic_annotations.cc into
+libsysinfo fixes things. Most of the code links both anyways. So lets
+just do it.
+---
+ Makefile.am | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile.am b/Makefile.am
+index 143d5690..e9ca2718 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -158,7 +158,6 @@ LOGGING_INCLUDES = src/base/logging.h \
+                    src/base/dynamic_annotations.h
+ noinst_LTLIBRARIES += liblogging.la
+ liblogging_la_SOURCES = src/base/logging.cc \
+-                        src/base/dynamic_annotations.cc \
+                         $(LOGGING_INCLUDES)
+ 
+ SYSINFO_INCLUDES = src/base/sysinfo.h \
+@@ -168,6 +167,7 @@ SYSINFO_INCLUDES = src/base/sysinfo.h \
+                    src/base/basictypes.h
+ noinst_LTLIBRARIES += libsysinfo.la
+ libsysinfo_la_SOURCES = src/base/sysinfo.cc \
++                        src/base/dynamic_annotations.cc \
+                         $(SYSINFO_INCLUDES)
+ libsysinfo_la_LIBADD = $(NANOSLEEP_LIBS)
+ 

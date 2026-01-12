@@ -551,6 +551,13 @@
     "source": "https://src.fedoraproject.org/rpms/google-noto-fonts.git",
     "version": "20251201"
   },
+  "gperftools": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "aa3dd8e0019ebda48a93a97b07657ea7c9d127bf",
+    "source": "https://src.fedoraproject.org/rpms/gperftools.git",
+    "version": "2.17.2"
+  },
   "grep": {
     "branch": "rawhide",
     "release": "2",
