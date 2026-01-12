@@ -1,0 +1,6 @@
+Changes in specific releases which need a migration
+===================================================
+
+CUPS 2.5
+
+- CUPS-Get-Document needs Auth - a new <Limit> scope in cupsd.conf will have to be migrated - commit https://github.com/OpenPrinting/cups/commit/a0c8b9c9556882f00c68b9727a95a1b6d1452913

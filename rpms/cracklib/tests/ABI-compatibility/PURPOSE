@@ -1,0 +1,3 @@
+PURPOSE of /CoreOS/cracklib/Sanity/ABI-compatibility
+Description: Test if the ABI hasn't changed
+Author: Hubert Kario <hkario@redhat.com>

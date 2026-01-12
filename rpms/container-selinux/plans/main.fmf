@@ -1,0 +1,30 @@
+discover:
+    how: fmf
+execute:
+    how: tmt
+prepare:
+    - how: feature
+      epel: enabled
+    # TODO: Revisit this once https://github.com/teemtee/tmt/issues/3990 is in place.
+    # FIXME: For whatever reason, CentOS Stream envs end up upgrading container-selinux
+    # from podman-next instead of using the one installed by Packit. This apparently should
+    # be easier to handle once tmt#3990 is done. Things work as expected on Fedora already.
+    - when: initiator == packit
+      how: shell
+      script: |
+        COPR_REPO_FILE="/etc/yum.repos.d/*podman-next*.repo"
+        if compgen -G $COPR_REPO_FILE > /dev/null; then
+            sed -i -n '/^priority=/!p;$apriority=1' $COPR_REPO_FILE
+        fi
+
+/basic_check:
+    discover+:
+        test: /test/basic_check
+
+/podman_rootful_system:
+    discover+:
+        test: /test/podman_rootful_system
+
+/podman_rootless_system:
+    discover+:
+        test: /test/podman_rootless_system

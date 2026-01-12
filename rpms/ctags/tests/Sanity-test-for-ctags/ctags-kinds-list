@@ -1,0 +1,1184 @@
+Unknown [disabled]
+Abaqus
+    p  Parts
+    a  Assembly
+    s  Steps
+Abc
+    s  sections
+Ada
+    P  package specifications
+    p  packages
+    T  type specifications [off]
+    t  types
+    U  subtype specifications [off]
+    u  subtypes
+    c  record type components
+    l  enum type literals
+    V  variable specifications [off]
+    v  variables
+    f  generic formal parameters
+    n  constants
+    x  user defined exceptions
+    R  subprogram specifications
+    r  subprograms
+    K  task specifications
+    k  tasks
+    O  protected data specifications
+    o  protected data
+    E  task/protected data entry specifications [off]
+    e  task/protected data entries
+    b  labels
+    i  loop/declare identifiers
+    a  automatic variables [off]
+    y  loops and blocks with no identifier [off]
+Ant
+    p  projects
+    t  targets
+    P  properties(global)
+    i  antfiles
+Asciidoc
+    c  chapters
+    s  sections
+    S  level 2 sections
+    t  level 3 sections
+    T  level 4 sections
+    u  level 5 sections
+    a  anchors
+Asm
+    d  defines
+    l  labels
+    m  macros
+    t  types (structs and records)
+    z  parameters for a macro [off]
+Asp
+    d  constants
+    c  classes
+    f  functions
+    s  subroutines
+    v  variables
+Autoconf
+    p  packages
+    t  templates
+    m  autoconf macros
+    w  options specified with --with-...
+    e  options specified with --enable-...
+    s  substitution keys
+    c  automake conditions
+    d  definitions
+AutoIt
+    f  functions
+    r  regions
+    g  global variables
+    l  local variables
+    S  included scripts
+Automake
+    d  directories
+    P  programs
+    M  manuals
+    T  ltlibraries
+    L  libraries
+    S  scripts
+    D  datum
+    c  conditions
+    s  subdirs
+    p  placeholder for EXTRA_, noinst_, and _check_ prefixed primaries (internal use) [off]
+Awk
+    f  functions
+Basic
+    c  constants
+    f  functions
+    l  labels
+    t  types
+    v  variables
+    g  enumerations
+    n  namespace
+Bats
+    t  test cases
+    S  scripts
+BETA
+    f  fragment definitions
+    p  all patterns [off]
+    s  slots (fragment uses)
+    v  patterns (virtual or rebound)
+BibLaTeX
+    A  artworks
+    B  audios
+    C  bibnotes
+    D  bookinbooks
+    E  Booklets
+    G  collections
+    H  commentarys
+    I  datasets
+    J  images
+    K  interferences
+    L  jurisdictions
+    M  legislations
+    N  legals
+    O  letters
+    P  movies
+    Q  musics
+    R  mvbooks
+    S  mvcollections
+    T  mvproceedings
+    U  mvreferences
+    V  onlines
+    W  patents
+    g  performances
+    h  periodicals
+    i  references
+    j  reports
+    k  reviews
+    l  sets
+    m  software
+    n  standards
+    o  suppbooks
+    p  suppcollections
+    q  suppperiodicals
+    r  thesis
+    s  videos
+    t  xdatas
+BibTeX
+    a  article
+    b  book
+    B  booklet
+    c  conference
+    i  inbook
+    I  incollection
+    j  inproceedings
+    m  manual
+    M  mastersthesis
+    n  misc
+    p  phdthesis
+    P  proceedings
+    s  string
+    t  techreport
+    u  unpublished
+Clojure
+    f  functions
+    n  namespaces
+CMake
+    f  functions
+    m  macros
+    t  targets
+    v  variable definitions
+    D  options specified with -D
+    p  projects
+C
+    d  macro definitions
+    e  enumerators (values inside an enumeration)
+    f  function definitions
+    g  enumeration names
+    h  included header files
+    l  local variables [off]
+    m  struct, and union members
+    p  function prototypes [off]
+    s  structure names
+    t  typedefs
+    u  union names
+    v  variable definitions
+    x  external and forward variable declarations [off]
+    z  function parameters inside function or prototype definitions [off]
+    L  goto labels [off]
+    D  parameters inside macro definitions [off]
+C++
+    d  macro definitions
+    e  enumerators (values inside an enumeration)
+    f  function definitions
+    g  enumeration names
+    h  included header files
+    l  local variables [off]
+    m  class, struct, and union members
+    p  function prototypes [off]
+    s  structure names
+    t  typedefs
+    u  union names
+    v  variable definitions
+    x  external and forward variable declarations [off]
+    z  function parameters inside function or prototype definitions [off]
+    L  goto labels [off]
+    D  parameters inside macro definitions [off]
+    c  classes
+    n  namespaces
+    A  namespace aliases [off]
+    N  names imported via using scope::symbol [off]
+    U  using namespace statements [off]
+    Z  template parameters [off]
+CPreProcessor
+    d  macro definitions
+    h  included header files
+    D  macro parameters [off]
+CSS
+    c  classes
+    s  selectors
+    i  identities
+C#
+    c  classes
+    d  macro definitions
+    e  enumerators (values inside an enumeration)
+    E  events
+    f  fields
+    g  enumeration names
+    i  interfaces
+    l  local variables [off]
+    m  methods
+    n  namespaces
+    p  properties
+    s  structure names
+    t  typedefs
+Ctags
+    l  language definitions
+    k  kind definitions
+Cobol
+    f  file descriptions (FD, SD, RD)
+    g  group items
+    P  program ids
+    s  sections
+    D  divisions
+    p  paragraphs
+    d  data items
+    S  source code file
+CobolFree
+    f  file descriptions (FD, SD, RD)
+    g  group items
+    P  program ids
+    s  sections
+    D  divisions
+    p  paragraphs
+    d  data items
+    S  source code file
+CobolVariable
+    f  file descriptions (FD, SD, RD)
+    g  group items
+    P  program ids
+    s  sections
+    D  divisions
+    p  paragraphs
+    d  data items
+    S  source code file
+CUDA
+    d  macro definitions
+    e  enumerators (values inside an enumeration)
+    f  function definitions
+    g  enumeration names
+    h  included header files
+    l  local variables [off]
+    m  struct, and union members
+    p  function prototypes [off]
+    s  structure names
+    t  typedefs
+    u  union names
+    v  variable definitions
+    x  external and forward variable declarations [off]
+    z  function parameters inside function or prototype definitions [off]
+    L  goto labels [off]
+    D  parameters inside macro definitions [off]
+D
+    a  aliases
+    c  classes
+    g  enumeration names
+    e  enumerators (values inside an enumeration)
+    x  external variable declarations [off]
+    f  function definitions
+    i  interfaces
+    l  local variables [off]
+    m  class, struct, and union members
+    X  mixins
+    M  modules
+    n  namespaces
+    p  function prototypes [off]
+    s  structure names
+    T  templates
+    u  union names
+    v  variable definitions
+    V  version statements
+Diff
+    m  modified files
+    n  newly created files
+    d  deleted files
+    h  hunks
+DTD
+    E  entities
+    p  parameter entities
+    e  elements
+    a  attributes
+    n  notations
+DTS
+    p  phandlers
+    l  labels
+DosBatch
+    l  labels
+    v  variables
+Eiffel
+    c  classes
+    f  features
+    l  local entities [off]
+Elixir
+    p  protocols (defprotocol...)
+    m  modules (defmodule ...)
+    f  functions (def ...)
+    c  callbacks (defcallback ...)
+    d  delegates (defdelegate ...)
+    e  exceptions (defexception ...)
+    g  guards (defguard ...)
+    i  implementations (defimpl ...)
+    a  macros (defmacro ...)
+    o  operators (e.g. "defmacro a <<< b")
+    r  records (defrecord...)
+    t  tests (test ...)
+    y  types (@type ...)
+EmacsLisp
+    Y  unknown type of definitions
+    f  functions
+    v  variables
+    c  constants
+    m  macros
+    a  aliases for functions
+    V  aliases for variables
+    s  inline function
+    i  inline function
+    e  errors
+    M  minor modes
+    D  derived major mode
+    C  customizable variables
+    G  customization groups
+    H  customizable faces
+    T  custom themes
+Erlang
+    d  macro definitions
+    f  functions
+    m  modules
+    r  record definitions
+    t  type definitions
+Falcon
+    c  classes
+    f  functions
+    m  class members
+    v  variables
+    i  imports
+Flex
+    f  functions
+    c  classes
+    i  interfaces
+    P  packages
+    m  methods
+    p  properties
+    v  global variables
+    l  local variables [off]
+    C  constants
+    I  imports
+    x  mxtags
+Forth
+    w  words
+    v  variables
+    c  constants
+Fortran
+    b  block data
+    c  common blocks
+    e  entry points
+    E  enumerations
+    f  functions
+    i  interface contents, generic names, and operators
+    k  type and structure components
+    l  labels
+    L  local, common block, and namelist variables [off]
+    m  modules
+    M  type bound procedures
+    n  namelists
+    N  enumeration values
+    p  programs
+    P  subprogram prototypes [off]
+    s  subroutines
+    t  derived types and structures
+    v  program (global) and module variables
+    S  submodules
+FrontMatter
+    t  titles
+FunctionParameters
+    m  methods
+    f  functions
+Fypp
+    m  macros
+Gdbinit
+    d  definitions
+    D  documents [off]
+    t  toplevel variables
+    l  local variables [off]
+GDScript
+    c  classes
+    m  methods
+    v  variables
+    C  constants
+    g  enumeration names
+    e  enumerated values
+    z  function parameters [off]
+    l  local variables [off]
+    s  signals
+GemSpec
+    g  gems
+Go
+    p  packages
+    f  functions
+    c  constants
+    t  types
+    v  variables
+    s  structs
+    i  interfaces
+    m  struct members
+    M  struct anonymous members
+    n  interface method specification
+    Y  unknown
+    P  name for specifying imported package
+    a  type aliases
+    R  receivers [off]
+GPerf
+    k  keywords
+    h  hash function names
+    l  lookup function names
+    c  class names
+    s  string pool names
+Haskell
+    t  types
+    c  type constructors
+    f  functions
+    m  modules
+Haxe
+    m  methods
+    c  classes
+    e  enumerations
+    v  variables
+    i  interfaces
+    t  typedefs
+HTML
+    a  named anchors
+    c  classes
+    t  titles
+    h  H1 headings
+    i  H2 headings
+    j  H3 headings
+    C  stylesheets
+    I  identifiers
+    J  scripts
+Iniconf
+    s  sections
+    k  keys
+Inko
+    o  Class definition
+    m  Method definition
+    t  Trait definition
+    a  Attribute definition
+    c  Constant definition
+    r  Reopen class
+IPythonCell
+    c  cells
+ITcl
+    c  classes
+    m  methods
+    v  object-specific variables
+    C  common variables
+    p  procedures within the  class  namespace
+Java
+    a  annotation declarations
+    c  classes
+    e  enum constants
+    f  fields
+    g  enum types
+    i  interfaces
+    l  local variables [off]
+    m  methods
+    p  packages
+JavaProperties
+    k  keys
+JavaScript
+    f  functions
+    c  classes
+    m  methods
+    p  properties
+    C  constants
+    v  global variables
+    g  generators
+    G  getters
+    S  setters
+    M  fields
+JSON
+    o  objects
+    a  arrays
+    n  numbers
+    s  strings
+    b  booleans
+    z  nulls
+Julia
+    c  Constants
+    f  Functions
+    g  Fields
+    m  Macros
+    n  Modules
+    s  Structures
+    t  Types
+    Y  name defined in other modules
+Kconfig
+    c  configs
+    m  menus
+    M  the main menu
+    k  kconfig file
+    C  choices
+    v  macro variables
+LdScript
+    S  sections
+    s  symbols
+    v  versions
+    i  input sections
+LEX
+    r  named regular expression
+    c  start or exclusive condition
+Lisp
+    Y  unknown type of definitions
+    f  functions
+    v  variables
+    m  macros
+    c  constants
+LiterateHaskell
+    t  types
+    c  type constructors
+    f  functions
+    m  modules
+Lua
+    f  functions
+    Y  unknown language object [off]
+M4
+    d  macros
+    I  macro files
+Man
+    t  titles
+    s  sections
+    S  sub sections
+Make
+    m  macros
+    t  targets
+    I  makefiles
+Markdown
+    c  chapters
+    s  sections
+    S  level 2 sections
+    t  level 3 sections
+    T  level 4 sections
+    u  level 5 sections
+    n  footnotes
+    h  hashtags
+MatLab
+    f  function
+    v  variable
+    c  class
+Meson
+    P  projects
+    V  variables
+    S  subdirs
+    B  build targets
+    c  custom targets
+    t  tests
+    b  benchmark targets
+    r  run targets
+    m  modules
+MesonOptions
+    s  strings
+    b  booleans
+    c  combos
+    i  integers
+    a  arrays
+    f  features
+Moose
+    c  classes
+    m  methods
+    a  attributes
+    w  wrappers
+    r  roles
+Myrddin
+    f  functions
+    c  constants
+    v  variables
+    t  types
+    r  traits
+    p  packages
+NSIS
+    s  sections
+    f  functions
+    v  variables
+    d  definitions
+    m  macros
+    S  section groups
+    p  macro parameters [off]
+    l  language strings
+    i  NSIS scripts
+ObjectiveC
+    i  class interface
+    I  class implementation
+    P  Protocol
+    m  Object's method
+    c  Class' method
+    v  Global variable
+    E  Object field
+    f  A function
+    p  A property
+    t  A type alias
+    s  A type structure
+    e  An enumeration
+    M  A preprocessor macro
+    C  categories
+OCaml
+    c  classes
+    m  Object's method
+    M  Module or functor
+    v  Global variable
+    p  Signature item
+    t  Type name
+    f  A function
+    C  A constructor
+    r  A 'structure' field
+    e  An exception
+Org
+    d  definitions
+    p  parts
+    c  chapters
+    s  sections
+    u  subsections
+    b  subsubsections
+    P  paragraphs
+    G  subparagraphs
+Passwd
+    u  user names
+Pascal
+    f  functions
+    p  procedures
+Perl
+    c  constants
+    f  formats
+    l  labels
+    p  packages
+    s  subroutines
+    d  subroutine declarations [off]
+    M  modules [off]
+    h  marker for here document [off]
+Perl6
+    c  classes
+    g  grammars
+    m  methods
+    o  modules
+    p  packages
+    r  roles
+    u  rules
+    b  submethods
+    s  subroutines
+    t  tokens
+PHP
+    c  classes
+    d  constant definitions
+    f  functions
+    i  interfaces
+    l  local variables [off]
+    n  namespaces
+    t  traits
+    v  variables
+    a  aliases
+PkgConfig
+    N  display names
+    p  packages
+    v  variabels
+Pod
+    c  chapters
+    s  sections
+    S  subsections
+    t  subsubsections
+PowerShell
+    f  functions
+    v  variables
+    c  classes
+    i  filter
+    g  enum names
+Protobuf
+    p  packages
+    m  messages
+    f  fields
+    e  enum constants
+    g  enum types
+    s  services
+    r  RPC methods
+    o  oneof names
+    G  groups
+    D  .proto definition
+PuppetManifest
+    c  classes
+    d  definitions
+    n  nodes
+    r  resources
+    v  variables
+    p  parameters
+    V  virtual resources
+    t  type aliases
+Python
+    c  classes
+    f  functions
+    m  class members
+    v  variables
+    I  name referring a module defined in other file
+    i  modules
+    Y  name referring a class/variable/function/module defined in other module
+    z  function parameters [off]
+    l  local variables [off]
+PythonLoggingConfig
+    L  logger sections
+    q  logger qualnames
+QemuHX
+    q  QEMU Management Protocol dispatch table entries
+    i  item in texinfo doc
+QtMoc
+    s  slots
+    S  signals
+    p  properties
+Quarto
+    l  chunk labels
+RMarkdown
+    l  chunk labels
+R
+    f  functions
+    l  libraries
+    s  sources
+    g  global variables having values other than function()
+    v  function variables having values other than function()
+    z  function parameters inside function definitions [off]
+    c  vectors explicitly created with `c()'
+    L  lists explicitly created with `list()'
+    d  data frame explicitly created with `data.frame()'
+    n  names attribtes in vectors, lists, or dataframes
+Rake
+    t  tasks
+    n  namespaces
+    f  file tasks
+    d  directory tasks
+    m  multi tasks
+    x  tasks defined with special constructor
+Raku
+    c  classes
+    g  grammars
+    m  methods
+    o  modules
+    p  packages
+    r  roles
+    u  rules
+    b  submethods
+    s  subroutines
+    t  tokens
+R6Class
+    c  classes
+    m  methods
+    f  fields
+    a  active binding functions
+RSpec
+    d  describes
+    c  contexts
+    i  things described with "it"
+REXX
+    s  subroutines
+Robot
+    t  testcases
+    k  keywords
+    v  variables
+RpmMacros
+    m  macros
+RpmSpec
+    t  tags
+    m  macros
+    p  packages
+    g  global macros
+    p  patch files
+ReStructuredText
+    H  titles
+    h  sub titles
+    c  chapters
+    s  sections
+    S  subsections
+    t  subsubsections
+    C  citations
+    T  targets
+    d  substitute definitions
+Ruby
+    c  classes
+    f  methods
+    m  modules
+    S  singleton methods
+    C  constants
+    A  accessors
+    a  aliases
+    L  libraries
+Rust
+    n  module
+    s  structural type
+    i  trait interface
+    c  implementation
+    f  Function
+    g  Enum
+    t  Type Alias
+    v  Global variable
+    M  Macro Definition
+    m  A struct field
+    e  An enum variant
+    P  A method
+    C  A constant
+S4Class
+    c  classes
+    r  representations
+    g  generics
+    m  methods
+Scheme
+    f  functions
+    s  sets
+SCSS
+    m  mixins
+    f  functions
+    v  variables
+    c  classes
+    P  placeholder classes
+    i  identities
+    z  function parameters
+Sh
+    a  aliases
+    f  functions
+    s  script files
+    h  label for here document
+SLang
+    f  functions
+    n  namespaces
+SML
+    e  exception declarations
+    f  function definitions
+    c  functor definitions
+    s  signature declarations
+    r  structure declarations
+    t  type definitions
+    v  value bindings
+SQL
+    C  PLSQL_CCFLAGS
+    D  domains
+    E  record fields
+    L  block label
+    P  packages
+    R  services
+    S  schemas
+    T  triggers
+    U  publications
+    V  views
+    b  database
+    c  cursors
+    d  prototypes [off]
+    e  events
+    f  functions
+    i  indexes
+    l  local variables [off]
+    n  synonyms
+    p  procedures
+    r  records [off]
+    s  subtypes
+    t  tables
+    v  variables
+    x  MobiLink Table Scripts
+    y  MobiLink Conn Scripts
+    z  MobiLink Properties
+SystemdUnit
+    u  units
+SystemTap
+    p  probe aliases
+    f  functions
+    v  variables
+    m  macros
+Tcl
+    p  procedures
+    n  namespaces
+    z  procedure parameters [off]
+TclOO
+    c  classes
+    m  methods
+Terraform
+    r  resources
+    d  data
+    v  variables
+    p  providers
+    m  modules
+    o  output
+TerraformVariables
+Tex
+    p  parts
+    c  chapters
+    s  sections
+    u  subsections
+    b  subsubsections
+    P  paragraphs
+    G  subparagraphs
+    l  labels
+    i  external input files
+    B  bibliography items
+    C  command created with \newcommand
+    o  math operator created with \DeclareMathOperator
+    e  environment created with \newenvironment
+    t  theorem created with \newtheorem
+    N  counter created with \newcounter
+TeXBeamer
+    f  frametitles
+    g  framesubtitles
+TTCN
+    M  module definition
+    t  type definition
+    c  constant definition
+    d  template definition
+    f  function definition
+    s  signature definition
+    C  testcase definition
+    a  altstep definition
+    G  group definition
+    P  module parameter definition
+    v  variable instance
+    T  timer instance
+    p  port instance
+    m  record/set/union member
+    e  enumeration value
+Txt2tags
+    s  sections
+TypeScript
+    f  functions
+    c  classes
+    i  interfaces
+    g  enums
+    e  enumerators (values inside an enumeration)
+    m  methods
+    n  namespaces
+    z  function parameters inside function definitions [off]
+    p  properties
+    v  variables
+    l  local variables [off]
+    C  constants
+    G  generators
+    a  aliases
+V
+    f  functions
+    p  modules
+    v  variables
+    c  constants
+    R  receivers in functions
+    l  labels
+    s  structs
+    m  struct/interface members
+    n  interface methods
+    e  enumerators (values inside an enumeration)
+    g  enumeration names
+    a  type aliases
+    i  interfaces
+    u  union names
+    Y  unknown (imported) variables, types and functions
+Vera
+    c  classes
+    d  macro definitions
+    e  enumerators (values inside an enumeration)
+    f  function definitions
+    g  enumeration names
+    i  interfaces
+    l  local variables [off]
+    m  class, struct, and union members
+    p  programs
+    P  function prototypes [off]
+    s  signals
+    t  tasks
+    T  typedefs
+    v  variable definitions
+    x  external variable declarations [off]
+    h  included header files
+    D  cpp macro parameters [off]
+Verilog
+    c  constants (parameter, specparam)
+    d  text macros
+    e  events
+    f  functions
+    m  modules
+    n  net data types
+    p  ports
+    r  variable data types
+    t  tasks
+    b  blocks (begin, fork)
+    i  instances of module
+SystemVerilog
+    c  constants (parameter, specparam, enum values)
+    d  text macros
+    e  events
+    f  functions
+    m  modules
+    n  net data types
+    p  ports
+    r  variable data types
+    t  tasks
+    b  blocks (begin, fork)
+    i  instances of module or interface
+    A  assertions (assert, assume, cover, restrict)
+    C  classes
+    V  covergroups
+    E  enumerators
+    I  interfaces
+    M  modports
+    K  packages
+    P  programs
+    Q  prototypes (extern, pure) [off]
+    R  properties
+    S  structs and unions
+    T  type declarations
+    H  checkers
+    L  clocking
+    q  sequences
+    w  struct and union members
+    l  interface class
+    O  constraints
+    N  nettype declarations
+VHDL
+    c  constant declarations
+    t  type definitions
+    T  subtype definitions
+    r  record names
+    e  entity declarations
+    C  component declarations [off]
+    d  prototypes [off]
+    f  function prototypes and declarations
+    p  procedure prototypes and declarations
+    P  package definitions
+    l  local definitions [off]
+    a  architectures
+    q  port declarations
+    g  generic declarations
+    s  signal declarations
+    Q  processes
+    v  variables
+    A  aliases
+Vim
+    a  autocommand groups
+    c  user-defined commands
+    f  function definitions
+    m  maps
+    v  variable definitions
+    n  vimball filename
+    C  constant definitions
+WindRes
+    d  dialogs
+    m  menus
+    i  icons
+    b  bitmaps
+    c  cursors
+    f  fonts
+    v  versions
+    a  accelerators
+YACC
+    t  tokens
+    l  labels
+YumRepo
+    r  repository id
+Zephir
+    c  classes
+    d  constant definitions
+    f  functions
+    i  interfaces
+    l  local variables [off]
+    n  namespaces
+    t  traits
+    v  variables
+    a  aliases
+Zsh
+    a  aliases
+    f  functions
+    s  script files
+    h  label for here document
+DBusIntrospect
+    a  arguments
+    i  interfaces
+    m  methods
+    s  signals
+    p  properties
+    n  nodes
+Glade
+    c  classes
+    h  handlers
+Maven2
+    g  group identifiers
+    a  artifact identifiers
+    p  properties
+    r  repository identifiers
+PlistXML
+    k  keys
+RelaxNG
+    e  elements
+    a  attributes
+    n  named patterns
+SVG
+    d  ids in defs tags
+XRC
+    o  objects
+XML
+    i  id attributes
+    n  namespace prefixes
+    r  root elements
+XSLT
+    s  stylesheets
+    p  parameters
+    m  matched template
+    n  named template
+    v  variables
+Yaml
+    a  anchors
+AnsiblePlaybook
+    p  plays
+I18nRubyGem
+    k  translation keys at the leafs
+    m  the middle component of keys [off]
+    l  the root element representing a locale [off]
+OpenAPI
+    d  schemas
+    p  paths
+    R  responses
+    P  parameters
+    t  titles
+    s  servers (or hosts in swagger)
+    T  tags
+Varlink
+    i  interfaces
+    m  methods
+    I  input parameters
+    O  output parameters
+    s  structs
+    f  fields
+    g  enumeration names
+    e  enumerators (values inside an enumeration)
+    E  errors
+    d  error descriptors
+Kotlin
+    p  packages
+    i  interfaces
+    c  classes
+    o  objects
+    m  methods
+    T  typealiases
+    C  constants
+    v  variables
+Thrift
+    s  structs
+    x  exceptions
+    u  unions
+    n  namespaces
+    e  enumerators (values inside an enumeration)
+    g  enumeration names
+    m  members
+    C  constants
+    t  typedefs
+    v  services
+    f  functions
+    z  parameters [off]
+    Z  parameters in throws list [off]
+    T  thrift files
+Elm
+    m  modules
+    n  modules renamed
+    t  types
+    c  constructors
+    a  aliases
+    p  ports
+    f  functions

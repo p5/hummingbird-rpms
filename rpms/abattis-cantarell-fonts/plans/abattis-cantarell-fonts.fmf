@@ -1,0 +1,12 @@
+summary: Fonts related tests
+discover:
+    how: fmf
+    url: https://src.fedoraproject.org/tests/fonts
+execute:
+    how: tmt
+environment:
+    PACKAGE: abattis-cantarell-fonts
+    FONT_ALIAS: system-ui
+    FONT_FAMILY: Cantarell
+    FONT_LANG: en
+    DEFAULT_SYSTEMUI: 1

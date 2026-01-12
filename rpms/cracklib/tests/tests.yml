@@ -1,0 +1,25 @@
+---
+# Tests for Docker and Classic Context
+- hosts: localhost
+  roles:
+  - role: standard-test-beakerlib
+    tags:
+    - classic
+    - container
+    tests:
+    - ABI-compatibility
+    - Localization
+    required_packages:
+    - words          # required for ABI-compatibility
+    - cracklib-devel # required for ABI-compatibility
+    - ltrace         # required for ABI-compatibility
+    - gcc            # required for ABI-compatibility
+
+# Tests for Atomic
+- hosts: localhost
+  roles:
+  - role: standard-test-beakerlib
+    tags:
+    - atomic
+    tests:
+    - Localization

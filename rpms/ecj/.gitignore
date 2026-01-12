@@ -1,0 +1,10 @@
+/noarch
+/.build-*.log
+/*.src.rpm
+/ecj-*.pom
+/ecj-*/
+/ecjsrc-*.jar
+/java10api.jar
+/java14api.jar
+/javax15api.jar
+/javax16api.jar

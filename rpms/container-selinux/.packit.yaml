@@ -1,0 +1,145 @@
+---
+# See the documentation for more information:
+# https://packit.dev/docs/configuration/
+
+downstream_package_name: container-selinux
+upstream_tag_template: v{version}
+
+# Ref: https://packit.dev/docs/configuration#files_to_sync
+files_to_sync:
+  - src: rpm/gating.yaml
+    dest: gating.yaml
+    delete: true
+  - src: plans/
+    dest: plans/
+    delete: true
+    mkpath: true
+  - src: test/
+    dest: test/
+    delete: true
+    mkpath: true
+  - src: .fmf/
+    dest: .fmf/
+    delete: true
+  - .packit.yaml
+
+packages:
+  container-selinux-fedora:
+    pkg_tool: fedpkg
+    specfile_path: rpm/container-selinux.spec
+  container-selinux-centos:
+    pkg_tool: centpkg
+    specfile_path: rpm/container-selinux.spec
+  container-selinux-eln:
+    specfile_path: rpm/container-selinux.spec
+
+srpm_build_deps:
+  - make
+
+jobs:
+  - job: copr_build
+    trigger: pull_request
+    packages: [container-selinux-fedora]
+    notifications: &copr_build_failure_notification
+      failure_comment:
+        message: "Ephemeral COPR build failed. @containers/packit-build please check."
+    enable_net: true
+    # container-selinux is noarch so we only need to test on one arch
+    targets: &fedora_copr_targets
+      - fedora-all-x86_64
+      - fedora-all-aarch64
+
+  - job: copr_build
+    trigger: pull_request
+    packages: [container-selinux-eln]
+    notifications: *copr_build_failure_notification
+    enable_net: true
+    targets: &eln_copr_targets
+      - fedora-eln-x86_64
+      - fedora-eln-aarch64
+
+  - job: copr_build
+    trigger: pull_request
+    packages: [container-selinux-centos]
+    notifications: *copr_build_failure_notification
+    enable_net: true
+    targets: &centos_copr_targets
+      - centos-stream-9-x86_64
+      - centos-stream-9-aarch64
+      - centos-stream-10-x86_64
+      - centos-stream-10-aarch64
+
+  # Run on commit to main branch
+  # Build targets managed in copr settings
+  - job: copr_build
+    trigger: commit
+    packages: [container-selinux-fedora]
+    notifications:
+      failure_comment:
+        message: "podman-next COPR build failed. @containers/packit-build please check."
+    branch: main
+    owner: rhcontainerbot
+    project: podman-next
+    enable_net: true
+
+  # All tests specified in the `/plans/` subdir
+  # Tests for Fedora
+  - job: tests
+    trigger: pull_request
+    packages: [container-selinux-fedora]
+    notifications: &test_failure_notification
+      failure_comment:
+        message: "Tests failed. @containers/packit-build please check."
+    targets: *fedora_copr_targets
+    tf_extra_params:
+      environments:
+        - artifacts:
+          - type: repository-file
+            id: https://copr.fedorainfracloud.org/coprs/rhcontainerbot/podman-next/repo/fedora-$releasever/rhcontainerbot-podman-next-fedora-$releasever.repo
+
+  # Tests for Fedora
+  - job: tests
+    trigger: pull_request
+    packages: [container-selinux-eln]
+    notifications: *test_failure_notification
+    targets: *eln_copr_targets
+    tf_extra_params:
+      environments:
+        - artifacts:
+          - type: repository-file
+            id: https://copr.fedorainfracloud.org/coprs/rhcontainerbot/podman-next/repo/fedora-eln/rhcontainerbot-podman-next-fedora-eln.repo
+
+  # Tests for CentOS Stream
+  - job: tests
+    trigger: pull_request
+    packages: [container-selinux-centos]
+    notifications: *test_failure_notification
+    targets: *centos_copr_targets
+    tf_extra_params:
+      environments:
+        - artifacts:
+          - type: repository-file
+            id: https://copr.fedorainfracloud.org/coprs/rhcontainerbot/podman-next/repo/centos-stream-$releasever/rhcontainerbot-podman-next-centos-stream-$releasever.repo
+
+  - job: propose_downstream
+    trigger: release
+    packages: [container-selinux-fedora]
+    dist_git_branches: &fedora_targets
+      - fedora-all
+
+  - job: propose_downstream
+    trigger: release
+    packages: [container-selinux-centos]
+    dist_git_branches:
+      - c10s
+
+  - job: koji_build
+    trigger: commit
+    packages: [container-selinux-fedora]
+    dist_git_branches: *fedora_targets
+
+  - job: bodhi_update
+    trigger: commit
+    packages: [container-selinux-fedora]
+    dist_git_branches:
+      - fedora-branched # rawhide updates are created automatically

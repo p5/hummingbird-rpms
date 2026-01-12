@@ -1,0 +1,24 @@
+# The meta-package doesn't contain any files, this is intended.
+addFilter("boost.x86_64: E: no-binary")
+
+# All docs are in a separate boost-doc package
+addFilter("boost.*: W: no-documentation")
+addFilter("boost.*: W: description-shorter-than-summary")
+
+# Upstream don't provide one
+addFilter("boost-doctools.x86_64: W: no-manual-page-for-binary quickbook")
+
+# Ignore these
+addFilter("boost.*: W: spelling-error %description -l en_US foundational ")
+addFilter("boost.*: W: spelling-error %description -l en_US invariants ")
+addFilter("boost.*: W: spelling-error %description -l en_US postconditions ")
+addFilter("boost.*: W: spelling-error %description -l en_US userland ")
+addFilter("boost.*: W: spelling-error Summary(en_US) numpy ")
+
+# The example code is useless without the headers
+addFilter("boost-examples.x86_64: E: devel-dependency boost-devel")
+
+# These libs are statically linked
+addFilter("boost-date-time.x86_64: E: shared-lib-without-dependency-information /usr/lib64/libboost_date_time.so.*")
+addFilter("boost-system.x86_64: E: shared-lib-without-dependency-information /usr/lib64/libboost_system.so.*")
+addFilter("boost-stacktrace.x86_64: E: shared-lib-without-dependency-information /usr/lib64/libboost_stacktrace_noop.so.*")

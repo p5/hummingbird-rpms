@@ -1,0 +1,7 @@
+PURPOSE of /CoreOS/ctags/Sanity-test-for-ctags
+Description: smoke test, funktion test for CI gating
+Author: Than Ngo <than@redhat.com>
+
+tests following scenarios:
+ * smoke test
+ * funktion test
