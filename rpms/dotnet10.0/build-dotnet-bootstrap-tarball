@@ -1,0 +1,123 @@
+#!/bin/bash
+
+# Usage:
+#   build-dotnet-bootstrap-tarball <tag-or-commit-from-dotnet>
+#
+# Creates a source archive suitable for bootstrapping
+# https://github.com/dotnet/dotnet.
+#
+# Requires a tarball with the name "${dotnet}-${tag}.tar.gz" in current
+# directory.
+
+set -euo pipefail
+IFS=$'\n\t'
+
+function print_usage {
+    echo "Usage:"
+    echo "$0 <tag-from-dotnet>|<commit-sha-from-dotnet>"
+    echo
+    echo "Creates a $arch bootstrap source archive from an archive of https://github.com/dotnet/dotnet"
+}
+
+function clean_dotnet_cache {
+    rm -rf ~/.aspnet ~/.dotnet/ ~/.nuget/ ~/.local/share/NuGet ~/.templateengine
+    rm -rf /tmp/NuGet /tmp/NuGetScratch /tmp/.NETCore* /tmp/.NETStandard* /tmp/.dotnet /tmp/dotnet.* /tmp/clr-debug-pipe* /tmp/Razor-Server /tmp/CoreFxPipe* /tmp/VBCSCompiler /tmp/.NETFramework*
+    rm -rf ~/.npm/
+}
+
+function check_bootstrap_environment {
+    if rpm -qa | grep dotnet ; then
+        echo "error: dotnet is installed. Not a good idea for bootstrapping."
+        exit 1
+    fi
+    if [ -d /usr/lib/dotnet ] || [ -d /usr/lib64/dotnet ] || [ -d /usr/share/dotnet ] ; then
+        echo "error: one of /usr/lib/dotnet /usr/lib64/dotnet or /usr/share/dotnet/ exists. Not a good idea for bootstrapping."
+        exit 1
+    fi
+    if command -v dotnet ; then
+        echo "error: dotnet is in $PATH. Not a good idea for bootstrapping."
+        exit 1
+    fi
+}
+
+positional_args=()
+while [[ "$#" -gt 0 ]]; do
+    arg="${1}"
+    case "${arg}" in
+        -h|--help)
+            print_usage
+            exit 0
+            ;;
+        *)
+            positional_args+=("$1")
+            shift
+            ;;
+    esac
+done
+
+check_bootstrap_environment
+
+tag=${positional_args[0]:-}
+if [[ -z ${tag} ]]; then
+    echo "error: missing tag to build"
+    exit 1
+fi
+
+set -x
+
+tag_without_v=$(echo "${tag}" | sed -e 's|^v||')
+tarball_name="dotnet-${tag_without_v}"
+tarball_suffix=.tar.gz
+
+if [ -f "dotnet-prebuilts-${tag}-x64${tarball_suffix}" ]; then
+    echo "error: dotnet-prebuilts-${tag}-x64${tarball_suffix} already exists"
+    exit 1
+fi
+if [ -f "dotnet-prebuilts-${tag}-arm64${tarball_suffix}" ]; then
+    echo "error: dotnet-prebuilts-${tag}-arm64${tarball_suffix} already exists"
+    exit 1
+fi
+
+for arch in arm64 x64; do
+    rm -rf "${tarball_name}"
+    tar xf "${tarball_name}${tarball_suffix}"
+
+    pushd "${tarball_name}"
+
+    if [[ $arch == arm64 ]]; then
+        ./prep-source-build.sh --bootstrap-rid linux-arm64
+    else
+        ./prep-source-build.sh
+    fi
+
+    # Remove files with funny licenses and crypto implementations and
+    # other not-very-useful artifacts. We MUST NOT ship any files that
+    # have unapproved licenses and unexpected cryptographic
+    # implementations.
+    #
+    # We use rm -r (no -f) to make sure the operation fails if the files
+    # are not at the expected locations. If the files are not at the
+    # expected location, we need to find the new location of the files and
+    # delete them, or verify that upstream has already removed the files.
+
+    # rm -r $FILE_TO_REMOVE
+
+    sdk_version=$(jq -r .tools.dotnet "global.json")
+
+    mkdir -p "../dotnet-prebuilts-${sdk_version}-${arch}"
+    pushd "../dotnet-prebuilts-${sdk_version}-${arch}"
+    mv "../${tarball_name}/prereqs/packages/archive/Private.SourceBuilt.Artifacts.Bootstrap.tar.gz" .
+    wget https://builds.dotnet.microsoft.com/dotnet/Sdk/${sdk_version}/dotnet-sdk-${sdk_version}-linux-${arch}.tar.gz || \
+      wget https://ci.dot.net/public/Sdk/${sdk_version}/dotnet-sdk-${sdk_version}-linux-${arch}.tar.gz
+    popd
+
+    popd
+
+    tar czf "dotnet-prebuilts-${sdk_version}-${arch}${tarball_suffix}" "dotnet-prebuilts-${sdk_version}-${arch}"
+    rm -rf "dotnet-prebuilts-${sdk_version}-${arch}"
+done
+
+if [ -f rpm-crosscompile-all ] ; then
+    ./rpm-crosscompile-all "${tag}"
+fi
+

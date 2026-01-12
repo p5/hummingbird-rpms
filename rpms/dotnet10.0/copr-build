@@ -1,0 +1,18 @@
+#!/bin/bash
+
+set -euo pipefail
+
+set -x
+
+function fedora_release {
+    source /etc/os-release
+    echo $VERSION_ID
+}
+
+fedpkg --release f$(fedora_release) srpm 2>&1 | tee fedpkg.output
+
+srpm_name=$(grep 'Wrote: ' fedpkg.output | cut -d' ' -f 2)
+
+ls -alh "${srpm_name}"
+
+copr-cli --debug build @dotnet-sig/dotnet-preview "${srpm_name}" --timeout 36000
