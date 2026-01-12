@@ -545,6 +545,13 @@
     "source": "https://src.fedoraproject.org/rpms/krb5.git",
     "version": "1.21.3"
   },
+  "langpacks": {
+    "branch": "rawhide",
+    "release": "5",
+    "sha": "9eeac2ff176132778b0f60c668aac692db619d36",
+    "source": "https://src.fedoraproject.org/rpms/langpacks.git",
+    "version": "4.2"
+  },
   "less": {
     "branch": "rawhide",
     "release": "6",

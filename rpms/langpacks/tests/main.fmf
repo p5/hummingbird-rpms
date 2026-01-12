@@ -1,0 +1,4 @@
+require:
+- langpacks-core-ja
+test: bash ./check-default-font-installed.sh
+framework: shell
