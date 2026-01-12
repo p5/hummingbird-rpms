@@ -1,0 +1,3 @@
+PURPOSE of /CoreOS/httpd/Sanity/smoke
+Description: Simple check of httpd
+Author: Branislav Nater <bnater@redhat.com>

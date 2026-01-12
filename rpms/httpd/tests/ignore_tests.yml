@@ -1,0 +1,12 @@
+---
+# Tests that run in all contexts
+- hosts: localhost
+  roles:
+  - role: standard-test-beakerlib
+    tags:
+    - classic
+    tests:
+    - smoke
+    required_packages:
+    - findutils         # beakerlib needs find command
+    - which             # smoke requires which command

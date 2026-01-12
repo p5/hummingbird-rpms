@@ -621,6 +621,13 @@
     "source": "https://src.fedoraproject.org/rpms/hostname.git",
     "version": "3.25"
   },
+  "httpd": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "0c203aeed682395c663f7afef328f754fa629b6a",
+    "source": "https://src.fedoraproject.org/rpms/httpd.git",
+    "version": "2.4.66"
+  },
   "ima-evm-utils": {
     "branch": "rawhide",
     "release": "7",
