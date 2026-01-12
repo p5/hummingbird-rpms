@@ -1,6 +1,7 @@
 {
   "branch": "rawhide",
-  "modification_status": "clean",
+  "modification_reason": "disable networking tests that fail in konflux",
+  "modification_status": "modified",
   "release": "1",
   "sha": "3dcff4fea32dfb04093977912d23b615f4aec28b",
   "source": "https://src.fedoraproject.org/rpms/nodejs24.git",
