@@ -628,6 +628,13 @@
     "source": "https://src.fedoraproject.org/rpms/httpd.git",
     "version": "2.4.66"
   },
+  "icu": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "e58b636d67b144eb2e939eb2563ed0ab7caba331",
+    "source": "https://src.fedoraproject.org/rpms/icu.git",
+    "version": "77.1"
+  },
   "ima-evm-utils": {
     "branch": "rawhide",
     "release": "7",
