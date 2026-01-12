@@ -20565,8 +20565,8 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
-        - "linux/arm64"
+        - "linux-d160-c8xlarge/arm64"
+        - "linux-d160-c8xlarge/amd64"
     - name: specfile
       value: "rust.spec"
     - name: monorepo-subdir
@@ -20583,11 +20583,20 @@ spec:
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
         value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:9674b53c53c6e20850ddd257aad199dc2dd9a2a295e65eea5bda9d679341cb9c"
+  taskRunSpecs:
+    - pipelineTaskName: upload-to-quay
+      stepSpecs:
+        - name: run-syft
+          computeResources:
+            requests:
+              memory: 10Gi
+            limits:
+              memory: 10Gi
   taskRunTemplate:
     serviceAccountName: build-pipeline-rust-main
   timeouts:
-    pipeline: 4h
-    tasks: 4h
+    pipeline: 12h
+    tasks: 12h
   workspaces:
     - name: git-auth
       secret:
@@ -20982,8 +20991,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-setup-main
   timeouts:
-    pipeline: 12h
-    tasks: 12h
+    pipeline: 4h
+    tasks: 4h
   workspaces:
     - name: git-auth
       secret:
