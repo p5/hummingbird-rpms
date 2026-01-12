@@ -117,6 +117,8 @@ Patch1:         runtime-openssl-sha1.patch
 Patch2:         runtime-disable-fortify-on-ilasm-parser.patch
 # https://github.com/dotnet/runtime/issues/119706#issuecomment-3292624673
 Patch3:         runtime-119706-clang-21.patch
+# https://github.com/dotnet/dotnet/issues/4037
+Patch4:         source-build-reference-packages-1522-year-overflow.patch
 
 
 ExclusiveArch:  aarch64 ppc64le s390x x86_64
