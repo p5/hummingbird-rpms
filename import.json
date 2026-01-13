@@ -1280,6 +1280,13 @@
     "source": "https://src.fedoraproject.org/rpms/rubygem-rdoc.git",
     "version": "7.0.3"
   },
+  "rubypick": {
+    "branch": "rawhide",
+    "release": "23",
+    "sha": "9ac7ea8c10bd75ff94f5be8505cf3ca99deb7d20",
+    "source": "https://src.fedoraproject.org/rpms/rubypick.git",
+    "version": "1.1.1"
+  },
   "rust-rpm-sequoia": {
     "branch": "rawhide",
     "release": "1",
