@@ -4569,6 +4569,80 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+  name: nodejs20-main
+spec:
+  application: rpms-main
+  componentName: nodejs20-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/nodejs20-main
+  source:
+    git:
+      context: rpms/nodejs20
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: nodejs20-main
+  name: nodejs20-main
+spec:
+  image:
+    name: hummingbird-tenant/nodejs20-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
+  name: nodejs24-main
+spec:
+  application: rpms-main
+  componentName: nodejs24-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/nodejs24-main
+  source:
+    git:
+      context: rpms/nodejs24
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: nodejs24-main
+  name: nodejs24-main
+spec:
+  image:
+    name: hummingbird-tenant/nodejs24-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
   name: npth-main
 spec:
   application: rpms-main

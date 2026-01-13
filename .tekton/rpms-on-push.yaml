@@ -7513,6 +7513,128 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "false"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[push]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/nodejs20/***]"
+  creationTimestamp: null
+  labels:
+    appstudio.openshift.io/application: rpms-main
+    appstudio.openshift.io/component: nodejs20-main
+    pipelines.appstudio.openshift.io/type: build
+  name: nodejs20-main-on-push
+  namespace: hummingbird-tenant
+spec:
+  params:
+    - name: git-url
+      value: '{{source_url}}'
+    - name: revision
+      value: '{{revision}}'
+    - name: ociStorage
+      value: quay.io/redhat-user-workloads/hummingbird-tenant/nodejs20-main:{{revision}}
+    - name: package-name
+      value: nodejs20
+    - name: target-branch
+      value: '{{target_branch}}'
+    - name: build-architectures
+      value:
+        - aarch64
+        - x86_64
+    - name: specfile
+      value: "nodejs20.spec"
+    - name: monorepo-subdir
+      value: "rpms/nodejs20"
+    - name: mock-config-template-filename-in-sources
+      value: "mock/mock.cfg"
+  pipelineRef:
+    resolver: bundles
+    params:
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+  taskRunTemplate:
+    serviceAccountName: build-pipeline-nodejs20-main
+  timeouts:
+    pipeline: 4h
+    tasks: 4h
+  workspaces:
+    - name: git-auth
+      secret:
+        secretName: '{{git_auth_secret}}'
+---
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  annotations:
+    build.appstudio.openshift.io/repo: https://gitlab.com/redhat/hummingbird/rpms/-/tree/{{revision}}
+    build.appstudio.redhat.com/commit_sha: '{{revision}}'
+    build.appstudio.redhat.com/target_branch: '{{target_branch}}'
+    pipelinesascode.tekton.dev/on-target-branch: "[main]"
+    pipelinesascode.tekton.dev/cancel-in-progress: "false"
+    pipelinesascode.tekton.dev/max-keep-runs: "3"
+    pipelinesascode.tekton.dev/on-event: "[push]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/nodejs24/***]"
+  creationTimestamp: null
+  labels:
+    appstudio.openshift.io/application: rpms-main
+    appstudio.openshift.io/component: nodejs24-main
+    pipelines.appstudio.openshift.io/type: build
+  name: nodejs24-main-on-push
+  namespace: hummingbird-tenant
+spec:
+  params:
+    - name: git-url
+      value: '{{source_url}}'
+    - name: revision
+      value: '{{revision}}'
+    - name: ociStorage
+      value: quay.io/redhat-user-workloads/hummingbird-tenant/nodejs24-main:{{revision}}
+    - name: package-name
+      value: nodejs24
+    - name: target-branch
+      value: '{{target_branch}}'
+    - name: build-architectures
+      value:
+        - aarch64
+        - x86_64
+    - name: specfile
+      value: "nodejs24.spec"
+    - name: monorepo-subdir
+      value: "rpms/nodejs24"
+    - name: mock-config-template-filename-in-sources
+      value: "mock/mock.cfg"
+  pipelineRef:
+    resolver: bundles
+    params:
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+  taskRunTemplate:
+    serviceAccountName: build-pipeline-nodejs24-main
+  timeouts:
+    pipeline: 4h
+    tasks: 4h
+  workspaces:
+    - name: git-auth
+      secret:
+        secretName: '{{git_auth_secret}}'
+---
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  annotations:
+    build.appstudio.openshift.io/repo: https://gitlab.com/redhat/hummingbird/rpms/-/tree/{{revision}}
+    build.appstudio.redhat.com/commit_sha: '{{revision}}'
+    build.appstudio.redhat.com/target_branch: '{{target_branch}}'
+    pipelinesascode.tekton.dev/on-target-branch: "[main]"
+    pipelinesascode.tekton.dev/cancel-in-progress: "false"
+    pipelinesascode.tekton.dev/max-keep-runs: "3"
+    pipelinesascode.tekton.dev/on-event: "[push]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/npth/***]"
   creationTimestamp: null
   labels:

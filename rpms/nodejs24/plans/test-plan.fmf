@@ -1,0 +1,23 @@
+---
+summary: Package test suite
+discover:
+  how: fmf
+  url: https://gitlab.com/redhat/centos-stream/tests/nodejs
+  filter: "component:nodejs24"
+environment:
+  NODEJS_MAIN_PACKAGE: nodejs24
+  NODEJS_DEVEL_PACKAGE: nodejs24-devel
+  NODEJS_BIN_PACKAGE: nodejs24-bin
+  NPM_BIN_PACKAGE: nodejs24-npm-bin
+  NODE_BIN: /usr/bin/node-24
+  NPM_BIN: /usr/bin/npm-24
+  NODE_INCLUDE_PATH: /usr/include/node
+prepare:
+  - name: install tested packages
+    how: install
+    package:
+      - ${NODEJS_MAIN_PACKAGE}
+      - ${NODEJS_DEVEL_PACKAGE}
+execute:
+  how: tmt
+...
