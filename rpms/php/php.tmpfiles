@@ -1,0 +1,5 @@
+d /var/lib/php           0755 root   root   -
+d /var/lib/php/opcache   0770 root   apache -
+d /var/lib/php/session   0770 root   apache -
+d /var/lib/php/wsdlcache 0770 root   apache -
+d /var/log/php-fpm       0770 apache root   -

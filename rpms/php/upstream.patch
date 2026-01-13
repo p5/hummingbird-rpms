@@ -1,0 +1,49 @@
+From 9b089edcbdda19e283c34c0619b17a29a2202fa3 Mon Sep 17 00:00:00 2001
+From: Remi Collet <remi@remirepo.net>
+Date: Thu, 1 Jan 2026 08:17:29 +0100
+Subject: [PATCH] Fix missing liburiparser linker option
+
+---
+ ext/uri/config.m4 | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/ext/uri/config.m4 b/ext/uri/config.m4
+index 390d8eb223cb9..dda586b752aa1 100644
+--- a/ext/uri/config.m4
++++ b/ext/uri/config.m4
+@@ -34,7 +34,7 @@ if test "$PHP_EXTERNAL_URIPARSER" = "no"; then
+   URI_CFLAGS="-DURI_STATIC_BUILD"
+ else
+   PKG_CHECK_MODULES([LIBURIPARSER], [liburiparser >= 1.0.0])
+-  PHP_EVAL_LIBLINE([$LIBURIPARSER_LIBS], [URI_SHARED_LIBADD])
++  PHP_EVAL_LIBLINE([$LIBURIPARSER_LIBS])
+   PHP_EVAL_INCLINE([$LIBURIPARSER_CFLAGS])
+ fi
+ 
+From bd484ed65f85cdced12deb65638af2caaa7b0b33 Mon Sep 17 00:00:00 2001
+From: Calvin Buckley <calvinb@php.net>
+Date: Wed, 31 Dec 2025 13:04:09 -0400
+Subject: [PATCH] Fix skipif for mkfifo usage in gh20582.phpt (#20804)
+
+Makes it like ext/standard/tests/file/filetype_variation.phpt; it's not
+just Windows that can have a missing posix_mkfifo, but also a minimal
+build, like the ones suggested that RMs test with (using --disable-all).
+---
+ ext/standard/tests/image/gh20582.phpt | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/ext/standard/tests/image/gh20582.phpt b/ext/standard/tests/image/gh20582.phpt
+index 63561534b2fd0..499f70e372603 100644
+--- a/ext/standard/tests/image/gh20582.phpt
++++ b/ext/standard/tests/image/gh20582.phpt
+@@ -5,7 +5,9 @@ Nikita Sveshnikov (Positive Technologies)
+ ndossche
+ --SKIPIF--
+ <?php
+-if (PHP_OS_FAMILY === "Windows") die("skip Only for platforms with FIFO pipes");
++if (!function_exists("posix_mkfifo")) {
++    die("skip no posix_mkfifo()");
++}
+ ?>
+ --FILE--
+ <?php
