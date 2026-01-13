@@ -1266,6 +1266,13 @@
     "source": "https://src.fedoraproject.org/rpms/ruby.git",
     "version": "4.0.0"
   },
+  "rubygem-json": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "3d429ea59d296926a6d2fdb353b3c10bf735ea15",
+    "source": "https://src.fedoraproject.org/rpms/rubygem-json.git",
+    "version": "2.18.0"
+  },
   "rust-rpm-sequoia": {
     "branch": "rawhide",
     "release": "1",
