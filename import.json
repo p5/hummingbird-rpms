@@ -860,8 +860,6 @@
     "source": "https://src.fedoraproject.org/rpms/nodejs20.git",
     "version": "20.19.6"
   },
-<<<<<<< HEAD
-=======
   "nodejs22": {
     "branch": "rawhide",
     "release": "1",
@@ -876,7 +874,6 @@
     "source": "https://src.fedoraproject.org/rpms/nodejs24.git",
     "version": "24.11.1"
   },
->>>>>>> d957205 (Import nodejs24-24.11.1-1)
   "npth": {
     "branch": "rawhide",
     "release": "1",
