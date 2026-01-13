@@ -6,7 +6,9 @@ kind: IntegrationTestScenario
 metadata:
   name: {{ application_name + "-testing-farm-" + arch.replace("_", "-") }}
   annotations:
-    test.appstudio.openshift.io/pipeline_timeout: 8h30m
+    test.appstudio.openshift.io/pipeline_timeout: 10h
+    test.appstudio.openshift.io/tasks_timeout: 9h
+    test.appstudio.openshift.io/finally_timeout: 1h
 spec:
   application: {{ application_name }}
   contexts:

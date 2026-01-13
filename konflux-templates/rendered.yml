@@ -7305,7 +7305,9 @@ kind: IntegrationTestScenario
 metadata:
   name: rpms-main-testing-farm-x86-64
   annotations:
-    test.appstudio.openshift.io/pipeline_timeout: 8h30m
+    test.appstudio.openshift.io/pipeline_timeout: 10h
+    test.appstudio.openshift.io/tasks_timeout: 9h
+    test.appstudio.openshift.io/finally_timeout: 1h
 spec:
   application: rpms-main
   contexts:
@@ -7336,7 +7338,9 @@ kind: IntegrationTestScenario
 metadata:
   name: rpms-main-testing-farm-aarch64
   annotations:
-    test.appstudio.openshift.io/pipeline_timeout: 8h30m
+    test.appstudio.openshift.io/pipeline_timeout: 10h
+    test.appstudio.openshift.io/tasks_timeout: 9h
+    test.appstudio.openshift.io/finally_timeout: 1h
 spec:
   application: rpms-main
   contexts:
