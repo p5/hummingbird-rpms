@@ -5,7 +5,7 @@
 
 Name:           hummingbird-release
 Version:        20251124
-Release:        1.3%{?dist}
+Release:        1.4%{?dist}
 Summary:        %{distro} release files
 License:        GPL-2.0-or-later
 URL:            https://hummingbird-project.io/
@@ -95,6 +95,7 @@ install -d -m 0755 %{buildroot}%{_prefix}/lib
 cat > %{buildroot}%{_prefix}/lib/os-release << EOF
 NAME="%{dist_name}"
 VERSION="%{version}"
+VERSION_ID="%{version}"
 ID="hummingbird"
 ID_LIKE="fedora rhel"
 CPE_NAME="cpe:/a:redhat:hummingbird:1"
