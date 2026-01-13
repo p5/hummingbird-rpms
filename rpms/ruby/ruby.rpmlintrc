@@ -1,0 +1,59 @@
+# Keep matching patterns enough not to hide unintended errors and warnings.
+
+# There is no way to implement this with `%{SOURCE0}` without `%{_sourcedir}`.
+# The order in the .spec file could be possibly different.
+addFilter(r'ruby\.(spec|src):20: E: use-of-RPM_SOURCE_DIR$')
+
+# The used version is not obvious.
+addFilter(r'ruby\.(spec|src):\d+: W: unversioned-explicit-provides bundled\(ccan-build_assert\)$')
+addFilter(r'ruby\.(spec|src):\d+: W: unversioned-explicit-provides bundled\(ccan-check_type\)$')
+addFilter(r'ruby\.(spec|src):\d+: W: unversioned-explicit-provides bundled\(ccan-container_of\)$')
+addFilter(r'ruby\.(spec|src):\d+: W: unversioned-explicit-provides bundled\(ccan-list\)$')
+
+# The template files do not have to have executable bits.
+addFilter(r'^rubygem-bundler\.noarch: E: non-executable-script /usr/share/gems/gems/bundler-[\d\.]+/lib/bundler/templates/[\w/\.]+ 644 /usr/bin/env ')
+
+# Samples don't really need executable bits.
+addFilter(r'^rubygem-bigdecimal\.x86_64: E: non-executable-script /usr/share/gems/gems/bigdecimal-[\d\.]+/sample/\w+.rb 644 /usr/local/bin/ruby$')
+
+# The bundled gem files permissions are overridden as 644 by `make install`.
+# https://bugs.ruby-lang.org/issues/17840
+# https://github.com/rubygems/rubygems/issues/5255
+addFilter(r'^.*: E: non-executable-script /usr/share/gems/gems/(abbrev|getoptlong|nkf|observer|resolv|resolv-replace|rinda|syslog)-[\d\.]+/bin/\w+ 644 ')
+
+# Ruby provides API to set the cipher list.
+addFilter(r'^ruby-libs\.\w+: W: crypto-policy-non-compliance-openssl /usr/lib(64)?/ruby/openssl.so SSL_CTX_set_cipher_list$')
+
+# `gethostbyname` is part of deprecated Ruby API. There is also request to drop the API altogether:
+# https://bugs.ruby-lang.org/issues/13097
+# https://bugs.ruby-lang.org/issues/17944
+addFilter(r'^ruby-libs\.\w+: W: binary-or-shlib-calls-gethostbyname /usr/lib(64)?/ruby/socket.so$')
+
+# Rake ships some examples.
+addFilter(r'^rubygem-rake.noarch: W: devel-file-in-non-devel-package /usr/share/gems/gems/rake-[\d\.]+/doc/example/\w+.c$')
+
+# Some executables don't have their manual pages. Is it worth of use help2man?
+addFilter(r'^.+: W: no-manual-page-for-binary (bundler|gem|racc|rbs|rdbg|rdoc|ruby-mri|syntax_suggest|typeprof)$')
+
+# Default gems does not come with any documentation.
+addFilter(r'^rubygem-(bigdecimal|io-console|json|psych)\.\w+: W: no-documentation$')
+
+# rubygems-devel ships only RPM macros and generators. Their placement is given
+# by RPM and can't be modified.
+addFilter(r'rubygems-devel.noarch: W: only-non-binary-in-usr-lib$')
+
+# Ignore some spelling false positives.
+# Ignore spelling of technical terms
+addFilter(r'^ruby-default-gems.noarch: E: spelling-error \(\'gemspec\'')
+addFilter(r'^ruby-libs.x86_64: E: spelling-error \(\'libruby\'')
+addFilter(r'^rubygem-test-unit.noarch: E: spelling-error \(\'xUnit\'')
+addFilter(r'^rubygem-psych.x86_64: E: spelling-error \(\'libyaml\'')
+addFilter(r'^rubygem-io-console.x86_64: E: spelling-error \(\'readline\'')
+# `pyaml` is part of URL
+addFilter(r'^rubygem-psych.x86_64: E: spelling-error \(\'pyyaml\'')
+# `de-` is actually prefix
+addFilter(r'^rubygem-psych.x86_64: E: spelling-error \(\'de\'')
+
+# It does not seemt to be worth of changing rubygems to archful package due to
+# single directory, unless it causes some real troubles.
+addFilter(r'^rubygems.noarch: E: noarch-with-lib64$')
