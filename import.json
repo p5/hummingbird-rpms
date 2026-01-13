@@ -1206,6 +1206,13 @@
     "source": "https://src.fedoraproject.org/rpms/php.git",
     "version": "8.5.2~RC1"
   },
+  "php-pecl-zip": {
+    "branch": "rawhide",
+    "release": "3",
+    "sha": "407a442da299e1b1ed8bc2bd3c772d1e25199b58",
+    "source": "https://src.fedoraproject.org/rpms/php-pecl-zip.git",
+    "version": "1.22.7"
+  },
   "pkgconf": {
     "branch": "rawhide",
     "release": "3",
