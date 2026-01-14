@@ -13221,6 +13221,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux-d160-c8xlarge/arm64"
+        - "linux-d160-c8xlarge/amd64"
     - name: specfile
       value: "ruff.spec"
     - name: monorepo-subdir
@@ -13240,8 +13244,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-ruff-main
   timeouts:
-    pipeline: 4h
-    tasks: 4h
+    pipeline: 8h
+    tasks: 8h
   workspaces:
     - name: git-auth
       secret:
