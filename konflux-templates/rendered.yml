@@ -8534,7 +8534,7 @@ spec:
         - name: url
           value: 'https://github.com/konflux-ci/release-service-catalog.git'
         - name: revision
-          value: 0fbe8d377db99dd697511d8008747ec6eed38582
+          value: 8b069422a14cdb62309d01f0aa26806cc01f7142
         - name: pathInRepo
           value: pipelines/managed/push-rpms-to-pulp/push-rpms-to-pulp.yaml
       resolver: git
