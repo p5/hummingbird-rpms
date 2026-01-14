@@ -1,0 +1,20 @@
+RPM macros to control the build arch's available for
+Fedora Haskell packages with ghc-rpm-macros.
+
+%ghc_arches_with_ghci:
+
+The ghci interactive environment is needed when compiling
+packages that use Template Haskell.  It is not available
+on all archs.  Use "ExclusiveArch: %{ghc_arches_with_ghci}"
+in packages that need the ghci capability to build,
+or require a dependency that can only build with ghci.
+
+%ghc_arches:
+
+Deprecated but still used in older releases/packages.
+Currently (as of F21) ghc is available on all actively
+maintained architectures, but we could use %ghc_arches
+again in the future if that is no longer true again.
+
+Please report any issues in Red Hat bugzilla under
+the Fedora product and ghc-srpm-macros component.

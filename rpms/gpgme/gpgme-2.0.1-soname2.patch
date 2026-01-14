@@ -1,0 +1,13 @@
+diff -up gpgme-2.0.1/qgpgme/CMakeLists.txt.soname2 gpgme-2.0.1/qgpgme/CMakeLists.txt
+--- gpgme-2.0.1/qgpgme/CMakeLists.txt.soname2	2025-11-10 11:58:06.452079763 +0100
++++ gpgme-2.0.1/qgpgme/CMakeLists.txt	2025-11-10 12:05:41.436829379 +0100
+@@ -38,7 +38,8 @@ set(VERSION_MICRO ${PROJECT_VERSION_PATC
+ set(LIBQGPGME_LT_CURRENT "22")
+ set(LIBQGPGME_LT_AGE "7")
+ set(LIBQGPGME_LT_REVISION "0")
+-math(EXPR LIBQGPGME_SOVERSION "${LIBQGPGME_LT_CURRENT} - ${LIBQGPGME_LT_AGE}")
++#prevent conflict with .so.15 from compat-gpgme124 library
++set(LIBQGPGME_SOVERSION "15v2")
+ 
+ set(GPG_ERROR_REQUIRED_VERSION "1.47")
+ set(GPGME_REQUIRED_VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.0")

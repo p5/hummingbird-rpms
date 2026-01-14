@@ -1,0 +1,22 @@
+---
+badfuncs:
+  # mod_proxy uses inet_ntoa (safely) for IPv4 address matching,
+  # and APR interfaces for IPv6 addresses.
+  allowed:
+    /usr/lib*/httpd/modules/mod_proxy.so:
+      - inet_ntoa
+upstream:
+  ignore:
+    - '*.xml'
+    - '*.service'
+    - '*.socket'
+    - '*.conf'
+    - '*.sysconf'
+    - '*.tmpfiles'
+    - 'README.*'
+    - '*.sysusers'
+    - '*.png'
+    - 'httpd-ssl-*'
+    - config.layout
+    - 'action*.sh'
+    - 'apachectl.*'

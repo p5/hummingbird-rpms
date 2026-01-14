@@ -1,0 +1,11 @@
+# The gpgverify testcases have these data in common. The details that differ
+# are in the subdirectories.
+
+require:
+    - rpm-build
+    - gpgverify
+    - grep
+
+test: ../test-rpmbuild
+# ".." because it's apparently relative to the subdirectory of each testcase,
+# not relative to this file.

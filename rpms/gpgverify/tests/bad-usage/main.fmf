@@ -1,0 +1,5 @@
+summary: gpgverify testcase, insecure clearsigned usage
+
+environment:
+    test_kind:       "negative"
+    required_output: "gpgverify: Neither a signature nor an output file was provided."

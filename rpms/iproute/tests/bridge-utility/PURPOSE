@@ -1,0 +1,3 @@
+PURPOSE of /CoreOS/iproute/Sanity/bridge-utility
+Description: Test basic bridge funcionality
+Author: David Spurek <dspurek@redhat.com>

@@ -411,6 +411,33 @@
     "sha": "90ff975dce8834d53778e793405bb55abf7d6980",
     "source": "https://src.fedoraproject.org/rpms/fontconfig.git",
     "version": "2.17.0"
+  "fonts-rpm-macros": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "c658dbd149ed6cf28fb84e7ec02197ef2002db1f",
+    "source": "https://src.fedoraproject.org/rpms/fonts-rpm-macros.git",
+    "version": "5.0.0"
+  },
+  "forge-srpm-macros": {
+    "branch": "rawhide",
+    "release": "3",
+    "sha": "b6fe7a9f17959118f0fe5b8eaaca7e51d71cddc6",
+    "source": "https://src.fedoraproject.org/rpms/forge-srpm-macros.git",
+    "version": "0.4.0"
+  },
+  "fpc-srpm-macros": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "7fc537dd75ba6ad322e48c0fbc2313ae196fa6cb",
+    "source": "https://src.fedoraproject.org/rpms/fpc-srpm-macros.git",
+    "version": "1.3"
+  },
+  "freetype": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "e6cc53fb5f04e16f208ec3b9ae9ee802d2157699",
+    "source": "https://src.fedoraproject.org/rpms/freetype.git",
+    "version": "2.14.1"
   },
   "fsverity-utils": {
     "branch": "rawhide",
@@ -419,6 +446,13 @@
     "source": "https://src.fedoraproject.org/rpms/fsverity-utils.git",
     "version": "1.6"
   },
+  "gap-srpm-macros": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "2c988e5368efe4d04919abc3a821bf2450ebd1fe",
+    "source": "https://src.fedoraproject.org/rpms/gap-srpm-macros.git",
+    "version": "2"
+  },
   "gawk": {
     "branch": "rawhide",
     "release": "2",
@@ -426,12 +460,26 @@
     "source": "https://src.fedoraproject.org/rpms/gawk.git",
     "version": "5.3.2"
   },
+  "gdb": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "cdcbfd69f7c739b9d192296b7ba358db2bbc80c0",
+    "source": "https://src.fedoraproject.org/rpms/gdb.git",
+    "version": "17.1"
+  },
   "gdbm": {
     "branch": "rawhide",
     "release": "10",
     "sha": "870811290fc8a18c7798959d1a0e9e17c018022f",
     "source": "https://src.fedoraproject.org/rpms/gdbm.git",
     "version": "1.23"
+  },
+  "ghc-srpm-macros": {
+    "branch": "rawhide",
+    "release": "3",
+    "sha": "0a6852c350c40ed6a4bdd6fe22b29614271cf0fb",
+    "source": "https://src.fedoraproject.org/rpms/ghc-srpm-macros.git",
+    "version": "1.9.2"
   },
   "git": {
     "branch": "rawhide",
@@ -453,6 +501,20 @@
     "sha": "56096312a18ac561c1d3c79c11c7e4ed52a8afc8",
     "source": "https://src.fedoraproject.org/rpms/gmp.git",
     "version": "6.3.0"
+  },
+  "gnat-srpm-macros": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "7402568218327483986dd79f9ac328d2a1d8f820",
+    "source": "https://src.fedoraproject.org/rpms/gnat-srpm-macros.git",
+    "version": "7"
+  },
+  "gnulib-l10n": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "8dffd23608a2f97c8c3cd089b8b6fa5f6cbdd0a8",
+    "source": "https://src.fedoraproject.org/rpms/gnulib-l10n.git",
+    "version": "20241231"
   },
   "gnupg2": {
     "branch": "rawhide",
@@ -489,12 +551,47 @@
     "source": "https://src.fedoraproject.org/rpms/google-noto-fonts.git",
     "version": "20251201"
   },
+  "gperftools": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "aa3dd8e0019ebda48a93a97b07657ea7c9d127bf",
+    "source": "https://src.fedoraproject.org/rpms/gperftools.git",
+    "version": "2.17.2"
+  },
+  "gpgme": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "a98e348fb9e801f7ea20f6add417a177f415a3c2",
+    "source": "https://src.fedoraproject.org/rpms/gpgme.git",
+    "version": "2.0.1"
+  },
+  "gpgverify": {
+    "branch": "rawhide",
+    "release": "3",
+    "sha": "296714a0a9113a38983ee490740b63c2b7b8d4a6",
+    "source": "https://src.fedoraproject.org/rpms/gpgverify.git",
+    "version": "2.2"
+  },
+  "graphite2": {
+    "branch": "rawhide",
+    "release": "19",
+    "sha": "35da1927572eb7adba1396c503fd7463558723ae",
+    "source": "https://src.fedoraproject.org/rpms/graphite2.git",
+    "version": "1.3.14"
+  },
   "grep": {
     "branch": "rawhide",
     "release": "2",
     "sha": "c2b244d3c09bd8779f95f0ab45909c6cc4309e7f",
     "source": "https://src.fedoraproject.org/rpms/grep.git",
     "version": "3.12"
+  },
+  "groff": {
+    "branch": "rawhide",
+    "release": "11",
+    "sha": "1cab785b3eeb39641c85ef254de3edf231f01fff",
+    "source": "https://src.fedoraproject.org/rpms/groff.git",
+    "version": "1.23.0"
   },
   "gzip": {
     "branch": "rawhide",
@@ -503,6 +600,20 @@
     "source": "https://src.fedoraproject.org/rpms/gzip.git",
     "version": "1.14"
   },
+  "haproxy": {
+    "branch": "rawhide",
+    "release": "4",
+    "sha": "8b9b0c59f3a47c87d5bd7f9844a5267080a607fa",
+    "source": "https://src.fedoraproject.org/rpms/haproxy.git",
+    "version": "3.0.5"
+  },
+  "harfbuzz": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "911e8d14640b7db83b7b6cda0213049f3799833d",
+    "source": "https://src.fedoraproject.org/rpms/harfbuzz.git",
+    "version": "12.3.0"
+  },
   "hostname": {
     "branch": "rawhide",
     "release": "1",
@@ -510,12 +621,33 @@
     "source": "https://src.fedoraproject.org/rpms/hostname.git",
     "version": "3.25"
   },
+  "httpd": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "0c203aeed682395c663f7afef328f754fa629b6a",
+    "source": "https://src.fedoraproject.org/rpms/httpd.git",
+    "version": "2.4.66"
+  },
+  "icu": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "e58b636d67b144eb2e939eb2563ed0ab7caba331",
+    "source": "https://src.fedoraproject.org/rpms/icu.git",
+    "version": "77.1"
+  },
   "ima-evm-utils": {
     "branch": "rawhide",
     "release": "7",
     "sha": "667e783b37838ccb6a2cb2198a22f280b2bb5548",
     "source": "https://src.fedoraproject.org/rpms/ima-evm-utils.git",
     "version": "1.6.2"
+  },
+  "iproute": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "e2fb4f806782daf154762a8e4b63ebaae16349f8",
+    "source": "https://src.fedoraproject.org/rpms/iproute.git",
+    "version": "6.17.0"
   },
   "jansson": {
     "branch": "rawhide",

@@ -1,0 +1,102 @@
+#!/bin/bash
+
+# Distinguishing between failures and errors isn't possible in all cases, as
+# RPMbuild uses exit code 1 for more than one kind of error, but this script
+# still tries to make the distinction where possible.
+
+# Try to run the prep scriptlet of the spec found in the current directory.
+# (There is one for each testcase, each in its own directory.) Save a copy of
+# the output for inspection.
+rpmbuild --define "_sourcedir ${PWD}" -bp *.spec 2>&1 | tee rpmbuild_output
+result=${PIPESTATUS[0]} tee_result=${PIPESTATUS[1]}
+if test "${test_kind}" = negative ; then
+    # This is a negative test. Swap the success and failure codes. Leave any
+    # other value as an error code.
+    case ${result} in
+        (0)
+            echo 'RPMbuild succeeded when it should have failed.'
+            exit 1
+            ;;
+        (1)
+            echo 'RPMbuild failed as it should.'
+            result=0
+            ;;
+    esac
+fi
+if test ${result} -ne 0 ; then
+    exit ${result}
+fi
+
+# Any problem with tee is an error in the test.
+case ${tee_result} in
+    (0)
+        # OK
+        ;;
+    (1)
+        exit 2  # Return error, not failure.
+        ;;
+    (*)
+        exit ${tee_result}
+        ;;
+esac
+
+# Check whether commands after the signature verification were executed.
+grep --quiet --fixed-strings 'Execution of prep continues.' rpmbuild_output
+result=$?
+case ${result} in
+    (0)
+        if test "${test_kind}" != negative ; then
+            echo 'Execution continued correctly.'
+        else
+            echo 'Execution continued when it should have stopped.'
+            exit 1
+        fi
+        ;;
+    (1)
+        if test "${test_kind}" != negative ; then
+            echo 'Execution stopped when it should have continued.'
+            exit 1
+        else
+            echo 'Execution stopped correctly.'
+        fi
+        ;;
+    (*)
+        exit ${result}  # error in the test
+        ;;
+esac
+
+if test -n "${required_output}" ; then
+    # Look for output that must be present.
+    grep --quiet --fixed-strings --regexp="${required_output}" rpmbuild_output
+    result=$?
+    case ${result} in
+        (0)
+            echo "The text \"${required_output}\" was correctly present."
+            ;;
+        (1)
+            echo "The text \"${required_output}\" didn't appear where it should."
+            exit 1
+            ;;
+        (*)
+            exit ${result}  # error in the test
+            ;;
+    esac
+fi
+
+if test -n "${forbidden_output}" ; then
+    # Look for output that must be absent.
+    grep --quiet --fixed-strings --regexp="${forbidden_output}" rpmbuild_output
+    result=$?
+    case ${result} in
+        (0)
+            echo "The text \"${forbidden_output}\" appeared where it shouldn't."
+            exit 1
+            ;;
+        (1)
+            echo "The text \"${forbidden_output}\" was correctly absent."
+            ;;
+        (*)
+            exit ${result}  # error in the test
+            ;;
+    esac
+fi

@@ -1,0 +1,3 @@
+PURPOSE of /CoreOS/iproute/Sanity/ip-rule-sanity-test
+Description: Test basic ip rule funcionality
+Author: Jaroslav Aster <jaster@redhat.com>
