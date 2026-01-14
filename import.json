@@ -1196,6 +1196,20 @@
     "source": "https://src.fedoraproject.org/rpms/perl-srpm-macros.git",
     "version": "1"
   },
+  "php": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "b5a597b36235f8efff7c9c82d88126edb8cb1968",
+    "source": "https://src.fedoraproject.org/rpms/php.git",
+    "version": "8.5.2~RC1"
+  },
+  "php-pecl-zip": {
+    "branch": "rawhide",
+    "release": "3",
+    "sha": "407a442da299e1b1ed8bc2bd3c772d1e25199b58",
+    "source": "https://src.fedoraproject.org/rpms/php-pecl-zip.git",
+    "version": "1.22.7"
+  },
   "pkgconf": {
     "branch": "rawhide",
     "release": "3",
