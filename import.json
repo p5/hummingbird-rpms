@@ -1405,6 +1405,34 @@
     "source": "https://src.fedoraproject.org/rpms/rpm.git",
     "version": "6.0.1"
   },
+  "ruby": {
+    "branch": "rawhide",
+    "release": "30",
+    "sha": "95c21e57751a564afe4457e7f5a5c0393ec5f8bd",
+    "source": "https://src.fedoraproject.org/rpms/ruby.git",
+    "version": "4.0.0"
+  },
+  "rubygem-json": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "3d429ea59d296926a6d2fdb353b3c10bf735ea15",
+    "source": "https://src.fedoraproject.org/rpms/rubygem-json.git",
+    "version": "2.18.0"
+  },
+  "rubygem-rdoc": {
+    "branch": "rawhide",
+    "release": "200",
+    "sha": "6deea9b12ad86aaf7a2e6af6bd952fe488d82aa5",
+    "source": "https://src.fedoraproject.org/rpms/rubygem-rdoc.git",
+    "version": "7.0.3"
+  },
+  "rubypick": {
+    "branch": "rawhide",
+    "release": "23",
+    "sha": "9ac7ea8c10bd75ff94f5be8505cf3ca99deb7d20",
+    "source": "https://src.fedoraproject.org/rpms/rubypick.git",
+    "version": "1.1.1"
+  },
   "rust-rpm-sequoia": {
     "branch": "rawhide",
     "release": "1",
