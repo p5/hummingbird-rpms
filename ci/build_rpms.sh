@@ -71,10 +71,15 @@ mkdir -p sources
 mkdir -p var_lib_mock
 
 # Allow mockbuilder (gid 135/mock) to read config and write results
-podman unshare setfacl -m g:135:rwx -m default:g:135:rwx "results"
-podman unshare setfacl -m g:135:rwx -m default:g:135:rwx "config"
-podman unshare setfacl -m g:135:rwx -m default:g:135:rwx "sources"
-podman unshare setfacl -m g:135:rwx "var_lib_mock"
+if command -v setfacl &> /dev/null; then
+    podman unshare setfacl -m g:135:rwx -m default:g:135:rwx "results"
+    podman unshare setfacl -m g:135:rwx -m default:g:135:rwx "config"
+    podman unshare setfacl -m g:135:rwx -m default:g:135:rwx "sources"
+    podman unshare setfacl -m g:135:rwx "var_lib_mock"
+else
+    echo "Error: This script requires setfacl in \$PATH.  Install setfacl via 'dnf -y install acl'"
+    exit 1
+fi
 
 # Copy local source files to sources directory
 cp -f "${RPM_DIR}/${package_name}"/* "${workdir}/sources/" 2>/dev/null || true
