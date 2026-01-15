@@ -96,8 +96,10 @@ for path in "${rpms[@]}"; do
     # resource names must not contain underscores, but some package names do (like createrepo_c)
     # resource names must also be lowercase, but some package names have uppercase (like R-*)
     # resource names must not contain '+', but some package names do (like perl-Text-Tabs+Wrap)
+    # resource names must not contain '.', but some package names do (like dotnet8.0)
     component_name=${dname//_/-}
     component_name=${component_name//+/-}
+    component_name=${component_name//./-}
     name=${component_name,,}-${BRANCH}
 
     (

@@ -1,0 +1,62 @@
+#!/bin/bash
+
+# Usage:
+#   build-prebuilt-archive architecture vmr-directory
+#
+# Creates an archive containing necessary bootstrapping binaries for ppc64le or
+# s390x architectures from a VMR build.
+#
+# You need to have cloned the VMR (https://github.com/dotnet/dotnet) and
+# cross-compiled it for the target architecture already.
+
+set -euo pipefail
+IFS=$'\n\t'
+set -x
+
+function print_usage {
+    echo "Usage:"
+    echo "$0 <architecture> <vmr directory>"
+    echo
+    echo "Creates a ppc64le or s390x bootstrap archive from a VMR build."
+    echo
+    echo "You need to have cloned the VMR (https://github.com/dotnet/dotnet) and"
+    echo "cross-compiled it for the target architecture already."
+
+}
+
+positional_args=()
+while [[ "$#" -gt 0 ]]; do
+    arg="${1}"
+    case "${arg}" in
+        -h|--help)
+            print_usage
+            exit 0
+            ;;
+        *)
+            positional_args+=("$1")
+            shift
+            ;;
+    esac
+done
+
+arch=${positional_args[0]}  # Name of the architecture. Eg, s390x or ppc64le
+dir=${positional_args[1]} # Checkout of the VMR with the cross-build for the target architecture
+dir=$(readlink -f "$dir")
+
+sdk_tarball=$(readlink -f $(find "$dir" -iname 'dotnet-sdk*'"$arch"'*tar.gz' | head -1))
+
+# SDK is at VMR/artifacts/assets/Release/dotnet-sdk-9.0.100-preview.3.24165.1-linux-$arch.tar.gz. Extract the SDK version from the name.
+sdk_version=$(echo "$(basename "${sdk_tarball}")" | sed -E -e 's/dotnet-sdk-//' -e "s/-linux-$arch.tar.gz//")
+echo $sdk_version
+
+archive_name=dotnet-prebuilts-${sdk_version}-${arch}
+
+mkdir -p $archive_name
+pushd $archive_name
+
+cp -av $sdk_tarball .
+cp $dir/artifacts/assets/Release/Private.SourceBuilt.Artifacts.*.tar.gz .
+
+popd
+
+tar cvzf $archive_name.tar.gz $archive_name

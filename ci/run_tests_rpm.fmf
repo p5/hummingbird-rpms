@@ -72,8 +72,8 @@ discover:
             # Handle packages where underscores were replaced with hyphens in IMAGE_NAME
             # and where uppercase letters were replaced with lowercase in IMAGE_NAME
             # Use glob matching to find the actual package directory
-            # Replace each hyphen with a pattern that matches hyphen, underscore or plus
-            package_pattern=${package_name//-/[-_+]}
+            # Replace each hyphen with a pattern that matches hyphen, underscore, plus or dot
+            package_pattern=${package_name//-/[-_+.]}
             # Enable case-insensitive globbing to match package names like R-*
             shopt -s nullglob nocaseglob
             matches=(rpms/${package_pattern})

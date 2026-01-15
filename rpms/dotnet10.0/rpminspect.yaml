@@ -1,0 +1,20 @@
+---
+inspections:
+    # We patch upstream a lot, no need to reject patches
+    patches: off
+badfuncs:
+    allowed:
+        # The Mono runtime (used on s390x, for example), uses inet_addr for
+        # debugging (such as sending the control flow graph to a remote process).
+        # See runtime/src/mono/mono/mini/cfgdump.c. This isn't part of any
+        # standard networking facility; networking APIs are implemented/used in
+        # libSystem*so.
+        /usr/lib64/dotnet/shared/Microsoft.NETCore.App/*/libcoreclr.so:
+            - inet_addr
+        /usr/lib64/dotnet/packs/Microsoft.NETCore.App.Runtime.*/*/runtimes/*/native/libcoreclr.so:
+            - inet_addr
+runpath:
+    # Upstream explicitly sets $ORIGIN/netcoredeps as an RPATH
+    # See https://github.com/dotnet/core/blob/main/Documentation/self-contained-linux-apps.md
+    allowed_origin_paths:
+        - /netcoredeps
