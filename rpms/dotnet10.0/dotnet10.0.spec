@@ -702,6 +702,7 @@ find -depth -name 'artifacts' -type d -print -exec rm -rf {} \;
   --source-only \
   --release-manifest %{SOURCE3} \
   --branding rtm \
+  --clean-while-building \
 %if %{without bootstrap}
   --with-sdk previously-built-dotnet \
 %endif
