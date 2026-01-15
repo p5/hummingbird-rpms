@@ -1441,6 +1441,13 @@
     "source": "https://src.fedoraproject.org/rpms/rubypick.git",
     "version": "1.1.1"
   },
+  "ruff": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "2ed24bbc3848718a86180e270683212a5cef32fd",
+    "source": "https://src.fedoraproject.org/rpms/ruff.git",
+    "version": "0.14.11"
+  },
   "rust-rpm-sequoia": {
     "branch": "rawhide",
     "release": "1",
