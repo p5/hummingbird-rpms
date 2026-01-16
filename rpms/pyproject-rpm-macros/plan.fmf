@@ -1,0 +1,128 @@
+execute:
+  how: tmt
+discover:
+  - name: same_repo
+    how: shell
+    tests:
+    - name: c9s_mockbuild
+      path: /
+      test: NAME="CentOS Stream" VERSION_ID=9 tests/mocktest.sh pyproject-rpm-macros
+    - name: c10s_mockbuild
+      path: /
+      test: NAME="CentOS Stream" VERSION_ID=10 tests/mocktest.sh pyproject-rpm-macros
+    - name: pytest
+      path: /tests
+      test: ./mocktest.sh python-pytest
+    - name: entrypoints
+      path: /tests
+      test: ./mocktest.sh python-entrypoints
+    - name: pluggy
+      path: /tests
+      test: ./mocktest.sh python-pluggy
+    - name: clikit
+      path: /tests
+      test: ./mocktest.sh python-clikit
+    - name: distroinfo
+      path: /tests
+      test: ./mocktest.sh python-distroinfo
+    - name: tldr
+      path: /tests
+      test: ./mocktest.sh tldr
+    - name: openqa_client
+      path: /tests
+      test: ./mocktest.sh python-openqa_client
+    - name: httpbin
+      path: /tests
+      test: ./mocktest.sh python-httpbin
+    - name: ldap
+      path: /tests
+      test: ./mocktest.sh python-ldap
+    - name: isort
+      path: /tests
+      test: ./mocktest.sh python-isort
+    - name: mistune
+      path: /tests
+      test: ./mocktest.sh python-mistune
+    - name: setuptools_scm
+      path: /tests
+      test: ./mocktest.sh python-setuptools_scm
+    - name: ipykernel
+      path: /tests
+      test: ./mocktest.sh python-ipykernel
+    - name: zope
+      path: /tests
+      test: ./mocktest.sh python-zope-event
+    - name: django
+      path: /tests
+      test: ./mocktest.sh python-django
+    - name: printrun
+      path: /tests
+      test: ./mocktest.sh printrun
+    - name: dns_lexicon
+      path: /tests
+      test: ./mocktest.sh python-dns-lexicon
+    - name: flit_core
+      path: /tests
+      test: ./mocktest.sh python-flit-core
+    - name: poetry_core
+      path: /tests
+      test: ./mocktest.sh python-poetry-core
+    - name: setuptools
+      path: /tests
+      test: ./mocktest.sh python-setuptools
+    - name: markupsafe
+      path: /tests
+      test: ./mocktest.sh python-markupsafe
+    - name: getmac
+      path: /tests
+      test: ./mocktest.sh python-getmac
+    - name: userpath
+      path: /tests
+      test: ./mocktest.sh python-userpath
+    - name: markdown_it_py
+      path: /tests
+      test: ./mocktest.sh python-markdown-it-py
+    - name: double_install
+      path: /tests
+      test: ./mocktest.sh double-install
+    - name: fake_requirements
+      path: /tests
+      test: ./mocktest.sh fake-requirements
+    - name: virtualenv
+      path: /tests
+      test: ./mocktest.sh python-virtualenv
+    - name: coverage_pth
+      path: /tests
+      test: ./mocktest.sh python-coverage-pth
+    - name: pello
+      path: /tests
+      test: ./mocktest.sh python-pello
+    - name: pello_with_options
+      path: /tests
+      test: ./mocktest.sh python-pello --with options
+    - name: pello_with_override_install
+      path: /tests
+      test: ./mocktest.sh python-pello --with override_install
+    - name: escape_paths
+      path: /tests
+      test: ./mocktest.sh escape_paths
+    - name: config-settings-test
+      path: /tests
+      test: ./mocktest.sh config-settings-test
+    - name: isort_c9s
+      path: /tests
+      test: NAME="CentOS Stream" VERSION_ID=9 ./mocktest.sh python-isort
+    - name: isort_c10s
+      path: /tests
+      test: NAME="CentOS Stream" VERSION_ID=10 ./mocktest.sh python-isort
+prepare:
+  - name: Install dependencies
+    how: install
+    package:
+    - mock
+    - rpmdevtools
+    - rpm-build
+    - dnf
+  - name: Update packages
+    how: shell
+    script: dnf upgrade -y

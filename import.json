@@ -1385,6 +1385,13 @@
     "source": "https://src.fedoraproject.org/rpms/publicsuffix-list.git",
     "version": "20250616"
   },
+  "pyproject-rpm-macros": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "e19d2d0689fbb322cbd6be57264e33d39134bbf6",
+    "source": "https://src.fedoraproject.org/rpms/pyproject-rpm-macros.git",
+    "version": "1.18.6"
+  },
   "qt5": {
     "branch": "rawhide",
     "release": "1",

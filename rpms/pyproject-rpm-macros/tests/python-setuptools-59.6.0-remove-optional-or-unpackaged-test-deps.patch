@@ -1,0 +1,38 @@
+From 4612fd1b6b7f9d3fdbfad34863e5b04535bb44cc Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Tom=C3=A1=C5=A1=20Hrn=C4=8Diar?= <thrnciar@redhat.com>
+Date: Wed, 8 Dec 2021 10:22:37 +0100
+Subject: [PATCH] Remove optional or unpackaged test deps
+
+---
+ setup.cfg | 10 ----------
+ 1 file changed, 10 deletions(-)
+
+diff --git a/setup.cfg b/setup.cfg
+index 0bc0101..442da7a 100644
+--- a/setup.cfg
++++ b/setup.cfg
+@@ -37,21 +37,11 @@ exclude =
+ [options.extras_require]
+ testing = 
+ 	pytest >= 6
+-	pytest-checkdocs >= 2.4
+-	pytest-flake8
+-	pytest-black >= 0.3.7; \
+-	python_implementation != "PyPy"
+-	pytest-cov
+-	pytest-mypy; \
+-	python_implementation != "PyPy"
+-	pytest-enabler >= 1.0.1
+ 	
+ 	mock
+-	flake8-2020
+ 	virtualenv>=13.0.0
+ 	pytest-virtualenv>=1.2.7  # TODO: Update once man-group/pytest-plugins#188 is solved
+ 	wheel
+-	paver
+ 	pip>=19.1 # For proper file:// URLs support.
+ 	jaraco.envs>=2.2
+ 	pytest-xdist
+-- 
+2.33.1
+

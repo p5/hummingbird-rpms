@@ -1,0 +1,44 @@
+From 06f390d522afb6d2d71bb601c2060a9fabe3f7de Mon Sep 17 00:00:00 2001
+From: Adam Williamson <awilliam@redhat.com>
+Date: Mon, 19 Jul 2021 15:41:23 -0700
+Subject: [PATCH] Fix disabling of location header autocorrect for werkzeug 2+
+ (#647)
+
+In werkzeug 2.0.0 and later, the Location header autocorrection
+moved from BaseResponse to Response, so we need to set
+`autocorrect_location_header = False` in `Response` not
+`BaseResponse`. From 2.1.0, BaseResponse is removed and importing
+it is an error, so we can't support both any more.
+
+Signed-off-by: Adam Williamson <awilliam@redhat.com>
+---
+ httpbin/core.py | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/httpbin/core.py b/httpbin/core.py
+index 66a2ed6..fd2842c 100644
+--- a/httpbin/core.py
++++ b/httpbin/core.py
+@@ -19,7 +19,7 @@ from flask import Flask, Response, request, render_template, redirect, jsonify a
+ from six.moves import range as xrange
+ from werkzeug.datastructures import WWWAuthenticate, MultiDict
+ from werkzeug.http import http_date
+-from werkzeug.wrappers import BaseResponse
++from werkzeug.wrappers import Response as WzResponse
+ from werkzeug.http import parse_authorization_header
+ from raven.contrib.flask import Sentry
+ 
+@@ -48,7 +48,9 @@ def jsonify(*args, **kwargs):
+     return response
+ 
+ # Prevent WSGI from correcting the casing of the Location header
+-BaseResponse.autocorrect_location_header = False
++# and forcing it to be absolute.
++WzResponse.autocorrect_location_header = False
++
+ 
+ # Find the correct template folder when running from a different location
+ tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
+-- 
+2.36.0
+
