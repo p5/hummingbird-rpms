@@ -1,0 +1,28 @@
+specfile_path: libmodulemd.spec
+upstream_package_name: libmodulemd
+downstream_package_name: libmodulemd
+upstream_tag_template: libmodulemd-{version}
+
+actions:
+  get-current-version: ./.packit_version.sh
+
+files_to_sync:
+  - .packit.yml
+  - .make_packit_specfile.sh
+  - libmodulemd.spec
+
+actions:
+    post-upstream-clone: ./.make_packit_specfile.sh
+
+jobs:
+- job: copr_build
+  trigger: pull_request
+  metadata:
+    targets:
+    - fedora-all
+    - epel-7
+
+- job: propose_downstream
+  trigger: release
+  metadata:
+    dist-git-branch: fedora-all
