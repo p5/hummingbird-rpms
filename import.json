@@ -1441,6 +1441,13 @@
     "source": "https://src.fedoraproject.org/rpms/python-iniconfig.git",
     "version": "2.3.0"
   },
+  "python-jinja2": {
+    "branch": "rawhide",
+    "release": "6",
+    "sha": "73b8db5fe8682a25bd1b2ab9e6c6131f1c37463a",
+    "source": "https://src.fedoraproject.org/rpms/python-jinja2.git",
+    "version": "3.1.6"
+  },
   "qt5": {
     "branch": "rawhide",
     "release": "1",
