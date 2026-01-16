@@ -1525,6 +1525,13 @@
     "source": "https://src.fedoraproject.org/rpms/python-pygments.git",
     "version": "2.19.1"
   },
+  "python-referencing": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "62f5de66294eea623300f6870171f96da6ec656b",
+    "source": "https://src.fedoraproject.org/rpms/python-referencing.git",
+    "version": "0.36.2"
+  },
   "qt5": {
     "branch": "rawhide",
     "release": "1",
