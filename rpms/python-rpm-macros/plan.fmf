@@ -1,0 +1,40 @@
+execute:
+  how: tmt
+
+discover:
+  - name: same_repo
+    how: shell
+    tests:
+    - name: pytest
+      test: PYTHONPATH=/usr/lib/rpm/redhat ALTERNATE_PYTHON_VERSION=3.6 pytest -v
+    - name: manual_byte_compilation_clamp_mtime_off
+      path: /tests
+      test: rpmbuild --define 'dist .clamp0' --define 'clamp_mtime_to_source_date_epoch 0' -ba pythontest.spec
+    - name: manual_byte_compilation_clamp_mtime_on
+      path: /tests
+      test: rpmbuild --define 'dist .clamp1' --define 'clamp_mtime_to_source_date_epoch 1' -ba pythontest.spec
+    - name: rpmlint_clamp_mtime_off
+      test: rpmlint ~/rpmbuild/RPMS/x86_64/pythontest-0-0.clamp0.x86_64.rpm | grep python-bytecode-inconsistent-mtime || exit 0 && exit 1
+    - name: rpmlint_clamp_mtime_on
+      test: rpmlint ~/rpmbuild/RPMS/x86_64/pythontest-0-0.clamp1.x86_64.rpm | grep python-bytecode-inconsistent-mtime || exit 0 && exit 1
+    - name: python_wheel_inject_sbom
+      path: /tests
+      test: rpmbuild -ba testwheel.spec
+
+prepare:
+  - name: Install dependencies
+    how: install
+    package:
+    - rpm-build
+    - rpmlint
+    - python-rpm-macros
+    - python3-rpm-macros
+    - python3-devel
+    - python3-setuptools
+    - python3-pip
+    - python3-pytest
+    - python3.6
+    - dnf
+  - name: Update packages
+    how: shell
+    script: dnf upgrade -y

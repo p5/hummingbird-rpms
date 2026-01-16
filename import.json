@@ -1553,6 +1553,13 @@
     "source": "https://src.fedoraproject.org/rpms/python-rpds-py.git",
     "version": "0.29.0"
   },
+  "python-rpm-macros": {
+    "branch": "rawhide",
+    "release": "9",
+    "sha": "0d417402dbc243c6fa3170fff3e8d6b5b59638c4",
+    "source": "https://src.fedoraproject.org/rpms/python-rpm-macros.git",
+    "version": "3.14"
+  },
   "qt5": {
     "branch": "rawhide",
     "release": "1",

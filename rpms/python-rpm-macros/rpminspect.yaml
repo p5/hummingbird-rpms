@@ -1,0 +1,7 @@
+# completely disabled inspections:
+inspections:
+    # there is no upstream and the files are changed from time to time
+    addedfiles: off
+    changedfiles: off
+    filesize: off
+    upstream: off
