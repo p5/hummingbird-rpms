@@ -1455,6 +1455,13 @@
     "source": "https://src.fedoraproject.org/rpms/python-jinja2-cli.git",
     "version": "0.8.2"
   },
+  "python-jsonschema": {
+    "branch": "rawhide",
+    "release": "6",
+    "sha": "9b01fb322610634e5277ee5f760e44ee251860e4",
+    "source": "https://src.fedoraproject.org/rpms/python-jsonschema.git",
+    "version": "4.23.0"
+  },
   "qt5": {
     "branch": "rawhide",
     "release": "1",
