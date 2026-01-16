@@ -818,6 +818,13 @@
     "source": "https://src.fedoraproject.org/rpms/libksba.git",
     "version": "1.6.7"
   },
+  "libmodulemd": {
+    "branch": "rawhide",
+    "release": "5",
+    "sha": "a9a3403052d90cd0c2102cfa496ca371c95016c4",
+    "source": "https://src.fedoraproject.org/rpms/libmodulemd.git",
+    "version": "2.15.2"
+  },
   "libmpc": {
     "branch": "rawhide",
     "release": "8",

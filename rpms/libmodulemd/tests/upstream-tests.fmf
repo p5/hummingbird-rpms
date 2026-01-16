@@ -1,0 +1,15 @@
+summary: Upstream tests
+component: libmodulemd
+require:
+    - bash
+    - dnf5
+    - dnf5-command(builddep)
+    - fedpkg
+    - libmodulemd
+    - koji
+    - meson
+    - ninja
+    - rpm
+    - rpmdevtools
+duration: 10m
+test: ./upstream-tests.sh
