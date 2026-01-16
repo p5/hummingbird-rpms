@@ -1476,6 +1476,13 @@
     "source": "https://src.fedoraproject.org/rpms/python-markupsafe.git",
     "version": "3.0.2"
   },
+  "python-mypy_extensions": {
+    "branch": "rawhide",
+    "release": "5",
+    "sha": "6dce8ef14027360a0511602db5a5aad4a4866f9b",
+    "source": "https://src.fedoraproject.org/rpms/python-mypy_extensions.git",
+    "version": "1.1.0"
+  },
   "qt5": {
     "branch": "rawhide",
     "release": "1",
