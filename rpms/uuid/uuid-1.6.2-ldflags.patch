@@ -1,22 +1,30 @@
-diff -up uuid-1.6.2/Makefile.in.ldflags uuid-1.6.2/Makefile.in
---- uuid-1.6.2/Makefile.in.ldflags	2022-01-24 20:53:01.992171989 +0100
-+++ uuid-1.6.2/Makefile.in	2022-01-24 20:53:02.025171559 +0100
-@@ -112,15 +112,15 @@ all: $(TARGETS)
- 	@$(LIBTOOL) --mode=compile $(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $<
+diff -urNp uuid-1.6.2.orig/Makefile.in uuid-1.6.2/Makefile.in
+--- uuid-1.6.2.orig/Makefile.in	2026-01-16 13:34:16.781374620 -0500
++++ uuid-1.6.2/Makefile.in	2026-01-16 13:34:57.708367586 -0500
+@@ -106,21 +106,21 @@ all: $(TARGETS)
+ 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $<
+ 
+ .c.lo:
+-	@$(LIBTOOL) --mode=compile $(CC) $(CPPFLAGS) $(CFLAGS) -c $<
++	@$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CPPFLAGS) $(CFLAGS) -c $<
+ 
+ .cc.lo:
+-	@$(LIBTOOL) --mode=compile $(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $<
++	@$(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $<
  
  $(LIB_NAME): $(LIB_OBJS)
 -	@$(LIBTOOL) --mode=link $(CC) -o $(LIB_NAME) $(LIB_OBJS) -rpath $(libdir) \
-+	@$(LIBTOOL) --mode=link $(CC) $(LDFLAGS) -o $(LIB_NAME) $(LIB_OBJS) -rpath $(libdir) \
++	@$(LIBTOOL) --tag=CC --mode=link $(CC) -o $(LIB_NAME) $(LIB_OBJS) -rpath $(libdir) \
  	    -version-info `$(SHTOOL) version -l c -d libtool $(S)/uuid_vers.h`
  
  $(DCE_NAME): $(DCE_OBJS)
 -	@$(LIBTOOL) --mode=link $(CC) -o $(DCE_NAME) $(DCE_OBJS) -rpath $(libdir) \
-+	@$(LIBTOOL) --mode=link $(CC) $(LDFLAGS) -o $(DCE_NAME) $(DCE_OBJS) -rpath $(libdir) \
++	@$(LIBTOOL) --tag=CC --mode=link $(CC) -o $(DCE_NAME) $(DCE_OBJS) -rpath $(libdir) \
  	    -version-info `$(SHTOOL) version -l c -d libtool $(S)/uuid_vers.h`
  
  $(CXX_NAME): $(CXX_OBJS)
 -	@$(LIBTOOL) --mode=link $(CXX) -o $(CXX_NAME) $(CXX_OBJS) -rpath $(libdir) \
-+	@$(LIBTOOL) --mode=link $(CXX) $(LDFLAGS) -o $(CXX_NAME) $(CXX_OBJS) -rpath $(libdir) \
++	@$(LIBTOOL) --tag=CXX --mode=link $(CXX) -o $(CXX_NAME) $(CXX_OBJS) -rpath $(libdir) \
  	    -version-info `$(SHTOOL) version -l c -d libtool $(S)/uuid_vers.h`
  
  $(PRG_NAME): $(PRG_OBJS) $(LIB_NAME)
