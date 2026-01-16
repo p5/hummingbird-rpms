@@ -1420,6 +1420,13 @@
     "source": "https://src.fedoraproject.org/rpms/python-charset-normalizer.git",
     "version": "3.4.4"
   },
+  "python-gitlab": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "1b84def30a5e780048822828dd7878a4e251c40c",
+    "source": "https://src.fedoraproject.org/rpms/python-gitlab.git",
+    "version": "7.1.0"
+  },
   "qt5": {
     "branch": "rawhide",
     "release": "1",
