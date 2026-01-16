@@ -1,0 +1,29 @@
+From 5d6e450446862d5115e5855837e2cd7257e1e184 Mon Sep 17 00:00:00 2001
+From: Cristian Le <git@lecris.dev>
+Date: Tue, 2 Sep 2025 14:52:19 +0200
+Subject: [PATCH] Convert toml dependency to tomllib
+
+---
+ jinja2cli/cli.py | 7 +++++--
+ setup.py         | 2 +-
+ 2 files changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/jinja2cli/cli.py b/jinja2cli/cli.py
+index 5a3dc0a..edf6210 100644
+--- a/jinja2cli/cli.py
++++ b/jinja2cli/cli.py
+@@ -176,9 +176,12 @@ def _parse_qs(data):
+ 
+ 
+ def _load_toml():
+-    import toml
++    if sys.version_info < (3, 11):
++        import tomli as tomllib
++    else:
++        import tomllib
+ 
+-    return toml.loads, Exception, MalformedToml
++    return tomllib.loads, Exception, MalformedToml
+ 
+ 
+ def _load_xml():
