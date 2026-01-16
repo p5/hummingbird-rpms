@@ -1406,6 +1406,13 @@
     "source": "https://src.fedoraproject.org/rpms/python-attrs.git",
     "version": "25.4.0"
   },
+  "python-certifi": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "602d3f8b38e0a6171329f809b5b98186da9ac6bf",
+    "source": "https://src.fedoraproject.org/rpms/python-certifi.git",
+    "version": "2025.07.09"
+  },
   "qt5": {
     "branch": "rawhide",
     "release": "1",
