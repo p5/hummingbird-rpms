@@ -1518,6 +1518,13 @@
     "source": "https://src.fedoraproject.org/rpms/python-productmd.git",
     "version": "1.50"
   },
+  "python-pygments": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "11f1f85d1323dbb26be401eedbeef0e923fc9780",
+    "source": "https://src.fedoraproject.org/rpms/python-pygments.git",
+    "version": "2.19.1"
+  },
   "qt5": {
     "branch": "rawhide",
     "release": "1",
