@@ -1539,6 +1539,13 @@
     "source": "https://src.fedoraproject.org/rpms/python-requests.git",
     "version": "2.32.5"
   },
+  "python-requests-toolbelt": {
+    "branch": "rawhide",
+    "release": "14",
+    "sha": "34e93948605298079a637e40d5420dc51493009e",
+    "source": "https://src.fedoraproject.org/rpms/python-requests-toolbelt.git",
+    "version": "1.0.0"
+  },
   "qt5": {
     "branch": "rawhide",
     "release": "1",
