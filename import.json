@@ -1413,6 +1413,13 @@
     "source": "https://src.fedoraproject.org/rpms/python-certifi.git",
     "version": "2025.07.09"
   },
+  "python-charset-normalizer": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "cf7f8a9992281804ab6f4fbf9d5b49b6cfcd1adf",
+    "source": "https://src.fedoraproject.org/rpms/python-charset-normalizer.git",
+    "version": "3.4.4"
+  },
   "qt5": {
     "branch": "rawhide",
     "release": "1",
