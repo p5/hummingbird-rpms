@@ -1392,6 +1392,13 @@
     "source": "https://src.fedoraproject.org/rpms/pyproject-rpm-macros.git",
     "version": "1.18.6"
   },
+  "pytest": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "bd6f0c9bc96ee5eeb817fc368e51b34620977411",
+    "source": "https://src.fedoraproject.org/rpms/pytest.git",
+    "version": "8.4.2"
+  },
   "qt5": {
     "branch": "rawhide",
     "release": "1",
