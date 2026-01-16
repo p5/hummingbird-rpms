@@ -1,0 +1,27 @@
+---
+# See the documentation for more information:
+# https://packit.dev/docs/configuration/
+
+upstream_project_url: https://github.com/python-gitlab/python-gitlab
+upstream_tag_template: v{version}
+copy_upstream_release_description: false
+upstream_tag_include: '^v\d+\.\d+\.\d+$'
+
+jobs:
+  - job: pull_from_upstream
+    trigger: release
+    dist_git_branches:
+      - fedora-all
+      - epel-all
+  - job: koji_build
+    trigger: commit
+    allowed_committers: ['packit','all_admins']
+    dist_git_branches:
+      - fedora-all
+      - epel-all
+  - job: bodhi_update
+    trigger: commit
+    allowed_builders: ['packit','all_users']
+    dist_git_branches:
+      - fedora-all
+      - epel-all

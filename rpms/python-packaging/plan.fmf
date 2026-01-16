@@ -1,0 +1,51 @@
+execute:
+  how: tmt
+
+discover:
+  - name: same_repo
+    how: shell
+    tests:
+      - name: smoke
+        test: ./smoke/runtest.sh
+        path: /tests
+  - name: rpms_pyproject-rpm-macros
+    how: shell
+    url: https://src.fedoraproject.org/rpms/pyproject-rpm-macros.git
+    tests:
+    - name: pyproject_pytest
+      path: /tests
+      test: ./mocktest.sh python-pytest
+    - name: pyproject_entrypoints
+      path: /tests
+      test: ./mocktest.sh python-entrypoints
+    - name: pyproject_pluggy
+      path: /tests
+      test: ./mocktest.sh python-pluggy
+    - name: pyproject_clikit
+      path: /tests
+      test: ./mocktest.sh python-clikit
+  - name: rpms_python-rpm-generators
+    how: shell
+    test: |
+      # Need to clone on our own, tmt clones it into 'tests' subdirectory
+      # which breaks fedpkg-minimal pkgname detection
+      git clone --depth=1 https://src.fedoraproject.org/rpms/python-rpm-generators.git python-rpm-generators &&
+      cd python-rpm-generators &&
+      ./tests/download_data_and_run_pytest.sh
+prepare:
+  - name: Install dependencies
+    how: install
+    package:
+    - fedpkg-minimal
+    - mock
+    - python3-pip
+    - python3-pytest
+    - python3-pyyaml
+    - python3-setuptools
+    - python3-wheel
+    - rpmdevtools
+    - rpm-build
+    - dnf
+  - name: Update packages
+    how: shell
+    script: dnf upgrade -y

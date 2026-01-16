@@ -1,4 +1,11 @@
 {
+  "PyYAML": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "c8f15e495913a6edf22eac51ef40fd4b189c49f7",
+    "source": "https://src.fedoraproject.org/rpms/PyYAML.git",
+    "version": "6.0.3"
+  },
   "R-rpm-macros": {
     "branch": "rawhide",
     "release": "1",
@@ -1384,6 +1391,230 @@
     "sha": "6dbc4af11314f64f559c5d3797b618cd453bf4f7",
     "source": "https://src.fedoraproject.org/rpms/publicsuffix-list.git",
     "version": "20250616"
+  },
+  "pyproject-rpm-macros": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "e19d2d0689fbb322cbd6be57264e33d39134bbf6",
+    "source": "https://src.fedoraproject.org/rpms/pyproject-rpm-macros.git",
+    "version": "1.18.6"
+  },
+  "pytest": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "bd6f0c9bc96ee5eeb817fc368e51b34620977411",
+    "source": "https://src.fedoraproject.org/rpms/pytest.git",
+    "version": "8.4.2"
+  },
+  "python-attrs": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "d65b25513579e9486981682b52d4caeacfa448a8",
+    "source": "https://src.fedoraproject.org/rpms/python-attrs.git",
+    "version": "25.4.0"
+  },
+  "python-certifi": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "602d3f8b38e0a6171329f809b5b98186da9ac6bf",
+    "source": "https://src.fedoraproject.org/rpms/python-certifi.git",
+    "version": "2025.07.09"
+  },
+  "python-charset-normalizer": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "cf7f8a9992281804ab6f4fbf9d5b49b6cfcd1adf",
+    "source": "https://src.fedoraproject.org/rpms/python-charset-normalizer.git",
+    "version": "3.4.4"
+  },
+  "python-gitlab": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "1b84def30a5e780048822828dd7878a4e251c40c",
+    "source": "https://src.fedoraproject.org/rpms/python-gitlab.git",
+    "version": "7.1.0"
+  },
+  "python-idna": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "988832036f54d17abe049b953747eb74d9d3296d",
+    "source": "https://src.fedoraproject.org/rpms/python-idna.git",
+    "version": "3.11"
+  },
+  "python-iniconfig": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "d2fa900b05217ad3a5dcdbe3a0e1e004570edb55",
+    "source": "https://src.fedoraproject.org/rpms/python-iniconfig.git",
+    "version": "2.3.0"
+  },
+  "python-jinja2": {
+    "branch": "rawhide",
+    "release": "6",
+    "sha": "73b8db5fe8682a25bd1b2ab9e6c6131f1c37463a",
+    "source": "https://src.fedoraproject.org/rpms/python-jinja2.git",
+    "version": "3.1.6"
+  },
+  "python-jinja2-cli": {
+    "branch": "rawhide",
+    "release": "19",
+    "sha": "0912d1cf6ecf3ab4ee7bafafdc0affb8ba595ba2",
+    "source": "https://src.fedoraproject.org/rpms/python-jinja2-cli.git",
+    "version": "0.8.2"
+  },
+  "python-jsonschema": {
+    "branch": "rawhide",
+    "release": "6",
+    "sha": "9b01fb322610634e5277ee5f760e44ee251860e4",
+    "source": "https://src.fedoraproject.org/rpms/python-jsonschema.git",
+    "version": "4.23.0"
+  },
+  "python-jsonschema-specifications": {
+    "branch": "rawhide",
+    "release": "6",
+    "sha": "b6bfefb0b1ebface6d2634869032fc941a0a7fed",
+    "source": "https://src.fedoraproject.org/rpms/python-jsonschema-specifications.git",
+    "version": "2024.10.1"
+  },
+  "python-markupsafe": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "b58ff67da7a576d270a9994b91dbc79301dba7bb",
+    "source": "https://src.fedoraproject.org/rpms/python-markupsafe.git",
+    "version": "3.0.2"
+  },
+  "python-mypy_extensions": {
+    "branch": "rawhide",
+    "release": "5",
+    "sha": "6dce8ef14027360a0511602db5a5aad4a4866f9b",
+    "source": "https://src.fedoraproject.org/rpms/python-mypy_extensions.git",
+    "version": "1.1.0"
+  },
+  "python-packaging": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "efb6ac5714056740a6cccaf214b439063fa70e3f",
+    "source": "https://src.fedoraproject.org/rpms/python-packaging.git",
+    "version": "25.0"
+  },
+  "python-pathspec": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "f117b2436890368e2de799361b0762aaea146d9d",
+    "source": "https://src.fedoraproject.org/rpms/python-pathspec.git",
+    "version": "1.0.3"
+  },
+  "python-pip": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "2b2a030e77e9665b23c9b6d0e415556ec1b73a2b",
+    "source": "https://src.fedoraproject.org/rpms/python-pip.git",
+    "version": "25.3"
+  },
+  "python-pluggy": {
+    "branch": "rawhide",
+    "release": "4",
+    "sha": "99a5b31f9eb0cc622c8235889b03fdc4afb53196",
+    "source": "https://src.fedoraproject.org/rpms/python-pluggy.git",
+    "version": "1.6.0"
+  },
+  "python-productmd": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "3584e2e32ea9b9b2acf3d2f6002806c662678a59",
+    "source": "https://src.fedoraproject.org/rpms/python-productmd.git",
+    "version": "1.50"
+  },
+  "python-pygments": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "11f1f85d1323dbb26be401eedbeef0e923fc9780",
+    "source": "https://src.fedoraproject.org/rpms/python-pygments.git",
+    "version": "2.19.1"
+  },
+  "python-referencing": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "62f5de66294eea623300f6870171f96da6ec656b",
+    "source": "https://src.fedoraproject.org/rpms/python-referencing.git",
+    "version": "0.36.2"
+  },
+  "python-requests": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "5482485d62e5871f6a1b3baebb19dc4022d39228",
+    "source": "https://src.fedoraproject.org/rpms/python-requests.git",
+    "version": "2.32.5"
+  },
+  "python-requests-toolbelt": {
+    "branch": "rawhide",
+    "release": "14",
+    "sha": "34e93948605298079a637e40d5420dc51493009e",
+    "source": "https://src.fedoraproject.org/rpms/python-requests-toolbelt.git",
+    "version": "1.0.0"
+  },
+  "python-rpds-py": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "e159118a8eb628b22bd88705abcdc85ee28bc55a",
+    "source": "https://src.fedoraproject.org/rpms/python-rpds-py.git",
+    "version": "0.29.0"
+  },
+  "python-rpm-macros": {
+    "branch": "rawhide",
+    "release": "9",
+    "sha": "0d417402dbc243c6fa3170fff3e8d6b5b59638c4",
+    "source": "https://src.fedoraproject.org/rpms/python-rpm-macros.git",
+    "version": "3.14"
+  },
+  "python-sentry-sdk": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "5501a93291c46f858fa125214ce8d9dc3a3e9aea",
+    "source": "https://src.fedoraproject.org/rpms/python-sentry-sdk.git",
+    "version": "2.48.0"
+  },
+  "python-types-pyyaml": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "68bd3b677cb1e9d8d78ffcc1d7dc4be210bd702c",
+    "source": "https://src.fedoraproject.org/rpms/python-types-pyyaml.git",
+    "version": "6.0.1"
+  },
+  "python-types-requests": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "b7acd3e1dd5fd469c0d285e596be3cb2b2bcfe9a",
+    "source": "https://src.fedoraproject.org/rpms/python-types-requests.git",
+    "version": "2.26.1"
+  },
+  "python-typing-extensions": {
+    "branch": "rawhide",
+    "release": "2",
+    "sha": "e937060e1054bf54628d2e4809b0f41a9f5ec6b6",
+    "source": "https://src.fedoraproject.org/rpms/python-typing-extensions.git",
+    "version": "4.15.0"
+  },
+  "python-urllib3": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "cd3e490d533b1b4c3aaea5cddbc7aec5e0e82fb0",
+    "source": "https://src.fedoraproject.org/rpms/python-urllib3.git",
+    "version": "2.6.3"
+  },
+  "python3-mypy": {
+    "branch": "rawhide",
+    "release": "3",
+    "sha": "20bf6002efd78faa49f60443f3761588dfcf550e",
+    "source": "https://src.fedoraproject.org/rpms/python3-mypy.git",
+    "version": "1.18.2"
+  },
+  "python3.14": {
+    "branch": "rawhide",
+    "release": "2",
+    "sha": "5ce9d27cf1e3c92ccba70c301aea5c72e9be0735",
+    "source": "https://src.fedoraproject.org/rpms/python3.14.git",
+    "version": "3.14.2"
   },
   "qt5": {
     "branch": "rawhide",

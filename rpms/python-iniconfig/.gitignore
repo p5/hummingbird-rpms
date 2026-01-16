@@ -1,0 +1,4 @@
+/iniconfig-*.tar.gz
+/iniconfig-*/
+/results_python-iniconfig/
+*.rpm

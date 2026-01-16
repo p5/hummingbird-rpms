@@ -1,0 +1,7 @@
+require:
+- nmap-ncat
+- python3
+- python3-requests
+
+test: "${PYTHON:-python3} repro.py"
+tty: "true"

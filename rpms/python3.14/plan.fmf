@@ -1,0 +1,91 @@
+execute:
+  how: tmt
+
+provision:
+  hardware:
+    memory: '>= 3 GB'
+
+environment:
+  pybasever: '3.14'
+
+discover:
+  - name: tests_python
+    how: shell
+    url: https://src.fedoraproject.org/tests/python.git
+    tests:
+    - name: smoke
+      path: /smoke
+      test: "VERSION=${pybasever} CYTHON=true ./venv.sh"
+    - name: smoke_virtualenv
+      path: /smoke
+      test: "VERSION=${pybasever} METHOD=virtualenv CYTHON=true ./venv.sh"
+    - name: debugsmoke
+      path: /smoke
+      test: "PYTHON=python${pybasever}d TOX=false VERSION=${pybasever} CYTHON=true ./venv.sh"
+    - name: selftest
+      path: /selftest
+      test: "VERSION=${pybasever} X='-i test_check_probes -i test_sysconfigdata_json -i test_margin_is_sufficient' ./parallel.sh"
+    - name: debugtest
+      path: /selftest
+      # test_base_interpreter: https://github.com/python/cpython/issues/131372
+      # test_interrupt and test_interrupt_no_handler: https://github.com/python/cpython/issues/133651
+      # test_margin_is_sufficient: https://github.com/python/cpython/issues/140222
+      test: "VERSION=${pybasever} PYTHON=python${pybasever}d X='-i test_check_probes -i test_sysconfigdata_json -i test_base_interpreter -i test_interrupt -i test_interrupt_no_handler -i test_margin_is_sufficient' ./parallel.sh"
+    - name: freethreadingtest
+      path: /selftest
+      test: "VERSION=${pybasever}t X='-i test_check_probes -i test_sysconfigdata_json -i test_base_interpreter -i test_margin_is_sufficient' ./parallel.sh"
+    - name: selftest_jit
+      path: /selftest
+      # test_attr_promotion_failure: https://github.com/python/cpython/issues/141833
+      test: "VERSION=${pybasever} PYTHON_JIT=1 X='-i test_check_probes -i test_sysconfigdata_json -i test_attr_promotion_failure -i test_margin_is_sufficient' ./parallel.sh"
+    - name: jit_disabled_by_default
+      test: "python${pybasever} -c 'import sys; assert not sys._jit.is_enabled()'"
+    - name: jit_disabled_explicitly
+      test: "PYTHON_JIT=0 python${pybasever} -c 'import sys; assert not sys._jit.is_enabled()'"
+    - name: jit_enabled_explicitly
+      test: "PYTHON_JIT=1 python${pybasever} -c 'import sys; assert sys._jit.is_enabled()'"
+    - name: optimizedflags
+      path: /flags
+      test: "python${pybasever} ./assertflags.py -O3 CFLAGS PY_BUILTIN_MODULE_CFLAGS PY_CFLAGS PY_CORE_CFLAGS PY_CFLAGS_NODIST PY_STDMODULE_CFLAGS"
+    - name: debugflags
+      path: /flags
+      test: "python${pybasever}d ./assertflags.py -O0  CFLAGS PY_BUILTIN_MODULE_CFLAGS PY_CFLAGS PY_CORE_CFLAGS PY_CFLAGS_NODIST PY_STDMODULE_CFLAGS"
+    - name: freethreadingflags
+      path: /flags
+      test: "python${pybasever}t ./assertflags.py -O3 CFLAGS PY_BUILTIN_MODULE_CFLAGS PY_CFLAGS PY_CORE_CFLAGS PY_CFLAGS_NODIST PY_STDMODULE_CFLAGS"
+    - name: freethreadingdebugflags
+      path: /flags
+      test: "python${pybasever}td ./assertflags.py -O0 CFLAGS PY_BUILTIN_MODULE_CFLAGS PY_CFLAGS PY_CORE_CFLAGS PY_CFLAGS_NODIST PY_STDMODULE_CFLAGS"
+    - name: marshalparser
+      path: /marshalparser
+      test: "VERSION=${pybasever} SAMPLE=10 ./test_marshalparser_compatibility.sh"
+
+prepare:
+  - name: Install dependencies
+    how: install
+    package:
+    - gcc  # for extension building in venv and selftest
+    - gcc-c++ # for test_cppext
+    - gdb  # for test_gdb
+    - "python${pybasever}"  # the test subject
+    - "python${pybasever}-debug"  # for leak testing
+    - "python${pybasever}-devel"  # for extension building in venv and selftest
+    - "python${pybasever}-tkinter"  # for selftest
+    - "python${pybasever}-test"  # for selftest
+    - "python${pybasever}-freethreading"  # for -O... flag test
+    - "python${pybasever}-freethreading-debug"  # for -O... flag test
+    - "python${pybasever}-freethreading-tkinter"  # for freethreadingtest
+    - "python${pybasever}-freethreading-test"  # for freethreadingtest
+    - tox  # for venv tests
+    - virtualenv  # for virtualenv tests
+    - glibc-all-langpacks # for locale tests
+    - marshalparser  # for testing compatibility (magic numbers) with marshalparser
+    - rpm  # for debugging
+    - dnf  # for upgrade
+  - name: Update packages
+    how: shell
+    script: dnf upgrade -y
+  - name: rpm_qa
+    order: 100
+    how: shell
+    script: rpm -qa | sort | tee $TMT_PLAN_DATA/rpmqa.txt

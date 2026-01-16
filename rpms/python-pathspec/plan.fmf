@@ -1,0 +1,9 @@
+discover:
+    how: shell
+    tests:
+    - name: import test
+      test: python3 -c 'import pathspec'
+      require:
+      - python3-pathspec
+execute:
+  how: tmt

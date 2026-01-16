@@ -1,0 +1,22 @@
+From c67728919a2d4be62edf3c37cc96b273d65286c5 Mon Sep 17 00:00:00 2001
+From: "Benjamin A. Beasley" <code@musicinmybrain.net>
+Date: Thu, 17 Jul 2025 07:28:22 -0400
+Subject: [PATCH] Remove pyrsistent from test dependencies
+
+It does not appear to be used anywhere.
+---
+ requirements-testing.txt | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/requirements-testing.txt b/requirements-testing.txt
+index 221863f4ab..5cd669af9a 100644
+--- a/requirements-testing.txt
++++ b/requirements-testing.txt
+@@ -6,7 +6,6 @@ pytest-forked
+ pytest-localserver
+ pytest-watch
+ jsonschema
+-pyrsistent
+ executing
+ asttokens
+ responses

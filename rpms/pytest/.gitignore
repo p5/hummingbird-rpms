@@ -1,0 +1,5 @@
+/pytest-*.zip
+/pytest-*.tar.gz
+/pytest-*/
+/results_*/
+*.rpm

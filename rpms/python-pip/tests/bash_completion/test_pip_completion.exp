@@ -1,0 +1,117 @@
+#!/usr/bin/expect -f
+
+# PIP bash completion smoke test using expect
+# Tests actual TAB completion functionality
+# Usage: test_pip_completion.exp [completion_file] [pip_binary]
+
+set timeout 5
+
+
+set completion_file [lindex $argv 0]
+set pip_exec [lindex $argv 1]
+
+
+puts "=== PIP Bash Completion Test (using expect) ==="
+puts "Testing completion file: $completion_file"
+puts "Testing pip binary: $pip_exec"
+
+# Check if completion file exists first
+if {![file exists $completion_file]} {
+    puts "✗ Completion file not found: $completion_file"
+    exit 1
+}
+puts "✓ Completion file found: $completion_file"
+
+# Start bash shell
+if {[info exists env(AS_POSIX)] && $env(AS_POSIX) == "1"} {
+    spawn bash --norc --posix
+} else {
+    spawn bash --norc
+}
+expect "$ "
+
+# Source the completion file
+send "source $completion_file\r"
+expect "$ "
+puts "Attempted to source completion file"
+
+# Test 1: Basic pip command completion
+puts "\nTest 1: Testing '$pip_exec ' + TAB completion..."
+send "$pip_exec "
+sleep 0.1
+# Send TAB TAB using hex codes
+send "\x09\x09"
+expect {
+    -re "(install|uninstall|list|show)" {
+        puts "✓ Basic pip commands found in completion"
+        expect "$ "
+    }
+    -re "Display all" {
+        puts "✓ Completion showing options menu"
+        send "n\r"
+        expect "$ "
+    }
+    timeout {
+        puts "✗ Timeout waiting for completion - test failed"
+        exit 1
+    }
+}
+
+# Clear the line and ensure clean prompt
+send "\x03"
+expect "$ "
+send "\r"
+expect "$ "
+
+# Test 2: Test partial command completion (simpler test)
+puts "\nTest 2: Testing '$pip_exec insta' + TAB completion..."
+send "$pip_exec insta"
+sleep 0.1
+# Single TAB for completion
+send "\x09"
+expect {
+    -re "install" {
+        puts "✓ Partial command completion works (insta -> install)"
+        expect "$ "
+    }
+    timeout {
+        puts "✗ Timeout on partial completion test - test failed"
+        exit 1
+    }
+}
+
+# Clear the line and ensure clean prompt
+send "\x03"
+expect "$ "
+send "\r"
+expect "$ "
+
+# Test 3: Test help completion
+puts "\nTest 3: Testing '$pip_exec --' + TAB completion..."
+send "$pip_exec --"
+sleep 0.1
+send "\x09\x09"
+expect {
+    -re "(--help|--version)" {
+        puts "✓ Command options found in completion"
+        expect "$ "
+    }
+    timeout {
+        puts "✗ Timeout on options completion test - test failed"
+        exit 1
+    }
+}
+
+# Final cleanup - make sure we're at clean prompt
+send "\x03"
+expect "$ "
+send "\r"
+expect "$ "
+
+# Exit bash cleanly
+send "exit\r"
+expect eof
+
+puts "\n=== Completion Test Complete ==="
+puts "PIP bash completion functionality tested!"
+

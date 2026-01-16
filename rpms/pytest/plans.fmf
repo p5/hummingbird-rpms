@@ -1,0 +1,11 @@
+discover:
+  - name: Smoke-tests
+    how: shell
+    tests:
+    - name: python-import-test
+      test: python3 -c 'import pytest'
+      require:
+      - python3-pytest
+      duration: 1m
+execute:
+  how: tmt

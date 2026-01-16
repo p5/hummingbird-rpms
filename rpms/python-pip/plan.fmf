@@ -1,0 +1,111 @@
+execute:
+  how: tmt
+
+discover:
+  - name: tests_python
+    how: shell
+    url: https://src.fedoraproject.org/tests/python.git
+    tests:
+    - name: smoke36
+      path: /smoke
+      test: VERSION=3.6 TOX=false ./venv.sh
+    - name: smoke39
+      path: /smoke
+      test: VERSION=3.9 ./venv.sh
+    - name: smoke310
+      path: /smoke
+      test: VERSION=3.10 ./venv.sh
+    - name: smoke311
+      path: /smoke
+      test: VERSION=3.11 ./venv.sh
+    - name: smoke312
+      path: /smoke
+      test: VERSION=3.12 ./venv.sh
+    - name: smoke313
+      path: /smoke
+      test: VERSION=3.13 ./venv.sh
+    - name: smoke314
+      path: /smoke
+      test: VERSION=3.14 ./venv.sh
+    - name: smoke315
+      path: /smoke
+      test: VERSION=3.15 ./venv.sh
+    - name: smoke39_virtualenv
+      path: /smoke
+      test: VERSION=3.9 METHOD=virtualenv ./venv.sh
+    - name: smoke310_virtualenv
+      path: /smoke
+      test: VERSION=3.10 METHOD=virtualenv ./venv.sh
+    - name: smoke311_virtualenv
+      path: /smoke
+      test: VERSION=3.11 METHOD=virtualenv ./venv.sh
+    - name: smoke312_virtualenv
+      path: /smoke
+      test: VERSION=3.12 METHOD=virtualenv ./venv.sh
+    - name: smoke313_virtualenv
+      path: /smoke
+      test: VERSION=3.13 METHOD=virtualenv ./venv.sh
+    - name: smoke314_virtualenv
+      path: /smoke
+      test: VERSION=3.14 METHOD=virtualenv ./venv.sh
+    - name: smoke315_virtualenv
+      path: /smoke
+      test: VERSION=3.15 METHOD=virtualenv ./venv.sh
+  - name: rpms_pyproject-rpm-macros
+    how: shell
+    url: https://src.fedoraproject.org/rpms/pyproject-rpm-macros.git
+    tests:
+    - name: pyproject_pytest
+      path: /tests
+      test: ./mocktest.sh python-pytest
+    - name: pyproject_entrypoints
+      path: /tests
+      test: ./mocktest.sh python-entrypoints
+    - name: pyproject_pluggy
+      path: /tests
+      test: ./mocktest.sh python-pluggy
+    - name: pyproject_clikit
+      path: /tests
+      test: ./mocktest.sh python-clikit
+  - name: same_repo
+    how: shell
+    dist-git-source: true
+    dist-git-download-only: true
+    tests:
+    - name: mock_bootstrap_build
+      test: |
+        cd $TMT_SOURCE_DIR &&
+        $TMT_TREE/../discover/rpms_pyproject-rpm-macros/tests/tests/mocktest.sh python-pip --without tests --without man
+    - name: pip_install_upgrade
+      path: /tests/pip_install_upgrade/
+      test: ./runtest.sh
+    - name: bash_completion
+      path: /tests/bash_completion
+      test: ./pip_completion_full_test.sh
+prepare:
+  - name: Install dependencies
+    how: install
+    package:
+    - gcc
+    - virtualenv
+    - python3.6-devel
+    - python3.9-devel
+    - python3.10-devel
+    - python3.11-devel
+    - python3.12-devel
+    - python3.13-devel
+    - python3.14-devel
+    - python3.15-devel
+    - python3-devel
+    - python3-tox
+    - mock
+    - rpmdevtools
+    - rpm-build
+    - grep
+    - util-linux
+    - shadow-utils
+    - expect
+    - dnf
+  - name: Update packages
+    how: shell
+    script: dnf upgrade -y
