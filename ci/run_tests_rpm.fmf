@@ -69,18 +69,22 @@ discover:
         echo "IMAGE_URL: ${IMAGE_URL:-unset}"
         if [[ -n ${IMAGE_NAME:-} ]]; then
             package_name=${IMAGE_NAME%-main}
-            # Handle packages where underscores were replaced with hyphens in IMAGE_NAME
-            # and where uppercase letters were replaced with lowercase in IMAGE_NAME
-            # Use glob matching to find the actual package directory
-            # Replace each hyphen with a pattern that matches hyphen, underscore, plus or dot
-            package_pattern=${package_name//-/[-_+.]}
-            # Enable case-insensitive globbing to match package names like R-*
-            shopt -s nullglob nocaseglob
-            matches=(rpms/${package_pattern})
-            shopt -u nullglob nocaseglob
-            if [[ ${#matches[@]} -eq 1 && -d ${matches[0]} ]]; then
-                package_name=$(basename "${matches[0]}")
-            fi
+            # Find actual package directory by reversing the IMAGE_NAME normalization.
+            # Konflux normalizes directory names: lowercase + replace _+. with hyphens.
+            # We iterate through rpms/ directories, apply the same normalization,
+            # and compare to package_name to find the original directory name.
+            while IFS= read -r dir; do
+                dir_basename=$(basename "$dir")
+                # Apply same normalization as Konflux: lowercase, replace _+. with -
+                normalized="${dir_basename,,}"
+                normalized="${normalized//_/-}"
+                normalized="${normalized//+/-}"
+                normalized="${normalized//./-}"
+                if [[ "${normalized}" == "${package_name}" ]]; then
+                    package_name="${dir_basename}"
+                    break
+                fi
+            done < <(find rpms -maxdepth 1 -mindepth 1 -type d)
         fi
         if [[ -n ${IMAGE_URL:-} ]]; then
           work_dir=$(mktemp -d)
