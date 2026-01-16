@@ -1,0 +1,14 @@
+summary: Runs upstream test suite
+require:
+  - python3-requests
+  - python3-pip
+  - python3-pytest
+  - python3-cryptography
+  - python3-devel
+  - python3-httpbin
+  - rpm-build
+  - gcc
+  - gcc-c++
+test: ./runtest.sh
+framework: beakerlib
+duration: 30m

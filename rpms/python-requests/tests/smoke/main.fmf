@@ -1,0 +1,6 @@
+summary: Basic sanity test for python-requests
+test: ./runtest.sh
+framework: beakerlib
+require:
+  - python3-requests
+duration: 5m
