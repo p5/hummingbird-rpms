@@ -1,0 +1,5 @@
+# completely disabled inspections:
+inspections:
+    # we know about RIGHT-TO-LEFT OVERRIDE in tests/IdnaTestV2.txt
+    # (fine tuning of this inspection does not seem to work)
+    unicode: off
