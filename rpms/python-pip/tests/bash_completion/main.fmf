@@ -1,0 +1,35 @@
+summary: PIP bash completion functionality smoke test
+description: |
+    Comprehensive test for pip bash completion functionality on Fedora/RHEL systems.
+
+    The test performs the following steps:
+    1. Finds the bash completion script in the given (e.g. python3-pip) RPM package
+    2. Discovers all pip executables in the package (e.g. /usr/bin/pip and /usr/bin/pip3.14)
+    3. Sources the completion script and verifies completion for all executables is registered
+    4. Runs functional TAB completion tests using expect (for regular and POSIX mode of Bash)
+    5. Validates that completion works for basic pip commands
+
+    This is a smoke test to ensure pip bash completion is properly
+    installed and functional after package installation.
+
+component:
+    - python3-pip
+
+test: ./pip_completion_full_test.sh
+
+framework: shell
+
+duration: 5m
+tier: 1
+
+
+require:
+    - python3-pip
+    - bash-completion
+    - expect
+    - rpm
+    - bash
+
+
+environment:
+    PACKAGE: python3-pip

@@ -1,0 +1,54 @@
+From 35378ae02912d704d466e4809070e17a8d13ad0a Mon Sep 17 00:00:00 2001
+From: Karolina Surma <ksurma@redhat.com>
+Date: Thu, 7 Aug 2025 15:05:34 +0200
+Subject: [PATCH] Downstream-Only: Remove pytest-subket from tests
+
+---
+ tests/conftest.py | 17 -----------------
+ 1 file changed, 17 deletions(-)
+
+diff --git a/tests/conftest.py b/tests/conftest.py
+index c98b871..ada7a7e 100644
+--- a/tests/conftest.py
++++ b/tests/conftest.py
+@@ -451,18 +451,6 @@ def coverage_install(
+     return _common_wheel_editable_install(tmpdir_factory, common_wheels, "coverage")
+ 
+ 
+-@pytest.fixture(scope="session")
+-def socket_install(tmpdir_factory: pytest.TempPathFactory, common_wheels: Path) -> Path:
+-    lib_dir = _common_wheel_editable_install(
+-        tmpdir_factory, common_wheels, "pytest_subket"
+-    )
+-    # pytest-subket is only included so it can intercept and block unexpected
+-    # network requests. It should NOT be visible to the pip under test.
+-    dist_info = next(lib_dir.glob("*.dist-info"))
+-    shutil.rmtree(dist_info)
+-    return lib_dir
+-
+-
+ def install_pth_link(
+     venv: VirtualEnvironment, project_name: str, lib_dir: Path
+ ) -> None:
+@@ -480,7 +468,6 @@ def virtualenv_template(
+     setuptools_install: Path,
+     wheel_install: Path,
+     coverage_install: Path,
+-    socket_install: Path,
+ ) -> VirtualEnvironment:
+     venv_type: VirtualEnvironmentType
+     if request.config.getoption("--use-venv"):
+@@ -495,10 +482,6 @@ def virtualenv_template(
+     # Install setuptools, wheel, pytest-subket, and pip.
+     install_pth_link(venv, "setuptools", setuptools_install)
+     install_pth_link(venv, "wheel", wheel_install)
+-    install_pth_link(venv, "pytest_subket", socket_install)
+-    # Also copy pytest-subket's .pth file so it can intercept socket calls.
+-    with open(venv.site / "pytest_socket.pth", "w") as f:
+-        f.write(socket_install.joinpath("pytest_socket.pth").read_text())
+ 
+     pth, dist_info = pip_editable_parts
+ 
+-- 
+2.50.1
+
