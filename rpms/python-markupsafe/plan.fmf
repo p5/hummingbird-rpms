@@ -1,0 +1,9 @@
+discover:
+    how: shell
+    tests:
+    - name: import test
+      test: python3 -c 'import markupsafe'
+      require:
+      - python3-markupsafe
+execute:
+  how: tmt
