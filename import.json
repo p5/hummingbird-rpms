@@ -1560,6 +1560,13 @@
     "source": "https://src.fedoraproject.org/rpms/python-rpm-macros.git",
     "version": "3.14"
   },
+  "python-sentry-sdk": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "5501a93291c46f858fa125214ce8d9dc3a3e9aea",
+    "source": "https://src.fedoraproject.org/rpms/python-sentry-sdk.git",
+    "version": "2.48.0"
+  },
   "qt5": {
     "branch": "rawhide",
     "release": "1",

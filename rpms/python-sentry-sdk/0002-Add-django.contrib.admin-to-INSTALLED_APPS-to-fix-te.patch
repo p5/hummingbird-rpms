@@ -1,0 +1,57 @@
+From 9752761d3932afcafc537349e24052334d1b928d Mon Sep 17 00:00:00 2001
+From: Roman Inflianskas <rominf@pm.me>
+Date: Wed, 25 Dec 2024 14:47:38 +0200
+Subject: [PATCH] Add django.contrib.admin to INSTALLED_APPS to fix tests
+
+---
+ tests/integrations/django/myapp/settings.py |  2 ++
+ tests/integrations/django/test_basic.py     | 13 +++++++------
+ 2 files changed, 9 insertions(+), 6 deletions(-)
+
+diff --git a/tests/integrations/django/myapp/settings.py b/tests/integrations/django/myapp/settings.py
+index d70adf63..9b08dda9 100644
+--- a/tests/integrations/django/myapp/settings.py
++++ b/tests/integrations/django/myapp/settings.py
+@@ -40,6 +40,7 @@ ALLOWED_HOSTS = ["localhost"]
+ # Application definition
+ 
+ INSTALLED_APPS = [
++    "django.contrib.admin",
+     "django.contrib.auth",
+     "django.contrib.contenttypes",
+     "django.contrib.sessions",
+@@ -72,6 +73,7 @@ def TestFunctionMiddleware(get_response):  # noqa: N802
+ 
+ MIDDLEWARE_CLASSES = [
+     "django.contrib.sessions.middleware.SessionMiddleware",
++    "django.contrib.messages.middleware.MessageMiddleware",
+     "django.contrib.auth.middleware.AuthenticationMiddleware",
+     "django.middleware.csrf.CsrfViewMiddleware",
+     "tests.integrations.django.myapp.settings.TestMiddleware",
+diff --git a/tests/integrations/django/test_basic.py b/tests/integrations/django/test_basic.py
+index 0e3f7001..9829460b 100644
+--- a/tests/integrations/django/test_basic.py
++++ b/tests/integrations/django/test_basic.py
+@@ -937,12 +937,13 @@ if DJANGO_VERSION >= (1, 10):
+     EXPECTED_MIDDLEWARE_SPANS = """\
+ - op="http.server": description=null
+   - op="middleware.django": description="django.contrib.sessions.middleware.SessionMiddleware.__call__"
+-    - op="middleware.django": description="django.contrib.auth.middleware.AuthenticationMiddleware.__call__"
+-      - op="middleware.django": description="django.middleware.csrf.CsrfViewMiddleware.__call__"
+-        - op="middleware.django": description="tests.integrations.django.myapp.settings.TestMiddleware.__call__"
+-          - op="middleware.django": description="tests.integrations.django.myapp.settings.TestFunctionMiddleware.__call__"
+-            - op="middleware.django": description="django.middleware.csrf.CsrfViewMiddleware.process_view"
+-            - op="view.render": description="message"\
++    - op="middleware.django": description="django.contrib.messages.middleware.MessageMiddleware.__call__"
++      - op="middleware.django": description="django.contrib.auth.middleware.AuthenticationMiddleware.__call__"
++        - op="middleware.django": description="django.middleware.csrf.CsrfViewMiddleware.__call__"
++          - op="middleware.django": description="tests.integrations.django.myapp.settings.TestMiddleware.__call__"
++            - op="middleware.django": description="tests.integrations.django.myapp.settings.TestFunctionMiddleware.__call__"
++              - op="middleware.django": description="django.middleware.csrf.CsrfViewMiddleware.process_view"
++              - op="view.render": description="message"\
+ """
+ else:
+     EXPECTED_MIDDLEWARE_SPANS = """\
+-- 
+2.47.1
+
