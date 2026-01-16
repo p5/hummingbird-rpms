@@ -85,8 +85,17 @@ sed -i 's/ --doctest-modules//' pyproject.toml
 %pyproject_check_import
 %if %{with tests}
 # test_unicode_header_name - reported: https://github.com/psf/requests/issues/6734
+k="${k-}${k+ and }not test_unicode_header_name"
 # test_use_proxy_from_environment needs pysocks
-%pytest -v tests -k "not test_unicode_header_name %{!?with_extradeps:and not test_use_proxy_from_environment}"
+%if %{without extradeps}
+k="${k-}${k+ and }not test_use_proxy_from_environment"
+%endif
+# test_connect_timeout and test_total_timeout_connect require network access to
+# non-routable IPs (10.255.255.1) which fails in konflux build environments
+k="${k-}${k+ and }not test_connect_timeout"
+k="${k-}${k+ and }not test_total_timeout_connect"
+
+%pytest -v tests -k "${k-}"
 %endif
 
 
