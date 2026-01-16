@@ -1546,6 +1546,13 @@
     "source": "https://src.fedoraproject.org/rpms/python-requests-toolbelt.git",
     "version": "1.0.0"
   },
+  "python-rpds-py": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "e159118a8eb628b22bd88705abcdc85ee28bc55a",
+    "source": "https://src.fedoraproject.org/rpms/python-rpds-py.git",
+    "version": "0.29.0"
+  },
   "qt5": {
     "branch": "rawhide",
     "release": "1",
