@@ -1486,6 +1486,8 @@ CheckPython() {
   # reported in https://github.com/python/cpython/issues/133651
   # test_margin_is_sufficient
   # reported in https://github.com/python/cpython/issues/140222
+  # test_resource is skipped because test_fsize_ismax and test_fsize_not_too_big
+  # assume RLIMIT_FSIZE is unlimited, which is not the case in containerized builds
   LD_LIBRARY_PATH=$ConfDir $ConfDir/python -m test.regrtest \
     -wW --slowest %{_smp_mflags} \
     %ifarch riscv64
@@ -1498,6 +1500,7 @@ CheckPython() {
     -i test_interrupt \
     -i test_interrupt_no_handler \
     -i test_margin_is_sufficient \
+    -x test_resource \
     %ifarch %{mips64}
     -x test_ctypes \
     %endif
