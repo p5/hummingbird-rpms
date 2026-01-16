@@ -1434,6 +1434,13 @@
     "source": "https://src.fedoraproject.org/rpms/python-idna.git",
     "version": "3.11"
   },
+  "python-iniconfig": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "d2fa900b05217ad3a5dcdbe3a0e1e004570edb55",
+    "source": "https://src.fedoraproject.org/rpms/python-iniconfig.git",
+    "version": "2.3.0"
+  },
   "qt5": {
     "branch": "rawhide",
     "release": "1",
