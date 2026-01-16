@@ -1504,6 +1504,13 @@
     "source": "https://src.fedoraproject.org/rpms/python-pip.git",
     "version": "25.3"
   },
+  "python-pluggy": {
+    "branch": "rawhide",
+    "release": "4",
+    "sha": "99a5b31f9eb0cc622c8235889b03fdc4afb53196",
+    "source": "https://src.fedoraproject.org/rpms/python-pluggy.git",
+    "version": "1.6.0"
+  },
   "qt5": {
     "branch": "rawhide",
     "release": "1",
