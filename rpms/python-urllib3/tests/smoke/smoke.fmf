@@ -1,0 +1,5 @@
+test: python3 test.py
+framework: shell
+require:
+- python3
+- python3-urllib3
