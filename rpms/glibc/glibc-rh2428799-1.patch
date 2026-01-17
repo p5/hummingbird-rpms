@@ -1,0 +1,100 @@
+Revert this upstream commit because it breaks C++:
+
+commit 999cd617cb7e40a2fa719e91fe1028c853ae14d5
+Author: Adhemerval Zanella <adhemerval.zanella@linaro.org>
+Date:   Fri Dec 19 15:52:21 2025 -0300
+
+    x86: Do not use __builtin_isinf_sign for _Float64x/long double
+    
+    Neither gcc [1] nor clang [2] handles pseudo-normal numbers correctly
+    with the __builtin_isinf_sign, so disable its usage for _Float64x and
+    long double types.
+    
+    This only affects x86, so add a new define __FP_BUILTIN_ISINF_SIGN_DENORMAL
+    to gate long double and related types to the libc function instead.
+    
+    It fixes the regression on test-ldouble-isinf when built with clang:
+    
+    Failure: isinf (pseudo_zero): Exception "Invalid operation" set
+    Failure: isinf (pseudo_inf): Exception "Invalid operation" set
+    Failure: isinf (pseudo_qnan): Exception "Invalid operation" set
+    Failure: isinf (pseudo_snan): Exception "Invalid operation" set
+    Failure: isinf (pseudo_unnormal): Exception "Invalid operation" set
+    Failure: isinf_downward (pseudo_zero): Exception "Invalid operation" set
+    Failure: isinf_downward (pseudo_inf): Exception "Invalid operation" set
+    Failure: isinf_downward (pseudo_qnan): Exception "Invalid operation" set
+    Failure: isinf_downward (pseudo_snan): Exception "Invalid operation" set
+    Failure: isinf_downward (pseudo_unnormal): Exception "Invalid operation" set
+    Failure: isinf_towardzero (pseudo_zero): Exception "Invalid operation" set
+    Failure: isinf_towardzero (pseudo_inf): Exception "Invalid operation" set
+    Failure: isinf_towardzero (pseudo_qnan): Exception "Invalid operation" set
+    Failure: isinf_towardzero (pseudo_snan): Exception "Invalid operation" set
+    Failure: isinf_towardzero (pseudo_unnormal): Exception "Invalid operation" set
+    Failure: isinf_upward (pseudo_zero): Exception "Invalid operation" set
+    Failure: isinf_upward (pseudo_inf): Exception "Invalid operation" set
+    Failure: isinf_upward (pseudo_qnan): Exception "Invalid operation" set
+    Failure: isinf_upward (pseudo_snan): Exception "Invalid operation" set
+    Failure: isinf_upward (pseudo_unnormal): Exception "Invalid operation" set
+    
+    Checked on x86_64-linux-gnu with gcc-15 and clang-18.
+    
+    [1] https://gcc.gnu.org/bugzilla/show_bug.cgi?id=123173
+    [2] https://github.com/llvm/llvm-project/issues/172651
+    
+    Reviewed-by: H.J. Lu <hjl.tools@gmail.com>
+
+diff --git a/bits/fp-builtin-denormal.h b/bits/fp-builtin-denormal.h
+index 0f24de149a2328df..457ab0c97a8b429b 100644
+--- a/bits/fp-builtin-denormal.h
++++ b/bits/fp-builtin-denormal.h
+@@ -26,7 +26,3 @@
+     Intel double extended-precision (long double).  By default assume 1 to
+     enable the usage of compiler builtin on math.h.  */
+ #define __FP_BUILTIN_FPCLASSIFY_DENORMAL 1
+-
+-/* __FP_BUILTIN_ISINF_SIGN_DENORMAL is defined to 1 if compiler supports
+-   handling pseudo-dernormal numbers with isinf_sign builtin.  */
+-#define __FP_BUILTIN_ISINF_SIGN_DENORMAL 1
+diff --git a/math/math.h b/math/math.h
+index 1066113ca6e97f79..77dfcdc36b04a3b1 100644
+--- a/math/math.h
++++ b/math/math.h
+@@ -1249,10 +1249,7 @@ enum
+      ? __isinff128 (x) : __builtin_isinf_sign (x))
+ # elif (__GNUC_PREREQ (4,4) && !defined __SUPPORT_SNAN__) \
+        || __glibc_clang_prereq (3,7)
+-#  define isinf(x) __MATH_TG_BUILTIN_CLASSIFY ((x),			      \
+-					       __builtin_isinf_sign, (x),     \
+-					       isinf, (x),		      \
+-					       __FP_BUILTIN_ISINF_SIGN_DENORMAL)
++#  define isinf(x) __builtin_isinf_sign (x)
+ # else
+ #  define isinf(x) __MATH_TG ((x), __isinf, (x))
+ # endif
+diff --git a/sysdeps/x86/bits/fp-builtin-denormal.h b/sysdeps/x86/bits/fp-builtin-denormal.h
+index 30ed7c899a60bf6e..33549c876a2a7bed 100644
+--- a/sysdeps/x86/bits/fp-builtin-denormal.h
++++ b/sysdeps/x86/bits/fp-builtin-denormal.h
+@@ -23,7 +23,3 @@
+ /* Neither GCC (bug 123161) nor clang (issue 172533) handles pseudo-normal
+    numbers correctly with fpclassify builtin.  */
+ #define __FP_BUILTIN_FPCLASSIFY_DENORMAL 0
+-
+-/* Neither GCC (bug 123173) nor clang (issue 172651) handles pseudo-normal
+-   numbers correctly with isinf_sign builtin.  */
+-#define __FP_BUILTIN_ISINF_SIGN_DENORMAL 0
+diff --git a/sysdeps/x86/fpu/test-builtin-denormal.c b/sysdeps/x86/fpu/test-builtin-denormal.c
+index 8856ebce80049603..6584ec339f1421dd 100644
+--- a/sysdeps/x86/fpu/test-builtin-denormal.c
++++ b/sysdeps/x86/fpu/test-builtin-denormal.c
+@@ -45,10 +45,6 @@ do_test (void)
+       TEST_COMPARE (feclearexcept (FE_INVALID), 0);
+       TEST_COMPARE (fpclassify (inputs[i].value), FP_NAN);
+       TEST_COMPARE (fetestexcept (FE_INVALID), 0);
+-
+-      TEST_COMPARE (feclearexcept (FE_INVALID), 0);
+-      TEST_COMPARE (isinf (inputs[i].value), 0);
+-      TEST_COMPARE (fetestexcept (FE_INVALID), 0);
+     }
+ 
+   return 0;
