@@ -1,0 +1,56 @@
+#!/bin/bash
+
+# Usage:
+#   ./build-arm64-bootstrap-tarball <bootstrap-dir> [SDK-version]
+
+set -euo pipefail
+
+set -x
+
+function parse-nuget-name-version-from-file() {
+    package=$1
+    filename=${package##*/}
+
+    version_suffix=$(echo "$filename" | grep -Eo '\.[[:digit:]]+.*\.nupkg')
+    version=$(echo "$version_suffix" | sed -Ee 's/^\.//' -e 's/\.nupkg$//')
+    name=${filename:0:(${#filename}-${#version_suffix})}
+
+    echo "$name" "$version"
+}
+
+bootstrap_dir=$(readlink -f "$1")
+
+sdk_version=${2:-$(jq -r  '.tools.dotnet' "$bootstrap_dir"/global.json)}
+
+mkdir -p "dotnet-prebuilts-${sdk_version}-arm64"
+
+pushd "dotnet-prebuilts-${sdk_version}-arm64"
+
+# Binaries can be at one of several different URLs:
+# GA releases:
+if ! wget "https://dotnetcli.azureedge.net/dotnet/Sdk/${sdk_version}/dotnet-sdk-${sdk_version}-linux-arm64.tar.gz" ; then
+    # Preview releases:
+    wget "https://dotnetbuilds.azureedge.net/public/Sdk/${sdk_version}/dotnet-sdk-${sdk_version}-linux-arm64.tar.gz"
+fi
+
+for archive in "$bootstrap_dir"/prereqs/packages/archive/*.tar.gz; do
+    mapfile -t linux_x64_packages < <(tar tf "$archive" | grep linux-x64)
+
+    for package in "${linux_x64_packages[@]}"; do
+        if [[ "$package" = *'.Intermediate.'* ]]; then
+            continue;
+        fi
+
+        read -r name version < <(parse-nuget-name-version-from-file "$package")
+
+        arm_name=${name/linux-x64/linux-arm64}
+
+        # https://gist.github.com/omajid/c04b6025de49d0b7b18ab4a7e789484e
+        nappo download --verbose "$arm_name" "$version"
+
+    done
+done
+
+popd
+
+tar czf "dotnet-prebuilts-${sdk_version}-arm64.tar.gz" "dotnet-prebuilts-${sdk_version}-arm64"

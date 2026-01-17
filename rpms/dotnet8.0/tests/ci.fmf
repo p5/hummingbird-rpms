@@ -1,0 +1,47 @@
+summary: Basic smoke test
+provision:
+    hardware:
+        disk:
+            - size: ">= 20 GiB"
+        memory: ">= 5120 MiB"
+prepare:
+    how: install
+    package:
+        - aspnetcore-runtime-8.0
+        - babeltrace
+        - bash-completion
+        - bc
+        - binutils
+        - dotnet-runtime-8.0
+        - dotnet-sdk-8.0
+        - expect
+        - file
+        - findutils
+        - gcc-c++
+        - git
+        - jq
+        - libstdc++-devel
+        - lldb
+        - lttng-tools
+        - npm
+        - postgresql-odbc
+        - postgresql-server
+        - procps-ng
+        - python3
+        - strace
+        - util-linux
+        - wget
+        - which
+        - zlib-devel
+execute:
+    script:
+        - dotnet --info
+        - wget --no-verbose https://github.com/redhat-developer/dotnet-bunny/releases/latest/download/turkey.tar.gz
+        - tar xf turkey.tar.gz
+        - dotnet turkey/Turkey.dll --version
+        - git clone "https://github.com/redhat-developer/dotnet-regular-tests.git"
+        - dotnet turkey/Turkey.dll -l="$TMT_TEST_DATA" dotnet-regular-tests --timeout=1200
+        - dnf remove -yq 'dotnet*'
+        - set -x; if command -v dotnet ; then exit 1; fi
+        - set -x; if [ -d /usr/lib64/dotnet ]; then exit 1; fi
+        - set -x; if man dotnet; then exit 1; fi

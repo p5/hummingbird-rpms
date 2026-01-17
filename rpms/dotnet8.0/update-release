@@ -1,0 +1,139 @@
+#!/bin/bash
+
+# Usage:
+#     ./update-release sdk-version runtime-version [--bug bug-id] [--tarball tarball-name] [--larger-rpm-release]
+
+set -euo pipefail
+IFS=$'\n\t'
+
+print_usage() {
+    echo " Usage:"
+    echo "     ./update-release sdk-version runtime-version [--bug bug-id] [--tarball tarball-name] [--release-json release-json] [--larger-rpm-release]"
+}
+
+user_provided_tarball_name=""
+
+rpm_release=1
+positional_args=()
+bug_ids=()
+while [[ "$#" -gt 0 ]]; do
+    arg="$1"
+    case "${arg}" in
+        --bug)
+            bug_ids+=("$2")
+            shift;
+            shift;
+            ;;
+        -h|--help)
+            print_usage
+            exit 0
+            ;;
+        --release-json)
+            release_json="$2"
+            shift;
+            shift;
+            ;;
+        --tarball)
+            user_provided_tarball_name="$2"
+            shift;
+            shift;
+            ;;
+        --larger-rpm-release)
+            rpm_release="2"
+            shift;
+            ;;
+        *)
+            positional_args+=("$1")
+            shift
+            ;;
+    esac
+done
+
+spec_files=( ./*.spec )
+spec_file="${spec_files[0]}"
+
+sdk_version=${positional_args[0]:-}
+if [[ -z ${sdk_version} ]]; then
+    echo "error: missing sdk version"
+    exit 1
+fi
+
+runtime_version=${positional_args[1]:-}
+if [[ -z ${runtime_version} ]]; then
+    echo "error: missing runtime version"
+    exit 1
+fi
+
+host_version="$runtime_version"
+
+if [[ "$runtime_version" == "6.0"* ]] || [[ "$runtime_version" == "7.0"* ]] ; then
+    tag=v${sdk_version}
+else
+    tag=v${runtime_version}
+fi
+
+sed -i -E "s|^%global host_version [[:digit:]]\.[[:digit:]]\.[[:digit:]]+|%global host_version ${host_version}|" "$spec_file"
+sed -i -E "s|^%global runtime_version [[:digit:]]\.[[:digit:]]\.[[:digit:]]+|%global runtime_version ${runtime_version}|" "$spec_file"
+sed -i -E "s|^%global sdk_version [[:digit:]]\.[[:digit:]]\.[[:digit:]][[:digit:]][[:digit:]]|%global sdk_version ${sdk_version}|" "$spec_file"
+
+
+if [[ "$runtime_version" == "6.0"* ]] || [[ "$runtime_version" == "7.0"* ]] ; then
+    if [[ -f "dotnet-${tag}.tar.gz" ]]; then
+        echo "dotnet-${tag}.tar.gz already exists, not rebuilding tarball"
+    else
+        if [[ -f "dotnet-${tag}-original.tar.gz" ]]; then
+            echo "dotnet-${tag}-original.tar.gz alredy exists, not rebuilding tarball"
+        else
+            if [[ -n "${user_provided_tarball_name}" ]]; then
+                cp -a "$user_provided_tarball_name" "dotnet-${tag}-original.tar.gz"
+            elif [[ -f "dotnet-${sdk_version}-SDK.tar.gz" ]]; then
+                cp -a "dotnet-${sdk_version}-SDK.tar.gz" "dotnet-${tag}-original.tar.gz"
+            elif [[ -f "dotnet-${sdk_version}.tar.gz" ]]; then
+                cp -a "dotnet-${sdk_version}.tar.gz" "dotnet-${tag}-original.tar.gz"
+            elif [[ -f "dotnet-${runtime_version}.tar.gz" ]]; then
+                cp -a "dotnet-${runtime_version}.tar.gz" "dotnet-${tag}-original.tar.gz"
+            fi
+        fi
+
+        ./build-dotnet-tarball "${tag}"
+    fi
+else
+    if [[ -f "dotnet-${tag}.tar.gz" ]]; then
+        echo "dotnet-${tag}.tar.gz already exists, not rebuilding tarball"
+    elif [[ -n ${user_provided_tarball_name} ]]; then
+        cp -a "${user_provided_tarball_name}" "dotnet-${tag}.tar.gz"
+        cp -a "${release_json}" release.json
+    else
+        rm -f release.json
+        spectool -g "$spec_file"
+    fi
+fi
+
+set -x
+
+comment="Update to .NET SDK ${sdk_version} and Runtime ${runtime_version}"
+commit_message="$comment
+"
+for bug_id in "${bug_ids[@]}"; do
+    if [[ "$bug_id" =~ ^[[:digit:]]+$ ]]; then
+        comment="$comment
+- Resolves: RHBZ#$bug_id"
+        commit_message="$commit_message
+Resolves: RHBZ#$bug_id"
+    else
+        comment="$comment
+- Resolves: $bug_id"
+        commit_message="$commit_message
+Resolves: $bug_id"
+    fi
+done
+
+echo "$commit_message" > git-commit-message
+
+rpmdev-bumpspec --comment="$comment" "$spec_file"
+
+# Reset release in 'Release' tag
+sed -i -E 's|^Release:        [[:digit:]]+%|Release:        '"$rpm_release"'%|' "$spec_file"
+# Reset Release in changelog comment
+# See https://stackoverflow.com/questions/18620153/find-matching-text-and-replace-next-line
+sed -i -E '/^%changelog$/!b;n;s/-[[:digit:]]+$/-'"$rpm_release"'/' "$spec_file"

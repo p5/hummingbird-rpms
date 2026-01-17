@@ -328,6 +328,13 @@
     "source": "https://src.fedoraproject.org/rpms/dotnet10.0.git",
     "version": "10.0.101"
   },
+  "dotnet8.0": {
+    "branch": "rawhide",
+    "release": "3",
+    "sha": "d46707aa89b1ce3873546354180673e511d9f126",
+    "source": "https://src.fedoraproject.org/rpms/dotnet8.0.git",
+    "version": "8.0.123"
+  },
   "dotnet9.0": {
     "branch": "rawhide",
     "release": "3",
