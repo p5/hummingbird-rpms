@@ -574,6 +574,7 @@ function retry_until_success {
 VERBOSE=1 retry_until_success $max_attempts \
     timeout 5h \
     ./build.sh \
+    --clean-while-building \
 %if %{without bootstrap}
     --with-sdk previously-built-dotnet \
 %endif
