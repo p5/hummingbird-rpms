@@ -1,9 +1,9 @@
 # List of supported tests
 #
 # Architectures which are to be ignored are listed after the test
-# for example: abort/test-abort-fatal-error.js i686 
+# for example: abort/test-abort-fatal-error.js i686
 # won't be runned for i686 architecture
-# 
+#
 # Each exception should be explained with a comment
 # containing date and a short description of the problem
 #
@@ -319,15 +319,19 @@ fixtures/utf8-shebang-bom.js
 fixtures/warnings.js
 fixtures/worker-preload.js
 internet/test-dgram-connect.js
-internet/test-dgram-membership.js
-internet/test-dgram-multicast-multi-process.js
+# Disabled on 12.01.2026
+# As it failed on Konflux due to not having network access
+# internet/test-dgram-membership.js
+# internet/test-dgram-multicast-multi-process.js
 internet/test-dns-cares-domains.js
 internet/test-dns-getDefaultResultOrder.js
 internet/test-dns-regress-6244.js
 internet/test-dns-setserver-in-callback-of-resolve4.js
 internet/test-https-issue-43963.js
-internet/test-net-autoselectfamily-events-timeout.js
-internet/test-net-connect-timeout.js
+# Disabled on 12.01.2026
+# As it failed on Konflux due to not having network access
+# internet/test-net-autoselectfamily-events-timeout.js
+# internet/test-net-connect-timeout.js
 internet/test-trace-events-dns.js
 message/console_assert.js
 message/max_tick_depth.js
