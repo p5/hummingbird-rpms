@@ -678,6 +678,7 @@ VERBOSE=1 retry_until_success $max_attempts \
     timeout 5h \
     ./build.sh \
     --source-only \
+    --clean-while-building \
     --release-manifest %{SOURCE5} \
 %if %{without bootstrap}
     --with-sdk previously-built-dotnet \
