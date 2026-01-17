@@ -1,4 +1,6 @@
 {%- for rpm in rpms -%}
+# --- {{ rpm.dname }} ---
+{%- if rpm.imported %}
 {{ pipeline_run(
     rpm=rpm,
     event_type='push',
@@ -8,5 +10,8 @@
     timeout_hours=rpm.timeout_hours,
     build_platforms=rpm.build_platforms if rpm.build_platforms is defined else None,
     task_run_specs=rpm.task_run_specs if rpm.task_run_specs is defined else None,
-) }}
+) -}}
+{%- else %}
+# PENDING
+{%- endif %}
 {% endfor -%}

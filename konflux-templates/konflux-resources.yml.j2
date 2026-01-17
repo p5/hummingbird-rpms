@@ -1,8 +1,13 @@
 {{ application() }}
 {%- for rpm in rpms %}
+# --- {{ rpm.name }} ---
+{%- if rpm.imported %}
 {{ component(rpm) }}
-{{ image_repository(rpm) }}
-{%- endfor %}
+{{ image_repository(rpm) -}}
+{%- else %}
+# PENDING
+{%- endif -%}
+{% endfor -%}
 {{ integration_test_scenario() }}
 {{ policy("registry-hummingbird") }}
 {{ release_plan("hummingbird-rpm-release") }}

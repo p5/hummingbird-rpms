@@ -16,6 +16,9 @@ BUILD_TRIGGER_RPM_NAME=${BUILD_TRIGGER_RPM_NAME:-setup}
 PACKAGE_CONFIG="ci/package-overrides.yaml"
 DEFAULT_TIMEOUT_HOURS=4
 
+# Manifest file listing all packages (imported and pending)
+MANIFEST_FILE="target-packages.yml"
+
 
 # Parse command line arguments
 while [[ $# -gt 0 ]]; do
@@ -78,8 +81,12 @@ APPLICATION_NAME="rpms-${BRANCH}"
 # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
 PIPELINE_BUNDLE="quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
 
+# Read packages from manifest file and existing rpms/ directories, then sort
 # shellcheck disable=SC2312
-mapfile -d '' rpms < <(find ./rpms -maxdepth 1 -mindepth 1 -type d -print0 | LC_ALL=C sort -z)
+mapfile -t packages < <({
+    yq -r '.packages[]' "${MANIFEST_FILE}"
+    find ./rpms -maxdepth 1 -mindepth 1 -type d -printf '%f\n'
+} | LC_ALL=C sort -u)
 
 echo "Building template variables..." >&2
 cat > "${temp_variables}" << EOF
@@ -91,8 +98,13 @@ tenant: ${TENANT}
 rpms: []
 EOF
 
-for path in "${rpms[@]}"; do
-    dname=$(basename "${path}")
+for dname in "${packages[@]}"; do
+    # Check if the package is imported (directory exists)
+    imported=false
+    if [[ -d "./rpms/${dname}" ]]; then
+        imported=true
+    fi
+
     # resource names must not contain underscores, but some package names do (like createrepo_c)
     # resource names must also be lowercase, but some package names have uppercase (like R-*)
     # resource names must not contain '+', but some package names do (like perl-Text-Tabs+Wrap)
@@ -105,46 +117,52 @@ for path in "${rpms[@]}"; do
     (
         echo "name: ${name}"
         echo "dname: ${dname}"
+        echo "imported: ${imported}"
 
-        # Always include timeout_hours, using configured value or default
-        if timeout_hours=$(yq -e ".${dname}.timeout_hours" "${PACKAGE_CONFIG}" 2>/dev/null); then
-            echo "timeout_hours: ${timeout_hours}"
-        else
+        # Skip detailed config for pending packages
+        if [[ ${imported} == false ]]; then
             echo "timeout_hours: ${DEFAULT_TIMEOUT_HOURS}"
-        fi
+        else
+            # Always include timeout_hours, using configured value or default
+            if timeout_hours=$(yq -e ".${dname}.timeout_hours" "${PACKAGE_CONFIG}" 2>/dev/null); then
+                echo "timeout_hours: ${timeout_hours}"
+            else
+                echo "timeout_hours: ${DEFAULT_TIMEOUT_HOURS}"
+            fi
 
-        # Only include build_platforms if overridden in the config file
-        if build_platforms=$(yq -e ".${dname}.build_platforms[]" "${PACKAGE_CONFIG}" 2>/dev/null); then
-            echo "build_platforms:"
-            echo "${build_platforms}" | while read -r platform; do
-                echo "  - ${platform}"
-            done
-        fi
+            # Only include build_platforms if overridden in the config file
+            if build_platforms=$(yq -e ".${dname}.build_platforms[]" "${PACKAGE_CONFIG}" 2>/dev/null); then
+                echo "build_platforms:"
+                echo "${build_platforms}" | while read -r platform; do
+                    echo "  - ${platform}"
+                done
+            fi
 
-        # Only include task_run_specs if overridden in the config file
-        if yq -e ".${dname}.task_run_specs" "${PACKAGE_CONFIG}" &>/dev/null; then
-            echo "task_run_specs:"
-            yq ".${dname}.task_run_specs" "${PACKAGE_CONFIG}" | sed 's/^/  /'
-        fi
+            # Only include task_run_specs if overridden in the config file
+            if yq -e ".${dname}.task_run_specs" "${PACKAGE_CONFIG}" &>/dev/null; then
+                echo "task_run_specs:"
+                yq ".${dname}.task_run_specs" "${PACKAGE_CONFIG}" | sed 's/^/  /'
+            fi
 
-        extra_paths=()
+            extra_paths=()
 
-        # Add package-specific test file if it exists
-        if [[ -f "test/rpms/${dname}.yml" ]]; then
-            extra_paths+=("test/rpms/${dname}.yml")
-        fi
+            # Add package-specific test file if it exists
+            if [[ -f "test/rpms/${dname}.yml" ]]; then
+                extra_paths+=("test/rpms/${dname}.yml")
+            fi
 
-        # Add ci/ and mock/ path changes for canary rpm
-        if [[ ${dname} == "${BUILD_TRIGGER_RPM_NAME}" && ${RESOURCE_TYPE} == pull-request ]]; then
-            extra_paths+=("ci/***")
-            extra_paths+=("mock/***")
-        fi
+            # Add ci/ and mock/ path changes for canary rpm
+            if [[ ${dname} == "${BUILD_TRIGGER_RPM_NAME}" && ${RESOURCE_TYPE} == pull-request ]]; then
+                extra_paths+=("ci/***")
+                extra_paths+=("mock/***")
+            fi
 
-        if [[ ${#extra_paths[@]} -gt 0 ]]; then
-            echo "extra_path_changes:"
-            for path_change in "${extra_paths[@]}"; do
-                echo "  - ${path_change}"
-            done
+            if [[ ${#extra_paths[@]} -gt 0 ]]; then
+                echo "extra_path_changes:"
+                for path_change in "${extra_paths[@]}"; do
+                    echo "  - ${path_change}"
+                done
+            fi
         fi
     ) > "${temp_rpm_variables}"
 

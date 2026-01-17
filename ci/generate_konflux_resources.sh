@@ -47,8 +47,15 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
+# Manifest file listing all packages (imported and pending)
+MANIFEST_FILE="target-packages.yml"
+
+# Read packages from manifest file and existing rpms/ directories, then sort
 # shellcheck disable=SC2312
-mapfile -d '' rpms < <(find ./rpms -maxdepth 1 -mindepth 1 -type d -print0 | LC_ALL=C sort -z)
+mapfile -t packages < <({
+    yq -r '.packages[]' "${MANIFEST_FILE}"
+    find ./rpms -maxdepth 1 -mindepth 1 -type d -printf '%f\n'
+} | LC_ALL=C sort -u)
 
 APPLICATION_NAME="rpms-${BRANCH}"
 
@@ -70,10 +77,16 @@ tenant: ${TENANT}
 git_repo: ${GIT_REPO}
 rpms: []
 EOF
-for path in "${rpms[@]}"; do
-    name=$(basename "${path}")
+for name in "${packages[@]}"; do
+    # Check if the package is imported (directory exists)
+    imported=false
+    if [[ -d "./rpms/${name}" ]]; then
+        imported=true
+    fi
+
     (
         echo "name: ${name}"
+        echo "imported: ${imported}"
         # resource names must not contain underscores, but some package names do (like createrepo_c)
         # resource names must also be lowercase, but some package names have uppercase (like R-*)
         # resource names must not contain '+', but some package names do (like perl-Text-Tabs+Wrap)
@@ -85,10 +98,15 @@ for path in "${rpms[@]}"; do
         echo "repository: ${name}"
         echo "tags: [latest]"
     ) > "${temp_rpm_variables}"
-    properties_file="${path}/properties.yml"
-    if [[ -f "${properties_file}" ]]; then
-        yq -i ". * load(\"${properties_file}\")" "${temp_rpm_variables}"
+
+    # Only load properties for imported packages
+    if [[ ${imported} == true ]]; then
+        properties_file="./rpms/${name}/properties.yml"
+        if [[ -f "${properties_file}" ]]; then
+            yq -i ". * load(\"${properties_file}\")" "${temp_rpm_variables}"
+        fi
     fi
+
     yq -i ".rpms += [load(\"${temp_rpm_variables}\")]" "${temp_variables}"
 done
 

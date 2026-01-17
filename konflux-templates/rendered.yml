@@ -9,6 +9,9 @@ spec:
   displayName: rpms-main
   gitOpsRepository:
     url: ""
+# --- CUnit ---
+# PENDING
+# --- PyYAML ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -46,6 +49,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- R-rpm-macros ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -83,6 +87,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- ShellCheck ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -120,6 +125,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- abattis-cantarell-fonts ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -157,6 +163,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- acl ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -194,6 +201,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- alsa-lib ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -231,6 +239,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- annobin ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -268,6 +277,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- ansible-packaging ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -305,6 +315,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- ant ---
+# PENDING
+# --- apr ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -342,6 +355,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- apr-util ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -379,6 +393,11 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- asciidoc ---
+# PENDING
+# --- atf ---
+# PENDING
+# --- attr ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -416,6 +435,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- audit ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -453,6 +473,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- authselect ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -490,6 +511,11 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- autoconf ---
+# PENDING
+# --- automake ---
+# PENDING
+# --- avahi ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -527,6 +553,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- babeltrace ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -564,6 +591,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- bash ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -601,6 +629,15 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- bash-completion ---
+# PENDING
+# --- bc ---
+# PENDING
+# --- beakerlib ---
+# PENDING
+# --- bind ---
+# PENDING
+# --- binutils ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -638,6 +675,11 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- bison ---
+# PENDING
+# --- bluez ---
+# PENDING
+# --- boost ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -675,6 +717,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- bpftool ---
+# PENDING
+# --- brotli ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -712,6 +757,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- busybox ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -749,6 +795,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- bzip2 ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -786,6 +833,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- c-ares ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -823,6 +871,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- ca-certificates ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -860,6 +909,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- caddy ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -897,6 +947,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- cairo ---
+# PENDING
+# --- capstone ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -934,6 +987,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- cargo-rpm-macros ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -971,6 +1025,11 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- catatonit ---
+# PENDING
+# --- check ---
+# PENDING
+# --- chkconfig ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -1008,6 +1067,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- chrpath ---
+# PENDING
+# --- cmake ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -1045,6 +1107,11 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- cmocka ---
+# PENDING
+# --- compat-gpgme124 ---
+# PENDING
+# --- composer ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -1082,6 +1149,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- composer-generators ---
+# PENDING
+# --- container-selinux ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -1119,6 +1189,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- containers-common ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -1156,6 +1227,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- coreutils ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -1193,6 +1265,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- cpio ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -1230,6 +1303,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- cracklib ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -1267,6 +1341,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- createrepo_c ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -1304,6 +1379,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- crypto-policies ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -1341,6 +1417,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- cryptsetup ---
+# PENDING
+# --- ctags ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -1378,6 +1457,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- cups ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -1415,6 +1495,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- curl ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -1452,6 +1533,11 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- cvs ---
+# PENDING
+# --- cvsps ---
+# PENDING
+# --- cyrus-sasl ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -1489,6 +1575,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- dbus ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -1526,6 +1613,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- dbus-broker ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -1563,6 +1651,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- dbus-python ---
+# PENDING
+# --- debugedit ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -1600,6 +1691,11 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- dejagnu ---
+# PENDING
+# --- desktop-file-utils ---
+# PENDING
+# --- diffutils ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -1637,6 +1733,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- dnf ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -1674,6 +1771,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- dnf5 ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -1711,6 +1809,19 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- docbook-dtds ---
+# PENDING
+# --- docbook-style-xsl ---
+# PENDING
+# --- docbook-utils ---
+# PENDING
+# --- docbook5-schemas ---
+# PENDING
+# --- docbook5-style-xsl ---
+# PENDING
+# --- dos2unix ---
+# PENDING
+# --- dotnet10.0 ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -1748,6 +1859,13 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- dotnet8.0 ---
+# PENDING
+# --- dotnet9.0 ---
+# PENDING
+# --- doxygen ---
+# PENDING
+# --- drpm ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -1785,6 +1903,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- dwz ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -1822,6 +1941,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- e2fsprogs ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -1859,6 +1979,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- ecj ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -1896,6 +2017,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- ed ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -1933,6 +2055,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- efi-rpm-macros ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -1970,6 +2093,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- elfutils ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -2007,6 +2131,13 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- elinks ---
+# PENDING
+# --- emacs ---
+# PENDING
+# --- execstack ---
+# PENDING
+# --- expat ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -2044,6 +2175,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- fedora-logos ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -2081,6 +2213,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- fedora-release ---
+# PENDING
+# --- fedora-repos ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -2118,6 +2253,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- file ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -2155,6 +2291,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- filesystem ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -2192,6 +2329,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- findutils ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -2229,6 +2367,15 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- fipscheck ---
+# PENDING
+# --- firebird ---
+# PENDING
+# --- firewalld ---
+# PENDING
+# --- flex ---
+# PENDING
+# --- fmt ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -2266,6 +2413,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- fontconfig ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -2303,6 +2451,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- fonts-rpm-macros ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -2340,6 +2489,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- fonttools ---
+# PENDING
+# --- forge-srpm-macros ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -2377,6 +2529,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- fpc-srpm-macros ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -2414,6 +2567,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- freetds ---
+# PENDING
+# --- freetype ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -2451,6 +2607,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- fsverity-utils ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -2488,6 +2645,13 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- fuse ---
+# PENDING
+# --- fuse3 ---
+# PENDING
+# --- g++ ---
+# PENDING
+# --- gap-srpm-macros ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -2525,6 +2689,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- gawk ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -2562,6 +2727,13 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- gcc ---
+# PENDING
+# --- gcc-c++ ---
+# PENDING
+# --- gd ---
+# PENDING
+# --- gdb ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -2599,6 +2771,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- gdbm ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -2636,6 +2809,25 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- gettext ---
+# PENDING
+# --- gettext-autopoint ---
+# PENDING
+# --- ghc ---
+# PENDING
+# --- ghc-Diff ---
+# PENDING
+# --- ghc-QuickCheck ---
+# PENDING
+# --- ghc-aeson ---
+# PENDING
+# --- ghc-fgl ---
+# PENDING
+# --- ghc-regex-tdfa ---
+# PENDING
+# --- ghc-rpm-macros ---
+# PENDING
+# --- ghc-srpm-macros ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -2673,6 +2865,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- ghostscript ---
+# PENDING
+# --- git ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -2710,6 +2905,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- glib2 ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -2747,6 +2943,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- glibc ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -2784,6 +2981,11 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- glibc-headers ---
+# PENDING
+# --- glibc-kernheaders ---
+# PENDING
+# --- gmp ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -2821,6 +3023,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- gnat-srpm-macros ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -2858,6 +3061,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- gnulib-l10n ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -2895,6 +3099,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- gnupg ---
+# PENDING
+# --- gnupg2 ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -2932,6 +3139,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- gnutls ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -2969,6 +3177,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- go-md2man ---
+# PENDING
+# --- go-rpm-macros ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -3006,6 +3217,11 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- go-vendor-tools ---
+# PENDING
+# --- gobject-introspection ---
+# PENDING
+# --- golang ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -3043,6 +3259,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- google-noto-fonts ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -3080,6 +3297,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- gperf ---
+# PENDING
+# --- gperftools ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -3117,6 +3337,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- gpgme ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -3154,6 +3375,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- gpgverify ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -3191,6 +3413,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- gpm ---
+# PENDING
+# --- graphite2 ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -3228,6 +3453,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- grep ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -3265,6 +3491,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- groff ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -3302,6 +3529,17 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- gtest ---
+# PENDING
+# --- gtk-doc ---
+# PENDING
+# --- gtk-sharp2 ---
+# PENDING
+# --- gtk2 ---
+# PENDING
+# --- gtk3 ---
+# PENDING
+# --- gzip ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -3339,6 +3577,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- haproxy ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -3376,6 +3615,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- hardlink ---
+# PENDING
+# --- harfbuzz ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -3413,6 +3655,11 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- help2man ---
+# PENDING
+# --- highlight ---
+# PENDING
+# --- hostname ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -3450,6 +3697,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- httpd ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -3487,6 +3735,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- hugo ---
+# PENDING
+# --- hummingbird-release ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -3524,6 +3775,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- icu ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -3561,6 +3813,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- ima-evm-utils ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -3598,6 +3851,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- intltool ---
+# PENDING
+# --- iproute ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -3635,6 +3891,13 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- iptables ---
+# PENDING
+# --- iso-codes ---
+# PENDING
+# --- itstool ---
+# PENDING
+# --- jansson ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -3672,6 +3935,19 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- java-21-openjdk ---
+# PENDING
+# --- java-25-openjdk ---
+# PENDING
+# --- java-rpm-macros ---
+# PENDING
+# --- javapackages-tools ---
+# PENDING
+# --- jemalloc ---
+# PENDING
+# --- jna ---
+# PENDING
+# --- jq ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -3709,6 +3985,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- json-c ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -3746,6 +4023,13 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- jsoncpp ---
+# PENDING
+# --- kde4-macros ---
+# PENDING
+# --- kernel ---
+# PENDING
+# --- kernel-headers ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -3783,6 +4067,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- kernel-srpm-macros ---
+# PENDING
+# --- keyutils ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -3820,6 +4107,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- kmod ---
+# PENDING
+# --- krb5 ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -3857,6 +4147,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- kyua ---
+# PENDING
+# --- langpacks ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -3894,6 +4187,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- less ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -3931,6 +4225,31 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- libX11 ---
+# PENDING
+# --- libXau ---
+# PENDING
+# --- libXaw ---
+# PENDING
+# --- libXcomposite ---
+# PENDING
+# --- libXext ---
+# PENDING
+# --- libXi ---
+# PENDING
+# --- libXmu ---
+# PENDING
+# --- libXrender ---
+# PENDING
+# --- libXtst ---
+# PENDING
+# --- libabigail ---
+# PENDING
+# --- libaio ---
+# PENDING
+# --- libappstream-glib ---
+# PENDING
+# --- libarchive ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -3968,6 +4287,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- libassuan ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -4005,6 +4325,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- libbpf ---
+# PENDING
+# --- libcap ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -4042,6 +4365,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- libcap-ng ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -4079,6 +4403,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- libcbor ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -4116,6 +4441,13 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- libcomps ---
+# PENDING
+# --- libdaemon ---
+# PENDING
+# --- libdb ---
+# PENDING
+# --- libdnf ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -4153,6 +4485,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- libeconf ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -4190,6 +4523,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- libedit ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -4227,6 +4561,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- libev ---
+# PENDING
+# --- libevent ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -4264,6 +4601,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- libffi ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -4301,6 +4639,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- libfido2 ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -4338,6 +4677,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- libfontenc ---
+# PENDING
+# --- libgcrypt ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -4375,6 +4717,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- libgit2 ---
+# PENDING
+# --- libgpg-error ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -4412,6 +4757,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- libidn2 ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -4449,6 +4795,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- libipt ---
+# PENDING
+# --- libksba ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -4486,6 +4835,11 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- libmicrohttpd ---
+# PENDING
+# --- libmnl ---
+# PENDING
+# --- libmodulemd ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -4523,6 +4877,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- libmpc ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -4560,6 +4915,15 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- libnl3 ---
+# PENDING
+# --- libnsl2 ---
+# PENDING
+# --- libpng ---
+# PENDING
+# --- libpq ---
+# PENDING
+# --- libpsl ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -4597,6 +4961,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- libpwquality ---
+# PENDING
+# --- librepo ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -4634,6 +5001,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- libseccomp ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -4671,6 +5039,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- libsecret ---
+# PENDING
+# --- libselinux ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -4708,6 +5079,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- libsemanage ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -4745,6 +5117,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- libsepol ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -4782,6 +5155,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- libsodium ---
+# PENDING
+# --- libsolv ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -4819,6 +5195,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- libssh ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -4856,6 +5233,11 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- libssh2 ---
+# PENDING
+# --- libstdc++ ---
+# PENDING
+# --- libtasn1 ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -4893,6 +5275,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- libtirpc ---
+# PENDING
+# --- libtool ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -4930,6 +5315,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- libunistring ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -4967,6 +5353,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- libunwind ---
+# PENDING
+# --- libusb1 ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -5004,6 +5393,11 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- libutempter ---
+# PENDING
+# --- libuv ---
+# PENDING
+# --- libverto ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -5041,6 +5435,11 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- libverto-module-base ---
+# PENDING
+# --- libxcb ---
+# PENDING
+# --- libxcrypt ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -5078,6 +5477,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- libxkbcommon ---
+# PENDING
+# --- libxml2 ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -5115,6 +5517,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- libxslt ---
+# PENDING
+# --- libyaml ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -5152,6 +5557,27 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- libzip ---
+# PENDING
+# --- linkchecker ---
+# PENDING
+# --- linux-atm ---
+# PENDING
+# --- linuxdoc-tools ---
+# PENDING
+# --- lksctp-tools ---
+# PENDING
+# --- llhttp ---
+# PENDING
+# --- llvm ---
+# PENDING
+# --- llvm20 ---
+# PENDING
+# --- lmdb ---
+# PENDING
+# --- logrotate ---
+# PENDING
+# --- lua ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -5189,6 +5615,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- lua-rpm-macros ---
+# PENDING
+# --- lz4 ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -5226,6 +5655,15 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- lzip ---
+# PENDING
+# --- lzo ---
+# PENDING
+# --- m4 ---
+# PENDING
+# --- mailcap ---
+# PENDING
+# --- make ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -5263,6 +5701,53 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- mariadb-connector-c ---
+# PENDING
+# --- mariadb10.11 ---
+# PENDING
+# --- mawk ---
+# PENDING
+# --- memcached ---
+# PENDING
+# --- meson ---
+# PENDING
+# --- mingw-binutils ---
+# PENDING
+# --- mingw-c-ares ---
+# PENDING
+# --- mingw-filesystem ---
+# PENDING
+# --- mingw-gcc ---
+# PENDING
+# --- mingw-libffi ---
+# PENDING
+# --- mingw-libtasn1 ---
+# PENDING
+# --- mingw-libxml2 ---
+# PENDING
+# --- mingw-nettle ---
+# PENDING
+# --- mingw-openssl ---
+# PENDING
+# --- mingw-python3 ---
+# PENDING
+# --- mingw-readline ---
+# PENDING
+# --- mingw-zlib ---
+# PENDING
+# --- mingw32-gcc-c++ ---
+# PENDING
+# --- mingw64-gcc-c++ ---
+# PENDING
+# --- mkfontscale ---
+# PENDING
+# --- mod_http2 ---
+# PENDING
+# --- mono ---
+# PENDING
+# --- mpdecimal ---
+# PENDING
+# --- mpfr ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -5300,6 +5785,13 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- mpich ---
+# PENDING
+# --- multilib-rpm-config ---
+# PENDING
+# --- musl ---
+# PENDING
+# --- ncurses ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -5337,6 +5829,13 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- net-snmp ---
+# PENDING
+# --- net-tools ---
+# PENDING
+# --- netpbm ---
+# PENDING
+# --- nettle ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -5374,6 +5873,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- newt ---
+# PENDING
+# --- nghttp2 ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -5411,6 +5913,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- nghttp3 ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -5448,6 +5951,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- nginx ---
+# PENDING
+# --- ngtcp2 ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -5485,6 +5991,13 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- ninja-build ---
+# PENDING
+# --- nmap ---
+# PENDING
+# --- nodejs-packaging ---
+# PENDING
+# --- nodejs20 ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -5522,6 +6035,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- nodejs22 ---
+# PENDING
+# --- nodejs24 ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -5559,6 +6075,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- npth ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -5596,6 +6113,15 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- nss ---
+# PENDING
+# --- nss_wrapper ---
+# PENDING
+# --- numpy ---
+# PENDING
+# --- ocaml-srpm-macros ---
+# PENDING
+# --- oniguruma ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -5633,6 +6159,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- openblas-srpm-macros ---
+# PENDING
+# --- openldap ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -5670,6 +6199,11 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- openmpi ---
+# PENDING
+# --- opensc ---
+# PENDING
+# --- openssh ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -5707,6 +6241,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- openssl ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -5744,6 +6279,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- p11-kit ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -5781,6 +6317,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- package-notes ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -5818,6 +6355,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- pam ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -5855,6 +6393,11 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- pam_wrapper ---
+# PENDING
+# --- pandoc ---
+# PENDING
+# --- patch ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -5892,6 +6435,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- pcre2 ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -5929,6 +6473,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- pcsc-lite ---
+# PENDING
+# --- perl ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -5966,6 +6513,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- perl-Archive-Tar ---
+# PENDING
+# --- perl-Carp ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -6003,6 +6553,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- perl-Data-Dumper ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -6040,6 +6591,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- perl-Digest ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -6077,6 +6629,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- perl-Digest-MD5 ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -6114,6 +6667,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- perl-Encode ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -6151,6 +6705,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- perl-Exporter ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -6188,6 +6743,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- perl-File-Path ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -6225,6 +6781,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- perl-File-Temp ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -6262,6 +6819,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- perl-Getopt-Long ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -6299,6 +6857,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- perl-HTTP-Tiny ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -6336,6 +6895,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- perl-IO-Socket-IP ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -6373,6 +6933,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- perl-IO-Socket-SSL ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -6410,6 +6971,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- perl-MIME-Base32 ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -6447,6 +7009,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- perl-MIME-Base64 ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -6484,6 +7047,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- perl-Net-SSLeay ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -6521,6 +7085,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- perl-PathTools ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -6558,6 +7123,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- perl-Pod-Escapes ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -6595,6 +7161,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- perl-Pod-Perldoc ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -6632,6 +7199,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- perl-Pod-Simple ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -6669,6 +7237,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- perl-Pod-Usage ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -6706,6 +7275,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- perl-Scalar-List-Utils ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -6743,6 +7313,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- perl-Socket ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -6780,6 +7351,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- perl-Storable ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -6817,6 +7389,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- perl-Term-ANSIColor ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -6854,6 +7427,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- perl-Term-Cap ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -6891,6 +7465,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- perl-Text-ParseWords ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -6928,6 +7503,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- perl-Text-Tabs+Wrap ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -6965,6 +7541,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- perl-Time-HiRes ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -7002,6 +7579,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- perl-Time-Local ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -7039,6 +7617,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- perl-URI ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -7076,6 +7655,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- perl-XML-Parser ---
+# PENDING
+# --- perl-constant ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -7113,6 +7695,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- perl-generators ---
+# PENDING
+# --- perl-libnet ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -7150,6 +7735,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- perl-parent ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -7187,6 +7773,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- perl-podlators ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -7224,6 +7811,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- perl-srpm-macros ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -7261,6 +7849,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- php ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -7298,6 +7887,11 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- php-json ---
+# PENDING
+# --- php-pear ---
+# PENDING
+# --- php-pecl-zip ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -7335,6 +7929,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- pkcs11-provider ---
+# PENDING
+# --- pkgconf ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -7372,6 +7969,13 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- pkgconfig ---
+# PENDING
+# --- po4a ---
+# PENDING
+# --- policycoreutils ---
+# PENDING
+# --- popt ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -7409,6 +8013,21 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- postgresql18 ---
+# PENDING
+# --- priv_wrapper ---
+# PENDING
+# --- procps ---
+# PENDING
+# --- procps-ng ---
+# PENDING
+# --- protobuf ---
+# PENDING
+# --- psmisc ---
+# PENDING
+# --- psutils ---
+# PENDING
+# --- publicsuffix-list ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -7446,6 +8065,11 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- pyOpenSSL ---
+# PENDING
+# --- pygobject3 ---
+# PENDING
+# --- pyproject-rpm-macros ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -7483,6 +8107,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- pytest ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -7520,6 +8145,11 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- python-Pallets-Sphinx-Themes ---
+# PENDING
+# --- python-argcomplete ---
+# PENDING
+# --- python-attrs ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -7557,6 +8187,11 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- python-betamax ---
+# PENDING
+# --- python-breathe ---
+# PENDING
+# --- python-certifi ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -7594,6 +8229,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- python-charset-normalizer ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -7631,6 +8267,19 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- python-cups ---
+# PENDING
+# --- python-decorator ---
+# PENDING
+# --- python-docutils ---
+# PENDING
+# --- python-filelock ---
+# PENDING
+# --- python-flit-core ---
+# PENDING
+# --- python-furo ---
+# PENDING
+# --- python-gitlab ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -7668,6 +8317,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- python-hypothesis ---
+# PENDING
+# --- python-idna ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -7705,6 +8357,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- python-impacket ---
+# PENDING
+# --- python-iniconfig ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -7742,6 +8397,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- python-inotify ---
+# PENDING
+# --- python-jinja2 ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -7779,6 +8437,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- python-jinja2-cli ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -7816,6 +8475,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- python-jsonschema ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -7853,6 +8513,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- python-jsonschema-specifications ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -7890,6 +8551,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- python-lxml ---
+# PENDING
+# --- python-markupsafe ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -7927,6 +8591,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- python-mock ---
+# PENDING
+# --- python-mypy_extensions ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -7964,6 +8631,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- python-packaging ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -8001,6 +8669,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- python-pathspec ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -8038,6 +8707,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- python-pexpect ---
+# PENDING
+# --- python-pip ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -8075,6 +8747,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- python-pluggy ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -8112,6 +8785,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- python-pretend ---
+# PENDING
+# --- python-productmd ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -8149,6 +8825,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- python-psutil ---
+# PENDING
+# --- python-pygments ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -8186,6 +8865,15 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- python-pygments-pytest ---
+# PENDING
+# --- python-pytest-cov ---
+# PENDING
+# --- python-pytest-timeout ---
+# PENDING
+# --- python-pytest-xdist ---
+# PENDING
+# --- python-referencing ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -8223,6 +8911,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- python-requests ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -8260,6 +8949,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- python-requests-toolbelt ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -8297,6 +8987,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- python-rpds-py ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -8334,6 +9025,11 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- python-rpm-generators ---
+# PENDING
+# --- python-rpm-lockfile-prototype ---
+# PENDING
+# --- python-rpm-macros ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -8371,6 +9067,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- python-sentry-sdk ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -8408,6 +9105,25 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- python-setuptools ---
+# PENDING
+# --- python-sphinx ---
+# PENDING
+# --- python-sphinx-issues ---
+# PENDING
+# --- python-sphinx-removed-in ---
+# PENDING
+# --- python-sphinx_rtd_theme ---
+# PENDING
+# --- python-sphinxcontrib-log-cabinet ---
+# PENDING
+# --- python-sphinxcontrib-trio ---
+# PENDING
+# --- python-trio ---
+# PENDING
+# --- python-twisted ---
+# PENDING
+# --- python-types-pyyaml ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -8445,6 +9161,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- python-types-requests ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -8482,6 +9199,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- python-typing-extensions ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -8519,6 +9237,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- python-urllib3 ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -8556,6 +9275,13 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- python-wcag-contrast-ratio ---
+# PENDING
+# --- python-wheel ---
+# PENDING
+# --- python-xmlschema ---
+# PENDING
+# --- python3-mypy ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -8593,6 +9319,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- python3.14 ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -8630,6 +9357,17 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- python3dist ---
+# PENDING
+# --- pyxattr ---
+# PENDING
+# --- qdbm ---
+# PENDING
+# --- qrencode ---
+# PENDING
+# --- qt3 ---
+# PENDING
+# --- qt5 ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -8667,6 +9405,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- qt5-qtbase ---
+# PENDING
+# --- qt6 ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -8704,6 +9445,11 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- rapidjson ---
+# PENDING
+# --- rdma-core ---
+# PENDING
+# --- readline ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -8741,6 +9487,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- redhat-rpm-config ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -8778,6 +9525,13 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- redis ---
+# PENDING
+# --- resolv_wrapper ---
+# PENDING
+# --- rhash ---
+# PENDING
+# --- rootfiles ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -8815,6 +9569,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- rpm ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -8852,6 +9607,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- rpmdevtools ---
+# PENDING
+# --- ruby ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -8889,6 +9647,11 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- rubygem ---
+# PENDING
+# --- rubygem-asciidoctor ---
+# PENDING
+# --- rubygem-json ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -8926,6 +9689,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- rubygem-rdoc ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -8963,6 +9727,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- rubygem-test-unit ---
+# PENDING
+# --- rubypick ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -9000,6 +9767,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- ruff ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -9037,6 +9805,13 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- rust ---
+# PENDING
+# --- rust-add-determinism ---
+# PENDING
+# --- rust-bindgen-cli ---
+# PENDING
+# --- rust-rpm-sequoia ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -9074,6 +9849,13 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- rust-sequoia-policy-config ---
+# PENDING
+# --- rust2rpm-helper ---
+# PENDING
+# --- scdoc ---
+# PENDING
+# --- sdbus-cpp ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -9111,6 +9893,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- sed ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -9148,6 +9931,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- selinux-policy ---
+# PENDING
+# --- setup ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -9185,6 +9971,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- sgml-common ---
+# PENDING
+# --- shadow-utils ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -9222,6 +10011,25 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- shared-mime-info ---
+# PENDING
+# --- sharutils ---
+# PENDING
+# --- skopeo ---
+# PENDING
+# --- smtpdaemon ---
+# PENDING
+# --- snappy ---
+# PENDING
+# --- socat ---
+# PENDING
+# --- socket_wrapper ---
+# PENDING
+# --- softhsm ---
+# PENDING
+# --- source-highlight ---
+# PENDING
+# --- sqlite ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -9259,6 +10067,21 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- star ---
+# PENDING
+# --- strace ---
+# PENDING
+# --- stunnel ---
+# PENDING
+# --- subversion ---
+# PENDING
+# --- swig ---
+# PENDING
+# --- swtpm ---
+# PENDING
+# --- sysprof ---
+# PENDING
+# --- systemd ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -9296,6 +10119,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- systemd-stub ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -9333,6 +10157,11 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- systemd-units ---
+# PENDING
+# --- systemtap ---
+# PENDING
+# --- tar ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -9370,6 +10199,11 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- tcl ---
+# PENDING
+# --- tcsh ---
+# PENDING
+# --- texinfo ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -9407,6 +10241,21 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- texlive ---
+# PENDING
+# --- tidy ---
+# PENDING
+# --- time ---
+# PENDING
+# --- tk ---
+# PENDING
+# --- tokyocabinet ---
+# PENDING
+# --- tomcat ---
+# PENDING
+# --- tomcli ---
+# PENDING
+# --- tpm2-tss ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -9444,6 +10293,23 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- tree-pkg ---
+# PENDING
+# --- tree-sitter-srpm-macros ---
+# PENDING
+# --- ttmkfdir ---
+# PENDING
+# --- tzdata ---
+# PENDING
+# --- uid_wrapper ---
+# PENDING
+# --- umockdev ---
+# PENDING
+# --- unbound ---
+# PENDING
+# --- unixODBC ---
+# PENDING
+# --- unzip ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -9481,6 +10347,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- util-linux ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -9518,6 +10385,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- uuid ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -9555,6 +10423,13 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- valgrind ---
+# PENDING
+# --- valkey ---
+# PENDING
+# --- vim ---
+# PENDING
+# --- which ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -9592,6 +10467,19 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- words ---
+# PENDING
+# --- xauth ---
+# PENDING
+# --- xen ---
+# PENDING
+# --- xmlto ---
+# PENDING
+# --- xmltoman ---
+# PENDING
+# --- xorg-x11-fonts ---
+# PENDING
+# --- xxhash ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -9629,6 +10517,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- xz ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -9666,6 +10555,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- yarnpkg ---
+# PENDING
+# --- yq ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -9703,6 +10595,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- zchunk ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -9740,6 +10633,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- zig-srpm-macros ---
+# PENDING
+# --- zip ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -9777,6 +10673,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- zlib-ng ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -9814,6 +10711,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- zstd ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -9851,7 +10749,6 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
-
 ---
 apiVersion: appstudio.redhat.com/v1beta2
 kind: IntegrationTestScenario
