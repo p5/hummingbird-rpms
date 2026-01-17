@@ -1,0 +1,649 @@
+# =============================================================================
+# Target Packages Manifest
+# =============================================================================
+#
+# This file lists all SRPM packages that should have entries in the generated
+# .tekton and konflux-templates files. Packages are either:
+#   - IMPORTED: Directory exists in rpms/, full resources generated
+#   - PENDING: Directory does not exist, placeholder comment generated
+#
+# Generated: 2026-01-17
+# Generator: ./ci/list_missing_rpms.sh --builddeps
+#
+# =============================================================================
+# SOURCES
+# =============================================================================
+#
+# 1. import.json (265 packages)
+#    Currently imported packages with existing rpms/<package>/ directories.
+#
+# 2. Container lockfiles (78 additional SRPMs)
+#    Source packages referenced in rprm-containers/*/rpms.lock.yaml files.
+#    Extracted via: yq '.arches[].packages[].sourcerpm'
+#
+# 3. BuildRequires analysis (276 additional SRPMs)
+#    Source packages required to build imported packages.
+#    Resolved via: dnf5 repoquery --sourcerpm <binary-package>
+#
+# =============================================================================
+# EXCEPTIONS AND KNOWN ISSUES
+# =============================================================================
+#
+# The following categories of entries were EXCLUDED from this manifest:
+#
+# 1. Malformed conditional BuildRequires (rpmspec parsing artifacts):
+#    - "(python-wheel-wheel if python-setuptools-wheel"
+#    - "(python3-tomli if python3"
+#    - "(python3-wheel if python3-setuptools"
+#    - " if python3"
+#
+# 2. Binary package names that couldn't be resolved to SRPMs:
+#    These are virtual provides or renamed packages. The actual SRPM is listed
+#    in parentheses if known:
+#
+#    - curl-devel         -> (provided by: curl, as libcurl-devel)
+#    - zlib-devel         -> (provided by: zlib-ng, as zlib-ng-compat-devel)
+#    - fontpackages-devel -> (provided by: fonts-rpm-macros)
+#    - java-devel         -> (provided by: java-21-openjdk)
+#    - java-25-devel      -> (provided by: java-25-openjdk)
+#    - libstdc++-devel    -> (provided by: gcc)
+#    - libstdc++-static   -> (provided by: gcc)
+#    - qt4-devel          -> (provided by: qt)
+#    - toml11-static      -> (provided by: toml11)
+#    - xxhash-static      -> (provided by: xxhash)
+#
+# =============================================================================
+# MAINTENANCE
+# =============================================================================
+#
+# To regenerate this list:
+#   ./ci/list_missing_rpms.sh --builddeps > /tmp/output.txt
+#   # Then merge with import.json and clean up exceptions
+#
+# To add new packages:
+#   - Add the package name to this file (keep sorted)
+#   - Run: make generate
+#
+# =============================================================================
+
+packages:
+  - CUnit
+  - PyYAML
+  - R-rpm-macros
+  - ShellCheck
+  - abattis-cantarell-fonts
+  - acl
+  - alsa-lib
+  - annobin
+  - ansible-packaging
+  - ant
+  - apr
+  - apr-util
+  - asciidoc
+  - atf
+  - attr
+  - audit
+  - authselect
+  - autoconf
+  - automake
+  - avahi
+  - babeltrace
+  - bash
+  - bash-completion
+  - bc
+  - beakerlib
+  - bind
+  - binutils
+  - bison
+  - bluez
+  - boost
+  - bpftool
+  - brotli
+  - busybox
+  - bzip2
+  - c-ares
+  - ca-certificates
+  - caddy
+  - cairo
+  - capstone
+  - cargo-rpm-macros
+  - catatonit
+  - check
+  - chkconfig
+  - chrpath
+  - cmake
+  - cmocka
+  - compat-gpgme124
+  - composer
+  - composer-generators
+  - container-selinux
+  - containers-common
+  - coreutils
+  - cpio
+  - cracklib
+  - createrepo_c
+  - crypto-policies
+  - cryptsetup
+  - ctags
+  - cups
+  - curl
+  - cvs
+  - cvsps
+  - cyrus-sasl
+  - dbus
+  - dbus-broker
+  - dbus-python
+  - debugedit
+  - dejagnu
+  - desktop-file-utils
+  - diffutils
+  - dnf
+  - dnf5
+  - docbook-dtds
+  - docbook-style-xsl
+  - docbook-utils
+  - docbook5-schemas
+  - docbook5-style-xsl
+  - dos2unix
+  - dotnet10.0
+  - dotnet8.0
+  - dotnet9.0
+  - doxygen
+  - drpm
+  - dwz
+  - e2fsprogs
+  - ecj
+  - ed
+  - efi-rpm-macros
+  - elfutils
+  - elinks
+  - emacs
+  - execstack
+  - expat
+  - fedora-logos
+  - fedora-release
+  - fedora-repos
+  - file
+  - filesystem
+  - findutils
+  - fipscheck
+  - firebird
+  - firewalld
+  - flex
+  - fmt
+  - fontconfig
+  - fonts-rpm-macros
+  - fonttools
+  - forge-srpm-macros
+  - fpc-srpm-macros
+  - freetds
+  - freetype
+  - fsverity-utils
+  - fuse
+  - fuse3
+  - g++
+  - gap-srpm-macros
+  - gawk
+  - gcc
+  - gcc-c++
+  - gd
+  - gdb
+  - gdbm
+  - gettext
+  - gettext-autopoint
+  - ghc
+  - ghc-Diff
+  - ghc-QuickCheck
+  - ghc-aeson
+  - ghc-fgl
+  - ghc-regex-tdfa
+  - ghc-rpm-macros
+  - ghc-srpm-macros
+  - ghostscript
+  - git
+  - glib2
+  - glibc
+  - glibc-headers
+  - glibc-kernheaders
+  - gmp
+  - gnat-srpm-macros
+  - gnulib-l10n
+  - gnupg
+  - gnupg2
+  - gnutls
+  - go-md2man
+  - go-rpm-macros
+  - go-vendor-tools
+  - gobject-introspection
+  - golang
+  - google-noto-fonts
+  - gperf
+  - gperftools
+  - gpgme
+  - gpgverify
+  - gpm
+  - graphite2
+  - grep
+  - groff
+  - gtest
+  - gtk-doc
+  - gtk-sharp2
+  - gtk2
+  - gtk3
+  - gzip
+  - haproxy
+  - hardlink
+  - harfbuzz
+  - help2man
+  - highlight
+  - hostname
+  - httpd
+  - hugo
+  - icu
+  - ima-evm-utils
+  - intltool
+  - iproute
+  - iptables
+  - iso-codes
+  - itstool
+  - jansson
+  - java-21-openjdk
+  - java-25-openjdk
+  - java-rpm-macros
+  - javapackages-tools
+  - jemalloc
+  - jna
+  - jq
+  - json-c
+  - jsoncpp
+  - kde4-macros
+  - kernel
+  - kernel-headers
+  - kernel-srpm-macros
+  - keyutils
+  - kmod
+  - krb5
+  - kyua
+  - langpacks
+  - less
+  - libX11
+  - libXau
+  - libXaw
+  - libXcomposite
+  - libXext
+  - libXi
+  - libXmu
+  - libXrender
+  - libXtst
+  - libabigail
+  - libaio
+  - libappstream-glib
+  - libarchive
+  - libassuan
+  - libbpf
+  - libcap
+  - libcap-ng
+  - libcbor
+  - libcomps
+  - libdaemon
+  - libdb
+  - libdnf
+  - libeconf
+  - libedit
+  - libev
+  - libevent
+  - libffi
+  - libfido2
+  - libfontenc
+  - libgcrypt
+  - libgit2
+  - libgpg-error
+  - libidn2
+  - libipt
+  - libksba
+  - libmicrohttpd
+  - libmnl
+  - libmodulemd
+  - libmpc
+  - libnl3
+  - libnsl2
+  - libpng
+  - libpq
+  - libpsl
+  - libpwquality
+  - librepo
+  - libseccomp
+  - libsecret
+  - libselinux
+  - libsemanage
+  - libsepol
+  - libsodium
+  - libsolv
+  - libssh
+  - libssh2
+  - libstdc++
+  - libtasn1
+  - libtirpc
+  - libtool
+  - libunistring
+  - libunwind
+  - libusb1
+  - libutempter
+  - libuv
+  - libverto
+  - libverto-module-base
+  - libxcb
+  - libxcrypt
+  - libxkbcommon
+  - libxml2
+  - libxslt
+  - libyaml
+  - libzip
+  - linkchecker
+  - linux-atm
+  - linuxdoc-tools
+  - lksctp-tools
+  - llhttp
+  - llvm
+  - llvm20
+  - lmdb
+  - logrotate
+  - lua
+  - lua-rpm-macros
+  - lz4
+  - lzip
+  - lzo
+  - m4
+  - mailcap
+  - make
+  - mariadb-connector-c
+  - mariadb10.11
+  - mawk
+  - memcached
+  - meson
+  - mingw-binutils
+  - mingw-c-ares
+  - mingw-filesystem
+  - mingw-gcc
+  - mingw-libffi
+  - mingw-libtasn1
+  - mingw-libxml2
+  - mingw-nettle
+  - mingw-openssl
+  - mingw-python3
+  - mingw-readline
+  - mingw-zlib
+  - mingw32-gcc-c++
+  - mingw64-gcc-c++
+  - mkfontscale
+  - mod_http2
+  - mono
+  - mpdecimal
+  - mpfr
+  - mpich
+  - multilib-rpm-config
+  - musl
+  - ncurses
+  - net-snmp
+  - net-tools
+  - netpbm
+  - nettle
+  - newt
+  - nghttp2
+  - nghttp3
+  - nginx
+  - ngtcp2
+  - ninja-build
+  - nmap
+  - nodejs-packaging
+  - nodejs20
+  - nodejs22
+  - nodejs24
+  - npth
+  - nss
+  - nss_wrapper
+  - numpy
+  - ocaml-srpm-macros
+  - oniguruma
+  - openblas-srpm-macros
+  - openldap
+  - openmpi
+  - opensc
+  - openssh
+  - openssl
+  - p11-kit
+  - package-notes
+  - pam
+  - pam_wrapper
+  - pandoc
+  - patch
+  - pcre2
+  - pcsc-lite
+  - perl
+  - perl-Archive-Tar
+  - perl-Carp
+  - perl-Data-Dumper
+  - perl-Digest
+  - perl-Digest-MD5
+  - perl-Encode
+  - perl-Exporter
+  - perl-File-Path
+  - perl-File-Temp
+  - perl-Getopt-Long
+  - perl-HTTP-Tiny
+  - perl-IO-Socket-IP
+  - perl-IO-Socket-SSL
+  - perl-MIME-Base32
+  - perl-MIME-Base64
+  - perl-Net-SSLeay
+  - perl-PathTools
+  - perl-Pod-Escapes
+  - perl-Pod-Perldoc
+  - perl-Pod-Simple
+  - perl-Pod-Usage
+  - perl-Scalar-List-Utils
+  - perl-Socket
+  - perl-Storable
+  - perl-Term-ANSIColor
+  - perl-Term-Cap
+  - perl-Text-ParseWords
+  - perl-Text-Tabs+Wrap
+  - perl-Time-HiRes
+  - perl-Time-Local
+  - perl-URI
+  - perl-XML-Parser
+  - perl-constant
+  - perl-generators
+  - perl-libnet
+  - perl-parent
+  - perl-podlators
+  - perl-srpm-macros
+  - php
+  - php-json
+  - php-pear
+  - php-pecl-zip
+  - pkcs11-provider
+  - pkgconf
+  - pkgconfig
+  - po4a
+  - policycoreutils
+  - popt
+  - postgresql18
+  - priv_wrapper
+  - procps
+  - procps-ng
+  - protobuf
+  - psmisc
+  - psutils
+  - publicsuffix-list
+  - pyOpenSSL
+  - pygobject3
+  - pyproject-rpm-macros
+  - pytest
+  - python-Pallets-Sphinx-Themes
+  - python-argcomplete
+  - python-attrs
+  - python-betamax
+  - python-breathe
+  - python-certifi
+  - python-charset-normalizer
+  - python-cups
+  - python-decorator
+  - python-docutils
+  - python-filelock
+  - python-flit-core
+  - python-furo
+  - python-gitlab
+  - python-hypothesis
+  - python-idna
+  - python-impacket
+  - python-iniconfig
+  - python-inotify
+  - python-jinja2
+  - python-jinja2-cli
+  - python-jsonschema
+  - python-jsonschema-specifications
+  - python-lxml
+  - python-markupsafe
+  - python-mock
+  - python-mypy_extensions
+  - python-packaging
+  - python-pathspec
+  - python-pexpect
+  - python-pip
+  - python-pluggy
+  - python-pretend
+  - python-productmd
+  - python-psutil
+  - python-pygments
+  - python-pygments-pytest
+  - python-pytest-cov
+  - python-pytest-timeout
+  - python-pytest-xdist
+  - python-referencing
+  - python-requests
+  - python-requests-toolbelt
+  - python-rpds-py
+  - python-rpm-generators
+  - python-rpm-lockfile-prototype
+  - python-rpm-macros
+  - python-sentry-sdk
+  - python-setuptools
+  - python-sphinx
+  - python-sphinx-issues
+  - python-sphinx-removed-in
+  - python-sphinx_rtd_theme
+  - python-sphinxcontrib-log-cabinet
+  - python-sphinxcontrib-trio
+  - python-trio
+  - python-twisted
+  - python-types-pyyaml
+  - python-types-requests
+  - python-typing-extensions
+  - python-urllib3
+  - python-wcag-contrast-ratio
+  - python-wheel
+  - python-xmlschema
+  - python3-mypy
+  - python3.14
+  - python3dist
+  - pyxattr
+  - qdbm
+  - qrencode
+  - qt3
+  - qt5
+  - qt5-qtbase
+  - qt6
+  - rapidjson
+  - rdma-core
+  - readline
+  - redhat-rpm-config
+  - redis
+  - resolv_wrapper
+  - rhash
+  - rootfiles
+  - rpm
+  - rpmdevtools
+  - ruby
+  - rubygem
+  - rubygem-asciidoctor
+  - rubygem-json
+  - rubygem-rdoc
+  - rubygem-test-unit
+  - rubypick
+  - ruff
+  - rust
+  - rust-add-determinism
+  - rust-bindgen-cli
+  - rust-rpm-sequoia
+  - rust-sequoia-policy-config
+  - rust2rpm-helper
+  - scdoc
+  - sdbus-cpp
+  - sed
+  - selinux-policy
+  - setup
+  - sgml-common
+  - shadow-utils
+  - shared-mime-info
+  - sharutils
+  - skopeo
+  - smtpdaemon
+  - snappy
+  - socat
+  - socket_wrapper
+  - softhsm
+  - source-highlight
+  - sqlite
+  - star
+  - strace
+  - stunnel
+  - subversion
+  - swig
+  - swtpm
+  - sysprof
+  - systemd
+  - systemd-units
+  - systemtap
+  - tar
+  - tcl
+  - tcsh
+  - texinfo
+  - texlive
+  - tidy
+  - time
+  - tk
+  - tokyocabinet
+  - tomcat
+  - tomcli
+  - tpm2-tss
+  - tree-pkg
+  - tree-sitter-srpm-macros
+  - ttmkfdir
+  - tzdata
+  - uid_wrapper
+  - umockdev
+  - unbound
+  - unixODBC
+  - unzip
+  - util-linux
+  - uuid
+  - valgrind
+  - valkey
+  - vim
+  - which
+  - words
+  - xauth
+  - xen
+  - xmlto
+  - xmltoman
+  - xorg-x11-fonts
+  - xxhash
+  - xz
+  - yarnpkg
+  - yq
+  - zchunk
+  - zig-srpm-macros
+  - zip
+  - zlib-ng
+  - zstd

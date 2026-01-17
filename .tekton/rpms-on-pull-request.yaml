@@ -1,3 +1,6 @@
+# --- CUnit ---
+# PENDING
+# --- PyYAML ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -62,6 +65,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- R-rpm-macros ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -126,6 +130,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- ShellCheck ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -190,6 +195,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- abattis-cantarell-fonts ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -254,6 +260,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- acl ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -318,6 +325,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- alsa-lib ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -382,6 +390,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- annobin ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -446,6 +455,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- ansible-packaging ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -510,6 +520,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- ant ---
+# PENDING
+# --- apr ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -574,6 +587,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- apr-util ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -638,6 +652,11 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- asciidoc ---
+# PENDING
+# --- atf ---
+# PENDING
+# --- attr ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -702,6 +721,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- audit ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -766,6 +786,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- authselect ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -830,6 +851,11 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- autoconf ---
+# PENDING
+# --- automake ---
+# PENDING
+# --- avahi ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -894,6 +920,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- babeltrace ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -958,6 +985,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- bash ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -1022,6 +1050,15 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- bash-completion ---
+# PENDING
+# --- bc ---
+# PENDING
+# --- beakerlib ---
+# PENDING
+# --- bind ---
+# PENDING
+# --- binutils ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -1086,6 +1123,11 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- bison ---
+# PENDING
+# --- bluez ---
+# PENDING
+# --- boost ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -1150,6 +1192,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- bpftool ---
+# PENDING
+# --- brotli ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -1214,6 +1259,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- busybox ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -1278,6 +1324,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- bzip2 ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -1342,6 +1389,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- c-ares ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -1406,6 +1454,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- ca-certificates ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -1470,6 +1519,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- caddy ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -1534,6 +1584,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- cairo ---
+# PENDING
+# --- capstone ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -1598,6 +1651,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- cargo-rpm-macros ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -1662,6 +1716,11 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- catatonit ---
+# PENDING
+# --- check ---
+# PENDING
+# --- chkconfig ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -1726,6 +1785,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- chrpath ---
+# PENDING
+# --- cmake ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -1790,6 +1852,11 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- cmocka ---
+# PENDING
+# --- compat-gpgme124 ---
+# PENDING
+# --- composer ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -1854,6 +1921,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- composer-generators ---
+# PENDING
+# --- container-selinux ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -1918,6 +1988,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- containers-common ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -1982,6 +2053,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- coreutils ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -2046,6 +2118,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- cpio ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -2110,6 +2183,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- cracklib ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -2174,6 +2248,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- createrepo_c ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -2238,6 +2313,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- crypto-policies ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -2302,6 +2378,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- cryptsetup ---
+# PENDING
+# --- ctags ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -2366,6 +2445,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- cups ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -2430,6 +2510,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- curl ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -2494,6 +2575,11 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- cvs ---
+# PENDING
+# --- cvsps ---
+# PENDING
+# --- cyrus-sasl ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -2558,6 +2644,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- dbus ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -2622,6 +2709,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- dbus-broker ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -2686,6 +2774,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- dbus-python ---
+# PENDING
+# --- debugedit ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -2750,6 +2841,11 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- dejagnu ---
+# PENDING
+# --- desktop-file-utils ---
+# PENDING
+# --- diffutils ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -2814,6 +2910,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- dnf ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -2878,6 +2975,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- dnf5 ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -2942,6 +3040,19 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- docbook-dtds ---
+# PENDING
+# --- docbook-style-xsl ---
+# PENDING
+# --- docbook-utils ---
+# PENDING
+# --- docbook5-schemas ---
+# PENDING
+# --- docbook5-style-xsl ---
+# PENDING
+# --- dos2unix ---
+# PENDING
+# --- dotnet10.0 ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -3006,6 +3117,13 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- dotnet8.0 ---
+# PENDING
+# --- dotnet9.0 ---
+# PENDING
+# --- doxygen ---
+# PENDING
+# --- drpm ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -3070,6 +3188,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- dwz ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -3134,6 +3253,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- e2fsprogs ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -3198,6 +3318,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- ecj ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -3262,6 +3383,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- ed ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -3326,6 +3448,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- efi-rpm-macros ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -3390,6 +3513,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- elfutils ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -3454,6 +3578,13 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- elinks ---
+# PENDING
+# --- emacs ---
+# PENDING
+# --- execstack ---
+# PENDING
+# --- expat ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -3518,6 +3649,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- fedora-logos ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -3582,6 +3714,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- fedora-release ---
+# PENDING
+# --- fedora-repos ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -3646,6 +3781,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- file ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -3710,6 +3846,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- filesystem ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -3774,6 +3911,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- findutils ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -3838,6 +3976,15 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- fipscheck ---
+# PENDING
+# --- firebird ---
+# PENDING
+# --- firewalld ---
+# PENDING
+# --- flex ---
+# PENDING
+# --- fmt ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -3902,6 +4049,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- fontconfig ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -3966,6 +4114,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- fonts-rpm-macros ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -4030,6 +4179,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- fonttools ---
+# PENDING
+# --- forge-srpm-macros ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -4094,6 +4246,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- fpc-srpm-macros ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -4158,6 +4311,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- freetds ---
+# PENDING
+# --- freetype ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -4222,6 +4378,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- fsverity-utils ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -4286,6 +4443,13 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- fuse ---
+# PENDING
+# --- fuse3 ---
+# PENDING
+# --- g++ ---
+# PENDING
+# --- gap-srpm-macros ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -4350,6 +4514,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- gawk ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -4414,6 +4579,13 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- gcc ---
+# PENDING
+# --- gcc-c++ ---
+# PENDING
+# --- gd ---
+# PENDING
+# --- gdb ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -4478,6 +4650,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- gdbm ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -4542,6 +4715,25 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- gettext ---
+# PENDING
+# --- gettext-autopoint ---
+# PENDING
+# --- ghc ---
+# PENDING
+# --- ghc-Diff ---
+# PENDING
+# --- ghc-QuickCheck ---
+# PENDING
+# --- ghc-aeson ---
+# PENDING
+# --- ghc-fgl ---
+# PENDING
+# --- ghc-regex-tdfa ---
+# PENDING
+# --- ghc-rpm-macros ---
+# PENDING
+# --- ghc-srpm-macros ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -4606,6 +4798,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- ghostscript ---
+# PENDING
+# --- git ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -4670,6 +4865,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- glib2 ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -4734,6 +4930,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- glibc ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -4802,6 +4999,11 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- glibc-headers ---
+# PENDING
+# --- glibc-kernheaders ---
+# PENDING
+# --- gmp ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -4866,6 +5068,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- gnat-srpm-macros ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -4930,6 +5133,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- gnulib-l10n ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -4994,6 +5198,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- gnupg ---
+# PENDING
+# --- gnupg2 ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -5058,6 +5265,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- gnutls ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -5122,6 +5330,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- go-md2man ---
+# PENDING
+# --- go-rpm-macros ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -5186,6 +5397,11 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- go-vendor-tools ---
+# PENDING
+# --- gobject-introspection ---
+# PENDING
+# --- golang ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -5250,6 +5466,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- google-noto-fonts ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -5314,6 +5531,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- gperf ---
+# PENDING
+# --- gperftools ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -5378,6 +5598,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- gpgme ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -5442,6 +5663,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- gpgverify ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -5506,6 +5728,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- gpm ---
+# PENDING
+# --- graphite2 ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -5570,6 +5795,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- grep ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -5634,6 +5860,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- groff ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -5698,6 +5925,17 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- gtest ---
+# PENDING
+# --- gtk-doc ---
+# PENDING
+# --- gtk-sharp2 ---
+# PENDING
+# --- gtk2 ---
+# PENDING
+# --- gtk3 ---
+# PENDING
+# --- gzip ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -5762,6 +6000,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- haproxy ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -5826,6 +6065,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- hardlink ---
+# PENDING
+# --- harfbuzz ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -5890,6 +6132,11 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- help2man ---
+# PENDING
+# --- highlight ---
+# PENDING
+# --- hostname ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -5954,6 +6201,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- httpd ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -6018,6 +6266,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- hugo ---
+# PENDING
+# --- hummingbird-release ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -6082,6 +6333,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- icu ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -6146,6 +6398,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- ima-evm-utils ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -6210,6 +6463,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- intltool ---
+# PENDING
+# --- iproute ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -6274,6 +6530,13 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- iptables ---
+# PENDING
+# --- iso-codes ---
+# PENDING
+# --- itstool ---
+# PENDING
+# --- jansson ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -6338,6 +6601,19 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- java-21-openjdk ---
+# PENDING
+# --- java-25-openjdk ---
+# PENDING
+# --- java-rpm-macros ---
+# PENDING
+# --- javapackages-tools ---
+# PENDING
+# --- jemalloc ---
+# PENDING
+# --- jna ---
+# PENDING
+# --- jq ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -6402,6 +6678,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- json-c ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -6466,6 +6743,13 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- jsoncpp ---
+# PENDING
+# --- kde4-macros ---
+# PENDING
+# --- kernel ---
+# PENDING
+# --- kernel-headers ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -6530,6 +6814,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- kernel-srpm-macros ---
+# PENDING
+# --- keyutils ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -6594,6 +6881,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- kmod ---
+# PENDING
+# --- krb5 ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -6658,6 +6948,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- kyua ---
+# PENDING
+# --- langpacks ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -6722,6 +7015,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- less ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -6786,6 +7080,31 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- libX11 ---
+# PENDING
+# --- libXau ---
+# PENDING
+# --- libXaw ---
+# PENDING
+# --- libXcomposite ---
+# PENDING
+# --- libXext ---
+# PENDING
+# --- libXi ---
+# PENDING
+# --- libXmu ---
+# PENDING
+# --- libXrender ---
+# PENDING
+# --- libXtst ---
+# PENDING
+# --- libabigail ---
+# PENDING
+# --- libaio ---
+# PENDING
+# --- libappstream-glib ---
+# PENDING
+# --- libarchive ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -6850,6 +7169,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- libassuan ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -6914,6 +7234,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- libbpf ---
+# PENDING
+# --- libcap ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -6978,6 +7301,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- libcap-ng ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -7042,6 +7366,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- libcbor ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -7106,6 +7431,13 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- libcomps ---
+# PENDING
+# --- libdaemon ---
+# PENDING
+# --- libdb ---
+# PENDING
+# --- libdnf ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -7170,6 +7502,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- libeconf ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -7234,6 +7567,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- libedit ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -7298,6 +7632,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- libev ---
+# PENDING
+# --- libevent ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -7362,6 +7699,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- libffi ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -7426,6 +7764,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- libfido2 ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -7490,6 +7829,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- libfontenc ---
+# PENDING
+# --- libgcrypt ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -7554,6 +7896,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- libgit2 ---
+# PENDING
+# --- libgpg-error ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -7618,6 +7963,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- libidn2 ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -7682,6 +8028,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- libipt ---
+# PENDING
+# --- libksba ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -7746,6 +8095,11 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- libmicrohttpd ---
+# PENDING
+# --- libmnl ---
+# PENDING
+# --- libmodulemd ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -7810,6 +8164,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- libmpc ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -7874,6 +8229,15 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- libnl3 ---
+# PENDING
+# --- libnsl2 ---
+# PENDING
+# --- libpng ---
+# PENDING
+# --- libpq ---
+# PENDING
+# --- libpsl ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -7938,6 +8302,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- libpwquality ---
+# PENDING
+# --- librepo ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -8002,6 +8369,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- libseccomp ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -8066,6 +8434,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- libsecret ---
+# PENDING
+# --- libselinux ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -8130,6 +8501,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- libsemanage ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -8194,6 +8566,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- libsepol ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -8258,6 +8631,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- libsodium ---
+# PENDING
+# --- libsolv ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -8322,6 +8698,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- libssh ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -8386,6 +8763,11 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- libssh2 ---
+# PENDING
+# --- libstdc++ ---
+# PENDING
+# --- libtasn1 ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -8450,6 +8832,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- libtirpc ---
+# PENDING
+# --- libtool ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -8514,6 +8899,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- libunistring ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -8578,6 +8964,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- libunwind ---
+# PENDING
+# --- libusb1 ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -8642,6 +9031,11 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- libutempter ---
+# PENDING
+# --- libuv ---
+# PENDING
+# --- libverto ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -8706,6 +9100,11 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- libverto-module-base ---
+# PENDING
+# --- libxcb ---
+# PENDING
+# --- libxcrypt ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -8770,6 +9169,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- libxkbcommon ---
+# PENDING
+# --- libxml2 ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -8834,6 +9236,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- libxslt ---
+# PENDING
+# --- libyaml ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -8898,6 +9303,27 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- libzip ---
+# PENDING
+# --- linkchecker ---
+# PENDING
+# --- linux-atm ---
+# PENDING
+# --- linuxdoc-tools ---
+# PENDING
+# --- lksctp-tools ---
+# PENDING
+# --- llhttp ---
+# PENDING
+# --- llvm ---
+# PENDING
+# --- llvm20 ---
+# PENDING
+# --- lmdb ---
+# PENDING
+# --- logrotate ---
+# PENDING
+# --- lua ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -8962,6 +9388,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- lua-rpm-macros ---
+# PENDING
+# --- lz4 ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -9026,6 +9455,15 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- lzip ---
+# PENDING
+# --- lzo ---
+# PENDING
+# --- m4 ---
+# PENDING
+# --- mailcap ---
+# PENDING
+# --- make ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -9090,6 +9528,53 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- mariadb-connector-c ---
+# PENDING
+# --- mariadb10.11 ---
+# PENDING
+# --- mawk ---
+# PENDING
+# --- memcached ---
+# PENDING
+# --- meson ---
+# PENDING
+# --- mingw-binutils ---
+# PENDING
+# --- mingw-c-ares ---
+# PENDING
+# --- mingw-filesystem ---
+# PENDING
+# --- mingw-gcc ---
+# PENDING
+# --- mingw-libffi ---
+# PENDING
+# --- mingw-libtasn1 ---
+# PENDING
+# --- mingw-libxml2 ---
+# PENDING
+# --- mingw-nettle ---
+# PENDING
+# --- mingw-openssl ---
+# PENDING
+# --- mingw-python3 ---
+# PENDING
+# --- mingw-readline ---
+# PENDING
+# --- mingw-zlib ---
+# PENDING
+# --- mingw32-gcc-c++ ---
+# PENDING
+# --- mingw64-gcc-c++ ---
+# PENDING
+# --- mkfontscale ---
+# PENDING
+# --- mod_http2 ---
+# PENDING
+# --- mono ---
+# PENDING
+# --- mpdecimal ---
+# PENDING
+# --- mpfr ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -9154,6 +9639,13 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- mpich ---
+# PENDING
+# --- multilib-rpm-config ---
+# PENDING
+# --- musl ---
+# PENDING
+# --- ncurses ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -9218,6 +9710,13 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- net-snmp ---
+# PENDING
+# --- net-tools ---
+# PENDING
+# --- netpbm ---
+# PENDING
+# --- nettle ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -9282,6 +9781,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- newt ---
+# PENDING
+# --- nghttp2 ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -9346,6 +9848,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- nghttp3 ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -9410,6 +9913,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- nginx ---
+# PENDING
+# --- ngtcp2 ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -9474,6 +9980,13 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- ninja-build ---
+# PENDING
+# --- nmap ---
+# PENDING
+# --- nodejs-packaging ---
+# PENDING
+# --- nodejs20 ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -9538,6 +10051,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- nodejs22 ---
+# PENDING
+# --- nodejs24 ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -9602,6 +10118,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- npth ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -9666,6 +10183,15 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- nss ---
+# PENDING
+# --- nss_wrapper ---
+# PENDING
+# --- numpy ---
+# PENDING
+# --- ocaml-srpm-macros ---
+# PENDING
+# --- oniguruma ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -9730,6 +10256,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- openblas-srpm-macros ---
+# PENDING
+# --- openldap ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -9794,6 +10323,11 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- openmpi ---
+# PENDING
+# --- opensc ---
+# PENDING
+# --- openssh ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -9858,6 +10392,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- openssl ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -9922,6 +10457,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- p11-kit ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -9986,6 +10522,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- package-notes ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -10050,6 +10587,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- pam ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -10114,6 +10652,11 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- pam_wrapper ---
+# PENDING
+# --- pandoc ---
+# PENDING
+# --- patch ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -10178,6 +10721,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- pcre2 ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -10242,6 +10786,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- pcsc-lite ---
+# PENDING
+# --- perl ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -10306,6 +10853,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- perl-Archive-Tar ---
+# PENDING
+# --- perl-Carp ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -10370,6 +10920,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- perl-Data-Dumper ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -10434,6 +10985,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- perl-Digest ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -10498,6 +11050,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- perl-Digest-MD5 ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -10562,6 +11115,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- perl-Encode ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -10626,6 +11180,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- perl-Exporter ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -10690,6 +11245,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- perl-File-Path ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -10754,6 +11310,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- perl-File-Temp ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -10818,6 +11375,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- perl-Getopt-Long ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -10882,6 +11440,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- perl-HTTP-Tiny ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -10946,6 +11505,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- perl-IO-Socket-IP ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -11010,6 +11570,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- perl-IO-Socket-SSL ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -11074,6 +11635,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- perl-MIME-Base32 ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -11138,6 +11700,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- perl-MIME-Base64 ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -11202,6 +11765,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- perl-Net-SSLeay ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -11266,6 +11830,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- perl-PathTools ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -11330,6 +11895,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- perl-Pod-Escapes ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -11394,6 +11960,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- perl-Pod-Perldoc ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -11458,6 +12025,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- perl-Pod-Simple ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -11522,6 +12090,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- perl-Pod-Usage ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -11586,6 +12155,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- perl-Scalar-List-Utils ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -11650,6 +12220,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- perl-Socket ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -11714,6 +12285,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- perl-Storable ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -11778,6 +12350,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- perl-Term-ANSIColor ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -11842,6 +12415,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- perl-Term-Cap ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -11906,6 +12480,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- perl-Text-ParseWords ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -11970,6 +12545,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- perl-Text-Tabs+Wrap ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -12034,6 +12610,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- perl-Time-HiRes ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -12098,6 +12675,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- perl-Time-Local ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -12162,6 +12740,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- perl-URI ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -12226,6 +12805,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- perl-XML-Parser ---
+# PENDING
+# --- perl-constant ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -12290,6 +12872,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- perl-generators ---
+# PENDING
+# --- perl-libnet ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -12354,6 +12939,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- perl-parent ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -12418,6 +13004,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- perl-podlators ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -12482,6 +13069,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- perl-srpm-macros ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -12546,6 +13134,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- php ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -12610,6 +13199,11 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- php-json ---
+# PENDING
+# --- php-pear ---
+# PENDING
+# --- php-pecl-zip ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -12674,6 +13268,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- pkcs11-provider ---
+# PENDING
+# --- pkgconf ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -12738,6 +13335,13 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- pkgconfig ---
+# PENDING
+# --- po4a ---
+# PENDING
+# --- policycoreutils ---
+# PENDING
+# --- popt ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -12802,6 +13406,21 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- postgresql18 ---
+# PENDING
+# --- priv_wrapper ---
+# PENDING
+# --- procps ---
+# PENDING
+# --- procps-ng ---
+# PENDING
+# --- protobuf ---
+# PENDING
+# --- psmisc ---
+# PENDING
+# --- psutils ---
+# PENDING
+# --- publicsuffix-list ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -12866,6 +13485,11 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- pyOpenSSL ---
+# PENDING
+# --- pygobject3 ---
+# PENDING
+# --- pyproject-rpm-macros ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -12930,6 +13554,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- pytest ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -12994,6 +13619,11 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- python-Pallets-Sphinx-Themes ---
+# PENDING
+# --- python-argcomplete ---
+# PENDING
+# --- python-attrs ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -13058,6 +13688,11 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- python-betamax ---
+# PENDING
+# --- python-breathe ---
+# PENDING
+# --- python-certifi ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -13122,6 +13757,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- python-charset-normalizer ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -13186,6 +13822,19 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- python-cups ---
+# PENDING
+# --- python-decorator ---
+# PENDING
+# --- python-docutils ---
+# PENDING
+# --- python-filelock ---
+# PENDING
+# --- python-flit-core ---
+# PENDING
+# --- python-furo ---
+# PENDING
+# --- python-gitlab ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -13250,6 +13899,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- python-hypothesis ---
+# PENDING
+# --- python-idna ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -13314,6 +13966,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- python-impacket ---
+# PENDING
+# --- python-iniconfig ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -13378,6 +14033,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- python-inotify ---
+# PENDING
+# --- python-jinja2 ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -13442,6 +14100,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- python-jinja2-cli ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -13506,6 +14165,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- python-jsonschema ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -13570,6 +14230,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- python-jsonschema-specifications ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -13634,6 +14295,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- python-lxml ---
+# PENDING
+# --- python-markupsafe ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -13698,6 +14362,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- python-mock ---
+# PENDING
+# --- python-mypy_extensions ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -13762,6 +14429,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- python-packaging ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -13826,6 +14494,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- python-pathspec ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -13890,6 +14559,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- python-pexpect ---
+# PENDING
+# --- python-pip ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -13954,6 +14626,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- python-pluggy ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -14018,6 +14691,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- python-pretend ---
+# PENDING
+# --- python-productmd ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -14082,6 +14758,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- python-psutil ---
+# PENDING
+# --- python-pygments ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -14146,6 +14825,15 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- python-pygments-pytest ---
+# PENDING
+# --- python-pytest-cov ---
+# PENDING
+# --- python-pytest-timeout ---
+# PENDING
+# --- python-pytest-xdist ---
+# PENDING
+# --- python-referencing ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -14210,6 +14898,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- python-requests ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -14274,6 +14963,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- python-requests-toolbelt ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -14338,6 +15028,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- python-rpds-py ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -14402,6 +15093,11 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- python-rpm-generators ---
+# PENDING
+# --- python-rpm-lockfile-prototype ---
+# PENDING
+# --- python-rpm-macros ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -14466,6 +15162,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- python-sentry-sdk ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -14530,6 +15227,25 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- python-setuptools ---
+# PENDING
+# --- python-sphinx ---
+# PENDING
+# --- python-sphinx-issues ---
+# PENDING
+# --- python-sphinx-removed-in ---
+# PENDING
+# --- python-sphinx_rtd_theme ---
+# PENDING
+# --- python-sphinxcontrib-log-cabinet ---
+# PENDING
+# --- python-sphinxcontrib-trio ---
+# PENDING
+# --- python-trio ---
+# PENDING
+# --- python-twisted ---
+# PENDING
+# --- python-types-pyyaml ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -14594,6 +15310,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- python-types-requests ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -14658,6 +15375,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- python-typing-extensions ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -14722,6 +15440,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- python-urllib3 ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -14786,6 +15505,13 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- python-wcag-contrast-ratio ---
+# PENDING
+# --- python-wheel ---
+# PENDING
+# --- python-xmlschema ---
+# PENDING
+# --- python3-mypy ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -14850,6 +15576,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- python3.14 ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -14914,6 +15641,17 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- python3dist ---
+# PENDING
+# --- pyxattr ---
+# PENDING
+# --- qdbm ---
+# PENDING
+# --- qrencode ---
+# PENDING
+# --- qt3 ---
+# PENDING
+# --- qt5 ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -14978,6 +15716,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- qt5-qtbase ---
+# PENDING
+# --- qt6 ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -15042,6 +15783,11 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- rapidjson ---
+# PENDING
+# --- rdma-core ---
+# PENDING
+# --- readline ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -15106,6 +15852,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- redhat-rpm-config ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -15170,6 +15917,13 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- redis ---
+# PENDING
+# --- resolv_wrapper ---
+# PENDING
+# --- rhash ---
+# PENDING
+# --- rootfiles ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -15234,6 +15988,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- rpm ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -15298,6 +16053,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- rpmdevtools ---
+# PENDING
+# --- ruby ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -15362,6 +16120,11 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- rubygem ---
+# PENDING
+# --- rubygem-asciidoctor ---
+# PENDING
+# --- rubygem-json ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -15426,6 +16189,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- rubygem-rdoc ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -15490,6 +16254,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- rubygem-test-unit ---
+# PENDING
+# --- rubypick ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -15554,6 +16321,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- ruff ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -15622,6 +16390,13 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- rust ---
+# PENDING
+# --- rust-add-determinism ---
+# PENDING
+# --- rust-bindgen-cli ---
+# PENDING
+# --- rust-rpm-sequoia ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -15686,6 +16461,13 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- rust-sequoia-policy-config ---
+# PENDING
+# --- rust2rpm-helper ---
+# PENDING
+# --- scdoc ---
+# PENDING
+# --- sdbus-cpp ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -15750,6 +16532,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- sed ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -15814,6 +16597,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- selinux-policy ---
+# PENDING
+# --- setup ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -15878,6 +16664,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- sgml-common ---
+# PENDING
+# --- shadow-utils ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -15942,6 +16731,25 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- shared-mime-info ---
+# PENDING
+# --- sharutils ---
+# PENDING
+# --- skopeo ---
+# PENDING
+# --- smtpdaemon ---
+# PENDING
+# --- snappy ---
+# PENDING
+# --- socat ---
+# PENDING
+# --- socket_wrapper ---
+# PENDING
+# --- softhsm ---
+# PENDING
+# --- source-highlight ---
+# PENDING
+# --- sqlite ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -16006,6 +16814,21 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- star ---
+# PENDING
+# --- strace ---
+# PENDING
+# --- stunnel ---
+# PENDING
+# --- subversion ---
+# PENDING
+# --- swig ---
+# PENDING
+# --- swtpm ---
+# PENDING
+# --- sysprof ---
+# PENDING
+# --- systemd ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -16070,6 +16893,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- systemd-stub ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -16134,6 +16958,11 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- systemd-units ---
+# PENDING
+# --- systemtap ---
+# PENDING
+# --- tar ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -16198,6 +17027,11 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- tcl ---
+# PENDING
+# --- tcsh ---
+# PENDING
+# --- texinfo ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -16262,6 +17096,21 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- texlive ---
+# PENDING
+# --- tidy ---
+# PENDING
+# --- time ---
+# PENDING
+# --- tk ---
+# PENDING
+# --- tokyocabinet ---
+# PENDING
+# --- tomcat ---
+# PENDING
+# --- tomcli ---
+# PENDING
+# --- tpm2-tss ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -16326,6 +17175,23 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- tree-pkg ---
+# PENDING
+# --- tree-sitter-srpm-macros ---
+# PENDING
+# --- ttmkfdir ---
+# PENDING
+# --- tzdata ---
+# PENDING
+# --- uid_wrapper ---
+# PENDING
+# --- umockdev ---
+# PENDING
+# --- unbound ---
+# PENDING
+# --- unixODBC ---
+# PENDING
+# --- unzip ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -16390,6 +17256,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- util-linux ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -16454,6 +17321,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- uuid ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -16518,6 +17386,13 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- valgrind ---
+# PENDING
+# --- valkey ---
+# PENDING
+# --- vim ---
+# PENDING
+# --- which ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -16582,6 +17457,19 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- words ---
+# PENDING
+# --- xauth ---
+# PENDING
+# --- xen ---
+# PENDING
+# --- xmlto ---
+# PENDING
+# --- xmltoman ---
+# PENDING
+# --- xorg-x11-fonts ---
+# PENDING
+# --- xxhash ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -16646,6 +17534,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- xz ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -16710,6 +17599,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- yarnpkg ---
+# PENDING
+# --- yq ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -16774,6 +17666,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- zchunk ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -16838,6 +17731,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- zig-srpm-macros ---
+# PENDING
+# --- zip ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -16902,6 +17798,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- zlib-ng ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -16966,6 +17863,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- zstd ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
