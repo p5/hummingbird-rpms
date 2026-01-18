@@ -125,6 +125,74 @@ get_all_buildrequires() {
     done < <(find "${RPMS_DIR}" -mindepth 2 -maxdepth 2 -name "*.spec" -type f -print0) | sort -u
 }
 
+# Convert binary package names to source RPM names
+# Takes a newline-separated list of binary packages on stdin
+# Outputs unique source RPM names (packages not found are marked with "(source unknown)")
+binary_to_srpm_names() {
+    local packages=()
+    local pkg
+
+    # Read all packages into an array
+    while IFS= read -r pkg; do
+        [[ -z "${pkg}" ]] && continue
+        packages+=("${pkg}")
+    done
+
+    if [[ ${#packages[@]} -eq 0 ]]; then
+        return
+    fi
+
+    # Query packages in batches to avoid ARG_MAX limits
+    # Output format: "binary_name sourcerpm_filename" for each match
+    # Use %{sourcerpm} since %{source_name} isn't available in all dnf versions
+    local dnf_output
+    dnf_output=$(printf '%s\n' "${packages[@]}" | xargs -n 200 dnf repoquery --qf '%{name} %{sourcerpm}\n' 2>/dev/null | grep -v '^$')
+
+    # Extract source package name from sourcerpm filename (e.g., "valgrind-3.19.0-1.fc38.src.rpm" -> "valgrind")
+    # The sourcerpm format is: name-version-release.src.rpm
+    # We strip from the last occurrence of "-[0-9]" onwards to get just the name
+    echo "${dnf_output}" | awk 'NF>=2 {print $2}' | sed -E 's/-[0-9][^-]*-[^-]*\.src\.rpm$//' | sort -u
+
+    # Find packages that didn't match by comparing input to output
+    local matched_binaries
+    matched_binaries=$(echo "${dnf_output}" | awk 'NF>=2 {print $1}' | sort -u)
+
+    # For unmatched packages, try "dnf provides" to find the real package name
+    local unmatched
+    # shellcheck disable=SC2312
+    unmatched=$(comm -23 <(printf '%s\n' "${packages[@]}" | sort -u) <(echo "${matched_binaries}"))
+
+    if [[ -n "${unmatched}" ]]; then
+        # Collect provider package names for unmatched packages
+        local providers=()
+        local still_unknown=()
+        local pkg provider_pkg
+
+        while IFS= read -r pkg; do
+            [[ -z "${pkg}" ]] && continue
+            # dnf provides output format: "package-version.arch : Description"
+            # Extract just the package name (first field, strip version-release.arch)
+            provider_pkg=$(dnf provides "${pkg}" 2>/dev/null | grep -v "^Last metadata" | head -1 | awk -F: '{print $1}' | sed -E 's/-[0-9][^-]*-[^-]*\.[^.]+$//' | xargs)
+            if [[ -n "${provider_pkg}" && "${provider_pkg}" != "${pkg}" ]]; then
+                providers+=("${provider_pkg}")
+            else
+                still_unknown+=("${pkg}")
+            fi
+        done <<< "${unmatched}"
+
+        # Query the provider packages for their SRPMs
+        if [[ ${#providers[@]} -gt 0 ]]; then
+            printf '%s\n' "${providers[@]}" | sort -u | xargs -n 200 dnf repoquery --qf '%{name} %{sourcerpm}\n' 2>/dev/null | \
+                grep -v '^$' | awk 'NF>=2 {print $2}' | sed -E 's/-[0-9][^-]*-[^-]*\.src\.rpm$//' | sort -u
+        fi
+
+        # Output packages that are still unknown
+        for pkg in "${still_unknown[@]}"; do
+            echo "${pkg} (source unknown)"
+        done
+    fi
+}
+
 # Find missing packages
 lockfile_srpms=$(get_lockfile_srpms | sort -u)
 imported_packages=$(get_imported_packages)
@@ -136,7 +204,14 @@ missing_builddeps=""
 if [[ "${CHECK_BUILDDEPS}" == true ]]; then
     all_buildrequires=$(get_all_buildrequires)
     # Find BuildRequires that are not in the imported packages list
-    missing_builddeps=$(comm -23 <(echo "${all_buildrequires}") <(echo "${imported_packages}"))
+    missing_binary_deps=$(comm -23 <(echo "${all_buildrequires}") <(echo "${imported_packages}"))
+    # Convert binary package names to source RPM names
+    if [[ -n "${missing_binary_deps}" ]]; then
+        missing_builddeps=$(echo "${missing_binary_deps}" | binary_to_srpm_names)
+        # Filter out SRPMs that are already imported
+        # shellcheck disable=SC2312
+        missing_builddeps=$(comm -23 <(echo "${missing_builddeps}" | sort) <(echo "${imported_packages}"))
+    fi
 fi
 
 # Count non-empty lines in a string
