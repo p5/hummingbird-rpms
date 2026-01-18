@@ -1,0 +1,10 @@
+summary: Upstreamed interop-nss-openssl renegotiation test
+contact: Stanislav Zidek <szidek@redhat.com>
+discover:
+  # upstreamed tests (public)
+  - name: interop-openssl-reneg
+    how: fmf
+    url: https://gitlab.com/redhat-crypto/tests/interop.git
+    filter: 'tag: interop-nss & tag: interop-openssl & tag: interop-reneg'
+execute:
+    how: tmt
