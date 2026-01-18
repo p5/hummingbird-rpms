@@ -1,0 +1,42 @@
+#!/bin/sh
+
+function die()
+{
+    printf '%s\n' "$*" >&2
+    exit 1
+}
+
+set -e
+
+cd modalias.prov.testdata
+test -x ../../modalias.prov || die "No ../../modalias.prov"
+
+# Copy and add -t option to modalias.prov
+cp ../../modalias.prov modalias.prov
+patch -p1 <<"EOF"
+--- a/modalias.prov
++++ b/modalias.prov
+@@ -105,6 +105,17 @@ combine_modaliases() {
+     print_modaliases "$prev" "$variants" "$pos"
+ }
+ 
++if [ "$#" = 2 ] && [ "$1" = "-t" ]; then
++    cat -- "$2" \
++    | { while read line; do echo "${#line} $line"; done } \
++    | LC_ALL=C sort -u \
++    | combine_modaliases \
++    >"$2.test"
++    echo "Comparing results for $2"
++    diff -u "$2.right" "$2.test" && rm -- "$2.test"
++    exit
++fi
++
+ for module in $(grep -E '/lib/modules/.+\.ko(\.gz|\.bz2|\.xz|\.zst)?$') "$@"; do
+     modver=$(/sbin/modinfo -F version "$module")
+     # delete possible extra lines because some modules have *two* version tags. *cough*b44*cough*
+EOF
+
+find | grep '\.ko.*\.modalias$' | xargs -n1 ./modalias.prov -t
+
+# Rename newly generated .test as .right
+#find | grep '\.ko.*\.modalias$' | xargs -I'{}' mv '{}'.test '{}'.right
