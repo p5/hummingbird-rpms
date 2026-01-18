@@ -7932,7 +7932,43 @@ spec:
     method: webhook
     title: SBOM-event-to-Bombino
 # --- mariadb-connector-c ---
-# PENDING
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
+  name: mariadb-connector-c-main
+spec:
+  application: rpms-main
+  componentName: mariadb-connector-c-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/mariadb-connector-c-main
+  source:
+    git:
+      context: rpms/mariadb-connector-c
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: mariadb-connector-c-main
+  name: mariadb-connector-c-main
+spec:
+  image:
+    name: hummingbird-tenant/mariadb-connector-c-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
 # --- mariadb10.11 ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
