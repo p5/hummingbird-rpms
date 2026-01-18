@@ -1038,9 +1038,9 @@
   "nodejs22": {
     "branch": "rawhide",
     "release": "1",
-    "sha": "47c75eb47c5380f5145ae9354152421271f5cf1f",
+    "sha": "957388792cd718381ce526a9eb8ab222e3ea563a",
     "source": "https://src.fedoraproject.org/rpms/nodejs22.git",
-    "version": "22.21.1"
+    "version": "22.22.0"
   },
   "nodejs24": {
     "branch": "rawhide",

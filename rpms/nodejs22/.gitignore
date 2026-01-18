@@ -1,0 +1,10 @@
+*~
+*.swp
+/*.tar.gz
+/*.src.rpm
+/*.tgz
+/node-*/*
+/.build-*.log
+/noarch
+/x86_64
+/icu4c-*-data-bin-*.zip

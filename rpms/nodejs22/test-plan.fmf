@@ -1,0 +1,27 @@
+---
+summary: Package test suite
+discover:
+  how: fmf
+  url: https://gitlab.com/redhat/centos-stream/tests/nodejs
+  filter: "component:nodejs22"
+environment:
+  NODEJS_MAIN_PACKAGE: nodejs22
+  NODEJS_DEVEL_PACKAGE: nodejs22-devel
+  NODEJS_BIN_PACKAGE: nodejs22-bin
+  NPM_BIN_PACKAGE: nodejs22-npm-bin
+  NODE_BIN: /usr/bin/node-22
+  NPM_BIN: /usr/bin/npm-22
+  NODE_INCLUDE_PATH: /usr/include/node
+provision:
+  - name: test-machine
+    how: container
+    image: 'fedora:rawhide'
+prepare:
+  - name: install tested packages
+    how: install
+    package:
+        - ${NODEJS_MAIN_PACKAGE}
+        - ${NODEJS_DEVEL_PACKAGE}
+execute:
+  how: tmt
+...
