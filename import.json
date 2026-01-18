@@ -1042,6 +1042,13 @@
     "source": "https://src.fedoraproject.org/rpms/libfido2.git",
     "version": "1.16.0"
   },
+  "libfontenc": {
+    "branch": "rawhide",
+    "release": "5",
+    "sha": "1d7a57319041152d9ee3f879c379fdf552b8945f",
+    "source": "https://src.fedoraproject.org/rpms/libfontenc.git",
+    "version": "1.1.8"
+  },
   "libgcrypt": {
     "branch": "rawhide",
     "release": "1",
