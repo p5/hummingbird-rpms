@@ -1,0 +1,6 @@
+require:
+- ttmkfdir
+- xorg-x11-fonts-ethiopic
+test: bash ./run_tests.sh
+framework: shell
+
