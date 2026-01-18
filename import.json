@@ -1364,6 +1364,13 @@
     "source": "https://src.fedoraproject.org/rpms/llhttp.git",
     "version": "9.3.0"
   },
+  "lmdb": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "82d2ba8611263298055b18d11028973c12c844e2",
+    "source": "https://src.fedoraproject.org/rpms/lmdb.git",
+    "version": "0.9.33"
+  },
   "lua": {
     "branch": "rawhide",
     "release": "4",
