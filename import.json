@@ -1805,6 +1805,13 @@
     "source": "https://src.fedoraproject.org/rpms/texinfo.git",
     "version": "7.2"
   },
+  "tomcat": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "fe110db6692c2c41f9d116785d56aa0526a682f5",
+    "source": "https://src.fedoraproject.org/rpms/tomcat.git",
+    "version": "10.1.46"
+  },
   "tpm2-tss": {
     "branch": "rawhide",
     "release": "8",

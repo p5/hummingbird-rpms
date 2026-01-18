@@ -1,0 +1,5 @@
+discover:
+  how: fmf
+  url: https://src.fedoraproject.org/tests/tomcat
+execute:
+    how: tmt

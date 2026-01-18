@@ -10468,7 +10468,43 @@ spec:
 # --- tokyocabinet ---
 # PENDING
 # --- tomcat ---
-# PENDING
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
+  name: tomcat-main
+spec:
+  application: rpms-main
+  componentName: tomcat-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/tomcat-main
+  source:
+    git:
+      context: rpms/tomcat
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: tomcat-main
+  name: tomcat-main
+spec:
+  image:
+    name: hummingbird-tenant/tomcat-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
 # --- tomcli ---
 # PENDING
 # --- tpm2-tss ---
