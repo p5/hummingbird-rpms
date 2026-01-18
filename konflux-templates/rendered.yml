@@ -1860,12 +1860,6 @@ spec:
     method: webhook
     title: SBOM-event-to-Bombino
 # --- dotnet8.0 ---
-# PENDING
-# --- dotnet9.0 ---
-# PENDING
-# --- doxygen ---
-# PENDING
-# --- drpm ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -1903,6 +1897,7 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- dotnet9.0 ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -1940,6 +1935,9 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- doxygen ---
+# PENDING
+# --- drpm ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component

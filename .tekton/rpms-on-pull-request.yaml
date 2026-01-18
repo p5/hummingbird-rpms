@@ -3118,12 +3118,6 @@ spec:
       secret:
         secretName: '{{git_auth_secret}}'
 # --- dotnet8.0 ---
-# PENDING
-# --- dotnet9.0 ---
-# PENDING
-# --- doxygen ---
-# PENDING
-# --- drpm ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -3188,6 +3182,7 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- dotnet9.0 ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -3252,6 +3247,9 @@ spec:
     - name: git-auth
       secret:
         secretName: '{{git_auth_secret}}'
+# --- doxygen ---
+# PENDING
+# --- drpm ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
