@@ -972,6 +972,13 @@
     "source": "https://src.fedoraproject.org/rpms/libXext.git",
     "version": "1.3.6"
   },
+  "libXi": {
+    "branch": "rawhide",
+    "release": "4",
+    "sha": "901c1b18607c9662c95239d7bfb49a6262fda85b",
+    "source": "https://src.fedoraproject.org/rpms/libXi.git",
+    "version": "1.8.2"
+  },
   "libaio": {
     "branch": "rawhide",
     "release": "23",
