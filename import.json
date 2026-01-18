@@ -1917,6 +1917,13 @@
     "source": "https://src.fedoraproject.org/rpms/zchunk.git",
     "version": "1.5.1"
   },
+  "zig-srpm-macros": {
+    "branch": "rawhide",
+    "release": "8",
+    "sha": "6b87bf3d634981f9a985586d3cef8a7ec0422809",
+    "source": "https://src.fedoraproject.org/rpms/zig-srpm-macros.git",
+    "version": "1"
+  },
   "zip": {
     "branch": "rawhide",
     "release": "44",
