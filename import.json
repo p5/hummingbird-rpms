@@ -1343,6 +1343,13 @@
     "source": "https://src.fedoraproject.org/rpms/libyaml.git",
     "version": "0.2.5"
   },
+  "libzip": {
+    "branch": "rawhide",
+    "release": "3",
+    "sha": "6c2faa5970e281277332965d968f1b9ac5502050",
+    "source": "https://src.fedoraproject.org/rpms/libzip.git",
+    "version": "1.11.4"
+  },
   "lua": {
     "branch": "rawhide",
     "release": "4",
