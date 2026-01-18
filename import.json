@@ -1735,6 +1735,13 @@
     "source": "https://src.fedoraproject.org/rpms/sed.git",
     "version": "4.9"
   },
+  "selinux-policy": {
+    "branch": "rawhide",
+    "release": "2",
+    "sha": "a54c161e81f426b99ac5271bf74fd36cb0ebd323",
+    "source": "https://src.fedoraproject.org/rpms/selinux-policy.git",
+    "version": "42.21"
+  },
   "setup": {
     "branch": "rawhide",
     "release": "1",
