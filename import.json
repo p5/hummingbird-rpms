@@ -951,6 +951,13 @@
     "source": "https://src.fedoraproject.org/rpms/libX11.git",
     "version": "1.8.12"
   },
+  "libXau": {
+    "branch": "rawhide",
+    "release": "4",
+    "sha": "9a1ce3347610e851acec29c200b99ccf29f01369",
+    "source": "https://src.fedoraproject.org/rpms/libXau.git",
+    "version": "1.0.12"
+  },
   "libaio": {
     "branch": "rawhide",
     "release": "23",
