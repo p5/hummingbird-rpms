@@ -1322,6 +1322,13 @@
     "source": "https://src.fedoraproject.org/rpms/libxml2.git",
     "version": "2.12.10"
   },
+  "libxslt": {
+    "branch": "rawhide",
+    "release": "6",
+    "sha": "79d83b8d5cd5ff67383dd98fcab09bcda632ed10",
+    "source": "https://src.fedoraproject.org/rpms/libxslt.git",
+    "version": "1.1.43"
+  },
   "libyaml": {
     "branch": "rawhide",
     "release": "17",
