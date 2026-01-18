@@ -1770,6 +1770,13 @@
     "source": "https://src.fedoraproject.org/rpms/skopeo.git",
     "version": "1.21.0"
   },
+  "snappy": {
+    "branch": "rawhide",
+    "release": "4",
+    "sha": "53a26600710394962486bb130d06af8d6a012b6e",
+    "source": "https://src.fedoraproject.org/rpms/snappy.git",
+    "version": "1.2.2"
+  },
   "sqlite": {
     "branch": "rawhide",
     "release": "1",
