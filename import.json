@@ -1196,6 +1196,13 @@
     "source": "https://src.fedoraproject.org/rpms/libssh.git",
     "version": "0.11.3"
   },
+  "libssh2": {
+    "branch": "rawhide",
+    "release": "5",
+    "sha": "eabbdb1748a6662d9f9f65d9368e3e3a11b6b78c",
+    "source": "https://src.fedoraproject.org/rpms/libssh2.git",
+    "version": "1.11.1"
+  },
   "libtasn1": {
     "branch": "rawhide",
     "release": "1",
