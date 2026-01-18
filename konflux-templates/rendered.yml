@@ -6364,7 +6364,43 @@ spec:
     method: webhook
     title: SBOM-event-to-Bombino
 # --- libpwquality ---
-# PENDING
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
+  name: libpwquality-main
+spec:
+  application: rpms-main
+  componentName: libpwquality-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/libpwquality-main
+  source:
+    git:
+      context: rpms/libpwquality
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: libpwquality-main
+  name: libpwquality-main
+spec:
+  image:
+    name: hummingbird-tenant/libpwquality-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
 # --- librepo ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
