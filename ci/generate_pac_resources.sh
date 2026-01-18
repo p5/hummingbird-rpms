@@ -79,7 +79,7 @@ template=.tekton/rpms-on-${RESOURCE_TYPE}.yaml.j2
 APPLICATION_NAME="rpms-${BRANCH}"
 
 # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-PIPELINE_BUNDLE="quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+PIPELINE_BUNDLE="quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
 
 # Read packages from manifest file and existing rpms/ directories, then sort
 # shellcheck disable=SC2312
