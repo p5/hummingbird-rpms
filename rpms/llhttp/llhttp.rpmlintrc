@@ -1,0 +1,7 @@
+# These are not real spelling errors...
+addFilter(r" spelling-error \('(llparse|js)', ")
+addFilter(r" spelling-error \(\"embedder's\", ")
+# No devel-specific documentation exists; the README is in the base package.
+addFilter(r"llhttp-devel\..*: no-documentation")
+# Intentional, with a justifying spec-file comment
+addFilter(r" no-%check-section")
