@@ -582,6 +582,7 @@ rm -rf src/runtime/src/native/external/zlib-ng
 
 %build
 cat /etc/os-release
+ulimit -a
 
 %if %{without bootstrap}
 # We need to create a copy because build scripts will mutate this

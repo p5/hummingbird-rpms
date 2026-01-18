@@ -492,6 +492,7 @@ sed -i -E 's|( /p:BuildDebPackage=false)|\1 --cmakeargs -DCLR_CMAKE_USE_SYSTEM_L
 
 %build
 cat /etc/os-release
+ulimit -a
 
 %if %{without bootstrap}
 # We need to create a copy because we will mutate this
