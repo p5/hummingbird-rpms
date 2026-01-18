@@ -1,0 +1,42 @@
+From 1cc96f25aff9898a93f2a575d9f6c57574da042f Mon Sep 17 00:00:00 2001
+From: Akira TAGOH <tagoh@redhat.com>
+Date: Thu, 23 Oct 2014 12:57:43 +0200
+Subject: [PATCH font/encodings] jisx0201.1976-0.enc: Add undefined mapping for
+ 0x7f - 0xa0 range
+
+The jisx0201 encoding has a hole in it in the 0x7f - 0xa0 range, see:
+http://en.wikipedia.org/wiki/JIS_X_0201
+
+The document for the format of the encoding files says:
+"Codes not listed are assumed to map through the identity (i.e. to the same
+ numerical value). In order to override this default mapping, you may specify
+ a range of codes to be undefined by using an `UNDEFINE' line"
+
+jisx0201.1976-0.enc was not doing this, causing all the codes on the range
+to be mapped 1:1. This specifically is causing problems for ttmkfdir, which
+checks that a font covers (most of) an encoding before adding a line for that
+encoding to fonts.scale, and the hole not properly being undefined causes
+this check to fail for atleast the Sazanami fonts.
+
+Cc: Akira TAGOH <tagoh@redhat.com>
+BugLink: https://bugzilla.redhat.com/show_bug.cgi?id=1009350
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+---
+ large/jisx0201.1976-0.enc | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/large/jisx0201.1976-0.enc b/large/jisx0201.1976-0.enc
+index 915d50c..328bc7a 100644
+--- a/large/jisx0201.1976-0.enc
++++ b/large/jisx0201.1976-0.enc
+@@ -68,6 +68,7 @@ ENDMAPPING
+ STARTMAPPING unicode
+ 0x5C	0x00A5	# YEN SIGN
+ 0x7E	0x203E	# OVERLINE
++UNDEFINE	0x7F	0xA0
+ 0x00A1 0x00DF 0xFF61
+ ENDMAPPING
+ STARTMAPPING cmap 1 1
+-- 
+2.1.0
+

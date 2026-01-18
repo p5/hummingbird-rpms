@@ -10874,7 +10874,43 @@ spec:
 # --- xmltoman ---
 # PENDING
 # --- xorg-x11-fonts ---
-# PENDING
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
+  name: xorg-x11-fonts-main
+spec:
+  application: rpms-main
+  componentName: xorg-x11-fonts-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/xorg-x11-fonts-main
+  source:
+    git:
+      context: rpms/xorg-x11-fonts
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: xorg-x11-fonts-main
+  name: xorg-x11-fonts-main
+spec:
+  image:
+    name: hummingbird-tenant/xorg-x11-fonts-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
 # --- xxhash ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
