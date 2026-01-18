@@ -8114,7 +8114,43 @@ spec:
 # --- mingw64-gcc-c++ ---
 # PENDING
 # --- mkfontscale ---
-# PENDING
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
+  name: mkfontscale-main
+spec:
+  application: rpms-main
+  componentName: mkfontscale-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/mkfontscale-main
+  source:
+    git:
+      context: rpms/mkfontscale
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: mkfontscale-main
+  name: mkfontscale-main
+spec:
+  image:
+    name: hummingbird-tenant/mkfontscale-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
 # --- mod_http2 ---
 # PENDING
 # --- mono ---
