@@ -1,0 +1,38 @@
+# See the documentation for more information:
+# https://packit.dev/docs/configuration/
+
+create_sync_note: false
+
+upstream_project_url: https://github.com/apache/tomcat.git
+
+issue_repository: https://src.fedoraproject.org/rpms/tomcat
+
+jobs:
+# https://packit.dev/docs/configuration/downstream/pull_from_upstream
+# Make sure there is Fedora mapping for the 'tomcat' project in https://release-monitoring.org/projects/search/?pattern=tomcat
+# Make sure Monitoring status on the left side at https://src.fedoraproject.org/rpms/tomcat is set to Monitoring
+- job: pull_from_upstream
+  trigger: release
+  dist_git_branches:
+    - fedora-branched
+
+# https://packit.dev/docs/configuration/downstream/koji_build
+- job: koji_build
+  trigger: commit
+  dist_git_branches:
+    - fedora-all
+    
+- job: koji_build
+  trigger: commit
+  scratch: true
+  allowed_pr_authors: ['all_admins', 'all_committers']
+  allowed_committers: ['all_admins', 'all_committers']
+  dist_git_branches:
+    - fedora-all
+
+# https://packit.dev/docs/configuration/downstream/bodhi_update
+- job: bodhi_update
+  trigger: commit
+  allowed_builders: ['packit', 'all_admins']
+  dist_git_branches:
+    - fedora-branched # rawhide updates are created automatically

@@ -1,0 +1,7 @@
+summary: Run javapackages-specific tests
+discover:
+  how: fmf
+  url: https://src.fedoraproject.org/tests/javapackages
+  ref: f42
+execute:
+  how: tmt

@@ -1,0 +1,40 @@
+---
+- hosts: localhost
+  tags:
+    - classic
+  tasks:
+    - dnf:
+        name: "*"
+        state: latest
+
+- hosts: localhost
+  roles:
+  - role: standard-test-basic
+    tags:
+    - classic
+    repositories:
+    - repo: "https://src.fedoraproject.org/rpms/pyproject-rpm-macros.git"
+      dest: "pyproject-rpm-macros"
+    - repo: "https://src.fedoraproject.org/rpms/general-purpose-preprocessor.git"
+      dest: "general-purpose-preprocessor"
+    tests:
+    # regression test for https://bugzilla.redhat.com/show_bug.cgi?id=2078744
+    - pyproject_rpm_macros:
+        dir: pyproject-rpm-macros/tests
+        run: ./mocktest.sh python-pluggy
+    # Try to build a package locally
+    - general-purpose-preprocessor:
+        dir: general-purpose-preprocessor
+        run: fedpkg local
+    - general-purpose-preprocessor-check:
+        dir: general-purpose-preprocessor
+        run: fedpkg local --define '%add_determinism_options --check --verbose'
+    required_packages:
+    - mock
+    - rpmdevtools
+    - rpm-build
+    - add-determinism
+    - fedora-packager
+    # to build general-purpose-preprocessor
+    - gcc
+    - make

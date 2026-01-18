@@ -1707,6 +1707,13 @@
     "source": "https://src.fedoraproject.org/rpms/ruff.git",
     "version": "0.14.11"
   },
+  "rust-add-determinism": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "3083bb97e2396c7337b75eba2f08b8deb2e1650e",
+    "source": "https://src.fedoraproject.org/rpms/rust-add-determinism.git",
+    "version": "0.7.2"
+  },
   "rust-rpm-sequoia": {
     "branch": "rawhide",
     "release": "1",
@@ -1728,6 +1735,13 @@
     "source": "https://src.fedoraproject.org/rpms/sed.git",
     "version": "4.9"
   },
+  "selinux-policy": {
+    "branch": "rawhide",
+    "release": "2",
+    "sha": "a54c161e81f426b99ac5271bf74fd36cb0ebd323",
+    "source": "https://src.fedoraproject.org/rpms/selinux-policy.git",
+    "version": "42.21"
+  },
   "setup": {
     "branch": "rawhide",
     "release": "1",
@@ -1735,12 +1749,33 @@
     "source": "https://src.fedoraproject.org/rpms/setup.git",
     "version": "2.15.0"
   },
+  "sgml-common": {
+    "branch": "rawhide",
+    "release": "68",
+    "sha": "7d819d376d8121e3de0d03001615500121bed352",
+    "source": "https://src.fedoraproject.org/rpms/sgml-common.git",
+    "version": "0.6.3"
+  },
   "shadow-utils": {
     "branch": "rawhide",
     "release": "7",
     "sha": "d39147a22233042f440eae625add65ddefeaa4bc",
     "source": "https://src.fedoraproject.org/rpms/shadow-utils.git",
     "version": "4.18.0"
+  },
+  "skopeo": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "54387fa261062ed63d80640338e445a0e68a2e05",
+    "source": "https://src.fedoraproject.org/rpms/skopeo.git",
+    "version": "1.21.0"
+  },
+  "snappy": {
+    "branch": "rawhide",
+    "release": "4",
+    "sha": "53a26600710394962486bb130d06af8d6a012b6e",
+    "source": "https://src.fedoraproject.org/rpms/snappy.git",
+    "version": "1.2.2"
   },
   "sqlite": {
     "branch": "rawhide",
@@ -1770,12 +1805,40 @@
     "source": "https://src.fedoraproject.org/rpms/texinfo.git",
     "version": "7.2"
   },
+  "tomcat": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "fe110db6692c2c41f9d116785d56aa0526a682f5",
+    "source": "https://src.fedoraproject.org/rpms/tomcat.git",
+    "version": "10.1.46"
+  },
   "tpm2-tss": {
     "branch": "rawhide",
     "release": "8",
     "sha": "7f13b9f2a3811b0ef4587e9f10dac18a2081406e",
     "source": "https://src.fedoraproject.org/rpms/tpm2-tss.git",
     "version": "4.1.3"
+  },
+  "tree-sitter-srpm-macros": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "c702e42b65aa8027e5066cb1be2001192af85a21",
+    "source": "https://src.fedoraproject.org/rpms/tree-sitter-srpm-macros.git",
+    "version": "0.4.2"
+  },
+  "ttmkfdir": {
+    "branch": "rawhide",
+    "release": "74",
+    "sha": "bfb709600b9e8ae0f1a95ec1750205cf4651af81",
+    "source": "https://src.fedoraproject.org/rpms/ttmkfdir.git",
+    "version": "3.0.9"
+  },
+  "tzdata": {
+    "branch": "rawhide",
+    "release": "2",
+    "sha": "0465d6cc4408fe4d1f5cb956d931fc29c7818587",
+    "source": "https://src.fedoraproject.org/rpms/tzdata.git",
+    "version": "2025c"
   },
   "unzip": {
     "branch": "rawhide",
@@ -1798,12 +1861,26 @@
     "source": "https://src.fedoraproject.org/rpms/uuid.git",
     "version": "1.6.2"
   },
+  "valkey": {
+    "branch": "rawhide",
+    "release": "2",
+    "sha": "a8894f50bd61a2b4dd978ae51c5f29cf16b06969",
+    "source": "https://src.fedoraproject.org/rpms/valkey.git",
+    "version": "9.0.1"
+  },
   "which": {
     "branch": "rawhide",
     "release": "3",
     "sha": "ac38d264ed7d568632294389b9245f4272156986",
     "source": "https://src.fedoraproject.org/rpms/which.git",
     "version": "2.23"
+  },
+  "xorg-x11-fonts": {
+    "branch": "rawhide",
+    "release": "42",
+    "sha": "48b6e17dd3b7304b53cd08de7d6c55de9f565741",
+    "source": "https://src.fedoraproject.org/rpms/xorg-x11-fonts.git",
+    "version": "7.5"
   },
   "xxhash": {
     "branch": "rawhide",
@@ -1819,6 +1896,13 @@
     "source": "https://src.fedoraproject.org/rpms/xz.git",
     "version": "5.8.2"
   },
+  "yarnpkg": {
+    "branch": "rawhide",
+    "release": "15",
+    "sha": "8b7871353b6395a263e44712f10eb334f65dd4fc",
+    "source": "https://src.fedoraproject.org/rpms/yarnpkg.git",
+    "version": "1.22.22"
+  },
   "yq": {
     "branch": "rawhide",
     "release": "1",
@@ -1832,6 +1916,13 @@
     "sha": "a08ff1c9af969affa6b728fdbf0503c00dea2eda",
     "source": "https://src.fedoraproject.org/rpms/zchunk.git",
     "version": "1.5.1"
+  },
+  "zig-srpm-macros": {
+    "branch": "rawhide",
+    "release": "8",
+    "sha": "6b87bf3d634981f9a985586d3cef8a7ec0422809",
+    "source": "https://src.fedoraproject.org/rpms/zig-srpm-macros.git",
+    "version": "1"
   },
   "zip": {
     "branch": "rawhide",
