@@ -1749,6 +1749,13 @@
     "source": "https://src.fedoraproject.org/rpms/setup.git",
     "version": "2.15.0"
   },
+  "sgml-common": {
+    "branch": "rawhide",
+    "release": "68",
+    "sha": "7d819d376d8121e3de0d03001615500121bed352",
+    "source": "https://src.fedoraproject.org/rpms/sgml-common.git",
+    "version": "0.6.3"
+  },
   "shadow-utils": {
     "branch": "rawhide",
     "release": "7",
