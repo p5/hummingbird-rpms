@@ -1833,6 +1833,13 @@
     "source": "https://src.fedoraproject.org/rpms/ttmkfdir.git",
     "version": "3.0.9"
   },
+  "tzdata": {
+    "branch": "rawhide",
+    "release": "2",
+    "sha": "0465d6cc4408fe4d1f5cb956d931fc29c7818587",
+    "source": "https://src.fedoraproject.org/rpms/tzdata.git",
+    "version": "2025c"
+  },
   "unzip": {
     "branch": "rawhide",
     "release": "68",

@@ -1,0 +1,29 @@
+From 2a7c7c5873ff0eb725e8eafad04f6af6ada66dc6 Mon Sep 17 00:00:00 2001
+From: Paul Eggert <eggert@cs.ucla.edu>
+Date: Sat, 25 Sep 2021 08:32:39 -0700
+Subject: [PROPOSED] Fix Jan Mayen typo
+
+Fix typo in 2021-09-24 revert of most of the 2021-05-19
+alike-since-1970 patch.  Problem reported by Chris Walton in:
+https://mm.icann.org/pipermail/tz/2021-September/030772.html
+* backward (Atlantic/Jan_Mayen): Link from Europe/Oslo,
+not Europe/Berlin.
+---
+ backward | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/backward b/backward
+index 7c288e3..5412c46 100644
+--- a/backward
++++ b/backward
+@@ -116,7 +116,7 @@ Link	Asia/Makassar		Asia/Ujung_Pandang
+ Link	Asia/Ulaanbaatar	Asia/Ulan_Bator
+ Link	Asia/Bangkok		Asia/Vientiane
+ Link	Atlantic/Faroe		Atlantic/Faeroe
+-Link	Europe/Berlin		Atlantic/Jan_Mayen
++Link	Europe/Oslo		Atlantic/Jan_Mayen
+ Link	Africa/Abidjan		Atlantic/St_Helena
+ Link	Australia/Sydney	Australia/ACT
+ Link	Australia/Sydney	Australia/Canberra
+-- 
+2.30.2

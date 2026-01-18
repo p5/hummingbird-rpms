@@ -1,0 +1,11 @@
+PURPOSE of /CoreOS/tzdata/Sanity/tzdata-checker
+Description: Testing tzdata by comparing base pkg with upstream
+Author: Michal Kolar <mkolar@redhat.com>
+
+Executing can be modified by these variables:
+  * NO_BEAKERLIB -- if this variable is set to "1" tescase use wrapper for rl* commands instead of beakerlib.
+                    It could be useful on systems without installed beaker framework.
+
+Example:
+    NO_BEAKERLIB=1 ./runtest.sh
+

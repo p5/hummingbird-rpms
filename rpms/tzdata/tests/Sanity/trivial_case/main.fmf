@@ -1,0 +1,10 @@
+summary: tzdata testing by trivial case
+component:
+- tzdata
+test: ./test.sh
+tier: 1
+framework: beakerlib
+require+:
+- tzdata
+- coreutils
+duration: 5m

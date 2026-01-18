@@ -10624,7 +10624,43 @@ spec:
     method: webhook
     title: SBOM-event-to-Bombino
 # --- tzdata ---
-# PENDING
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
+  name: tzdata-main
+spec:
+  application: rpms-main
+  componentName: tzdata-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/tzdata-main
+  source:
+    git:
+      context: rpms/tzdata
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: tzdata-main
+  name: tzdata-main
+spec:
+  image:
+    name: hummingbird-tenant/tzdata-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
 # --- uid_wrapper ---
 # PENDING
 # --- umockdev ---
