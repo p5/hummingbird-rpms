@@ -1,0 +1,15 @@
+discover:
+    how: fmf
+    url: https://github.com/containers/skopeo
+    ref: "v1.21.0"
+execute:
+    how: tmt
+prepare:
+  - name: Disable installing everything from srpm
+    how: install
+    exclude:
+      - ".*"
+  - name: Install the main package
+    how: install
+    package:
+      - skopeo-tests
