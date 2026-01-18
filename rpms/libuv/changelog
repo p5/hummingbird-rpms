@@ -1,0 +1,32 @@
+* Thu Jan 20 2022 Fedora Release Engineering <releng@fedoraproject.org> 1:1.43.0-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_36_Mass_Rebuild
+
+* Wed Jan 05 2022 Stephen Gallagher <sgallagh@redhat.com> 1:1.43.0-2
+- Also remove udp_multicast_join6 test
+
+* Wed Jan 05 2022 Stephen Gallagher <sgallagh@redhat.com> 1:1.43.0-1
+- Update to 1.43.0
+
+* Thu Sep 02 2021 Stephen Gallagher <sgallagh@redhat.com> 1:1.42.0-2
+- Drop use of rpmautospec for the release field
+
+* Tue Aug 31 2021 Stephen Gallagher <sgallagh@redhat.com> 1:1.42.0-1
+- Update to 1.42.0
+
+* Thu Jul 22 2021 Fedora Release Engineering <releng@fedoraproject.org> 1:1.41.1-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_35_Mass_Rebuild
+
+* Fri Jul 09 2021 Stephen Gallagher <sgallagh@redhat.com> 1:1.41.1-1
+- idna: fix OOB read in punycode decoder
+
+* Fri Feb 19 2021 Stephen Gallagher <sgallagh@redhat.com> 1:1.41.0-2
+- Update package.cfg for rawhide rename
+
+* Fri Feb 19 2021 Stephen Gallagher <sgallagh@redhat.com> 1:1.41.0-1
+- Update to 1.41.0
+
+* Tue Jan 26 2021 Fedora Release Engineering <releng@fedoraproject.org> 1:1.40.0-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_34_Mass_Rebuild
+
+* Tue Jan 05 2021 Tom Stellard <tstellar@redhat.com> 1:1.40.0-2
+- Add BuildRequires: make

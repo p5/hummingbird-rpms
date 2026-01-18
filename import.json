@@ -1245,6 +1245,13 @@
     "source": "https://src.fedoraproject.org/rpms/libusb1.git",
     "version": "1.0.29"
   },
+  "libuv": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "c6eeef4fcb660bea5098b6992cd72a2dbd771d8c",
+    "source": "https://src.fedoraproject.org/rpms/libuv.git",
+    "version": "1.51.0"
+  },
   "libverto": {
     "branch": "rawhide",
     "release": "11",
