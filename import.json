@@ -1896,6 +1896,13 @@
     "source": "https://src.fedoraproject.org/rpms/xz.git",
     "version": "5.8.2"
   },
+  "yarnpkg": {
+    "branch": "rawhide",
+    "release": "15",
+    "sha": "8b7871353b6395a263e44712f10eb334f65dd4fc",
+    "source": "https://src.fedoraproject.org/rpms/yarnpkg.git",
+    "version": "1.22.22"
+  },
   "yq": {
     "branch": "rawhide",
     "release": "1",

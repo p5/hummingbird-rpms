@@ -1,0 +1,30 @@
+diff -rupN --no-dereference yarn-1.22.22/package.json yarn-1.22.22-new/package.json
+--- yarn-1.22.22/package.json	2025-09-30 14:26:03.561888356 +0200
++++ yarn-1.22.22-new/package.json	2025-09-30 14:26:03.566194507 +0200
+@@ -69,7 +69,6 @@
+     "babel-preset-flow": "^6.23.0",
+     "babel-preset-stage-0": "^6.0.0",
+     "babylon": "^6.5.0",
+-    "commitizen": "^2.9.6",
+     "cz-conventional-changelog": "^2.0.0",
+     "eslint": "^4.3.0",
+     "eslint-config-fb-strict": "^22.0.0",
+@@ -131,8 +130,7 @@
+     "test-only": "node --max_old_space_size=4096 node_modules/jest/bin/jest.js --verbose",
+     "test-only-debug": "node --inspect-brk --max_old_space_size=4096 node_modules/jest/bin/jest.js --runInBand --verbose",
+     "test-coverage": "node --max_old_space_size=4096 node_modules/jest/bin/jest.js --coverage --verbose",
+-    "watch": "gulp watch",
+-    "commit": "git-cz"
++    "watch": "gulp watch"
+   },
+   "jest": {
+     "collectCoverageFrom": [
+@@ -152,8 +150,5 @@
+     ]
+   },
+   "config": {
+-    "commitizen": {
+-      "path": "./node_modules/cz-conventional-changelog"
+-    }
+   }
+ }
