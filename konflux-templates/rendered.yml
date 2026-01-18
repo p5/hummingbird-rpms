@@ -8398,7 +8398,43 @@ spec:
     method: webhook
     title: SBOM-event-to-Bombino
 # --- nginx ---
-# PENDING
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
+  name: nginx-main
+spec:
+  application: rpms-main
+  componentName: nginx-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/nginx-main
+  source:
+    git:
+      context: rpms/nginx
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: nginx-main
+  name: nginx-main
+spec:
+  image:
+    name: hummingbird-tenant/nginx-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
 # --- ngtcp2 ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
