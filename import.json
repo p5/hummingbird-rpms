@@ -986,6 +986,13 @@
     "source": "https://src.fedoraproject.org/rpms/libXrender.git",
     "version": "0.9.12"
   },
+  "libXtst": {
+    "branch": "rawhide",
+    "release": "4",
+    "sha": "272dc738064cded9455991bfd16e648148636b0b",
+    "source": "https://src.fedoraproject.org/rpms/libXtst.git",
+    "version": "1.2.5"
+  },
   "libaio": {
     "branch": "rawhide",
     "release": "23",
