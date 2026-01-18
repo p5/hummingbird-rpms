@@ -1056,6 +1056,13 @@
     "source": "https://src.fedoraproject.org/rpms/libgcrypt.git",
     "version": "1.11.2"
   },
+  "libgit2": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "1d9b45413af392164fb280bd9e628fc3e1213542",
+    "source": "https://src.fedoraproject.org/rpms/libgit2.git",
+    "version": "1.9.1"
+  },
   "libgpg-error": {
     "branch": "rawhide",
     "release": "1",
