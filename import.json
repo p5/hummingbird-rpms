@@ -1406,6 +1406,13 @@
     "source": "https://src.fedoraproject.org/rpms/libxcrypt.git",
     "version": "4.5.2"
   },
+  "libxkbcommon": {
+    "branch": "rawhide",
+    "release": "2",
+    "sha": "459614fef381bd6621940d726f7f979e003aaad6",
+    "source": "https://src.fedoraproject.org/rpms/libxkbcommon.git",
+    "version": "1.13.1"
+  },
   "libxml2": {
     "branch": "rawhide",
     "release": "5",
