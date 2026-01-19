@@ -1070,6 +1070,13 @@
     "source": "https://src.fedoraproject.org/rpms/libdaemon.git",
     "version": "0.14"
   },
+  "libdb": {
+    "branch": "rawhide",
+    "release": "67",
+    "sha": "83f08967efea263a260e3e39fbae547a565ef9c2",
+    "source": "https://src.fedoraproject.org/rpms/libdb.git",
+    "version": "5.3.28"
+  },
   "libdnf": {
     "branch": "rawhide",
     "release": "1",
