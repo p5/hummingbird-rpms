@@ -2540,6 +2540,13 @@
     "source": "https://src.fedoraproject.org/rpms/stunnel.git",
     "version": "5.75"
   },
+  "subversion": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "82e9e1e85cb9845f26d7bfad990e7735a3731eff",
+    "source": "https://src.fedoraproject.org/rpms/subversion.git",
+    "version": "1.14.5"
+  },
   "systemd": {
     "branch": "rawhide",
     "release": "1",
