@@ -1798,6 +1798,13 @@
     "source": "https://src.fedoraproject.org/rpms/tar.git",
     "version": "1.35"
   },
+  "tcl": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "00fb1d71ea03b42cd4b447054ae57ded0d0b0622",
+    "source": "https://src.fedoraproject.org/rpms/tcl.git",
+    "version": "9.0.2"
+  },
   "texinfo": {
     "branch": "rawhide",
     "release": "7",
