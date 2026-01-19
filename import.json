@@ -188,6 +188,13 @@
     "source": "https://src.fedoraproject.org/rpms/binutils.git",
     "version": "2.45.50"
   },
+  "bison": {
+    "branch": "rawhide",
+    "release": "13",
+    "sha": "402fdde1dcc87436ca922dd8a8ddb16b7767eb15",
+    "source": "https://src.fedoraproject.org/rpms/bison.git",
+    "version": "3.8.2"
+  },
   "boost": {
     "branch": "rawhide",
     "release": "17",
