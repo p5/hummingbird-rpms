@@ -2505,6 +2505,13 @@
     "source": "https://src.fedoraproject.org/rpms/socat.git",
     "version": "1.8.1.0"
   },
+  "socket_wrapper": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "ee66ed1af06b2481dcd20c29e54d5099b336de51",
+    "source": "https://src.fedoraproject.org/rpms/socket_wrapper.git",
+    "version": "1.5.2"
+  },
   "sqlite": {
     "branch": "rawhide",
     "release": "1",

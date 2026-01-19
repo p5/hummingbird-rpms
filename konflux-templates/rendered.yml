@@ -13984,7 +13984,43 @@ spec:
     method: webhook
     title: SBOM-event-to-Bombino
 # --- socket_wrapper ---
-# PENDING
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
+  name: socket-wrapper-main
+spec:
+  application: rpms-main
+  componentName: socket-wrapper-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/socket-wrapper-main
+  source:
+    git:
+      context: rpms/socket_wrapper
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: socket-wrapper-main
+  name: socket-wrapper-main
+spec:
+  image:
+    name: hummingbird-tenant/socket-wrapper-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
 # --- softhsm ---
 # PENDING
 # --- source-highlight ---
