@@ -2407,6 +2407,13 @@
     "source": "https://src.fedoraproject.org/rpms/rust-rpm-sequoia.git",
     "version": "1.10.0"
   },
+  "rust-sequoia-policy-config": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "f1d8cd13c85c3e70c98ea549a5fc073ef622832f",
+    "source": "https://src.fedoraproject.org/rpms/rust-sequoia-policy-config.git",
+    "version": "0.8.1"
+  },
   "rust2rpm-helper": {
     "branch": "rawhide",
     "release": "1",
