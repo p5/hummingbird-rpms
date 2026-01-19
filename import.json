@@ -1364,6 +1364,13 @@
     "source": "https://src.fedoraproject.org/rpms/libuv.git",
     "version": "1.51.0"
   },
+  "libutempter": {
+    "branch": "rawhide",
+    "release": "20",
+    "sha": "4df35f3fe48acd46bccee525506cdefbe5b773f3",
+    "source": "https://src.fedoraproject.org/rpms/libutempter.git",
+    "version": "1.2.1"
+  },
   "libverto": {
     "branch": "rawhide",
     "release": "11",
