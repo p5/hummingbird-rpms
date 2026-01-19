@@ -2330,6 +2330,13 @@
     "source": "https://src.fedoraproject.org/rpms/rpm.git",
     "version": "6.0.1"
   },
+  "rpmdevtools": {
+    "branch": "rawhide",
+    "release": "14",
+    "sha": "026974d82c66d0e0ee413580e5f876ec4517be58",
+    "source": "https://src.fedoraproject.org/rpms/rpmdevtools.git",
+    "version": "9.6"
+  },
   "ruby": {
     "branch": "rawhide",
     "release": "30",

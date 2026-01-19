@@ -1,0 +1,531 @@
+diff --git a/Makefile.am b/Makefile.am
+index bb6f7c6..d55f397 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -15,7 +15,7 @@ man8_MANS = rpmdev-rmdevelrpms.8
+ dist_pkgsysconf_DATA = curlrc newspec.conf rmdevelrpms.conf \
+ 	spectemplate-lib.spec spectemplate-minimal.spec \
+ 	spectemplate-perl.spec spectemplate-php-pear.spec \
+-	spectemplate-python.spec spectemplate-ruby.spec \
++	spectemplate-python.spec spectemplate-pyproject.spec spectemplate-ruby.spec \
+ 	spectemplate-ocaml.spec spectemplate-R.spec spectemplate-dummy.spec \
+ 	template.init
+ 
+diff --git a/rpmdev-bumpspec b/rpmdev-bumpspec
+index b8f4047..5a6a909 100755
+--- a/rpmdev-bumpspec
++++ b/rpmdev-bumpspec
+@@ -27,8 +27,10 @@ import time
+ 
+ try:
+     from rpmautospec import specfile_uses_rpmautospec
++    from rpmautospec.subcommands.release import calculate_release_number
+ except ImportError:
+     specfile_uses_rpmautospec = None
++    calculate_release_number = None
+ 
+ __version__ = "1.0.13"
+ 
+@@ -378,19 +380,25 @@ the Free Software Foundation; either version 2 of the License, or
+             # Not actually a parser error, but... meh.
+             parser.error(e)
+ 
+-        uses_rpmautospec = False
++        uses_rpmautospec_autorelease = uses_rpmautospec_autochangelog = False
+         if specfile_uses_rpmautospec:
+-            uses_rpmautospec = specfile_uses_rpmautospec(
++            uses_rpmautospec_autorelease = specfile_uses_rpmautospec(
+                 specpath=s.filename,
+                 check_autorelease=True,
+                 check_autochangelog=False
+             )
++            uses_rpmautospec_autochangelog = specfile_uses_rpmautospec(
++                specpath=s.filename,
++                check_autorelease=False,
++                check_autochangelog=True
++            )
+ 
+-        if uses_rpmautospec:
++        changed = False
++        if uses_rpmautospec_autorelease:
+             if opts.new:
+                 print("RPMAutoSpec usage detected, only setting Version.")
+                 changed = s.newVersion(opts.new, set_release=False)
+-            else:
++            elif uses_rpmautospec_autochangelog:
+                 print("RPMAutoSpec usage detected, not changing the spec file.")
+                 continue
+         else:
+@@ -405,14 +413,12 @@ the Free Software Foundation; either version 2 of the License, or
+ 
+                 changed = True
+ 
+-        # If we didn't change anything, no need to write and modify the
+-        # changelog.
+         if changed:
++            # Write out changed version or release if changed.
+             s.writeFile(aspec)
+-        else:
+-            continue
+ 
+-        if uses_rpmautospec:
++        if uses_rpmautospec_autochangelog:
++            print("RPMAutospec %autochangelog is used, no need to add %changelog entry.")
+             continue
+ 
+         if not s.checkChangelogPresence():
+@@ -422,6 +428,10 @@ the Free Software Foundation; either version 2 of the License, or
+         # Get EVR for changelog entry.
+         cmd = ("rpm", "-q", "--specfile", "--define", "dist %{nil}",
+                "--qf=%|epoch?{%{epoch}:}:{}|%{version}-%{release}\n", aspec)
++        if not opts.new and calculate_release_number and uses_rpmautospec_autorelease:
++            # Rpmautospec doesn’t see a change yet so the calculated number will be one too low.
++            release_number = calculate_release_number(aspec) + 1
++            cmd += ("--define", "_rpmautospec_release_number {}".format(release_number))
+         popen = subprocess.Popen(cmd, stdout=subprocess.PIPE)
+         evr = popen.communicate()[0].split(b"\n")[0]
+         if sys.version_info[0] > 2:
+diff --git a/rpmdev-spectool b/rpmdev-spectool
+index 1d57256..2c06ef8 100755
+--- a/rpmdev-spectool
++++ b/rpmdev-spectool
+@@ -25,7 +25,9 @@ import os
+ import tempfile
+ import time
+ from collections import OrderedDict
+-from typing import Optional
++from typing import Any, Callable, Dict, List, Optional
++from typing import OrderedDict as OrderedDictT
++from typing import Tuple
+ from urllib.parse import urlparse
+ 
+ import progressbar
+@@ -46,13 +48,13 @@ anything about missing sources or patches). The plan is to catch errors like
+ this in spectool itself and warn the user about it in the future."""
+ 
+ 
+-def complete_spec_paths(prefix, **kwargs):
++def complete_spec_paths(prefix, **kwargs) -> List[str]:
+     import glob
+ 
+     return glob.glob(prefix + "*.spec")
+ 
+ 
+-def get_args() -> dict:
++def get_args() -> Dict[str, Any]:
+     try:
+         import argcomplete
+     except ImportError:
+@@ -191,6 +193,15 @@ def get_args() -> dict:
+         help="output debug info, don't clean up when done",
+     )
+ 
++    misc.add_argument(
++        "--http-header",
++        "-H",
++        action="append",
++        dest="headers",
++        default=[],
++        help="Optionally add custom headers",
++    )
++
+     specfile = parser.add_argument("specfile", action="store")
+ 
+     if argcomplete:
+@@ -202,17 +213,17 @@ def get_args() -> dict:
+     return vars(parser.parse_args())
+ 
+ 
+-def split_numbers(args: str) -> list:
++def split_numbers(args: str) -> List[str]:
+     return args.split(",")
+ 
+ 
+ # simple streamed file download progress tracker inspired by requests_download
+ class ProgressTracker:
+-    def __init__(self, progress_bar: progressbar.ProgressBar):
++    def __init__(self, progress_bar: progressbar.ProgressBar) -> None:
+         self.progress_bar = progress_bar
+         self.received = 0
+ 
+-    def on_start(self, response: requests.Response):
++    def on_start(self, response: requests.Response) -> None:
+         max_value = None
+ 
+         if "content-length" in response.headers:
+@@ -221,7 +232,7 @@ class ProgressTracker:
+         self.progress_bar.start(max_value=max_value)
+         self.received = 0
+ 
+-    def on_chunk(self, chunk: bytes):
++    def on_chunk(self, chunk: bytes) -> None:
+         self.received += len(chunk)
+ 
+         try:
+@@ -229,12 +240,13 @@ class ProgressTracker:
+         except ValueError:
+             pass
+ 
+-    def on_finish(self):
++    def on_finish(self) -> None:
+         self.progress_bar.finish()
+ 
+ 
+ # simple streamed file download implementation inspired by requests_download
+-def download(url, target, headers=None, tracker: Optional[ProgressTracker] = None):
++def download(url, target, headers=None,
++             tracker: Optional[ProgressTracker] = None) -> None:
+     if headers is None:
+         headers = {}
+ 
+@@ -263,7 +275,8 @@ def download(url, target, headers=None, tracker: Optional[ProgressTracker] = Non
+         tracker.on_finish()
+ 
+ 
+-def get_file(url: str, path: str, force: bool) -> bool:
++def get_file(url: str, path: str, force: bool,
++             headers: Optional[Dict[str, str]] = None) -> bool:
+     if os.path.exists(path):
+         if force:
+             os.remove(path)
+@@ -272,13 +285,13 @@ def get_file(url: str, path: str, force: bool) -> bool:
+             return False
+ 
+     progress = ProgressTracker(progressbar.DataTransferBar())
+-    download(url, path, tracker=progress)
++    download(url, path, tracker=progress, headers=headers)
+ 
+     return True
+ 
+ 
+ class Spec:
+-    def __init__(self, path: str):
++    def __init__(self, path: str) -> None:
+         self.path = path
+         self.spec = rpm.spec(self.path)
+ 
+@@ -289,10 +302,10 @@ class Spec:
+         self.files = list(self.spec.sources)
+         self.files.sort(key=(lambda file: file[1]))
+ 
+-        self._sources = None
+-        self._patches = None
++        self._sources: Optional[OrderedDictT[str, str]] = None
++        self._patches: Optional[OrderedDictT[str, str]] = None
+ 
+-    def _files(self, typ) -> OrderedDict:
++    def _files(self, typ: int) -> OrderedDictT[str, str]:
+         # file is a 3-tuple of (path, number, type)
+         # type 1: source file
+         # type 2: patch file
+@@ -305,41 +318,42 @@ class Spec:
+         return files
+ 
+     @property
+-    def sources(self) -> OrderedDict:
++    def sources(self) -> OrderedDictT[str, str]:
+         if not self._sources:
+             self._sources = self._files(1)
+ 
+         return self._sources
+ 
+     @property
+-    def patches(self) -> OrderedDict:
++    def patches(self) -> OrderedDictT[str, str]:
+         if not self._patches:
+             self._patches = self._files(2)
+ 
+         return self._patches
+ 
+-    def print_source(self, number: int, value: str = None):
++    def print_source(self, number: str, value: Optional[str] = None) -> None:
+         if not value:
+             value = self.sources[number]
+ 
+         print("Source{}: {}".format(number, value))
+ 
+-    def print_patch(self, number: int, value: str = None):
++    def print_patch(self, number: str, value: Optional[str] = None) -> None:
+         if not value:
+             value = self.patches[number]
+ 
+         print("Patch{}: {}".format(number, value))
+ 
+-    def list_sources(self):
++    def list_sources(self) -> None:
+         for (number, value) in self.sources.items():
+             self.print_source(number, value)
+ 
+-    def list_patches(self):
++    def list_patches(self) -> None:
+         for (number, value) in self.patches.items():
+             self.print_patch(number, value)
+ 
+     @staticmethod
+-    def _get_file(value: str, directory: str, force: bool, dry: bool):
++    def _get_file(value: str, directory: str, force: bool, dry: bool,
++                  headers: Optional[Dict[str, str]] = None) -> None:
+         parsed = urlparse(value)
+ 
+         if "#" not in value:
+@@ -354,19 +368,23 @@ class Spec:
+                 return
+ 
+         if parsed.scheme:
++            if dry:
++                print("Would have downloaded: {}".format(value))
++                return None
+             if not dry:
+                 path = os.path.join(directory, basename)
+ 
+                 try:
+                     print("Downloading: {}".format(value))
+                     os.makedirs(directory, exist_ok=True)
+-                    really = get_file(value, path, force)
++                    really = get_file(value, path, force, headers=headers)
+                     if really:
+                         print("Downloaded: {}".format(basename))
+ 
+                 except IOError as e:
+                     print("Download failed:")
+                     print(e)
++                    raise e
+ 
+                 except KeyboardInterrupt:
+                     if os.path.isfile(path):
+@@ -376,28 +394,53 @@ class Spec:
+                         print("Download cancelled.")
+                     raise
+ 
+-            else:
+-                print("Would have downloaded: {}".format(value))
+-
+-    def get_source(self, number: int, directory: str, force: bool, dry: bool, value: str = None):
++    def get_source(self, number: str, directory: str, force: bool, dry: bool,
++                   value: Optional[str] = None,
++                   headers: Optional[Dict[str, str]] = None) -> bool:
+         if not value:
+             value = self.sources[number]
+ 
+-        self._get_file(value, directory, force, dry)
++        try:
++            self._get_file(value, directory, force, dry, headers=headers)
++            return False
++
++        except IOError:
++            return True
+ 
+-    def get_patch(self, number: int, directory: str, force: bool, dry: bool, value: str = None):
++    def get_patch(self, number: str, directory: str, force: bool, dry: bool,
++                  value: Optional[str] = None,
++                  headers: Optional[Dict[str, str]] = None) -> bool:
+         if not value:
+             value = self.patches[number]
+ 
+-        self._get_file(value, directory, force, dry)
++        try:
++            self._get_file(value, directory, force, dry, headers=headers)
++            return False
++
++        except IOError:
++            return True
++
++    def get_sources(self, directory: str, force: bool, dry: bool,
++                    headers: Optional[Dict[str, str]] = None):
++        failure = False
+ 
+-    def get_sources(self, directory: str, force: bool, dry: bool):
+         for number, value in self.sources.items():
+-            self.get_source(number, directory, force, dry, value)
++            if self.get_source(number, directory, force, dry, value,
++                               headers=headers):
++                failure = True
++
++        return failure
++
++    def get_patches(self, directory: str, force: bool, dry: bool,
++                    headers: Optional[Dict[str, str]] = None):
++        failure = False
+ 
+-    def get_patches(self, directory: str, force: bool, dry: bool):
+         for number, value in self.patches.items():
+-            self.get_patch(number, directory, force, dry, value)
++            if self.get_patch(number, directory, force, dry, value,
++                              headers=headers):
++                failure = True
++
++        return failure
+ 
+ 
+ def main() -> int:
+@@ -484,6 +527,10 @@ def main() -> int:
+     if args["get_files"]:
+         force = args["force"]
+         dry = args["dry_run"]
++        headers = {}
++        for header in args["headers"]:
++            k, sep, v = header.partition(':')
++            headers[k.strip()] = v.strip()
+ 
+         if args["directory"] and args["sourcedir"]:
+             print("Conflicting requests for download directory.")
+@@ -496,18 +543,21 @@ def main() -> int:
+         else:
+             directory = os.getcwd()
+ 
++        tasks: List[Tuple[Callable[..., bool], Tuple[Any, ...]]] = []
++
+         if args["source"]:
+             numbers = split_numbers(args["source"])
+ 
+             for number in numbers:
+                 if number not in spec.sources.keys():
+-                    print("No patch with number '{}' found.".format(number))
++                    print("No source with number '{}' found.".format(number))
+                     continue
+ 
+-                spec.get_source(number, directory, force, dry)
++                tasks.append((spec.get_source, (number, directory, force, dry,
++                                                headers)))
+ 
+         elif args["sources"] and not args["patch"]:
+-            spec.get_sources(directory, force, dry)
++            tasks.append((spec.get_sources, (directory, force, dry, headers)))
+ 
+         if args["patch"]:
+             numbers = split_numbers(args["patch"])
+@@ -517,10 +567,22 @@ def main() -> int:
+                     print("No patch with number '{}' found.".format(number))
+                     continue
+ 
+-                spec.get_patch(number, directory, force, dry)
++                tasks.append((spec.get_patch, (number, directory, force, dry,
++                                               headers)))
+ 
+         elif args["patches"] and not args["source"]:
+-            spec.get_patches(directory, force, dry)
++            tasks.append((spec.get_patches, (directory, force, dry, headers)))
++
++        failure = False
++
++        for task, fargs in tasks:
++            fail = task(*fargs)
++
++            if fail:
++                failure = True
++
++        if failure:
++            return 1
+ 
+     return 0
+ 
+diff --git a/spectemplate-cmake.spec b/spectemplate-cmake.spec
+new file mode 100644
+index 0000000..0cdcbb8
+--- /dev/null
++++ b/spectemplate-cmake.spec
+@@ -0,0 +1,38 @@
++Name:           
++Version:        
++Release:        1%{?dist}
++Summary:        
++
++License:        
++URL:            
++Source0:        
++
++BuildRequires:  cmake
++
++%description
++%{summary}.
++
++
++%prep
++%autosetup -q
++
++
++%build
++%cmake
++%cmake_build
++
++
++%install
++%cmake_install
++
++
++%check
++%ctest
++
++
++%files
++%license add-license-file-here
++%doc add-docs-here
++
++
++%changelog
+diff --git a/spectemplate-pyproject.spec b/spectemplate-pyproject.spec
+new file mode 100644
+index 0000000..15d5a65
+--- /dev/null
++++ b/spectemplate-pyproject.spec
+@@ -0,0 +1,60 @@
++Name:           python-...
++Version:        ...
++Release:        1%{?dist}
++Summary:        ...
++
++License:        ...
++URL:            https://...
++# use a source from git forge or PyPI:
++Source:         %{url}/archive/v%{version}/...-%{version}.tar.gz / %{pypi_source ...}
++
++# for pure Python packages:
++BuildArch:      noarch
++# for packages with extension modules:
++BuildRequires:  gcc
++
++BuildRequires:  python3-devel
++
++%global _description %{expand:
++...}
++
++%description %_description
++
++%package -n python3-...
++Summary:        %{summary}
++
++%description -n python3-... %_description
++
++
++%prep
++%autosetup -p1 -n ...-%{version}
++
++
++%generate_buildrequires
++# use the appropriate flags to get all test dependencies:
++%pyproject_buildrequires -x... / -t
++
++
++%build
++%pyproject_wheel
++
++
++%install
++%pyproject_install
++# list the installed top-level Python module names:
++%pyproject_save_files ...
++
++
++%check
++# testing the package is mandatory, at least somehow:
++%tox / %pytest / %pyproject_check_import ...
++
++
++%files -n python3-... -f %{pyproject_files}
++%doc README.*
++# only add LICENSE / COPYING if not included in %%{pyproject_files}
++%license LICENSE / COPYING
++%{_bindir}/...
++
++
++%changelog
