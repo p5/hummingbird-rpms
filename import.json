@@ -1819,6 +1819,13 @@
     "source": "https://src.fedoraproject.org/rpms/texinfo.git",
     "version": "7.2"
   },
+  "tidy": {
+    "branch": "rawhide",
+    "release": "13",
+    "sha": "65fb86411af2fb3efc6aee6de49d8473c520b575",
+    "source": "https://src.fedoraproject.org/rpms/tidy.git",
+    "version": "5.8.0"
+  },
   "tomcat": {
     "branch": "rawhide",
     "release": "1",
