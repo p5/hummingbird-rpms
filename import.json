@@ -2561,6 +2561,13 @@
     "source": "https://src.fedoraproject.org/rpms/swtpm.git",
     "version": "0.10.1"
   },
+  "sysprof": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "2765af3ca16cc679d942e1666730ed309044e1ff",
+    "source": "https://src.fedoraproject.org/rpms/sysprof.git",
+    "version": "50~alpha"
+  },
   "systemd": {
     "branch": "rawhide",
     "release": "1",
