@@ -1,0 +1,11 @@
+summary: Public (Fedora) Tier1 beakerlib tests
+environment+:
+    PACKAGE: bind
+discover:
+    how: fmf
+    url: https://gitlab.com/redhat/centos-stream/tests/bind.git
+    filter: 'tier: 1'
+execute:
+    how: tmt
+context:
+    component: bind
