@@ -1000,6 +1000,13 @@
     "source": "https://src.fedoraproject.org/rpms/libaio.git",
     "version": "0.3.111"
   },
+  "libabigail": {
+    "branch": "rawhide",
+    "release": "2",
+    "sha": "e5891d52893f05f4e8757bf793eafc10d5d859af",
+    "source": "https://src.fedoraproject.org/rpms/libabigail.git",
+    "version": "2.9"
+  },
   "libarchive": {
     "branch": "rawhide",
     "release": "1",

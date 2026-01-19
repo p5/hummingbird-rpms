@@ -1,0 +1,26 @@
+From 8602d3c36dad05ada68feedc80926afadff448a2 Mon Sep 17 00:00:00 2001
+From: Maxwell G <maxwell@gtmx.me>
+Date: Sat, 13 Jan 2024 05:50:39 +0000
+Subject: [PATCH] Replace deprecated mock with unittest.mock
+
+Relates: https://fedoraproject.org/wiki/Changes/RemovePythonMockUsage
+---
+ tests/mockfedabipkgdiff.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tests/mockfedabipkgdiff.in b/tests/mockfedabipkgdiff.in
+index 1e56266..863cf7f 100644
+--- a/tests/mockfedabipkgdiff.in
++++ b/tests/mockfedabipkgdiff.in
+@@ -42,7 +42,7 @@ import tempfile
+ import six
+ 
+ try:
+-    from mock import patch
++    from unittest.mock import patch
+ except ImportError:
+     import sys
+     six.print_('mock is required to run tests. Please install before running'
+-- 
+2.43.0
+
