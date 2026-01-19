@@ -314,6 +314,13 @@
     "source": "https://src.fedoraproject.org/rpms/cmake.git",
     "version": "3.31.10"
   },
+  "cmocka": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "62f498a092bf6015b9fea1e82b49e8d5b56d7979",
+    "source": "https://src.fedoraproject.org/rpms/cmocka.git",
+    "version": "2.0.2"
+  },
   "composer": {
     "branch": "rawhide",
     "release": "1",
