@@ -2554,6 +2554,13 @@
     "source": "https://src.fedoraproject.org/rpms/swig.git",
     "version": "4.4.1"
   },
+  "swtpm": {
+    "branch": "rawhide",
+    "release": "3",
+    "sha": "16eabef8eddfa77d70df0a2c6778bf2e21e7eb60",
+    "source": "https://src.fedoraproject.org/rpms/swtpm.git",
+    "version": "0.10.1"
+  },
   "systemd": {
     "branch": "rawhide",
     "release": "1",
