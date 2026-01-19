@@ -1224,6 +1224,13 @@
     "source": "https://src.fedoraproject.org/rpms/libpng.git",
     "version": "1.6.53"
   },
+  "libpq": {
+    "branch": "rawhide",
+    "release": "4",
+    "sha": "1de2f5b32a204efb01efd2b1b9a8ecf0a329d255",
+    "source": "https://src.fedoraproject.org/rpms/libpq.git",
+    "version": "18.0"
+  },
   "libpsl": {
     "branch": "rawhide",
     "release": "1",
