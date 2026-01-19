@@ -1826,6 +1826,13 @@
     "source": "https://src.fedoraproject.org/rpms/tidy.git",
     "version": "5.8.0"
   },
+  "time": {
+    "branch": "rawhide",
+    "release": "28",
+    "sha": "9c5193fb4f92b443b81ac24a066ecb9d6ca1b033",
+    "source": "https://src.fedoraproject.org/rpms/time.git",
+    "version": "1.9"
+  },
   "tomcat": {
     "branch": "rawhide",
     "release": "1",

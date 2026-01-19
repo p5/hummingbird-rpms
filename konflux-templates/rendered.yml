@@ -10570,7 +10570,43 @@ spec:
     method: webhook
     title: SBOM-event-to-Bombino
 # --- time ---
-# PENDING
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
+  name: time-main
+spec:
+  application: rpms-main
+  componentName: time-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/time-main
+  source:
+    git:
+      context: rpms/time
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: time-main
+  name: time-main
+spec:
+  image:
+    name: hummingbird-tenant/time-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
 # --- tk ---
 # PENDING
 # --- tokyocabinet ---
