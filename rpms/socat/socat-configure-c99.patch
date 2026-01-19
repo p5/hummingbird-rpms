@@ -1,0 +1,32 @@
+Include <openssl/err.h> for the ERR_error_string function.  This
+improves compatibility with future compilers which will not accept
+implicit funcction declarations by default.
+
+diff --git a/configure b/configure
+index fe4e606e91010520..694801b2a93659af 100755
+--- a/configure
++++ b/configure
+@@ -5199,6 +5199,8 @@ else
+       cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+ /* end confdefs.h.  */
+ #include <openssl/ssl.h>
++      #include <openssl/err.h>
++
+ int
+ main ()
+ {
+diff --git a/configure.ac b/configure.ac
+index 09dbb7a1e8d35c84..abd599c90e3ef0d7 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -559,7 +559,9 @@ if test -n "$WITH_OPENSSL" -a "$sc_cv_have_openssl_ssl_h" = 'yes'; then
+       else
+ 	LIBS="$LIBS -lssl -lcrypto"
+       fi
+-      AC_TRY_LINK([#include <openssl/ssl.h>],
++      AC_TRY_LINK([#include <openssl/ssl.h>
++      #include <openssl/err.h>
++      ],
+        [SSL_library_init();ERR_error_string()],
+        [sc_cv_have_libssl='yes'],
+        [ LIBS="$LIBS -lcrypto"
