@@ -1007,6 +1007,13 @@
     "source": "https://src.fedoraproject.org/rpms/libXaw.git",
     "version": "1.0.16"
   },
+  "libXmu": {
+    "branch": "rawhide",
+    "release": "5",
+    "sha": "1414e391caf9029d8f52675caf5f36f076cccd42",
+    "source": "https://src.fedoraproject.org/rpms/libXmu.git",
+    "version": "1.2.1"
+  },
   "libabigail": {
     "branch": "rawhide",
     "release": "2",
