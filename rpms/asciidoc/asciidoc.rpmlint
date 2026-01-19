@@ -1,0 +1,28 @@
+from Config import *
+
+# The libxslt dependency is needed for /usr/bin/xsltproc
+addFilter('asciidoc.noarch: E: explicit-lib-dependency libxslt')
+
+# a2x.py and asciidoc.py and symlinked from a2x and asciidoc, respectively.
+# Both commands have man-pages under their preferred names
+addFilter('asciidoc.noarch: W: no-manual-page-for-binary a2x.py')
+addFilter('asciidoc.noarch: W: no-manual-page-for-binary asciidoc.py')
+
+# The dangling symlinks are all provided in asciidoc, which asciidoc-doc
+# requires
+addFilter('asciidoc-doc.noarch: W: dangling-relative-symlink /usr/share/doc/asciidoc/dblatex ../../asciidoc/dblatex')
+addFilter('asciidoc-doc.noarch: W: dangling-relative-symlink /usr/share/doc/asciidoc/docbook-xsl ../../asciidoc/docbook-xsl')
+addFilter('asciidoc-doc.noarch: W: dangling-relative-symlink /usr/share/doc/asciidoc/examples/website/ASCIIMathML.js ../../javascripts/ASCIIMathML.js')
+addFilter('asciidoc-doc.noarch: W: dangling-relative-symlink /usr/share/doc/asciidoc/examples/website/CHANGELOG.txt ../../CHANGELOG.txt')
+addFilter('asciidoc-doc.noarch: W: dangling-relative-symlink /usr/share/doc/asciidoc/examples/website/INSTALL.txt ../../INSTALL.txt')
+addFilter('asciidoc-doc.noarch: W: dangling-relative-symlink /usr/share/doc/asciidoc/examples/website/LaTeXMathML.js ../../javascripts/LaTeXMathML.js')
+addFilter('asciidoc-doc.noarch: W: dangling-relative-symlink /usr/share/doc/asciidoc/examples/website/README.txt ../../README.asciidoc')
+addFilter('asciidoc-doc.noarch: W: dangling-relative-symlink /usr/share/doc/asciidoc/examples/website/asciidoc.css ../../stylesheets/asciidoc.css')
+addFilter('asciidoc-doc.noarch: W: dangling-relative-symlink /usr/share/doc/asciidoc/examples/website/asciidoc.js ../../javascripts/asciidoc.js')
+addFilter('asciidoc-doc.noarch: W: dangling-relative-symlink /usr/share/doc/asciidoc/examples/website/xhtml11-quirks.css ../../stylesheets/xhtml11-quirks.css')
+addFilter('asciidoc-doc.noarch: W: dangling-relative-symlink /usr/share/doc/asciidoc/images ../../asciidoc/images')
+addFilter('asciidoc-doc.noarch: W: dangling-relative-symlink /usr/share/doc/asciidoc/javascripts ../../asciidoc/javascripts')
+addFilter('asciidoc-doc.noarch: W: dangling-relative-symlink /usr/share/doc/asciidoc/stylesheets ../../asciidoc/stylesheets')
+
+# The latex and music subpackages don't have separate documentation
+addFilter('asciidoc-(latex|music).noarch: W: no-documentation')

@@ -83,6 +83,13 @@
     "source": "https://src.fedoraproject.org/rpms/aqute-bnd.git",
     "version": "6.3.1"
   },
+  "asciidoc": {
+    "branch": "rawhide",
+    "release": "19",
+    "sha": "6f993e3809b8f4a7421cd739d7fb6f67d818d571",
+    "source": "https://src.fedoraproject.org/rpms/asciidoc.git",
+    "version": "10.2.0"
+  },
   "attr": {
     "branch": "rawhide",
     "release": "6",
