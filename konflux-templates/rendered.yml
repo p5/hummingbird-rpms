@@ -887,6 +887,44 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- bdftopcf ---
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
+  name: bdftopcf-main
+spec:
+  application: rpms-main
+  componentName: bdftopcf-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/bdftopcf-main
+  source:
+    git:
+      context: rpms/bdftopcf
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: bdftopcf-main
+  name: bdftopcf-main
+spec:
+  image:
+    name: hummingbird-tenant/bdftopcf-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
 # --- beakerlib ---
 # PENDING
 # --- bind ---

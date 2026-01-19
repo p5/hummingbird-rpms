@@ -160,6 +160,13 @@
     "source": "https://src.fedoraproject.org/rpms/bc.git",
     "version": "1.08.2"
   },
+  "bdftopcf": {
+    "branch": "rawhide",
+    "release": "5",
+    "sha": "cddf5a47a6ee086b1a7153e7a81beb74d108aecc",
+    "source": "https://src.fedoraproject.org/rpms/bdftopcf.git",
+    "version": "1.1.2"
+  },
   "binutils": {
     "branch": "rawhide",
     "release": "13",
