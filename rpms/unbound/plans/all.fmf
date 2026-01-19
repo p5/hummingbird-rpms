@@ -1,0 +1,7 @@
+summary: Test plan with all Fedora tests
+discover:
+       how: fmf
+       url: https://gitlab.com/redhat/centos-stream/tests/unbound.git
+execute:
+       how: tmt
+

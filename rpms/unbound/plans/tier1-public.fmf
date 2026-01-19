@@ -1,0 +1,7 @@
+summary: Public (Fedora) Tier1 beakerlib tests
+discover:
+    how: fmf
+    url: https://gitlab.com/redhat/centos-stream/tests/unbound.git
+    filter: 'tier: 1'
+execute:
+    how: tmt

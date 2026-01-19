@@ -1924,6 +1924,13 @@
     "source": "https://src.fedoraproject.org/rpms/umockdev.git",
     "version": "0.19.4"
   },
+  "unbound": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "e3acf4a8c2e24679bc9c894c5eb9cc5027b4cf79",
+    "source": "https://src.fedoraproject.org/rpms/unbound.git",
+    "version": "1.24.2"
+  },
   "unzip": {
     "branch": "rawhide",
     "release": "68",
