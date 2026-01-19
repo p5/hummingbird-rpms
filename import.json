@@ -2393,6 +2393,13 @@
     "source": "https://src.fedoraproject.org/rpms/rust-add-determinism.git",
     "version": "0.7.2"
   },
+  "rust-bindgen-cli": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "e9fe2bc581cd5a6215e123f1a0af83f88c7b2f10",
+    "source": "https://src.fedoraproject.org/rpms/rust-bindgen-cli.git",
+    "version": "0.72.1"
+  },
   "rust-rpm-sequoia": {
     "branch": "rawhide",
     "release": "1",

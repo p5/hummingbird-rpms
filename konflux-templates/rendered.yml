@@ -13336,7 +13336,43 @@ spec:
     method: webhook
     title: SBOM-event-to-Bombino
 # --- rust-bindgen-cli ---
-# PENDING
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
+  name: rust-bindgen-cli-main
+spec:
+  application: rpms-main
+  componentName: rust-bindgen-cli-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/rust-bindgen-cli-main
+  source:
+    git:
+      context: rpms/rust-bindgen-cli
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: rust-bindgen-cli-main
+  name: rust-bindgen-cli-main
+spec:
+  image:
+    name: hummingbird-tenant/rust-bindgen-cli-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
 # --- rust-rpm-sequoia ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
