@@ -1422,7 +1422,43 @@ spec:
     method: webhook
     title: SBOM-event-to-Bombino
 # --- cairo ---
-# PENDING
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
+  name: cairo-main
+spec:
+  application: rpms-main
+  componentName: cairo-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/cairo-main
+  source:
+    git:
+      context: rpms/cairo
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: cairo-main
+  name: cairo-main
+spec:
+  image:
+    name: hummingbird-tenant/cairo-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
 # --- capstone ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1

@@ -258,6 +258,13 @@
     "source": "https://src.fedoraproject.org/rpms/caddy.git",
     "version": "2.10.2"
   },
+  "cairo": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "e266fc584af10dbda85d5aac5c91215d0d8226ed",
+    "source": "https://src.fedoraproject.org/rpms/cairo.git",
+    "version": "1.18.4"
+  },
   "capstone": {
     "branch": "rawhide",
     "release": "1",
