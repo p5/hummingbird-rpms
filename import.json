@@ -1994,6 +1994,13 @@
     "source": "https://src.fedoraproject.org/rpms/words.git",
     "version": "3.0"
   },
+  "xmlto": {
+    "branch": "rawhide",
+    "release": "4",
+    "sha": "8cb63c9ee2458dc07aa6e965f20904f7a9d431e8",
+    "source": "https://src.fedoraproject.org/rpms/xmlto.git",
+    "version": "0.0.29"
+  },
   "xorg-x11-fonts": {
     "branch": "rawhide",
     "release": "42",
