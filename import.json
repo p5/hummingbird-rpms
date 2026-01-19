@@ -2309,6 +2309,13 @@
     "source": "https://src.fedoraproject.org/rpms/redhat-rpm-config.git",
     "version": "343"
   },
+  "resolv_wrapper": {
+    "branch": "rawhide",
+    "release": "11",
+    "sha": "dc0132e17696d5447989a317f63a726ce3aec578",
+    "source": "https://src.fedoraproject.org/rpms/resolv_wrapper.git",
+    "version": "1.1.8"
+  },
   "rootfiles": {
     "branch": "rawhide",
     "release": "1",
