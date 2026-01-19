@@ -2400,6 +2400,13 @@
     "source": "https://src.fedoraproject.org/rpms/rust-rpm-sequoia.git",
     "version": "1.10.0"
   },
+  "rust2rpm-helper": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "a2f5e0d42b5ba04861262ce2a3b518bc63ef50d8",
+    "source": "https://src.fedoraproject.org/rpms/rust2rpm-helper.git",
+    "version": "0.1.9"
+  },
   "sdbus-cpp": {
     "branch": "rawhide",
     "release": "1",
