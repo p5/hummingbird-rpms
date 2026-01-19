@@ -1007,6 +1007,13 @@
     "source": "https://src.fedoraproject.org/rpms/libabigail.git",
     "version": "2.9"
   },
+  "libappstream-glib": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "6a7a389b6bfd303cc1c6376fe5120034c0e8d8f3",
+    "source": "https://src.fedoraproject.org/rpms/libappstream-glib.git",
+    "version": "0.8.3"
+  },
   "libarchive": {
     "branch": "rawhide",
     "release": "1",
