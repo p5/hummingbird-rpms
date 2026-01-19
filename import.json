@@ -2001,6 +2001,13 @@
     "source": "https://src.fedoraproject.org/rpms/xmlto.git",
     "version": "0.0.29"
   },
+  "xmltoman": {
+    "branch": "rawhide",
+    "release": "34",
+    "sha": "1203fa82bc269082747a335f490d66aa308ca41d",
+    "source": "https://src.fedoraproject.org/rpms/xmltoman.git",
+    "version": "0.4"
+  },
   "xorg-x11-fonts": {
     "branch": "rawhide",
     "release": "42",
