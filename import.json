@@ -1987,6 +1987,13 @@
     "source": "https://src.fedoraproject.org/rpms/which.git",
     "version": "2.23"
   },
+  "words": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "1a2dc3332c38e930b7c13d0acbe98bb33d9f7572",
+    "source": "https://src.fedoraproject.org/rpms/words.git",
+    "version": "3.0"
+  },
   "xorg-x11-fonts": {
     "branch": "rawhide",
     "release": "42",
