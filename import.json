@@ -300,6 +300,13 @@
     "source": "https://src.fedoraproject.org/rpms/chkconfig.git",
     "version": "1.33"
   },
+  "chrpath": {
+    "branch": "rawhide",
+    "release": "28",
+    "sha": "428f29cb25daf158c1e03e91cccfc3d816eb4db3",
+    "source": "https://src.fedoraproject.org/rpms/chrpath.git",
+    "version": "0.16"
+  },
   "cmake": {
     "branch": "rawhide",
     "release": "3",
