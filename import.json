@@ -2526,6 +2526,13 @@
     "source": "https://src.fedoraproject.org/rpms/sqlite.git",
     "version": "3.51.0"
   },
+  "star": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "62307559c7daf13d00c157c0ea489f57c53066b8",
+    "source": "https://src.fedoraproject.org/rpms/star.git",
+    "version": "2024.03.21"
+  },
   "systemd": {
     "branch": "rawhide",
     "release": "1",
