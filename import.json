@@ -1931,6 +1931,13 @@
     "source": "https://src.fedoraproject.org/rpms/unbound.git",
     "version": "1.24.2"
   },
+  "unixODBC": {
+    "branch": "rawhide",
+    "release": "3",
+    "sha": "12770a47ba2c52c5785f1a1f6f07b1bda5538c39",
+    "source": "https://src.fedoraproject.org/rpms/unixODBC.git",
+    "version": "2.3.14"
+  },
   "unzip": {
     "branch": "rawhide",
     "release": "68",
