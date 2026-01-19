@@ -118,6 +118,13 @@
     "source": "https://src.fedoraproject.org/rpms/autoconf.git",
     "version": "2.72"
   },
+  "automake": {
+    "branch": "rawhide",
+    "release": "4",
+    "sha": "cda55142fa8adfa6fca4b09f29b1d3c19b79755b",
+    "source": "https://src.fedoraproject.org/rpms/automake.git",
+    "version": "1.18.1"
+  },
   "avahi": {
     "branch": "rawhide",
     "release": "6",
