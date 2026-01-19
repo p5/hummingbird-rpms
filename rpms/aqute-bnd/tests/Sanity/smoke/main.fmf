@@ -1,0 +1,6 @@
+summary: aqute-bnd smoke test
+description: |
+  Test basic functionality of aqute-bnd.
+require:
+  - aqute-bnd
+  - unzip

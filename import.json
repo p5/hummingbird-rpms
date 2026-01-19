@@ -76,6 +76,13 @@
     "source": "https://src.fedoraproject.org/rpms/apr-util.git",
     "version": "1.6.3"
   },
+  "aqute-bnd": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "baadffc55fe8ce5161a905e795338b9bed788560",
+    "source": "https://src.fedoraproject.org/rpms/aqute-bnd.git",
+    "version": "6.3.1"
+  },
   "attr": {
     "branch": "rawhide",
     "release": "6",
