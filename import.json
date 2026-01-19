@@ -1861,6 +1861,13 @@
     "source": "https://src.fedoraproject.org/rpms/tomcat-jakartaee-migration.git",
     "version": "1.0.9"
   },
+  "tomcli": {
+    "branch": "rawhide",
+    "release": "4",
+    "sha": "a5381a58317a7141931b563fa9538333cdebc9e1",
+    "source": "https://src.fedoraproject.org/rpms/tomcli.git",
+    "version": "0.10.1"
+  },
   "tpm2-tss": {
     "branch": "rawhide",
     "release": "8",
