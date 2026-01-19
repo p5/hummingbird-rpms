@@ -1,0 +1,52 @@
+---
+inspections:
+  # xml files shipped are GDB register set descriptions which can only be
+  # verified with gdb/features/gdb-target.dtd, provided in GDB sources.
+  xml: off
+
+annocheck:
+  # Currently lto is disabled globally for valgrind, it should be able
+  # to be enabled through upstream configure --enable-lto in the future.
+  # Note that all (default hardened) flags need to be repeated here, if
+  # you override some config flags it will completely overwrite the
+  # defaults (--ignore-unknown --verbose).
+  jobs:
+    - hardened: --ignore-unknown --verbose --skip-lto
+  # Ignore files built specially without hardening flags
+  ignore:
+    # Valgrind tools themselves (memcheck, cachegrind, massif, etc) are
+    # statically linked and need to be built without PIE to be loaded at
+    # a fixed address in the program's address space.
+    # Also need to be built without stack protection so the generated
+    # code (valgrind VEX jit) interacts correctly with their own static code.
+    - /usr/libexec/valgrind/*-*-linux
+    # Wrappers for various string and mem functions such as memcpy, strlen, etc
+    # that valgrind uses to keep track of memory usage. Hardening settings such
+    # as optimizations need to be disabled so they don't interfere or break
+    # the checks that valgrind does internally.
+    - /usr/libexec/valgrind/vgpreload*so
+    # libmpiwrap is special since it is a LD_PRELOAD wrapper used by valgrind
+    # memcheck for MPI using programs, the wrapper is against a specific MPI
+    # implementation though, in our case openmpi. We don't want to have a hard
+    # dependency on openmpi however, so a user can use the wrapper without
+    # explicitly pulling in openmpi unless the program explicitly uses it.
+    - /usr/lib*/openmpi/valgrind/libmpiwrap-*-linux.so
+    # These static archives (to create custom valgrind tools) are only
+    # distributed in valgrind-tools-devel and don't have hardening flags
+    # for the same reason as the standard tools (see above).
+    - /usr/lib*/valgrind/*-*linux.a
+
+debuginfo:
+  ignore:
+    # We add the debuginfo to vgpreload libraries because we want to show the
+    # user exactly where the issue is, which we cannot without always having
+    # the symtab around. The vgpreload libraries are really tiny, so it doesn't
+    # have a big impact on the package size.
+    - /usr/libexec/valgrind/vgpreload*.so
+
+runpath:
+  allowed_paths:
+    # As described above, libmpiwrap is a wrapper against openmpi
+    # so we set DT_RUNPATH to openmpi libs path
+    - /usr/lib/openmpi/lib
+    - /usr/lib64/openmpi/lib

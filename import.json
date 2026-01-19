@@ -1959,6 +1959,13 @@
     "source": "https://src.fedoraproject.org/rpms/uuid.git",
     "version": "1.6.2"
   },
+  "valgrind": {
+    "branch": "rawhide",
+    "release": "3",
+    "sha": "338731caeafb9963a1193b9277e6aa54943d798f",
+    "source": "https://src.fedoraproject.org/rpms/valgrind.git",
+    "version": "3.26.0"
+  },
   "valkey": {
     "branch": "rawhide",
     "release": "2",
