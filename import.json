@@ -1182,6 +1182,13 @@
     "source": "https://src.fedoraproject.org/rpms/libmnl.git",
     "version": "1.0.5"
   },
+  "libmicrohttpd": {
+    "branch": "rawhide",
+    "release": "3",
+    "sha": "18e076928a27c61ec8e51b0bd46b581b57c8be2b",
+    "source": "https://src.fedoraproject.org/rpms/libmicrohttpd.git",
+    "version": "1.0.2"
+  },
   "libmodulemd": {
     "branch": "rawhide",
     "release": "5",
