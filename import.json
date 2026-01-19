@@ -2253,6 +2253,13 @@
     "source": "https://src.fedoraproject.org/rpms/python3.14.git",
     "version": "3.14.2"
   },
+  "qdbm": {
+    "branch": "rawhide",
+    "release": "75",
+    "sha": "020ab54f42231c42b6a80491a834b0a80a5cb5fa",
+    "source": "https://src.fedoraproject.org/rpms/qdbm.git",
+    "version": "1.8.78"
+  },
   "qt5": {
     "branch": "rawhide",
     "release": "1",
