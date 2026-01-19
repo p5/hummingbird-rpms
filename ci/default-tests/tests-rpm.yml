@@ -23,12 +23,12 @@ rpm-integrity-check:
 
 rpm-install:
   command: |
-    # Test installing the RPM using dnf-installroot
+    # Test installing the RPM using dnf-installroot in a container
 
     # Get the package name from the RPM
     rpm_name=$(rpm -qp --queryformat '%{NAME}' "${TEST_RPM}")
 
-    # Create a temporary directory for the build context
+    # Create a temporary directory for the local repository
     build_dir=$(mktemp -d)
 
     # Ensure cleanup on exit
@@ -37,13 +37,7 @@ rpm-install:
     }
     trap cleanup EXIT
 
-    # Copy the Containerfile to the build context
-    cp ../rpm-install-test.Containerfile "${build_dir}/Containerfile"
-
-    # Copy repo configs to the build context
-    cp -r ../repos "${build_dir}/repos"
-
-    # Create local-repo directory in build context
+    # Create local-repo directory
     mkdir -p "${build_dir}/local-repo"
 
     # Determine which RPMs to include in the local repository
@@ -55,7 +49,7 @@ rpm-install:
       rpm_files=("${TEST_RPM}")
     fi
 
-    # Copy RPM files to local-repo and create repository metadata
+    # Copy RPM files to local-repo
     for rpm_file in "${rpm_files[@]}"; do
       cp "${rpm_file}" "${build_dir}/local-repo/"
     done
@@ -68,20 +62,56 @@ rpm-install:
 
     echo "Created local repository with $(ls -1 "${build_dir}/local-repo/"*.rpm | wc -l) RPM(s)"
 
-    # Build the image, installing the package by name from the local repository.
-    # The Containerfile verifies:
-    #   1. The package is installed (rpm -q)
-    #   2. The package came from local-repo (dnf info)
-    sanitized_name="${rpm_name//[^a-zA-Z0-9._-]/-}"
-    test_image="rpm-install-test:${sanitized_name}-$$"
-    "${TEST_ENGINE}" build \
-      -t "${test_image}" \
+    # Run installation test in a container
+    # Mount repo configs and local-repo, run all operations in a single bash script
+    "${TEST_ENGINE}" run --rm \
       --cap-add=ALL \
-      --build-arg PACKAGE_NAME="${rpm_name}" \
-      "${build_dir}"
+      -v "$(cd .. && pwd)/repos:/tmp/repos:ro,z" \
+      -v "${build_dir}/local-repo:/tmp/local-repo:ro,z" \
+      quay.io/hummingbird-ci/builder:latest-hatchling \
+      bash -c '
+        set -e  # Exit immediately on any error
 
-    # Cleanup the test image
-    "${TEST_ENGINE}" rmi -f "${test_image}" 2>/dev/null || true
+        # Copy repo configurations
+        cp /tmp/repos/rawhide.repo /etc/yum.repos.d/
+        cp /tmp/repos/hummingbird.repo /etc/yum.repos.d/
+
+        # Create local.repo config
+        printf "%s\n" \
+          "[local-repo]" \
+          "name=Local Repository" \
+          "baseurl=file:///tmp/local-repo" \
+          "enabled=1" \
+          "gpgcheck=0" \
+          "priority=1" \
+          > /etc/yum.repos.d/local.repo
+
+        # Define DNF variables
+        NEWROOT=/new-root-fs
+        DNF_CACHE=/tmp/dnf-cache
+        DNF_FLAGS="-y --use-host-config --nodocs --setopt=install_weak_deps=False --setopt=cachedir=${DNF_CACHE} --setopt=system_cachedir=${DNF_CACHE} --setopt=logdir=${DNF_CACHE} --setopt=varsdir=${DNF_CACHE}"
+
+        # Create new root directory
+        mkdir -p "${NEWROOT}"
+
+        # Import GPG key
+        rpmkeys --import /etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-rawhide-primary --root "${NEWROOT}"
+
+        # Install filesystem first, then the test package
+        dnf-installroot "${NEWROOT}" ${DNF_FLAGS} install filesystem
+        dnf-installroot "${NEWROOT}" ${DNF_FLAGS} install '"${rpm_name}"'
+
+        # Verify the package was installed from local-repo
+        install_repo=$(dnf --installroot="${NEWROOT}" info --installed '"${rpm_name}"' 2>/dev/null | \
+          grep "^From repo" | cut -d: -f2 | tr -d " ")
+
+        if [ "${install_repo}" != "local-repo" ]; then
+          echo "Error: Package '"'${rpm_name}'"' was not installed from local-repo (got: ${install_repo:-unknown})"
+          exit 1
+        fi
+
+        echo "Verified: '"${rpm_name}"' installed from local-repo"
+      '
 
 # Source RPM tests (only run when --src-rpm is provided)
 src-rpm-hum-suffix-check:
