@@ -1098,6 +1098,13 @@
     "source": "https://src.fedoraproject.org/rpms/libedit.git",
     "version": "3.1"
   },
+  "libev": {
+    "branch": "rawhide",
+    "release": "15",
+    "sha": "a4929c0f1b39dc435bcf01bb7d6f708e88f367c6",
+    "source": "https://src.fedoraproject.org/rpms/libev.git",
+    "version": "4.33"
+  },
   "libevent": {
     "branch": "rawhide",
     "release": "16",
