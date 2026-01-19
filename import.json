@@ -2267,6 +2267,13 @@
     "source": "https://src.fedoraproject.org/rpms/qrencode.git",
     "version": "4.1.1"
   },
+  "qt3": {
+    "branch": "rawhide",
+    "release": "103",
+    "sha": "e61f6364485c87fb2144d38fbb58c7e8eb956de8",
+    "source": "https://src.fedoraproject.org/rpms/qt3.git",
+    "version": "3.3.8b"
+  },
   "qt5": {
     "branch": "rawhide",
     "release": "1",
