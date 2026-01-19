@@ -1,0 +1,20 @@
+composer-generators Release Notes
+=================================
+
+# Version 0.1.2 - 2025-02-04
+
+* provide bundled library without version
+  when version is not valid
+
+# Version 0.1.1 - 2024-12-30
+
+* remove 'v' in version number
+
+# Version 0.1.0 - 2024-10-11
+
+* find main project name and provide it
+  Ex: Provides: php-composer(vendor/project) = 1.0.0
+
+* find bundled lilbraries and provide them
+  Ex: Provides: bundled(php-composer(vendor/lib)) = 1.2.3
+

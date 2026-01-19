@@ -1806,7 +1806,43 @@ spec:
     method: webhook
     title: SBOM-event-to-Bombino
 # --- composer-generators ---
-# PENDING
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
+  name: composer-generators-main
+spec:
+  application: rpms-main
+  componentName: composer-generators-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/composer-generators-main
+  source:
+    git:
+      context: rpms/composer-generators
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: composer-generators-main
+  name: composer-generators-main
+spec:
+  image:
+    name: hummingbird-tenant/composer-generators-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
 # --- container-selinux ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1

@@ -328,6 +328,13 @@
     "source": "https://src.fedoraproject.org/rpms/composer.git",
     "version": "2.9.3"
   },
+  "composer-generators": {
+    "branch": "rawhide",
+    "release": "4",
+    "sha": "7922c9c9ea5835b1c4b73035582f2190cd7e4fe9",
+    "source": "https://src.fedoraproject.org/rpms/composer-generators.git",
+    "version": "0.1.2"
+  },
   "container-selinux": {
     "branch": "rawhide",
     "release": "1",
