@@ -1805,6 +1805,13 @@
     "source": "https://src.fedoraproject.org/rpms/tcl.git",
     "version": "9.0.2"
   },
+  "tcsh": {
+    "branch": "rawhide",
+    "release": "5",
+    "sha": "628e95a050f41d725cd0456e730fc5234170dad5",
+    "source": "https://src.fedoraproject.org/rpms/tcsh.git",
+    "version": "6.24.14"
+  },
   "texinfo": {
     "branch": "rawhide",
     "release": "7",
