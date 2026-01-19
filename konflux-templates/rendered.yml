@@ -316,7 +316,43 @@ spec:
     method: webhook
     title: SBOM-event-to-Bombino
 # --- ant ---
-# PENDING
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
+  name: ant-main
+spec:
+  application: rpms-main
+  componentName: ant-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/ant-main
+  source:
+    git:
+      context: rpms/ant
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: ant-main
+  name: ant-main
+spec:
+  image:
+    name: hummingbird-tenant/ant-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
 # --- apr ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1

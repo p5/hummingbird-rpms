@@ -55,6 +55,13 @@
     "source": "https://src.fedoraproject.org/rpms/ansible-packaging.git",
     "version": "1"
   },
+  "ant": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "b73f92390f196b7ac44cbe8d54f1236d03bcf876",
+    "source": "https://src.fedoraproject.org/rpms/ant.git",
+    "version": "1.10.15"
+  },
   "apr": {
     "branch": "rawhide",
     "release": "3",

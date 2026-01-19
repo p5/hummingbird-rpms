@@ -1,0 +1,11 @@
+--- !Policy
+product_versions:
+  - fedora-*
+decision_contexts:
+  - bodhi_update_push_testing
+  - bodhi_update_push_stable
+rules:
+  - !PassingTestCaseRule {test_case_name: fedora-ci.koji-build./plans/matrix/jdk21/full.functional}
+  - !PassingTestCaseRule {test_case_name: fedora-ci.koji-build./plans/matrix/jdk21/headless.functional}
+  - !PassingTestCaseRule {test_case_name: fedora-ci.koji-build./plans/matrix/unbound/jlink.functional}
+  - !PassingTestCaseRule {test_case_name: fedora-ci.koji-build./plans/javapackages.functional}
