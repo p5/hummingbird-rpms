@@ -1840,6 +1840,13 @@
     "source": "https://src.fedoraproject.org/rpms/tk.git",
     "version": "9.0.2"
   },
+  "tokyocabinet": {
+    "branch": "rawhide",
+    "release": "30",
+    "sha": "46a582dc0f3a29d72a292924904edd4a99367248",
+    "source": "https://src.fedoraproject.org/rpms/tokyocabinet.git",
+    "version": "1.4.48"
+  },
   "tomcat": {
     "branch": "rawhide",
     "release": "1",
