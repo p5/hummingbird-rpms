@@ -1973,6 +1973,13 @@
     "source": "https://src.fedoraproject.org/rpms/valkey.git",
     "version": "9.0.1"
   },
+  "vim": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "6fdde68c435ff130e2b61dcad32966df1a6ffbbf",
+    "source": "https://src.fedoraproject.org/rpms/vim.git",
+    "version": "9.1.2086"
+  },
   "which": {
     "branch": "rawhide",
     "release": "3",
