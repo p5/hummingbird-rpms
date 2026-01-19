@@ -2477,6 +2477,13 @@
     "source": "https://src.fedoraproject.org/rpms/shared-mime-info.git",
     "version": "2.4"
   },
+  "sharutils": {
+    "branch": "rawhide",
+    "release": "31",
+    "sha": "b624ae08a92040e1fa2db66322c7d43e3010198a",
+    "source": "https://src.fedoraproject.org/rpms/sharutils.git",
+    "version": "4.15.2"
+  },
   "skopeo": {
     "branch": "rawhide",
     "release": "1",
