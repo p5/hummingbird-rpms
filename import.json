@@ -286,6 +286,13 @@
     "source": "https://src.fedoraproject.org/rpms/check.git",
     "version": "0.15.2"
   },
+  "checkpolicy": {
+    "branch": "rawhide",
+    "release": "4",
+    "sha": "4f7a4b70bc32cb94cd285ef51c54b8bdae42d13f",
+    "source": "https://src.fedoraproject.org/rpms/checkpolicy.git",
+    "version": "3.9"
+  },
   "chkconfig": {
     "branch": "rawhide",
     "release": "3",
