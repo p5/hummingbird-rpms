@@ -2344,6 +2344,13 @@
     "source": "https://src.fedoraproject.org/rpms/ruby.git",
     "version": "4.0.0"
   },
+  "rubygem-asciidoctor": {
+    "branch": "rawhide",
+    "release": "2",
+    "sha": "f87335e0ef6b804afc226ee158b922f87a592ae7",
+    "source": "https://src.fedoraproject.org/rpms/rubygem-asciidoctor.git",
+    "version": "2.0.26"
+  },
   "rubygem-json": {
     "branch": "rawhide",
     "release": "1",
