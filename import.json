@@ -216,6 +216,13 @@
     "source": "https://src.fedoraproject.org/rpms/brotli.git",
     "version": "1.2.0"
   },
+  "btrfs-progs": {
+    "branch": "rawhide",
+    "release": "4",
+    "sha": "48720ca255f46d7139d6ab2260590fd6085a8e8e",
+    "source": "https://src.fedoraproject.org/rpms/btrfs-progs.git",
+    "version": "6.17.1"
+  },
   "busybox": {
     "branch": "rawhide",
     "release": "5",
