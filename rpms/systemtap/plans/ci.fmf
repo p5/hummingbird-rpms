@@ -1,0 +1,12 @@
+summary: CI Gating Plan
+discover:
+  how: fmf
+  url: https://src.fedoraproject.org/tests/systemtap-gating.git
+  ref: main
+  directory: tests
+prepare:
+  - name: prepare
+    how: shell
+    script: ./plans/prepare.sh
+execute:
+  how: tmt

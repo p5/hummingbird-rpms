@@ -2575,6 +2575,13 @@
     "source": "https://src.fedoraproject.org/rpms/systemd.git",
     "version": "259"
   },
+  "systemtap": {
+    "branch": "rawhide",
+    "release": "3",
+    "sha": "a5c5bd1293b3c1d39c7f9a1c39370d7d7bd1e374",
+    "source": "https://src.fedoraproject.org/rpms/systemtap.git",
+    "version": "5.4"
+  },
   "tar": {
     "branch": "rawhide",
     "release": "6",

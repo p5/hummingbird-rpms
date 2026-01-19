@@ -1,0 +1,26 @@
+
+
+# exclude ownership tests; we need setuid/gids as is
+ownership:
+  ignore:
+    - /usr/bin/staprun
+
+# this SO is for JNI only, so annobin/etc. don't know what to do with it
+annocheck:
+  ignore:
+    - /usr/libexec/systemtap/libHelperSDT.so
+
+# bytecode version 43 vs 55 complaint is a misconfiguration according to msrb
+javabytecode:
+  ignore:
+    - /usr/libexec/systemtap/HelperSDT.jar
+
+# setuid binary
+permissions:
+  ignore:
+    - /usr/bin/staprun
+
+# some stap scripts are wrapped within /bin/sh that confuses rpminspect
+shellsyntax:
+  ignore:
+    - *.stp
