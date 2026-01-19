@@ -1868,6 +1868,13 @@
     "source": "https://src.fedoraproject.org/rpms/tomcli.git",
     "version": "0.10.1"
   },
+  "toml11": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "703aad61f6e94973ed0b54164a7e0d0579efaa30",
+    "source": "https://src.fedoraproject.org/rpms/toml11.git",
+    "version": "4.4.0"
+  },
   "tpm2-tss": {
     "branch": "rawhide",
     "release": "8",
