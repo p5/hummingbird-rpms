@@ -2260,6 +2260,13 @@
     "source": "https://src.fedoraproject.org/rpms/qdbm.git",
     "version": "1.8.78"
   },
+  "qrencode": {
+    "branch": "rawhide",
+    "release": "12",
+    "sha": "751deb6620327b713dfa47d52b94fc99c8725e6e",
+    "source": "https://src.fedoraproject.org/rpms/qrencode.git",
+    "version": "4.1.1"
+  },
   "qt5": {
     "branch": "rawhide",
     "release": "1",
