@@ -167,6 +167,13 @@
     "source": "https://src.fedoraproject.org/rpms/bdftopcf.git",
     "version": "1.1.2"
   },
+  "beakerlib": {
+    "branch": "rawhide",
+    "release": "3",
+    "sha": "4e062639b27587eac7edc2982a66a26f283a66ee",
+    "source": "https://src.fedoraproject.org/rpms/beakerlib.git",
+    "version": "1.32"
+  },
   "binutils": {
     "branch": "rawhide",
     "release": "13",

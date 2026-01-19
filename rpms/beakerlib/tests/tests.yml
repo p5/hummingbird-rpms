@@ -1,0 +1,16 @@
+---
+# Test to run in classic context
+- hosts: localhost
+  roles:
+  - role: standard-test-beakerlib
+    tags:
+    - classic
+    repositories:
+    - repo: "https://src.fedoraproject.org/rpms/udica.git"
+      dest: "udica"
+    tests:
+        - udica/tests/sanity
+    required_packages:
+        - udica
+        - podman
+
