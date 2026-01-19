@@ -2421,6 +2421,13 @@
     "source": "https://src.fedoraproject.org/rpms/rust2rpm-helper.git",
     "version": "0.1.9"
   },
+  "scdoc": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "640e7ff32aa9ce15d088d713581fcf85e4c65721",
+    "source": "https://src.fedoraproject.org/rpms/scdoc.git",
+    "version": "1.11.3"
+  },
   "sdbus-cpp": {
     "branch": "rawhide",
     "release": "1",
