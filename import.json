@@ -153,6 +153,13 @@
     "source": "https://src.fedoraproject.org/rpms/bash-completion.git",
     "version": "2.17"
   },
+  "bc": {
+    "branch": "rawhide",
+    "release": "4",
+    "sha": "0cbaa3123cdeeedc1f55e6705bc35d1846ef91ea",
+    "source": "https://src.fedoraproject.org/rpms/bc.git",
+    "version": "1.08.2"
+  },
   "binutils": {
     "branch": "rawhide",
     "release": "13",
