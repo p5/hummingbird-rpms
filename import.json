@@ -2533,6 +2533,13 @@
     "source": "https://src.fedoraproject.org/rpms/star.git",
     "version": "2024.03.21"
   },
+  "stunnel": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "79305d4f1ce661e4e07d676021a227c05196683d",
+    "source": "https://src.fedoraproject.org/rpms/stunnel.git",
+    "version": "5.75"
+  },
   "systemd": {
     "branch": "rawhide",
     "release": "1",
