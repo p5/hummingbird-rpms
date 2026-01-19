@@ -202,6 +202,13 @@
     "source": "https://src.fedoraproject.org/rpms/boost.git",
     "version": "1.83.0"
   },
+  "bpftool": {
+    "branch": "rawhide",
+    "release": "3",
+    "sha": "f475124bb2756cdb62a63c71b537fd969185f224",
+    "source": "https://src.fedoraproject.org/rpms/bpftool.git",
+    "version": "7.6.0"
+  },
   "brotli": {
     "branch": "rawhide",
     "release": "1",
