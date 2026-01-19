@@ -1,0 +1,16 @@
+summary: source-highlight testing by upstream testsuite
+description: ''
+contact:
+- Michal Kolar <mkolar@redhat.com>
+component:
+- source-highlight
+test: ./runtest.sh
+framework: beakerlib
+recommend:
+- source-highlight
+- rpm-build
+- yum-utils
+- gcc-c++
+duration: 30m
+extra-summary: /tools/source-highlight/Sanity/source-highlight-testsuite
+extra-task: /tools/source-highlight/Sanity/source-highlight-testsuite
