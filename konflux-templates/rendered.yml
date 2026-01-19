@@ -5380,7 +5380,43 @@ spec:
     method: webhook
     title: SBOM-event-to-Bombino
 # --- libXaw ---
-# PENDING
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
+  name: libxaw-main
+spec:
+  application: rpms-main
+  componentName: libxaw-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/libxaw-main
+  source:
+    git:
+      context: rpms/libXaw
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: libxaw-main
+  name: libxaw-main
+spec:
+  image:
+    name: hummingbird-tenant/libxaw-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
 # --- libXcomposite ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
