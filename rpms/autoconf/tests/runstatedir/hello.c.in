@@ -1,0 +1,8 @@
+// Taken from http://www.idryman.org/blog/2016/03/10/autoconf-tutorial-1/
+#include <stdio.h>
+int main(int argc, char** argv) {
+  printf("hello world!\n");
+  printf("runstatedir: @runstatedir@\n");
+  return 0;
+}
+

@@ -622,7 +622,43 @@ spec:
     method: webhook
     title: SBOM-event-to-Bombino
 # --- autoconf ---
-# PENDING
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
+  name: autoconf-main
+spec:
+  application: rpms-main
+  componentName: autoconf-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/autoconf-main
+  source:
+    git:
+      context: rpms/autoconf
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: autoconf-main
+  name: autoconf-main
+spec:
+  image:
+    name: hummingbird-tenant/autoconf-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
 # --- automake ---
 # PENDING
 # --- avahi ---

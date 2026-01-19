@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# Taken from http://www.idryman.org/blog/2016/03/10/autoconf-tutorial-1/
+
+set -xe
+
+autoreconf --verbose --install --force
+./configure --help
+./configure --runstatedir=/var/mytmp
+make
+./hello
+./hello | grep 'hello world!'
+./hello | grep 'runstatedir: /var/mytmp'
+make dist
+
+echo "Test for --runstatedir succeeded."

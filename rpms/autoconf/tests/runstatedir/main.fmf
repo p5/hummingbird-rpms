@@ -1,0 +1,13 @@
+summary: The test for runstatedir feature
+description: |
+    This test verifies basic functionality including the --runstatedir
+    feature: https://lists.gnu.org/archive/html/autoconf-patches/2013-09/msg00018.html
+contact: Honza Horak <hhorak@redhat.com>
+component:
+test: ./run
+path: /tests/runstatedir
+recommend:
+- autoconf
+- automake
+- libtool
+duration: 5m
