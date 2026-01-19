@@ -7018,7 +7018,43 @@ spec:
     method: webhook
     title: SBOM-event-to-Bombino
 # --- libsecret ---
-# PENDING
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
+  name: libsecret-main
+spec:
+  application: rpms-main
+  componentName: libsecret-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/libsecret-main
+  source:
+    git:
+      context: rpms/libsecret
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: libsecret-main
+  name: libsecret-main
+spec:
+  image:
+    name: hummingbird-tenant/libsecret-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
 # --- libselinux ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1

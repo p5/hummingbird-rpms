@@ -1259,6 +1259,13 @@
     "source": "https://src.fedoraproject.org/rpms/libseccomp.git",
     "version": "2.6.0"
   },
+  "libsecret": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "b277b7153cf58d7e112455a4837788390ffcb506",
+    "source": "https://src.fedoraproject.org/rpms/libsecret.git",
+    "version": "0.21.7"
+  },
   "libselinux": {
     "branch": "rawhide",
     "release": "6",
