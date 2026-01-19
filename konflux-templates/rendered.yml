@@ -10,7 +10,43 @@ spec:
   gitOpsRepository:
     url: ""
 # --- CUnit ---
-# PENDING
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
+  name: cunit-main
+spec:
+  application: rpms-main
+  componentName: cunit-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/cunit-main
+  source:
+    git:
+      context: rpms/CUnit
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: cunit-main
+  name: cunit-main
+spec:
+  image:
+    name: hummingbird-tenant/cunit-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
 # --- PyYAML ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
