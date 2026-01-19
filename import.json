@@ -1917,6 +1917,13 @@
     "source": "https://src.fedoraproject.org/rpms/uid_wrapper.git",
     "version": "1.3.2"
   },
+  "umockdev": {
+    "branch": "rawhide",
+    "release": "2",
+    "sha": "e67b65699a8fb27062704d3532ac7dbc3e485491",
+    "source": "https://src.fedoraproject.org/rpms/umockdev.git",
+    "version": "0.19.4"
+  },
   "unzip": {
     "branch": "rawhide",
     "release": "68",
