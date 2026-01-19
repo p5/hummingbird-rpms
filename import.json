@@ -2470,6 +2470,13 @@
     "source": "https://src.fedoraproject.org/rpms/shadow-utils.git",
     "version": "4.18.0"
   },
+  "shared-mime-info": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "6c09b2aa8f1afc8026f9f1e81c2b4db906dc16f6",
+    "source": "https://src.fedoraproject.org/rpms/shared-mime-info.git",
+    "version": "2.4"
+  },
   "skopeo": {
     "branch": "rawhide",
     "release": "1",
