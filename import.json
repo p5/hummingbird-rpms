@@ -279,6 +279,13 @@
     "source": "https://src.fedoraproject.org/rpms/cargo-rpm-macros.git",
     "version": "28.4"
   },
+  "check": {
+    "branch": "rawhide",
+    "release": "21",
+    "sha": "66d57202be0e68334810a89c43656a19ce8c4799",
+    "source": "https://src.fedoraproject.org/rpms/check.git",
+    "version": "0.15.2"
+  },
   "chkconfig": {
     "branch": "rawhide",
     "release": "3",
