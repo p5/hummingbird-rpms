@@ -2365,6 +2365,13 @@
     "source": "https://src.fedoraproject.org/rpms/rubygem-rdoc.git",
     "version": "7.0.3"
   },
+  "rubygem-test-unit": {
+    "branch": "rawhide",
+    "release": "2",
+    "sha": "99962afb31f34f2cf6fc04e8f90a221e2f741bc2",
+    "source": "https://src.fedoraproject.org/rpms/rubygem-test-unit.git",
+    "version": "3.7.7"
+  },
   "rubypick": {
     "branch": "rawhide",
     "release": "23",
