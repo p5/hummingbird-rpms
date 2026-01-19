@@ -2547,6 +2547,13 @@
     "source": "https://src.fedoraproject.org/rpms/subversion.git",
     "version": "1.14.5"
   },
+  "swig": {
+    "branch": "rawhide",
+    "release": "2",
+    "sha": "d9ecada6bde1129f90f3fa28e7ce4ff67695a906",
+    "source": "https://src.fedoraproject.org/rpms/swig.git",
+    "version": "4.4.1"
+  },
   "systemd": {
     "branch": "rawhide",
     "release": "1",
