@@ -1833,6 +1833,13 @@
     "source": "https://src.fedoraproject.org/rpms/time.git",
     "version": "1.9"
   },
+  "tk": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "57921177274f6668dfc82fb6c518154bf8200880",
+    "source": "https://src.fedoraproject.org/rpms/tk.git",
+    "version": "9.0.2"
+  },
   "tomcat": {
     "branch": "rawhide",
     "release": "1",
