@@ -7,7 +7,7 @@
 
 Name:           dnf5
 Version:        %{project_version_prime}.%{project_version_major}.%{project_version_minor}.%{project_version_micro}
-Release:        7%{?dist}
+Release:        7.1%{?dist}
 Summary:        Command-line package manager
 License:        GPL-2.0-or-later
 URL:            https://github.com/rpm-software-management/dnf5
@@ -20,6 +20,7 @@ Patch5:         0005-copr_plugin-silence-error-variable-val-set-but-not-u.patch
 Patch6:         0006-progressbar-remove-unused-message_index-variable.patch
 Patch7:         0007-Add-a-couple-of-missing-includes-to-fix-builds.patch
 Patch8:         0008-Replace-all-std-format-with-fmt-format.patch
+Patch9:         0009-transaction-sort-packages-when-SOURCE_DATE_EPOCH-set.patch
 
 Requires:       libdnf5%{?_isa} = %{version}-%{release}
 Requires:       libdnf5-cli%{?_isa} = %{version}-%{release}
@@ -1090,6 +1091,9 @@ mkdir -p %{buildroot}%{_libdir}/libdnf5/plugins
 %ldconfig_scriptlets
 
 %changelog
+* Tue Jan 20 2026 Jonathan Lebon <jonathan@jlebon.com> - 5.3.0.0-7.1
+- Backport upstream PR#2522: sort packages when SOURCE_DATE_EPOCH set
+
 * Tue Jan 20 2026 Petr Pisar <ppisar@redhat.com> - 5.3.0.0-7
 - Fix building with GCC 16 (bug #2427953)
 
