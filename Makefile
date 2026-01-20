@@ -50,5 +50,10 @@ dist-git:
 .PHONY: find-missing-rpms-host find-missing-rpms
 find-missing-rpms-host:
 	ci/verify_rpms_in_pulp.sh $(ARGS)
-find-missing-rpms:
+find-missing-rpms: # This lists rpms missing in pulp that need to be published.
 	$(PODMAN_RUN) $(PODMAN_IMAGE) make find-missing-rpms-host ARGS='$(ARGS)'
+
+
+.PHONY: analyze-rpms
+analyze-rpms: # This lists rpms defined in the containers repo that are not present in the rpms repo
+	+@ci/analyze-rpms.sh $(ARGS)
