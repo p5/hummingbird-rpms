@@ -50,7 +50,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-cunit-main
   timeouts:
@@ -608,7 +608,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-ant-main
   timeouts:
@@ -794,7 +794,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-aqute-bnd-main
   timeouts:
@@ -856,7 +856,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-asciidoc-main
   timeouts:
@@ -1106,7 +1106,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-autoconf-main
   timeouts:
@@ -1168,7 +1168,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-automake-main
   timeouts:
@@ -1416,7 +1416,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-bash-completion-main
   timeouts:
@@ -1478,7 +1478,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-bc-main
   timeouts:
@@ -1540,7 +1540,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-bdftopcf-main
   timeouts:
@@ -1602,7 +1602,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-beakerlib-main
   timeouts:
@@ -1664,7 +1664,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-bind-main
   timeouts:
@@ -1788,7 +1788,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-bison-main
   timeouts:
@@ -1914,7 +1914,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-bpftool-main
   timeouts:
@@ -2038,7 +2038,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-btrfs-progs-main
   timeouts:
@@ -2410,7 +2410,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-cairo-main
   timeouts:
@@ -2598,7 +2598,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-check-main
   timeouts:
@@ -2660,7 +2660,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-checkpolicy-main
   timeouts:
@@ -2784,7 +2784,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-chrpath-main
   timeouts:
@@ -2908,7 +2908,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-cmocka-main
   timeouts:
@@ -3034,7 +3034,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-composer-generators-main
   timeouts:
@@ -3530,7 +3530,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-cryptsetup-main
   timeouts:
@@ -18128,7 +18128,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-tcl-main
   timeouts:
@@ -18190,7 +18190,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-tcsh-main
   timeouts:
@@ -18316,7 +18316,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-tidy-main
   timeouts:
@@ -18378,7 +18378,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-time-main
   timeouts:
@@ -18440,7 +18440,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-tk-main
   timeouts:
@@ -18502,7 +18502,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-tokyocabinet-main
   timeouts:
@@ -18626,7 +18626,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-tomcat-jakartaee-migration-main
   timeouts:
@@ -18688,7 +18688,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-tomcli-main
   timeouts:
@@ -18750,7 +18750,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-toml11-main
   timeouts:
@@ -18874,7 +18874,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-tree-pkg-main
   timeouts:
@@ -19122,7 +19122,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-uid-wrapper-main
   timeouts:
@@ -19184,7 +19184,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-umockdev-main
   timeouts:
@@ -19246,7 +19246,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-unbound-main
   timeouts:
@@ -19308,7 +19308,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-unixodbc-main
   timeouts:
@@ -19556,7 +19556,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-valgrind-main
   timeouts:
@@ -19680,7 +19680,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-vim-main
   timeouts:
@@ -19804,7 +19804,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-words-main
   timeouts:
@@ -19868,7 +19868,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-xen-main
   timeouts:
@@ -19930,7 +19930,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-xmlto-main
   timeouts:
@@ -19992,7 +19992,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-xmltoman-main
   timeouts:
