@@ -1,0 +1,171 @@
+#!/bin/bash
+
+# Usage:
+#   build-dotnet-bootstrap-tarball <tag-or-commit-from-dotnet>
+#
+# Creates a source archive suitable for bootstrapping from a tag (or commit) at
+# https://github.com/dotnet/dotnet
+#
+# Clone dotnet/dotnet, check out the tag, and build a source-tarball.
+# Can also use a full git commit identifier instead of tag (not an
+# abbreviated 8 character commit identifier though).
+
+set -euo pipefail
+IFS=$'\n\t'
+
+function print_usage {
+    echo "Usage:"
+    echo "$0 <tag-from-dotnet>"
+    echo
+    echo "Creates a $arch bootstrap source archive from a tag at https://github.com/dotnet/dotnet"
+}
+
+function clean_dotnet_cache {
+    rm -rf ~/.aspnet ~/.dotnet/ ~/.nuget/ ~/.local/share/NuGet ~/.templateengine
+    rm -rf /tmp/NuGet /tmp/NuGetScratch /tmp/.NETCore* /tmp/.NETStandard* /tmp/.dotnet /tmp/dotnet.* /tmp/clr-debug-pipe* /tmp/Razor-Server /tmp/CoreFxPipe* /tmp/VBCSCompiler /tmp/.NETFramework*
+    rm -rf ~/.npm/
+}
+
+function check_bootstrap_environment {
+    if rpm -qa | grep dotnet ; then
+        echo "error: dotnet is installed. Not a good idea for bootstrapping."
+        exit 1
+    fi
+    if [ -d /usr/lib/dotnet ] || [ -d /usr/lib64/dotnet ] || [ -d /usr/share/dotnet ] ; then
+        echo "error: one of /usr/lib/dotnet /usr/lib64/dotnet or /usr/share/dotnet/ exists. Not a good idea for bootstrapping."
+        exit 1
+    fi
+    if command -v dotnet ; then
+        echo "error: dotnet is in $PATH. Not a good idea for bootstrapping."
+        exit 1
+    fi
+}
+
+function runtime_id {
+
+    source /etc/os-release
+    case "${ID}" in
+        # Remove the RHEL minor version
+        rhel) rid_version=${VERSION_ID%.*} ;;
+
+        *) rid_version=${VERSION_ID} ;;
+    esac
+
+    echo "${ID}.${rid_version}-${arch}"
+}
+
+build_bootstrap=false
+
+declare -A archmap
+archmap=(
+    ["aarch64"]="arm64"
+    ["amd64"]="x64"
+    ["armv8l"]="arm"
+    ["i386"]="x86"
+    ["i686"]="x86"
+    ["ppc64le"]="ppc64le"
+    ["s390x"]="s390x"
+    ["x86_64"]="x64"
+)
+
+arch=${archmap["$(uname -m)"]}
+
+
+positional_args=()
+while [[ "$#" -gt 0 ]]; do
+    arg="${1}"
+    case "${arg}" in
+        -h|--help)
+            print_usage
+            exit 0
+            ;;
+        *)
+            positional_args+=("$1")
+            shift
+            ;;
+    esac
+done
+
+check_bootstrap_environment
+
+tag=${positional_args[0]:-}
+if [[ -z ${tag} ]]; then
+    echo "error: missing tag to build"
+    exit 1
+fi
+
+set -x
+
+dir_name="dotnet-${tag}"
+unmodified_tarball_name="${dir_name}-original"
+tarball_name="${dir_name}"
+
+unmodified_tarball_name="${unmodified_tarball_name}-${arch}-bootstrap"
+tarball_name="${tarball_name}-${arch}-bootstrap"
+
+tarball_suffix=.tar.gz
+
+if [ -f "${tarball_name}${tarball_suffix}" ]; then
+    echo "error: ${tarball_name}${tarball_suffix} already exists"
+    exit 1
+fi
+
+
+if [ ! -f "${unmodified_tarball_name}.tar.gz" ]; then
+    if [[ $tag =~ ^[0-9a-fA-F]+$ ]]; then
+        if [ ! -f $tag.zip ]; then
+            wget https://github.com/dotnet/dotnet/archive/$tag.zip
+        fi
+        dir=$(mktemp -d -p $(pwd))
+        pushd $dir
+        unzip -q ../$tag.zip
+        if [[ $(ls -1q | wc -l) -gt 3 ]]; then
+            echo "error: tarball doesn't have a single main directory"
+            exit 1
+        fi
+        tar czf ../${unmodified_tarball_name}.tar.gz dotnet-$tag
+        popd
+    else
+        wget https://github.com/dotnet/dotnet/archive/refs/tags/${tag}.tar.gz
+        mv "${tag}.tar.gz" "${unmodified_tarball_name}.tar.gz"
+    fi
+fi
+
+tar tf "${unmodified_tarball_name}".tar.gz > .tarball_file_list
+extracted_tarball_root=$(head -1 .tarball_file_list | cut -d/ -f 1)
+if [[ "$extracted_tarball_root" == "."* ]]; then
+    echo "error: can't find main directory in the dotnet tarball"
+    exit 1
+fi
+if [[ $(grep -cv "^${extracted_tarball_root}/" .tarball_file_list) -gt 0 ]]; then
+    echo "error: tarball doesn't have a single main directory"
+    exit 1
+fi
+rm .tarball_file_list
+
+rm -rf "${tarball_name}"
+rm -rf "${extracted_tarball_root}"
+tar xf "${unmodified_tarball_name}.tar.gz"
+mv "${extracted_tarball_root}" "${tarball_name}"
+
+pushd "${tarball_name}"
+
+./prep-source-build.sh --bootstrap
+
+# Remove files with funny licenses and crypto implementations and
+# other not-very-useful artifacts. We MUST NOT ship any files that
+# have unapproved licenses and unexpected cryptographic
+# implementations.
+#
+# We use rm -r (no -f) to make sure the operation fails if the files
+# are not at the expected locations. If the files are not at the
+# expected location, we need to find the new location of the files and
+# delete them, or verify that upstream has already removed the files.
+
+# rm -r $FILE_TO_REMOVE
+
+popd
+
+echo "Bootstrap .NET SDK: $(jq .tools.dotnet "${tarball_name}"/global.json)"
+
+time tar -czf "${tarball_name}${tarball_suffix}" "${tarball_name}"

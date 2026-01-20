@@ -33,6 +33,18 @@ ruff:
 setup:
   timeout_hours: 12
 
+dotnet8.0:
+  # Use machines with 320GB disk space for large builds
+  build_platforms:
+    - "linux-d320-c4xlarge/arm64"
+    - "linux-d320-c4xlarge/amd64"
+
+dotnet9.0:
+  # Use machines with 320GB disk space for large builds
+  build_platforms:
+    - "linux-d320-c4xlarge/arm64"
+    - "linux-d320-c4xlarge/amd64"
+
 dotnet10.0:
   # Use machines with 320GB disk space for large builds
   build_platforms:

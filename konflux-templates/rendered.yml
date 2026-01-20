@@ -2624,9 +2624,81 @@ spec:
     method: webhook
     title: SBOM-event-to-Bombino
 # --- dotnet8.0 ---
-# PENDING
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
+  name: dotnet8-0-main
+spec:
+  application: rpms-main
+  componentName: dotnet8-0-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/dotnet8-0-main
+  source:
+    git:
+      context: rpms/dotnet8.0
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: dotnet8-0-main
+  name: dotnet8-0-main
+spec:
+  image:
+    name: hummingbird-tenant/dotnet8-0-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
 # --- dotnet9.0 ---
-# PENDING
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
+  name: dotnet9-0-main
+spec:
+  application: rpms-main
+  componentName: dotnet9-0-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/dotnet9-0-main
+  source:
+    git:
+      context: rpms/dotnet9.0
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: dotnet9-0-main
+  name: dotnet9-0-main
+spec:
+  image:
+    name: hummingbird-tenant/dotnet9-0-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
 # --- doxygen ---
 # PENDING
 # --- drpm ---

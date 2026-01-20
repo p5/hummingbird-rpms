@@ -1,0 +1,35 @@
+# Tarball is generated, no upstream URL
+addFilter("W:.*invalid-url Source0: dotnet-.*tar.gz")
+
+# macOS is the correct name
+addFilter("W: spelling-error %description -l en_US macOS ->.*")
+# The name of the nuget package includes NETCore
+addFilter("W: spelling-error .* NETCore -> Net Core.*")
+
+# Upstream really has no README or documentation files. They suggest using online resources.
+addFilter("W: no-documentation")
+
+# This is a script that we run; it's expected to have execute permissions
+addFilter("W: strange-permission check-debug-symbols.py")
+
+# libicu is a required dependency, but it's used via a dlopen()
+addFilter("E: explicit-lib-dependency libicu")
+
+# There's no devel package for us to place .h files
+addFilter("W: devel-file-in-non-devel-package /usr/lib64/dotnet/.*\.h")
+addFilter("W: devel-file-in-non-devel-package /usr/lib64/dotnet/.*\.a")
+
+# These paths are non-standard, so we need $ORIGIN to find these libraries
+addFilter("E: binary-or-shlib-defines-rpath /usr/lib64/dotnet/.*\['\$ORIGIN/netcoredeps'\]")
+addFilter("E: binary-or-shlib-defines-rpath /usr/lib64/dotnet/.*\['\$ORIGIN'\]")
+
+# We put dll files in /usr/lib/dotnet, but rpmlint somehow doesn't see it as a binary?
+addFilter("W: only-non-binary-in-usr-lib")
+
+# We use a number of zero-length files, including _._
+addFilter("E: zero-length /usr/lib64/dotnet/.*/_\._")
+
+# Upstream uses hidden files, even though we ask them not to, as much as possible
+addFilter("W: hidden-file-or-dir /usr/lib64/dotnet/.*/\.version")
+addFilter("W: hidden-file-or-dir /usr/lib64/dotnet/.*/\.toolsetversion")
+

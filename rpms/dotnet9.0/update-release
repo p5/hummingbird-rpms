@@ -1,0 +1,161 @@
+#!/bin/bash
+
+# Usage:
+#     ./update-release [--bug bug-id] [--tarball tarball-name] [--release-json release-json] [--larger-rpm-release]
+
+set -euo pipefail
+IFS=$'\n\t'
+
+print_usage() {
+    echo " Usage:"
+    echo "     ./update-release [runtime-version] [--bug bug-id] [--tarball tarball-name] [--release-json release-json] [--larger-rpm-release]"
+}
+
+user_provided_tarball_name=""
+
+rpm_release=1
+positional_args=()
+bug_ids=()
+while [[ "$#" -gt 0 ]]; do
+    arg="$1"
+    case "${arg}" in
+        --bug)
+            bug_ids+=("$2")
+            shift;
+            shift;
+            ;;
+        -h|--help)
+            print_usage
+            exit 0
+            ;;
+        --release-json)
+            release_json="$2"
+            shift;
+            shift;
+            ;;
+        --tarball)
+            user_provided_tarball_name="$2"
+            shift;
+            shift;
+            ;;
+        --larger-rpm-release)
+            rpm_release="2"
+            shift;
+            ;;
+        *)
+            positional_args+=("$1")
+            shift
+            ;;
+    esac
+done
+
+spec_files=( ./*.spec )
+spec_file="${spec_files[0]}"
+
+dotnet_major_minor_version=$spec_file
+dotnet_major_minor_version=${dotnet_major_minor_version#./dotnet}
+dotnet_major_minor_version=${dotnet_major_minor_version%.spec}
+
+echo "Updating .NET $dotnet_major_minor_version"
+
+runtime_version=${positional_args[1]:-}
+sdk_version=""
+tag=v${runtime_version}
+if [[ -z ${runtime_version} ]]; then
+    if [[ -n "${release_json:-}" ]]; then
+        cp -a "${release_json}" release.json
+    else
+        cat > query <<EOF
+        [ .[] | select(.name | contains(".NET 9.0")) ]
+        | first
+        | { tag_name: .tag_name,
+            tarball: .tarball_url,
+            signature: .assets[].browser_download_url | select(. | endswith("tar.gz.sig")),
+            release_manifest: .assets[] | select(.name == "release.json") | .browser_download_url }
+EOF
+        curl https://api.github.com/repos/dotnet/dotnet/releases \
+            | jq --from-file query > release.metadata.github
+        tag=$(jq -r .tag_name release.metadata.github)
+        curl -L "$(jq -r .release_manifest release.metadata.github)" -o release.json
+    fi
+fi
+
+aspnetcore_runtime_version=$(jq -r .aspNetCoreVersion release.json)
+runtime_version=$(jq -r .runtimeVersion release.json)
+sdk_version=$(jq -r .sdkVersion release.json)
+tag=$(jq -r .tag release.json)
+tag_without_v=$(echo ${tag} | sed -e 's|^v||')
+
+echo "Updating .NET $dotnet_major_minor_version to SDK ${sdk_version} and Runtime ${runtime_version}"
+
+sed -i -E "s|^%global upstream_tag .*$|%global upstream_tag ${tag}|" "$spec_file"
+
+sed -i -E "s|^%global runtime_version .*$|%global runtime_version ${runtime_version}|" "$spec_file"
+sed -i -E "s|^%global aspnetcore_runtime_version .*$|%global aspnetcore_runtime_version ${aspnetcore_runtime_version}|" "$spec_file"
+sed -i -E "s|^%global sdk_version .*$|%global sdk_version ${sdk_version}|" "$spec_file"
+
+if [[ $runtime_version = *preview* ]] || [[ $runtime_version = *rc* ]]; then
+    # For Preview/RC releases, convert x.y.z-preview.a.b to x.y.z~preview.a.b (replace - with ~)
+    # https://docs.fedoraproject.org/en-US/packaging-guidelines/Versioning/#_handling_non_sorting_versions_with_tilde_dot_and_caret
+    runtime_rpm_version=${runtime_version/-/\~}
+    aspnetcore_runtime_rpm_version=${aspnetcore_runtime_version/-/\~}
+    sdk_rpm_version=${sdk_version/-/\~}
+    sed -i -E "s|^(%global runtime_rpm_version) .*$|\1 ${runtime_rpm_version}|" "$spec_file"
+    sed -i -E "s|^(%global aspnetcore_runtime_rpm_version) .*$|\1 ${aspnetcore_runtime_rpm_version}|" "$spec_file"
+    sed -i -E "s|^(%global sdk_rpm_version) .*$|\1 ${sdk_rpm_version}|" "$spec_file"
+else
+    # For GA releases replace rpm versions with rpm macros for the actual version
+    sed -i -E "s|^(%global runtime_rpm_version) .*$|\1 %{runtime_version}|" "$spec_file"
+    sed -i -E "s|^(%global aspnetcore_runtime_rpm_version) .*$|\1 %{aspnetcore_runtime_version}|" "$spec_file"
+    sed -i -E "s|^(%global sdk_rpm_version) .*$|\1 %{sdk_version}|" "$spec_file"
+fi
+
+if [[ -f "dotnet-${tag_without_v}.tar.gz" ]]; then
+    echo "dotnet-${tag_without_v}.tar.gz already exists, not rebuilding tarball"
+elif [[ -n ${user_provided_tarball_name} ]]; then
+    cp -a "${user_provided_tarball_name}" "dotnet-${tag_without_v}.tar.gz"
+    cp -a "${user_provided_tarball_name}.sig" "dotnet-${tag_without_v}.tar.gz.sig"
+else
+    rm -f release.json
+    spectool -g "$spec_file"
+    if spectool -l "$spec_file" | grep 'bootstrap.tar.gz' ; then
+        ./build-dotnet-bootstrap-tarball "$tag"
+        tar xf dotnet-"$tag"-x64-bootstrap.tar.gz "dotnet-$tag-x64-bootstrap/global.json"
+        bootstrap_sdk_version=$(jq -r .tools.dotnet "dotnet-$tag-x64-bootstrap/global.json")
+        sed -i -E "s|^(%global bootstrap_sdk_version) .*$|\1 ${bootstrap_sdk_version}|" "$spec_file"
+        spectool -g "$spec_file"
+
+        if [ -f re-build-all-bootstrap ]; then
+            ./re-build-all-bootstrap "${tag}"
+        fi
+    fi
+fi
+
+set -x
+
+comment="Update to .NET SDK ${sdk_version} and Runtime ${runtime_version}"
+commit_message="$comment
+"
+for bug_id in "${bug_ids[@]}"; do
+    if [[ "$bug_id" =~ ^[[:digit:]]+$ ]]; then
+        comment="$comment
+- Resolves: RHBZ#$bug_id"
+        commit_message="$commit_message
+Resolves: RHBZ#$bug_id"
+    else
+        comment="$comment
+- Resolves: $bug_id"
+        commit_message="$commit_message
+Resolves: $bug_id"
+    fi
+done
+
+echo "$commit_message" > git-commit-message
+
+rpmdev-bumpspec --comment="$comment" "$spec_file"
+
+# Reset release in 'Release' tag
+sed -i -E 's|^Release:        [[:digit:]]+%|Release:        '"$rpm_release"'%|' "$spec_file"
+# Reset Release in changelog comment
+# See https://stackoverflow.com/questions/18620153/find-matching-text-and-replace-next-line
+sed -i -E '/^%changelog$/!b;n;s/-[[:digit:]]+$/-'"$rpm_release"'/' "$spec_file"
