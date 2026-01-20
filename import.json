@@ -202,6 +202,13 @@
     "source": "https://src.fedoraproject.org/rpms/bison.git",
     "version": "3.8.2"
   },
+  "bluez": {
+    "branch": "rawhide",
+    "release": "3",
+    "sha": "2b80ca33d9f49175157881673a8df4b005b8b0e5",
+    "source": "https://src.fedoraproject.org/rpms/bluez.git",
+    "version": "5.85"
+  },
   "boost": {
     "branch": "rawhide",
     "release": "17",
