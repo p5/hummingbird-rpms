@@ -1608,7 +1608,43 @@ spec:
     method: webhook
     title: SBOM-event-to-Bombino
 # --- catatonit ---
-# PENDING
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
+  name: catatonit-main
+spec:
+  application: rpms-main
+  componentName: catatonit-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/catatonit-main
+  source:
+    git:
+      context: rpms/catatonit
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: catatonit-main
+  name: catatonit-main
+spec:
+  image:
+    name: hummingbird-tenant/catatonit-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
 # --- check ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
