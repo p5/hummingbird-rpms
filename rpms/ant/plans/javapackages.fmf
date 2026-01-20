@@ -1,0 +1,7 @@
+summary: Run javapackages-specific tests
+discover:
+  how: fmf
+  url: https://gitlab.com/redhat/centos-stream/tests/javapackages.git
+  ref: f43
+execute:
+  how: tmt

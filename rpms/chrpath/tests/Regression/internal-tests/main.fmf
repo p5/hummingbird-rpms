@@ -1,0 +1,22 @@
+summary: internal-tests
+description: ''
+contact: Martin Cermak <mcermak@redhat.com>
+component:
+- chrpath
+test: ./runtest.sh
+framework: beakerlib
+recommend:
+- chrpath
+- rpm-build
+- gcc
+- libgcc
+- glibc-devel
+- libgcc.i686
+- glibc-devel.i686
+- libgcc.s390
+- glibc-devel.s390
+- libgcc.ppc
+- glibc-devel.ppc
+duration: 30m
+extra-summary: /tools/chrpath/Regression/internal-tests
+extra-task: /tools/chrpath/Regression/internal-tests

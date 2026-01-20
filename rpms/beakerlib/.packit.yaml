@@ -1,0 +1,82 @@
+specfile_path: dist/beakerlib.spec
+
+files_to_sync:
+  - src: dist/*
+    dest: .
+  - .packit.yaml
+
+upstream_package_name: beakerlib
+downstream_package_name: beakerlib
+
+actions:
+    changelog-entry:
+      - "bash -c 'rpm -q --qf \"%{CHANGELOGTEXT}\n\" --specfile dist/beakerlib.spec 2> /dev/null | grep -v \"(none)\"'"
+
+jobs:
+  - job: copr_build
+    trigger: pull_request
+    targets:
+      - fedora-latest-stable
+      - centos-stream-9
+      - centos-stream-10
+
+  - job: copr_build
+    trigger: commit
+    branch: master
+    preserve_project: True
+    targets:
+      - fedora-all-x86_64
+      - fedora-all-aarch64
+      - centos-stream-all-x86_64
+      - centos-stream-all-aarch64
+      - centos-stream-all-s390x
+      - centos-stream-all-ppc64le
+      - epel-6-x86_64
+      - epel-6-aarch64
+      - epel-all-x86_64
+      - epel-all-aarch64
+      - epel-all-s390x
+      - epel-all-ppc64le
+
+  - job: copr_build
+    trigger: release
+    preserve_project: True
+    targets:
+      - fedora-all-x86_64
+      - fedora-all-aarch64
+      - centos-stream-all-x86_64
+      - centos-stream-all-aarch64
+      - centos-stream-all-s390x
+      - centos-stream-all-ppc64le
+      - epel-6-x86_64
+      - epel-6-aarch64
+      - epel-all-x86_64
+      - epel-all-aarch64
+      - epel-all-s390x
+      - epel-all-ppc64le
+
+  - job: tests
+    trigger: pull_request
+    targets:
+      - fedora-latest-stable
+      - centos-stream-9
+      - centos-stream-10
+
+  - job: propose_downstream
+    trigger: release
+    dist_git_branches:
+      - fedora-all
+      - epel-all
+
+  - job: koji_build
+    trigger: commit
+    allowed_pr_authors: ["packit", "sopos"]
+    dist_git_branches:
+      - fedora-all
+      - epel-all
+
+  - job: bodhi_update
+    trigger: commit
+    dist_git_branches:
+      - fedora-branched
+      - epel-all

@@ -1,0 +1,77 @@
+#!/usr/bin/php
+<?php
+/*
+ Use this script to generate bundled provides, e.g.:
+ ./composer.prov vendor/composer/installed.php
+
+ Copyright (C) 2024-2025 Remi Collet <remi@fedoraproject.org>.
+
+ SPDX-3.0-License-Identifier: GPL-2.0-or-later
+
+ This program is free software.
+ For more information on the license, see COPYING or
+ <https://www.gnu.org/licenses/gpl-2.0.en.html>.
+ For more information on free software, see
+ <https://www.gnu.org/philosophy/free-sw.en.html>.
+*/
+
+// Check if composer "name" and "pretty_version" are usable in RPM
+function isValid(Array $package, $strict=true) {
+	// Only vendor/project
+	if (!isset($package['name'])
+		|| !strpos($package['name'], '/')
+	) {
+		return false;
+	}
+	// pretty_version is required
+	if (!isset($package['pretty_version'])) {
+		return false;
+	}
+	if ($strict) {
+		// pretty_version is usable
+		if (empty($package['pretty_version'])
+			|| strpos($package['pretty_version'], '-')
+		) {
+			return false;
+		}
+	}
+	return true;
+}
+
+// Clean "pretty_version"
+function getVersion(Array $package) {
+	return ltrim($package['pretty_version'], 'v');
+}
+
+// Parse an installed.php file
+function run($file) {
+	fputs(STDERR, "Search bundled libraries installed, parsing $file\n");
+	$installed = include $file;
+	$main = false;
+	if (isValid($installed['root'], false)) {
+		$main = $installed['root']['name'];
+		if (isValid($installed['root'])) {
+			printf("php-composer(%s) = %s\n", $main, getVersion($installed['root']));
+		}
+	}
+	if (isset($installed['versions'])) foreach($installed['versions'] as $name => $v) {
+		if ($name !== $main) {
+			$v['name'] = $name;
+			if (isValid($v)) {
+				printf("bundled(php-composer(%s)) = %s\n", $name, getVersion($v));
+			} else if (isValid($v, false)) {
+				printf("bundled(php-composer(%s))\n", $name);
+			}
+		}
+	}
+}
+
+// From command line argument, manual usage
+if (isset($_SERVER['argv'][1])) {
+	run($_SERVER['argv'][1]);
+
+// From input lines, rpmbuild usage
+} else while($f = fgets(STDIN)) {
+	run(trim($f));
+}
+

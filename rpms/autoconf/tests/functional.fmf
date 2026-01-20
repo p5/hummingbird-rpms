@@ -1,0 +1,5 @@
+summary: Functional tier tests
+discover:
+    how: fmf
+execute:
+    how: tmt

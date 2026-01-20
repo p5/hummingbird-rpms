@@ -1,0 +1,10 @@
+summary: Test plan with all beakerlib tests
+environment+:
+    PACKAGE: bind
+discover:
+    how: fmf
+    url: https://gitlab.com/redhat/centos-stream/tests/bind.git
+execute:
+    how: tmt
+context:
+    component: bind
