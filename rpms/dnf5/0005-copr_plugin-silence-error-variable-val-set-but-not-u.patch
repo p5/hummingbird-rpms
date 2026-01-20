@@ -1,0 +1,37 @@
+From bb8e3debcbeda644dc2235258d976d8ff971c378 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Ale=C5=A1=20Mat=C4=9Bj?= <amatej@redhat.com>
+Date: Tue, 13 Jan 2026 16:29:38 +0100
+Subject: [PATCH 5/8] =?UTF-8?q?copr=5Fplugin:=20silence=20error:=20variabl?=
+ =?UTF-8?q?e=20=E2=80=98val=E2=80=99=20set=20but=20not=20used?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ dnf5-plugins/copr_plugin/json.cpp | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/dnf5-plugins/copr_plugin/json.cpp b/dnf5-plugins/copr_plugin/json.cpp
+index f3c0f148..8f4cd2ea 100644
+--- a/dnf5-plugins/copr_plugin/json.cpp
++++ b/dnf5-plugins/copr_plugin/json.cpp
+@@ -25,6 +25,7 @@
+ 
+ #include <fstream>
+ #include <iostream>
++#include <utility>
+ 
+ Json::Json(libdnf5::Base & base, const std::string & url) {
+     auto temp_file = libdnf5::utils::fs::TempFile("/tmp", "dnf5-copr-plugin");
+@@ -60,6 +61,8 @@ std::vector<std::string> Json::keys() {
+     std::vector<std::string> retval;
+     json_object_object_foreach(root, key, val) {
+         retval.push_back(key);
++        // Silence error: variable ‘val’ set but not used
++        std::ignore = val;
+     }
+     return retval;
+ }
+-- 
+2.52.0
+
