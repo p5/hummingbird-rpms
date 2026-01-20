@@ -1,0 +1,31 @@
+--- xen-4.21.0/tools/libs/light/libxl_internal.c.orig	2025-11-18 18:02:13.000000000 +0000
++++ xen-4.21.0/tools/libs/light/libxl_internal.c	2026-01-05 20:55:36.678719203 +0000
+@@ -204,7 +204,7 @@
+ 
+ char *libxl__dirname(libxl__gc *gc, const char *s)
+ {
+-    char *c = strrchr(s, '/');
++    char *c = strrchr((char *) s, '/');
+ 
+     if (!c)
+         return NULL;
+--- xen-4.21.0/tools/libs/light/libxl_cpuid.c.orig	2025-11-18 18:02:13.000000000 +0000
++++ xen-4.21.0/tools/libs/light/libxl_cpuid.c	2026-01-05 23:46:40.203837602 +0000
+@@ -444,14 +444,14 @@
+             return 4;
+         }
+         value = str[1] - 'a';
+-        endptr = strchr(str, '=');
++        endptr = strchr((char *) str, '=');
+         if (value > 3 || endptr == NULL) {
+             return 4;
+         }
+         str = endptr + 1;
+-        endptr = strchr(str, ',');
++        endptr = strchr((char *) str, ',');
+         if (endptr == NULL) {
+-            endptr = strchr(str, 0);
++            endptr = strchr((char *) str, 0);
+         }
+         if (endptr - str != 32) {
+             return 5;

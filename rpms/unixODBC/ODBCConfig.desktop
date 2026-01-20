@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=ODBC Data Source Administrator
+Comment=ODBC Data Source Administration Tool
+Exec=ODBCConfig
+Icon=LinuxODBC.xpm
+Type=Application
+Encoding=UTF-8
+Terminal=false
+Categories=X-Red-Hat-Extra;

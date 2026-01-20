@@ -1798,12 +1798,54 @@
     "source": "https://src.fedoraproject.org/rpms/tar.git",
     "version": "1.35"
   },
+  "tcl": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "00fb1d71ea03b42cd4b447054ae57ded0d0b0622",
+    "source": "https://src.fedoraproject.org/rpms/tcl.git",
+    "version": "9.0.2"
+  },
+  "tcsh": {
+    "branch": "rawhide",
+    "release": "5",
+    "sha": "628e95a050f41d725cd0456e730fc5234170dad5",
+    "source": "https://src.fedoraproject.org/rpms/tcsh.git",
+    "version": "6.24.14"
+  },
   "texinfo": {
     "branch": "rawhide",
     "release": "7",
     "sha": "2c26ac87e6179d5f03ce2dfdd68beb306e00df92",
     "source": "https://src.fedoraproject.org/rpms/texinfo.git",
     "version": "7.2"
+  },
+  "tidy": {
+    "branch": "rawhide",
+    "release": "13",
+    "sha": "65fb86411af2fb3efc6aee6de49d8473c520b575",
+    "source": "https://src.fedoraproject.org/rpms/tidy.git",
+    "version": "5.8.0"
+  },
+  "time": {
+    "branch": "rawhide",
+    "release": "28",
+    "sha": "9c5193fb4f92b443b81ac24a066ecb9d6ca1b033",
+    "source": "https://src.fedoraproject.org/rpms/time.git",
+    "version": "1.9"
+  },
+  "tk": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "57921177274f6668dfc82fb6c518154bf8200880",
+    "source": "https://src.fedoraproject.org/rpms/tk.git",
+    "version": "9.0.2"
+  },
+  "tokyocabinet": {
+    "branch": "rawhide",
+    "release": "30",
+    "sha": "46a582dc0f3a29d72a292924904edd4a99367248",
+    "source": "https://src.fedoraproject.org/rpms/tokyocabinet.git",
+    "version": "1.4.48"
   },
   "tomcat": {
     "branch": "rawhide",
@@ -1812,12 +1854,40 @@
     "source": "https://src.fedoraproject.org/rpms/tomcat.git",
     "version": "10.1.46"
   },
+  "tomcat-jakartaee-migration": {
+    "branch": "rawhide",
+    "release": "9",
+    "sha": "2ecd9b89f959c2e0cd8b7c585d2c6b729acc45df",
+    "source": "https://src.fedoraproject.org/rpms/tomcat-jakartaee-migration.git",
+    "version": "1.0.9"
+  },
+  "tomcli": {
+    "branch": "rawhide",
+    "release": "4",
+    "sha": "a5381a58317a7141931b563fa9538333cdebc9e1",
+    "source": "https://src.fedoraproject.org/rpms/tomcli.git",
+    "version": "0.10.1"
+  },
+  "toml11": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "703aad61f6e94973ed0b54164a7e0d0579efaa30",
+    "source": "https://src.fedoraproject.org/rpms/toml11.git",
+    "version": "4.4.0"
+  },
   "tpm2-tss": {
     "branch": "rawhide",
     "release": "8",
     "sha": "7f13b9f2a3811b0ef4587e9f10dac18a2081406e",
     "source": "https://src.fedoraproject.org/rpms/tpm2-tss.git",
     "version": "4.1.3"
+  },
+  "tree-pkg": {
+    "branch": "rawhide",
+    "release": "4",
+    "sha": "f69fe579e6a0b79986a25c881fb201448d782785",
+    "source": "https://src.fedoraproject.org/rpms/tree-pkg.git",
+    "version": "2.2.1"
   },
   "tree-sitter-srpm-macros": {
     "branch": "rawhide",
@@ -1840,6 +1910,34 @@
     "source": "https://src.fedoraproject.org/rpms/tzdata.git",
     "version": "2025c"
   },
+  "uid_wrapper": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "d272a7e93f831eb70d08d8ddaa61512c31654aeb",
+    "source": "https://src.fedoraproject.org/rpms/uid_wrapper.git",
+    "version": "1.3.2"
+  },
+  "umockdev": {
+    "branch": "rawhide",
+    "release": "2",
+    "sha": "e67b65699a8fb27062704d3532ac7dbc3e485491",
+    "source": "https://src.fedoraproject.org/rpms/umockdev.git",
+    "version": "0.19.4"
+  },
+  "unbound": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "e3acf4a8c2e24679bc9c894c5eb9cc5027b4cf79",
+    "source": "https://src.fedoraproject.org/rpms/unbound.git",
+    "version": "1.24.2"
+  },
+  "unixODBC": {
+    "branch": "rawhide",
+    "release": "3",
+    "sha": "12770a47ba2c52c5785f1a1f6f07b1bda5538c39",
+    "source": "https://src.fedoraproject.org/rpms/unixODBC.git",
+    "version": "2.3.14"
+  },
   "unzip": {
     "branch": "rawhide",
     "release": "68",
@@ -1861,6 +1959,13 @@
     "source": "https://src.fedoraproject.org/rpms/uuid.git",
     "version": "1.6.2"
   },
+  "valgrind": {
+    "branch": "rawhide",
+    "release": "3",
+    "sha": "338731caeafb9963a1193b9277e6aa54943d798f",
+    "source": "https://src.fedoraproject.org/rpms/valgrind.git",
+    "version": "3.26.0"
+  },
   "valkey": {
     "branch": "rawhide",
     "release": "2",
@@ -1868,12 +1973,47 @@
     "source": "https://src.fedoraproject.org/rpms/valkey.git",
     "version": "9.0.1"
   },
+  "vim": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "6fdde68c435ff130e2b61dcad32966df1a6ffbbf",
+    "source": "https://src.fedoraproject.org/rpms/vim.git",
+    "version": "9.1.2086"
+  },
   "which": {
     "branch": "rawhide",
     "release": "3",
     "sha": "ac38d264ed7d568632294389b9245f4272156986",
     "source": "https://src.fedoraproject.org/rpms/which.git",
     "version": "2.23"
+  },
+  "words": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "1a2dc3332c38e930b7c13d0acbe98bb33d9f7572",
+    "source": "https://src.fedoraproject.org/rpms/words.git",
+    "version": "3.0"
+  },
+  "xen": {
+    "branch": "rawhide",
+    "release": "2",
+    "sha": "461c19a5ca798a589685fb403b57643af1eb6f83",
+    "source": "https://src.fedoraproject.org/rpms/xen.git",
+    "version": "4.21.0"
+  },
+  "xmlto": {
+    "branch": "rawhide",
+    "release": "4",
+    "sha": "8cb63c9ee2458dc07aa6e965f20904f7a9d431e8",
+    "source": "https://src.fedoraproject.org/rpms/xmlto.git",
+    "version": "0.0.29"
+  },
+  "xmltoman": {
+    "branch": "rawhide",
+    "release": "34",
+    "sha": "1203fa82bc269082747a335f490d66aa308ca41d",
+    "source": "https://src.fedoraproject.org/rpms/xmltoman.git",
+    "version": "0.4"
   },
   "xorg-x11-fonts": {
     "branch": "rawhide",
