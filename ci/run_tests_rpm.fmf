@@ -114,5 +114,5 @@ discover:
           src_rpm_file=$(ls -1 "${srpms_dir}/"*.src.rpm)
 
           # Run tests with --repo-dir pointing to binary RPMs directory
-          ci/run_tests_rpm.sh $(printf -- '--rpm %s ' "${rpm_files[@]}") --repo-dir "${rpms_dir}" --src-rpm "${src_rpm_file}" "${package_name:-}"
+          ci/run_tests_rpm.sh -j $(printf -- '--rpm %s ' "${rpm_files[@]}") --repo-dir "${rpms_dir}" --src-rpm "${src_rpm_file}" "${package_name:-}"
         fi
