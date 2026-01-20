@@ -97,6 +97,7 @@ use in Bluetooth applications.
 %package hid2hci
 Summary: Put HID proxying bluetooth HCI's into HCI mode
 Requires: bluez%{?_isa} = %{version}-%{release}
+Requires: systemd-udev
 
 %description hid2hci
 Most allinone PC's and bluetooth keyboard / mouse sets which include a
@@ -167,7 +168,7 @@ install -m0755 tools/avinfo $RPM_BUILD_ROOT%{_bindir}
 
 # btmgmt is not installed by "make install", but it is useful for debugging
 # some issues and to set the MAC address on HCIs which don't have their
-# MAC address configured 
+# MAC address configured
 install -m0755 tools/btmgmt $RPM_BUILD_ROOT%{_bindir}
 
 # Remove libtool archive
