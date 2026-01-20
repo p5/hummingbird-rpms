@@ -71,6 +71,21 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
+# Check for required commands
+check_command() {
+    if ! command -v "$1" &>/dev/null; then
+        echo "Error: Required command '$1' is not installed." >&2
+        echo "Please install it and try again." >&2
+        exit 1
+    fi
+}
+
+check_command yq
+if [[ "${CHECK_BUILDDEPS}" == true ]]; then
+    check_command rpmspec
+    check_command dnf
+fi
+
 # Validate containers directory
 if [[ ! -d "${CONTAINERS_DIR}" ]]; then
     echo "Error: Containers directory not found: ${CONTAINERS_DIR}" >&2
