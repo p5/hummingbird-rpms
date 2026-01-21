@@ -853,6 +853,13 @@
     "source": "https://src.fedoraproject.org/rpms/jansson.git",
     "version": "2.14"
   },
+  "java-25-openjdk": {
+    "branch": "rawhide",
+    "release": "3.1",
+    "sha": "8cd039f21bc991f187ffb36c9bd113e7fdc78b76",
+    "source": "https://src.fedoraproject.org/rpms/java-25-openjdk.git",
+    "version": "25.0.1.0.8"
+  },
   "jq": {
     "branch": "rawhide",
     "release": "1",
