@@ -7750,8 +7750,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-java-25-openjdk-main
   timeouts:
-    pipeline: 4h
-    tasks: 4h
+    pipeline: 8 - "linux-d160-c8xlarge/arm64" - "linux-d160-c8xlarge/amd64"h
+    tasks: 8 - "linux-d160-c8xlarge/arm64" - "linux-d160-c8xlarge/amd64"h
   workspaces:
     - name: git-auth
       secret:

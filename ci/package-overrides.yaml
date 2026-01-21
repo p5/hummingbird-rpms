@@ -30,6 +30,11 @@ ruff:
     - "linux-d160-c8xlarge/arm64"
     - "linux-d160-c8xlarge/amd64"
 
+java-25-openjdk:
+  timeout_hours: 8
+    - "linux-d160-c8xlarge/arm64"
+    - "linux-d160-c8xlarge/amd64"
+
 setup:
   timeout_hours: 12
 
