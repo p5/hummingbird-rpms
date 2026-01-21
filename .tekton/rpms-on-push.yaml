@@ -7791,6 +7791,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux-d160-c8xlarge/arm64"
+        - "linux-d160-c8xlarge/amd64"
     - name: specfile
       value: "java-25-openjdk.spec"
     - name: monorepo-subdir
@@ -7810,8 +7814,8 @@ spec:
   taskRunTemplate:
     serviceAccountName: build-pipeline-java-25-openjdk-main
   timeouts:
-    pipeline: 8 - "linux-d160-c8xlarge/arm64" - "linux-d160-c8xlarge/amd64"h
-    tasks: 8 - "linux-d160-c8xlarge/arm64" - "linux-d160-c8xlarge/amd64"h
+    pipeline: 8h
+    tasks: 8h
   workspaces:
     - name: git-auth
       secret:
