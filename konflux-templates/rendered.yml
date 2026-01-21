@@ -12978,7 +12978,7 @@ spec:
     - name: ARCH
       value: x86_64
     - name: IMAGE_TAG
-      value: v3.7
+      value: v3.8
   resolverRef:
     resolver: bundles
     params:
@@ -13011,7 +13011,7 @@ spec:
     - name: ARCH
       value: aarch64
     - name: IMAGE_TAG
-      value: v3.7
+      value: v3.8
   resolverRef:
     resolver: bundles
     params:
