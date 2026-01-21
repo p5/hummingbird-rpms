@@ -96,6 +96,15 @@ def run_git_commit(*args: str, cwd: Path | str | None = None) -> subprocess.Comp
     return run_git(*commit_args, cwd=cwd)
 
 
+def check_jinja2_available() -> None:
+    """Check if jinja2 command-line tool is available."""
+    try:
+        subprocess.run(['jinja2', '--version'], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        sys.exit("ERROR: jinja2 command-line tool is not available.\n"
+                 "       Please install jinja2-cli (pip install jinja2-cli) or similar package.")
+
+
 def expand_url_shortcut(url: str) -> str:
     """Expand URL shortcuts to full dist-git URLs."""
     if url.startswith('fedora/'):
@@ -343,6 +352,9 @@ def import_(url: str, branch: str, ref: str | None = None, dry_run: bool = False
         'release': release,
     }
     save_import_json()
+
+    logging.info("Checking prerequisites...")
+    check_jinja2_available()
 
     logging.info("Calling generate.sh to update Tekton resources...")
     subprocess.run([ROOT_DIR / 'ci/generate.sh'], check=True)
