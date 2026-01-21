@@ -1,0 +1,37 @@
+From b4503ee9d9b629b4f90f29b5bacab5743b404f61 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Ale=C5=A1=20Mat=C4=9Bj?= <amatej@redhat.com>
+Date: Tue, 13 Jan 2026 16:30:47 +0100
+Subject: [PATCH 7/8] Add a couple of missing includes to fix builds
+
+---
+ libdnf5/module/module_metadata.hpp | 1 +
+ test/libdnf5/utils/test_fs.cpp     | 1 +
+ 2 files changed, 2 insertions(+)
+
+diff --git a/libdnf5/module/module_metadata.hpp b/libdnf5/module/module_metadata.hpp
+index 6c803b1c..7bca0f71 100644
+--- a/libdnf5/module/module_metadata.hpp
++++ b/libdnf5/module/module_metadata.hpp
+@@ -20,6 +20,7 @@
+ #ifndef LIBDNF5_MODULE_MODULE_METADATA_HPP
+ #define LIBDNF5_MODULE_MODULE_METADATA_HPP
+ 
++#include "libdnf5/base/base.hpp"
+ #include "libdnf5/base/base_weak.hpp"
+ #include "libdnf5/module/module_item.hpp"
+ #include "libdnf5/module/module_sack_weak.hpp"
+diff --git a/test/libdnf5/utils/test_fs.cpp b/test/libdnf5/utils/test_fs.cpp
+index b06bc646..81a971d6 100644
+--- a/test/libdnf5/utils/test_fs.cpp
++++ b/test/libdnf5/utils/test_fs.cpp
+@@ -24,6 +24,7 @@
+ 
+ #include <fcntl.h>
+ #include <libdnf5/common/exception.hpp>
++#include <unistd.h>
+ 
+ #include <filesystem>
+ 
+-- 
+2.52.0
+

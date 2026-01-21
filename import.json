@@ -470,8 +470,8 @@
   },
   "dnf5": {
     "branch": "rawhide",
-    "release": "3",
-    "sha": "d5463425afb3e02912898a0b436cfb665b3412f3",
+    "release": "7",
+    "sha": "5e8cce04396a4c2b1bf2e41d2219a78989f8a61d",
     "source": "https://src.fedoraproject.org/rpms/dnf5.git",
     "version": "5.3.0.0"
   },
