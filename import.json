@@ -475,6 +475,13 @@
     "source": "https://src.fedoraproject.org/rpms/dnf5.git",
     "version": "5.3.0.0"
   },
+  "dos2unix": {
+    "branch": "rawhide",
+    "release": "3",
+    "sha": "6aa9294ca9b7bdf8ff94249586d1ae01b7caab8d",
+    "source": "https://src.fedoraproject.org/rpms/dos2unix.git",
+    "version": "7.5.3"
+  },
   "dotnet10.0": {
     "branch": "rawhide",
     "release": "1",
