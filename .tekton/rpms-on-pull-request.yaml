@@ -38,6 +38,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "CUnit.spec"
     - name: monorepo-subdir
@@ -103,6 +107,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "PyYAML.spec"
     - name: monorepo-subdir
@@ -168,6 +176,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "R-rpm-macros.spec"
     - name: monorepo-subdir
@@ -233,6 +245,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "ShellCheck.spec"
     - name: monorepo-subdir
@@ -298,6 +314,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "abattis-cantarell-fonts.spec"
     - name: monorepo-subdir
@@ -363,6 +383,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "acl.spec"
     - name: monorepo-subdir
@@ -428,6 +452,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "alsa-lib.spec"
     - name: monorepo-subdir
@@ -493,6 +521,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "annobin.spec"
     - name: monorepo-subdir
@@ -558,6 +590,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "ansible-packaging.spec"
     - name: monorepo-subdir
@@ -623,6 +659,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "ant.spec"
     - name: monorepo-subdir
@@ -688,6 +728,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "apr.spec"
     - name: monorepo-subdir
@@ -753,6 +797,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "apr-util.spec"
     - name: monorepo-subdir
@@ -818,6 +866,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "aqute-bnd.spec"
     - name: monorepo-subdir
@@ -883,6 +935,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "asciidoc.spec"
     - name: monorepo-subdir
@@ -950,6 +1006,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "attr.spec"
     - name: monorepo-subdir
@@ -1015,6 +1075,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "audit.spec"
     - name: monorepo-subdir
@@ -1080,6 +1144,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "authselect.spec"
     - name: monorepo-subdir
@@ -1145,6 +1213,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "autoconf.spec"
     - name: monorepo-subdir
@@ -1210,6 +1282,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "automake.spec"
     - name: monorepo-subdir
@@ -1275,6 +1351,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "avahi.spec"
     - name: monorepo-subdir
@@ -1340,6 +1420,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "babeltrace.spec"
     - name: monorepo-subdir
@@ -1405,6 +1489,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "bash.spec"
     - name: monorepo-subdir
@@ -1470,6 +1558,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "bash-completion.spec"
     - name: monorepo-subdir
@@ -1535,6 +1627,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "bc.spec"
     - name: monorepo-subdir
@@ -1600,6 +1696,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "bdftopcf.spec"
     - name: monorepo-subdir
@@ -1665,6 +1765,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "beakerlib.spec"
     - name: monorepo-subdir
@@ -1730,6 +1834,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "bind.spec"
     - name: monorepo-subdir
@@ -1795,6 +1903,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "binutils.spec"
     - name: monorepo-subdir
@@ -1860,6 +1972,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "bison.spec"
     - name: monorepo-subdir
@@ -1925,6 +2041,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "bluez.spec"
     - name: monorepo-subdir
@@ -1990,6 +2110,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "boost.spec"
     - name: monorepo-subdir
@@ -2055,6 +2179,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "bpftool.spec"
     - name: monorepo-subdir
@@ -2120,6 +2248,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "brotli.spec"
     - name: monorepo-subdir
@@ -2185,6 +2317,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "btrfs-progs.spec"
     - name: monorepo-subdir
@@ -2250,6 +2386,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "busybox.spec"
     - name: monorepo-subdir
@@ -2315,6 +2455,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "bzip2.spec"
     - name: monorepo-subdir
@@ -2380,6 +2524,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "c-ares.spec"
     - name: monorepo-subdir
@@ -2445,6 +2593,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "ca-certificates.spec"
     - name: monorepo-subdir
@@ -2510,6 +2662,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "caddy.spec"
     - name: monorepo-subdir
@@ -2575,6 +2731,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "cairo.spec"
     - name: monorepo-subdir
@@ -2640,6 +2800,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "capstone.spec"
     - name: monorepo-subdir
@@ -2705,6 +2869,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "cargo-rpm-macros.spec"
     - name: monorepo-subdir
@@ -2770,6 +2938,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "catatonit.spec"
     - name: monorepo-subdir
@@ -2835,6 +3007,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "check.spec"
     - name: monorepo-subdir
@@ -2900,6 +3076,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "checkpolicy.spec"
     - name: monorepo-subdir
@@ -2965,6 +3145,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "chkconfig.spec"
     - name: monorepo-subdir
@@ -3030,6 +3214,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "chrpath.spec"
     - name: monorepo-subdir
@@ -3095,6 +3283,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "cmake.spec"
     - name: monorepo-subdir
@@ -3160,6 +3352,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "cmocka.spec"
     - name: monorepo-subdir
@@ -3225,6 +3421,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "compat-gpgme124.spec"
     - name: monorepo-subdir
@@ -3290,6 +3490,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "composer.spec"
     - name: monorepo-subdir
@@ -3355,6 +3559,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "composer-generators.spec"
     - name: monorepo-subdir
@@ -3420,6 +3628,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "container-selinux.spec"
     - name: monorepo-subdir
@@ -3485,6 +3697,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "containers-common.spec"
     - name: monorepo-subdir
@@ -3550,6 +3766,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "coreutils.spec"
     - name: monorepo-subdir
@@ -3615,6 +3835,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "cpio.spec"
     - name: monorepo-subdir
@@ -3680,6 +3904,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "cracklib.spec"
     - name: monorepo-subdir
@@ -3745,6 +3973,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "createrepo_c.spec"
     - name: monorepo-subdir
@@ -3810,6 +4042,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "crypto-policies.spec"
     - name: monorepo-subdir
@@ -3875,6 +4111,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "cryptsetup.spec"
     - name: monorepo-subdir
@@ -3940,6 +4180,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "ctags.spec"
     - name: monorepo-subdir
@@ -4005,6 +4249,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "cups.spec"
     - name: monorepo-subdir
@@ -4070,6 +4318,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "curl.spec"
     - name: monorepo-subdir
@@ -4139,6 +4391,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "cyrus-sasl.spec"
     - name: monorepo-subdir
@@ -4204,6 +4460,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "dbus.spec"
     - name: monorepo-subdir
@@ -4269,6 +4529,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "dbus-broker.spec"
     - name: monorepo-subdir
@@ -4336,6 +4600,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "debugedit.spec"
     - name: monorepo-subdir
@@ -4405,6 +4673,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "diffutils.spec"
     - name: monorepo-subdir
@@ -4470,6 +4742,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "dnf.spec"
     - name: monorepo-subdir
@@ -4535,6 +4811,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "dnf5.spec"
     - name: monorepo-subdir
@@ -4612,6 +4892,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "dotnet10.0.spec"
     - name: monorepo-subdir
@@ -4677,6 +4961,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "dotnet8.0.spec"
     - name: monorepo-subdir
@@ -4742,6 +5030,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "dotnet9.0.spec"
     - name: monorepo-subdir
@@ -4809,6 +5101,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "drpm.spec"
     - name: monorepo-subdir
@@ -4874,6 +5170,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "dwz.spec"
     - name: monorepo-subdir
@@ -4939,6 +5239,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "e2fsprogs.spec"
     - name: monorepo-subdir
@@ -5004,6 +5308,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "ecj.spec"
     - name: monorepo-subdir
@@ -5069,6 +5377,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "ed.spec"
     - name: monorepo-subdir
@@ -5134,6 +5446,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "efi-rpm-macros.spec"
     - name: monorepo-subdir
@@ -5199,6 +5515,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "elfutils.spec"
     - name: monorepo-subdir
@@ -5270,6 +5590,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "expat.spec"
     - name: monorepo-subdir
@@ -5335,6 +5659,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "fedora-logos.spec"
     - name: monorepo-subdir
@@ -5402,6 +5730,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "fedora-repos.spec"
     - name: monorepo-subdir
@@ -5467,6 +5799,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "file.spec"
     - name: monorepo-subdir
@@ -5532,6 +5868,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "filesystem.spec"
     - name: monorepo-subdir
@@ -5597,6 +5937,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "findutils.spec"
     - name: monorepo-subdir
@@ -5670,6 +6014,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "fmt.spec"
     - name: monorepo-subdir
@@ -5735,6 +6083,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "fontconfig.spec"
     - name: monorepo-subdir
@@ -5800,6 +6152,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "fonts-rpm-macros.spec"
     - name: monorepo-subdir
@@ -5867,6 +6223,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "forge-srpm-macros.spec"
     - name: monorepo-subdir
@@ -5932,6 +6292,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "fpc-srpm-macros.spec"
     - name: monorepo-subdir
@@ -5999,6 +6363,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "freetype.spec"
     - name: monorepo-subdir
@@ -6064,6 +6432,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "fsverity-utils.spec"
     - name: monorepo-subdir
@@ -6135,6 +6507,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "gap-srpm-macros.spec"
     - name: monorepo-subdir
@@ -6200,6 +6576,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "gawk.spec"
     - name: monorepo-subdir
@@ -6271,6 +6651,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "gdb.spec"
     - name: monorepo-subdir
@@ -6336,6 +6720,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "gdbm.spec"
     - name: monorepo-subdir
@@ -6419,6 +6807,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "ghc-srpm-macros.spec"
     - name: monorepo-subdir
@@ -6486,6 +6878,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "git.spec"
     - name: monorepo-subdir
@@ -6551,6 +6947,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "glib2.spec"
     - name: monorepo-subdir
@@ -6689,6 +7089,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "gmp.spec"
     - name: monorepo-subdir
@@ -6754,6 +7158,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "gnat-srpm-macros.spec"
     - name: monorepo-subdir
@@ -6819,6 +7227,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "gnulib-l10n.spec"
     - name: monorepo-subdir
@@ -6886,6 +7298,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "gnupg2.spec"
     - name: monorepo-subdir
@@ -6951,6 +7367,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "gnutls.spec"
     - name: monorepo-subdir
@@ -7018,6 +7438,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "go-rpm-macros.spec"
     - name: monorepo-subdir
@@ -7087,6 +7511,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "golang.spec"
     - name: monorepo-subdir
@@ -7152,6 +7580,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "google-noto-fonts.spec"
     - name: monorepo-subdir
@@ -7219,6 +7651,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "gperftools.spec"
     - name: monorepo-subdir
@@ -7284,6 +7720,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "gpgme.spec"
     - name: monorepo-subdir
@@ -7349,6 +7789,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "gpgverify.spec"
     - name: monorepo-subdir
@@ -7416,6 +7860,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "graphite2.spec"
     - name: monorepo-subdir
@@ -7481,6 +7929,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "grep.spec"
     - name: monorepo-subdir
@@ -7546,6 +7998,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "groff.spec"
     - name: monorepo-subdir
@@ -7621,6 +8077,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "gzip.spec"
     - name: monorepo-subdir
@@ -7686,6 +8146,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "haproxy.spec"
     - name: monorepo-subdir
@@ -7753,6 +8217,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "harfbuzz.spec"
     - name: monorepo-subdir
@@ -7822,6 +8290,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "hostname.spec"
     - name: monorepo-subdir
@@ -7887,6 +8359,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "httpd.spec"
     - name: monorepo-subdir
@@ -7954,6 +8430,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "hummingbird-release.spec"
     - name: monorepo-subdir
@@ -8019,6 +8499,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "icu.spec"
     - name: monorepo-subdir
@@ -8084,6 +8568,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "ima-evm-utils.spec"
     - name: monorepo-subdir
@@ -8151,6 +8639,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "iproute.spec"
     - name: monorepo-subdir
@@ -8222,6 +8714,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "jansson.spec"
     - name: monorepo-subdir
@@ -8366,6 +8862,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "jq.spec"
     - name: monorepo-subdir
@@ -8431,6 +8931,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "json-c.spec"
     - name: monorepo-subdir
@@ -8502,6 +9006,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "kernel-headers.spec"
     - name: monorepo-subdir
@@ -8569,6 +9077,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "keyutils.spec"
     - name: monorepo-subdir
@@ -8636,6 +9148,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "krb5.spec"
     - name: monorepo-subdir
@@ -8703,6 +9219,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "langpacks.spec"
     - name: monorepo-subdir
@@ -8768,6 +9288,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "less.spec"
     - name: monorepo-subdir
@@ -8857,6 +9381,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "libarchive.spec"
     - name: monorepo-subdir
@@ -8922,6 +9450,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "libassuan.spec"
     - name: monorepo-subdir
@@ -8989,6 +9521,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "libcap.spec"
     - name: monorepo-subdir
@@ -9054,6 +9590,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "libcap-ng.spec"
     - name: monorepo-subdir
@@ -9119,6 +9659,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "libcbor.spec"
     - name: monorepo-subdir
@@ -9190,6 +9734,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "libdnf.spec"
     - name: monorepo-subdir
@@ -9255,6 +9803,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "libeconf.spec"
     - name: monorepo-subdir
@@ -9320,6 +9872,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "libedit.spec"
     - name: monorepo-subdir
@@ -9387,6 +9943,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "libevent.spec"
     - name: monorepo-subdir
@@ -9452,6 +10012,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "libffi.spec"
     - name: monorepo-subdir
@@ -9517,6 +10081,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "libfido2.spec"
     - name: monorepo-subdir
@@ -9584,6 +10152,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "libgcrypt.spec"
     - name: monorepo-subdir
@@ -9651,6 +10223,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "libgpg-error.spec"
     - name: monorepo-subdir
@@ -9716,6 +10292,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "libidn2.spec"
     - name: monorepo-subdir
@@ -9783,6 +10363,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "libksba.spec"
     - name: monorepo-subdir
@@ -9852,6 +10436,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "libmodulemd.spec"
     - name: monorepo-subdir
@@ -9917,6 +10505,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "libmpc.spec"
     - name: monorepo-subdir
@@ -9990,6 +10582,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "libpsl.spec"
     - name: monorepo-subdir
@@ -10057,6 +10653,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "librepo.spec"
     - name: monorepo-subdir
@@ -10122,6 +10722,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "libseccomp.spec"
     - name: monorepo-subdir
@@ -10189,6 +10793,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "libselinux.spec"
     - name: monorepo-subdir
@@ -10254,6 +10862,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "libsemanage.spec"
     - name: monorepo-subdir
@@ -10319,6 +10931,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "libsepol.spec"
     - name: monorepo-subdir
@@ -10386,6 +11002,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "libsolv.spec"
     - name: monorepo-subdir
@@ -10451,6 +11071,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "libssh.spec"
     - name: monorepo-subdir
@@ -10520,6 +11144,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "libtasn1.spec"
     - name: monorepo-subdir
@@ -10587,6 +11215,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "libtool.spec"
     - name: monorepo-subdir
@@ -10652,6 +11284,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "libunistring.spec"
     - name: monorepo-subdir
@@ -10717,6 +11353,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "libunwind.spec"
     - name: monorepo-subdir
@@ -10782,6 +11422,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "libusb1.spec"
     - name: monorepo-subdir
@@ -10851,6 +11495,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "libverto.spec"
     - name: monorepo-subdir
@@ -10920,6 +11568,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "libxcrypt.spec"
     - name: monorepo-subdir
@@ -10987,6 +11639,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "libxml2.spec"
     - name: monorepo-subdir
@@ -11054,6 +11710,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "libyaml.spec"
     - name: monorepo-subdir
@@ -11139,6 +11799,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "lua.spec"
     - name: monorepo-subdir
@@ -11206,6 +11870,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "lz4.spec"
     - name: monorepo-subdir
@@ -11279,6 +11947,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "make.spec"
     - name: monorepo-subdir
@@ -11346,6 +12018,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "mariadb10.11.spec"
     - name: monorepo-subdir
@@ -11453,6 +12129,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "mpfr.spec"
     - name: monorepo-subdir
@@ -11524,6 +12204,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "ncurses.spec"
     - name: monorepo-subdir
@@ -11595,6 +12279,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "nettle.spec"
     - name: monorepo-subdir
@@ -11662,6 +12350,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "nghttp2.spec"
     - name: monorepo-subdir
@@ -11727,6 +12419,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "nghttp3.spec"
     - name: monorepo-subdir
@@ -11794,6 +12490,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "ngtcp2.spec"
     - name: monorepo-subdir
@@ -11865,6 +12565,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "nodejs20.spec"
     - name: monorepo-subdir
@@ -11930,6 +12634,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "nodejs22.spec"
     - name: monorepo-subdir
@@ -11995,6 +12703,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "nodejs24.spec"
     - name: monorepo-subdir
@@ -12060,6 +12772,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "npth.spec"
     - name: monorepo-subdir
@@ -12133,6 +12849,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "oniguruma.spec"
     - name: monorepo-subdir
@@ -12200,6 +12920,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "openldap.spec"
     - name: monorepo-subdir
@@ -12269,6 +12993,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "openssh.spec"
     - name: monorepo-subdir
@@ -12334,6 +13062,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "openssl.spec"
     - name: monorepo-subdir
@@ -12399,6 +13131,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "p11-kit.spec"
     - name: monorepo-subdir
@@ -12464,6 +13200,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "package-notes.spec"
     - name: monorepo-subdir
@@ -12529,6 +13269,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "pam.spec"
     - name: monorepo-subdir
@@ -12598,6 +13342,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "patch.spec"
     - name: monorepo-subdir
@@ -12663,6 +13411,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "pcre2.spec"
     - name: monorepo-subdir
@@ -12730,6 +13482,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "perl.spec"
     - name: monorepo-subdir
@@ -12797,6 +13553,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "perl-Carp.spec"
     - name: monorepo-subdir
@@ -12862,6 +13622,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "perl-Data-Dumper.spec"
     - name: monorepo-subdir
@@ -12927,6 +13691,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "perl-Digest.spec"
     - name: monorepo-subdir
@@ -12992,6 +13760,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "perl-Digest-MD5.spec"
     - name: monorepo-subdir
@@ -13057,6 +13829,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "perl-Encode.spec"
     - name: monorepo-subdir
@@ -13122,6 +13898,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "perl-Exporter.spec"
     - name: monorepo-subdir
@@ -13187,6 +13967,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "perl-File-Path.spec"
     - name: monorepo-subdir
@@ -13252,6 +14036,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "perl-File-Temp.spec"
     - name: monorepo-subdir
@@ -13317,6 +14105,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "perl-Getopt-Long.spec"
     - name: monorepo-subdir
@@ -13382,6 +14174,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "perl-HTTP-Tiny.spec"
     - name: monorepo-subdir
@@ -13447,6 +14243,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "perl-IO-Socket-IP.spec"
     - name: monorepo-subdir
@@ -13512,6 +14312,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "perl-IO-Socket-SSL.spec"
     - name: monorepo-subdir
@@ -13577,6 +14381,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "perl-MIME-Base32.spec"
     - name: monorepo-subdir
@@ -13642,6 +14450,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "perl-MIME-Base64.spec"
     - name: monorepo-subdir
@@ -13707,6 +14519,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "perl-Net-SSLeay.spec"
     - name: monorepo-subdir
@@ -13772,6 +14588,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "perl-PathTools.spec"
     - name: monorepo-subdir
@@ -13837,6 +14657,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "perl-Pod-Escapes.spec"
     - name: monorepo-subdir
@@ -13902,6 +14726,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "perl-Pod-Perldoc.spec"
     - name: monorepo-subdir
@@ -13967,6 +14795,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "perl-Pod-Simple.spec"
     - name: monorepo-subdir
@@ -14032,6 +14864,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "perl-Pod-Usage.spec"
     - name: monorepo-subdir
@@ -14097,6 +14933,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "perl-Scalar-List-Utils.spec"
     - name: monorepo-subdir
@@ -14162,6 +15002,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "perl-Socket.spec"
     - name: monorepo-subdir
@@ -14227,6 +15071,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "perl-Storable.spec"
     - name: monorepo-subdir
@@ -14292,6 +15140,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "perl-Term-ANSIColor.spec"
     - name: monorepo-subdir
@@ -14357,6 +15209,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "perl-Term-Cap.spec"
     - name: monorepo-subdir
@@ -14422,6 +15278,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "perl-Text-ParseWords.spec"
     - name: monorepo-subdir
@@ -14487,6 +15347,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "perl-Text-Tabs+Wrap.spec"
     - name: monorepo-subdir
@@ -14552,6 +15416,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "perl-Time-HiRes.spec"
     - name: monorepo-subdir
@@ -14617,6 +15485,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "perl-Time-Local.spec"
     - name: monorepo-subdir
@@ -14682,6 +15554,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "perl-URI.spec"
     - name: monorepo-subdir
@@ -14749,6 +15625,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "perl-constant.spec"
     - name: monorepo-subdir
@@ -14816,6 +15696,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "perl-libnet.spec"
     - name: monorepo-subdir
@@ -14881,6 +15765,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "perl-parent.spec"
     - name: monorepo-subdir
@@ -14946,6 +15834,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "perl-podlators.spec"
     - name: monorepo-subdir
@@ -15011,6 +15903,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "perl-srpm-macros.spec"
     - name: monorepo-subdir
@@ -15076,6 +15972,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "php.spec"
     - name: monorepo-subdir
@@ -15145,6 +16045,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "php-pecl-zip.spec"
     - name: monorepo-subdir
@@ -15212,6 +16116,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "pkgconf.spec"
     - name: monorepo-subdir
@@ -15283,6 +16191,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "popt.spec"
     - name: monorepo-subdir
@@ -15362,6 +16274,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "publicsuffix-list.spec"
     - name: monorepo-subdir
@@ -15431,6 +16347,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "pyproject-rpm-macros.spec"
     - name: monorepo-subdir
@@ -15496,6 +16416,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "pytest.spec"
     - name: monorepo-subdir
@@ -15565,6 +16489,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "python-attrs.spec"
     - name: monorepo-subdir
@@ -15634,6 +16562,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "python-certifi.spec"
     - name: monorepo-subdir
@@ -15699,6 +16631,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "python-charset-normalizer.spec"
     - name: monorepo-subdir
@@ -15776,6 +16712,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "python-gitlab.spec"
     - name: monorepo-subdir
@@ -15843,6 +16783,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "python-idna.spec"
     - name: monorepo-subdir
@@ -15910,6 +16854,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "python-iniconfig.spec"
     - name: monorepo-subdir
@@ -15977,6 +16925,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "python-jinja2.spec"
     - name: monorepo-subdir
@@ -16042,6 +16994,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "python-jinja2-cli.spec"
     - name: monorepo-subdir
@@ -16107,6 +17063,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "python-jsonschema.spec"
     - name: monorepo-subdir
@@ -16172,6 +17132,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "python-jsonschema-specifications.spec"
     - name: monorepo-subdir
@@ -16239,6 +17203,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "python-markupsafe.spec"
     - name: monorepo-subdir
@@ -16306,6 +17274,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "python-mypy_extensions.spec"
     - name: monorepo-subdir
@@ -16371,6 +17343,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "python-packaging.spec"
     - name: monorepo-subdir
@@ -16436,6 +17412,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "python-pathspec.spec"
     - name: monorepo-subdir
@@ -16503,6 +17483,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "python-pip.spec"
     - name: monorepo-subdir
@@ -16568,6 +17552,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "python-pluggy.spec"
     - name: monorepo-subdir
@@ -16635,6 +17623,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "python-productmd.spec"
     - name: monorepo-subdir
@@ -16702,6 +17694,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "python-pygments.spec"
     - name: monorepo-subdir
@@ -16775,6 +17771,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "python-referencing.spec"
     - name: monorepo-subdir
@@ -16840,6 +17840,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "python-requests.spec"
     - name: monorepo-subdir
@@ -16905,6 +17909,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "python-requests-toolbelt.spec"
     - name: monorepo-subdir
@@ -16970,6 +17978,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "python-rpds-py.spec"
     - name: monorepo-subdir
@@ -17039,6 +18051,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "python-rpm-macros.spec"
     - name: monorepo-subdir
@@ -17104,6 +18120,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "python-sentry-sdk.spec"
     - name: monorepo-subdir
@@ -17187,6 +18207,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "python-types-pyyaml.spec"
     - name: monorepo-subdir
@@ -17252,6 +18276,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "python-types-requests.spec"
     - name: monorepo-subdir
@@ -17317,6 +18345,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "python-typing-extensions.spec"
     - name: monorepo-subdir
@@ -17382,6 +18414,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "python-urllib3.spec"
     - name: monorepo-subdir
@@ -17453,6 +18489,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "python3-mypy.spec"
     - name: monorepo-subdir
@@ -17518,6 +18558,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "python3.14.spec"
     - name: monorepo-subdir
@@ -17593,6 +18637,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "qt5.spec"
     - name: monorepo-subdir
@@ -17660,6 +18708,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "qt6.spec"
     - name: monorepo-subdir
@@ -17729,6 +18781,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "readline.spec"
     - name: monorepo-subdir
@@ -17794,6 +18850,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "redhat-rpm-config.spec"
     - name: monorepo-subdir
@@ -17865,6 +18925,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "rootfiles.spec"
     - name: monorepo-subdir
@@ -17930,6 +18994,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "rpm.spec"
     - name: monorepo-subdir
@@ -17997,6 +19065,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "ruby.spec"
     - name: monorepo-subdir
@@ -18066,6 +19138,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "rubygem-json.spec"
     - name: monorepo-subdir
@@ -18131,6 +19207,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "rubygem-rdoc.spec"
     - name: monorepo-subdir
@@ -18198,6 +19278,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "rubypick.spec"
     - name: monorepo-subdir
@@ -18334,6 +19418,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "rust-add-determinism.spec"
     - name: monorepo-subdir
@@ -18401,6 +19489,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "rust-rpm-sequoia.spec"
     - name: monorepo-subdir
@@ -18472,6 +19564,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "sdbus-cpp.spec"
     - name: monorepo-subdir
@@ -18537,6 +19633,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "sed.spec"
     - name: monorepo-subdir
@@ -18602,6 +19702,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "selinux-policy.spec"
     - name: monorepo-subdir
@@ -18667,6 +19771,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "setup.spec"
     - name: monorepo-subdir
@@ -18732,6 +19840,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "sgml-common.spec"
     - name: monorepo-subdir
@@ -18797,6 +19909,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "shadow-utils.spec"
     - name: monorepo-subdir
@@ -18866,6 +19982,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "skopeo.spec"
     - name: monorepo-subdir
@@ -18933,6 +20053,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "snappy.spec"
     - name: monorepo-subdir
@@ -19006,6 +20130,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "sqlite.spec"
     - name: monorepo-subdir
@@ -19085,6 +20213,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "systemd.spec"
     - name: monorepo-subdir
@@ -19150,6 +20282,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "systemd-stub.spec"
     - name: monorepo-subdir
@@ -19219,6 +20355,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "tar.spec"
     - name: monorepo-subdir
@@ -19284,6 +20424,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "tcl.spec"
     - name: monorepo-subdir
@@ -19349,6 +20493,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "tcsh.spec"
     - name: monorepo-subdir
@@ -19414,6 +20562,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "texinfo.spec"
     - name: monorepo-subdir
@@ -19481,6 +20633,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "tidy.spec"
     - name: monorepo-subdir
@@ -19546,6 +20702,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "time.spec"
     - name: monorepo-subdir
@@ -19611,6 +20771,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "tk.spec"
     - name: monorepo-subdir
@@ -19676,6 +20840,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "tokyocabinet.spec"
     - name: monorepo-subdir
@@ -19741,6 +20909,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "tomcat.spec"
     - name: monorepo-subdir
@@ -19806,6 +20978,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "tomcat-jakartaee-migration.spec"
     - name: monorepo-subdir
@@ -19871,6 +21047,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "tomcli.spec"
     - name: monorepo-subdir
@@ -19936,6 +21116,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "toml11.spec"
     - name: monorepo-subdir
@@ -20001,6 +21185,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "tpm2-tss.spec"
     - name: monorepo-subdir
@@ -20066,6 +21254,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "tree-pkg.spec"
     - name: monorepo-subdir
@@ -20131,6 +21323,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "tree-sitter-srpm-macros.spec"
     - name: monorepo-subdir
@@ -20196,6 +21392,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "ttmkfdir.spec"
     - name: monorepo-subdir
@@ -20261,6 +21461,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "tzdata.spec"
     - name: monorepo-subdir
@@ -20326,6 +21530,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "uid_wrapper.spec"
     - name: monorepo-subdir
@@ -20391,6 +21599,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "umockdev.spec"
     - name: monorepo-subdir
@@ -20456,6 +21668,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "unbound.spec"
     - name: monorepo-subdir
@@ -20521,6 +21737,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "unixODBC.spec"
     - name: monorepo-subdir
@@ -20586,6 +21806,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "unzip.spec"
     - name: monorepo-subdir
@@ -20651,6 +21875,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "util-linux.spec"
     - name: monorepo-subdir
@@ -20716,6 +21944,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "uuid.spec"
     - name: monorepo-subdir
@@ -20781,6 +22013,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "valgrind.spec"
     - name: monorepo-subdir
@@ -20846,6 +22082,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "valkey.spec"
     - name: monorepo-subdir
@@ -20911,6 +22151,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "vim.spec"
     - name: monorepo-subdir
@@ -20976,6 +22220,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "which.spec"
     - name: monorepo-subdir
@@ -21041,6 +22289,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "words.spec"
     - name: monorepo-subdir
@@ -21108,6 +22360,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "xen.spec"
     - name: monorepo-subdir
@@ -21173,6 +22429,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "xmlto.spec"
     - name: monorepo-subdir
@@ -21238,6 +22498,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "xmltoman.spec"
     - name: monorepo-subdir
@@ -21303,6 +22567,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "xorg-x11-fonts.spec"
     - name: monorepo-subdir
@@ -21368,6 +22636,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "xxhash.spec"
     - name: monorepo-subdir
@@ -21433,6 +22705,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "xz.spec"
     - name: monorepo-subdir
@@ -21498,6 +22774,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "yarnpkg.spec"
     - name: monorepo-subdir
@@ -21563,6 +22843,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "yq.spec"
     - name: monorepo-subdir
@@ -21628,6 +22912,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "zchunk.spec"
     - name: monorepo-subdir
@@ -21693,6 +22981,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "zig-srpm-macros.spec"
     - name: monorepo-subdir
@@ -21758,6 +23050,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "zip.spec"
     - name: monorepo-subdir
@@ -21823,6 +23119,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "zlib-ng.spec"
     - name: monorepo-subdir
@@ -21888,6 +23188,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "zstd.spec"
     - name: monorepo-subdir
