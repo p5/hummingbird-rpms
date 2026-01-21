@@ -21615,6 +21615,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "qdbm.spec"
     - name: monorepo-subdir
@@ -21630,7 +21634,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-qdbm-main
   timeouts:
@@ -21677,6 +21681,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "qrencode.spec"
     - name: monorepo-subdir
@@ -21692,7 +21700,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-qrencode-main
   timeouts:
@@ -21739,6 +21747,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "qt3.spec"
     - name: monorepo-subdir
@@ -21754,7 +21766,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-qt3-main
   timeouts:
@@ -21937,6 +21949,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "rdma-core.spec"
     - name: monorepo-subdir
@@ -21952,7 +21968,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-rdma-core-main
   timeouts:
@@ -22133,6 +22149,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "resolv_wrapper.spec"
     - name: monorepo-subdir
@@ -22148,7 +22168,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-resolv-wrapper-main
   timeouts:
@@ -22329,6 +22349,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "rpmdevtools.spec"
     - name: monorepo-subdir
@@ -22344,7 +22368,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-rpmdevtools-main
   timeouts:
@@ -22459,6 +22483,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "rubygem-asciidoctor.spec"
     - name: monorepo-subdir
@@ -22474,7 +22502,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-rubygem-asciidoctor-main
   timeouts:
@@ -22653,6 +22681,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "rubygem-test-unit.spec"
     - name: monorepo-subdir
@@ -22668,7 +22700,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-rubygem-test-unit-main
   timeouts:
@@ -22915,6 +22947,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "rust-bindgen-cli.spec"
     - name: monorepo-subdir
@@ -22930,71 +22966,9 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-rust-bindgen-cli-main
-  timeouts:
-    pipeline: 4h
-    tasks: 4h
-  workspaces:
-    - name: git-auth
-      secret:
-        secretName: '{{git_auth_secret}}'
-# --- rust-packaging ---
----
-apiVersion: tekton.dev/v1
-kind: PipelineRun
-metadata:
-  annotations:
-    build.appstudio.openshift.io/repo: https://gitlab.com/redhat/hummingbird/rpms/-/tree/{{revision}}
-    build.appstudio.redhat.com/commit_sha: '{{revision}}'
-    build.appstudio.redhat.com/target_branch: '{{target_branch}}'
-    pipelinesascode.tekton.dev/on-target-branch: "[main]"
-    pipelinesascode.tekton.dev/cancel-in-progress: "false"
-    pipelinesascode.tekton.dev/max-keep-runs: "3"
-    pipelinesascode.tekton.dev/on-event: "[push]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/rust-packaging/***]"
-  creationTimestamp: null
-  labels:
-    appstudio.openshift.io/application: rpms-main
-    appstudio.openshift.io/component: rust-packaging-main
-    pipelines.appstudio.openshift.io/type: build
-  name: rust-packaging-main-on-push
-  namespace: hummingbird-tenant
-spec:
-  params:
-    - name: git-url
-      value: '{{source_url}}'
-    - name: revision
-      value: '{{revision}}'
-    - name: ociStorage
-      value: quay.io/redhat-user-workloads/hummingbird-tenant/rust-packaging-main:{{revision}}
-    - name: package-name
-      value: rust-packaging
-    - name: target-branch
-      value: '{{target_branch}}'
-    - name: build-architectures
-      value:
-        - aarch64
-        - x86_64
-    - name: specfile
-      value: "rust-packaging.spec"
-    - name: monorepo-subdir
-      value: "rpms/rust-packaging"
-    - name: mock-config-template-filename-in-sources
-      value: "mock/mock.cfg"
-  pipelineRef:
-    resolver: bundles
-    params:
-      - name: name
-        value: build-rpm-package
-      - name: kind
-        value: pipeline
-      - name: bundle
-        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
-  taskRunTemplate:
-    serviceAccountName: build-pipeline-rust-packaging-main
   timeouts:
     pipeline: 4h
     tasks: 4h
@@ -23105,6 +23079,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "rust-sequoia-policy-config.spec"
     - name: monorepo-subdir
@@ -23120,7 +23098,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-rust-sequoia-policy-config-main
   timeouts:
@@ -23167,6 +23145,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "rust2rpm-helper.spec"
     - name: monorepo-subdir
@@ -23182,7 +23164,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-rust2rpm-helper-main
   timeouts:
@@ -23229,6 +23211,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "scdoc.spec"
     - name: monorepo-subdir
@@ -23244,7 +23230,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-scdoc-main
   timeouts:
@@ -23687,6 +23673,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "shared-mime-info.spec"
     - name: monorepo-subdir
@@ -23702,7 +23692,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-shared-mime-info-main
   timeouts:
@@ -23749,6 +23739,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "sharutils.spec"
     - name: monorepo-subdir
@@ -23764,7 +23758,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-sharutils-main
   timeouts:
@@ -23945,6 +23939,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "socat.spec"
     - name: monorepo-subdir
@@ -23960,7 +23958,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-socat-main
   timeouts:
@@ -24007,6 +24005,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "socket_wrapper.spec"
     - name: monorepo-subdir
@@ -24022,7 +24024,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-socket-wrapper-main
   timeouts:
@@ -24071,6 +24073,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "source-highlight.spec"
     - name: monorepo-subdir
@@ -24086,7 +24092,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-source-highlight-main
   timeouts:
@@ -24199,6 +24205,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "star.spec"
     - name: monorepo-subdir
@@ -24214,7 +24224,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-star-main
   timeouts:
@@ -24263,6 +24273,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "stunnel.spec"
     - name: monorepo-subdir
@@ -24278,7 +24292,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-stunnel-main
   timeouts:
@@ -24325,6 +24339,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "subversion.spec"
     - name: monorepo-subdir
@@ -24340,7 +24358,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-subversion-main
   timeouts:
@@ -24387,6 +24405,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "swig.spec"
     - name: monorepo-subdir
@@ -24402,7 +24424,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-swig-main
   timeouts:
@@ -24449,6 +24471,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "swtpm.spec"
     - name: monorepo-subdir
@@ -24464,7 +24490,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-swtpm-main
   timeouts:
@@ -24511,6 +24537,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "sysprof.spec"
     - name: monorepo-subdir
@@ -24526,7 +24556,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-sysprof-main
   timeouts:
@@ -24707,6 +24737,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "systemtap.spec"
     - name: monorepo-subdir
@@ -24722,7 +24756,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:85e414e49a3af6024975e7aa81be7ed050f40fcc70cb879389b1286b10d8ce13"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
   taskRunTemplate:
     serviceAccountName: build-pipeline-systemtap-main
   timeouts:
