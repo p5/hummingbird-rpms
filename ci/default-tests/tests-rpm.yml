@@ -54,11 +54,17 @@ rpm-install:
       cp "${rpm_file}" "${build_dir}/local-repo/"
     done
 
-    # Run createrepo_c in a container to generate repository metadata
-    "${TEST_ENGINE}" run --rm --user 0 -e HOME=/root \
-      -v "${build_dir}/local-repo:/repo:z" \
-      quay.io/hummingbird-ci/builder:latest \
-      createrepo_c /repo
+    # Run createrepo_c to generate repository metadata
+    if command -v createrepo_c &>/dev/null; then
+      # Use native createrepo_c if available (faster, no container overhead)
+      createrepo_c "${build_dir}/local-repo"
+    else
+      # Fall back to container
+      "${TEST_ENGINE}" run --rm --user 0 -e HOME=/root \
+        -v "${build_dir}/local-repo:/repo:z" \
+        quay.io/hummingbird-ci/builder:latest \
+        createrepo_c /repo
+    fi
 
     echo "Created local repository with $(ls -1 "${build_dir}/local-repo/"*.rpm | wc -l) RPM(s)"
 

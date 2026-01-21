@@ -13,11 +13,15 @@ Usage: $0 [OPTIONS] PACKAGE_NAME
 Run tests for RPM packages.
 
 OPTIONS:
-    --rpm PATH            Path to binary RPM file to test (required)
+    --rpm PATH            Path to binary RPM file to test (optional)
                           Can be specified multiple times for multiple RPMs
+                          If not provided, auto-discovers RPMs from --repo-dir,
+                          ./builds/<package>/RPMS/, or ./RPMS/
     --repo-dir PATH       Path to directory containing RPMs to create a local repository
                           (optional, enables dependency resolution for multi-package builds)
     --src-rpm PATH        Path to source RPM file (optional, enables source RPM tests)
+    --jobs [N], -j [N]    Number of parallel RPM tests to run (default: 1)
+                          If N is omitted, uses number of CPU cores
     --verbose, -v         Enable verbose output during testing
     --help, -h            Show this help message
 
@@ -116,6 +120,7 @@ TEST_ENGINE=podman
 TEST_IMAGE="${TEST_IMAGE:-quay.io/hummingbird/core-runtime:latest-builder}"
 TEST_SRC_RPM=""
 TEST_REPO_DIR=""
+TEST_JOBS=1
 RPM_PATHS=()
 
 while [[ $# -gt 0 ]]; do
@@ -135,6 +140,34 @@ while [[ $# -gt 0 ]]; do
         --src-rpm)
             TEST_SRC_RPM=$2
             shift 2
+            ;;
+        --jobs|-j)
+            # Check if next argument is a number or missing/another option
+            if [[ -z ${2:-} ]] || [[ $2 == -* ]]; then
+                # No number provided, use number of CPU cores
+                TEST_JOBS=$(nproc)
+                shift
+            elif [[ $2 =~ ^[0-9]+$ ]]; then
+                TEST_JOBS=$2
+                if (( TEST_JOBS < 1 )); then
+                    echo "Error: --jobs must be a positive integer"
+                    exit 1
+                fi
+                shift 2
+            else
+                # Next argument is not a number (probably package name), use nproc
+                TEST_JOBS=$(nproc)
+                shift
+            fi
+            ;;
+        -j[0-9]*)
+            # Handle -jN format (no space between -j and number)
+            TEST_JOBS=${1#-j}
+            if (( TEST_JOBS < 1 )); then
+                echo "Error: --jobs must be a positive integer"
+                exit 1
+            fi
+            shift
             ;;
         --help|-h)
             show_help
@@ -165,10 +198,44 @@ if [[ -z ${PACKAGE_NAME:-} ]]; then
     exit 1
 fi >&2
 
+# Auto-discover RPMs if none provided
 if [[ ${#RPM_PATHS[@]} -eq 0 ]]; then
-    echo "Error: --rpm PATH is required"
-    echo "Usage: $0 [OPTIONS] PACKAGE_NAME"
-    exit 1
+    # Determine search directory (check multiple locations)
+    if [[ -n ${TEST_REPO_DIR} ]]; then
+        search_dir="${TEST_REPO_DIR}"
+    elif [[ -d "./builds/${PACKAGE_NAME}/RPMS" ]]; then
+        search_dir="./builds/${PACKAGE_NAME}/RPMS"
+    elif [[ -d ./RPMS ]]; then
+        search_dir="./RPMS"
+    else
+        search_dir="."
+    fi
+
+    # Get current architecture
+    current_arch=$(uname -m)
+
+    # Find RPMs matching package name and architecture
+    # shellcheck disable=SC2312
+    while IFS= read -r -d '' rpm_file; do
+        rpm_name=$(rpm -qp --queryformat '%{NAME}' "${rpm_file}" 2>/dev/null) || continue
+        rpm_arch=$(rpm -qp --queryformat '%{ARCH}' "${rpm_file}" 2>/dev/null) || continue
+
+        # Check if RPM name starts with package name (handles subpackages like tcl-devel)
+        if [[ ${rpm_name} == "${PACKAGE_NAME}" || ${rpm_name} == "${PACKAGE_NAME}-"* ]]; then
+            # Include if architecture matches or is noarch
+            if [[ ${rpm_arch} == "noarch" || ${rpm_arch} == "${current_arch}" ]]; then
+                RPM_PATHS+=("${rpm_file}")
+            fi
+        fi
+    done < <(find "${search_dir}" -maxdepth 1 -name '*.rpm' ! -name '*.src.rpm' -print0 2>/dev/null)
+
+    if [[ ${#RPM_PATHS[@]} -eq 0 ]]; then
+        echo "Error: No RPMs found for package '${PACKAGE_NAME}' in ${search_dir}"
+        echo "Either provide --rpm PATH or ensure RPMs exist in --repo-dir, ./builds/<package>/RPMS/, or ./RPMS/"
+        exit 1
+    fi
+
+    echo "Auto-discovered ${#RPM_PATHS[@]} RPM(s) for ${PACKAGE_NAME} in ${search_dir}"
 fi >&2
 
 # Validate package directory exists
@@ -214,6 +281,7 @@ export TEST_VERBOSE
 export TEST_ENGINE
 export TEST_IMAGE
 export PACKAGE_NAME
+export TEST_JOBS
 
 temp_dir=$(mktemp -d)
 trap 'rm -rf "${temp_dir}"' EXIT
@@ -232,6 +300,7 @@ fi
 log_info "Container engine: ${TEST_ENGINE}"
 log_info "Container image: ${TEST_IMAGE}"
 log_info "Verbose mode: ${TEST_VERBOSE}"
+log_info "Parallel jobs: ${TEST_JOBS}"
 
 # Load default tests
 default_tests_file="${base_dir}/ci/default-tests/tests-rpm.yml"
@@ -263,6 +332,140 @@ fi
 binary_rpm_test_names=$(jq -r 'keys_unsorted[] | select(startswith("src-") | not)' <<< "${test_data}")
 src_rpm_test_names=$(jq -r 'keys_unsorted[] | select(startswith("src-"))' <<< "${test_data}")
 
+# Function to run tests for a single RPM
+# Arguments: rpm_file rpm_index total_rpms result_dir
+# Outputs results to result_dir/results.txt and logs to result_dir/output.log
+run_rpm_tests() {
+    local rpm_file=$1
+    local rpm_index=$2
+    local total_rpms=$3
+    local result_dir=$4
+    local output_log="${result_dir}/output.log"
+    local results_file="${result_dir}/results.txt"
+    local rpm_basename
+    rpm_basename=$(basename "${rpm_file}")
+
+    export TEST_RPM="${rpm_file}"
+
+    # Capture all output for this RPM
+    {
+        log_heading "Testing Binary RPM ${rpm_index}/${total_rpms}: ${rpm_basename}"
+
+        # Run binary RPM tests
+        local current_test=0
+        local total_tests=0
+        local passed_tests=0
+        local failed_tests=0
+        local known_issue_tests=0
+        local unexpected_pass_tests=0
+        local known_issues_found=()
+
+        while IFS= read -r test_name; do
+            [[ -z ${test_name} ]] && continue
+            total_tests=$((total_tests + 1))
+            current_test=$((current_test + 1))
+
+            log_heading "Test ${current_test}: ${test_name}"
+
+            local single_test_data
+            single_test_data=$(jq --compact-output --arg test_name "${test_name}" '.[$test_name]' <<< "${test_data}")
+
+            log_info "Running test..."
+            local command known_issues source_dir
+            command=$(jq -r '.command' <<< "${single_test_data}")
+            known_issues=$(jq -c '.known_issues // []' <<< "${single_test_data}")
+            source_dir=$(jq -r '.source_dir // "."' <<< "${single_test_data}")
+
+            # Run test in subshell to avoid side effects
+            (
+                [[ ${TEST_VERBOSE} == true ]] && set -x
+                # Change to the directory where the test is defined
+                cd "${source_dir}"
+                # Ensure TEST_RPM, TEST_SRC_RPM, TEST_ENGINE and TEST_IMAGE are available in subshell
+                export TEST_RPM TEST_SRC_RPM TEST_ENGINE TEST_IMAGE
+                eval "${command}"
+            ) &> "${output_log}.${current_test}" &
+
+            if ! wait -n; then
+                local issue_result
+                issue_result=$(check_known_issues "${known_issues}" "${output_log}.${current_test}")
+                if [[ -n "${issue_result}" ]]; then
+                    # Trim leading/trailing whitespace from the combined line
+                    local issue_line issue_url
+                    issue_line=$(tr '\n' ' ' <<< "${issue_result}" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+                    log_known_failure "${issue_line}"
+                    known_issue_tests=$((known_issue_tests + 1))
+                    issue_url=$(head -n1 <<< "${issue_result}")
+                    # Only add to known_issues_found if not empty/null
+                    if [[ -n ${issue_url} && ${issue_url} != "null" ]]; then
+                        known_issues_found+=("${issue_url}")
+                    fi
+                else
+                    echo "Command output:"
+                    cat "${output_log}.${current_test}"
+                    log_fail "Test failed with unknown issue"
+                    failed_tests=$((failed_tests + 1))
+                fi
+            else
+                if [[ ${TEST_VERBOSE} == true ]]; then
+                    echo "Command output:"
+                    cat "${output_log}.${current_test}"
+                fi
+
+                if [[ ${known_issues} != "[]" ]]; then
+                    local always_fail_issues
+                    always_fail_issues=$(jq -cr '.[] | select(.fails == "always" or (.fails | not)) | .issue + " " + .description' <<< "${known_issues}")
+                    if [[ -n "${always_fail_issues}" ]]; then
+                        log_unexpected_pass "${always_fail_issues}"
+                        unexpected_pass_tests=$((unexpected_pass_tests + 1))
+                    else
+                        log_pass "Test passed"
+                        passed_tests=$((passed_tests + 1))
+                    fi
+                else
+                    log_pass "Test passed"
+                    passed_tests=$((passed_tests + 1))
+                fi
+            fi
+        done <<< "${binary_rpm_test_names}"
+
+        # Print summary for this RPM
+        if (( known_issue_tests > 0 )); then
+            log_heading "Known Failures Found for $(basename "${rpm_file}")"
+            echo "${known_issues_found[@]}" | tr ' ' '\n' | grep -v '^null$' | grep -v '^$' | sort -u | sed 's/^/- /' || true
+        fi
+
+        log_heading "Test Summary for $(basename "${rpm_file}")"
+        log_info "Passed: ${passed_tests}/${total_tests}"
+        log_info "Known Failures: ${known_issue_tests}/${total_tests}"
+        log_info "Unknown Failures: ${failed_tests}/${total_tests}"
+        log_info "Unexpected Passes: ${unexpected_pass_tests}/${total_tests}"
+
+        echo ""
+
+        # Write results to file for aggregation
+        cat > "${results_file}" << RESULTS_EOF
+total_tests=${total_tests}
+passed_tests=${passed_tests}
+failed_tests=${failed_tests}
+known_issue_tests=${known_issue_tests}
+unexpected_pass_tests=${unexpected_pass_tests}
+known_issues_found=${known_issues_found[*]:-}
+RESULTS_EOF
+    } > "${result_dir}/console.log" 2>&1
+
+    # Return exit code based on test results
+    if (( failed_tests > 0 || unexpected_pass_tests > 0 )); then
+        return 1
+    fi
+    return 0
+}
+export -f run_rpm_tests
+export -f log_heading log_pass log_unexpected_pass log_known_failure log_fail log_info
+export -f check_known_issues
+export test_data binary_rpm_test_names
+export RED GREEN YELLOW LIGHT_CYAN NC
+
 # Initialize overall counters
 overall_total_tests=0
 overall_passed_tests=0
@@ -271,108 +474,79 @@ overall_known_issue_tests=0
 overall_unexpected_pass_tests=0
 declare -a overall_known_issues_found
 
-# Run tests for each RPM
+# Run tests for each RPM (with parallelism support)
+declare -a rpm_pids=()
+declare -a rpm_result_dirs=()
 rpm_index=0
+total_rpms=${#RPM_PATHS[@]}
+
 for rpm_file in "${RPM_PATHS[@]}"; do
     rpm_index=$((rpm_index + 1))
-    export TEST_RPM="${rpm_file}"
 
-    log_heading "Testing Binary RPM ${rpm_index}/${#RPM_PATHS[@]}: $(basename "${rpm_file}")"
+    # Create result directory for this RPM
+    result_dir="${temp_dir}/rpm-${rpm_index}"
+    mkdir -p "${result_dir}"
+    rpm_result_dirs+=("${result_dir}")
 
-    # Run binary RPM tests
-    current_test=0
-    total_tests=0
-    passed_tests=0
-    failed_tests=0
-    known_issue_tests=0
-    unexpected_pass_tests=0
-    declare -a known_issues_found
+    # Show which RPM is being tested (useful for parallel execution progress)
+    log_info "Starting test [${rpm_index}/${total_rpms}]: ${rpm_file}"
 
-    while IFS= read -r test_name; do
-        [[ -z ${test_name} ]] && continue
-        total_tests=$((total_tests + 1))
-        current_test=$((current_test + 1))
+    # Run tests (in background if parallel jobs > 1)
+    if (( TEST_JOBS > 1 )); then
+        run_rpm_tests "${rpm_file}" "${rpm_index}" "${total_rpms}" "${result_dir}" &
+        rpm_pids+=($!)
 
-        log_heading "Test ${current_test}: ${test_name}"
-
-        single_test_data=$(jq --compact-output --arg test_name "${test_name}" '.[$test_name]' <<< "${test_data}")
-
-        log_info "Running test..."
-        command=$(jq -r '.command' <<< "${single_test_data}")
-        known_issues=$(jq -c '.known_issues // []' <<< "${single_test_data}")
-        source_dir=$(jq -r '.source_dir // "."' <<< "${single_test_data}")
-
-        # Run test in subshell to avoid side effects
-        (
-            [[ ${TEST_VERBOSE} == true ]] && set -x
-            # Change to the directory where the test is defined
-            cd "${source_dir}"
-            # Ensure TEST_RPM, TEST_SRC_RPM, TEST_ENGINE and TEST_IMAGE are available in subshell
-            export TEST_RPM TEST_SRC_RPM TEST_ENGINE TEST_IMAGE
-            eval "${command}"
-        ) &> "${temp_dir}/output.log" &
-
-        if ! wait -n; then
-            issue_result=$(check_known_issues "${known_issues}" "${temp_dir}/output.log")
-            if [[ -n "${issue_result}" ]]; then
-                # Trim leading/trailing whitespace from the combined line
-                issue_line=$(tr '\n' ' ' <<< "${issue_result}" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
-                log_known_failure "${issue_line}"
-                known_issue_tests=$((known_issue_tests + 1))
-                issue_url=$(head -n1 <<< "${issue_result}")
-                # Only add to known_issues_found if not empty/null
-                if [[ -n ${issue_url} && ${issue_url} != "null" ]]; then
-                    known_issues_found+=("${issue_url}")
+        # Wait if we've hit the job limit
+        if (( ${#rpm_pids[@]} >= TEST_JOBS )); then
+            # Wait for at least one job to complete
+            wait -n || true
+            # Remove completed PIDs from array
+            new_pids=()
+            for pid in "${rpm_pids[@]}"; do
+                if kill -0 "${pid}" 2>/dev/null; then
+                    new_pids+=("${pid}")
                 fi
-            else
-                echo "Command output:"
-                cat "${temp_dir}/output.log"
-                log_fail "Test failed with unknown issue"
-                failed_tests=$((failed_tests + 1))
-            fi
-        else
-            if [[ ${TEST_VERBOSE} == true ]]; then
-                echo "Command output:"
-                cat "${temp_dir}/output.log"
-            fi
-
-            if [[ ${known_issues} != "[]" ]]; then
-                always_fail_issues=$(jq -cr '.[] | select(.fails == "always" or (.fails | not)) | .issue + " " + .description' <<< "${known_issues}")
-                if [[ -n "${always_fail_issues}" ]]; then
-                    log_unexpected_pass "${always_fail_issues}"
-                    unexpected_pass_tests=$((unexpected_pass_tests + 1))
-                else
-                    log_pass "Test passed"
-                    passed_tests=$((passed_tests + 1))
-                fi
-            else
-                log_pass "Test passed"
-                passed_tests=$((passed_tests + 1))
-            fi
+            done
+            rpm_pids=("${new_pids[@]}")
         fi
-    done <<< "${binary_rpm_test_names}"
-
-    # Print summary for this RPM
-    if (( known_issue_tests > 0 )); then
-        log_heading "Known Failures Found for $(basename "${rpm_file}")"
-        echo "${known_issues_found[@]}" | tr ' ' '\n' | grep -v '^null$' | grep -v '^$' | sort -u | sed 's/^/- /' || true
+    else
+        # Sequential execution - run and display output immediately
+        # shellcheck disable=SC2310  # Intentional: continue on test failure
+        run_rpm_tests "${rpm_file}" "${rpm_index}" "${total_rpms}" "${result_dir}" || true
+        cat "${result_dir}/console.log"
     fi
+done
 
-    log_heading "Test Summary for $(basename "${rpm_file}")"
-    log_info "Passed: ${passed_tests}/${total_tests}"
-    log_info "Known Failures: ${known_issue_tests}/${total_tests}"
-    log_info "Unknown Failures: ${failed_tests}/${total_tests}"
-    log_info "Unexpected Passes: ${unexpected_pass_tests}/${total_tests}"
+# Wait for all remaining parallel jobs to complete
+if (( TEST_JOBS > 1 )); then
+    for pid in "${rpm_pids[@]}"; do
+        wait "${pid}" || true
+    done
 
-    # Accumulate results
-    overall_total_tests=$((overall_total_tests + total_tests))
-    overall_passed_tests=$((overall_passed_tests + passed_tests))
-    overall_failed_tests=$((overall_failed_tests + failed_tests))
-    overall_known_issue_tests=$((overall_known_issue_tests + known_issue_tests))
-    overall_unexpected_pass_tests=$((overall_unexpected_pass_tests + unexpected_pass_tests))
-    overall_known_issues_found+=("${known_issues_found[@]}")
+    # Display output from all RPMs in order
+    for result_dir in "${rpm_result_dirs[@]}"; do
+        if [[ -f "${result_dir}/console.log" ]]; then
+            cat "${result_dir}/console.log"
+        fi
+    done
+fi
 
-    echo ""
+# Aggregate results from all RPMs
+for result_dir in "${rpm_result_dirs[@]}"; do
+    if [[ -f "${result_dir}/results.txt" ]]; then
+        # Source the results file to get variables
+        # shellcheck source=/dev/null
+        source "${result_dir}/results.txt"
+        overall_total_tests=$((overall_total_tests + total_tests))
+        overall_passed_tests=$((overall_passed_tests + passed_tests))
+        overall_failed_tests=$((overall_failed_tests + failed_tests))
+        overall_known_issue_tests=$((overall_known_issue_tests + known_issue_tests))
+        overall_unexpected_pass_tests=$((overall_unexpected_pass_tests + unexpected_pass_tests))
+        if [[ -n ${known_issues_found:-} ]]; then
+            # shellcheck disable=SC2206
+            overall_known_issues_found+=(${known_issues_found})
+        fi
+    fi
 done
 
 # Run source RPM tests once (if any exist and TEST_SRC_RPM is provided)
