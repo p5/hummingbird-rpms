@@ -293,6 +293,13 @@
     "source": "https://src.fedoraproject.org/rpms/cargo-rpm-macros.git",
     "version": "28.4"
   },
+  "catatonit": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "a18983d24a32abcb11053369e066f9087c2cdd3d",
+    "source": "https://src.fedoraproject.org/rpms/catatonit.git",
+    "version": "0.2.1"
+  },
   "check": {
     "branch": "rawhide",
     "release": "21",
@@ -334,6 +341,13 @@
     "sha": "62f498a092bf6015b9fea1e82b49e8d5b56d7979",
     "source": "https://src.fedoraproject.org/rpms/cmocka.git",
     "version": "2.0.2"
+  },
+  "compat-gpgme124": {
+    "branch": "rawhide",
+    "release": "12",
+    "sha": "813a71d35b68946fa49725c6caf46197df5e8667",
+    "source": "https://src.fedoraproject.org/rpms/compat-gpgme124.git",
+    "version": "1.24.3"
   },
   "composer": {
     "branch": "rawhide",
