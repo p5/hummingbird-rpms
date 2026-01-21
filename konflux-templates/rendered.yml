@@ -1,14 +1,4 @@
----
-apiVersion: appstudio.redhat.com/v1alpha1
-kind: Application
-metadata:
-  name: rpms-main
-spec:
-  appModelRepository:
-    url: ""
-  displayName: rpms-main
-  gitOpsRepository:
-    url: ""
+
 # --- CUnit ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
@@ -13028,74 +13018,7 @@ spec:
       url: https://bombino.api.redhat.com/v1/sbom/quay/push
     event: repo_push
     method: webhook
-    title: SBOM-event-to-Bombino
----
-apiVersion: appstudio.redhat.com/v1beta2
-kind: IntegrationTestScenario
-metadata:
-  name: rpms-main-testing-farm-x86-64
-  annotations:
-    test.appstudio.openshift.io/pipeline_timeout: 10h
-    test.appstudio.openshift.io/tasks_timeout: 9h
-    test.appstudio.openshift.io/finally_timeout: 1h
-spec:
-  application: rpms-main
-  contexts:
-    - name: pull_request
-  params:
-    - name: COMPOSE
-      value: RHEL-9-Nightly
-    - name: PIPELINE_MODE
-      value: rpm
-    - name: ARCH
-      value: x86_64
-    - name: IMAGE_TAG
-      value: v3.8
-  resolverRef:
-    resolver: bundles
-    params:
-      - name: bundle
-        value: quay.io/testing-farm/tmt-via-testing-farm:$(params.IMAGE_TAG)
-      - name: name
-        value: tmt-via-testing-farm
-      - name: kind
-        value: pipeline
-      - name: url
-        value: quay.io/testing-farm/tmt-via-testing-farm:$(params.IMAGE_TAG)
----
-apiVersion: appstudio.redhat.com/v1beta2
-kind: IntegrationTestScenario
-metadata:
-  name: rpms-main-testing-farm-aarch64
-  annotations:
-    test.appstudio.openshift.io/pipeline_timeout: 10h
-    test.appstudio.openshift.io/tasks_timeout: 9h
-    test.appstudio.openshift.io/finally_timeout: 1h
-spec:
-  application: rpms-main
-  contexts:
-    - name: pull_request
-  params:
-    - name: COMPOSE
-      value: RHEL-9-Nightly
-    - name: PIPELINE_MODE
-      value: rpm
-    - name: ARCH
-      value: aarch64
-    - name: IMAGE_TAG
-      value: v3.8
-  resolverRef:
-    resolver: bundles
-    params:
-      - name: bundle
-        value: quay.io/testing-farm/tmt-via-testing-farm:$(params.IMAGE_TAG)
-      - name: name
-        value: tmt-via-testing-farm
-      - name: kind
-        value: pipeline
-      - name: url
-        value: quay.io/testing-farm/tmt-via-testing-farm:$(params.IMAGE_TAG)
----
+    title: SBOM-event-to-Bombino---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: EnterpriseContractPolicy
 metadata:
@@ -13119,18 +13042,6 @@ spec:
         include:
           - '@minimal'
           - '@slsa3'
----
-apiVersion: appstudio.redhat.com/v1alpha1
-kind: ReleasePlan
-metadata:
-  labels:
-    release.appstudio.openshift.io/auto-release: "true"
-    release.appstudio.openshift.io/standing-attribution: "true"
-    release.appstudio.openshift.io/releasePlanAdmission: hummingbird-rpm-release
-  name: hummingbird-rpm-release
-spec:
-  application: rpms-main
-  target: hummingbird-tenant
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: ReleasePlanAdmission
