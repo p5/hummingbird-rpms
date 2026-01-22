@@ -356,8 +356,8 @@ def import_(url: str, branch: str, ref: str | None = None, dry_run: bool = False
     logging.info("Checking prerequisites...")
     check_jinja2_available()
 
-    logging.info("Calling generate.sh to update Tekton resources...")
-    subprocess.run([ROOT_DIR / 'ci/generate.sh'], check=True)
+    logging.info("Calling generate_resources.py to update Tekton resources...")
+    subprocess.run([sys.executable, ROOT_DIR / 'ci/generate_resources.py', 'all'], check=True)
 
     logging.info("Successfully imported %s", package_name)
 
