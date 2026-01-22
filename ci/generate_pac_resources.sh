@@ -15,6 +15,7 @@ BUILD_TRIGGER_RPM_NAME=${BUILD_TRIGGER_RPM_NAME:-setup}
 # See ci/package-overrides.yaml for overrides
 PACKAGE_CONFIG="ci/package-overrides.yaml"
 DEFAULT_TIMEOUT_HOURS=4
+DEFAULT_BUILD_PLATFORMS=("linux/amd64" "linux/arm64")
 
 # Manifest file listing all packages (imported and pending)
 MANIFEST_FILE="target-packages.yml"
@@ -130,10 +131,14 @@ for dname in "${packages[@]}"; do
                 echo "timeout_hours: ${DEFAULT_TIMEOUT_HOURS}"
             fi
 
-            # Only include build_platforms if overridden in the config file
+            # Always include build_platforms, using override or defaults
+            echo "build_platforms:"
             if build_platforms=$(yq -e ".${dname}.build_platforms[]" "${PACKAGE_CONFIG}" 2>/dev/null); then
-                echo "build_platforms:"
                 echo "${build_platforms}" | while read -r platform; do
+                    echo "  - ${platform}"
+                done
+            else
+                for platform in "${DEFAULT_BUILD_PLATFORMS[@]}"; do
                     echo "  - ${platform}"
                 done
             fi
