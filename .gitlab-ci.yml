@@ -93,6 +93,18 @@ add_components_to_konflux:
       changes:
         - konflux-templates/rendered.yml
 
+deploy_releases_to_konflux:
+  variables:
+    PARENT_PROJECT_PATH: $CI_PROJECT_PATH
+    ONLY_JOB_NAME: rpms-releases
+  trigger:
+    project: redhat/hummingbird/infrastructure
+    strategy: depend
+  allow_failure: true
+  rules:
+    - !reference [.rules, push]
+    - !reference [.rules, web]
+
 dist_git_update:
   environment:
     name: chore-mr
