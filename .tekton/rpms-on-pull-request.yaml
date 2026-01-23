@@ -9657,7 +9657,74 @@ spec:
       secret:
         secretName: '{{git_auth_secret}}'
 # --- libXaw ---
-# PENDING
+---
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  annotations:
+    build.appstudio.openshift.io/repo: https://gitlab.com/redhat/hummingbird/rpms/-/tree/{{revision}}
+    build.appstudio.redhat.com/commit_sha: '{{revision}}'
+    build.appstudio.redhat.com/pull_request_number: '{{pull_request_number}}'
+    build.appstudio.redhat.com/target_branch: '{{target_branch}}'
+    pipelinesascode.tekton.dev/on-target-branch: "[main]"
+    pipelinesascode.tekton.dev/cancel-in-progress: "true"
+    pipelinesascode.tekton.dev/max-keep-runs: "3"
+    pipelinesascode.tekton.dev/on-event: "[pull_request]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/libXaw/***]"
+  creationTimestamp: null
+  labels:
+    appstudio.openshift.io/application: rpms-main
+    appstudio.openshift.io/component: libxaw-main
+    pipelines.appstudio.openshift.io/type: build
+  name: libxaw-main-on-pull-request
+  namespace: hummingbird-tenant
+spec:
+  params:
+    - name: git-url
+      value: '{{source_url}}'
+    - name: revision
+      value: '{{revision}}'
+    - name: image-expires-after
+      value: 5d
+    - name: ociStorage
+      value: quay.io/redhat-user-workloads/hummingbird-tenant/libxaw-main:on-mr-{{pull_request_number}}-{{revision}}
+    - name: package-name
+      value: libXaw
+    - name: target-branch
+      value: '{{target_branch}}'
+    - name: build-architectures
+      value:
+        - aarch64
+        - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
+    - name: specfile
+      value: "libXaw.spec"
+    - name: monorepo-subdir
+      value: "rpms/libXaw"
+    - name: mock-config-template-filename-in-sources
+      value: "mock/mock.cfg"
+  pipelineRef:
+    resolver: bundles
+    params:
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
+  taskRunTemplate:
+    serviceAccountName: build-pipeline-libxaw-main
+  timeouts:
+    pipeline: 4h
+    tasks: 4h
+  workspaces:
+    - name: git-auth
+      secret:
+        secretName: '{{git_auth_secret}}'
 # --- libXcomposite ---
 ---
 apiVersion: tekton.dev/v1
@@ -9866,7 +9933,74 @@ spec:
       secret:
         secretName: '{{git_auth_secret}}'
 # --- libXmu ---
-# PENDING
+---
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  annotations:
+    build.appstudio.openshift.io/repo: https://gitlab.com/redhat/hummingbird/rpms/-/tree/{{revision}}
+    build.appstudio.redhat.com/commit_sha: '{{revision}}'
+    build.appstudio.redhat.com/pull_request_number: '{{pull_request_number}}'
+    build.appstudio.redhat.com/target_branch: '{{target_branch}}'
+    pipelinesascode.tekton.dev/on-target-branch: "[main]"
+    pipelinesascode.tekton.dev/cancel-in-progress: "true"
+    pipelinesascode.tekton.dev/max-keep-runs: "3"
+    pipelinesascode.tekton.dev/on-event: "[pull_request]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/libXmu/***]"
+  creationTimestamp: null
+  labels:
+    appstudio.openshift.io/application: rpms-main
+    appstudio.openshift.io/component: libxmu-main
+    pipelines.appstudio.openshift.io/type: build
+  name: libxmu-main-on-pull-request
+  namespace: hummingbird-tenant
+spec:
+  params:
+    - name: git-url
+      value: '{{source_url}}'
+    - name: revision
+      value: '{{revision}}'
+    - name: image-expires-after
+      value: 5d
+    - name: ociStorage
+      value: quay.io/redhat-user-workloads/hummingbird-tenant/libxmu-main:on-mr-{{pull_request_number}}-{{revision}}
+    - name: package-name
+      value: libXmu
+    - name: target-branch
+      value: '{{target_branch}}'
+    - name: build-architectures
+      value:
+        - aarch64
+        - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
+    - name: specfile
+      value: "libXmu.spec"
+    - name: monorepo-subdir
+      value: "rpms/libXmu"
+    - name: mock-config-template-filename-in-sources
+      value: "mock/mock.cfg"
+  pipelineRef:
+    resolver: bundles
+    params:
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
+  taskRunTemplate:
+    serviceAccountName: build-pipeline-libxmu-main
+  timeouts:
+    pipeline: 4h
+    tasks: 4h
+  workspaces:
+    - name: git-auth
+      secret:
+        secretName: '{{git_auth_secret}}'
 # --- libXrender ---
 ---
 apiVersion: tekton.dev/v1
@@ -10006,7 +10140,74 @@ spec:
       secret:
         secretName: '{{git_auth_secret}}'
 # --- libabigail ---
-# PENDING
+---
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  annotations:
+    build.appstudio.openshift.io/repo: https://gitlab.com/redhat/hummingbird/rpms/-/tree/{{revision}}
+    build.appstudio.redhat.com/commit_sha: '{{revision}}'
+    build.appstudio.redhat.com/pull_request_number: '{{pull_request_number}}'
+    build.appstudio.redhat.com/target_branch: '{{target_branch}}'
+    pipelinesascode.tekton.dev/on-target-branch: "[main]"
+    pipelinesascode.tekton.dev/cancel-in-progress: "true"
+    pipelinesascode.tekton.dev/max-keep-runs: "3"
+    pipelinesascode.tekton.dev/on-event: "[pull_request]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/libabigail/***]"
+  creationTimestamp: null
+  labels:
+    appstudio.openshift.io/application: rpms-main
+    appstudio.openshift.io/component: libabigail-main
+    pipelines.appstudio.openshift.io/type: build
+  name: libabigail-main-on-pull-request
+  namespace: hummingbird-tenant
+spec:
+  params:
+    - name: git-url
+      value: '{{source_url}}'
+    - name: revision
+      value: '{{revision}}'
+    - name: image-expires-after
+      value: 5d
+    - name: ociStorage
+      value: quay.io/redhat-user-workloads/hummingbird-tenant/libabigail-main:on-mr-{{pull_request_number}}-{{revision}}
+    - name: package-name
+      value: libabigail
+    - name: target-branch
+      value: '{{target_branch}}'
+    - name: build-architectures
+      value:
+        - aarch64
+        - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
+    - name: specfile
+      value: "libabigail.spec"
+    - name: monorepo-subdir
+      value: "rpms/libabigail"
+    - name: mock-config-template-filename-in-sources
+      value: "mock/mock.cfg"
+  pipelineRef:
+    resolver: bundles
+    params:
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
+  taskRunTemplate:
+    serviceAccountName: build-pipeline-libabigail-main
+  timeouts:
+    pipeline: 4h
+    tasks: 4h
+  workspaces:
+    - name: git-auth
+      secret:
+        secretName: '{{git_auth_secret}}'
 # --- libaio ---
 ---
 apiVersion: tekton.dev/v1
@@ -10077,7 +10278,74 @@ spec:
       secret:
         secretName: '{{git_auth_secret}}'
 # --- libappstream-glib ---
-# PENDING
+---
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  annotations:
+    build.appstudio.openshift.io/repo: https://gitlab.com/redhat/hummingbird/rpms/-/tree/{{revision}}
+    build.appstudio.redhat.com/commit_sha: '{{revision}}'
+    build.appstudio.redhat.com/pull_request_number: '{{pull_request_number}}'
+    build.appstudio.redhat.com/target_branch: '{{target_branch}}'
+    pipelinesascode.tekton.dev/on-target-branch: "[main]"
+    pipelinesascode.tekton.dev/cancel-in-progress: "true"
+    pipelinesascode.tekton.dev/max-keep-runs: "3"
+    pipelinesascode.tekton.dev/on-event: "[pull_request]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/libappstream-glib/***]"
+  creationTimestamp: null
+  labels:
+    appstudio.openshift.io/application: rpms-main
+    appstudio.openshift.io/component: libappstream-glib-main
+    pipelines.appstudio.openshift.io/type: build
+  name: libappstream-glib-main-on-pull-request
+  namespace: hummingbird-tenant
+spec:
+  params:
+    - name: git-url
+      value: '{{source_url}}'
+    - name: revision
+      value: '{{revision}}'
+    - name: image-expires-after
+      value: 5d
+    - name: ociStorage
+      value: quay.io/redhat-user-workloads/hummingbird-tenant/libappstream-glib-main:on-mr-{{pull_request_number}}-{{revision}}
+    - name: package-name
+      value: libappstream-glib
+    - name: target-branch
+      value: '{{target_branch}}'
+    - name: build-architectures
+      value:
+        - aarch64
+        - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
+    - name: specfile
+      value: "libappstream-glib.spec"
+    - name: monorepo-subdir
+      value: "rpms/libappstream-glib"
+    - name: mock-config-template-filename-in-sources
+      value: "mock/mock.cfg"
+  pipelineRef:
+    resolver: bundles
+    params:
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
+  taskRunTemplate:
+    serviceAccountName: build-pipeline-libappstream-glib-main
+  timeouts:
+    pipeline: 4h
+    tasks: 4h
+  workspaces:
+    - name: git-auth
+      secret:
+        secretName: '{{git_auth_secret}}'
 # --- libarchive ---
 ---
 apiVersion: tekton.dev/v1
@@ -10562,9 +10830,143 @@ spec:
       secret:
         secretName: '{{git_auth_secret}}'
 # --- libdaemon ---
-# PENDING
+---
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  annotations:
+    build.appstudio.openshift.io/repo: https://gitlab.com/redhat/hummingbird/rpms/-/tree/{{revision}}
+    build.appstudio.redhat.com/commit_sha: '{{revision}}'
+    build.appstudio.redhat.com/pull_request_number: '{{pull_request_number}}'
+    build.appstudio.redhat.com/target_branch: '{{target_branch}}'
+    pipelinesascode.tekton.dev/on-target-branch: "[main]"
+    pipelinesascode.tekton.dev/cancel-in-progress: "true"
+    pipelinesascode.tekton.dev/max-keep-runs: "3"
+    pipelinesascode.tekton.dev/on-event: "[pull_request]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/libdaemon/***]"
+  creationTimestamp: null
+  labels:
+    appstudio.openshift.io/application: rpms-main
+    appstudio.openshift.io/component: libdaemon-main
+    pipelines.appstudio.openshift.io/type: build
+  name: libdaemon-main-on-pull-request
+  namespace: hummingbird-tenant
+spec:
+  params:
+    - name: git-url
+      value: '{{source_url}}'
+    - name: revision
+      value: '{{revision}}'
+    - name: image-expires-after
+      value: 5d
+    - name: ociStorage
+      value: quay.io/redhat-user-workloads/hummingbird-tenant/libdaemon-main:on-mr-{{pull_request_number}}-{{revision}}
+    - name: package-name
+      value: libdaemon
+    - name: target-branch
+      value: '{{target_branch}}'
+    - name: build-architectures
+      value:
+        - aarch64
+        - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
+    - name: specfile
+      value: "libdaemon.spec"
+    - name: monorepo-subdir
+      value: "rpms/libdaemon"
+    - name: mock-config-template-filename-in-sources
+      value: "mock/mock.cfg"
+  pipelineRef:
+    resolver: bundles
+    params:
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
+  taskRunTemplate:
+    serviceAccountName: build-pipeline-libdaemon-main
+  timeouts:
+    pipeline: 4h
+    tasks: 4h
+  workspaces:
+    - name: git-auth
+      secret:
+        secretName: '{{git_auth_secret}}'
 # --- libdb ---
-# PENDING
+---
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  annotations:
+    build.appstudio.openshift.io/repo: https://gitlab.com/redhat/hummingbird/rpms/-/tree/{{revision}}
+    build.appstudio.redhat.com/commit_sha: '{{revision}}'
+    build.appstudio.redhat.com/pull_request_number: '{{pull_request_number}}'
+    build.appstudio.redhat.com/target_branch: '{{target_branch}}'
+    pipelinesascode.tekton.dev/on-target-branch: "[main]"
+    pipelinesascode.tekton.dev/cancel-in-progress: "true"
+    pipelinesascode.tekton.dev/max-keep-runs: "3"
+    pipelinesascode.tekton.dev/on-event: "[pull_request]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/libdb/***]"
+  creationTimestamp: null
+  labels:
+    appstudio.openshift.io/application: rpms-main
+    appstudio.openshift.io/component: libdb-main
+    pipelines.appstudio.openshift.io/type: build
+  name: libdb-main-on-pull-request
+  namespace: hummingbird-tenant
+spec:
+  params:
+    - name: git-url
+      value: '{{source_url}}'
+    - name: revision
+      value: '{{revision}}'
+    - name: image-expires-after
+      value: 5d
+    - name: ociStorage
+      value: quay.io/redhat-user-workloads/hummingbird-tenant/libdb-main:on-mr-{{pull_request_number}}-{{revision}}
+    - name: package-name
+      value: libdb
+    - name: target-branch
+      value: '{{target_branch}}'
+    - name: build-architectures
+      value:
+        - aarch64
+        - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
+    - name: specfile
+      value: "libdb.spec"
+    - name: monorepo-subdir
+      value: "rpms/libdb"
+    - name: mock-config-template-filename-in-sources
+      value: "mock/mock.cfg"
+  pipelineRef:
+    resolver: bundles
+    params:
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
+  taskRunTemplate:
+    serviceAccountName: build-pipeline-libdb-main
+  timeouts:
+    pipeline: 4h
+    tasks: 4h
+  workspaces:
+    - name: git-auth
+      secret:
+        secretName: '{{git_auth_secret}}'
 # --- libdnf ---
 ---
 apiVersion: tekton.dev/v1
@@ -10773,7 +11175,74 @@ spec:
       secret:
         secretName: '{{git_auth_secret}}'
 # --- libev ---
-# PENDING
+---
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  annotations:
+    build.appstudio.openshift.io/repo: https://gitlab.com/redhat/hummingbird/rpms/-/tree/{{revision}}
+    build.appstudio.redhat.com/commit_sha: '{{revision}}'
+    build.appstudio.redhat.com/pull_request_number: '{{pull_request_number}}'
+    build.appstudio.redhat.com/target_branch: '{{target_branch}}'
+    pipelinesascode.tekton.dev/on-target-branch: "[main]"
+    pipelinesascode.tekton.dev/cancel-in-progress: "true"
+    pipelinesascode.tekton.dev/max-keep-runs: "3"
+    pipelinesascode.tekton.dev/on-event: "[pull_request]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/libev/***]"
+  creationTimestamp: null
+  labels:
+    appstudio.openshift.io/application: rpms-main
+    appstudio.openshift.io/component: libev-main
+    pipelines.appstudio.openshift.io/type: build
+  name: libev-main-on-pull-request
+  namespace: hummingbird-tenant
+spec:
+  params:
+    - name: git-url
+      value: '{{source_url}}'
+    - name: revision
+      value: '{{revision}}'
+    - name: image-expires-after
+      value: 5d
+    - name: ociStorage
+      value: quay.io/redhat-user-workloads/hummingbird-tenant/libev-main:on-mr-{{pull_request_number}}-{{revision}}
+    - name: package-name
+      value: libev
+    - name: target-branch
+      value: '{{target_branch}}'
+    - name: build-architectures
+      value:
+        - aarch64
+        - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
+    - name: specfile
+      value: "libev.spec"
+    - name: monorepo-subdir
+      value: "rpms/libev"
+    - name: mock-config-template-filename-in-sources
+      value: "mock/mock.cfg"
+  pipelineRef:
+    resolver: bundles
+    params:
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
+  taskRunTemplate:
+    serviceAccountName: build-pipeline-libev-main
+  timeouts:
+    pipeline: 4h
+    tasks: 4h
+  workspaces:
+    - name: git-auth
+      secret:
+        secretName: '{{git_auth_secret}}'
 # --- libevent ---
 ---
 apiVersion: tekton.dev/v1
@@ -11327,7 +11796,74 @@ spec:
       secret:
         secretName: '{{git_auth_secret}}'
 # --- libipt ---
-# PENDING
+---
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  annotations:
+    build.appstudio.openshift.io/repo: https://gitlab.com/redhat/hummingbird/rpms/-/tree/{{revision}}
+    build.appstudio.redhat.com/commit_sha: '{{revision}}'
+    build.appstudio.redhat.com/pull_request_number: '{{pull_request_number}}'
+    build.appstudio.redhat.com/target_branch: '{{target_branch}}'
+    pipelinesascode.tekton.dev/on-target-branch: "[main]"
+    pipelinesascode.tekton.dev/cancel-in-progress: "true"
+    pipelinesascode.tekton.dev/max-keep-runs: "3"
+    pipelinesascode.tekton.dev/on-event: "[pull_request]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/libipt/***]"
+  creationTimestamp: null
+  labels:
+    appstudio.openshift.io/application: rpms-main
+    appstudio.openshift.io/component: libipt-main
+    pipelines.appstudio.openshift.io/type: build
+  name: libipt-main-on-pull-request
+  namespace: hummingbird-tenant
+spec:
+  params:
+    - name: git-url
+      value: '{{source_url}}'
+    - name: revision
+      value: '{{revision}}'
+    - name: image-expires-after
+      value: 5d
+    - name: ociStorage
+      value: quay.io/redhat-user-workloads/hummingbird-tenant/libipt-main:on-mr-{{pull_request_number}}-{{revision}}
+    - name: package-name
+      value: libipt
+    - name: target-branch
+      value: '{{target_branch}}'
+    - name: build-architectures
+      value:
+        - aarch64
+        - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
+    - name: specfile
+      value: "libipt.spec"
+    - name: monorepo-subdir
+      value: "rpms/libipt"
+    - name: mock-config-template-filename-in-sources
+      value: "mock/mock.cfg"
+  pipelineRef:
+    resolver: bundles
+    params:
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
+  taskRunTemplate:
+    serviceAccountName: build-pipeline-libipt-main
+  timeouts:
+    pipeline: 4h
+    tasks: 4h
+  workspaces:
+    - name: git-auth
+      secret:
+        secretName: '{{git_auth_secret}}'
 # --- libksba ---
 ---
 apiVersion: tekton.dev/v1
@@ -11398,7 +11934,74 @@ spec:
       secret:
         secretName: '{{git_auth_secret}}'
 # --- libmicrohttpd ---
-# PENDING
+---
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  annotations:
+    build.appstudio.openshift.io/repo: https://gitlab.com/redhat/hummingbird/rpms/-/tree/{{revision}}
+    build.appstudio.redhat.com/commit_sha: '{{revision}}'
+    build.appstudio.redhat.com/pull_request_number: '{{pull_request_number}}'
+    build.appstudio.redhat.com/target_branch: '{{target_branch}}'
+    pipelinesascode.tekton.dev/on-target-branch: "[main]"
+    pipelinesascode.tekton.dev/cancel-in-progress: "true"
+    pipelinesascode.tekton.dev/max-keep-runs: "3"
+    pipelinesascode.tekton.dev/on-event: "[pull_request]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/libmicrohttpd/***]"
+  creationTimestamp: null
+  labels:
+    appstudio.openshift.io/application: rpms-main
+    appstudio.openshift.io/component: libmicrohttpd-main
+    pipelines.appstudio.openshift.io/type: build
+  name: libmicrohttpd-main-on-pull-request
+  namespace: hummingbird-tenant
+spec:
+  params:
+    - name: git-url
+      value: '{{source_url}}'
+    - name: revision
+      value: '{{revision}}'
+    - name: image-expires-after
+      value: 5d
+    - name: ociStorage
+      value: quay.io/redhat-user-workloads/hummingbird-tenant/libmicrohttpd-main:on-mr-{{pull_request_number}}-{{revision}}
+    - name: package-name
+      value: libmicrohttpd
+    - name: target-branch
+      value: '{{target_branch}}'
+    - name: build-architectures
+      value:
+        - aarch64
+        - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
+    - name: specfile
+      value: "libmicrohttpd.spec"
+    - name: monorepo-subdir
+      value: "rpms/libmicrohttpd"
+    - name: mock-config-template-filename-in-sources
+      value: "mock/mock.cfg"
+  pipelineRef:
+    resolver: bundles
+    params:
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
+  taskRunTemplate:
+    serviceAccountName: build-pipeline-libmicrohttpd-main
+  timeouts:
+    pipeline: 4h
+    tasks: 4h
+  workspaces:
+    - name: git-auth
+      secret:
+        secretName: '{{git_auth_secret}}'
 # --- libmnl ---
 ---
 apiVersion: tekton.dev/v1
@@ -11814,7 +12417,74 @@ spec:
       secret:
         secretName: '{{git_auth_secret}}'
 # --- libpq ---
-# PENDING
+---
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  annotations:
+    build.appstudio.openshift.io/repo: https://gitlab.com/redhat/hummingbird/rpms/-/tree/{{revision}}
+    build.appstudio.redhat.com/commit_sha: '{{revision}}'
+    build.appstudio.redhat.com/pull_request_number: '{{pull_request_number}}'
+    build.appstudio.redhat.com/target_branch: '{{target_branch}}'
+    pipelinesascode.tekton.dev/on-target-branch: "[main]"
+    pipelinesascode.tekton.dev/cancel-in-progress: "true"
+    pipelinesascode.tekton.dev/max-keep-runs: "3"
+    pipelinesascode.tekton.dev/on-event: "[pull_request]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/libpq/***]"
+  creationTimestamp: null
+  labels:
+    appstudio.openshift.io/application: rpms-main
+    appstudio.openshift.io/component: libpq-main
+    pipelines.appstudio.openshift.io/type: build
+  name: libpq-main-on-pull-request
+  namespace: hummingbird-tenant
+spec:
+  params:
+    - name: git-url
+      value: '{{source_url}}'
+    - name: revision
+      value: '{{revision}}'
+    - name: image-expires-after
+      value: 5d
+    - name: ociStorage
+      value: quay.io/redhat-user-workloads/hummingbird-tenant/libpq-main:on-mr-{{pull_request_number}}-{{revision}}
+    - name: package-name
+      value: libpq
+    - name: target-branch
+      value: '{{target_branch}}'
+    - name: build-architectures
+      value:
+        - aarch64
+        - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
+    - name: specfile
+      value: "libpq.spec"
+    - name: monorepo-subdir
+      value: "rpms/libpq"
+    - name: mock-config-template-filename-in-sources
+      value: "mock/mock.cfg"
+  pipelineRef:
+    resolver: bundles
+    params:
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
+  taskRunTemplate:
+    serviceAccountName: build-pipeline-libpq-main
+  timeouts:
+    pipeline: 4h
+    tasks: 4h
+  workspaces:
+    - name: git-auth
+      secret:
+        secretName: '{{git_auth_secret}}'
 # --- libpsl ---
 ---
 apiVersion: tekton.dev/v1
@@ -12092,7 +12762,74 @@ spec:
       secret:
         secretName: '{{git_auth_secret}}'
 # --- libsecret ---
-# PENDING
+---
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  annotations:
+    build.appstudio.openshift.io/repo: https://gitlab.com/redhat/hummingbird/rpms/-/tree/{{revision}}
+    build.appstudio.redhat.com/commit_sha: '{{revision}}'
+    build.appstudio.redhat.com/pull_request_number: '{{pull_request_number}}'
+    build.appstudio.redhat.com/target_branch: '{{target_branch}}'
+    pipelinesascode.tekton.dev/on-target-branch: "[main]"
+    pipelinesascode.tekton.dev/cancel-in-progress: "true"
+    pipelinesascode.tekton.dev/max-keep-runs: "3"
+    pipelinesascode.tekton.dev/on-event: "[pull_request]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/libsecret/***]"
+  creationTimestamp: null
+  labels:
+    appstudio.openshift.io/application: rpms-main
+    appstudio.openshift.io/component: libsecret-main
+    pipelines.appstudio.openshift.io/type: build
+  name: libsecret-main-on-pull-request
+  namespace: hummingbird-tenant
+spec:
+  params:
+    - name: git-url
+      value: '{{source_url}}'
+    - name: revision
+      value: '{{revision}}'
+    - name: image-expires-after
+      value: 5d
+    - name: ociStorage
+      value: quay.io/redhat-user-workloads/hummingbird-tenant/libsecret-main:on-mr-{{pull_request_number}}-{{revision}}
+    - name: package-name
+      value: libsecret
+    - name: target-branch
+      value: '{{target_branch}}'
+    - name: build-architectures
+      value:
+        - aarch64
+        - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
+    - name: specfile
+      value: "libsecret.spec"
+    - name: monorepo-subdir
+      value: "rpms/libsecret"
+    - name: mock-config-template-filename-in-sources
+      value: "mock/mock.cfg"
+  pipelineRef:
+    resolver: bundles
+    params:
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
+  taskRunTemplate:
+    serviceAccountName: build-pipeline-libsecret-main
+  timeouts:
+    pipeline: 4h
+    tasks: 4h
+  workspaces:
+    - name: git-auth
+      secret:
+        secretName: '{{git_auth_secret}}'
 # --- libselinux ---
 ---
 apiVersion: tekton.dev/v1
@@ -12993,7 +13730,74 @@ spec:
       secret:
         secretName: '{{git_auth_secret}}'
 # --- libutempter ---
-# PENDING
+---
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  annotations:
+    build.appstudio.openshift.io/repo: https://gitlab.com/redhat/hummingbird/rpms/-/tree/{{revision}}
+    build.appstudio.redhat.com/commit_sha: '{{revision}}'
+    build.appstudio.redhat.com/pull_request_number: '{{pull_request_number}}'
+    build.appstudio.redhat.com/target_branch: '{{target_branch}}'
+    pipelinesascode.tekton.dev/on-target-branch: "[main]"
+    pipelinesascode.tekton.dev/cancel-in-progress: "true"
+    pipelinesascode.tekton.dev/max-keep-runs: "3"
+    pipelinesascode.tekton.dev/on-event: "[pull_request]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/libutempter/***]"
+  creationTimestamp: null
+  labels:
+    appstudio.openshift.io/application: rpms-main
+    appstudio.openshift.io/component: libutempter-main
+    pipelines.appstudio.openshift.io/type: build
+  name: libutempter-main-on-pull-request
+  namespace: hummingbird-tenant
+spec:
+  params:
+    - name: git-url
+      value: '{{source_url}}'
+    - name: revision
+      value: '{{revision}}'
+    - name: image-expires-after
+      value: 5d
+    - name: ociStorage
+      value: quay.io/redhat-user-workloads/hummingbird-tenant/libutempter-main:on-mr-{{pull_request_number}}-{{revision}}
+    - name: package-name
+      value: libutempter
+    - name: target-branch
+      value: '{{target_branch}}'
+    - name: build-architectures
+      value:
+        - aarch64
+        - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
+    - name: specfile
+      value: "libutempter.spec"
+    - name: monorepo-subdir
+      value: "rpms/libutempter"
+    - name: mock-config-template-filename-in-sources
+      value: "mock/mock.cfg"
+  pipelineRef:
+    resolver: bundles
+    params:
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
+  taskRunTemplate:
+    serviceAccountName: build-pipeline-libutempter-main
+  timeouts:
+    pipeline: 4h
+    tasks: 4h
+  workspaces:
+    - name: git-auth
+      secret:
+        secretName: '{{git_auth_secret}}'
 # --- libuv ---
 ---
 apiVersion: tekton.dev/v1
@@ -13273,7 +14077,74 @@ spec:
       secret:
         secretName: '{{git_auth_secret}}'
 # --- libxkbcommon ---
-# PENDING
+---
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  annotations:
+    build.appstudio.openshift.io/repo: https://gitlab.com/redhat/hummingbird/rpms/-/tree/{{revision}}
+    build.appstudio.redhat.com/commit_sha: '{{revision}}'
+    build.appstudio.redhat.com/pull_request_number: '{{pull_request_number}}'
+    build.appstudio.redhat.com/target_branch: '{{target_branch}}'
+    pipelinesascode.tekton.dev/on-target-branch: "[main]"
+    pipelinesascode.tekton.dev/cancel-in-progress: "true"
+    pipelinesascode.tekton.dev/max-keep-runs: "3"
+    pipelinesascode.tekton.dev/on-event: "[pull_request]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/libxkbcommon/***]"
+  creationTimestamp: null
+  labels:
+    appstudio.openshift.io/application: rpms-main
+    appstudio.openshift.io/component: libxkbcommon-main
+    pipelines.appstudio.openshift.io/type: build
+  name: libxkbcommon-main-on-pull-request
+  namespace: hummingbird-tenant
+spec:
+  params:
+    - name: git-url
+      value: '{{source_url}}'
+    - name: revision
+      value: '{{revision}}'
+    - name: image-expires-after
+      value: 5d
+    - name: ociStorage
+      value: quay.io/redhat-user-workloads/hummingbird-tenant/libxkbcommon-main:on-mr-{{pull_request_number}}-{{revision}}
+    - name: package-name
+      value: libxkbcommon
+    - name: target-branch
+      value: '{{target_branch}}'
+    - name: build-architectures
+      value:
+        - aarch64
+        - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
+    - name: specfile
+      value: "libxkbcommon.spec"
+    - name: monorepo-subdir
+      value: "rpms/libxkbcommon"
+    - name: mock-config-template-filename-in-sources
+      value: "mock/mock.cfg"
+  pipelineRef:
+    resolver: bundles
+    params:
+      - name: name
+        value: build-rpm-package
+      - name: kind
+        value: pipeline
+      - name: bundle
+        # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:92ecfafac4f48a500112a3bc42924807aee41afe8679faf5279a970a33cb9895"
+  taskRunTemplate:
+    serviceAccountName: build-pipeline-libxkbcommon-main
+  timeouts:
+    pipeline: 4h
+    tasks: 4h
+  workspaces:
+    - name: git-auth
+      secret:
+        secretName: '{{git_auth_secret}}'
 # --- libxml2 ---
 ---
 apiVersion: tekton.dev/v1

@@ -1000,6 +1000,34 @@
     "source": "https://src.fedoraproject.org/rpms/libaio.git",
     "version": "0.3.111"
   },
+  "libXaw": {
+    "branch": "rawhide",
+    "release": "5",
+    "sha": "3a4b9e8401177876158b19ade9e5fbc13a70576a",
+    "source": "https://src.fedoraproject.org/rpms/libXaw.git",
+    "version": "1.0.16"
+  },
+  "libXmu": {
+    "branch": "rawhide",
+    "release": "5",
+    "sha": "1414e391caf9029d8f52675caf5f36f076cccd42",
+    "source": "https://src.fedoraproject.org/rpms/libXmu.git",
+    "version": "1.2.1"
+  },
+  "libabigail": {
+    "branch": "rawhide",
+    "release": "2",
+    "sha": "e5891d52893f05f4e8757bf793eafc10d5d859af",
+    "source": "https://src.fedoraproject.org/rpms/libabigail.git",
+    "version": "2.9"
+  },
+  "libappstream-glib": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "6a7a389b6bfd303cc1c6376fe5120034c0e8d8f3",
+    "source": "https://src.fedoraproject.org/rpms/libappstream-glib.git",
+    "version": "0.8.3"
+  },
   "libarchive": {
     "branch": "rawhide",
     "release": "1",
@@ -1049,6 +1077,20 @@
     "source": "https://src.fedoraproject.org/rpms/libcomps.git",
     "version": "0.1.23"
   },
+  "libdaemon": {
+    "branch": "rawhide",
+    "release": "33",
+    "sha": "e45b7c59778bd8c6b4b0118b643e66bde146da34",
+    "source": "https://src.fedoraproject.org/rpms/libdaemon.git",
+    "version": "0.14"
+  },
+  "libdb": {
+    "branch": "rawhide",
+    "release": "67",
+    "sha": "83f08967efea263a260e3e39fbae547a565ef9c2",
+    "source": "https://src.fedoraproject.org/rpms/libdb.git",
+    "version": "5.3.28"
+  },
   "libdnf": {
     "branch": "rawhide",
     "release": "1",
@@ -1069,6 +1111,13 @@
     "sha": "c51489c500f8884ed4932b5fbf31aab21ed8de08",
     "source": "https://src.fedoraproject.org/rpms/libedit.git",
     "version": "3.1"
+  },
+  "libev": {
+    "branch": "rawhide",
+    "release": "15",
+    "sha": "a4929c0f1b39dc435bcf01bb7d6f708e88f367c6",
+    "source": "https://src.fedoraproject.org/rpms/libev.git",
+    "version": "4.33"
   },
   "libevent": {
     "branch": "rawhide",
@@ -1126,6 +1175,13 @@
     "source": "https://src.fedoraproject.org/rpms/libidn2.git",
     "version": "2.3.8"
   },
+  "libipt": {
+    "branch": "rawhide",
+    "release": "4",
+    "sha": "cd49f09fe11b0850c4837795922e112eab84a8c3",
+    "source": "https://src.fedoraproject.org/rpms/libipt.git",
+    "version": "2.1.2"
+  },
   "libksba": {
     "branch": "rawhide",
     "release": "4",
@@ -1139,6 +1195,13 @@
     "sha": "ec6d8ff62e3cb207ddde0fb3817a9e71c64f827b",
     "source": "https://src.fedoraproject.org/rpms/libmnl.git",
     "version": "1.0.5"
+  },
+  "libmicrohttpd": {
+    "branch": "rawhide",
+    "release": "3",
+    "sha": "18e076928a27c61ec8e51b0bd46b581b57c8be2b",
+    "source": "https://src.fedoraproject.org/rpms/libmicrohttpd.git",
+    "version": "1.0.2"
   },
   "libmodulemd": {
     "branch": "rawhide",
@@ -1175,6 +1238,13 @@
     "source": "https://src.fedoraproject.org/rpms/libpng.git",
     "version": "1.6.53"
   },
+  "libpq": {
+    "branch": "rawhide",
+    "release": "4",
+    "sha": "1de2f5b32a204efb01efd2b1b9a8ecf0a329d255",
+    "source": "https://src.fedoraproject.org/rpms/libpq.git",
+    "version": "18.0"
+  },
   "libpsl": {
     "branch": "rawhide",
     "release": "1",
@@ -1202,6 +1272,13 @@
     "sha": "9639e347a69b4ac9637dbaa6c7874910d93a1eb2",
     "source": "https://src.fedoraproject.org/rpms/libseccomp.git",
     "version": "2.6.0"
+  },
+  "libsecret": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "b277b7153cf58d7e112455a4837788390ffcb506",
+    "source": "https://src.fedoraproject.org/rpms/libsecret.git",
+    "version": "0.21.7"
   },
   "libselinux": {
     "branch": "rawhide",
@@ -1301,6 +1378,20 @@
     "source": "https://src.fedoraproject.org/rpms/libuv.git",
     "version": "1.51.0"
   },
+  "libutempter": {
+    "branch": "rawhide",
+    "release": "20",
+    "sha": "4df35f3fe48acd46bccee525506cdefbe5b773f3",
+    "source": "https://src.fedoraproject.org/rpms/libutempter.git",
+    "version": "1.2.1"
+  },
+  "libuv": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "c6eeef4fcb660bea5098b6992cd72a2dbd771d8c",
+    "source": "https://src.fedoraproject.org/rpms/libuv.git",
+    "version": "1.51.0"
+  },
   "libverto": {
     "branch": "rawhide",
     "release": "11",
@@ -1321,6 +1412,13 @@
     "sha": "af9ba4149d7d46324d758eae645ccffbcd957218",
     "source": "https://src.fedoraproject.org/rpms/libxcrypt.git",
     "version": "4.5.2"
+  },
+  "libxkbcommon": {
+    "branch": "rawhide",
+    "release": "2",
+    "sha": "459614fef381bd6621940d726f7f979e003aaad6",
+    "source": "https://src.fedoraproject.org/rpms/libxkbcommon.git",
+    "version": "1.13.1"
   },
   "libxml2": {
     "branch": "rawhide",

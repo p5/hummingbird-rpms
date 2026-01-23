@@ -1,0 +1,12 @@
+/test:
+    summary:
+        Basic set of quick tests for libpq. Since libpq is client library and
+        part of postgresql. Postgresql testsuite is used.
+    discover:
+      - name: fedora
+        how: fmf
+        url: "https://src.fedoraproject.org/tests/postgresql.git"
+        ref: main
+        filter: tag:libpq
+    execute:
+        how: tmt

@@ -1,0 +1,13 @@
+summary: libabigail testing by upstream testsuite
+component:
+- libabigail
+test: ./test.sh
+tier: 1
+framework: beakerlib
+require+:
+- libabigail
+- rpm-build
+- yum-utils
+- gcc-c++
+- coreutils
+duration: 1h
