@@ -7429,6 +7429,44 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- openssl-fips-provider ---
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
+  name: openssl-fips-provider-main
+spec:
+  application: rpms-main
+  componentName: openssl-fips-provider-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/openssl-fips-provider-main
+  source:
+    git:
+      context: rpms/openssl-fips-provider
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: openssl-fips-provider-main
+  name: openssl-fips-provider-main
+spec:
+  image:
+    name: hummingbird-tenant/openssl-fips-provider-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
 # --- p11-kit ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1

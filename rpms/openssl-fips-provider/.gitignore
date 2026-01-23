@@ -1,0 +1,8 @@
+# Downloaded sources
+openssl-fips-provider-*.tar.gz
+
+# Build artifacts
+*.rpm
+*.src.rpm
+
+openssl-fips-provider-*/
