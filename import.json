@@ -853,6 +853,13 @@
     "source": "https://src.fedoraproject.org/rpms/httpd.git",
     "version": "2.4.66"
   },
+  "hugo": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "dc56221d1deeb5369bc460c975d5d0706eb4f1fc",
+    "source": "https://src.fedoraproject.org/rpms/hugo.git",
+    "version": "0.154.3"
+  },
   "icu": {
     "branch": "rawhide",
     "release": "1",
@@ -958,6 +965,13 @@
     "source": "https://src.fedoraproject.org/rpms/libXau.git",
     "version": "1.0.12"
   },
+  "libXaw": {
+    "branch": "rawhide",
+    "release": "5",
+    "sha": "3a4b9e8401177876158b19ade9e5fbc13a70576a",
+    "source": "https://src.fedoraproject.org/rpms/libXaw.git",
+    "version": "1.0.16"
+  },
   "libXcomposite": {
     "branch": "rawhide",
     "release": "7",
@@ -979,6 +993,13 @@
     "source": "https://src.fedoraproject.org/rpms/libXi.git",
     "version": "1.8.2"
   },
+  "libXmu": {
+    "branch": "rawhide",
+    "release": "5",
+    "sha": "1414e391caf9029d8f52675caf5f36f076cccd42",
+    "source": "https://src.fedoraproject.org/rpms/libXmu.git",
+    "version": "1.2.1"
+  },
   "libXrender": {
     "branch": "rawhide",
     "release": "4",
@@ -993,33 +1014,19 @@
     "source": "https://src.fedoraproject.org/rpms/libXtst.git",
     "version": "1.2.5"
   },
-  "libaio": {
-    "branch": "rawhide",
-    "release": "23",
-    "sha": "74b7c207c49584138a893031fd8ed7a54a0975bc",
-    "source": "https://src.fedoraproject.org/rpms/libaio.git",
-    "version": "0.3.111"
-  },
-  "libXaw": {
-    "branch": "rawhide",
-    "release": "5",
-    "sha": "3a4b9e8401177876158b19ade9e5fbc13a70576a",
-    "source": "https://src.fedoraproject.org/rpms/libXaw.git",
-    "version": "1.0.16"
-  },
-  "libXmu": {
-    "branch": "rawhide",
-    "release": "5",
-    "sha": "1414e391caf9029d8f52675caf5f36f076cccd42",
-    "source": "https://src.fedoraproject.org/rpms/libXmu.git",
-    "version": "1.2.1"
-  },
   "libabigail": {
     "branch": "rawhide",
     "release": "2",
     "sha": "e5891d52893f05f4e8757bf793eafc10d5d859af",
     "source": "https://src.fedoraproject.org/rpms/libabigail.git",
     "version": "2.9"
+  },
+  "libaio": {
+    "branch": "rawhide",
+    "release": "23",
+    "sha": "74b7c207c49584138a893031fd8ed7a54a0975bc",
+    "source": "https://src.fedoraproject.org/rpms/libaio.git",
+    "version": "0.3.111"
   },
   "libappstream-glib": {
     "branch": "rawhide",
@@ -1189,19 +1196,19 @@
     "source": "https://src.fedoraproject.org/rpms/libksba.git",
     "version": "1.6.7"
   },
-  "libmnl": {
-    "branch": "rawhide",
-    "release": "9",
-    "sha": "ec6d8ff62e3cb207ddde0fb3817a9e71c64f827b",
-    "source": "https://src.fedoraproject.org/rpms/libmnl.git",
-    "version": "1.0.5"
-  },
   "libmicrohttpd": {
     "branch": "rawhide",
     "release": "3",
     "sha": "18e076928a27c61ec8e51b0bd46b581b57c8be2b",
     "source": "https://src.fedoraproject.org/rpms/libmicrohttpd.git",
     "version": "1.0.2"
+  },
+  "libmnl": {
+    "branch": "rawhide",
+    "release": "9",
+    "sha": "ec6d8ff62e3cb207ddde0fb3817a9e71c64f827b",
+    "source": "https://src.fedoraproject.org/rpms/libmnl.git",
+    "version": "1.0.5"
   },
   "libmodulemd": {
     "branch": "rawhide",
@@ -1371,13 +1378,6 @@
     "source": "https://src.fedoraproject.org/rpms/libusb1.git",
     "version": "1.0.29"
   },
-  "libuv": {
-    "branch": "rawhide",
-    "release": "1",
-    "sha": "c6eeef4fcb660bea5098b6992cd72a2dbd771d8c",
-    "source": "https://src.fedoraproject.org/rpms/libuv.git",
-    "version": "1.51.0"
-  },
   "libutempter": {
     "branch": "rawhide",
     "release": "20",
@@ -1518,19 +1518,19 @@
     "source": "https://src.fedoraproject.org/rpms/make.git",
     "version": "4.4.1"
   },
-  "mariadb10.11": {
-    "branch": "rawhide",
-    "release": "2",
-    "sha": "5fe85de4d78ae7383e653f38524fce28f28bc4b6",
-    "source": "https://src.fedoraproject.org/rpms/mariadb10.11.git",
-    "version": "10.11.15"
-  },
   "mariadb-connector-c": {
     "branch": "rawhide",
     "release": "2",
     "sha": "9dd68a33b8f57bd5ce568a456b2cd1aeaf0b701a",
     "source": "https://src.fedoraproject.org/rpms/mariadb-connector-c.git",
     "version": "3.4.8"
+  },
+  "mariadb10.11": {
+    "branch": "rawhide",
+    "release": "2",
+    "sha": "5fe85de4d78ae7383e653f38524fce28f28bc4b6",
+    "source": "https://src.fedoraproject.org/rpms/mariadb10.11.git",
+    "version": "10.11.15"
   },
   "mawk": {
     "branch": "rawhide",
