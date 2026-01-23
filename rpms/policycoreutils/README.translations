@@ -1,0 +1,49 @@
+SELinux translations currently live in the following locations:
+
+- https://translate.fedoraproject.org/projects/selinux/
+  - contains 2 versions of translatable strings rhel8 (latest RHEL 8 release) and main (Fedora and RHEL 9)
+  - maintains large number of languages (several of which do not actually contain any translated strings)
+  - updated by community and partially by RH localization effort
+
+- SELinux source repositories (periodicaly updated from weblate)
+  - https://github.com/fedora-selinux/selinux
+    - used for Fedora, latest CentOS and RHEL 9
+  - https://github.com/SELinuxProject/selinux
+    - upstream repository
+
+How to update source files on weblate:
+  $ git clone git@github.com:fedora-selinux/selinux.git
+  $ cd selinux
+  # generate new potfiles
+  $ for p in policycoreutils python gui sandbox; do
+    cd $p/po
+    rm $p.pot
+    make $p.pot
+    sed -i 's/charset=CHARSET/charset=UTF-8/g' $p.pot
+    cd -
+    done
+  # https://translate.fedoraproject.org/projects/selinux/policycoreutils/en/
+  # Files -> Upload translations
+  # Repeat the process for python, gui and sandbox
+  # or use weblate command line tool (get your API key at https://translate.fedoraproject.org/accounts/profile/#api):
+  $ for p in policycoreutils python gui sandbox; do
+    wlc --key <API key> --url https://translate.fedoraproject.org/api/ upload --input $p/po/$p.pot selinux/$p/en --method=source
+    done
+
+How to pull new translations from weblate
+  $ git clone git@github.com:fedora-selinux/selinux.git
+  # https://translate.fedoraproject.org/projects/selinux/policycoreutils
+  # Files -> Download translation files as ZIP file (save in selinux source directory)
+  # Repeat the process for python, gui and sandbox
+  # or use weblate command line tool
+  $ for p in policycoreutils python gui sandbox; do
+    wlc --key <API key> --url https://translate.fedoraproject.org/api/ download selinux/$p --output selinux
+    done
+  # unzip archives
+  $ cd selinux
+  $ for p in policycoreutils python gui sandbox; do
+    unzip -o selinux-$p.zip -d ..
+    rm selinux-$p.zip
+    done
+  $ git add .
+  $ git commit

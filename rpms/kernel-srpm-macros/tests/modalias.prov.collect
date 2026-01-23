@@ -1,0 +1,31 @@
+#! /bin/bash -efu
+
+# This fetches test data from current system's /lib/modules
+# to /tmp/COLLECT
+
+IFS=$'\n'
+
+find /lib/modules | grep -E '/lib/modules/.+\.ko(\.gz|\.bz2|\.xz|\.zst)?$' \
+| while IFS='' read -r module; do
+    modver=$(/sbin/modinfo -F version "$module")
+    # delete possible extra lines because some modules have *two* version tags. *cough*b44*cough*
+    modver=${modver%%$'\n'*}    # using $'' bashism, avoid running "head -n1" process
+    # replace any strange chars with underscores.
+    # [!...] is glob's "match any char not in set" pattern
+    # (although bash supports [^...] too, it is not standard)
+    modver=${modver//[!0-9a-zA-Z._]/_}
+    # only add version tag if it has a version
+    [ -z "$modver" ] || modver=" = $modver"
+
+    d="/tmp/COLLECT$module"
+    d="${d%/*}"
+    mkdir -p "$d"
+
+    out=`/sbin/modinfo -F alias "$module" \
+    | sed -E "s,[^][0-9a-zA-Z._:*?/-],_,g; s,(.+),modalias(\\1)$modver,"`
+
+    [ "$out" ] || continue
+
+    echo "/tmp/COLLECT$module.modalias$modver" >&2
+    printf '%s\n' "$out" >"/tmp/COLLECT$module.modalias"
+done

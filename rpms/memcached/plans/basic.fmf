@@ -1,0 +1,7 @@
+summary:
+    Verify that memcached works
+discover:
+    how: fmf
+    url: https://gitlab.com/redhat/centos-stream/tests/memcached.git
+execute:
+    how: tmt

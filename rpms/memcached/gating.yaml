@@ -1,0 +1,8 @@
+--- !Policy
+product_versions:
+  - fedora-34
+decision_context: bodhi_update_push_testing
+subject_type: koji_build
+rules:
+  - !PassingTestCaseRule {test_case_name: fedora-ci.koji-build.tier0-tf.functional}
+

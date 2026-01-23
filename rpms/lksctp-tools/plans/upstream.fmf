@@ -1,0 +1,19 @@
+summary: Upstream tests
+
+prepare:
+    how: install
+    package:
+      - libtool
+      - make
+      - gcc
+
+discover:
+    how: shell
+    dist-git-source: true
+    tests:
+      - name: upstream-tier0
+        #duration: 2h
+        test: exec tests/run-local-tests.sh
+
+execute:
+  - how: tmt
