@@ -3,10 +3,10 @@
   "customManagers": [
     {
       "customType": "regex",
-      "description": "Update PIPELINE_BUNDLE digest in generate_pac_resources.sh",
-      "managerFilePatterns": ["/ci/generate_pac_resources\\.sh$/"],
+      "description": "Update PIPELINE_BUNDLE digest in generate_resources.py",
+      "managerFilePatterns": ["/ci/generate_resources\\.py$/"],
       "matchStrings": [
-        "#\\s*renovate:\\s*datasource=(?<datasource>\\S+)\\s+depName=(?<depName>\\S+)\\n\\s*PIPELINE_BUNDLE=\"[^:]+:(?<currentValue>[^@]+)@(?<currentDigest>sha256:[a-f0-9]+)\""
+        "#\\s*renovate:\\s*datasource=(?<datasource>\\S+)\\s+depName=(?<depName>\\S+)\\n\\s*PIPELINE_BUNDLE\\s*=\\s*\"[^:]+:(?<currentValue>[^@]+)@(?<currentDigest>sha256:[a-f0-9]+)\""
       ],
       "datasourceTemplate": "docker",
       "versioningTemplate": "docker"

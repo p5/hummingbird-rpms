@@ -50,8 +50,8 @@ def workdir(tmp_path: Path) -> Path:
         json.dumps({'fedora': {'f40': 'f40', 'rawhide': 'f99'}}) + '\n'
     )
 
-    # no-op generate.sh
-    os.symlink('/bin/true', tmp_path / 'ci' / 'generate.sh')
+    # no-op generate_resources.py
+    (tmp_path / 'ci' / 'generate_resources.py').write_text('# no-op for tests\n')
     (tmp_path / '.tekton').mkdir()
     (tmp_path / 'konflux-templates').mkdir()
 

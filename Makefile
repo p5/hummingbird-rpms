@@ -35,7 +35,7 @@ check:
 
 .PHONY: generate-host generate
 generate-host:
-	ci/generate.sh $(ARGS)
+	python3 ci/generate_resources.py all $(ARGS)
 generate:
 	$(PODMAN_RUN) $(PODMAN_IMAGE) make generate-host ARGS='$(ARGS)'
 
