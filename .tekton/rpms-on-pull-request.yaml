@@ -4890,6 +4890,10 @@ spec:
       value:
         - aarch64
         - x86_64
+    - name: build-platforms
+      value:
+        - "linux/amd64"
+        - "linux/arm64"
     - name: specfile
       value: "dos2unix.spec"
     - name: monorepo-subdir
@@ -4957,8 +4961,8 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
-        - "linux/arm64"
+        - "linux-d320-c4xlarge/arm64"
+        - "linux-d320-c4xlarge/amd64"
     - name: specfile
       value: "dotnet10.0.spec"
     - name: monorepo-subdir
@@ -5026,8 +5030,8 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
-        - "linux/arm64"
+        - "linux-d320-c4xlarge/arm64"
+        - "linux-d320-c4xlarge/amd64"
     - name: specfile
       value: "dotnet8.0.spec"
     - name: monorepo-subdir
@@ -5095,8 +5099,8 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
-        - "linux/arm64"
+        - "linux-d320-c4xlarge/arm64"
+        - "linux-d320-c4xlarge/amd64"
     - name: specfile
       value: "dotnet9.0.spec"
     - name: monorepo-subdir
