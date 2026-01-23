@@ -225,7 +225,7 @@ if [[ "${CHECK_BUILDDEPS}" == true ]]; then
         missing_builddeps=$(echo "${missing_binary_deps}" | binary_to_srpm_names)
         # Filter out SRPMs that are already imported
         # shellcheck disable=SC2312
-        missing_builddeps=$(comm -23 <(echo "${missing_builddeps}" | sort) <(echo "${imported_packages}"))
+        missing_builddeps=$(comm -23 <(echo "${missing_builddeps}" | sort -u) <(echo "${imported_packages}"))
     fi
 fi
 
