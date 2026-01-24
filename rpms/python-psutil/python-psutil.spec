@@ -108,6 +108,8 @@ k="${k-}${k+ and }not TestSystemNetIfAddrs"
 k="${k-}${k+ and }not test_against_nproc"
 k="${k-}${k+ and }not test_against_sysdev_cpu_"
 k="${k-}${k+ and }not test_disk_partitions_mocked"
+# test_disk_partitions fails in mock/chroot - no physical partitions visible
+k="${k-}${k+ and }not test_disk_partitions"
 k="${k-}${k+ and }not test_emulate_use_cpuinfo"
 k="${k-}${k+ and }not test_emulate_use_second_file"
 k="${k-}${k+ and }not test_exe_mocked"
