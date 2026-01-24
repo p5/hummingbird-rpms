@@ -1,0 +1,27 @@
+#!/bin/sh
+
+version=$1
+
+echo "This update includes the latest stable release of _Apache Subversion_, version **${1}**".
+echo
+
+curl --silent -n "http://svn.apache.org/repos/asf/subversion/tags/$1/CHANGES" | \
+sed -n "
+/^#/d;
+/^Version ${1/-rc*/}/,/^Version /{
+/, from \/branches/d;
+/repos\/asf\/subversion\/tags/d;
+s,#\([0-9]*\),[SVN-\1](https://issues.apache.org/jira/browse/SVN-\1),;
+s/(r[0-9, retal]+)\*//g;
+s/^ *//;
+s/ +/ /g;
+s/^ *- \(.*\)$/#### \1/;
+s/\(.*visible changes.*:\)$/### \1/;
+/^ *$/d;
+/Windows/d
+/^Version /d
+s,(r1.*),,g
+s,\(@[0-9]*\),\\\1,g
+p;
+}
+" -

@@ -1,0 +1,13 @@
+*** xio-ext2.c.orig	2007-02-19 23:26:33.000000000 -0500
+--- xio-ext2.c	2007-02-19 23:24:58.000000000 -0500
+***************
+*** 15,20 ****
+--- 15,22 ----
+  
+  /****** FD options ******/
+  
++ #include <linux/fs.h>
++ 
+  #ifdef EXT2_SECRM_FL
+  /* secure deletion, chattr 's' */
+  const struct optdesc opt_ext2_secrm        = { "ext2-secrm",        "secrm",        OPT_EXT2_SECRM,        GROUP_REG, PH_FD, TYPE_BOOL, OFUNC_IOCTL_MASK_LONG, EXT2_IOC_GETFLAGS, EXT2_IOC_SETFLAGS, EXT2_SECRM_FL };

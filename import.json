@@ -2253,6 +2253,27 @@
     "source": "https://src.fedoraproject.org/rpms/python3.14.git",
     "version": "3.14.2"
   },
+  "qdbm": {
+    "branch": "rawhide",
+    "release": "75",
+    "sha": "020ab54f42231c42b6a80491a834b0a80a5cb5fa",
+    "source": "https://src.fedoraproject.org/rpms/qdbm.git",
+    "version": "1.8.78"
+  },
+  "qrencode": {
+    "branch": "rawhide",
+    "release": "12",
+    "sha": "751deb6620327b713dfa47d52b94fc99c8725e6e",
+    "source": "https://src.fedoraproject.org/rpms/qrencode.git",
+    "version": "4.1.1"
+  },
+  "qt3": {
+    "branch": "rawhide",
+    "release": "103",
+    "sha": "e61f6364485c87fb2144d38fbb58c7e8eb956de8",
+    "source": "https://src.fedoraproject.org/rpms/qt3.git",
+    "version": "3.3.8b"
+  },
   "qt5": {
     "branch": "rawhide",
     "release": "1",
@@ -2266,6 +2287,13 @@
     "sha": "b9cd7b1de7a028e8b125237694b90e279f39a50f",
     "source": "https://src.fedoraproject.org/rpms/qt6.git",
     "version": "6.10.1"
+  },
+  "rdma-core": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "258dd5b7e72cae72a0e0b53dfe2df653fad6cbe2",
+    "source": "https://src.fedoraproject.org/rpms/rdma-core.git",
+    "version": "61.0"
   },
   "readline": {
     "branch": "rawhide",
@@ -2281,6 +2309,13 @@
     "source": "https://src.fedoraproject.org/rpms/redhat-rpm-config.git",
     "version": "343"
   },
+  "resolv_wrapper": {
+    "branch": "rawhide",
+    "release": "11",
+    "sha": "dc0132e17696d5447989a317f63a726ce3aec578",
+    "source": "https://src.fedoraproject.org/rpms/resolv_wrapper.git",
+    "version": "1.1.8"
+  },
   "rootfiles": {
     "branch": "rawhide",
     "release": "1",
@@ -2295,12 +2330,26 @@
     "source": "https://src.fedoraproject.org/rpms/rpm.git",
     "version": "6.0.1"
   },
+  "rpmdevtools": {
+    "branch": "rawhide",
+    "release": "14",
+    "sha": "026974d82c66d0e0ee413580e5f876ec4517be58",
+    "source": "https://src.fedoraproject.org/rpms/rpmdevtools.git",
+    "version": "9.6"
+  },
   "ruby": {
     "branch": "rawhide",
     "release": "30",
     "sha": "95c21e57751a564afe4457e7f5a5c0393ec5f8bd",
     "source": "https://src.fedoraproject.org/rpms/ruby.git",
     "version": "4.0.0"
+  },
+  "rubygem-asciidoctor": {
+    "branch": "rawhide",
+    "release": "2",
+    "sha": "f87335e0ef6b804afc226ee158b922f87a592ae7",
+    "source": "https://src.fedoraproject.org/rpms/rubygem-asciidoctor.git",
+    "version": "2.0.26"
   },
   "rubygem-json": {
     "branch": "rawhide",
@@ -2315,6 +2364,13 @@
     "sha": "6deea9b12ad86aaf7a2e6af6bd952fe488d82aa5",
     "source": "https://src.fedoraproject.org/rpms/rubygem-rdoc.git",
     "version": "7.0.3"
+  },
+  "rubygem-test-unit": {
+    "branch": "rawhide",
+    "release": "2",
+    "sha": "99962afb31f34f2cf6fc04e8f90a221e2f741bc2",
+    "source": "https://src.fedoraproject.org/rpms/rubygem-test-unit.git",
+    "version": "3.7.7"
   },
   "rubypick": {
     "branch": "rawhide",
@@ -2337,12 +2393,40 @@
     "source": "https://src.fedoraproject.org/rpms/rust-add-determinism.git",
     "version": "0.7.2"
   },
+  "rust-bindgen-cli": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "e9fe2bc581cd5a6215e123f1a0af83f88c7b2f10",
+    "source": "https://src.fedoraproject.org/rpms/rust-bindgen-cli.git",
+    "version": "0.72.1"
+  },
   "rust-rpm-sequoia": {
     "branch": "rawhide",
     "release": "1",
     "sha": "7cd894b9e23b8f9dccc7e6cb441cbeeecf07b5cd",
     "source": "https://src.fedoraproject.org/rpms/rust-rpm-sequoia.git",
     "version": "1.10.0"
+  },
+  "rust-sequoia-policy-config": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "f1d8cd13c85c3e70c98ea549a5fc073ef622832f",
+    "source": "https://src.fedoraproject.org/rpms/rust-sequoia-policy-config.git",
+    "version": "0.8.1"
+  },
+  "rust2rpm-helper": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "a2f5e0d42b5ba04861262ce2a3b518bc63ef50d8",
+    "source": "https://src.fedoraproject.org/rpms/rust2rpm-helper.git",
+    "version": "0.1.9"
+  },
+  "scdoc": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "640e7ff32aa9ce15d088d713581fcf85e4c65721",
+    "source": "https://src.fedoraproject.org/rpms/scdoc.git",
+    "version": "1.11.3"
   },
   "sdbus-cpp": {
     "branch": "rawhide",
@@ -2386,6 +2470,20 @@
     "source": "https://src.fedoraproject.org/rpms/shadow-utils.git",
     "version": "4.18.0"
   },
+  "shared-mime-info": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "6c09b2aa8f1afc8026f9f1e81c2b4db906dc16f6",
+    "source": "https://src.fedoraproject.org/rpms/shared-mime-info.git",
+    "version": "2.4"
+  },
+  "sharutils": {
+    "branch": "rawhide",
+    "release": "31",
+    "sha": "b624ae08a92040e1fa2db66322c7d43e3010198a",
+    "source": "https://src.fedoraproject.org/rpms/sharutils.git",
+    "version": "4.15.2"
+  },
   "skopeo": {
     "branch": "rawhide",
     "release": "1",
@@ -2400,6 +2498,27 @@
     "source": "https://src.fedoraproject.org/rpms/snappy.git",
     "version": "1.2.2"
   },
+  "socat": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "83d791bf4d238c264be99a957e81c4201de67933",
+    "source": "https://src.fedoraproject.org/rpms/socat.git",
+    "version": "1.8.1.0"
+  },
+  "socket_wrapper": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "ee66ed1af06b2481dcd20c29e54d5099b336de51",
+    "source": "https://src.fedoraproject.org/rpms/socket_wrapper.git",
+    "version": "1.5.2"
+  },
+  "source-highlight": {
+    "branch": "rawhide",
+    "release": "27",
+    "sha": "59404ea34ee0af8b432d5a5dd6ac6e3e534217d3",
+    "source": "https://src.fedoraproject.org/rpms/source-highlight.git",
+    "version": "3.1.9"
+  },
   "sqlite": {
     "branch": "rawhide",
     "release": "1",
@@ -2407,12 +2526,61 @@
     "source": "https://src.fedoraproject.org/rpms/sqlite.git",
     "version": "3.51.0"
   },
+  "star": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "62307559c7daf13d00c157c0ea489f57c53066b8",
+    "source": "https://src.fedoraproject.org/rpms/star.git",
+    "version": "2024.03.21"
+  },
+  "stunnel": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "79305d4f1ce661e4e07d676021a227c05196683d",
+    "source": "https://src.fedoraproject.org/rpms/stunnel.git",
+    "version": "5.75"
+  },
+  "subversion": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "82e9e1e85cb9845f26d7bfad990e7735a3731eff",
+    "source": "https://src.fedoraproject.org/rpms/subversion.git",
+    "version": "1.14.5"
+  },
+  "swig": {
+    "branch": "rawhide",
+    "release": "2",
+    "sha": "d9ecada6bde1129f90f3fa28e7ce4ff67695a906",
+    "source": "https://src.fedoraproject.org/rpms/swig.git",
+    "version": "4.4.1"
+  },
+  "swtpm": {
+    "branch": "rawhide",
+    "release": "3",
+    "sha": "16eabef8eddfa77d70df0a2c6778bf2e21e7eb60",
+    "source": "https://src.fedoraproject.org/rpms/swtpm.git",
+    "version": "0.10.1"
+  },
+  "sysprof": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "2765af3ca16cc679d942e1666730ed309044e1ff",
+    "source": "https://src.fedoraproject.org/rpms/sysprof.git",
+    "version": "50~alpha"
+  },
   "systemd": {
     "branch": "rawhide",
     "release": "1",
     "sha": "399885597ce9f7cc63673c3369086021f0b01176",
     "source": "https://src.fedoraproject.org/rpms/systemd.git",
     "version": "259"
+  },
+  "systemtap": {
+    "branch": "rawhide",
+    "release": "3",
+    "sha": "a5c5bd1293b3c1d39c7f9a1c39370d7d7bd1e374",
+    "source": "https://src.fedoraproject.org/rpms/systemtap.git",
+    "version": "5.4"
   },
   "tar": {
     "branch": "rawhide",
