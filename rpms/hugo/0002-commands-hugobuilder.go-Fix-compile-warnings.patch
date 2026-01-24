@@ -1,0 +1,57 @@
+From c7fbba453f62f2b0a33f9e3c686ba7ffc5057259 Mon Sep 17 00:00:00 2001
+From: Prarit Bhargava <prarit@redhat.com>
+Date: Fri, 23 Jan 2026 18:42:31 -0500
+Subject: [PATCH 1/2] commands/hugobuilder.go: Fix compile warnings
+
+Fix these compile warnings:
+
+./hugobuilder.go:175:58: (github.com/gohugoio/hugo/common/loggers.Logger).Errorf call has arguments but no formatting directives
+./hugobuilder.go:180:57: (github.com/gohugoio/hugo/common/loggers.Logger).Errorf call has arguments but no formatting directives
+./hugobuilder.go:347:6: (github.com/gohugoio/hugo/common/loggers.Logger).Errorln call has possible Printf formatting directive %s
+./hugobuilder.go:367:6: (github.com/gohugoio/hugo/common/loggers.Logger).Errorln call has possible Printf formatting directive %s
+
+Signed-off-by: Prarit Bhargava <prarit@redhat.com>
+---
+ commands/hugobuilder.go | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/commands/hugobuilder.go b/commands/hugobuilder.go
+index 038b9ad94780..034af9434c62 100644
+--- a/commands/hugobuilder.go
++++ b/commands/hugobuilder.go
+@@ -172,12 +172,12 @@ func (c *hugoBuilder) initMemProfile() {
+ 
+ 	f, err := os.Create(c.r.memprofile)
+ 	if err != nil {
+-		c.r.logger.Errorf("could not create memory profile: ", err)
++		c.r.logger.Errorf("could not create memory profile: %s", err)
+ 	}
+ 	defer f.Close()
+ 	runtime.GC() // get up-to-date statistics
+ 	if err := pprof.WriteHeapProfile(f); err != nil {
+-		c.r.logger.Errorf("could not write memory profile: ", err)
++		c.r.logger.Errorf("could not write memory profile: %s", err)
+ 	}
+ }
+ 
+@@ -344,7 +344,7 @@ func (c *hugoBuilder) newWatcher(pollIntervalStr string, dirList ...string) (*wa
+ 			case changes := <-c.r.changesFromBuild:
+ 				unlock, err := h.LockBuild()
+ 				if err != nil {
+-					c.r.logger.Errorln("Failed to acquire a build lock: %s", err)
++					c.r.logger.Errorln("Failed to acquire a build lock: %w", err)
+ 					return
+ 				}
+ 				c.changeDetector.PrepareNew()
+@@ -364,7 +364,7 @@ func (c *hugoBuilder) newWatcher(pollIntervalStr string, dirList ...string) (*wa
+ 			case evs := <-watcher.Events:
+ 				unlock, err := h.LockBuild()
+ 				if err != nil {
+-					c.r.logger.Errorln("Failed to acquire a build lock: %s", err)
++					c.r.logger.Errorln("Failed to acquire a build lock: %w", err)
+ 					return
+ 				}
+ 				c.handleEvents(watcher, staticSyncer, evs, configSet)
+-- 
+2.52.0
+

@@ -1,0 +1,30 @@
+From 633fe9962ab518e3f686afecf1ff3d19cbbc54e0 Mon Sep 17 00:00:00 2001
+From: Prarit Bhargava <prarit@redhat.com>
+Date: Fri, 23 Jan 2026 18:44:31 -0500
+Subject: [PATCH 3/3] commands/import.go: Fix compile warning
+
+Fix this warning
+
+./import.go:466:2: Println arg list ends with redundant newline
+
+Signed-off-by: Prarit Bhargava <prarit@redhat.com>
+---
+ commands/import.go | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/commands/import.go b/commands/import.go
+index 163f3b4d4c37..dbcc556acc52 100644
+--- a/commands/import.go
++++ b/commands/import.go
+@@ -463,7 +463,7 @@ func (c *importCommand) importFromJekyll(args []string) error {
+ 	}
+ 
+ 	c.r.Println("Congratulations!", fileCount, "post(s) imported!")
+-	c.r.Println("Now, start Hugo by yourself:\n")
++	c.r.Println("Now, start Hugo by yourself:")
+ 	c.r.Println("cd " + args[1])
+ 	c.r.Println("git init")
+ 	c.r.Println("git submodule add https://github.com/theNewDynamic/gohugo-theme-ananke themes/ananke")
+-- 
+2.52.0
+
