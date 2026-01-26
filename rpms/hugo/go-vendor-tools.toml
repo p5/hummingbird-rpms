@@ -1,0 +1,51 @@
+[archive]
+
+[[licensing.licenses]]
+path = "docs/LICENSE.md"
+sha256sum = "60619c2bcd9ee1b479943ae5504fed8f55ee63a1abb7c0dc76f96cca4fc019b7"
+expression = "Apache-2.0 AND MIT"
+
+[[licensing.licenses]]
+path = "vendor/github.com/BurntSushi/locker/UNLICENSE"
+sha256sum = "7e12e5df4bae12cb21581ba157ced20e1986a0508dd10d0e8a4ab9a4cf94e85c"
+expression = "Unlicense"
+
+[[licensing.licenses]]
+path = "vendor/github.com/alecthomas/chroma/v2/COPYING"
+sha256sum = "e7bf754e7153012a3a8ff697d21acd6c12e590d6a55f2aef8ee83616aa9a795f"
+expression = "MIT"
+
+[[licensing.licenses]]
+path = "vendor/github.com/bep/golibsass/libsass_src/COPYING"
+sha256sum = "619c195be45054a9b8d6e4c114381fe0a015fddc9663ca7940660312b74d7592"
+expression = "MIT"
+
+[[licensing.licenses]]
+path = "vendor/github.com/oasdiff/yaml/LICENSE"
+sha256sum = "24653fd8a39354396da1a265d68316399edc39b1df48c5866d55f9f06484fa9a"
+expression = "BSD-3-Clause AND MIT"
+
+[[licensing.licenses]]
+path = "vendor/github.com/oasdiff/yaml3/LICENSE"
+sha256sum = "d18f6323b71b0b768bb5e9616e36da390fbd39369a81807cca352de4e4e6aa0b"
+expression = "Apache-2.0 AND MIT"
+
+[[licensing.licenses]]
+path = "vendor/go.yaml.in/yaml/v3/LICENSE"
+sha256sum = "d18f6323b71b0b768bb5e9616e36da390fbd39369a81807cca352de4e4e6aa0b"
+expression = "Apache-2.0 AND MIT"
+
+[[licensing.licenses]]
+path = "vendor/gopkg.in/yaml.v3/LICENSE"
+sha256sum = "d18f6323b71b0b768bb5e9616e36da390fbd39369a81807cca352de4e4e6aa0b"
+expression = "Apache-2.0 AND MIT"
+
+[[licensing.licenses]]
+path = "vendor/howett.net/plist/LICENSE"
+sha256sum = "20d9b7d9372369484ecadae229d3e3efee8029b259e11c9a1b07d2e0a3c82e39"
+expression = "BSD-2-Clause AND BSD-3-Clause"
+
+[[licensing.licenses]]
+path = "livereload/livereload.js"
+sha256sum = "e071a0325051d6bf19fc9c69c97cb7512e600a16e3f63fdd279cc39f72f9e488"
+expression = "Apache-2.0"

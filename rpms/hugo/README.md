@@ -1,0 +1,3 @@
+# hugo
+
+The hugo package
