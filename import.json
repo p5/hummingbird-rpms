@@ -2533,6 +2533,13 @@
     "source": "https://src.fedoraproject.org/rpms/source-highlight.git",
     "version": "3.1.9"
   },
+  "spdlog": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "9fdfe34fefc3bd2c69ac5f16dec1f84e6b01548d",
+    "source": "https://src.fedoraproject.org/rpms/spdlog.git",
+    "version": "1.15.3"
+  },
   "sqlite": {
     "branch": "rawhide",
     "release": "1",
