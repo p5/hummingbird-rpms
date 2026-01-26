@@ -24,6 +24,11 @@ CONTAINERS_DIR="${REPO_ROOT}/../containers"
 COUNT_ONLY=false
 CHECK_BUILDDEPS=false
 
+# Packages to exclude from output (e.g., packages that should never be imported)
+BLOCKLIST=(
+    "fedora-release"
+)
+
 show_help() {
     cat << EOF
 Usage: $0 [OPTIONS]
@@ -78,6 +83,19 @@ check_command() {
         echo "Please install it and try again." >&2
         exit 1
     fi
+}
+
+# Filter out blocklisted packages from a newline-separated list
+filter_blocklist() {
+    local input="$1"
+    if [[ -z "${input}" ]] || [[ ${#BLOCKLIST[@]} -eq 0 ]]; then
+        echo "${input}"
+        return
+    fi
+    # Create a pattern for grep -Ev
+    local pattern
+    pattern=$(printf '%s\n' "${BLOCKLIST[@]}" | paste -sd'|')
+    echo "${input}" | grep -Ev "^(${pattern})$" || true
 }
 
 check_command yq
@@ -213,6 +231,7 @@ lockfile_srpms=$(get_lockfile_srpms | sort -u)
 imported_packages=$(get_imported_packages)
 
 missing=$(comm -23 <(echo "${lockfile_srpms}") <(echo "${imported_packages}"))
+missing=$(filter_blocklist "${missing}")
 
 # Get missing build dependencies if requested
 missing_builddeps=""
@@ -226,6 +245,7 @@ if [[ "${CHECK_BUILDDEPS}" == true ]]; then
         # Filter out SRPMs that are already imported
         # shellcheck disable=SC2312
         missing_builddeps=$(comm -23 <(echo "${missing_builddeps}" | sort -u) <(echo "${imported_packages}"))
+        missing_builddeps=$(filter_blocklist "${missing_builddeps}")
     fi
 fi
 
