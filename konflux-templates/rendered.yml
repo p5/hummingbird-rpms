@@ -12028,7 +12028,43 @@ spec:
     method: webhook
     title: SBOM-event-to-Bombino
 # --- python-psutil ---
-# PENDING
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
+  name: python-psutil-main
+spec:
+  application: rpms-main
+  componentName: python-psutil-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/python-psutil-main
+  source:
+    git:
+      context: rpms/python-psutil
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: python-psutil-main
+  name: python-psutil-main
+spec:
+  image:
+    name: hummingbird-tenant/python-psutil-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
 # --- python-pygments ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
