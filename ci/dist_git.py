@@ -52,6 +52,17 @@ class KojiBuild(TypedDict, total=False):
     source: str
 
 
+def uses_autorelease(package_dir: Path) -> bool:
+    """Check if the spec file in package_dir uses %autorelease."""
+    spec_files = list(package_dir.glob('*.spec'))
+    if len(spec_files) != 1:
+        return False
+
+    spec_content = spec_files[0].read_text()
+    # Check for %autorelease in Release: line (possibly with options like -b, -e, etc.)
+    return bool(re.search(r'^Release:\s*%\{?\??autorelease\b', spec_content, re.MULTILINE))
+
+
 def parse_spec_version(package_dir: Path) -> tuple[str, str]:
     """Extract version and release from package directory's spec file."""
     # Find the spec file
@@ -216,6 +227,43 @@ class KojiTransport(xmlrpc.client.SafeTransport):
         connection.putheader("Accept", "text/xml")
 
 
+def get_koji_server() -> xmlrpc.client.ServerProxy:
+    """Get a Koji XML-RPC server proxy with proper transport configuration."""
+    return xmlrpc.client.ServerProxy('https://koji.fedoraproject.org/kojihub',
+                                      transport=KojiTransport(),
+                                      allow_none=True)
+
+
+class KojiLatestBuild(TypedDict, total=False):
+    """Result from Koji listTagged() API."""
+    nvr: str
+    version: str
+    release: str
+
+
+def get_koji_latest_build(package_name: str, dist_tag: str) -> KojiLatestBuild | None:
+    """Get the latest build for a package from Koji.
+
+    Uses listTagged to find the latest build in the given tag.
+    Returns None if no build found.
+    """
+    server = get_koji_server()
+
+    # listTagged signature: (tag, event, inherit, prefix, latest, package, ...)
+    builds = cast(list[KojiLatestBuild], server.listTagged(dist_tag, None, False, None, True, package_name))
+
+    if not builds:
+        # Try previous Fedora release as fallback
+        previous_release = get_previous_fedora_release(dist_tag)
+        if previous_release:
+            logging.info("No builds found in %s, trying %s", dist_tag, previous_release)
+            builds = cast(list[KojiLatestBuild], server.listTagged(previous_release, None, False, None, True, package_name))
+
+    if builds:
+        return builds[0]
+    return None
+
+
 def check_koji_build(package_name: str, version: str, release: str, expected_commit: str,
                      dist_tag: str, branch: str) -> bool:
     """Check if a build exists in Koji and matches the expected commit.
@@ -230,8 +278,7 @@ def check_koji_build(package_name: str, version: str, release: str, expected_com
     # Construct NVR
     nvr = f'{package_name}-{version}-{release}.{koji_dist_tag}'
 
-    server = xmlrpc.client.ServerProxy('https://koji.fedoraproject.org/kojihub',
-                                        transport=KojiTransport())
+    server = get_koji_server()
     build_result = server.getBuild(nvr)
 
     # If build not found, try previous release as fallback
@@ -343,6 +390,33 @@ def import_(url: str, branch: str, ref: str | None = None, dry_run: bool = False
     # We can't have sub .git directories in our repo
     shutil.rmtree(package_dir / '.git')
 
+    # Check if spec uses %autorelease - if so, query Koji for actual release
+    if uses_autorelease(package_dir):
+        logging.info("Upstream uses %autorelease, querying Koji for latest release...")
+        dist_tag = get_dist_tag(branch)
+        koji_build = get_koji_latest_build(package_name, dist_tag)
+        if koji_build:
+            release = koji_build['release']
+            # Strip dist suffix (e.g., "1.fc42" -> "1")
+            release = re.sub(r'\.(fc|el)\d+$', '', release)
+            logging.info("Koji latest release: %s", release)
+
+            # Replace %autorelease in spec file with actual release value
+            spec_files = list(package_dir.glob('*.spec'))
+            if spec_files:
+                spec_file = spec_files[0]
+                spec_content = spec_file.read_text()
+                new_content = re.sub(
+                    r'^(Release:\s*)%\{?\??autorelease\b.*$',
+                    rf'\g<1>{release}%{{?dist}}',
+                    spec_content,
+                    flags=re.MULTILINE
+                )
+                spec_file.write_text(new_content)
+                logging.info("Replaced %%autorelease with %s%%{?dist} in %s", release, spec_file.name)
+        else:
+            logging.warning("No Koji build found for %s, keeping %%autorelease", package_name)
+
     # Update import.json
     imports[package_name] = {
         'source': url,
@@ -404,11 +478,27 @@ def update(package_name: str, skip_build_check: bool = False, sync: bool = False
         version, release = parse_spec_version(upstream_dir)
         logging.info("Version: %s-%s", version, release)
 
+        dist_tag = get_dist_tag(metadata['branch'])
+
+        # Check if upstream uses %autorelease - if so, query Koji for actual release
+        has_autorelease = uses_autorelease(upstream_dir)
+        if has_autorelease:
+            logging.info("Upstream uses %autorelease, querying Koji for latest release...")
+            koji_build = get_koji_latest_build(package_name, dist_tag)
+            if koji_build:
+                release = koji_build['release']
+                # Strip dist suffix (e.g., "1.fc42" -> "1")
+                release = re.sub(r'\.(fc|el)\d+$', '', release)
+                logging.info("Koji latest release: %s", release)
+            else:
+                logging.warning("No Koji build found for %s, using spec release: %s",
+                               package_name, release)
+                has_autorelease = False  # Don't replace if we couldn't get Koji release
+
         # Check if this version-release was built in Koji; syncing is a human thing,
         # assume they know what they are doing
         if not skip_build_check and not sync:
             logging.info("Checking Koji for build %s-%s-%s...", package_name, version, release)
-            dist_tag = get_dist_tag(metadata['branch'])
             if not check_koji_build(package_name, version, release, latest_sha, dist_tag, metadata['branch']):
                 logging.info("Skipping %s: %s-%s not built in Koji", package_name, version, release)
                 return
@@ -424,6 +514,22 @@ def update(package_name: str, skip_build_check: bool = False, sync: bool = False
         shutil.rmtree(package_dir)
         shutil.rmtree(upstream_dir / '.git')
         shutil.copytree(upstream_dir, package_dir)
+
+        # Replace %autorelease with actual release value from Koji
+        if has_autorelease:
+            spec_files = list(package_dir.glob('*.spec'))
+            if spec_files:
+                spec_file = spec_files[0]
+                spec_content = spec_file.read_text()
+                # Replace %autorelease (with optional braces/options) with release + %{?dist}
+                new_content = re.sub(
+                    r'^(Release:\s*)%\{?\??autorelease\b.*$',
+                    rf'\g<1>{release}%{{?dist}}',
+                    spec_content,
+                    flags=re.MULTILINE
+                )
+                spec_file.write_text(new_content)
+                logging.info("Replaced %%autorelease with %s%%{?dist} in %s", release, spec_file.name)
 
         logging.info("Updated to %s-%s", version, release)
 
