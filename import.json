@@ -895,6 +895,27 @@
     "source": "https://src.fedoraproject.org/rpms/java-25-openjdk.git",
     "version": "25.0.1.0.8"
   },
+  "java-rpm-macros": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "5bbf9ba1854c4e0f41d719867b194ea88d1e1fc3",
+    "source": "https://src.fedoraproject.org/rpms/java-rpm-macros.git",
+    "version": "1"
+  },
+  "javapackages-tools": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "b281f3ebdddf455e5817642cab0192329f90f9df",
+    "source": "https://src.fedoraproject.org/rpms/javapackages-tools.git",
+    "version": "6.4.1"
+  },
+  "jemalloc": {
+    "branch": "rawhide",
+    "release": "14",
+    "sha": "7128f3e14edfc86d51d06382ba64500f09d62812",
+    "source": "https://src.fedoraproject.org/rpms/jemalloc.git",
+    "version": "5.3.0"
+  },
   "jq": {
     "branch": "rawhide",
     "release": "1",

@@ -1,0 +1,13 @@
+--- configure.orig	2017-12-14 12:15:32.517920736 +0100
++++ configure	2017-12-14 12:16:22.608660037 +0100
+@@ -6865,10 +6865,6 @@
+ 	fi
+ 	;;
+   powerpc*)
+-	cat >>confdefs.h <<_ACEOF
+-#define HAVE_ALTIVEC
+-_ACEOF
+-
+ 	CPU_SPINWAIT='__asm__ volatile("or 31,31,31")'
+ 	;;
+   *)

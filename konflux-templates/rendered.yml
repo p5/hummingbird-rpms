@@ -5018,11 +5018,119 @@ spec:
     method: webhook
     title: SBOM-event-to-Bombino
 # --- java-rpm-macros ---
-# PENDING
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
+  name: java-rpm-macros-main
+spec:
+  application: rpms-main
+  componentName: java-rpm-macros-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/java-rpm-macros-main
+  source:
+    git:
+      context: rpms/java-rpm-macros
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: java-rpm-macros-main
+  name: java-rpm-macros-main
+spec:
+  image:
+    name: hummingbird-tenant/java-rpm-macros-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
 # --- javapackages-tools ---
-# PENDING
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
+  name: javapackages-tools-main
+spec:
+  application: rpms-main
+  componentName: javapackages-tools-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/javapackages-tools-main
+  source:
+    git:
+      context: rpms/javapackages-tools
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: javapackages-tools-main
+  name: javapackages-tools-main
+spec:
+  image:
+    name: hummingbird-tenant/javapackages-tools-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
 # --- jemalloc ---
-# PENDING
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
+  name: jemalloc-main
+spec:
+  application: rpms-main
+  componentName: jemalloc-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/jemalloc-main
+  source:
+    git:
+      context: rpms/jemalloc
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: jemalloc-main
+  name: jemalloc-main
+spec:
+  image:
+    name: hummingbird-tenant/jemalloc-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
 # --- jna ---
 # PENDING
 # --- jq ---

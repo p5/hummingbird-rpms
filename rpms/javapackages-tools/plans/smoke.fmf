@@ -1,0 +1,11 @@
+summary: Basic smoke tests
+discover:
+  how: fmf
+  url: https://gitlab.com/redhat/centos-stream/tests/javapackages-tools.git
+  filter: tier:0,1
+prepare:
+  how: install
+  exclude:
+    - maven-local-openjdk25
+execute:
+  how: tmt

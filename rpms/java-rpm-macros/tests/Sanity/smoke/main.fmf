@@ -1,0 +1,3 @@
+summary: java-rpm-macros smoke test
+description: |
+  Test basic functionality of java-rpm-macros.
