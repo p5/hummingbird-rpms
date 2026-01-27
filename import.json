@@ -2472,8 +2472,8 @@
   },
   "setup": {
     "branch": "rawhide",
-    "release": "1",
-    "sha": "f2d2aec19325d0200557c13e607d983e71154aec",
+    "release": "28",
+    "sha": "79dbefdc7a531abc08d9177b672b537d6c69d2b1",
     "source": "https://src.fedoraproject.org/rpms/setup.git",
     "version": "2.15.0"
   },
