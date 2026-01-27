@@ -918,8 +918,8 @@
   },
   "jq": {
     "branch": "rawhide",
-    "release": "1",
-    "sha": "6608a6f22087eb7b888b71f1f9be9befba3eaed3",
+    "release": "2",
+    "sha": "1597363a1cdd9a3513d2d24b84e8de545412290d",
     "source": "https://src.fedoraproject.org/rpms/jq.git",
     "version": "1.8.1"
   },
@@ -2493,8 +2493,8 @@
   },
   "setup": {
     "branch": "rawhide",
-    "release": "1",
-    "sha": "f2d2aec19325d0200557c13e607d983e71154aec",
+    "release": "28",
+    "sha": "79dbefdc7a531abc08d9177b672b537d6c69d2b1",
     "source": "https://src.fedoraproject.org/rpms/setup.git",
     "version": "2.15.0"
   },
