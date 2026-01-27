@@ -34,7 +34,7 @@ print(string.sub(hash, 0, 16))
 Summary: Utilities from the general purpose cryptography library with TLS implementation
 Name: openssl
 Version: 3.5.4
-Release: 1%{?dist}
+Release: 2%{?dist}
 Epoch: 1
 Source0: openssl-%{version}.tar.gz
 Source1: fips-hmacify.sh
@@ -95,7 +95,7 @@ Patch0049: 0049-FIPS-fix-disallowed-digests-tests.patch
 Patch0050: 0050-Make-openssl-speed-run-in-FIPS-mode.patch
 Patch0051: 0051-Backport-upstream-27483-for-PKCS11-needs.patch
 Patch0052: 0052-Red-Hat-9-FIPS-indicator-defines.patch
-%if ( %{defined rhel} && (! %{defined centos}) && (! %{defined eln}) )
+%if ( ( %{defined rhel} || %{defined hummingbird} ) && (! %{defined centos}) && (! %{defined eln}) )
 Patch0053: 0053-Allow-hybrid-MLKEM-in-FIPS-mode.patch
 %endif
 Patch0054: 0054-Temporarily-disable-SLH-DSA-FIPS-self-tests.patch
@@ -134,7 +134,7 @@ Summary: A general purpose cryptography library with TLS implementation
 Requires: ca-certificates >= 2008-5
 Requires: crypto-policies >= 20180730
 Recommends: pkcs11-provider%{?_isa}
-%if ( %{defined rhel} && (! %{defined centos}) && (! %{defined eln}) )
+%if ( ( %{defined rhel} || %{defined hummingbird} ) && (! %{defined centos}) && (! %{defined eln}) )
 Requires: openssl-fips-provider
 %endif
 
@@ -319,7 +319,7 @@ make test HARNESS_JOBS=8
 # Add generation of HMAC checksum of the final stripped library
 # We manually copy standard definition of __spec_install_post
 # and add hmac calculation/embedding to fips.so
-%if ( %{defined rhel} && (! %{defined centos}) && (! %{defined eln}) )
+%if ( ( %{defined rhel} || %{defined hummingbird} ) && (! %{defined centos}) && (! %{defined eln}) )
 %define __spec_install_post \
     rm -rf $RPM_BUILD_ROOT/%{_libdir}/ossl-modules/fips.so \
     %{?__debug_package:%{__debug_install_post}} \
@@ -476,6 +476,9 @@ ln -s /etc/crypto-policies/back-ends/openssl_fips.config $RPM_BUILD_ROOT%{_sysco
 %ldconfig_scriptlets libs
 
 %changelog
+* Mon Jan 26 2026 Robert Sturla <rsturla@redhat.com> - 1:3.5.4-2
+- Remove upstream fips.so from openssl-libs for Hummingbird
+
 * Wed Oct 15 2025 Dmitry Belyavskiy <dbelyavs@redhat.com> - 1:3.5.4-1
 - Rebase to OpenSSL 3.5.4, resolving CVE-2025-9230 and CVE-2025-9232
 
