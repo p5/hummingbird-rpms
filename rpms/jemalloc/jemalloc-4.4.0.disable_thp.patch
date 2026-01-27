@@ -1,0 +1,11 @@
+--- configure.orig	2017-01-12 13:18:55.344548013 +0100
++++ configure	2017-01-12 13:19:05.284128625 +0100
+@@ -8742,7 +8742,7 @@
+ }
+ _ACEOF
+ if ac_fn_c_try_link "$LINENO"; then :
+-  je_cv_thp=yes
++  je_cv_thp=no
+ else
+   je_cv_thp=no
+ fi
