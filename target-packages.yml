@@ -411,6 +411,7 @@ packages:
   - opensc
   - openssh
   - openssl
+  - openssl-fips-provider
   - p11-kit
   - package-notes
   - pam

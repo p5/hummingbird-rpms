@@ -1,0 +1,66 @@
+---
+# Tests specific to the openssl-fips-provider package
+
+fips-checksum-match:
+  command: |
+    # Verify the fips.so from our built RPM matches the one from UBI9 container
+    # This ensures we are shipping the exact same FIPS-validated module
+
+    # Only run this test on the openssl-fips-provider-so package (not debuginfo/debugsource)
+    rpm_name=$(rpm -qp --queryformat '%{NAME}' "${TEST_RPM}")
+    if [[ "${rpm_name}" != "openssl-fips-provider-so" ]]; then
+      echo "Skipping: This test only runs on openssl-fips-provider-so (got: ${rpm_name})"
+      exit 0
+    fi
+
+    FIPS_SO_PATH="/usr/lib64/ossl-modules/fips.so"
+    UBI9_IMAGE="registry.access.redhat.com/ubi9/ubi:latest"
+
+    # Create temporary directory for extraction
+    build_dir=$(mktemp -d)
+    cleanup() {
+      rm -rf "${build_dir}"
+    }
+    trap cleanup EXIT
+
+    echo "Using RPM: ${TEST_RPM}"
+
+    # Extract fips.so from our built RPM
+    mkdir -p "${build_dir}/rpm-extract"
+    rpm2cpio "${TEST_RPM}" | (cd "${build_dir}/rpm-extract" && cpio -idm 2>/dev/null)
+
+    local_fips="${build_dir}/rpm-extract${FIPS_SO_PATH}"
+    if [[ ! -f ${local_fips} ]]; then
+      TEST_FAIL "fips.so not found in RPM at ${FIPS_SO_PATH}"
+    fi
+
+    LOCAL_CHECKSUM=$(sha512sum "${local_fips}" | awk '{print $1}')
+    echo "Local RPM fips.so checksum: ${LOCAL_CHECKSUM}"
+
+    # Extract fips.so from UBI9 container
+    echo "Pulling UBI9 image..."
+    "${TEST_ENGINE}" pull "${UBI9_IMAGE}"
+
+    echo "Extracting fips.so from UBI9 container..."
+    "${TEST_ENGINE}" run --rm "${UBI9_IMAGE}" cat "${FIPS_SO_PATH}" > "${build_dir}/ubi9-fips.so"
+
+    if [[ ! -s ${build_dir}/ubi9-fips.so ]]; then
+      TEST_FAIL "Failed to extract fips.so from UBI9 container"
+    fi
+
+    UBI9_CHECKSUM=$(sha512sum "${build_dir}/ubi9-fips.so" | awk '{print $1}')
+    echo "UBI9 fips.so checksum: ${UBI9_CHECKSUM}"
+
+    # Compare checksums
+    if [[ "${LOCAL_CHECKSUM}" == "${UBI9_CHECKSUM}" ]]; then
+      echo "SUCCESS: Checksums match! The fips.so is identical to UBI9."
+    else
+      echo "FAILURE: Checksums do NOT match!"
+      echo "Local: ${LOCAL_CHECKSUM}"
+      echo "UBI9:  ${UBI9_CHECKSUM}"
+      ls -la "${local_fips}"
+      ls -la "${build_dir}/ubi9-fips.so"
+      file "${local_fips}"
+      file "${build_dir}/ubi9-fips.so"
+      TEST_FAIL "fips.so checksum mismatch - our module differs from UBI9"
+    fi

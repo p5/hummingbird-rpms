@@ -4,6 +4,8 @@
 # Available options per package:
 #   timeout_hours: Override the default build timeout (default: 4 hours)
 #   build_platforms: Override the default MPLs (instance sizes) for builds
+#   forked_from: Override the upstream dist-git repository URL for lookaside cache resolution
+#                (default: https://src.fedoraproject.org/rpms/<package-name>)
 #
 # Example:
 # llvm:
@@ -69,3 +71,7 @@ gcc:
   build_platforms:
     - "linux-d160-c8xlarge/amd64"
     - "linux-d160-c8xlarge/arm64"
+
+openssl-fips-provider:
+  # Use hummingbird lookaside cache instead of Fedora
+  forked_from: "https://gitlab.com/redhat/hummingbird/rpms"
