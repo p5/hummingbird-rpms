@@ -902,6 +902,13 @@
     "source": "https://src.fedoraproject.org/rpms/java-rpm-macros.git",
     "version": "1"
   },
+  "javapackages-tools": {
+    "branch": "rawhide",
+    "release": "1",
+    "sha": "b281f3ebdddf455e5817642cab0192329f90f9df",
+    "source": "https://src.fedoraproject.org/rpms/javapackages-tools.git",
+    "version": "6.4.1"
+  },
   "jq": {
     "branch": "rawhide",
     "release": "1",
