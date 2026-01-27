@@ -5,7 +5,7 @@
 
 Name:           hummingbird-release
 Version:        20251124
-Release:        1.4%{?dist}
+Release:        1.5%{?dist}
 Summary:        %{distro} release files
 License:        GPL-2.0-or-later
 URL:            https://hummingbird-project.io/
@@ -134,6 +134,9 @@ cat > %{buildroot}%{_rpmmacrodir}/macros.dist << EOF
 %%dist_home_url       %{dist_home_url}
 %%dist_bug_report_url %{dist_bug_report_url}
 %%dist_debuginfod_url %{dist_debuginfod_url}
+
+# Hummingbird macro - enables %%{?hummingbird} conditionals in spec files
+%%hummingbird         1
 
 # Fedora compatibility macros - enables %%{?fedora} conditionals in spec files
 %%fedora              %{fedora_version}
