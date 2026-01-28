@@ -1,3 +1,0 @@
-%__composer_provides	%{_rpmconfigdir}/composer.prov
-%__composer_path		composer/installed\\.php$
-

@@ -1,3 +1,0 @@
-# tomcli
-
-The tomcli package
