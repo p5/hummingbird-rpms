@@ -1,1 +1,0 @@
-addFilter('spelling-error .* (multi|shar|unpackaging|unshar|Unshar|uuencoding)')

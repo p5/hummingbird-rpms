@@ -1,3 +1,0 @@
-# swtpm
-
-The swtpm package

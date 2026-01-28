@@ -1,3 +1,0 @@
-# bdftopcf
-
-The bdftopcf package

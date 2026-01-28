@@ -1,3 +1,0 @@
-# bpftool
-
-The bpftool package

@@ -1,6 +1,0 @@
-summary: CI test plan, runs all tests from tests repo.
-discover:
-    how: fmf
-    url: https://src.fedoraproject.org/tests/valgrind
-execute:
-    how: tmt

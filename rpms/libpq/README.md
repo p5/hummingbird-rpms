@@ -1,3 +1,0 @@
-# libpq
-
-The libpq package
