@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "2",
+  "sha": "dcfec2090552b64af8c56777402d83e68a20d464",
+  "source": "https://src.fedoraproject.org/rpms/libsepol.git",
+  "version": "3.9"
+}

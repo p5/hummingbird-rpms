@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "1",
+  "sha": "6a99bd15250acc5fb1d161fcec029090d08229ef",
+  "source": "https://src.fedoraproject.org/rpms/google-noto-fonts.git",
+  "version": "20251201"
+}

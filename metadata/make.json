@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "11",
+  "sha": "992bd106a5b6d91a368925646441d63898d98ec7",
+  "source": "https://src.fedoraproject.org/rpms/make.git",
+  "version": "4.4.1"
+}

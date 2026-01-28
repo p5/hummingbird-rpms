@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "521",
+  "sha": "097f56882a58ce9f99b2dcb7c82d3b06f854bbeb",
+  "source": "https://src.fedoraproject.org/rpms/perl-Term-ANSIColor.git",
+  "version": "5.01"
+}

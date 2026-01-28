@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "1",
+  "sha": "d2fa900b05217ad3a5dcdbe3a0e1e004570edb55",
+  "source": "https://src.fedoraproject.org/rpms/python-iniconfig.git",
+  "version": "2.3.0"
+}

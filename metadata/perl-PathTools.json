@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "520",
+  "sha": "d081f89e4e1e43471082d1739d7b6a52c4e90396",
+  "source": "https://src.fedoraproject.org/rpms/perl-PathTools.git",
+  "version": "3.94"
+}

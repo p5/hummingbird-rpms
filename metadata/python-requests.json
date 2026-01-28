@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "1",
+  "sha": "5482485d62e5871f6a1b3baebb19dc4022d39228",
+  "source": "https://src.fedoraproject.org/rpms/python-requests.git",
+  "version": "2.32.5"
+}

@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "3",
+  "sha": "f367e09a2321dc54e2625e28a8ad759875a2651d",
+  "source": "https://src.fedoraproject.org/rpms/patch.git",
+  "version": "2.8"
+}

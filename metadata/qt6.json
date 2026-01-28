@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "1",
+  "sha": "b9cd7b1de7a028e8b125237694b90e279f39a50f",
+  "source": "https://src.fedoraproject.org/rpms/qt6.git",
+  "version": "6.10.1"
+}

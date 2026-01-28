@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "3",
+  "sha": "fa8636d8e2a70a4d52acedb2248453dc8a035eb4",
+  "source": "https://src.fedoraproject.org/rpms/zlib-ng.git",
+  "version": "2.3.2"
+}

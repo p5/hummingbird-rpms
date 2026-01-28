@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "520",
+  "sha": "eb160dcde4f1e6a0239a26d022a299adbdf2412e",
+  "source": "https://src.fedoraproject.org/rpms/perl-Getopt-Long.git",
+  "version": "2.58"
+}

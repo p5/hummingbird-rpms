@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "520",
+  "sha": "21c2f4f5c27a5b087552f64faf0a6abaabe6d343",
+  "source": "https://src.fedoraproject.org/rpms/perl-MIME-Base64.git",
+  "version": "3.16"
+}

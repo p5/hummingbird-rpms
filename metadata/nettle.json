@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "1",
+  "sha": "22cdcd488e7405cb07243032e949f91ecb2726b4",
+  "source": "https://src.fedoraproject.org/rpms/nettle.git",
+  "version": "3.10.1"
+}

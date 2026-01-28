@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "1",
+  "sha": "1a0e23b6c9305682af00a62a59158a716a2c5258",
+  "source": "https://src.fedoraproject.org/rpms/rootfiles.git",
+  "version": "9.0"
+}

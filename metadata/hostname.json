@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "1",
+  "sha": "743fda931ab667f384da6684b4c495099d7a1c70",
+  "source": "https://src.fedoraproject.org/rpms/hostname.git",
+  "version": "3.25"
+}

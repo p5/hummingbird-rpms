@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "4",
+  "sha": "7fb43f13e6a1107cea05fce6bc845250a6ded65a",
+  "source": "https://src.fedoraproject.org/rpms/libfido2.git",
+  "version": "1.16.0"
+}

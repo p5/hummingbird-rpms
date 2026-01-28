@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "1",
+  "sha": "b80222307c8c4093f8bf9f10fceb2c94156bb2aa",
+  "source": "https://src.fedoraproject.org/rpms/openssl.git",
+  "version": "3.5.4"
+}

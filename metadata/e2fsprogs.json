@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "3",
+  "sha": "d32b6dc2d7f15702ca45dff064e733c2f5677432",
+  "source": "https://src.fedoraproject.org/rpms/e2fsprogs.git",
+  "version": "1.47.3"
+}

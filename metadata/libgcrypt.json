@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "1",
+  "sha": "42572cdcf22a43f0d0c562e7b9f97d046a9d97e1",
+  "source": "https://src.fedoraproject.org/rpms/libgcrypt.git",
+  "version": "1.11.2"
+}

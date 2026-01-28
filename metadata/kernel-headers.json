@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "0.rc4.3609fa95fb0f.31",
+  "sha": "91b3296f9575d26645f436de8f489f68e0ed3627",
+  "source": "https://src.fedoraproject.org/rpms/kernel-headers.git",
+  "version": "6.19.0"
+}

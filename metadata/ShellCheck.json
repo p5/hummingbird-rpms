@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "3",
+  "sha": "f160f1aeeb99ed86fc2424e6b2be5621f0a54d2d",
+  "source": "https://src.fedoraproject.org/rpms/ShellCheck.git",
+  "version": "0.11.0"
+}

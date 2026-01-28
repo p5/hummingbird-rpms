@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "21",
+  "sha": "79b3efe8fc0de8130ed3389226e3c2232fa02716",
+  "source": "https://src.fedoraproject.org/rpms/bzip2.git",
+  "version": "1.0.8"
+}

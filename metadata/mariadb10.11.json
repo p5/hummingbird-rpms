@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "2",
+  "sha": "5fe85de4d78ae7383e653f38524fce28f28bc4b6",
+  "source": "https://src.fedoraproject.org/rpms/mariadb10.11.git",
+  "version": "10.11.15"
+}

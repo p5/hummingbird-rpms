@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "4",
+  "sha": "e2eb6baed0c8f6693e4390857e43c30b6f15fd98",
+  "source": "https://src.fedoraproject.org/rpms/libassuan.git",
+  "version": "2.5.7"
+}

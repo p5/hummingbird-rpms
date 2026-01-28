@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "1",
+  "sha": "b58ff67da7a576d270a9994b91dbc79301dba7bb",
+  "source": "https://src.fedoraproject.org/rpms/python-markupsafe.git",
+  "version": "3.0.2"
+}

@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "1",
+  "sha": "2c988e5368efe4d04919abc3a821bf2450ebd1fe",
+  "source": "https://src.fedoraproject.org/rpms/gap-srpm-macros.git",
+  "version": "2"
+}

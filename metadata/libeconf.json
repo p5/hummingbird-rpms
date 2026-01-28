@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "2",
+  "sha": "9e7ec088dddb34e76445c007e5df07a68166c5ca",
+  "source": "https://src.fedoraproject.org/rpms/libeconf.git",
+  "version": "0.7.9"
+}

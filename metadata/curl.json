@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "1",
+  "sha": "3c4947ef9777ff0e270d3680b23a3e10134ee68f",
+  "source": "https://src.fedoraproject.org/rpms/curl.git",
+  "version": "8.18.0"
+}

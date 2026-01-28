@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "1",
+  "sha": "0bd1d0f0aa3633f79370dad432bbcf7143f34cc4",
+  "source": "https://src.fedoraproject.org/rpms/sdbus-cpp.git",
+  "version": "2.2.1"
+}

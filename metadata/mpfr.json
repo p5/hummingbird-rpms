@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "2",
+  "sha": "ebdaaedf86e2a22913d26995ac27c9d1e45cd406",
+  "source": "https://src.fedoraproject.org/rpms/mpfr.git",
+  "version": "4.2.2"
+}

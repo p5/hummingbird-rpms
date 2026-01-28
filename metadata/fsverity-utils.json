@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "3",
+  "sha": "6f595a4169590d536324f0f8df243c10b389f94e",
+  "source": "https://src.fedoraproject.org/rpms/fsverity-utils.git",
+  "version": "1.6"
+}

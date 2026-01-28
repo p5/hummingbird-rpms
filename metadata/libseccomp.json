@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "2",
+  "sha": "9639e347a69b4ac9637dbaa6c7874910d93a1eb2",
+  "source": "https://src.fedoraproject.org/rpms/libseccomp.git",
+  "version": "2.6.0"
+}

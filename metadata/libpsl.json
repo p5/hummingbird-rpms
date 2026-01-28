@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "1",
+  "sha": "01882ecbc2688bf7da05250218dc42e3a06a0c1a",
+  "source": "https://src.fedoraproject.org/rpms/libpsl.git",
+  "version": "0.21.5"
+}

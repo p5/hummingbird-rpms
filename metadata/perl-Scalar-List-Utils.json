@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "1",
+  "sha": "0d1a67d32474df1248a5fa1eda9a9ff4dbb45433",
+  "source": "https://src.fedoraproject.org/rpms/perl-Scalar-List-Utils.git",
+  "version": "1.70"
+}

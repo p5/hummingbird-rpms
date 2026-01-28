@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "520",
+  "sha": "c7b8d700412ecd7558faa320b20bfc9bd2abd985",
+  "source": "https://src.fedoraproject.org/rpms/perl-Time-Local.git",
+  "version": "1.350"
+}

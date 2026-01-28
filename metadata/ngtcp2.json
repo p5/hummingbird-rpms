@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "1",
+  "sha": "2bbca70b1bfaa15ab52ea2bd116e28dda0c007cb",
+  "source": "https://src.fedoraproject.org/rpms/ngtcp2.git",
+  "version": "1.19.0"
+}

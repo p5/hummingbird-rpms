@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "1",
+  "sha": "c364159f1a43395b33df06fb17aad705d0de76f8",
+  "source": "https://src.fedoraproject.org/rpms/caddy.git",
+  "version": "2.10.2"
+}

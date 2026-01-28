@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "1",
+  "sha": "8c735393e91be4ee5fc303aedd1b6581741fb01a",
+  "source": "https://src.fedoraproject.org/rpms/glib2.git",
+  "version": "2.87.0"
+}

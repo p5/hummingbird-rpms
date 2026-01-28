@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "1",
+  "sha": "d3b57fda76468500c6459e917402eaaf1731fcfb",
+  "source": "https://src.fedoraproject.org/rpms/c-ares.git",
+  "version": "1.34.6"
+}

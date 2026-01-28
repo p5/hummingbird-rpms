@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "6",
+  "sha": "b6bfefb0b1ebface6d2634869032fc941a0a7fed",
+  "source": "https://src.fedoraproject.org/rpms/python-jsonschema-specifications.git",
+  "version": "2024.10.1"
+}

@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "67",
+  "sha": "e2f51024b269439f12626635bfb8d5a76b60165d",
+  "source": "https://src.fedoraproject.org/rpms/uuid.git",
+  "version": "1.6.2"
+}

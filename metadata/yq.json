@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "4",
+  "sha": "9ea538ca37b94920259093fdf0b41b1c747daade",
+  "source": "https://src.fedoraproject.org/rpms/yq.git",
+  "version": "4.47.1"
+}

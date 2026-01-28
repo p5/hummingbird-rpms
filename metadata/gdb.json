@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "1",
+  "sha": "cdcbfd69f7c739b9d192296b7ba358db2bbc80c0",
+  "source": "https://src.fedoraproject.org/rpms/gdb.git",
+  "version": "17.1"
+}

@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "1",
+  "sha": "6add7bebbf5e30e3703d0701f8230cc203fa37b0",
+  "source": "https://src.fedoraproject.org/rpms/ctags.git",
+  "version": "6.2.1"
+}

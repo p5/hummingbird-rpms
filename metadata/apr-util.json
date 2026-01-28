@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "25",
+  "sha": "b403b80b23ad1c304b0dcb435fa5e7725d5c90b7",
+  "source": "https://src.fedoraproject.org/rpms/apr-util.git",
+  "version": "1.6.3"
+}

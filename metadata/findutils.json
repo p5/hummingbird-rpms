@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "6",
+  "sha": "5a4117b723b6108318a5a28df2594aa582a667d3",
+  "source": "https://src.fedoraproject.org/rpms/findutils.git",
+  "version": "4.10.0"
+}

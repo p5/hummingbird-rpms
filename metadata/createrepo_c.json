@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "3",
+  "sha": "8c19468fbd44603484b396a140616ad98579fd3e",
+  "source": "https://src.fedoraproject.org/rpms/createrepo_c.git",
+  "version": "1.2.1"
+}

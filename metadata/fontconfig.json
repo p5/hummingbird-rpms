@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "3",
+  "sha": "90ff975dce8834d53778e793405bb55abf7d6980",
+  "source": "https://src.fedoraproject.org/rpms/fontconfig.git",
+  "version": "2.17.0"
+}

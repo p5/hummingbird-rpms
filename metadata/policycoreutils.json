@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "8",
+  "sha": "334519545a78e920fef778ad1847651cb5284458",
+  "source": "https://src.fedoraproject.org/rpms/policycoreutils.git",
+  "version": "3.9"
+}

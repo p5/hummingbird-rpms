@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "3",
+  "sha": "59d94a3ff73c61f1461cb29df9c58dd1c9846509",
+  "source": "https://src.fedoraproject.org/rpms/jansson.git",
+  "version": "2.14"
+}

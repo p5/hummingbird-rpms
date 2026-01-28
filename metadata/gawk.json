@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "2",
+  "sha": "0c5251a3f35b4564bb275c95e66d509737c016ec",
+  "source": "https://src.fedoraproject.org/rpms/gawk.git",
+  "version": "5.3.2"
+}

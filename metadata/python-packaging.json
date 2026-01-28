@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "1",
+  "sha": "efb6ac5714056740a6cccaf214b439063fa70e3f",
+  "source": "https://src.fedoraproject.org/rpms/python-packaging.git",
+  "version": "25.0"
+}

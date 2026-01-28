@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "1",
+  "sha": "2b2a030e77e9665b23c9b6d0e415556ec1b73a2b",
+  "source": "https://src.fedoraproject.org/rpms/python-pip.git",
+  "version": "25.3"
+}
