@@ -1,0 +1,59 @@
+From 89b901b20ba8d1fc5406b837ef7cf9fe72c50a2d Mon Sep 17 00:00:00 2001
+From: Scott Hebert <scoheb@users.noreply.github.com>
+Date: Wed, 11 Feb 2026 14:19:20 -0500
+Subject: [PATCH] Use redhat as namespace for hummingbird rpms (#4615)
+
+The namespace value of `redhat` signifies this as an RPM package
+produced and distributed by Red Hat.
+
+Signed-off-by: Scott Hebert <scoheb@gmail.com>
+---
+ syft/pkg/cataloger/redhat/package.go      |  4 ++--
+ syft/pkg/cataloger/redhat/package_test.go | 14 ++++++++++++++
+ 2 files changed, 16 insertions(+), 2 deletions(-)
+
+diff --git a/syft/pkg/cataloger/redhat/package.go b/syft/pkg/cataloger/redhat/package.go
+index 6bcdea55410..fc2da4fd1c8 100644
+--- a/syft/pkg/cataloger/redhat/package.go
++++ b/syft/pkg/cataloger/redhat/package.go
+@@ -84,13 +84,13 @@ func newMetadataFromManifestLine(entry string) (*pkg.RpmDBEntry, error) {
+ 	}, nil
+ }
+ 
+-// packageURL returns the PURL for the specific RHEL package (see https://github.com/package-url/purl-spec)
++// packageURL returns the PURL for the specific RHEL or Hummingbird package (see https://github.com/package-url/purl-spec)
+ func packageURL(name, arch string, epoch *int, srpm string, version, release string, distro *linux.Release) string {
+ 	var namespace string
+ 	if distro != nil {
+ 		namespace = distro.ID
+ 	}
+-	if namespace == "rhel" {
++	if namespace == "rhel" || namespace == "hummingbird" {
+ 		namespace = "redhat"
+ 	}
+ 	if strings.HasPrefix(namespace, "opensuse") {
+diff --git a/syft/pkg/cataloger/redhat/package_test.go b/syft/pkg/cataloger/redhat/package_test.go
+index c05af2f5ffa..777d753c470 100644
+--- a/syft/pkg/cataloger/redhat/package_test.go
++++ b/syft/pkg/cataloger/redhat/package_test.go
+@@ -55,6 +55,20 @@ func Test_packageURL(t *testing.T) {
+ 			},
+ 			expected: "pkg:rpm/p@v-r",
+ 		},
++		{
++			name: "hummingbird distro maps to redhat namespace",
++			distro: &linux.Release{
++				ID:        "hummingbird",
++				VersionID: "1.0",
++			},
++			metadata: pkg.RpmDBEntry{
++				Name:    "p",
++				Version: "v",
++				Release: "r",
++				Epoch:   nil,
++			},
++			expected: "pkg:rpm/redhat/p@v-r?distro=hummingbird-1.0",
++		},
+ 		{
+ 			name: "with upstream source rpm info",
+ 			distro: &linux.Release{
