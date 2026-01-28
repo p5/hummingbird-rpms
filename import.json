@@ -2787,10 +2787,10 @@
   },
   "util-linux": {
     "branch": "rawhide",
-    "release": "7",
-    "sha": "ab6d50b5886f004fac162c760bfe73d81c2ebdfb",
+    "release": "12",
+    "sha": "196be3f2a16d94149800f747c1468bfea7b9707a",
     "source": "https://src.fedoraproject.org/rpms/util-linux.git",
-    "version": "2.41.2"
+    "version": "2.41.3"
   },
   "uuid": {
     "branch": "rawhide",
