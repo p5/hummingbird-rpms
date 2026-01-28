@@ -19,7 +19,7 @@
 
 Name:		zlib-ng
 Version:	2.3.2
-Release:	%autorelease
+Release:	3%{?dist}
 Summary:	Zlib replacement with optimizations
 License:	Zlib
 Url:		https://github.com/zlib-ng/zlib-ng
@@ -102,6 +102,10 @@ _EOF_
 
 %ifarch riscv64
 %global cmake_param %cmake_param -DWITH_RVV=OFF
+%endif
+
+%ifarch s390x
+%global cmake_param %cmake_param -DWITH_DFLTCC_DEFLATE=ON -DWITH_DFLTCC_INFLATE=ON
 %endif
 
 %if 0%{?rhel} >= 10

@@ -2787,10 +2787,10 @@
   },
   "util-linux": {
     "branch": "rawhide",
-    "release": "7",
-    "sha": "ab6d50b5886f004fac162c760bfe73d81c2ebdfb",
+    "release": "12",
+    "sha": "196be3f2a16d94149800f747c1468bfea7b9707a",
     "source": "https://src.fedoraproject.org/rpms/util-linux.git",
-    "version": "2.41.2"
+    "version": "2.41.3"
   },
   "uuid": {
     "branch": "rawhide",
@@ -2885,8 +2885,8 @@
   },
   "yq": {
     "branch": "rawhide",
-    "release": "1",
-    "sha": "d2295bbe56412e6a6204a60a507bba517eaf7b57",
+    "release": "4",
+    "sha": "9ea538ca37b94920259093fdf0b41b1c747daade",
     "source": "https://src.fedoraproject.org/rpms/yq.git",
     "version": "4.47.1"
   },
@@ -2913,8 +2913,8 @@
   },
   "zlib-ng": {
     "branch": "rawhide",
-    "release": "1",
-    "sha": "d5f7e25717ad0bee8d65c4c8cdce7b195a8774e1",
+    "release": "3",
+    "sha": "fa8636d8e2a70a4d52acedb2248453dc8a035eb4",
     "source": "https://src.fedoraproject.org/rpms/zlib-ng.git",
     "version": "2.3.2"
   },
