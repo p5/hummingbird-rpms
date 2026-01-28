@@ -1,11 +1,11 @@
 %global distro  Hummingbird OS
 
 # Fedora version we're tracking
-%global fedora_version 44
+%global fedora_version 43
 
 Name:           hummingbird-release
 Version:        20251124
-Release:        1.5%{?dist}
+Release:        1.6%{?dist}
 Summary:        %{distro} release files
 License:        GPL-2.0-or-later
 URL:            https://hummingbird-project.io/
