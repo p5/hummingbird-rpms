@@ -1,0 +1,31 @@
+--- !Policy
+product_versions:
+  - fedora-*
+decision_contexts:
+  - bodhi_update_push_testing
+  - bodhi_update_push_stable
+  - bodhi_update_push_stable_critpath
+subject_type: koji_build
+rules:
+  - !PassingTestCaseRule {test_case_name: fedora-ci.koji-build./tests/build-gating.functional}
+  - !PassingTestCaseRule {test_case_name: fedora-ci.koji-build./tests/lld-alternatives.functional}
+  - !PassingTestCaseRule {test_case_name: fedora-ci.koji-build.installability.functional}
+--- !Policy
+product_versions:
+  # The version number here should match the current rawhide release.
+  - fedora-44
+decision_contexts:
+  - bodhi_update_push_stable
+  - bodhi_update_push_stable_critpath
+rules:
+  - !PassingTestCaseRule {test_case_name: fedora-ci.koji-build.rpmdeplint.functional}
+  - !PassingTestCaseRule {test_case_name: fedora-ci.koji-build./tests/kernel-ark-build.functional}
+--- !Policy
+product_versions:
+  - rhel-9
+  - rhel-10
+decision_context: osci_compose_gate
+rules:
+  - !PassingTestCaseRule {test_case_name: baseos-ci.brew-build.tier0-tmt-x86_64-aarch64.functional}
+  - !PassingTestCaseRule {test_case_name: baseos-ci.brew-build.tier0-tmt-s390x-ppc64le.functional}
+  - !PassingTestCaseRule {test_case_name: osci.brew-build.rebuild.validation}

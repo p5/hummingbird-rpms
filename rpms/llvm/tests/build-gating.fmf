@@ -1,0 +1,51 @@
+#
+# Build/PR gating tests for *LLVM 19*
+#
+# Compatible with various LLVM 19 distributions:
+#
+#   * Fedora (ursine packages)
+#   * CentOS 10 stream (ursine packages)
+#   * Centos 9 stream (ursine packages)
+#   * RHEL-10 (ursine packages)
+#   * RHEL-9 (ursine packages)
+#   * RHEL-8 (Red Hat module)
+#
+
+summary: LLVM tests for build/PR gating
+adjust:
+  - because: "Plan to be ran when either executed locally, or executed by CI system to gate a build or PR."
+    when: >-
+      trigger is defined
+      and trigger != commit
+      and trigger != build
+    enabled: false
+
+  # Unfortunatelly, TMT does not support more declarative approach, we need to run commands on our own.
+  - because: "On CentOS, CRB must be enabled to provide rarer packages"
+    prepare+:
+      - name: Enable CRB
+        how: shell
+        script: dnf config-manager --set-enabled crb
+    when: >-
+      distro == centos
+
+  # Unfortunately, TMT does not support more declarative approach, we need to run commands on our own.
+  - because: "On RHEL, CRB must be enabled to provide rarer packages"
+    prepare+:
+      - name: Enable CRB
+        how: shell
+        script: dnf config-manager --set-enabled rhel-CRB
+    when: >-
+      distro == rhel-9
+      or distro == rhel-8
+
+discover:
+  how: fmf
+  url: https://src.fedoraproject.org/tests/llvm.git
+  ref: main
+  filter: "tag:-spoils-installation & tag:-not-in-default"
+execute:
+    how: tmt
+provision:
+  hardware:
+    memory: ">= 4 GiB"
