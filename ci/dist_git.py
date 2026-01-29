@@ -38,7 +38,7 @@ sign_off: bool = False
 
 
 class PackageMetadata(TypedDict):
-    """Metadata stored in rpms/<package>/import.json for each package."""
+    """Metadata stored in metadata/<package>.json for each package."""
     source: str
     branch: str
     sha: str
