@@ -1,7 +1,7 @@
 {
-  "branch": "rawhide",
-  "release": "13",
-  "sha": "d7078a903f45f89a34ef0866efa7440f378412cb",
+  "branch": "f43",
+  "release": "4",
+  "sha": "1ff5036d073647776041628b5646fef4f2b832d4",
   "source": "https://src.fedoraproject.org/rpms/binutils.git",
-  "version": "2.45.50"
+  "version": "2.45.1"
 }
