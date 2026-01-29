@@ -22,6 +22,26 @@
         "#\\s*renovate:\\s*datasource=(?<datasource>\\S+)\\s+depName=(?<depName>\\S+)\\n\\s*value:\\s*\"[^:]+:(?<currentValue>[^@]+)@(?<currentDigest>sha256:[a-f0-9]+)\""
       ],
       "versioningTemplate": "docker"
+    },
+    {
+      "customType": "regex",
+      "description": "Update release-service-catalog git reference in Konflux template",
+      "managerFilePatterns": ["/konflux-templates/konflux-resources\\.yml\\.j2$/"],
+      "matchStrings": [
+        "{#-?\\s*renovate:\\s*datasource=git-refs\\s+depName=(?<depName>\\S+)\\s+branch=(?<currentValue>\\S+)\\s*#}\\n{%-?\\s*set\\s+release_catalog_revision\\s*=\\s*\"(?<currentDigest>[a-f0-9]{40})\""
+      ],
+      "datasourceTemplate": "git-refs",
+      "packageNameTemplate": "https://github.com/{{{depName}}}"
+    },
+    {
+      "customType": "regex",
+      "description": "Update release-service-catalog git reference in rendered Konflux YAML",
+      "managerFilePatterns": ["/konflux-templates/rendered\\.yml$/"],
+      "matchStrings": [
+        "#\\s*renovate:\\s*datasource=git-refs\\s+depName=(?<depName>\\S+)\\s+branch=(?<currentValue>\\S+)\\n\\s*value:\\s*(?<currentDigest>[a-f0-9]{40})"
+      ],
+      "datasourceTemplate": "git-refs",
+      "packageNameTemplate": "https://github.com/{{{depName}}}"
     }
   ],
   "packageRules": [
