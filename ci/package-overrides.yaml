@@ -26,21 +26,6 @@
 # All available MPLs can be found in the:
 # https://konflux.pages.redhat.com/docs/users/getting-started/multi-platform-builds.html documentation.
 
-ruff:
-  timeout_hours: 8
-  build_platforms:
-    - "linux-d160-c8xlarge/arm64"
-    - "linux-d160-c8xlarge/amd64"
-
-java-25-openjdk:
-  timeout_hours: 8
-  build_platforms:
-    - "linux-d160-c8xlarge/arm64"
-    - "linux-d160-c8xlarge/amd64"
-
-setup:
-  timeout_hours: 12
-
 dotnet8.0:
   # Use machines with 320GB disk space for large builds
   build_platforms:
@@ -75,3 +60,32 @@ gcc:
 openssl-fips-provider:
   # Use hummingbird lookaside cache instead of Fedora
   forked_from: "https://gitlab.com/redhat/hummingbird/rpms"
+
+java-25-openjdk:
+  timeout_hours: 8
+  build_platforms:
+    - "linux-d160-c8xlarge/arm64"
+    - "linux-d160-c8xlarge/amd64"
+
+ruff:
+  timeout_hours: 8
+  build_platforms:
+    - "linux-d160-c8xlarge/arm64"
+    - "linux-d160-c8xlarge/amd64"
+
+# Required to prevent running out of storage
+rust:
+  timeout_hours: 12
+  build_platforms:
+    - "linux-d160-c8xlarge/arm64"
+    - "linux-d160-c8xlarge/amd64"
+  # Required to prevent Syft OOMing during SBOM generation
+  task_run_specs:
+    - pipelineTaskName: upload-to-quay
+      stepSpecs:
+        - name: run-syft
+          computeResources:
+            requests:
+              memory: 10Gi
+            limits:
+              memory: 10Gi
