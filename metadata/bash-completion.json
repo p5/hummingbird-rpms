@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "2",
+  "sha": "edb7b646da097662097c99877cd705f29aedbba5",
+  "source": "https://src.fedoraproject.org/rpms/bash-completion.git",
+  "version": "2.17"
+}

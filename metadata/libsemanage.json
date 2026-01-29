@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "4",
+  "sha": "f1f8f1b80f983b786b608c0395c464e5dde3a717",
+  "source": "https://src.fedoraproject.org/rpms/libsemanage.git",
+  "version": "3.9"
+}

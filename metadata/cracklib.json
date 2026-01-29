@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "8",
+  "sha": "268edecb671455aa54e4767a00a0b91c555539b2",
+  "source": "https://src.fedoraproject.org/rpms/cracklib.git",
+  "version": "2.9.11"
+}

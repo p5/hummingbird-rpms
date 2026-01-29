@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "2",
+  "sha": "0ec1907e754a91e45315013d6e61daee1f27abfa",
+  "source": "https://src.fedoraproject.org/rpms/audit.git",
+  "version": "4.1.2"
+}

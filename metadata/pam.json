@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "3",
+  "sha": "a6b937d812c29318262dccd9153f8c6220b10b8c",
+  "source": "https://src.fedoraproject.org/rpms/pam.git",
+  "version": "1.7.1"
+}

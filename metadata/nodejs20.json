@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "1",
+  "sha": "425848de92b44066cf953f94630e3aee526f1aba",
+  "source": "https://src.fedoraproject.org/rpms/nodejs20.git",
+  "version": "20.19.6"
+}

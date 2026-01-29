@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "3",
+  "sha": "92ec2770d5cbc46683c9ea2a3e913c761b90800a",
+  "source": "https://src.fedoraproject.org/rpms/libcomps.git",
+  "version": "0.1.23"
+}

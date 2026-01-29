@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "8",
+  "sha": "7f13b9f2a3811b0ef4587e9f10dac18a2081406e",
+  "source": "https://src.fedoraproject.org/rpms/tpm2-tss.git",
+  "version": "4.1.3"
+}

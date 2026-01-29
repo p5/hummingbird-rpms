@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "8.20250614",
+  "sha": "cdb41c6eca745ba4fbdfd789fe67394485ef6ded",
+  "source": "https://src.fedoraproject.org/rpms/ncurses.git",
+  "version": "6.5"
+}

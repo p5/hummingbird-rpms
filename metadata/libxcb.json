@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "7",
+  "sha": "6118e6f5ed4a5c85cececbd2f0f3de88e16a17c2",
+  "source": "https://src.fedoraproject.org/rpms/libxcb.git",
+  "version": "1.17.0"
+}

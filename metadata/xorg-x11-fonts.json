@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "42",
+  "sha": "48b6e17dd3b7304b53cd08de7d6c55de9f565741",
+  "source": "https://src.fedoraproject.org/rpms/xorg-x11-fonts.git",
+  "version": "7.5"
+}

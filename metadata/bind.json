@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "3",
+  "sha": "159d742c215ea9d3dd625a88168633643ea29786",
+  "source": "https://src.fedoraproject.org/rpms/bind.git",
+  "version": "9.18.43"
+}

@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "3",
+  "sha": "05f90a1ea4499a33d42110f6503bd17038f69ec5",
+  "source": "https://src.fedoraproject.org/rpms/dotnet9.0.git",
+  "version": "9.0.113"
+}

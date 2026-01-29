@@ -3,7 +3,8 @@
 dist-git importer for Hummingbird rpms repository.
 
 This tool imports and syncs Fedora/CentOS dist-git packages
-into the local rpms/ directory while tracking metadata in import.json.
+into the local rpms/ directory while tracking metadata in per-package
+import.json files.
 """
 
 import argparse
@@ -22,7 +23,8 @@ from pathlib import Path
 from typing import TypedDict, cast
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
-IMPORT_JSON = ROOT_DIR / 'import.json'
+RPMS_DIR = ROOT_DIR / 'rpms'
+METADATA_DIR = ROOT_DIR / 'metadata'
 RELEASES_JSON = ROOT_DIR / 'upstream-releases.json'
 
 # Global imports dict, loaded at startup
@@ -36,7 +38,7 @@ sign_off: bool = False
 
 
 class PackageMetadata(TypedDict):
-    """Metadata stored in import.json for each package."""
+    """Metadata stored in rpms/<package>/import.json for each package."""
     source: str
     branch: str
     sha: str
@@ -86,11 +88,40 @@ def parse_spec_version(package_dir: Path) -> tuple[str, str]:
         raise ValueError(f"Unexpected rpmspec output for {spec_file}: {rpmspec.stdout}") from e
 
 
-def save_import_json() -> None:
-    """Save import.json with sorted keys for consistent diffs."""
-    with open(IMPORT_JSON, 'w') as f:
-        json.dump(imports, f, indent=2, sort_keys=True)
+def load_package_metadata(package_name: str) -> PackageMetadata | None:
+    """Load package metadata from metadata/<package>.json."""
+    import_file = METADATA_DIR / f'{package_name}.json'
+    if not import_file.exists():
+        return None
+    with open(import_file) as f:
+        data = json.load(f)
+        if not data:
+            return None
+        return cast(PackageMetadata, data)
+
+
+def save_package_metadata(package_name: str, metadata: PackageMetadata) -> None:
+    """Save package metadata to metadata/<package>.json."""
+    import_file = METADATA_DIR / f'{package_name}.json'
+    METADATA_DIR.mkdir(exist_ok=True)
+    with open(import_file, 'w') as f:
+        json.dump(metadata, f, indent=2, sort_keys=True)
         f.write('\n')  # Ensure trailing newline
+
+
+def get_all_imported_packages() -> dict[str, PackageMetadata]:
+    """Scan metadata/ directory and load all package metadata files."""
+    all_imports: dict[str, PackageMetadata] = {}
+    if not METADATA_DIR.exists():
+        return all_imports
+
+    for metadata_file in METADATA_DIR.glob('*.json'):
+        package_name = metadata_file.stem
+        metadata = load_package_metadata(package_name)
+        if metadata:
+            all_imports[package_name] = metadata
+
+    return all_imports
 
 
 def run_git(*args: str, cwd: Path | str | None = None, check: bool = True) -> subprocess.CompletedProcess[str]:
@@ -417,15 +448,17 @@ def import_(url: str, branch: str, ref: str | None = None, dry_run: bool = False
         else:
             logging.warning("No Koji build found for %s, keeping %%autorelease", package_name)
 
-    # Update import.json
-    imports[package_name] = {
+    # Save package metadata to import.json
+    metadata: PackageMetadata = {
         'source': url,
         'branch': branch,
         'sha': sha,
         'version': version,
         'release': release,
     }
-    save_import_json()
+    save_package_metadata(package_name, metadata)
+    # Update global imports dict
+    imports[package_name] = metadata
 
     logging.info("Checking prerequisites...")
     check_jinja2_available()
@@ -437,7 +470,8 @@ def import_(url: str, branch: str, ref: str | None = None, dry_run: bool = False
 
     # Commit the changes
     if not dry_run:
-        run_git('add', '-f', f'rpms/{package_name}', 'import.json', 'konflux-templates', '.tekton', cwd=ROOT_DIR)
+        run_git('add', '-f', f'rpms/{package_name}', f'metadata/{package_name}.json',
+                'konflux-templates', '.tekton', cwd=ROOT_DIR)
         commit_msg = f"Import {package_name}-{version}-{release}\n\nBranch: {branch}\nUpstream: {sha}"
         run_git_commit('-m', commit_msg, cwd=ROOT_DIR)
 
@@ -446,7 +480,7 @@ def update(package_name: str, skip_build_check: bool = False, sync: bool = False
            dry_run: bool = False) -> None:
     """Update a single package from upstream."""
     if package_name not in imports:
-        sys.exit(f"ERROR: Package {package_name} not in import.json")
+        sys.exit(f"ERROR: Package {package_name} not found (missing metadata/{package_name}.json)")
 
     package_dir = ROOT_DIR / 'rpms' / package_name
     assert package_dir.exists()
@@ -533,15 +567,15 @@ def update(package_name: str, skip_build_check: bool = False, sync: bool = False
 
         logging.info("Updated to %s-%s", version, release)
 
-        # Update import.json
+        # Update package metadata
         imports[package_name]['sha'] = latest_sha
         imports[package_name]['version'] = version
         imports[package_name]['release'] = release
-        save_import_json()
+        save_package_metadata(package_name, imports[package_name])
 
         # Commit the changes
         if not dry_run:
-            run_git('add', '-f', f'rpms/{package_name}', 'import.json', cwd=ROOT_DIR)
+            run_git('add', '-f', f'rpms/{package_name}', f'metadata/{package_name}.json', cwd=ROOT_DIR)
             verb = "Sync" if sync else "Update"
             commit_msg = f"{verb} {package_name} to {version}-{release}\n\nUpstream: {latest_sha}"
             run_git_commit('-m', commit_msg, cwd=ROOT_DIR)
@@ -567,8 +601,8 @@ def main() -> None:
 
     logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 
-    # Load import.json
-    imports = cast(dict[str, PackageMetadata], json.loads(IMPORT_JSON.read_text()))
+    # Load all package metadata from per-package import.json files
+    imports = get_all_imported_packages()
 
     # Load upstream-releases.json
     releases = cast(dict[str, dict[str, str]], json.loads(RELEASES_JSON.read_text()))

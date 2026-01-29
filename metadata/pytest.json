@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "1",
+  "sha": "bd6f0c9bc96ee5eeb817fc368e51b34620977411",
+  "source": "https://src.fedoraproject.org/rpms/pytest.git",
+  "version": "8.4.2"
+}

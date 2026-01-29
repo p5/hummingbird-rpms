@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "19",
+  "sha": "0912d1cf6ecf3ab4ee7bafafdc0affb8ba595ba2",
+  "source": "https://src.fedoraproject.org/rpms/python-jinja2-cli.git",
+  "version": "0.8.2"
+}

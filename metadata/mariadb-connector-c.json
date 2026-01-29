@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "2",
+  "sha": "9dd68a33b8f57bd5ce568a456b2cd1aeaf0b701a",
+  "source": "https://src.fedoraproject.org/rpms/mariadb-connector-c.git",
+  "version": "3.4.8"
+}

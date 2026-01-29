@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "2",
+  "sha": "5ce9d27cf1e3c92ccba70c301aea5c72e9be0735",
+  "source": "https://src.fedoraproject.org/rpms/python3.14.git",
+  "version": "3.14.2"
+}

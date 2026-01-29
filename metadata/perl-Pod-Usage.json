@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "520",
+  "sha": "65d3a2323457728295f030dc475ad61ee6727bde",
+  "source": "https://src.fedoraproject.org/rpms/perl-Pod-Usage.git",
+  "version": "2.05"
+}

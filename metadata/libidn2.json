@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "2",
+  "sha": "4be723c6beff248a22cfad6a999c994549b3b26c",
+  "source": "https://src.fedoraproject.org/rpms/libidn2.git",
+  "version": "2.3.8"
+}

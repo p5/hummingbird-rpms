@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "520",
+  "sha": "006007167370ebe48bc872fbb0217ba6d6b2f5c2",
+  "source": "https://src.fedoraproject.org/rpms/perl-Time-HiRes.git",
+  "version": "1.9778"
+}

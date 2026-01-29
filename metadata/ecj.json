@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "14",
+  "sha": "e9f15b073f0432229400fd30ae2d3d984e293d0c",
+  "source": "https://src.fedoraproject.org/rpms/ecj.git",
+  "version": "4.23"
+}

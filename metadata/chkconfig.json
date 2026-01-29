@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "3",
+  "sha": "8358faf6403af6ad5abb7287309f0224e757395d",
+  "source": "https://src.fedoraproject.org/rpms/chkconfig.git",
+  "version": "1.33"
+}

@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "3",
+  "sha": "4ebf4fe81093a89b97ea9f7e694f9f6ce27981aa",
+  "source": "https://src.fedoraproject.org/rpms/postgresql18.git",
+  "version": "18.1"
+}

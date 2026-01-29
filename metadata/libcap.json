@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "1",
+  "sha": "d3979ba09dfa5020ce71a12147eec800295dc5ae",
+  "source": "https://src.fedoraproject.org/rpms/libcap.git",
+  "version": "2.77"
+}

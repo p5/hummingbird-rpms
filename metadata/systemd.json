@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "1",
+  "sha": "399885597ce9f7cc63673c3369086021f0b01176",
+  "source": "https://src.fedoraproject.org/rpms/systemd.git",
+  "version": "259"
+}

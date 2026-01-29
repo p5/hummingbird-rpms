@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "74",
+  "sha": "bfb709600b9e8ae0f1a95ec1750205cf4651af81",
+  "source": "https://src.fedoraproject.org/rpms/ttmkfdir.git",
+  "version": "3.0.9"
+}

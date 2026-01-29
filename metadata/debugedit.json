@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "3",
+  "sha": "7d56713fbb46b23faab66928f949e09553473389",
+  "source": "https://src.fedoraproject.org/rpms/debugedit.git",
+  "version": "5.2"
+}

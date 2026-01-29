@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "2",
+  "sha": "90e8be4cbb29497a806a204c694afafe72513bc0",
+  "source": "https://src.fedoraproject.org/rpms/libunwind.git",
+  "version": "1.8.3"
+}

@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "1",
+  "sha": "4cab9b71128c85f410021701294581ef9d524736",
+  "source": "https://src.fedoraproject.org/rpms/ed.git",
+  "version": "1.22.4"
+}

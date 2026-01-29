@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "0.1",
+  "sha": "b38b2b9743f27ab776c2ef406f1c271d8f73339b",
+  "source": "https://src.fedoraproject.org/rpms/fedora-repos.git",
+  "version": "44"
+}

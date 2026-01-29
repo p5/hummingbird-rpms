@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "5",
+  "sha": "85623a4cdbece6bd49191b971bb7677260476732",
+  "source": "https://src.fedoraproject.org/rpms/libxml2.git",
+  "version": "2.12.10"
+}

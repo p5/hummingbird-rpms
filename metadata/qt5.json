@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "1",
+  "sha": "5909d82addb80bf68552852a952caf8e4de53c14",
+  "source": "https://src.fedoraproject.org/rpms/qt5.git",
+  "version": "5.15.18"
+}

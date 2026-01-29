@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "5",
+  "sha": "a330ab929f6496beb403f4524e8b7bf2ca881eaf",
+  "source": "https://src.fedoraproject.org/rpms/libnsl2.git",
+  "version": "2.0.1"
+}

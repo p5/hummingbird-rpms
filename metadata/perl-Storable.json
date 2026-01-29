@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "521",
+  "sha": "c4e2ec7c7524fae396b51d4bbc3080774934c5ce",
+  "source": "https://src.fedoraproject.org/rpms/perl-Storable.git",
+  "version": "3.37"
+}

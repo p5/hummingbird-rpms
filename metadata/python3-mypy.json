@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "3",
+  "sha": "20bf6002efd78faa49f60443f3761588dfcf550e",
+  "source": "https://src.fedoraproject.org/rpms/python3-mypy.git",
+  "version": "1.18.2"
+}

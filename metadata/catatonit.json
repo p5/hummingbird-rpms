@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "1",
+  "sha": "a18983d24a32abcb11053369e066f9087c2cdd3d",
+  "source": "https://src.fedoraproject.org/rpms/catatonit.git",
+  "version": "0.2.1"
+}

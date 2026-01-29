@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "520",
+  "sha": "83ca36ab12ac07acd14469fcf699ef8787d6d42f",
+  "source": "https://src.fedoraproject.org/rpms/perl-Exporter.git",
+  "version": "5.79"
+}

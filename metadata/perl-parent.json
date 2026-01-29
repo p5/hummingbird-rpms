@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "520",
+  "sha": "f6edd5adb19038df25a1a2fe2aa6301a952a39a2",
+  "source": "https://src.fedoraproject.org/rpms/perl-parent.git",
+  "version": "0.244"
+}

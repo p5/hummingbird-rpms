@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "1",
+  "sha": "05e5c6d1c95cef9d2ca8a669dfa9e6474ca3eeea",
+  "source": "https://src.fedoraproject.org/rpms/dbus.git",
+  "version": "1.16.0"
+}

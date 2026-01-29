@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "1",
+  "sha": "d51944534043c30076986d184dd985dc522cc5e2",
+  "source": "https://src.fedoraproject.org/rpms/containers-common.git",
+  "version": "0.64.2"
+}

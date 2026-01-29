@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "520",
+  "sha": "a8ff590c732b326216ab1499780e5964e4b03ddf",
+  "source": "https://src.fedoraproject.org/rpms/perl.git",
+  "version": "5.42.0"
+}

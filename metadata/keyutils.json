@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "6",
+  "sha": "0fdb9190f6ad534a8d28fba90dc95ca14dea3778",
+  "source": "https://src.fedoraproject.org/rpms/keyutils.git",
+  "version": "1.6.3"
+}

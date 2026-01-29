@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "1",
+  "sha": "23d47e726eddebf44a68f733e28a0c6b0236f99c",
+  "source": "https://src.fedoraproject.org/rpms/gnupg2.git",
+  "version": "2.4.9"
+}

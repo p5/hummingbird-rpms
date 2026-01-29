@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "12",
+  "sha": "196be3f2a16d94149800f747c1468bfea7b9707a",
+  "source": "https://src.fedoraproject.org/rpms/util-linux.git",
+  "version": "2.41.3"
+}

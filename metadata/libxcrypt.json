@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "2",
+  "sha": "af9ba4149d7d46324d758eae645ccffbcd957218",
+  "source": "https://src.fedoraproject.org/rpms/libxcrypt.git",
+  "version": "4.5.2"
+}
