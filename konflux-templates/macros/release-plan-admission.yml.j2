@@ -1,4 +1,6 @@
-{%- macro release_plan_admission(plan_name, pulp_domain, pulp_credentials_secret, pipeline_url, pipeline_revision, pipeline_path, policy) -%}
+{%- macro release_plan_admission(plan_name, pulp_domain, pulp_credentials_secret, pipeline_url, pipeline_path, policy, pipeline_revision=none, pipeline_revision_pinned=none) -%}
+{%- set _revision = pipeline_revision or pipeline_revision_pinned -%}
+{%- set _pinned = pipeline_revision_pinned is not none -%}
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: ReleasePlanAdmission
@@ -22,7 +24,10 @@ spec:
         - name: url
           value: '{{ pipeline_url }}'
         - name: revision
-          value: {{ pipeline_revision }}
+{%- if not _pinned %}
+          # renovate: datasource=git-refs depName=konflux-ci/release-service-catalog branch=production
+{%- endif %}
+          value: {{ _revision }}
         - name: pathInRepo
           value: {{ pipeline_path }}
       resolver: git

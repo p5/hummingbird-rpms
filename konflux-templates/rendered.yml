@@ -13336,7 +13336,8 @@ spec:
       url: https://bombino.api.redhat.com/v1/sbom/quay/push
     event: repo_push
     method: webhook
-    title: SBOM-event-to-Bombino---
+    title: SBOM-event-to-Bombino
+---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: EnterpriseContractPolicy
 metadata:
