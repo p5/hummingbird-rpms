@@ -6,8 +6,8 @@ Name: binutils%{?_with_debug:-debug}
 # A version number of X.XX.90 is a pre-release snapshot.
 # The variable %%{source} (see below) should be set to indicate which of these
 # origins is being used.
-Version: 2.45.50
-Release: 13%{?dist}
+Version: 2.45.1
+Release: 4%{?dist}
 License: GPL-3.0-or-later AND (GPL-3.0-or-later WITH Bison-exception-2.2) AND (LGPL-2.0-or-later WITH GCC-exception-2.0) AND BSD-3-Clause AND GFDL-1.3-or-later AND GPL-2.0-or-later AND LGPL-2.1-or-later AND LGPL-2.0-or-later
 URL: https://sourceware.org/binutils
 
@@ -111,9 +111,9 @@ URL: https://sourceware.org/binutils
 # They are a "snapshot" of the about to be released branch sources, rather than
 # a snapshot of the mainline development sources.
 
-# %%define source official-release
+%define source official-release
 # %%define source pre-release
-%define source snapshot
+# %%define source snapshot
 # %%define source tarball
 
 # For snapshots and tarballs an extension is used to indicate the commit ID.
@@ -121,7 +121,7 @@ URL: https://sourceware.org/binutils
 # correctly.  Note %%(echo) is used because you cannot directly set a
 # spec variable to a hexadecimal string value.
 
-%define commit_id %(echo "be970c68891")
+%define commit_id %(echo "21e608528c3")
 
 #----End of Configure Options------------------------------------------------
 
@@ -198,10 +198,10 @@ URL: https://sourceware.org/binutils
 # ODD numbered upstream GNU Binutils releases do not include the sources
 # for the GOLD linker, so we use a snapshot from the mainline development
 # sources instead - but only for GOLD, not for the rest of the binutils.
-
+#
 # FIXME: Delete this once the gold linker is fully deprecated.
-# %%define gold_tarball %%(echo "binutils-with-gold-2.44.50-21e608528c3")
-%define gold_tarball none
+# %%define use_separate_gold_tarball 0
+%define gold_tarball %(echo "binutils-with-gold-2.44.50-21e608528c3")
 
 #----------------------------------------------------------------------------
 
@@ -213,15 +213,14 @@ Source0: https://ftp.gnu.org/gnu/binutils/binutils-%{version}.tar.xz
 Source0: binutils-%{version}.tar.xz
 %endif
 %if "%{source}" == "snapshot"
-Source0: binutils-with-gold-%{version}-%{commit_id}.tar.gz
+Source0: binutils-with-gold-%{version}-%{commit_id}.tar.xz
 %endif
 %if "%{source}" == "tarball"
 Source0: binutils-%{version}-%{commit_id}.tar.xz
 %endif
 
 Source1: binutils-2.19.50.0.1-output-format.sed
-
-%if "%{gold_tarball}" != "none"
+%if "%{gold_tarball}" != ""
 Source2: %{gold_tarball}.tar.xz
 %endif
 
@@ -275,86 +274,77 @@ Patch06: binutils-2.27-aarch64-ifunc.patch
 # Lifetime: Permanent.
 Patch07: binutils-do-not-link-with-static-libstdc++.patch
 
-# Purpose:  Allow the binutils to be configured with any (recent) version of
-#            autoconf.
-# Lifetime: Fixed in 2.46 (maybe ?)
-Patch08: binutils-autoconf-version.patch
-
-# Purpose:  Stop libtool from inserting useless runpaths into binaries.
-# Lifetime: Who knows.
-Patch09: binutils-libtool-no-rpath.patch
-
-# Purpose:  Fix binutils testsuite failures.
-# Lifetime: Permanent, but varies with each rebase.
-Patch10: binutils-testsuite-fixes.patch
-
-# Purpose:  Fix binutils testsuite failures for the RISCV-64 target.
-# Lifetime: Permanent, but varies with each rebase.
-Patch11: binutils-riscv-testsuite-fixes.patch
-
-# Purpose:  Fix the ar test of non-deterministic archives.
-# Lifetime: Fixed in 2.46
-Patch12: binutils-fix-ar-test.patch
-
-# Purpose:  Fix a seg fault in the AArch64 linker when building u-boot.
-# Lifetime: Fixed in 2.46
-Patch13: binutils-aarch64-small-plt0.patch
-
-%if %{with gold}
-
-# Purpose:  Make the GOLD linker ignore the "-z pack-relative-relocs" command line option.
-# Lifetime: Fixed in 2.46 (maybe)
-Patch14: binutils-gold-pack-relative-relocs.patch
-
-# Purpose:  Let the gold linker ignore --error-execstack and --error-rwx-segments.
-# Lifetime: Fixed in 2.46 (maybe)
-Patch15: binutils-gold-ignore-execstack-error.patch
-
 # Purpose:  Stop gold from aborting when input sections with the same name
 #            have different flags.
 # Lifetime: Fixed in 2.43 (maybe)
-Patch16: binutils-gold-mismatched-section-flags.patch
+Patch08: binutils-gold-mismatched-section-flags.patch
 
 # Purpose:  Change the gold configuration script to only warn about
 #            unsupported targets.  This allows the binutils to be built with
 #            BPF support enabled.
 # Lifetime: Permanent.
-Patch17: binutils-gold-warn-unsupported.patch
+Patch09: binutils-gold-warn-unsupported.patch
 
 # Purpose:  Enable the creation of .note.gnu.property sections by the GOLD
 #            linker for x86 binaries.
 # Lifetime: Permanent.
-Patch18: binutils-gold-i386-gnu-property-notes.patch
+Patch10: binutils-gold-i386-gnu-property-notes.patch
+
+# Purpose:  Allow the binutils to be configured with any (recent) version of
+#            autoconf.
+# Lifetime: Fixed in 2.44 (maybe ?)
+Patch11: binutils-autoconf-version.patch
+
+# Purpose:  Stop libtool from inserting useless runpaths into binaries.
+# Lifetime: Who knows.
+Patch12: binutils-libtool-no-rpath.patch
 
 # Purpose:  Stop an abort when using dwp to process a file with no dwo links.
-# Lifetime: Fixed in 2.46 (maybe)
-Patch19: binutils-gold-empty-dwp.patch
-%endif
+# Lifetime: Fixed in 2.44 (maybe)
+Patch13: binutils-gold-empty-dwp.patch
+
+# Purpose:  Fix binutils testsuite failures.
+# Lifetime: Permanent, but varies with each rebase.
+Patch14: binutils-testsuite-fixes.patch
+
+# Purpose:  Fix binutils testsuite failures for the RISCV-64 target.
+# Lifetime: Permanent, but varies with each rebase.
+Patch15: binutils-riscv-testsuite-fixes.patch
+
+# Purpose:  Make the GOLD linker ignore the "-z pack-relative-relocs" command line option.
+# Lifetime: Fixed in 2.44 (maybe)
+Patch16: binutils-gold-pack-relative-relocs.patch
+
+# Purpose:  Let the gold linker ignore --error-execstack and --error-rwx-segments.
+# Lifetime: Fixed in 2.44 (maybe)
+Patch17: binutils-gold-ignore-execstack-error.patch
+
+# Purpose:  Fix the ar test of non-deterministic archives.
+# Lifetime: Fixed in 2.44
+Patch18: binutils-fix-ar-test.patch
+
+# Purpose:  Fix a seg fault in the AArch64 linker when building u-boot.
+# Lifetime: Fixed in 2.45
+Patch19: binutils-aarch64-small-plt0.patch
+
+# Purpose:  Stops a potential illegal memory access when linking a corrupt
+#            input file.  PR 33457
+# Lifetime: Fixed in 2.46
+Patch20: binutils-CVE-2025-11083.patch
+
+# Purpose:  Stops a potential illegal memory access when linking a corrupt
+#            input file.  PR 33464
+# Lifetime: Fixed in 2.46
+Patch21: binutils-CVE-2025-11082.patch
 
 #----------------------------------------------------------------------------
 
-# Purpose:  Change the Risc-V assembler's default behaviour to not enabling
-#            relaxation (as this is suspected of causing DWARF debug info problems).
-# Lifetime: Fixed in 2.46 (maybe)
-Patch95: binutils-riscv-gas-default-no-relax.patch
-
-# Purpose:  Revert the fixes for PR33577 which introduce a change into the
-#            behaviour of symbol versioning - a behaviour not expected by
-#            other linkers.
-# Lifetime: Fixed in 2.46 (maybe) (hopefully temporary)
-# Patch97: binutils-revert-PR33577.patch
-
-# Purpose:  Remove the Build protected-func-2 without PIE linker tests
-#            as these are currently failing.
-# Lifetime: TEMPORARY - should be fixed by the 2.46 release.
-Patch98: binutils-remove-ld-protected-func-2-test.patch
-
-# Purpose:  Suppress the x86 linker's p_align-1 tests due to kernel bug on CentOS-10.
+# Purpose:  Suppress the x86 linker's p_align-1 tests due to kernel bug on CentOS-10
 # Lifetime: TEMPORARY
 Patch99: binutils-suppress-ld-align-tests.patch
 
 # Purpose: Disable GCS warnings when shared dependencies are not built with GCS
-# support.
+# support
 # Lifetime: TEMPORARY
 Patch100: binutils-disable-gcs-report-dynamic.patch
 Patch101: binutils-disable-gcs-report-dynamic-tests.patch
@@ -373,7 +363,8 @@ Provides: bundled(libiberty)
 # Perl, sed and touch are all used in the %%prep section of this spec file.
 BuildRequires: autoconf, automake, perl, sed, coreutils, make
 
-# Bison is used to generate gold/yyscript.c and ld/ldgram.c.
+# bison is used to generate either gold/yyscript.c or ld/ldgram.c depending
+# on the build architecture.
 BuildRequires: bison
 
 %if %{with clang}
@@ -612,19 +603,19 @@ use by developers.  It is NOT INTENDED FOR PRODUCTION use.
 
 %prep
 
-%if "%{gold_tarball}" != "none"
+%if "%{gold_tarball}" != ""
 
 %setup -q -n binutils-%{version} -a 0
-
-%if %{with gold}
 %setup -q -n binutils-%{version} -D -b 2 
+
 mv ../%{gold_tarball}/gold .
 mv ../%{gold_tarball}/elfcpp .
-%endif
 
 %autopatch -p1 
 
-%elif "%{source}" == "snapshot"
+%else
+
+%if "%{source}" == "snapshot"
 %autosetup -p1 -n binutils-with-gold-%{version}-%{commit_id}
 %elif "%{source}" == "official-release"
 %autosetup -p1 -n binutils-with-gold-%{version}
@@ -632,13 +623,13 @@ mv ../%{gold_tarball}/elfcpp .
 %autosetup -p1 -n binutils-%{version} 
 %endif
 
+%endif
+
 # On ppc64 and aarch64, we might use 64KiB pages
 sed -i -e '/#define.*ELF_COMMONPAGESIZE/s/0x1000$/0x10000/' bfd/elf*ppc.c
 sed -i -e '/#define.*ELF_COMMONPAGESIZE/s/0x1000$/0x10000/' bfd/elf*aarch64.c
-%if %{with gold}
 sed -i -e '/common_pagesize/s/4 /64 /' gold/powerpc.cc
 sed -i -e '/pagesize/s/0x1000,/0x10000,/' gold/aarch64.cc
-%endif
 
 # LTP sucks
 perl -pi -e 's/i\[3-7\]86/i[34567]86/g' */conf*
@@ -818,11 +809,7 @@ run_target_configuration()
 
     %set_build_flags
 
-    # RHEL-121799: Builders may want to restrict the number of CPUs used by
-    # the LTO compiler.  The normal way to do this is to set RPM_BUILD_NCPUS.
-    # But this only affects the -j option passed to make.  By adding -flto=N
-    # we can also restrict the number of threads used by the LTO compiler.
-    export CFLAGS="$RPM_OPT_FLAGS -flto=$RPM_BUILD_NCPUS"
+    export CFLAGS="$RPM_OPT_FLAGS"
 
 %ifarch %{power64}
     export CFLAGS="$CFLAGS -Wno-error"
@@ -1485,52 +1472,26 @@ exit 0
 
 #----------------------------------------------------------------------------
 %changelog
-* Mon Jan 05 2026 Nick Clifton <nickc@redhat.com> - 2.45.50-13
-- Rebase to commit be970c68891
+* Thu Jan 15 2026 Nick Clifton <nickc@redhat.com> - 2.45.1-4
+- Remove experimental Risc-V patch added with -2 revision.
 
-* Thu Dec 18 2025 Nick Clifton <nickc@redhat.com> - 2.45.50-12
-- Fix compile time warning messages about discarded qualifiers.
+* Fri Jan 09 2026 Nick Clifton <nickc@redhat.com> - 2.45.1-3
+- Fix Risc-V related test failures caused by previous patch. 
+
+* Mon Jan 05 2026 Nick Clifton <nickc@redhat.com> - 2.45.1-2
 - Change Risc-V assembler to default to disabling relaxation.
 
-* Mon Dec 08 2025 Nick Clifton <nickc@redhat.com> - 2.45.50-11
-- Rebase to commit 8e992ccb1e4
+* Wed Nov 12 2025 Nick Clifton <nickc@redhat.com> - 2.45.1-1
+- Rebase to the 2.45.1 release.
 
-* Thu Dec 04 2025 Nick Clifton <nickc@redhat.com> - 2.45.50-10
-- Fix testsuite failures for Risc-V target.
+* Fri Oct 03 2025 Nick Clifton <nickc@redhat.com> - 2.45-4
+- Stop a potential illegal memory access when linking a corrupt input file.  (CVE-2025-11082)
 
-* Mon Nov 24 2025 Nick Clifton <nickc@redhat.com> - 2.45.50-9
-- Rebase to commit beab972c07d
-- Revert patches for PR 33577
+* Thu Oct 02 2025 Nick Clifton <nickc@redhat.com> - 2.45-3
+- Stop a potential illegal memory access when linking a corrupt input file.  (CVE-2025-11083)
 
-* Tue Nov 11 2025 Nick Clifton <nickc@redhat.com> - 2.45.50-8
-- Rebase to commit 96b8a8a633a
-
-* Tue Nov 04 2025 Nick Clifton <nickc@redhat.com> - 2.45.50-7
-- Pass -flto=$RPM_BUILD_NCPUS in CFLAGS.  (RHEL-121799)
-
-* Tue Oct 28 2025 Nick Clifton <nickc@redhat.com> - 2.45.50-6
-- Rebase to commit 2006dea18d5
-
-* Mon Oct 06 2025 Nick Clifton <nickc@redhat.com> - 2.45.50-5
-- Rebase to commit b05d1d89605
-
-* Tue Sep 09 2025 Nick Clifton <nickc@redhat.com> - 2.45.50-4
+* Fri Sep 12 2025 Nick Clifton <nickc@redhat.com> - 2.45-2
 - Enhance the riscv-64 zicfilp-unlabeled-plt test to cope with larger offsets.
-
-* Mon Sep 08 2025 Nick Clifton <nickc@redhat.com> - 2.45.50-3
-- Rebase to commit 79b2b564fec
-
-* Tue Aug 19 2025 Nick Clifton <nickc@redhat.com> - 2.45.50-2
-- Rebase to commit 7e432e93f8a (previous rebase appears to be broken)
-
-* Mon Aug 18 2025 Nick Clifton <nickc@redhat.com> - 2.45.50-1
-- Rebase to commit 570f4c0c119.
-
-* Fri Aug 15 2025 Nick Clifton <nickc@redhat.com> - 2.45-3
-- Oops - the gold linker was disabled too soon, re-enabling.
-
-* Wed Aug 13 2025 Nick Clifton <nickc@redhat.com> - 2.45-2
-- Disable building of gold by default.  Ref: https://fedoraproject.org/wiki/Changes/DeprecateGoldLinker
 
 * Mon Jul 28 2025 Nick Clifton <nickc@redhat.com> - 2.45-1
 - Rebase to official GNU Binutils 2.45 release.
