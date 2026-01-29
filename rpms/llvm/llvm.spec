@@ -2406,6 +2406,40 @@ test_list_filter_out+=("libarcher :: races/taskwait-depend.c")
 %endif
 %endif
 
+# The following libarcher tests fail due to setrlimit limitations in the build environment
+# which breaks ThreadSanitizer functionality that libarcher depends on.
+test_list_filter_out+=("libarcher :: barrier/barrier.c")
+test_list_filter_out+=("libarcher :: critical/critical.c")
+test_list_filter_out+=("libarcher :: critical/lock-nested.c")
+test_list_filter_out+=("libarcher :: critical/lock.c")
+test_list_filter_out+=("libarcher :: parallel/parallel-firstprivate.c")
+test_list_filter_out+=("libarcher :: parallel/parallel-nosuppression.c")
+test_list_filter_out+=("libarcher :: parallel/parallel-simple.c")
+test_list_filter_out+=("libarcher :: parallel/parallel-simple2.c")
+test_list_filter_out+=("libarcher :: races/critical-unrelated.c")
+test_list_filter_out+=("libarcher :: races/lock-nested-unrelated.c")
+test_list_filter_out+=("libarcher :: races/lock-unrelated.c")
+test_list_filter_out+=("libarcher :: races/parallel-simple.c")
+test_list_filter_out+=("libarcher :: races/task-dependency.c")
+test_list_filter_out+=("libarcher :: races/task-taskgroup-unrelated.c")
+test_list_filter_out+=("libarcher :: races/task-taskwait-nested.c")
+test_list_filter_out+=("libarcher :: races/task-two.c")
+test_list_filter_out+=("libarcher :: races/taskwait-depend.c")
+test_list_filter_out+=("libarcher :: reduction/parallel-reduction-nowait.c")
+test_list_filter_out+=("libarcher :: reduction/parallel-reduction.c")
+test_list_filter_out+=("libarcher :: task/omp_task_depend_all.c")
+test_list_filter_out+=("libarcher :: task/task-barrier.c")
+test_list_filter_out+=("libarcher :: task/task-create.c")
+test_list_filter_out+=("libarcher :: task/task-dependency.c")
+test_list_filter_out+=("libarcher :: task/task-taskgroup-nested.c")
+test_list_filter_out+=("libarcher :: task/task-taskgroup.c")
+test_list_filter_out+=("libarcher :: task/task-taskwait-nested.c")
+test_list_filter_out+=("libarcher :: task/task-taskwait.c")
+test_list_filter_out+=("libarcher :: task/task_early_fulfill.c")
+test_list_filter_out+=("libarcher :: task/task_late_fulfill.c")
+test_list_filter_out+=("libarcher :: task/taskwait-depend.c")
+test_list_filter_out+=("libarcher :: worksharing/ordered.c")
+
 # The following tests seem pass on ppc64le and x86_64 and aarch64 only:
 %ifnarch ppc64le x86_64 s390x aarch64
 # Passes on ppc64le:
