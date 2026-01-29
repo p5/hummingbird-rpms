@@ -15,6 +15,14 @@ if [[ -z "${PULP_REPOSITORIES_STRING}" ]]; then
   exit 1
 fi
 
+# Optional third argument: path to pulp CLI config (e.g., ci.toml)
+PULP_CONFIG_FILE=$3
+PULP_CONFIG_OPT=()
+if [[ -n "${PULP_CONFIG_FILE}" ]]; then
+  PULP_CONFIG_OPT=(--config "${PULP_CONFIG_FILE}")
+  echo "ℹ️ Using pulp config file: ${PULP_CONFIG_FILE}"
+fi
+
 # Parse comma-delimited string into array
 IFS=',' read -ra PULP_REPOSITORIES <<< "${PULP_REPOSITORIES_STRING}"
 
@@ -25,30 +33,42 @@ done
 
 echo "ℹ️ Will create repositories: ${PULP_REPOSITORIES[*]}"
 
-pulp_domain_output=$(pulp domain list --field name)
-DOMAIN_EXISTS=$(jq -r ".[] | select(.name == \"${PULP_DOMAIN}\") | .name" <<< "${pulp_domain_output}")
-if [[ "${DOMAIN_EXISTS}" == "${PULP_DOMAIN}" ]]; then
-    echo "ℹ️ Domain '${PULP_DOMAIN}' already exists. Skipping creation."
+# Check domain existence robustly (avoids pagination/truncation)
+if pulp "${PULP_CONFIG_OPT[@]}" domain show --name "${PULP_DOMAIN}" >/dev/null 2>&1; then
+  echo "ℹ️ Domain '${PULP_DOMAIN}' already exists. Skipping creation."
 else
-    echo "🆕 Domain '${PULP_DOMAIN}' not found. Creating..."
-    pulp console populated-domain create --name "${PULP_DOMAIN}"
+  echo "🆕 Domain '${PULP_DOMAIN}' not found. Creating..."
+  # Attempt creation; if it already exists, report and continue
+  if ! pulp "${PULP_CONFIG_OPT[@]}" console populated-domain create --name "${PULP_DOMAIN}" >/dev/null 2>&1; then
+    echo "⚠️  Domain creation reported an error; verifying existence..."
+    if ! pulp "${PULP_CONFIG_OPT[@]}" domain show --name "${PULP_DOMAIN}" >/dev/null 2>&1; then
+      echo "🔴 Error: Failed to create domain '${PULP_DOMAIN}' and it does not exist."
+      exit 1
+    fi
+    echo "ℹ️ Domain '${PULP_DOMAIN}' now exists. Continuing."
+  fi
 fi
 
 # Create repositories
 for PULP_REPOSITORY in "${PULP_REPOSITORIES[@]}"; do
     echo "🔄 Processing repository: ${PULP_REPOSITORY}"
 
-    pulp_repo_output=$(pulp --domain "${PULP_DOMAIN}" rpm repository list --field name)
-    REPO_EXISTS=$(jq -r ".[] | select(.name == \"${PULP_REPOSITORY}\") | .name" <<< "${pulp_repo_output}")
-
-    if [[ "${REPO_EXISTS}" == "${PULP_REPOSITORY}" ]]; then
-        echo "ℹ️ Repository '${PULP_REPOSITORY}' already exists. Skipping creation."
+    if pulp "${PULP_CONFIG_OPT[@]}" --domain "${PULP_DOMAIN}" rpm repository show --name "${PULP_REPOSITORY}" >/dev/null 2>&1; then
+      echo "ℹ️ Repository '${PULP_REPOSITORY}' already exists. Skipping creation."
     else
-        echo "🆕 Repository '${PULP_REPOSITORY}' not found. Creating..."
-        pulp --domain "${PULP_DOMAIN}" rpm repository create --name "${PULP_REPOSITORY}"
-        pulp --domain "${PULP_DOMAIN}" rpm repository update --name "${PULP_REPOSITORY}" --autopublish
-        pulp --domain "${PULP_DOMAIN}" rpm distribution create --name "${PULP_REPOSITORY}" \
-          --repository "${PULP_REPOSITORY}" --base-path "${PULP_REPOSITORY}"
+      echo "🆕 Repository '${PULP_REPOSITORY}' not found. Creating..."
+      pulp "${PULP_CONFIG_OPT[@]}" --domain "${PULP_DOMAIN}" rpm repository create --name "${PULP_REPOSITORY}"
+      pulp "${PULP_CONFIG_OPT[@]}" --domain "${PULP_DOMAIN}" rpm repository update --name "${PULP_REPOSITORY}" --autopublish
+    fi
+    # Ensure distribution exists (recreate if it was deleted)
+    if pulp "${PULP_CONFIG_OPT[@]}" --domain "${PULP_DOMAIN}" rpm distribution show --name "${PULP_REPOSITORY}" >/dev/null 2>&1; then
+      echo "ℹ️ Distribution '${PULP_REPOSITORY}' already exists. Skipping creation."
+    else
+      echo "🆕 Distribution '${PULP_REPOSITORY}' not found. Creating..."
+      pulp "${PULP_CONFIG_OPT[@]}" --domain "${PULP_DOMAIN}" rpm distribution create \
+        --name "${PULP_REPOSITORY}" \
+        --repository "${PULP_REPOSITORY}" \
+        --base-path "${PULP_REPOSITORY}"
     fi
 done
 echo "✅ Setup complete."
