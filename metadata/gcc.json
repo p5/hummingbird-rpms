@@ -1,7 +1,7 @@
 {
-  "branch": "rawhide",
-  "release": "0.4",
-  "sha": "2df9f5e1831b0143b359addf7e09e7d5c67d9fa4",
+  "branch": "f43",
+  "release": "7",
+  "sha": "fef47e540ee170873511546e35fc912cceed23f1",
   "source": "https://src.fedoraproject.org/rpms/gcc.git",
-  "version": "16.0.0"
+  "version": "15.2.1"
 }
