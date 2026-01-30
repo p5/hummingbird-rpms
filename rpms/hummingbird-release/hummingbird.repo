@@ -5,6 +5,7 @@ baseurl=https://koji-s3-cache.hummingbird-project.io/console.redhat.com/api/pulp
 gpgcheck=0
 enabled=1
 sslverify=1
+priority=10
 
 [hummingbird-source]
 name=Hummingbird - Source
@@ -13,3 +14,4 @@ baseurl=https://koji-s3-cache.hummingbird-project.io/console.redhat.com/api/pulp
 gpgcheck=0
 enabled=0
 sslverify=1
+priority=10
