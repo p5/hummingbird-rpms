@@ -1,7 +1,7 @@
 Name:           libfido2
 
 Version:        1.16.0
-Release:        4%{?dist}
+Release:        4.1%{?dist}
 Summary:        FIDO2 library
 
 License:        BSD-2-Clause
