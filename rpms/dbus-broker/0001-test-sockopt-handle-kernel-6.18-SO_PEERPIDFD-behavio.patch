@@ -1,0 +1,69 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Prarit Bhargava <prarit@redhat.com>
+Date: Thu, 30 Jan 2026 12:00:00 -0500
+Subject: [PATCH] test-sockopt: handle kernel 6.18+ SO_PEERPIDFD behavior
+ change
+
+On Linux kernel 6.18+, SO_PEERPIDFD behavior has changed for reaped
+processes. Previously, SO_PEERPIDFD would fail with EINVAL or ESRCH
+when the peer process had exited. Now it succeeds and returns a valid
+pidfd that refers to the dead process (Pid: -1 in fdinfo).
+
+Update the test to handle both behaviors:
+- Old kernels: sockopt_get_peerpidfd() returns SOCKOPT_E_REAPED
+- New kernels: sockopt_get_peerpidfd() succeeds, but pidfd_send_signal()
+  returns ESRCH indicating the process is dead
+
+Signed-off-by: Prarit Bhargava <prarit@redhat.com>
+---
+ src/util/test-sockopt.c | 27 ++++++++++++++++++++++++---
+ 1 file changed, 24 insertions(+), 3 deletions(-)
+
+diff --git a/src/util/test-sockopt.c b/src/util/test-sockopt.c
+index 8a12345..9b67890 100644
+--- a/src/util/test-sockopt.c
++++ b/src/util/test-sockopt.c
+@@ -4,8 +4,10 @@
+ 
+ #undef NDEBUG
+ #include <c-stdaux.h>
++#include <errno.h>
+ #include <stdlib.h>
+ #include <sys/socket.h>
++#include <sys/syscall.h>
+ #include <sys/types.h>
+ #include <sys/un.h>
+ #include <sys/wait.h>
+@@ -81,9 +83,28 @@ static void test_peerpidfd_client(
+ 
+         r = sockopt_get_peerpidfd(fd, &pidfd);
+         if (r != SOCKOPT_E_UNSUPPORTED) {
+-                if (stale) {
+-                        c_assert(r == SOCKOPT_E_REAPED);
++                if (stale && r == SOCKOPT_E_REAPED) {
++                        /*
++                         * Old kernel behavior (pre-6.18): SO_PEERPIDFD fails
++                         * with EINVAL/ESRCH for reaped processes, which
++                         * sockopt_get_peerpidfd() maps to SOCKOPT_E_REAPED.
++                         */
++                        ;
++                } else if (stale && !r) {
++                        /*
++                         * New kernel behavior (6.18+): SO_PEERPIDFD succeeds
++                         * even for reaped processes, returning a pidfd that
++                         * refers to the dead process. Verify this by checking
++                         * that pidfd_send_signal() returns ESRCH.
++                         */
++                        int sig_r;
++
++                        c_assert(pidfd >= 0);
++                        sig_r = syscall(SYS_pidfd_send_signal, pidfd, 0, NULL, 0);
++                        c_assert(sig_r < 0);
++                        c_assert(errno == ESRCH);
+                 } else {
++                        c_assert(!stale);
+                         c_assert(!r);
+                         c_assert(pidfd >= 0);
+ 
+-- 
+2.47.1

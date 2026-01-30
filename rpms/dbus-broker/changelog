@@ -1,3 +1,6 @@
+* Thu Jan 30 2026 Prarit Bhargava <prarit@redhat.com> - 37-2.1
+- Fix test-sockopt failure on kernel 6.18+ (SO_PEERPIDFD behavior change)
+
 * Wed Jul 26 2023 Lukáš Zaoral <lzaoral@redhat.com> - 33-3
 - migrate to SPDX license format
 

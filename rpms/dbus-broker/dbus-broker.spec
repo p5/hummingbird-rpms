@@ -2,11 +2,13 @@
 
 Name:                 dbus-broker
 Version:              37
-Release:              2%{?dist}
+Release:              2.1%{?dist}
 Summary:              Linux D-Bus Message Broker
 License:              Apache-2.0 AND LGPL-2.0-or-later AND LGPL-2.1-or-later AND (Apache-2.0 OR LGPL-2.1-or-later)
 URL:                  https://github.com/bus1/dbus-broker
 Source0:              https://github.com/bus1/dbus-broker/releases/download/v%{version}/dbus-broker-%{version}.tar.xz
+# Fix test-sockopt failure on kernel 6.18+ where SO_PEERPIDFD succeeds for reaped processes
+Patch1:               0001-test-sockopt-handle-kernel-6.18-SO_PEERPIDFD-behavio.patch
 BuildRequires:        pkgconfig(audit)
 BuildRequires:        pkgconfig(expat)
 BuildRequires:        pkgconfig(dbus-1)
