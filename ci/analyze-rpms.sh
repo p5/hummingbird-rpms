@@ -25,8 +25,13 @@ COUNT_ONLY=false
 CHECK_BUILDDEPS=false
 
 # Packages to exclude from output (e.g., packages that should never be imported)
+# fedora-release - superceded by hummingbird-release
+# golang-oras - uploaded to lookaside cache (along with other go packages)
+# python-rpm-lockfile-prototype uploaded to lookaside cache (along with other python packages)
 BLOCKLIST=(
     "fedora-release"
+    "golang-oras"
+    "python-rpm-lockfile-prototype"
 )
 
 show_help() {
@@ -120,7 +125,7 @@ fi
 
 # Get list of SRPMs from container lockfiles
 get_lockfile_srpms() {
-	(cd "${CONTAINERS_DIR}"; make list-lockfile-srpms)
+	(cd "${CONTAINERS_DIR}"; make --no-print-directory list-lockfile-srpms)
 }
 
 # Get list of already imported packages
