@@ -42,7 +42,7 @@ Epoch: %{conditional_epoch}
 Version: 1.21.0
 # The `AND` needs to be uppercase in the License for SPDX compatibility
 License: Apache-2.0 AND BSD-2-Clause AND BSD-3-Clause AND ISC AND MIT AND MPL-2.0
-Release: %autorelease
+Release: 1.1%{?dist}
 %if %{defined golang_arches_future}
 ExclusiveArch: %{golang_arches_future}
 %else
