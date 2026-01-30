@@ -120,7 +120,7 @@ fi
 
 # Get list of SRPMs from container lockfiles
 get_lockfile_srpms() {
-	(cd "${CONTAINERS_DIR}"; make list-lockfile-srpms)
+	(cd "${CONTAINERS_DIR}"; make --no-print-directory list-lockfile-srpms)
 }
 
 # Get list of already imported packages
