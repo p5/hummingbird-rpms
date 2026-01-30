@@ -1,0 +1,23 @@
+summary: Build latest kernel-ark with clang using different build configurations
+discover:
+    how: fmf
+    url: https://src.fedoraproject.org/tests/llvm.git
+    ref: main
+    test: kernel-ark-build
+execute:
+    how: tmt
+provision:
+    hardware:
+        memory: ">=16 GiB"
+        cpu:
+            cores: ">=8"
+adjust:
+  - because: "Plan to be ran when either executed locally, or executed by CI system to gate a build or PR."
+    when: >-
+      trigger is defined
+      and trigger != commit
+      and trigger != build
+    enabled: false
+  - because: "Rebuilding kernel-ark is relevant only to rawhide"
+    when: distro is not defined or distro != fedora-rawhide
+    enabled: false

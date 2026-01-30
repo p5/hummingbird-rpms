@@ -1,0 +1,20 @@
+summary: LLD tests for build/PR gating, testing alternatives and spoiling the installation
+adjust:
+  - because: "Plan to be ran when either executed locally, or executed by CI system to gate a build or PR."
+    when: >-
+      trigger is defined
+      and trigger != commit
+      and trigger != build
+    enabled: false
+
+discover:
+    - name: lld-alternatives
+      how: fmf
+      url: https://src.fedoraproject.org/tests/llvm.git
+      ref: main
+      test: ld-alternative
+execute:
+    how: tmt
+provision:
+  hardware:
+    memory: ">= 4 GiB"

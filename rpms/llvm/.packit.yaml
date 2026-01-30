@@ -1,0 +1,29 @@
+# We want to use the following Packit functions in the llvm package:
+# pull_from_upstream
+
+# See the documentation for more information:
+# https://packit.dev/docs/configuration/
+
+specfile_path: llvm.spec
+
+# name in upstream package repository or registry (e.g. in PyPI)
+upstream_package_name: llvm
+upstream_tag_template: llvmorg-{version}
+# downstream (Fedora) RPM package name
+downstream_package_name: llvm
+prerelease_suffix_pattern: "([.\\-_]?)(a(lpha)?|b(eta)?|r?c|pre(view)?)([.\\-_]?\\d+)?"
+prerelease_suffix_macro: prerel
+
+# Do not create README.packit.
+create_sync_note: false
+
+jobs:
+  - job: pull_from_upstream
+    trigger: release
+    dist_git_branches:
+      # We try to keep fedora-latest in sync with fedora-rawhide with
+      # fast-forward merges. For that reason, we only update fedora-rawhide.
+      - fedora-rawhide
+
+# We avoid to use koji_build and bodhi_update because llvm updates are
+# frequently provided via side-tags due to the impact to other packages.
