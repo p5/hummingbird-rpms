@@ -1,0 +1,9 @@
+repos:
+  - repo: local
+    hooks:
+      - id: make-generate
+        name: Run make generate
+        entry: bash -c 'make generate && git diff --exit-code || (echo "❌ make generate created changes - please stage and commit them" && exit 1)'
+        language: system
+        pass_filenames: false
+        always_run: true
