@@ -9,6 +9,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: pyyaml-main
 spec:
   application: rpms-main
@@ -47,6 +48,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: r-rpm-macros-main
 spec:
   application: rpms-main
@@ -85,6 +87,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: shellcheck-main
 spec:
   application: rpms-main
@@ -123,6 +126,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: abattis-cantarell-fonts-main
 spec:
   application: rpms-main
@@ -161,6 +165,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: acl-main
 spec:
   application: rpms-main
@@ -199,6 +204,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: alsa-lib-main
 spec:
   application: rpms-main
@@ -237,6 +243,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: annobin-main
 spec:
   application: rpms-main
@@ -275,6 +282,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: ansible-packaging-main
 spec:
   application: rpms-main
@@ -313,6 +321,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: apr-main
 spec:
   application: rpms-main
@@ -351,6 +360,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: apr-util-main
 spec:
   application: rpms-main
@@ -391,6 +401,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: attr-main
 spec:
   application: rpms-main
@@ -429,6 +440,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: audit-main
 spec:
   application: rpms-main
@@ -467,6 +479,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: authselect-main
 spec:
   application: rpms-main
@@ -505,6 +518,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: autoconf-main
 spec:
   application: rpms-main
@@ -543,6 +557,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: automake-main
 spec:
   application: rpms-main
@@ -581,6 +596,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: avahi-main
 spec:
   application: rpms-main
@@ -619,6 +635,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: babeltrace-main
 spec:
   application: rpms-main
@@ -657,6 +674,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: bash-main
 spec:
   application: rpms-main
@@ -695,6 +713,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: bash-completion-main
 spec:
   application: rpms-main
@@ -733,6 +752,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: bind-main
 spec:
   application: rpms-main
@@ -771,6 +791,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: binutils-main
 spec:
   application: rpms-main
@@ -809,6 +830,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: boost-main
 spec:
   application: rpms-main
@@ -847,6 +869,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: brotli-main
 spec:
   application: rpms-main
@@ -885,6 +908,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: busybox-main
 spec:
   application: rpms-main
@@ -923,6 +947,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: bzip2-main
 spec:
   application: rpms-main
@@ -961,6 +986,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: c-ares-main
 spec:
   application: rpms-main
@@ -999,6 +1025,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: ca-certificates-main
 spec:
   application: rpms-main
@@ -1037,6 +1064,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: caddy-main
 spec:
   application: rpms-main
@@ -1075,6 +1103,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: capstone-main
 spec:
   application: rpms-main
@@ -1113,6 +1142,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: cargo-rpm-macros-main
 spec:
   application: rpms-main
@@ -1151,6 +1181,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: catatonit-main
 spec:
   application: rpms-main
@@ -1189,6 +1220,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: chkconfig-main
 spec:
   application: rpms-main
@@ -1227,6 +1259,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: cmake-main
 spec:
   application: rpms-main
@@ -1265,6 +1298,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: composer-main
 spec:
   application: rpms-main
@@ -1303,6 +1337,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: container-selinux-main
 spec:
   application: rpms-main
@@ -1341,6 +1376,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: containers-common-main
 spec:
   application: rpms-main
@@ -1379,6 +1415,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: coreutils-main
 spec:
   application: rpms-main
@@ -1417,6 +1454,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: cpio-main
 spec:
   application: rpms-main
@@ -1455,6 +1493,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: cracklib-main
 spec:
   application: rpms-main
@@ -1493,6 +1532,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: createrepo-c-main
 spec:
   application: rpms-main
@@ -1531,6 +1571,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: crypto-policies-main
 spec:
   application: rpms-main
@@ -1569,6 +1610,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: ctags-main
 spec:
   application: rpms-main
@@ -1607,6 +1649,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: cups-main
 spec:
   application: rpms-main
@@ -1645,6 +1688,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: curl-main
 spec:
   application: rpms-main
@@ -1687,6 +1731,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: cyrus-sasl-main
 spec:
   application: rpms-main
@@ -1725,6 +1770,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: dbus-main
 spec:
   application: rpms-main
@@ -1765,6 +1811,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: debugedit-main
 spec:
   application: rpms-main
@@ -1807,6 +1854,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: diffutils-main
 spec:
   application: rpms-main
@@ -1845,6 +1893,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: dnf-main
 spec:
   application: rpms-main
@@ -1883,6 +1932,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: dnf5-main
 spec:
   application: rpms-main
@@ -1931,6 +1981,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: dotnet10-0-main
 spec:
   application: rpms-main
@@ -1969,6 +2020,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: dotnet8-0-main
 spec:
   application: rpms-main
@@ -2007,6 +2059,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: dotnet9-0-main
 spec:
   application: rpms-main
@@ -2047,6 +2100,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: drpm-main
 spec:
   application: rpms-main
@@ -2085,6 +2139,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: dwz-main
 spec:
   application: rpms-main
@@ -2123,6 +2178,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: e2fsprogs-main
 spec:
   application: rpms-main
@@ -2161,6 +2217,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: ecj-main
 spec:
   application: rpms-main
@@ -2199,6 +2256,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: ed-main
 spec:
   application: rpms-main
@@ -2237,6 +2295,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: efi-rpm-macros-main
 spec:
   application: rpms-main
@@ -2275,6 +2334,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: elfutils-main
 spec:
   application: rpms-main
@@ -2319,6 +2379,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: expat-main
 spec:
   application: rpms-main
@@ -2357,6 +2418,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: fedora-logos-main
 spec:
   application: rpms-main
@@ -2397,6 +2459,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: fedora-repos-main
 spec:
   application: rpms-main
@@ -2435,6 +2498,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: file-main
 spec:
   application: rpms-main
@@ -2473,6 +2537,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: filesystem-main
 spec:
   application: rpms-main
@@ -2511,6 +2576,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: findutils-main
 spec:
   application: rpms-main
@@ -2557,6 +2623,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: fmt-main
 spec:
   application: rpms-main
@@ -2595,6 +2662,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: fontconfig-main
 spec:
   application: rpms-main
@@ -2633,6 +2701,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: fonts-rpm-macros-main
 spec:
   application: rpms-main
@@ -2673,6 +2742,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: forge-srpm-macros-main
 spec:
   application: rpms-main
@@ -2711,6 +2781,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: fpc-srpm-macros-main
 spec:
   application: rpms-main
@@ -2751,6 +2822,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: freetype-main
 spec:
   application: rpms-main
@@ -2789,6 +2861,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: fsverity-utils-main
 spec:
   application: rpms-main
@@ -2833,6 +2906,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: gap-srpm-macros-main
 spec:
   application: rpms-main
@@ -2871,6 +2945,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: gawk-main
 spec:
   application: rpms-main
@@ -2909,6 +2984,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: gcc-main
 spec:
   application: rpms-main
@@ -2951,6 +3027,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: gdb-main
 spec:
   application: rpms-main
@@ -2989,6 +3066,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: gdbm-main
 spec:
   application: rpms-main
@@ -3045,6 +3123,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: ghc-srpm-macros-main
 spec:
   application: rpms-main
@@ -3085,6 +3164,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: git-main
 spec:
   application: rpms-main
@@ -3123,6 +3203,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: glib2-main
 spec:
   application: rpms-main
@@ -3161,6 +3242,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: glibc-main
 spec:
   application: rpms-main
@@ -3203,6 +3285,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: gmp-main
 spec:
   application: rpms-main
@@ -3241,6 +3324,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: gnat-srpm-macros-main
 spec:
   application: rpms-main
@@ -3279,6 +3363,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: gnulib-l10n-main
 spec:
   application: rpms-main
@@ -3319,6 +3404,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: gnupg2-main
 spec:
   application: rpms-main
@@ -3357,6 +3443,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: gnutls-main
 spec:
   application: rpms-main
@@ -3397,6 +3484,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: go-rpm-macros-main
 spec:
   application: rpms-main
@@ -3439,6 +3527,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: golang-main
 spec:
   application: rpms-main
@@ -3477,6 +3566,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: google-noto-fonts-main
 spec:
   application: rpms-main
@@ -3517,6 +3607,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: gperftools-main
 spec:
   application: rpms-main
@@ -3555,6 +3646,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: gpgme-main
 spec:
   application: rpms-main
@@ -3593,6 +3685,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: gpgverify-main
 spec:
   application: rpms-main
@@ -3633,6 +3726,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: graphite2-main
 spec:
   application: rpms-main
@@ -3671,6 +3765,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: grep-main
 spec:
   application: rpms-main
@@ -3709,6 +3804,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: groff-main
 spec:
   application: rpms-main
@@ -3757,6 +3853,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: gzip-main
 spec:
   application: rpms-main
@@ -3795,6 +3892,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: haproxy-main
 spec:
   application: rpms-main
@@ -3835,6 +3933,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: harfbuzz-main
 spec:
   application: rpms-main
@@ -3877,6 +3976,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: hostname-main
 spec:
   application: rpms-main
@@ -3915,6 +4015,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: httpd-main
 spec:
   application: rpms-main
@@ -3953,6 +4054,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: hugo-main
 spec:
   application: rpms-main
@@ -3991,6 +4093,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: hummingbird-release-main
 spec:
   application: rpms-main
@@ -4029,6 +4132,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: icu-main
 spec:
   application: rpms-main
@@ -4067,6 +4171,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: ima-evm-utils-main
 spec:
   application: rpms-main
@@ -4107,6 +4212,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: iproute-main
 spec:
   application: rpms-main
@@ -4151,6 +4257,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: jansson-main
 spec:
   application: rpms-main
@@ -4189,6 +4296,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: java-21-openjdk-main
 spec:
   application: rpms-main
@@ -4227,6 +4335,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: java-25-openjdk-main
 spec:
   application: rpms-main
@@ -4265,6 +4374,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: java-rpm-macros-main
 spec:
   application: rpms-main
@@ -4303,6 +4413,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: javapackages-tools-main
 spec:
   application: rpms-main
@@ -4341,6 +4452,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: jemalloc-main
 spec:
   application: rpms-main
@@ -4381,6 +4493,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: jq-main
 spec:
   application: rpms-main
@@ -4419,6 +4532,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: json-c-main
 spec:
   application: rpms-main
@@ -4463,6 +4577,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: kernel-headers-main
 spec:
   application: rpms-main
@@ -4501,6 +4616,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: kernel-srpm-macros-main
 spec:
   application: rpms-main
@@ -4539,6 +4655,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: keyutils-main
 spec:
   application: rpms-main
@@ -4579,6 +4696,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: krb5-main
 spec:
   application: rpms-main
@@ -4617,6 +4735,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: kubernetes1-35-main
 spec:
   application: rpms-main
@@ -4657,6 +4776,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: langpacks-main
 spec:
   application: rpms-main
@@ -4695,6 +4815,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: less-main
 spec:
   application: rpms-main
@@ -4733,6 +4854,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: libx11-main
 spec:
   application: rpms-main
@@ -4771,6 +4893,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: libxau-main
 spec:
   application: rpms-main
@@ -4809,6 +4932,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: libxcomposite-main
 spec:
   application: rpms-main
@@ -4847,6 +4971,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: libxext-main
 spec:
   application: rpms-main
@@ -4885,6 +5010,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: libxi-main
 spec:
   application: rpms-main
@@ -4923,6 +5049,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: libxrender-main
 spec:
   application: rpms-main
@@ -4961,6 +5088,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: libxtst-main
 spec:
   application: rpms-main
@@ -4999,6 +5127,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: libaio-main
 spec:
   application: rpms-main
@@ -5037,6 +5166,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: libarchive-main
 spec:
   application: rpms-main
@@ -5075,6 +5205,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: libassuan-main
 spec:
   application: rpms-main
@@ -5113,6 +5244,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: libbpf-main
 spec:
   application: rpms-main
@@ -5151,6 +5283,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: libcap-main
 spec:
   application: rpms-main
@@ -5189,6 +5322,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: libcap-ng-main
 spec:
   application: rpms-main
@@ -5227,6 +5361,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: libcbor-main
 spec:
   application: rpms-main
@@ -5265,6 +5400,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: libcomps-main
 spec:
   application: rpms-main
@@ -5303,6 +5439,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: libdnf-main
 spec:
   application: rpms-main
@@ -5341,6 +5478,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: libeconf-main
 spec:
   application: rpms-main
@@ -5379,6 +5517,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: libedit-main
 spec:
   application: rpms-main
@@ -5417,6 +5556,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: libevent-main
 spec:
   application: rpms-main
@@ -5455,6 +5595,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: libffi-main
 spec:
   application: rpms-main
@@ -5493,6 +5634,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: libfido2-main
 spec:
   application: rpms-main
@@ -5531,6 +5673,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: libfontenc-main
 spec:
   application: rpms-main
@@ -5569,6 +5712,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: libgcrypt-main
 spec:
   application: rpms-main
@@ -5607,6 +5751,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: libgit2-main
 spec:
   application: rpms-main
@@ -5645,6 +5790,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: libgpg-error-main
 spec:
   application: rpms-main
@@ -5683,6 +5829,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: libidn2-main
 spec:
   application: rpms-main
@@ -5721,6 +5868,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: libipt-main
 spec:
   application: rpms-main
@@ -5759,6 +5907,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: libksba-main
 spec:
   application: rpms-main
@@ -5797,6 +5946,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: libmnl-main
 spec:
   application: rpms-main
@@ -5835,6 +5985,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: libmodulemd-main
 spec:
   application: rpms-main
@@ -5873,6 +6024,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: libmpc-main
 spec:
   application: rpms-main
@@ -5911,6 +6063,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: libnl3-main
 spec:
   application: rpms-main
@@ -5949,6 +6102,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: libnsl2-main
 spec:
   application: rpms-main
@@ -5987,6 +6141,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: libpng-main
 spec:
   application: rpms-main
@@ -6025,6 +6180,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: libpsl-main
 spec:
   application: rpms-main
@@ -6063,6 +6219,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: libpwquality-main
 spec:
   application: rpms-main
@@ -6101,6 +6258,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: librepo-main
 spec:
   application: rpms-main
@@ -6139,6 +6297,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: libseccomp-main
 spec:
   application: rpms-main
@@ -6177,6 +6336,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: libselinux-main
 spec:
   application: rpms-main
@@ -6215,6 +6375,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: libsemanage-main
 spec:
   application: rpms-main
@@ -6253,6 +6414,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: libsepol-main
 spec:
   application: rpms-main
@@ -6291,6 +6453,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: libsodium-main
 spec:
   application: rpms-main
@@ -6329,6 +6492,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: libsolv-main
 spec:
   application: rpms-main
@@ -6367,6 +6531,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: libssh-main
 spec:
   application: rpms-main
@@ -6405,6 +6570,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: libssh2-main
 spec:
   application: rpms-main
@@ -6445,6 +6611,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: libtasn1-main
 spec:
   application: rpms-main
@@ -6483,6 +6650,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: libtirpc-main
 spec:
   application: rpms-main
@@ -6521,6 +6689,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: libtool-main
 spec:
   application: rpms-main
@@ -6559,6 +6728,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: libunistring-main
 spec:
   application: rpms-main
@@ -6597,6 +6767,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: libunwind-main
 spec:
   application: rpms-main
@@ -6635,6 +6806,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: libusb1-main
 spec:
   application: rpms-main
@@ -6673,6 +6845,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: libuv-main
 spec:
   application: rpms-main
@@ -6711,6 +6884,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: libverto-main
 spec:
   application: rpms-main
@@ -6751,6 +6925,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: libxcb-main
 spec:
   application: rpms-main
@@ -6789,6 +6964,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: libxcrypt-main
 spec:
   application: rpms-main
@@ -6827,6 +7003,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: libxml2-main
 spec:
   application: rpms-main
@@ -6865,6 +7042,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: libxslt-main
 spec:
   application: rpms-main
@@ -6903,6 +7081,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: libyaml-main
 spec:
   application: rpms-main
@@ -6941,6 +7120,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: libzip-main
 spec:
   application: rpms-main
@@ -6985,6 +7165,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: lksctp-tools-main
 spec:
   application: rpms-main
@@ -7023,6 +7204,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: llhttp-main
 spec:
   application: rpms-main
@@ -7065,6 +7247,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: lmdb-main
 spec:
   application: rpms-main
@@ -7103,6 +7286,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: logrotate-main
 spec:
   application: rpms-main
@@ -7141,6 +7325,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: lua-main
 spec:
   application: rpms-main
@@ -7179,6 +7364,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: lua-rpm-macros-main
 spec:
   application: rpms-main
@@ -7217,6 +7403,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: lz4-main
 spec:
   application: rpms-main
@@ -7257,6 +7444,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: lzo-main
 spec:
   application: rpms-main
@@ -7297,6 +7485,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: mailcap-main
 spec:
   application: rpms-main
@@ -7335,6 +7524,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: make-main
 spec:
   application: rpms-main
@@ -7373,6 +7563,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: mariadb-connector-c-main
 spec:
   application: rpms-main
@@ -7411,6 +7602,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: mariadb10-11-main
 spec:
   application: rpms-main
@@ -7449,6 +7641,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: mawk-main
 spec:
   application: rpms-main
@@ -7487,6 +7680,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: memcached-main
 spec:
   application: rpms-main
@@ -7555,6 +7749,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: mkfontscale-main
 spec:
   application: rpms-main
@@ -7597,6 +7792,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: mpdecimal-main
 spec:
   application: rpms-main
@@ -7635,6 +7831,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: mpfr-main
 spec:
   application: rpms-main
@@ -7679,6 +7876,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: ncurses-main
 spec:
   application: rpms-main
@@ -7723,6 +7921,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: nettle-main
 spec:
   application: rpms-main
@@ -7763,6 +7962,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: nghttp2-main
 spec:
   application: rpms-main
@@ -7801,6 +8001,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: nghttp3-main
 spec:
   application: rpms-main
@@ -7839,6 +8040,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: nginx-main
 spec:
   application: rpms-main
@@ -7877,6 +8079,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: ngtcp2-main
 spec:
   application: rpms-main
@@ -7921,6 +8124,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: nodejs20-main
 spec:
   application: rpms-main
@@ -7959,6 +8163,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: nodejs22-main
 spec:
   application: rpms-main
@@ -7997,6 +8202,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: nodejs24-main
 spec:
   application: rpms-main
@@ -8035,6 +8241,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: npth-main
 spec:
   application: rpms-main
@@ -8073,6 +8280,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: nss-main
 spec:
   application: rpms-main
@@ -8115,6 +8323,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: ocaml-srpm-macros-main
 spec:
   application: rpms-main
@@ -8153,6 +8362,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: oniguruma-main
 spec:
   application: rpms-main
@@ -8191,6 +8401,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: openblas-srpm-macros-main
 spec:
   application: rpms-main
@@ -8229,6 +8440,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: openldap-main
 spec:
   application: rpms-main
@@ -8271,6 +8483,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: openssh-main
 spec:
   application: rpms-main
@@ -8309,6 +8522,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: openssl-main
 spec:
   application: rpms-main
@@ -8347,6 +8561,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: openssl-fips-provider-main
 spec:
   application: rpms-main
@@ -8385,6 +8600,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: p11-kit-main
 spec:
   application: rpms-main
@@ -8423,6 +8639,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: package-notes-main
 spec:
   application: rpms-main
@@ -8461,6 +8678,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: pam-main
 spec:
   application: rpms-main
@@ -8503,6 +8721,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: patch-main
 spec:
   application: rpms-main
@@ -8541,6 +8760,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: pcre2-main
 spec:
   application: rpms-main
@@ -8581,6 +8801,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: perl-main
 spec:
   application: rpms-main
@@ -8621,6 +8842,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: perl-carp-main
 spec:
   application: rpms-main
@@ -8659,6 +8881,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: perl-data-dumper-main
 spec:
   application: rpms-main
@@ -8697,6 +8920,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: perl-digest-main
 spec:
   application: rpms-main
@@ -8735,6 +8959,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: perl-digest-md5-main
 spec:
   application: rpms-main
@@ -8773,6 +8998,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: perl-encode-main
 spec:
   application: rpms-main
@@ -8811,6 +9037,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: perl-exporter-main
 spec:
   application: rpms-main
@@ -8849,6 +9076,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: perl-file-path-main
 spec:
   application: rpms-main
@@ -8887,6 +9115,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: perl-file-temp-main
 spec:
   application: rpms-main
@@ -8925,6 +9154,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: perl-getopt-long-main
 spec:
   application: rpms-main
@@ -8963,6 +9193,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: perl-http-tiny-main
 spec:
   application: rpms-main
@@ -9001,6 +9232,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: perl-io-socket-ip-main
 spec:
   application: rpms-main
@@ -9039,6 +9271,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: perl-io-socket-ssl-main
 spec:
   application: rpms-main
@@ -9077,6 +9310,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: perl-mime-base32-main
 spec:
   application: rpms-main
@@ -9115,6 +9349,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: perl-mime-base64-main
 spec:
   application: rpms-main
@@ -9153,6 +9388,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: perl-net-ssleay-main
 spec:
   application: rpms-main
@@ -9191,6 +9427,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: perl-pathtools-main
 spec:
   application: rpms-main
@@ -9229,6 +9466,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: perl-pod-escapes-main
 spec:
   application: rpms-main
@@ -9267,6 +9505,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: perl-pod-perldoc-main
 spec:
   application: rpms-main
@@ -9305,6 +9544,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: perl-pod-simple-main
 spec:
   application: rpms-main
@@ -9343,6 +9583,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: perl-pod-usage-main
 spec:
   application: rpms-main
@@ -9381,6 +9622,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: perl-scalar-list-utils-main
 spec:
   application: rpms-main
@@ -9419,6 +9661,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: perl-socket-main
 spec:
   application: rpms-main
@@ -9457,6 +9700,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: perl-storable-main
 spec:
   application: rpms-main
@@ -9495,6 +9739,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: perl-term-ansicolor-main
 spec:
   application: rpms-main
@@ -9533,6 +9778,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: perl-term-cap-main
 spec:
   application: rpms-main
@@ -9571,6 +9817,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: perl-text-parsewords-main
 spec:
   application: rpms-main
@@ -9609,6 +9856,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: perl-text-tabs-wrap-main
 spec:
   application: rpms-main
@@ -9647,6 +9895,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: perl-time-hires-main
 spec:
   application: rpms-main
@@ -9685,6 +9934,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: perl-time-local-main
 spec:
   application: rpms-main
@@ -9723,6 +9973,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: perl-uri-main
 spec:
   application: rpms-main
@@ -9763,6 +10014,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: perl-constant-main
 spec:
   application: rpms-main
@@ -9803,6 +10055,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: perl-libnet-main
 spec:
   application: rpms-main
@@ -9841,6 +10094,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: perl-parent-main
 spec:
   application: rpms-main
@@ -9879,6 +10133,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: perl-podlators-main
 spec:
   application: rpms-main
@@ -9917,6 +10172,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: perl-srpm-macros-main
 spec:
   application: rpms-main
@@ -9955,6 +10211,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: php-main
 spec:
   application: rpms-main
@@ -9997,6 +10254,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: php-pecl-zip-main
 spec:
   application: rpms-main
@@ -10037,6 +10295,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: pkgconf-main
 spec:
   application: rpms-main
@@ -10079,6 +10338,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: policycoreutils-main
 spec:
   application: rpms-main
@@ -10117,6 +10377,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: popt-main
 spec:
   application: rpms-main
@@ -10155,6 +10416,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: postgresql18-main
 spec:
   application: rpms-main
@@ -10201,6 +10463,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: psmisc-main
 spec:
   application: rpms-main
@@ -10241,6 +10504,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: publicsuffix-list-main
 spec:
   application: rpms-main
@@ -10283,6 +10547,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: pyproject-rpm-macros-main
 spec:
   application: rpms-main
@@ -10321,6 +10586,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: pytest-main
 spec:
   application: rpms-main
@@ -10363,6 +10629,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: python-attrs-main
 spec:
   application: rpms-main
@@ -10405,6 +10672,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: python-certifi-main
 spec:
   application: rpms-main
@@ -10443,6 +10711,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: python-charset-normalizer-main
 spec:
   application: rpms-main
@@ -10493,6 +10762,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: python-gitlab-main
 spec:
   application: rpms-main
@@ -10533,6 +10803,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: python-idna-main
 spec:
   application: rpms-main
@@ -10573,6 +10844,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: python-iniconfig-main
 spec:
   application: rpms-main
@@ -10613,6 +10885,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: python-jinja2-main
 spec:
   application: rpms-main
@@ -10651,6 +10924,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: python-jinja2-cli-main
 spec:
   application: rpms-main
@@ -10689,6 +10963,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: python-jsonschema-main
 spec:
   application: rpms-main
@@ -10727,6 +11002,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: python-jsonschema-specifications-main
 spec:
   application: rpms-main
@@ -10767,6 +11043,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: python-markupsafe-main
 spec:
   application: rpms-main
@@ -10807,6 +11084,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: python-mypy-extensions-main
 spec:
   application: rpms-main
@@ -10845,6 +11123,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: python-packaging-main
 spec:
   application: rpms-main
@@ -10883,6 +11162,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: python-pathspec-main
 spec:
   application: rpms-main
@@ -10923,6 +11203,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: python-pip-main
 spec:
   application: rpms-main
@@ -10961,6 +11242,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: python-pluggy-main
 spec:
   application: rpms-main
@@ -11001,6 +11283,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: python-productmd-main
 spec:
   application: rpms-main
@@ -11039,6 +11322,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: python-pygments-main
 spec:
   application: rpms-main
@@ -11085,6 +11369,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: python-referencing-main
 spec:
   application: rpms-main
@@ -11123,6 +11408,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: python-requests-main
 spec:
   application: rpms-main
@@ -11161,6 +11447,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: python-requests-toolbelt-main
 spec:
   application: rpms-main
@@ -11199,6 +11486,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: python-rpds-py-main
 spec:
   application: rpms-main
@@ -11241,6 +11529,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: python-rpm-macros-main
 spec:
   application: rpms-main
@@ -11279,6 +11568,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: python-sentry-sdk-main
 spec:
   application: rpms-main
@@ -11335,6 +11625,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: python-types-pyyaml-main
 spec:
   application: rpms-main
@@ -11373,6 +11664,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: python-types-requests-main
 spec:
   application: rpms-main
@@ -11411,6 +11703,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: python-typing-extensions-main
 spec:
   application: rpms-main
@@ -11449,6 +11742,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: python-urllib3-main
 spec:
   application: rpms-main
@@ -11493,6 +11787,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: python3-mypy-main
 spec:
   application: rpms-main
@@ -11531,6 +11826,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: python3-14-main
 spec:
   application: rpms-main
@@ -11573,6 +11869,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: qt5-main
 spec:
   application: rpms-main
@@ -11613,6 +11910,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: qt6-main
 spec:
   application: rpms-main
@@ -11653,6 +11951,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: rdma-core-main
 spec:
   application: rpms-main
@@ -11691,6 +11990,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: readline-main
 spec:
   application: rpms-main
@@ -11729,6 +12029,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: redhat-rpm-config-main
 spec:
   application: rpms-main
@@ -11771,6 +12072,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: rootfiles-main
 spec:
   application: rpms-main
@@ -11809,6 +12111,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: rpm-main
 spec:
   application: rpms-main
@@ -11847,6 +12150,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: ruby-main
 spec:
   application: rpms-main
@@ -11887,6 +12191,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: rubygem-rdoc-main
 spec:
   application: rpms-main
@@ -11925,6 +12230,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: rubypick-main
 spec:
   application: rpms-main
@@ -11963,6 +12269,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: ruff-main
 spec:
   application: rpms-main
@@ -12001,6 +12308,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: rust-main
 spec:
   application: rpms-main
@@ -12039,6 +12347,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: rust-add-determinism-main
 spec:
   application: rpms-main
@@ -12077,6 +12386,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: rust-rpm-sequoia-main
 spec:
   application: rpms-main
@@ -12115,6 +12425,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: sdbus-cpp-main
 spec:
   application: rpms-main
@@ -12153,6 +12464,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: sed-main
 spec:
   application: rpms-main
@@ -12191,6 +12503,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: selinux-policy-main
 spec:
   application: rpms-main
@@ -12229,6 +12542,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: setup-main
 spec:
   application: rpms-main
@@ -12267,6 +12581,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: sgml-common-main
 spec:
   application: rpms-main
@@ -12305,6 +12620,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: shadow-utils-main
 spec:
   application: rpms-main
@@ -12343,6 +12659,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: skopeo-main
 spec:
   application: rpms-main
@@ -12383,6 +12700,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: snappy-main
 spec:
   application: rpms-main
@@ -12423,6 +12741,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: source-highlight-main
 spec:
   application: rpms-main
@@ -12461,6 +12780,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: sqlite-main
 spec:
   application: rpms-main
@@ -12501,6 +12821,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: subversion-main
 spec:
   application: rpms-main
@@ -12539,6 +12860,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: systemd-main
 spec:
   application: rpms-main
@@ -12577,6 +12899,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: systemd-stub-main
 spec:
   application: rpms-main
@@ -12617,6 +12940,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: tar-main
 spec:
   application: rpms-main
@@ -12657,6 +12981,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: tomcat-main
 spec:
   application: rpms-main
@@ -12695,6 +13020,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: tpm2-tss-main
 spec:
   application: rpms-main
@@ -12733,6 +13059,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: tree-sitter-srpm-macros-main
 spec:
   application: rpms-main
@@ -12771,6 +13098,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: ttmkfdir-main
 spec:
   application: rpms-main
@@ -12809,6 +13137,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: tzdata-main
 spec:
   application: rpms-main
@@ -12847,6 +13176,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: unzip-main
 spec:
   application: rpms-main
@@ -12885,6 +13215,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: util-linux-main
 spec:
   application: rpms-main
@@ -12923,6 +13254,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: uuid-main
 spec:
   application: rpms-main
@@ -12961,6 +13293,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: valkey-main
 spec:
   application: rpms-main
@@ -12999,6 +13332,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: which-main
 spec:
   application: rpms-main
@@ -13039,6 +13373,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: xorg-x11-fonts-main
 spec:
   application: rpms-main
@@ -13077,6 +13412,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: xxhash-main
 spec:
   application: rpms-main
@@ -13115,6 +13451,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: xz-main
 spec:
   application: rpms-main
@@ -13153,6 +13490,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: yarnpkg-main
 spec:
   application: rpms-main
@@ -13191,6 +13529,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: yq-main
 spec:
   application: rpms-main
@@ -13229,6 +13568,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: zchunk-main
 spec:
   application: rpms-main
@@ -13267,6 +13607,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: zig-srpm-macros-main
 spec:
   application: rpms-main
@@ -13305,6 +13646,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: zip-main
 spec:
   application: rpms-main
@@ -13343,6 +13685,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: zlib-ng-main
 spec:
   application: rpms-main
@@ -13381,6 +13724,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: zstd-main
 spec:
   application: rpms-main

@@ -8,6 +8,8 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    {# Disable MR comments from integration tests (still shows commit status) -#}
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: {{ rpm.component_name }}
 spec:
   application: {{ application_name }}
