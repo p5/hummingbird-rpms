@@ -1,0 +1,7 @@
+{
+  "branch": "f43",
+  "release": "1",
+  "sha": "db058c1faa937e031b77428d3cdbfad474c7ad60",
+  "source": "https://src.fedoraproject.org/rpms/java-21-openjdk.git",
+  "version": "21.0.8.0.9"
+}
