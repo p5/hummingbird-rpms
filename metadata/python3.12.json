@@ -1,0 +1,7 @@
+{
+  "branch": "f43",
+  "release": "3",
+  "sha": "ddb24d27e2a4e4c97692bd10aa015bc40e6684d0",
+  "source": "https://src.fedoraproject.org/rpms/python3.12.git",
+  "version": "3.12.12"
+}
