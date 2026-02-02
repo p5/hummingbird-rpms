@@ -3,13 +3,12 @@
 
 Summary:        Fedora package repositories
 Name:           fedora-repos
-Version:        44
-Release:        0.1%{?eln:.eln%{eln}}
+Version:        43
+Release:        1.1%{?dist}
 License:        MIT
 URL:            https://fedoraproject.org/
 
 Provides:       fedora-repos(%{version}) = %{release}
-Requires:       system-release(%{version})
 Obsoletes:      fedora-repos < 33-0.7
 Obsoletes:      fedora-repos-modular < 39-0.3
 %if %{rawhide_release} == %{version}
@@ -143,7 +142,6 @@ where client's system will pull OSTree updates.
 %package eln
 Summary:        ELN repo definitions
 Requires:       fedora-gpg-keys >= %{version}-%{release}
-Requires:       system-release(%{version})
 
 %description eln
 This package provides repository files for ELN (Enterprise Linux Next)
@@ -407,8 +405,12 @@ rm -f "$TMPRING"
 
 
 %changelog
-* Mon Aug 11 2025 Samyak Jain <samyak.jn11@gmail.com> - 44-0.1
+* Fri Oct 10 2025 Jens Petersen <petersen@redhat.com> - 43-1
+- Disable updates-testing for F43 final release
+
+* Mon Aug 11 2025 Samyak Jain <samyak.jn11@gmail.com> - 43-0.4
 - Rawhide is now F44
+- Update testing repository for F43 enabled
 
 * Mon Aug 04 2025 Samyak Jain <samyak.jn11@gmail.com> - 43-0.3
 - Add RPM-GPG-KEY-fedora-45-primary
