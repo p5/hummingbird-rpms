@@ -3,8 +3,8 @@
 
 Summary:        Fedora package repositories
 Name:           fedora-repos
-Version:        44
-Release:        0.1%{?eln:.eln%{eln}}
+Version:        43
+Release:        1%{?eln:.eln%{eln}}
 License:        MIT
 URL:            https://fedoraproject.org/
 
@@ -407,8 +407,12 @@ rm -f "$TMPRING"
 
 
 %changelog
-* Mon Aug 11 2025 Samyak Jain <samyak.jn11@gmail.com> - 44-0.1
+* Fri Oct 10 2025 Jens Petersen <petersen@redhat.com> - 43-1
+- Disable updates-testing for F43 final release
+
+* Mon Aug 11 2025 Samyak Jain <samyak.jn11@gmail.com> - 43-0.4
 - Rawhide is now F44
+- Update testing repository for F43 enabled
 
 * Mon Aug 04 2025 Samyak Jain <samyak.jn11@gmail.com> - 43-0.3
 - Add RPM-GPG-KEY-fedora-45-primary
