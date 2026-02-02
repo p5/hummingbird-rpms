@@ -4,12 +4,11 @@
 Summary:        Fedora package repositories
 Name:           fedora-repos
 Version:        43
-Release:        1%{?eln:.eln%{eln}}
+Release:        1.1%{?eln:.eln%{eln}}
 License:        MIT
 URL:            https://fedoraproject.org/
 
 Provides:       fedora-repos(%{version}) = %{release}
-Requires:       system-release(%{version})
 Obsoletes:      fedora-repos < 33-0.7
 Obsoletes:      fedora-repos-modular < 39-0.3
 %if %{rawhide_release} == %{version}
@@ -143,7 +142,6 @@ where client's system will pull OSTree updates.
 %package eln
 Summary:        ELN repo definitions
 Requires:       fedora-gpg-keys >= %{version}-%{release}
-Requires:       system-release(%{version})
 
 %description eln
 This package provides repository files for ELN (Enterprise Linux Next)
