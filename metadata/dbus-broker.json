@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "2",
+  "sha": "fb708e916db7dbee6cfa8186cc79a1bf56b95b8b",
+  "source": "https://src.fedoraproject.org/rpms/dbus-broker.git",
+  "version": "37"
+}
