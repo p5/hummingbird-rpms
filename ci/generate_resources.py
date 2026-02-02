@@ -79,6 +79,26 @@ def build_pac_variables(branch: str, tenant: str, resource_type: str) -> dict:
         }
 
         if imported:
+            # Auto-detect spec file in package directory
+            pkg_dir = ROOT_DIR / "rpms" / dname
+            spec_files = list(pkg_dir.glob("*.spec"))
+            if spec_files:
+                rpm_data["specfile"] = spec_files[0].name
+            else:
+                # Fallback to default naming if no spec file found
+                rpm_data["specfile"] = f"{dname}.spec"
+
+            # Load metadata to get upstream package name from source URL
+            metadata_file = ROOT_DIR / "metadata" / f"{dname}.json"
+            metadata = load_yaml_file(metadata_file)
+            upstream_name = dname  # Default to directory name
+            if metadata and "source" in metadata:
+                # Extract package name from source URL (e.g., https://.../rpms/tomcat.git -> tomcat)
+                upstream_name = Path(metadata["source"]).stem
+
+            # Store upstream package name for use in pipeline
+            rpm_data["package_name"] = upstream_name
+
             # Check for overrides
             pkg_config = package_overrides.get(dname, {})
 

@@ -387,20 +387,28 @@ def is_package_unmodified(package_name: str, metadata: PackageMetadata, upstream
         ).returncode == 0
 
 
-def import_(url: str, branch: str, ref: str | None = None, dry_run: bool = False) -> None:
+def import_(url: str, branch: str, ref: str | None = None, directory: str | None = None,
+            dry_run: bool = False) -> None:
     """Import a new dist-git package."""
     url = expand_url_shortcut(url)
     package_name = Path(url).stem
-    package_dir = ROOT_DIR / 'rpms' / package_name
+
+    # Allow overriding the directory name
+    dir_name = directory if directory else package_name
+    package_dir = ROOT_DIR / 'rpms' / dir_name
 
     if package_dir.exists():
-        sys.exit(f"ERROR: Package {package_name} already exists at rpms/{package_name}/\n"
+        sys.exit(f"ERROR: Package directory rpms/{dir_name}/ already exists\n"
                  f"       Use 'sync' or 'update' command to update existing packages.")
 
-    if ref:
-        logging.info("Importing %s from %s (branch: %s, ref: %s)", package_name, url, branch, ref)
+    if dir_name != package_name:
+        logging.info("Importing %s from %s to rpms/%s/ (branch: %s%s)",
+                     package_name, url, dir_name, branch, f", ref: {ref}" if ref else "")
     else:
-        logging.info("Importing %s from %s (branch: %s)", package_name, url, branch)
+        if ref:
+            logging.info("Importing %s from %s (branch: %s, ref: %s)", package_name, url, branch, ref)
+        else:
+            logging.info("Importing %s from %s (branch: %s)", package_name, url, branch)
 
     logging.info("Cloning from %s...", url)
     if ref:
@@ -449,6 +457,7 @@ def import_(url: str, branch: str, ref: str | None = None, dry_run: bool = False
             logging.warning("No Koji build found for %s, keeping %%autorelease", package_name)
 
     # Save package metadata to import.json
+    # The source URL contains the upstream package name, so we don't need to store it separately
     metadata: PackageMetadata = {
         'source': url,
         'branch': branch,
@@ -456,9 +465,9 @@ def import_(url: str, branch: str, ref: str | None = None, dry_run: bool = False
         'version': version,
         'release': release,
     }
-    save_package_metadata(package_name, metadata)
+    save_package_metadata(dir_name, metadata)
     # Update global imports dict
-    imports[package_name] = metadata
+    imports[dir_name] = metadata
 
     logging.info("Checking prerequisites...")
     check_jinja2_available()
@@ -466,11 +475,11 @@ def import_(url: str, branch: str, ref: str | None = None, dry_run: bool = False
     logging.info("Calling generate_resources.py to update Tekton resources...")
     subprocess.run([sys.executable, ROOT_DIR / 'ci/generate_resources.py', 'all'], check=True)
 
-    logging.info("Successfully imported %s", package_name)
+    logging.info("Successfully imported %s to rpms/%s/", package_name, dir_name)
 
     # Commit the changes
     if not dry_run:
-        run_git('add', '-f', f'rpms/{package_name}', f'metadata/{package_name}.json',
+        run_git('add', '-f', f'rpms/{dir_name}', f'metadata/{dir_name}.json',
                 'konflux-templates', '.tekton', cwd=ROOT_DIR)
         commit_msg = f"Import {package_name}-{version}-{release}\n\nBranch: {branch}\nUpstream: {sha}"
         run_git_commit('-m', commit_msg, cwd=ROOT_DIR)
@@ -486,6 +495,10 @@ def update(package_name: str, skip_build_check: bool = False, sync: bool = False
     assert package_dir.exists()
 
     metadata = imports[package_name]
+
+    # Extract the upstream package name from the source URL (for Koji queries)
+    # This may differ from the directory name
+    upstream_package_name = Path(metadata['source']).stem
 
     # Check latest commit from upstream with ls-remote (fast, no clone needed)
     result = run_git('ls-remote', metadata['source'], metadata['branch'])
@@ -518,7 +531,7 @@ def update(package_name: str, skip_build_check: bool = False, sync: bool = False
         has_autorelease = uses_autorelease(upstream_dir)
         if has_autorelease:
             logging.info("Upstream uses %autorelease, querying Koji for latest release...")
-            koji_build = get_koji_latest_build(package_name, dist_tag)
+            koji_build = get_koji_latest_build(upstream_package_name, dist_tag)
             if koji_build:
                 release = koji_build['release']
                 # Strip dist suffix (e.g., "1.fc42" -> "1")
@@ -526,14 +539,14 @@ def update(package_name: str, skip_build_check: bool = False, sync: bool = False
                 logging.info("Koji latest release: %s", release)
             else:
                 logging.warning("No Koji build found for %s, using spec release: %s",
-                               package_name, release)
+                               upstream_package_name, release)
                 has_autorelease = False  # Don't replace if we couldn't get Koji release
 
         # Check if this version-release was built in Koji; syncing is a human thing,
         # assume they know what they are doing
         if not skip_build_check and not sync:
-            logging.info("Checking Koji for build %s-%s-%s...", package_name, version, release)
-            if not check_koji_build(package_name, version, release, latest_sha, dist_tag, metadata['branch']):
+            logging.info("Checking Koji for build %s-%s-%s...", upstream_package_name, version, release)
+            if not check_koji_build(upstream_package_name, version, release, latest_sha, dist_tag, metadata['branch']):
                 logging.info("Skipping %s: %s-%s not built in Koji", package_name, version, release)
                 return
 
@@ -577,7 +590,7 @@ def update(package_name: str, skip_build_check: bool = False, sync: bool = False
         if not dry_run:
             run_git('add', '-f', f'rpms/{package_name}', f'metadata/{package_name}.json', cwd=ROOT_DIR)
             verb = "Sync" if sync else "Update"
-            commit_msg = f"{verb} {package_name} to {version}-{release}\n\nUpstream: {latest_sha}"
+            commit_msg = f"{verb} {upstream_package_name} to {version}-{release}\n\nUpstream: {latest_sha}"
             run_git_commit('-m', commit_msg, cwd=ROOT_DIR)
 
 
@@ -615,6 +628,9 @@ Examples:
   # Import bash from rawhide (using shortcut)
   %(prog)s import fedora/bash
 
+  # Import tomcat from rawhide into rpms/tomcat10/ directory
+  %(prog)s import --directory tomcat10 fedora/tomcat
+
   # Import glibc from Fedora 42 (using full URL), don't commit the update
   %(prog)s --dry-run import --branch f42 https://src.fedoraproject.org/rpms/glibc.git
 
@@ -637,6 +653,8 @@ Examples:
                                help='Branch to import from (default: rawhide)')
     import_parser.add_argument('--ref',
                                help='Specific commit/tag to import (default: latest on branch)')
+    import_parser.add_argument('--directory',
+                               help='Directory name in rpms/ (default: package name from URL)')
 
     # update command
     update_parser = subparsers.add_parser('update', help='Update packages from upstream if unmodified')
@@ -662,7 +680,7 @@ Examples:
         check_git_config()
 
     if args.command == 'import':
-        import_(args.url, args.branch, args.ref, args.dry_run)
+        import_(args.url, args.branch, args.ref, args.directory, args.dry_run)
     elif args.command == 'update':
         if args.package:
             packages = [args.package]

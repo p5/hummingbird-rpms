@@ -280,7 +280,7 @@ def test_import_existing_package_fails(workdir: Path, upstream_repos: dict[str, 
     )
 
     assert result.returncode == 1
-    assert "ERROR: Package vanilla already exists" in result.stderr
+    assert "ERROR: Package directory rpms/vanilla/ already exists" in result.stderr
 
 
 def test_import_with_ref(workdir: Path, upstream_repos: dict[str, Path]) -> None:

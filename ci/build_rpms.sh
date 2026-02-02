@@ -115,6 +115,21 @@ EOF
     echo "Local RPMs repo configured from: ${local_rpms_dir}"
 fi
 
+# Detect spec file name (there should be exactly one .spec file)
+spec_file=$(find "${RPM_DIR}/${package_name}" -maxdepth 1 -name "*.spec" -type f | head -n1 || true)
+if [[ -z "${spec_file}" ]]; then
+    echo "Error: No .spec file found in rpms/${package_name}/" >&2
+    exit 1
+fi
+spec_file_name=$(basename "${spec_file}")
+
+# Extract upstream package name from spec file name (strip .spec extension)
+# This allows the directory name to differ from the actual package name
+upstream_package_name="${spec_file_name%.spec}"
+if [[ "${upstream_package_name}" != "${package_name}" ]]; then
+    echo "Using upstream package name: ${upstream_package_name} (local directory: ${package_name})"
+fi
+
 # Detect git directory location (handle worktrees)
 if [[ -f "${REPO_ROOT}/.git" ]]; then
     # Git worktree - read the gitdir location (may be relative)
@@ -171,14 +186,14 @@ cp -r /bare .git
 
 echo 'Downloading sources via dist-git-client...'
 # Use --forked-from to tell dist-git-client to use Fedora's lookaside cache
-dist-git-client --forked-from https://src.fedoraproject.org/rpms/${package_name}.git sources
+dist-git-client --forked-from https://src.fedoraproject.org/rpms/${upstream_package_name}.git sources
 
 # Copy all downloaded sources to /sources directory
 echo 'Copying sources to /sources directory...'
 cp -v * /sources/ 2>/dev/null || true
 
 mock -r /config/mock.cfg \
-     --spec '/repo/rpms/${package_name}/${package_name}.spec' \
+     --spec '/repo/rpms/${package_name}/${spec_file_name}' \
      --sources /sources \
      --resultdir /results
 
