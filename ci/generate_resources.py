@@ -96,6 +96,9 @@ def build_pac_variables(branch: str, tenant: str, resource_type: str) -> dict:
                 # Extract package name from source URL (e.g., https://.../rpms/tomcat.git -> tomcat)
                 upstream_name = Path(metadata["source"]).stem
 
+            # Store upstream package name for use in pipeline
+            rpm_data["package_name"] = upstream_name
+
             # Check for overrides
             pkg_config = package_overrides.get(dname, {})
 
@@ -112,9 +115,6 @@ def build_pac_variables(branch: str, tenant: str, resource_type: str) -> dict:
 
             if "forked_from" in pkg_config:
                 rpm_data["forked_from"] = pkg_config["forked_from"]
-            elif metadata and "source" in metadata and upstream_name != dname:
-                # Auto-set forked_from from metadata source if directory name differs
-                rpm_data["forked_from"] = metadata["source"]
 
             # Extra path changes
             extra_paths = []

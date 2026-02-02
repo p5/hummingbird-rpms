@@ -35,7 +35,7 @@ spec:
     - name: ociStorage
       value: quay.io/redhat-user-workloads/{{ tenant }}/{{ rpm.name }}:{{ output_image_tag }}
     - name: package-name
-      value: {{ rpm.dname }}
+      value: {{ rpm.package_name }}
     - name: target-branch
       value: '{{ "{{target_branch}}" }}'
     - name: build-architectures

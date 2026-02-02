@@ -21959,7 +21959,7 @@ spec:
     - name: ociStorage
       value: quay.io/redhat-user-workloads/hummingbird-tenant/tomcat10-main:{{revision}}
     - name: package-name
-      value: tomcat10
+      value: tomcat
     - name: target-branch
       value: '{{target_branch}}'
     - name: build-architectures
@@ -21976,10 +21976,6 @@ spec:
       value: "rpms/tomcat10"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
-    - name: dist-git-client-configdir
-      value: "mock/"
-    - name: forked-from
-      value: "https://src.fedoraproject.org/rpms/tomcat.git"
   pipelineRef:
     resolver: bundles
     params:
