@@ -48,7 +48,7 @@ spec:
         - "{{ platform }}"
 {%- endfor %}
     - name: specfile
-      value: "{{  rpm.dname }}.spec"
+      value: "{{ rpm.specfile }}"
     - name: monorepo-subdir
       value: "rpms/{{ rpm.dname }}"
     - name: mock-config-template-filename-in-sources

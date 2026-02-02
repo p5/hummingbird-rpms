@@ -79,6 +79,15 @@ def build_pac_variables(branch: str, tenant: str, resource_type: str) -> dict:
         }
 
         if imported:
+            # Auto-detect spec file in package directory
+            pkg_dir = ROOT_DIR / "rpms" / dname
+            spec_files = list(pkg_dir.glob("*.spec"))
+            if spec_files:
+                rpm_data["specfile"] = spec_files[0].name
+            else:
+                # Fallback to default naming if no spec file found
+                rpm_data["specfile"] = f"{dname}.spec"
+
             # Check for overrides
             pkg_config = package_overrides.get(dname, {})
 

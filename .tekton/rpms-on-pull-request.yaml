@@ -22955,7 +22955,7 @@ spec:
         - "linux/amd64"
         - "linux/arm64"
     - name: specfile
-      value: "tomcat10.spec"
+      value: "tomcat.spec"
     - name: monorepo-subdir
       value: "rpms/tomcat10"
     - name: mock-config-template-filename-in-sources
