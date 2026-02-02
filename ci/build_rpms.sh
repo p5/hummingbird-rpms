@@ -116,7 +116,7 @@ EOF
 fi
 
 # Detect spec file name (there should be exactly one .spec file)
-spec_file=$(find "${RPM_DIR}/${package_name}" -maxdepth 1 -name "*.spec" -type f | head -n1)
+spec_file=$(find "${RPM_DIR}/${package_name}" -maxdepth 1 -name "*.spec" -type f | head -n1 || true)
 if [[ -z "${spec_file}" ]]; then
     echo "Error: No .spec file found in rpms/${package_name}/" >&2
     exit 1
