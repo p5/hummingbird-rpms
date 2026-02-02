@@ -22963,7 +22963,7 @@ spec:
     - name: dist-git-client-configdir
       value: "mock/"
     - name: forked-from
-      value: "https://src.fedoraproject.org/rpms/tomcat"
+      value: "https://src.fedoraproject.org/rpms/tomcat.git"
   pipelineRef:
     resolver: bundles
     params:

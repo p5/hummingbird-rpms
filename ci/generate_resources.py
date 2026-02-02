@@ -84,12 +84,17 @@ def build_pac_variables(branch: str, tenant: str, resource_type: str) -> dict:
             spec_files = list(pkg_dir.glob("*.spec"))
             if spec_files:
                 rpm_data["specfile"] = spec_files[0].name
-                # Extract upstream package name from spec filename
-                upstream_name = spec_files[0].stem
             else:
                 # Fallback to default naming if no spec file found
                 rpm_data["specfile"] = f"{dname}.spec"
-                upstream_name = dname
+
+            # Load metadata to get upstream package name from source URL
+            metadata_file = ROOT_DIR / "metadata" / f"{dname}.json"
+            metadata = load_yaml_file(metadata_file)
+            upstream_name = dname  # Default to directory name
+            if metadata and "source" in metadata:
+                # Extract package name from source URL (e.g., https://.../rpms/tomcat.git -> tomcat)
+                upstream_name = Path(metadata["source"]).stem
 
             # Check for overrides
             pkg_config = package_overrides.get(dname, {})
@@ -107,9 +112,9 @@ def build_pac_variables(branch: str, tenant: str, resource_type: str) -> dict:
 
             if "forked_from" in pkg_config:
                 rpm_data["forked_from"] = pkg_config["forked_from"]
-            elif upstream_name != dname:
-                # Auto-set forked_from if directory name differs from upstream package name
-                rpm_data["forked_from"] = f"https://src.fedoraproject.org/rpms/{upstream_name}"
+            elif metadata and "source" in metadata and upstream_name != dname:
+                # Auto-set forked_from from metadata source if directory name differs
+                rpm_data["forked_from"] = metadata["source"]
 
             # Extra path changes
             extra_paths = []
