@@ -72,7 +72,7 @@ rpm-install:
     # Mount repo configs and local-repo, run all operations in a single bash script
     "${TEST_ENGINE}" run --rm \
       --cap-add=ALL \
-      -v "$(cd .. && pwd)/repos:/tmp/repos:ro,z" \
+      -v "${CI_REPOS_DIR}:/tmp/repos:ro,z" \
       -v "${build_dir}/local-repo:/tmp/local-repo:ro,z" \
       quay.io/hummingbird-ci/builder:latest-hatchling \
       bash -c '

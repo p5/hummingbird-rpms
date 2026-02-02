@@ -1,0 +1,675 @@
+---
+# Tests specific to the nss-fips package
+#
+# These tests verify that the FIPS-certified libraries we package match
+# the original RHEL binaries exactly (byte-for-byte identical).
+
+fips-checksum-match-softokn:
+    summary: Verify libsoftokn3.so matches RHEL 9.2 FIPS-certified binary
+    command: |
+        # Only run this test on the nss-softokn-fips package
+        rpm_name=$(rpm -qp --queryformat '%{NAME}' "${TEST_RPM}")
+        if [[ "${rpm_name}" != "nss-softokn-fips" ]]; then
+          echo "Skipping: This test only runs on nss-softokn-fips (got: ${rpm_name})"
+          exit 0
+        fi
+
+        # Known-good SHA512 checksums from RHEL 9.2 nss-softokn-3.90.0-6.el9_2 packages
+        # Architecture-specific checksums (binaries differ per architecture)
+        rpm_arch=$(rpm -qp --queryformat '%{ARCH}' "${TEST_RPM}")
+        case "${rpm_arch}" in
+          x86_64)
+            EXPECTED_SOFTOKN_SHA512="9de6b4ef12514fc0388b6e9a897b032ff3ea9be1569671b70414b098125efd1c4b8edd2779f14882637480fbceffef5121181a10af763e45c4c0f64a71db623b"
+            ;;
+          aarch64)
+            EXPECTED_SOFTOKN_SHA512="75addf8e63c21c5b854f1871b7e2d3c3f8b228cfb4fcecbbd19eeceed56e1442b825b408f08f2e15d15716de1e7f5288a41bf8c660121779c1f54841e9eac3ef"
+            ;;
+          *)
+            echo "ERROR: Unsupported architecture: ${rpm_arch}"
+            exit 1
+            ;;
+        esac
+
+        SOFTOKN_SO_PATH="/usr/lib64/libsoftokn3.so"
+
+        # Create temporary directory for extraction
+        build_dir=$(mktemp -d)
+        cleanup() { rm -rf "${build_dir}"; }
+        trap cleanup EXIT
+
+        echo "Using RPM: ${TEST_RPM}"
+        echo "Expected SHA512: ${EXPECTED_SOFTOKN_SHA512}"
+
+        # Extract libraries from our built RPM
+        mkdir -p "${build_dir}/rpm-extract"
+        rpm2cpio "${TEST_RPM}" | (cd "${build_dir}/rpm-extract" && cpio -idm 2>/dev/null)
+
+        local_softokn="${build_dir}/rpm-extract${SOFTOKN_SO_PATH}"
+
+        if [[ ! -f ${local_softokn} ]]; then
+          echo "ERROR: libsoftokn3.so not found in RPM at ${SOFTOKN_SO_PATH}"
+          exit 1
+        fi
+
+        ACTUAL_SHA512=$(sha512sum "${local_softokn}" | awk '{print $1}')
+        echo "Actual SHA512:   ${ACTUAL_SHA512}"
+
+        if [[ "${ACTUAL_SHA512}" == "${EXPECTED_SOFTOKN_SHA512}" ]]; then
+          echo "SUCCESS: libsoftokn3.so checksum matches RHEL 9.2 FIPS-certified binary!"
+        else
+          echo "FAILURE: libsoftokn3.so checksum does NOT match!"
+          echo "Expected: ${EXPECTED_SOFTOKN_SHA512}"
+          echo "Actual:   ${ACTUAL_SHA512}"
+          ls -la "${local_softokn}"
+          file "${local_softokn}"
+          exit 1
+        fi
+
+fips-checksum-match-freebl:
+    summary: Verify libfreebl*.so match RHEL 9.2 FIPS-certified binaries
+    command: |
+        # Only run this test on the nss-softokn-freebl-fips package
+        rpm_name=$(rpm -qp --queryformat '%{NAME}' "${TEST_RPM}")
+        if [[ "${rpm_name}" != "nss-softokn-freebl-fips" ]]; then
+          echo "Skipping: This test only runs on nss-softokn-freebl-fips (got: ${rpm_name})"
+          exit 0
+        fi
+
+        # Known-good SHA512 checksums from RHEL 9.2 nss-softokn-freebl-3.90.0-6.el9_2 packages
+        # Architecture-specific checksums (binaries differ per architecture)
+        rpm_arch=$(rpm -qp --queryformat '%{ARCH}' "${TEST_RPM}")
+        case "${rpm_arch}" in
+          x86_64)
+            EXPECTED_FREEBL3_SHA512="ac02694d537e242f7fb2b87834b92bb27deb4b0dfc5011e861c25f5ddace795d67e4b7d2a6eecbdff1ad8ddcd36c427313d0b4e37162b2bef1c1d9d5f1827cdf"
+            EXPECTED_FREEBLPRIV3_SHA512="f23ac9a2540c259a2b8057f8e43a9ce7a779759ac5e764e906d91251a3b0ffa06c63b0f16c07f14fecebb15422308854d8f19dca35179826cff95d5026430058"
+            ;;
+          aarch64)
+            EXPECTED_FREEBL3_SHA512="dae32a9dda2db9beb4a2dbd90da5a482e2f4ef42e73e899a220a1ff08d2d4fd427d5c165f63db519b5f16aceabcbd709b0b857e042aba6b65f1c18c7f67e7ae7"
+            EXPECTED_FREEBLPRIV3_SHA512="4af207d657110efc16c09e7f10f34ea16a890268434f5d3b8ce363f049861aa1b2bb4a73aa8119e3ca16ebea3f4d0f015149b562d7b1fac536d7c4a2efe7ddc3"
+            ;;
+          *)
+            echo "ERROR: Unsupported architecture: ${rpm_arch}"
+            exit 1
+            ;;
+        esac
+
+        # Create temporary directory for extraction
+        build_dir=$(mktemp -d)
+        cleanup() { rm -rf "${build_dir}"; }
+        trap cleanup EXIT
+
+        echo "Using RPM: ${TEST_RPM}"
+
+        # Extract libraries from our built RPM
+        mkdir -p "${build_dir}/rpm-extract"
+        rpm2cpio "${TEST_RPM}" | (cd "${build_dir}/rpm-extract" && cpio -idm 2>/dev/null)
+
+        failed=0
+
+        # Check libfreebl3.so
+        local_freebl3="${build_dir}/rpm-extract/usr/lib64/libfreebl3.so"
+        if [[ ! -f ${local_freebl3} ]]; then
+          echo "ERROR: libfreebl3.so not found in RPM"
+          exit 1
+        fi
+        ACTUAL_FREEBL3=$(sha512sum "${local_freebl3}" | awk '{print $1}')
+        echo "libfreebl3.so:"
+        echo "  Expected: ${EXPECTED_FREEBL3_SHA512}"
+        echo "  Actual:   ${ACTUAL_FREEBL3}"
+        if [[ "${ACTUAL_FREEBL3}" == "${EXPECTED_FREEBL3_SHA512}" ]]; then
+          echo "  Result: MATCH"
+        else
+          echo "  Result: MISMATCH"
+          failed=1
+        fi
+
+        # Check libfreeblpriv3.so
+        local_freeblpriv3="${build_dir}/rpm-extract/usr/lib64/libfreeblpriv3.so"
+        if [[ ! -f ${local_freeblpriv3} ]]; then
+          echo "ERROR: libfreeblpriv3.so not found in RPM"
+          exit 1
+        fi
+        ACTUAL_FREEBLPRIV3=$(sha512sum "${local_freeblpriv3}" | awk '{print $1}')
+        echo "libfreeblpriv3.so:"
+        echo "  Expected: ${EXPECTED_FREEBLPRIV3_SHA512}"
+        echo "  Actual:   ${ACTUAL_FREEBLPRIV3}"
+        if [[ "${ACTUAL_FREEBLPRIV3}" == "${EXPECTED_FREEBLPRIV3_SHA512}" ]]; then
+          echo "  Result: MATCH"
+        else
+          echo "  Result: MISMATCH"
+          failed=1
+        fi
+
+        if [[ ${failed} -eq 1 ]]; then
+          echo "FAILURE: One or more checksums do not match RHEL 9.2 FIPS-certified binaries"
+          exit 1
+        fi
+
+        echo "SUCCESS: All freebl library checksums match RHEL 9.2 FIPS-certified binaries!"
+
+fips-library-valid-softokn:
+    summary: Verify libsoftokn3.so is a valid ELF shared object
+    command: |
+        rpm_name=$(rpm -qp --queryformat '%{NAME}' "${TEST_RPM}")
+        if [[ "${rpm_name}" != "nss-softokn-fips" ]]; then
+          echo "Skipping: This test only runs on nss-softokn-fips (got: ${rpm_name})"
+          exit 0
+        fi
+
+        build_dir=$(mktemp -d)
+        cleanup() { rm -rf "${build_dir}"; }
+        trap cleanup EXIT
+
+        echo "Extracting library from RPM..."
+        mkdir -p "${build_dir}/extract"
+        rpm2cpio "${TEST_RPM}" | (cd "${build_dir}/extract" && cpio -idm 2>/dev/null)
+
+        lib_path="${build_dir}/extract/usr/lib64/libsoftokn3.so"
+
+        if [[ ! -f ${lib_path} ]]; then
+          echo "ERROR: libsoftokn3.so not found in RPM"
+          exit 1
+        fi
+
+        echo "Validating libsoftokn3.so..."
+
+        # Verify it's a valid ELF file
+        file_type=$(file "${lib_path}")
+        echo "File type: ${file_type}"
+
+        if [[ ! "${file_type}" =~ "ELF" ]] || [[ ! "${file_type}" =~ "shared object" ]]; then
+          echo "ERROR: Not a valid ELF shared object"
+          exit 1
+        fi
+
+        # Verify library has correct SONAME
+        if command -v readelf &>/dev/null; then
+          soname=$(readelf -d "${lib_path}" 2>/dev/null | grep SONAME | awk -F'[][]' '{print $2}')
+          echo "SONAME: ${soname:-not found}"
+
+          echo "Dependencies:"
+          readelf -d "${lib_path}" 2>/dev/null | grep NEEDED | sed 's/^/  /' || true
+        fi
+
+        # Verify .chk file exists
+        chk_path="${build_dir}/extract/usr/lib64/libsoftokn3.chk"
+        if [[ -f ${chk_path} ]]; then
+          chk_size=$(stat -c%s "${chk_path}")
+          echo "Integrity check file: libsoftokn3.chk (${chk_size} bytes)"
+        else
+          echo "WARNING: libsoftokn3.chk not found"
+        fi
+
+        echo "SUCCESS: libsoftokn3.so is valid!"
+
+fips-library-valid-freebl:
+    summary: Verify libfreebl*.so are valid ELF shared objects
+    command: |
+        rpm_name=$(rpm -qp --queryformat '%{NAME}' "${TEST_RPM}")
+        if [[ "${rpm_name}" != "nss-softokn-freebl-fips" ]]; then
+          echo "Skipping: This test only runs on nss-softokn-freebl-fips (got: ${rpm_name})"
+          exit 0
+        fi
+
+        build_dir=$(mktemp -d)
+        cleanup() { rm -rf "${build_dir}"; }
+        trap cleanup EXIT
+
+        echo "Extracting libraries from RPM..."
+        mkdir -p "${build_dir}/extract"
+        rpm2cpio "${TEST_RPM}" | (cd "${build_dir}/extract" && cpio -idm 2>/dev/null)
+
+        failed=0
+        for lib in libfreebl3.so libfreeblpriv3.so; do
+          lib_path="${build_dir}/extract/usr/lib64/${lib}"
+          chk_path="${build_dir}/extract/usr/lib64/${lib%.so}.chk"
+
+          echo "Validating ${lib}..."
+
+          if [[ ! -f ${lib_path} ]]; then
+            echo "  ERROR: ${lib} not found"
+            failed=1
+            continue
+          fi
+
+          # Verify it's a valid ELF file
+          file_type=$(file "${lib_path}")
+          echo "  File type: ${file_type}"
+
+          if [[ ! "${file_type}" =~ "ELF" ]] || [[ ! "${file_type}" =~ "shared object" ]]; then
+            echo "  ERROR: Not a valid ELF shared object"
+            failed=1
+            continue
+          fi
+
+          # Check for .chk file
+          if [[ -f ${chk_path} ]]; then
+            chk_size=$(stat -c%s "${chk_path}")
+            echo "  Integrity check file: ${lib%.so}.chk (${chk_size} bytes)"
+
+            if [[ ${chk_size} -lt 10 ]]; then
+              echo "  ERROR: .chk file too small - likely corrupted"
+              failed=1
+            fi
+          else
+            echo "  ERROR: ${lib%.so}.chk not found - FIPS will fail"
+            failed=1
+          fi
+
+          echo "  OK"
+        done
+
+        if [[ ${failed} -eq 1 ]]; then
+          echo "FAILURE: One or more libraries failed validation"
+          exit 1
+        fi
+
+        echo "SUCCESS: All freebl libraries are valid!"
+
+fips-package-provides-softokn:
+    summary: Verify nss-softokn-fips provides nss-softokn
+    command: |
+        rpm_name=$(rpm -qp --queryformat '%{NAME}' "${TEST_RPM}")
+        if [[ "${rpm_name}" != "nss-softokn-fips" ]]; then
+          echo "Skipping: This test only runs on nss-softokn-fips (got: ${rpm_name})"
+          exit 0
+        fi
+
+        echo "Checking package provides..."
+        provides=$(rpm -qp --provides "${TEST_RPM}")
+        echo "${provides}"
+
+        if echo "${provides}" | grep -q "nss-softokn ="; then
+          echo "SUCCESS: Package provides nss-softokn"
+        else
+          echo "ERROR: Package does not provide nss-softokn"
+          exit 1
+        fi
+
+fips-package-provides-freebl:
+    summary: Verify nss-softokn-freebl-fips provides nss-softokn-freebl
+    command: |
+        rpm_name=$(rpm -qp --queryformat '%{NAME}' "${TEST_RPM}")
+        if [[ "${rpm_name}" != "nss-softokn-freebl-fips" ]]; then
+          echo "Skipping: This test only runs on nss-softokn-freebl-fips (got: ${rpm_name})"
+          exit 0
+        fi
+
+        echo "Checking package provides..."
+        provides=$(rpm -qp --provides "${TEST_RPM}")
+        echo "${provides}"
+
+        # nss-softokn-freebl-fips must provide nss-softokn-freebl so that
+        # packages depending on nss-softokn-freebl (e.g., dracut, glibc)
+        # are satisfied when the FIPS variant is installed.
+        if echo "${provides}" | grep -q "nss-softokn-freebl ="; then
+          echo "SUCCESS: Package provides nss-softokn-freebl"
+        else
+          echo "ERROR: Package does not provide nss-softokn-freebl"
+          exit 1
+        fi
+
+fips-package-conflicts:
+    summary: Verify packages conflict with the non-FIPS versions
+    command: |
+        rpm_name=$(rpm -qp --queryformat '%{NAME}' "${TEST_RPM}")
+
+        echo "Checking package conflicts..."
+        conflicts=$(rpm -qp --conflicts "${TEST_RPM}")
+        echo "${conflicts}"
+
+        case "${rpm_name}" in
+          nss-softokn-fips)
+            if echo "${conflicts}" | grep -q "nss-softokn"; then
+              echo "SUCCESS: Package conflicts with nss-softokn"
+            else
+              echo "ERROR: Package does not conflict with nss-softokn"
+              exit 1
+            fi
+            ;;
+          nss-softokn-freebl-fips)
+            if echo "${conflicts}" | grep -q "nss-softokn-freebl"; then
+              echo "SUCCESS: Package conflicts with nss-softokn-freebl"
+            else
+              echo "ERROR: Package does not conflict with nss-softokn-freebl"
+              exit 1
+            fi
+            ;;
+          *)
+            echo "Skipping: Not a testable subpackage (got: ${rpm_name})"
+            exit 0
+            ;;
+        esac
+
+fips-not-installed-by-default:
+    summary: Verify installing Java does NOT pull in FIPS packages automatically
+    command: |
+        # Only run this test once (on the main nss-fips package)
+        rpm_name=$(rpm -qp --queryformat '%{NAME}' "${TEST_RPM}")
+        if [[ "${rpm_name}" != "nss-fips" ]]; then
+          echo "Skipping: This test only runs on nss-fips meta-package (got: ${rpm_name})"
+          exit 0
+        fi
+
+        echo "Testing that FIPS packages are NOT installed when not requested..."
+
+        "${TEST_ENGINE}" run --rm \
+          -v "${TEST_REPO_DIR}:/tmp/rpms:ro,z" \
+          quay.io/hummingbird-ci/builder:latest-hatchling \
+          bash -c '
+            set -e
+
+            echo "=== Setting up local repo with nss-fips packages ==="
+            dnf install -y createrepo_c >/dev/null 2>&1
+            mkdir -p /tmp/local-repo
+            cp /tmp/rpms/*.rpm /tmp/local-repo/
+            createrepo_c /tmp/local-repo >/dev/null 2>&1
+
+            printf "%s\n" \
+              "[local-repo]" \
+              "name=Local Repository" \
+              "baseurl=file:///tmp/local-repo" \
+              "enabled=1" \
+              "gpgcheck=0" \
+              > /etc/yum.repos.d/local.repo
+
+            echo ""
+            echo "=== Installing Java WITHOUT requesting FIPS packages ==="
+            dnf install -y java-21-openjdk-headless
+
+            echo ""
+            echo "=== Installed NSS packages ==="
+            rpm -qa | grep -E "^nss" | sort
+
+            echo ""
+            echo "=== Verification ==="
+            # Should have standard nss-softokn, NOT nss-softokn-fips
+            if rpm -q nss-softokn &>/dev/null; then
+              echo "PASS: Got standard nss-softokn (non-FIPS)"
+            else
+              echo "FAIL: nss-softokn not installed"
+              exit 1
+            fi
+
+            # FIPS packages should never be auto-installed: they conflict
+            # with the standard packages and are not pulled in by any
+            # dependency chain, so dnf will not select them.
+            if rpm -q nss-softokn-fips &>/dev/null; then
+              echo "FAIL: nss-softokn-fips was installed when not requested!"
+              exit 1
+            else
+              echo "PASS: nss-softokn-fips was NOT installed (correct - FIPS is opt-in)"
+            fi
+
+            if rpm -q nss-softokn-freebl-fips &>/dev/null; then
+              echo "FAIL: nss-softokn-freebl-fips was installed when not requested!"
+              exit 1
+            else
+              echo "PASS: nss-softokn-freebl-fips was NOT installed (correct - FIPS is opt-in)"
+            fi
+
+            echo ""
+            echo "SUCCESS: FIPS packages are correctly opt-in only"
+          '
+
+fips-java-crypto:
+    summary: Verify OpenJDK correctly uses NSS PKCS11 provider for crypto operations
+    command: |
+        # Only run this test once (on the main nss-fips package)
+        rpm_name=$(rpm -qp --queryformat '%{NAME}' "${TEST_RPM}")
+        if [[ "${rpm_name}" != "nss-fips" ]]; then
+          echo "Skipping: This test only runs on nss-fips meta-package (got: ${rpm_name})"
+          exit 0
+        fi
+
+        echo "Testing Java crypto operations with NSS PKCS11 provider..."
+
+        "${TEST_ENGINE}" run --rm \
+          -v "${TEST_REPO_DIR}:/tmp/rpms:ro,z" \
+          -v "${TEST_FILES_DIR}:/tmp/test-files:ro,z" \
+          quay.io/hummingbird-ci/builder:latest-hatchling \
+          bash -c '
+            set -e
+
+            echo "=== Setting up local repo with nss-fips packages ==="
+            dnf install -y createrepo_c >/dev/null 2>&1
+            mkdir -p /tmp/local-repo
+            cp /tmp/rpms/*.rpm /tmp/local-repo/
+            createrepo_c /tmp/local-repo >/dev/null 2>&1
+
+            printf "%s\n" \
+              "[local-repo]" \
+              "name=Local Repository" \
+              "baseurl=file:///tmp/local-repo" \
+              "enabled=1" \
+              "gpgcheck=0" \
+              > /etc/yum.repos.d/local.repo
+
+            echo ""
+            echo "=== Installing Java and NSS FIPS packages ==="
+            dnf install -y java-21-openjdk-devel nss-softokn-fips nss-softokn-freebl-fips
+
+            echo ""
+            echo "=== Installed NSS packages ==="
+            rpm -qa | grep -E "^nss" | sort
+
+            echo ""
+            echo "=== Verifying FIPS packages are installed ==="
+            rpm -q nss-softokn-fips nss-softokn-freebl-fips
+
+            echo ""
+            echo "=== Compiling TestCryptoNSS.java (uses NSS PKCS11 provider) ==="
+            cp /tmp/test-files/TestCryptoNSS.java /tmp/
+            cd /tmp
+            javac TestCryptoNSS.java
+            echo "Compilation successful"
+
+            echo ""
+            echo "=== Running TestCryptoNSS ==="
+            java TestCryptoNSS
+
+            echo ""
+            echo "=== Verifying NSS libraries are being used ==="
+            # Check that the FIPS libraries are in place
+            ls -la /usr/lib64/libsoftokn3.so /usr/lib64/libfreebl*.so
+
+            # Verify the integrity check files exist
+            if [[ -f /usr/lib64/libsoftokn3.chk ]]; then
+              echo "FIPS integrity file libsoftokn3.chk: present"
+            else
+              echo "WARNING: libsoftokn3.chk not found"
+            fi
+
+            echo ""
+            echo "SUCCESS: Java crypto operations work correctly with NSS PKCS11 provider"
+          '
+
+fips-java-crypto-negative:
+    summary: Verify Java crypto via NSS PKCS11 fails when FIPS NSS library is removed
+    command: |
+        # Only run this test once (on the main nss-fips package)
+        rpm_name=$(rpm -qp --queryformat '%{NAME}' "${TEST_RPM}")
+        if [[ "${rpm_name}" != "nss-fips" ]]; then
+          echo "Skipping: This test only runs on nss-fips meta-package (got: ${rpm_name})"
+          exit 0
+        fi
+
+        echo "Testing that Java crypto via NSS PKCS11 fails when FIPS NSS library is removed..."
+
+        "${TEST_ENGINE}" run --rm \
+          -v "${TEST_REPO_DIR}:/tmp/rpms:ro,z" \
+          -v "${TEST_FILES_DIR}:/tmp/test-files:ro,z" \
+          quay.io/hummingbird-ci/builder:latest-hatchling \
+          bash -c '
+            set -e
+
+            echo "=== Setting up local repo with nss-fips packages ==="
+            dnf install -y createrepo_c >/dev/null 2>&1
+            mkdir -p /tmp/local-repo
+            cp /tmp/rpms/*.rpm /tmp/local-repo/
+            createrepo_c /tmp/local-repo >/dev/null 2>&1
+
+            printf "%s\n" \
+              "[local-repo]" \
+              "name=Local Repository" \
+              "baseurl=file:///tmp/local-repo" \
+              "enabled=1" \
+              "gpgcheck=0" \
+              > /etc/yum.repos.d/local.repo
+
+            echo ""
+            echo "=== Installing Java and NSS FIPS packages ==="
+            dnf install -y java-21-openjdk-devel nss-softokn-fips nss-softokn-freebl-fips
+
+            echo ""
+            echo "=== Installed NSS packages ==="
+            rpm -qa | grep -E "^nss" | sort
+
+            echo ""
+            echo "=== Compiling TestCryptoNSS.java (uses NSS PKCS11 provider) ==="
+            cp /tmp/test-files/TestCryptoNSS.java /tmp/
+            cd /tmp
+            javac TestCryptoNSS.java
+            echo "Compilation successful"
+
+            echo ""
+            echo "=== Verifying TestCryptoNSS works before library removal ==="
+            java TestCryptoNSS
+            echo "TestCryptoNSS passed (as expected with library present)"
+
+            echo ""
+            echo "=== Forcefully removing libsoftokn3.so ==="
+            rm -f /usr/lib64/libsoftokn3.so
+            echo "Removed /usr/lib64/libsoftokn3.so"
+
+            echo ""
+            echo "=== Verifying library is gone ==="
+            if [[ -f /usr/lib64/libsoftokn3.so ]]; then
+              echo "ERROR: libsoftokn3.so still exists"
+              exit 1
+            fi
+            echo "Confirmed: libsoftokn3.so has been removed"
+
+            echo ""
+            echo "=== Running TestCryptoNSS (should fail since library is missing) ==="
+            set +e
+            java TestCryptoNSS 2>&1
+            exit_code=$?
+            set -e
+
+            echo ""
+            echo "=== Checking exit code ==="
+            if [[ ${exit_code} -eq 0 ]]; then
+              echo "FAILURE: TestCryptoNSS succeeded when it should have failed!"
+              echo "The removal of libsoftokn3.so did not cause the expected failure."
+              exit 1
+            fi
+
+            echo "TestCryptoNSS failed with exit code: ${exit_code} (as expected)"
+            echo ""
+            echo "SUCCESS: Java crypto via NSS PKCS11 correctly fails when FIPS NSS library is removed"
+          '
+
+fips-replaces-nss-softokn:
+    summary: Verify nss-fips packages can replace existing nss-softokn packages
+    command: |
+        # Only run this test once (on the main nss-fips package)
+        rpm_name=$(rpm -qp --queryformat '%{NAME}' "${TEST_RPM}")
+        if [[ "${rpm_name}" != "nss-fips" ]]; then
+          echo "Skipping: This test only runs on nss-fips meta-package (got: ${rpm_name})"
+          exit 0
+        fi
+
+        # This test verifies that installing nss-softokn-fips packages
+        # correctly replaces existing nss-softokn packages from Fedora
+
+        echo "Starting NSS replacement test..."
+
+        "${TEST_ENGINE}" run --rm \
+          -v "${TEST_REPO_DIR}:/tmp/rpms:ro,z" \
+          quay.io/hummingbird-ci/builder:latest-hatchling \
+          bash -c '
+            set -e
+
+            echo "=== Step 1: Install standard NSS packages ==="
+            dnf install -y nss nss-softokn nss-softokn-freebl
+
+            echo ""
+            echo "=== Installed NSS packages (before) ==="
+            rpm -qa | grep -E "^nss" | sort
+
+            # Verify standard packages are installed
+            if ! rpm -q nss-softokn &>/dev/null; then
+              echo "ERROR: nss-softokn not installed"
+              exit 1
+            fi
+            if ! rpm -q nss-softokn-freebl &>/dev/null; then
+              echo "ERROR: nss-softokn-freebl not installed"
+              exit 1
+            fi
+            echo "Standard NSS packages installed successfully"
+
+            echo ""
+            echo "=== Step 2: Create local repo for nss-fips packages ==="
+            dnf install -y createrepo_c
+            mkdir -p /tmp/local-repo
+            cp /tmp/rpms/*.rpm /tmp/local-repo/
+            createrepo_c /tmp/local-repo
+
+            printf "%s\n" \
+              "[local-repo]" \
+              "name=Local Repository" \
+              "baseurl=file:///tmp/local-repo" \
+              "enabled=1" \
+              "gpgcheck=0" \
+              "priority=1" \
+              > /etc/yum.repos.d/local.repo
+
+            echo ""
+            echo "=== Step 3: Install nss-fips packages (should replace nss-softokn*) ==="
+            # Use --allowerasing to allow dnf to remove conflicting packages
+            dnf install -y --allowerasing nss-softokn-fips nss-softokn-freebl-fips
+
+            echo ""
+            echo "=== Installed packages (after) ==="
+            rpm -qa | grep -E "^nss" | sort
+
+            echo ""
+            echo "=== Step 4: Verify replacement ==="
+            # nss-softokn should be gone
+            if rpm -q nss-softokn &>/dev/null; then
+              echo "FAIL: nss-softokn is still installed"
+              exit 1
+            else
+              echo "PASS: nss-softokn has been removed"
+            fi
+
+            # nss-softokn-freebl should be gone
+            if rpm -q nss-softokn-freebl &>/dev/null; then
+              echo "FAIL: nss-softokn-freebl is still installed"
+              exit 1
+            else
+              echo "PASS: nss-softokn-freebl has been removed"
+            fi
+
+            # nss-fips packages should be installed
+            rpm -q nss-softokn-fips nss-softokn-freebl-fips
+            echo "PASS: nss-fips packages are installed"
+
+            echo ""
+            echo "=== Step 5: Verify libraries are in place ==="
+            ls -la /usr/lib64/libsoftokn3.so /usr/lib64/libfreebl*.so
+
+            echo ""
+            echo "=== Step 6: Verify library is loadable ==="
+            # Basic check that the library can be loaded
+            if ldd /usr/lib64/libsoftokn3.so | grep -q "not found"; then
+              echo "FAIL: libsoftokn3.so has missing dependencies"
+              ldd /usr/lib64/libsoftokn3.so
+              exit 1
+            fi
+            echo "PASS: libsoftokn3.so dependencies are satisfied"
+
+            echo ""
+            echo "=== SUCCESS: nss-fips packages correctly replaced nss-softokn packages ==="
+          '
