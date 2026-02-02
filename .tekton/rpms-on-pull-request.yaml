@@ -22960,6 +22960,10 @@ spec:
       value: "rpms/tomcat10"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
+    - name: dist-git-client-configdir
+      value: "mock/"
+    - name: forked-from
+      value: "https://src.fedoraproject.org/rpms/tomcat"
   pipelineRef:
     resolver: bundles
     params:
