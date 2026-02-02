@@ -21928,6 +21928,8 @@ spec:
 # --- texlive ---
 # PENDING
 # --- tomcat ---
+# PENDING
+# --- tomcat10 ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -21940,13 +21942,13 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "false"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[push]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/tomcat/***]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/tomcat10/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
-    appstudio.openshift.io/component: tomcat-main
+    appstudio.openshift.io/component: tomcat10-main
     pipelines.appstudio.openshift.io/type: build
-  name: tomcat-main-on-push
+  name: tomcat10-main-on-push
   namespace: hummingbird-tenant
 spec:
   params:
@@ -21955,9 +21957,9 @@ spec:
     - name: revision
       value: '{{revision}}'
     - name: ociStorage
-      value: quay.io/redhat-user-workloads/hummingbird-tenant/tomcat-main:{{revision}}
+      value: quay.io/redhat-user-workloads/hummingbird-tenant/tomcat10-main:{{revision}}
     - name: package-name
-      value: tomcat
+      value: tomcat10
     - name: target-branch
       value: '{{target_branch}}'
     - name: build-architectures
@@ -21969,9 +21971,9 @@ spec:
         - "linux/amd64"
         - "linux/arm64"
     - name: specfile
-      value: "tomcat.spec"
+      value: "tomcat10.spec"
     - name: monorepo-subdir
-      value: "rpms/tomcat"
+      value: "rpms/tomcat10"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
   pipelineRef:
@@ -21985,7 +21987,7 @@ spec:
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
         value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:9674b53c53c6e20850ddd257aad199dc2dd9a2a295e65eea5bda9d679341cb9c"
   taskRunTemplate:
-    serviceAccountName: build-pipeline-tomcat-main
+    serviceAccountName: build-pipeline-tomcat10-main
   timeouts:
     pipeline: 4h
     tasks: 4h

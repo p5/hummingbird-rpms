@@ -7243,6 +7243,7 @@ metadata:
     git-provider: gitlab
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
   name: llvm-main
 spec:
   application: rpms-main
@@ -13086,6 +13087,8 @@ spec:
 # --- texlive ---
 # PENDING
 # --- tomcat ---
+# PENDING
+# --- tomcat10 ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -13096,14 +13099,14 @@ metadata:
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
     test.appstudio.openshift.io/comment_strategy: disable_all
-  name: tomcat-main
+  name: tomcat10-main
 spec:
   application: rpms-main
-  componentName: tomcat-main
-  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/tomcat-main
+  componentName: tomcat10-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/tomcat10-main
   source:
     git:
-      context: rpms/tomcat
+      context: rpms/tomcat10
       revision: main
       url: https://gitlab.com/redhat/hummingbird/rpms.git
 ---
@@ -13112,11 +13115,11 @@ kind: ImageRepository
 metadata:
   labels:
     appstudio.redhat.com/application: rpms-main
-    appstudio.redhat.com/component: tomcat-main
-  name: tomcat-main
+    appstudio.redhat.com/component: tomcat10-main
+  name: tomcat10-main
 spec:
   image:
-    name: hummingbird-tenant/tomcat-main
+    name: hummingbird-tenant/tomcat10-main
     visibility: public
   notifications:
   - config:
