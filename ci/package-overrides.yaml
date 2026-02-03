@@ -44,6 +44,10 @@ dotnet10.0:
     - "linux-d320-c4xlarge/arm64"
     - "linux-d320-c4xlarge/amd64"
 
+chunkah:
+  # Use hummingbird lookaside cache (not in Fedora)
+  forked_from: "https://gitlab.com/redhat/hummingbird/rpms"
+
 glibc:
   timeout_hours: 16
   build_platforms:
