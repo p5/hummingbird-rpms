@@ -3,11 +3,11 @@
 # NOTE: To avoid NVR clashes of nspr* packages:
 # - reset %%{nspr_release} to 1, when updating %%{nspr_version}
 # - increment %%{nspr_version}, when updating the NSS part only
-%global baserelease 2
+%global baserelease 1
 %global nss_release %baserelease
 # use "%%global nspr_release %%[%%baserelease+n]" to handle offsets when
 # release number between nss and nspr are different.
-%global nspr_release %[%baserelease+1]
+%global nspr_release %[%baserelease+0]
 # only need to update this as we added new
 # algorithms under nss policy control
 %global crypto_policies_version 20240521
@@ -52,6 +52,7 @@ rpm.define(string.format("nss_archive_version %s",
            string.gsub(rpm.expand("%nss_version"), "(.*)%.0$", "%1")))
 }
 
+# Mozilla messed up the versioning for 3.119.1, it seems to be only this version
 %{lua:
 if rpm.expand("%{nss_version}") == "3.119.1" then
     rpm.define(string.format("nss_archive_version %s",
@@ -152,7 +153,6 @@ Patch66:          nss-3.118-ml-dsa-tls-test.patch
 Patch67:          nss-3.118-ml-dsa-unittests.patch
 
 Patch70:          nss-3.118.1-fix-test-typo.patch
-Patch71:          nss-3.118.1-add-const-qual-for-gcc15.patch
 
 Patch100:         nspr-config-pc.patch
 Patch101:         nspr-gcc-atomics.patch
@@ -288,7 +288,6 @@ License:        MPL-2.0
 URL:            http://www.mozilla.org/projects/nspr/
 Conflicts:      filesystem < 3
 BuildRequires:  gcc
-BuildRequires:  binutils >= 2.45.50-9
 
 %description -n nspr
 NSPR provides platform independence for non-GUI operating system
@@ -1107,19 +1106,8 @@ fi
 
 
 %changelog
-* Fri Jan 16 2026 Fedora Release Engineering <releng@fedoraproject.org> - 3.119.1-2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_44_Mass_Rebuild
-
 * Mon Jan 5 2026 Frantisek Krenzelok <fkrenzel@redhat.com> - 3.119.1-1
 - Update NSS to 3.119.1 with NSPR 4.38.2
-- Fix previous changelog
-
-* Fri Dec 5 2025 Frantisek Krenzelok <fkrenzel@redhat.com> - 3.119.0-1
-- Update NSS to 3.119.0 with NSPR 4.38.2
-
-* Tue Nov 25 2025 Frantisek Krenzelok <fkrenzel@redhat.com> - 3.118.1-3
-- Rebuild for binutils-2.45.50-9.fc44
-  https://bugzilla.redhat.com/show_bug.cgi?id=2415065
 
 * Wed Nov 19 2025 Frantisek Krenzelok <krenzelok.frantisek@gmail.com> - 3.118.1-2
 - Add the rest of the patches for ML-DSA support (not yet in 3.118.1 upstream).
@@ -1135,9 +1123,6 @@ fi
 
 * Mon Aug 25 2025 Frantisek Krenzelok <krenzelok.frantisek@gmail.com> - 3.115.1-1
 - Update NSS to 3.115.1
-
-* Fri Aug 15 2025 Frantisek Krenzelok <krenzelok.frantisek@gmail.com> - 3.115.0-1
-- Update NSS to 3.115.0
 
 * Thu Aug 14 2025 Bojan Smojver <bojan@rexursive.com> - 3.114.0-2
 - Patch for merge test failure (Bob Relyea <rrelyea@redhat.com>)
