@@ -12373,7 +12373,44 @@ spec:
     method: webhook
     title: SBOM-event-to-Bombino
 # --- ruby ---
-# PENDING
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
+  name: ruby-main
+spec:
+  application: rpms-main
+  componentName: ruby-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/ruby-main
+  source:
+    git:
+      context: rpms/ruby
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: ruby-main
+  name: ruby-main
+spec:
+  image:
+    name: hummingbird-tenant/ruby-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
 # --- ruby3.4 ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1

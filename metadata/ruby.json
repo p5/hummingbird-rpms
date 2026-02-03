@@ -1,0 +1,7 @@
+{
+  "branch": "f41",
+  "release": "21",
+  "sha": "5716be76df6996dc455fbd319765aa0546aa80eb",
+  "source": "https://src.fedoraproject.org/rpms/ruby.git",
+  "version": "3.3.10"
+}
