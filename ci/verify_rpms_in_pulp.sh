@@ -16,9 +16,9 @@ set -euo pipefail
 #   ./ci/verify_rpms_in_pulp.sh
 #   BASE_URL=https://example/repo/x86_64 ./ci/verify_rpms_in_pulp.sh
 
-BASE_URL_DEFAULT="https://console.redhat.com/api/pulp-content/public-hummingbird/x86_64/"
+BASE_URL_DEFAULT="https://packages.redhat.com/api/pulp-content/public-hummingbird/x86_64/"
 BASE_URL="${BASE_URL:-${BASE_URL_DEFAULT}}"
-BASE_URL_AARCH64_DEFAULT="https://console.redhat.com/api/pulp-content/public-hummingbird/aarch64/"
+BASE_URL_AARCH64_DEFAULT="https://packages.redhat.com/api/pulp-content/public-hummingbird/aarch64/"
 BASE_URL_AARCH64="${BASE_URL_AARCH64:-${BASE_URL_AARCH64_DEFAULT}}"
 ONLY_FILTER=""
 HB_DEBUG="${HB_DEBUG:-0}"
