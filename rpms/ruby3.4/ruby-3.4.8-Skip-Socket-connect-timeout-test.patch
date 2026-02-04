@@ -1,0 +1,11 @@
+diff -urNp ruby-3.4.8.orig/spec/ruby/library/socket/socket/connect_spec.rb ruby-3.4.8/spec/ruby/library/socket/socket/connect_spec.rb
+--- ruby-3.4.8.orig/spec/ruby/library/socket/socket/connect_spec.rb	2026-02-04 14:32:26.613688893 -0500
++++ ruby-3.4.8/spec/ruby/library/socket/socket/connect_spec.rb	2026-02-04 14:31:42.851319828 -0500
+@@ -56,6 +56,7 @@ describe 'Socket#connect' do
+ 
+   ruby_version_is "3.4" do
+     it "fails with timeout" do
++      skip "unreliable in isolated network environments"
+       # TEST-NET-1 IP address are reserved for documentation and example purposes.
+       address = Socket.pack_sockaddr_in(1, "192.0.2.1")
+ 

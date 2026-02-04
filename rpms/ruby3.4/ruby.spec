@@ -281,6 +281,10 @@ Patch9: ruby-3.3.0-Disable-syntax-suggest-test-case.patch
 # Fix the tests using SHA-1 Probabilistic Signature Scheme (PSS) parameters.
 # https://github.com/ruby/openssl/pull/879
 Patch10: ruby-3.4.2-openssl-Fix-SHA-1-PSS-tests.patch
+# Skip Socket#connect timeout test in isolated CI environments.
+# The test expects IO::TimeoutError but gets Errno::ENETUNREACH when network
+# is unreachable.
+Patch11: ruby-3.4.8-Skip-Socket-connect-timeout-test.patch
 
 Requires: %{name}-libs%{?_isa} = %{version}-%{release}
 %{?with_rubypick:Suggests: rubypick}
@@ -775,6 +779,7 @@ analysis result in RBS format, a standard type description format for Ruby
 %patch 6 -p1
 %patch 9 -p1
 %patch 10 -p1
+%patch 11 -p1
 
 # Provide an example of usage of the tapset:
 cp -a %{SOURCE3} .
