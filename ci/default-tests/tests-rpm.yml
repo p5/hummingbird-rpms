@@ -117,6 +117,48 @@ rpm-install:
         fi
 
         echo "Verified: '"${rpm_name}"' installed from local-repo"
+
+        # Verify ELF binaries contain the Hummingbird CPE string
+        CPE_STRING="cpe:/a:redhat:hummingbird:1"
+
+        # Install tools needed for CPE check (after package validation)
+        if ! dnf ${DNF_FLAGS} install binutils file >/dev/null 2>&1; then
+          echo "ERROR: Failed to install binutils and file packages needed for CPE check"
+          exit 1
+        fi
+
+        # Get list of files installed by the package and find ELF binaries
+        mapfile -t elf_files < <(rpm --root="${NEWROOT}" -ql '"${rpm_name}"' | \
+          sed "s|^|${NEWROOT}|" | \
+          xargs -r file 2>/dev/null | \
+          grep -E ": +ELF " | \
+          cut -d: -f1)
+
+        if [ ${#elf_files[@]} -eq 0 ]; then
+          echo "No ELF binaries found in package - skipping CPE check"
+        else
+          echo "Checking ${#elf_files[@]} ELF binary/binaries for CPE string: ${CPE_STRING}"
+
+          failed_files=()
+          for elf_file in "${elf_files[@]}"; do
+            if ! readelf -p .note.package "${elf_file}" 2>/dev/null | grep -qF "${CPE_STRING}"; then
+              # Get path relative to NEWROOT for cleaner output
+              rel_path="${elf_file#${NEWROOT}}"
+              failed_files+=("${rel_path}")
+            fi
+          done
+
+          if [ ${#failed_files[@]} -gt 0 ]; then
+            echo "The following ELF binaries do not contain ${CPE_STRING} in their .note.package section:"
+            for f in "${failed_files[@]}"; do
+              echo "  - ${f}"
+            done
+            echo "ERROR: Found ${#failed_files[@]} ELF binary/binaries without CPE string in .note.package header"
+            exit 1
+          fi
+
+          echo "All ${#elf_files[@]} ELF binary/binaries contain the correct CPE string"
+        fi
       '
 
 # Source RPM tests (only run when --src-rpm is provided)
