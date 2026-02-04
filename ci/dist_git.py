@@ -100,7 +100,7 @@ def rename_spec_validate(original_name: str, original_dir: Path) -> str:
     """
 
     spec_file = original_dir / f"{original_name}.spec"
-    current_spec = Specfile(str(spec_file))
+    current_spec = Specfile(str(spec_file), sourcedir=original_dir)
     new_name = current_spec.name
 
     spec_file_git_path = f'rpms/{original_name}/{original_name}.spec'
@@ -109,10 +109,17 @@ def rename_spec_validate(original_name: str, original_dir: Path) -> str:
     if git_result.returncode != 0:
         sys.exit(f"ERROR: Could not retrieve original spec file from git: {spec_file_git_path}")
 
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.spec', delete=True) as tmp_file:
-        tmp_file.write(git_result.stdout)
-        tmp_file.flush()  # Ensure content is written to disk
-        original_spec = Specfile(tmp_file.name)
+    # Use a temp directory so we can copy source files needed by %load directives
+    with tempfile.TemporaryDirectory() as tmpdir:
+        tmp_spec = Path(tmpdir) / f"{original_name}.spec"
+        tmp_spec.write_text(git_result.stdout)
+
+        # Copy all non-spec source files to temp dir (for %load macros.* etc.)
+        for src_file in original_dir.iterdir():
+            if src_file.is_file() and src_file.suffix != '.spec':
+                shutil.copy(src_file, tmpdir)
+
+        original_spec = Specfile(str(tmp_spec), sourcedir=Path(tmpdir))
         original_spec_name = original_spec.name
 
     if original_spec_name == new_name:
