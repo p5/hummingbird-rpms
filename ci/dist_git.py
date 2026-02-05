@@ -265,34 +265,29 @@ def get_koji_server() -> xmlrpc.client.ServerProxy:
                                       allow_none=True)
 
 
-class KojiLatestBuild(TypedDict, total=False):
-    """Result from Koji listTagged() API."""
-    nvr: str
+class MdapiPackageInfo(TypedDict, total=False):
+    """Result from MDAPI srcpkg endpoint."""
     version: str
     release: str
 
 
-def get_koji_latest_build(package_name: str, dist_tag: str) -> KojiLatestBuild | None:
-    """Get the latest build for a package from Koji.
+def get_mdapi_latest_build(package_name: str, branch: str) -> MdapiPackageInfo | None:
+    """Get the latest build for a package from MDAPI.
 
-    Uses listTagged to find the latest build in the given tag.
+    Queries the Fedora MDAPI (MetaSource) for package metadata.
     Returns None if no build found.
     """
-    server = get_koji_server()
+    url = f'https://mdapi.fedoraproject.org/{branch}/srcpkg/{package_name}'
 
-    # listTagged signature: (tag, event, inherit, prefix, latest, package, ...)
-    builds = cast(list[KojiLatestBuild], server.listTagged(dist_tag, None, False, None, True, package_name))
-
-    if not builds:
-        # Try previous Fedora release as fallback
-        previous_release = get_previous_fedora_release(dist_tag)
-        if previous_release:
-            logging.info("No builds found in %s, trying %s", dist_tag, previous_release)
-            builds = cast(list[KojiLatestBuild], server.listTagged(previous_release, None, False, None, True, package_name))
-
-    if builds:
-        return builds[0]
-    return None
+    try:
+        output = subprocess.check_output(
+            ['curl', '--silent', '--show-error', '--fail', '--retry', '3', '--max-time', '30', url],
+            text=True
+        )
+        data = json.loads(output)
+        return cast(MdapiPackageInfo, {'version': data['version'], 'release': data['release']})
+    except subprocess.CalledProcessError:
+        return None
 
 
 def check_koji_build(package_name: str, version: str, release: str, expected_commit: str,
@@ -429,16 +424,15 @@ def import_(url: str, branch: str, ref: str | None = None, directory: str | None
     # We can't have sub .git directories in our repo
     shutil.rmtree(package_dir / '.git')
 
-    # Check if spec uses %autorelease - if so, query Koji for actual release
+    # Check if spec uses %autorelease - if so, query MDAPI for actual release
     if uses_autorelease(package_dir):
-        logging.info("Upstream uses %autorelease, querying Koji for latest release...")
-        dist_tag = get_dist_tag(branch)
-        koji_build = get_koji_latest_build(package_name, dist_tag)
-        if koji_build:
-            release = koji_build['release']
+        logging.info("Upstream uses %%autorelease, querying MDAPI for latest release...")
+        mdapi_build = get_mdapi_latest_build(package_name, branch)
+        if mdapi_build:
+            release = mdapi_build['release']
             # Strip dist suffix (e.g., "1.fc42" -> "1")
             release = re.sub(r'\.(fc|el)\d+$', '', release)
-            logging.info("Koji latest release: %s", release)
+            logging.info("MDAPI latest release: %s", release)
 
             # Replace %autorelease in spec file with actual release value
             spec_files = list(package_dir.glob('*.spec'))
@@ -454,7 +448,7 @@ def import_(url: str, branch: str, ref: str | None = None, directory: str | None
                 spec_file.write_text(new_content)
                 logging.info("Replaced %%autorelease with %s%%{?dist} in %s", release, spec_file.name)
         else:
-            logging.warning("No Koji build found for %s, keeping %%autorelease", package_name)
+            logging.warning("No MDAPI build found for %s, keeping %%autorelease", package_name)
 
     # Save package metadata to import.json
     # The source URL contains the upstream package name, so we don't need to store it separately
@@ -527,20 +521,20 @@ def update(package_name: str, skip_build_check: bool = False, sync: bool = False
 
         dist_tag = get_dist_tag(metadata['branch'])
 
-        # Check if upstream uses %autorelease - if so, query Koji for actual release
+        # Check if upstream uses %autorelease - if so, query MDAPI for actual release
         has_autorelease = uses_autorelease(upstream_dir)
         if has_autorelease:
-            logging.info("Upstream uses %autorelease, querying Koji for latest release...")
-            koji_build = get_koji_latest_build(upstream_package_name, dist_tag)
-            if koji_build:
-                release = koji_build['release']
+            logging.info("Upstream uses %%autorelease, querying MDAPI for latest release...")
+            mdapi_build = get_mdapi_latest_build(package_name, metadata['branch'])
+            if mdapi_build:
+                release = mdapi_build['release']
                 # Strip dist suffix (e.g., "1.fc42" -> "1")
                 release = re.sub(r'\.(fc|el)\d+$', '', release)
-                logging.info("Koji latest release: %s", release)
+                logging.info("MDAPI latest release: %s", release)
             else:
-                logging.warning("No Koji build found for %s, using spec release: %s",
+                logging.warning("No MDAPI build found for %s, using spec release: %s",
                                upstream_package_name, release)
-                has_autorelease = False  # Don't replace if we couldn't get Koji release
+                has_autorelease = False  # Don't replace if we couldn't get MDAPI release
 
         # Check if this version-release was built in Koji; syncing is a human thing,
         # assume they know what they are doing
@@ -562,7 +556,7 @@ def update(package_name: str, skip_build_check: bool = False, sync: bool = False
         shutil.rmtree(upstream_dir / '.git')
         shutil.copytree(upstream_dir, package_dir)
 
-        # Replace %autorelease with actual release value from Koji
+        # Replace %autorelease with actual release value from MDAPI
         if has_autorelease:
             spec_files = list(package_dir.glob('*.spec'))
             if spec_files:
