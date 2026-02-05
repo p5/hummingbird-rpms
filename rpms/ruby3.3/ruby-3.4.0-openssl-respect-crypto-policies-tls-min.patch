@@ -1,0 +1,47 @@
+From ae215a47ae1a6527bb7b8566e5bcc9430652462f Mon Sep 17 00:00:00 2001
+From: Ewoud Kohl van Wijngaarden <ewoud@kohlvanwijngaarden.nl>
+Date: Fri, 5 Jan 2024 15:58:59 +0100
+Subject: [PATCH] Only set min_version on OpenSSL < 1.1.0
+
+Both Red Hat and Debian-like systems configure the minimum TLS version
+to be 1.2 by default, but allow users to change this via configs.
+
+On Red Hat and derivatives this happens via crypto-policies[1], which in
+writes settings in /etc/crypto-policies/back-ends/opensslcnf.config.
+Most notably, it sets TLS.MinProtocol there. For Debian there's
+MinProtocol in /etc/ssl/openssl.cnf. Both default to TLSv1.2, which is
+considered a secure default.
+
+In constrast, the SSLContext has a hard coded OpenSSL::SSL::TLS1_VERSION
+for min_version. TLS 1.0 and 1.1 are considered insecure. By always
+setting this in the default parameters, the system wide default can't be
+respected, even if a developer wants to.
+
+This takes the approach that's also done for ciphers: it's only set for
+OpenSSL < 1.1.0.
+
+[1]: https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/security_hardening/using-the-system-wide-cryptographic-policies_security-hardening
+---
+ lib/openssl/ssl.rb | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/ext/openssl/lib/openssl/ssl.rb b/ext/openssl/lib/openssl/ssl.rb
+index e557b8b48..83ecacafb 100644
+--- a/ext/openssl/lib/openssl/ssl.rb
++++ b/ext/openssl/lib/openssl/ssl.rb
+@@ -22,7 +22,6 @@ module OpenSSL
+   module SSL
+     class SSLContext
+       DEFAULT_PARAMS = { # :nodoc:
+-        :min_version => OpenSSL::SSL::TLS1_VERSION,
+         :verify_mode => OpenSSL::SSL::VERIFY_PEER,
+         :verify_hostname => true,
+         :options => -> {
+@@ -55,6 +54,7 @@ class SSLContext
+       if !(OpenSSL::OPENSSL_VERSION.start_with?("OpenSSL") &&
+            OpenSSL::OPENSSL_VERSION_NUMBER >= 0x10100000)
+         DEFAULT_PARAMS.merge!(
++          min_version: OpenSSL::SSL::TLS1_VERSION,
+           ciphers: %w{
+             ECDHE-ECDSA-AES128-GCM-SHA256
+             ECDHE-RSA-AES128-GCM-SHA256
