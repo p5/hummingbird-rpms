@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "2",
+  "sha": "1dd5dffaf2b5eca21e8e4ebde4ef056799838111",
+  "source": "https://src.fedoraproject.org/rpms/emacs-filesystem.git",
+  "version": "30.2"
+}
