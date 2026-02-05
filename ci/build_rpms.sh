@@ -130,6 +130,27 @@ if [[ "${upstream_package_name}" != "${package_name}" ]]; then
     echo "Using upstream package name: ${upstream_package_name} (local directory: ${package_name})"
 fi
 
+# Check for forked_from override in package-overrides.yaml
+forked_from=""
+overrides_file="${SCRIPT_DIR}/package-overrides.yaml"
+if [[ -f "${overrides_file}" ]]; then
+    # Extract forked_from value for this package using grep/sed (avoids yq dependency)
+    # Look for package_name: followed by forked_from: on subsequent indented lines
+    forked_from=$(awk -v pkg="${package_name}:" '
+        $0 ~ "^"pkg"$" { in_pkg=1; next }
+        in_pkg && /^[^ ]/ { in_pkg=0 }
+        in_pkg && /forked_from:/ { gsub(/.*forked_from:[[:space:]]*["'\'']?/, ""); gsub(/["'\'']?[[:space:]]*$/, ""); print; exit }
+    ' "${overrides_file}")
+fi
+
+# Determine the upstream repo URL for dist-git-client
+if [[ -n "${forked_from}" ]]; then
+    upstream_repo_url="${forked_from}/${upstream_package_name}.git"
+    echo "Using custom lookaside cache: ${forked_from}"
+else
+    upstream_repo_url="https://src.fedoraproject.org/rpms/${upstream_package_name}.git"
+fi
+
 # Detect git directory location (handle worktrees)
 if [[ -f "${REPO_ROOT}/.git" ]]; then
     # Git worktree - read the gitdir location (may be relative)
@@ -168,6 +189,11 @@ bash -euo pipefail -c "
 # Configure curl's header until https://github.com/release-engineering/dist-git/issues/88 is fixed
 echo 'header = \"Accept-Encoding: identity\"' > /tmp/.curlrc
 
+# Set up dist-git-client config directory with custom lookaside cache configuration
+mkdir -p /tmp/dist-git-client-config
+cp /repo/mock/dist-git-client.ini /tmp/dist-git-client-config/
+export CONFIG_DIR=/tmp/dist-git-client-config
+
 # Create repo from local RPMs if mounted
 if [[ -d /local-rpms-src ]]; then
     echo 'Creating repository from local RPMs...'
@@ -185,8 +211,8 @@ pushd /tmp/package
 cp -r /bare .git
 
 echo 'Downloading sources via dist-git-client...'
-# Use --forked-from to tell dist-git-client to use Fedora's lookaside cache
-dist-git-client --forked-from https://src.fedoraproject.org/rpms/${upstream_package_name}.git sources
+# Use --forked-from to tell dist-git-client which lookaside cache to use
+dist-git-client --configdir \${CONFIG_DIR} --forked-from ${upstream_repo_url} sources
 
 # Copy all downloaded sources to /sources directory
 echo 'Copying sources to /sources directory...'
