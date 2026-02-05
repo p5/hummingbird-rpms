@@ -6,13 +6,20 @@
 %global ruby_version %{major_minor_version}.%{teeny_version}
 %global ruby_release %{ruby_version}
 
+# Determine if this should be the default Ruby version for this Fedora/RHEL release
+# The default version will own /usr/bin/ruby
+%global ruby_pkg_major %{major_version}%{minor_version}
+%if 0%{?fedora} >= 43 || 0%{?rhel} >= 11
+%global ruby_default %{ruby_pkg_major}
+%endif
+
 # Specify the named version. It has precedense to revision.
 %dnl %global milestone preview2
 
 # Keep the revision enabled for pre-releases from GIT.
 %dnl %global revision d428d086c2
 
-%global ruby_archive %{name}-%{ruby_version}
+%global ruby_archive ruby-%{ruby_version}
 
 # If revision and milestone are removed/commented out, the official release build is expected.
 %if 0%{?milestone:1} != 0
@@ -188,7 +195,7 @@
 %undefine _package_note_flags
 
 Summary: An interpreter of object-oriented scripting language
-Name: ruby
+Name: ruby%{major_version}.%{minor_version}
 Version: %{ruby_version}%{?development_release}
 Release: 30%{?dist}
 # Licenses, which are likely not included in binary RPMs:
@@ -861,7 +868,7 @@ rm -rf %{buildroot}
 
 # Rename ruby/config.h to ruby/config-<arch>.h to avoid file conflicts on
 # multilib systems and install config.h wrapper
-%multilib_fix_c_header --file %{_includedir}/%{name}/config.h
+%multilib_fix_c_header --file %{_includedir}/ruby/config.h
 
 # `ruby` executable is placed in some strange directory for some unknow
 # reasons.
@@ -870,11 +877,19 @@ rm -rf %{buildroot}
 CONFIG_TARGET_DIR=%{buildroot}%{_exec_prefix}/$( \
   %{_vpath_builddir}/miniruby -I%{_vpath_builddir} -rrbconfig -e 'puts RbConfig::CONFIG["config_target"]'
 )
-mv ${CONFIG_TARGET_DIR}/bin/ruby %{buildroot}%{_bindir}
+mv ${CONFIG_TARGET_DIR}/bin/ruby %{buildroot}%{_bindir}/%{name}
 rm -rd ${CONFIG_TARGET_DIR}
 
 # Rename the ruby executable. It is replaced by RubyPick.
 %{?with_rubypick:mv %{buildroot}%{_bindir}/%{name}{,-mri}}
+
+# Handle the default ruby symlink
+# Remove the auto-generated symlink first, then conditionally recreate if this is the default version
+rm -f %{buildroot}%{_bindir}/ruby
+%if 0%{?ruby_default}
+ln -srf %{buildroot}%{_bindir}/%{name}%{?with_rubypick:-mri} \
+        %{buildroot}%{_bindir}/ruby
+%endif
 
 # Version is empty if --with-ruby-version is specified.
 # http://bugs.ruby-lang.org/issues/7807
@@ -1242,6 +1257,9 @@ make -C %{_vpath_builddir} runruby TESTRUN_SCRIPT=" \
 %license GPL
 %license LEGAL
 %{_bindir}/%{name}%{?with_rubypick:-mri}
+%if 0%{?ruby_default}
+%{_bindir}/ruby
+%endif
 %{_mandir}/man1/ruby*
 
 %files devel
@@ -1444,7 +1462,7 @@ make -C %{_vpath_builddir} runruby TESTRUN_SCRIPT=" \
 %dir %{gem_dir}/specifications
 %dir %{gem_dir}/specifications/default
 %dir %{_exec_prefix}/lib*/gems
-%dir %{_exec_prefix}/lib*/gems/ruby
+%dir %{_exec_prefix}/lib*/gems/%{name}
 
 %exclude %{gem_dir}/cache/*
 
