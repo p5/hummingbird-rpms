@@ -1,0 +1,17 @@
+summary: testsuite
+description: ''
+contact: Martin Cermak <mcermak@redhat.com>
+component:
+  - m4
+test: ./runtest.sh
+framework: beakerlib
+require:
+  - m4
+  - gcc
+  - rpm-build
+  - autoconf
+  - automake
+  - gettext
+duration: 3h
+extra-summary: /tools/m4/Regression/testsuite
+extra-task: /tools/m4/Regression/testsuite
