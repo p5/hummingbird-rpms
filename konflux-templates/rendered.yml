@@ -6246,6 +6246,45 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- libjpeg-turbo ---
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
+  name: libjpeg-turbo-main
+spec:
+  application: rpms-main
+  componentName: libjpeg-turbo-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/libjpeg-turbo-main
+  source:
+    git:
+      context: rpms/libjpeg-turbo
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: libjpeg-turbo-main
+  name: libjpeg-turbo-main
+spec:
+  image:
+    name: hummingbird-tenant/libjpeg-turbo-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
 # --- libksba ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
