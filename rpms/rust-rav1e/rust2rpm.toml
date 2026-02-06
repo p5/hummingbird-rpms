@@ -1,0 +1,42 @@
+[package]
+cargo-toml-patch-comments = [
+    """update license expression in crate metadata:
+https://github.com/xiph/rav1e/issues/2181""",
+    "drop references to benchmarks",
+    "drop unused feature for dumping lookahead data and its dependencies",
+    "drop unused features for profiling and tracing and their dependencies",
+    "drop WASM-specific wasm-bindgen dependency and wasm feature",
+    "drop unused, benchmark-only criterion dev-dependency",
+    "drop aom-sys dependency (rust-aom-sys is retired)",
+    "test with dav1d-sys 0.7 instead of libdav1d-sys 0.8 (not packaged)",
+    """compatibility fixes for cargo-c v0.9.26 and newer:
+https://github.com/lu-zero/cargo-c/pull/346
+https://github.com/lu-zero/cargo-c/pull/352""",
+    "allow console 0.16: https://github.com/xiph/rav1e/pull/3436",
+]
+suppress-cdylib-install-fixme = true
+
+[[package.extra-patches]]
+number = 2
+file = "0001-remove-references-to-removed-built-and-profiling-cra.patch"
+
+[requires]
+build = ["cargo-c"]
+
+[features]
+enable = [
+    "channel-api",
+    "unstable",
+    # Test decoding using dav1d as a reference decoder:
+    "decode_test_dav1d",
+]
+
+[scripts]
+build.post = [
+    "%cargo_cbuild -f channel-api,unstable",
+]
+install.post = [
+    "%cargo_cinstall -f channel-api,unstable",
+    "rm -v %{buildroot}%{_libdir}/librav1e.a",
+]
+

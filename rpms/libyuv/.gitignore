@@ -1,0 +1,6 @@
+*.orig
+*.rej
+*~
+/libyuv-*.tar.bz2
+/libyuv-*.tar.xz
+/96bbdb53ed6b5bdf2e940f6068016a78afcc7852.tar.gz

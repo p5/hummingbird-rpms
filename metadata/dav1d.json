@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "3",
+  "sha": "47a6b82879ef92422e7278496859b04e8b78cc86",
+  "source": "https://src.fedoraproject.org/rpms/dav1d.git",
+  "version": "1.5.2"
+}

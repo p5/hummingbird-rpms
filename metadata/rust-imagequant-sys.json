@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "2",
+  "sha": "6b124f1265131fbf61a2b4f0947fe27ccc4b4f77",
+  "source": "https://src.fedoraproject.org/rpms/rust-imagequant-sys.git",
+  "version": "4.1.0"
+}

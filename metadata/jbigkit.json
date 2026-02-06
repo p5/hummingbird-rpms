@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "33",
+  "sha": "9406f51a754ee665021bc4352676c24c205b318d",
+  "source": "https://src.fedoraproject.org/rpms/jbigkit.git",
+  "version": "2.1"
+}

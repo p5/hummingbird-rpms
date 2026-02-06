@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "5",
+  "sha": "3f90cf83bdc7efa35e018477b83e21e42b52adf3",
+  "source": "https://src.fedoraproject.org/rpms/aom.git",
+  "version": "3.13.1"
+}

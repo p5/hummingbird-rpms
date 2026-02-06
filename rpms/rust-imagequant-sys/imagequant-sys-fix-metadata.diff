@@ -1,0 +1,10 @@
+--- imagequant-sys-4.1.0/Cargo.toml	1970-01-01T00:00:01+00:00
++++ imagequant-sys-4.1.0/Cargo.toml	2025-08-18T20:30:34.608653+00:00
+@@ -60,6 +60,7 @@
+ [package.metadata.capi.library]
+ name = "imagequant"
+ version = "0.4.1"
++version_suffix_components = 1
+ 
+ [package.metadata.capi.pkg_config]
+ description = "Convert 24/32-bit images to 8-bit palette with alpha channel."

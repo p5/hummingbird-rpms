@@ -1,0 +1,72 @@
+* Wed Jul 21 2021 Fedora Release Engineering <releng@fedoraproject.org> - 0.9.0-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_35_Mass_Rebuild
+
+* Sun May 23 14:46:02 CEST 2021 Robert-André Mauchin <zebob.m@gmail.com> - 0.9.0-1
+- Update to 0.9.0
+- Close: rhbz#1960939
+
+* Fri Mar  5 13:05:22 CET 2021 Robert-André Mauchin <zebob.m@gmail.com> - 0.8.2-1
+- Update to 0.8.2
+- Close: rhbz#1931257
+
+* Tue Jan 26 2021 Fedora Release Engineering <releng@fedoraproject.org> - 0.8.1-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_34_Mass_Rebuild
+
+* Fri Jan  8 16:48:34 CET 2021 Robert-André Mauchin <zebob.m@gmail.com> - 0.8.1-1
+- Update to 0.8.1
+- Close: rhbz#1912021
+
+* Sat Dec 05 2020 Robert-André Mauchin <zebob.m@gmail.com> - 0.8.0-1
+- Update to 0.8.0
+- Close: rhbz#1849403
+
+* Mon Jul 27 2020 Fedora Release Engineering <releng@fedoraproject.org> - 0.7.1-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_33_Mass_Rebuild
+
+* Tue Jun 30 2020 Robert-André Mauchin <zebob.m@gmail.com> - 0.7.1-1
+- Update to 0.7.1 (#1849403)
+
+* Fri May 22 2020 Igor Raits <ignatenkobrain@fedoraproject.org> - 0.7.0-1
+- Update to 0.7.0
+
+* Tue Jan 28 2020 Fedora Release Engineering <releng@fedoraproject.org> - 0.5.2-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild
+
+* Thu Dec 05 2019 Robert-André Mauchin <zebob.m@gmail.com> - 0.5.2-1
+- Release 0.5.2 (#1779827)
+
+* Tue Nov 19 2019 Robert-André Mauchin <zebob.m@gmail.com> - 0.5.1-1
+- Release 0.5.1 (#1765775, #1771993)
+
+* Fri Oct 11 2019 Robert-André Mauchin <zebob.m@gmail.com> - 0.5.0-1
+- Release 0.5.0 (#1760765)
+
+* Fri Aug 09 2019 Robert-André Mauchin <zebob.m@gmail.com> - 0.4.0-1
+- Release 0.4.0 (#1708919)
+
+* Wed Jul 24 2019 Fedora Release Engineering <releng@fedoraproject.org> - 0.3.0-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_31_Mass_Rebuild
+
+* Mon Apr 29 2019 Robert-André Mauchin <zebob.m@gmail.com> - 0.3.0-1
+- Release 0.3.0 (#1701494)
+
+* Sun Apr 21 2019 Robert-André Mauchin <zebob.m@gmail.com> - 0.2.2-1
+- Release 0.2.2 (#1701494)
+
+* Tue Apr 16 2019 Adam Williamson <awilliam@redhat.com> - 0.2.1-3
+- Rebuild with Meson fix for #1699099
+
+* Tue Mar 26 2019 Igor Gnatenko <ignatenkobrain@fedoraproject.org> - 0.2.1-2
+- Rebuild with -Db_ndebug=true
+
+* Tue Mar 12 2019 Robert-André Mauchin - 0.2.1-1
+- Release 0.2.1
+
+* Tue Mar 05 2019 Robert-André Mauchin - 0.2.0-1
+- Release 0.2.0
+
+* Thu Jan 31 2019 Fedora Release Engineering <releng@fedoraproject.org> - 0.1.0-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
+
+* Tue Dec 11 2018 Robert-André Mauchin <zebob.m@gmail.com> - 0.1.0-1
+- Initial build

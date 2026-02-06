@@ -1,0 +1,6 @@
+---
+rpm-install:
+  known_issues:
+    - pattern: "nothing provides libvmaf = .* needed by vmaf-models"
+      description: "vmaf-models requires libvmaf which is x86_64-only; test runs on non-x86_64"
+      fails: sometimes
