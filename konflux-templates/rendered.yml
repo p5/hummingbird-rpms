@@ -6168,6 +6168,45 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- libimagequant ---
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
+  name: libimagequant-main
+spec:
+  application: rpms-main
+  componentName: libimagequant-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/libimagequant-main
+  source:
+    git:
+      context: rpms/libimagequant
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: libimagequant-main
+  name: libimagequant-main
+spec:
+  image:
+    name: hummingbird-tenant/libimagequant-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
 # --- libipt ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
@@ -12952,6 +12991,45 @@ metadata:
 spec:
   image:
     name: hummingbird-tenant/rust-add-determinism-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
+# --- rust-imagequant-sys ---
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
+  name: rust-imagequant-sys-main
+spec:
+  application: rpms-main
+  componentName: rust-imagequant-sys-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/rust-imagequant-sys-main
+  source:
+    git:
+      context: rpms/rust-imagequant-sys
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: rust-imagequant-sys-main
+  name: rust-imagequant-sys-main
+spec:
+  image:
+    name: hummingbird-tenant/rust-imagequant-sys-main
     visibility: public
   notifications:
   - config:
