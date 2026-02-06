@@ -6,13 +6,20 @@
 %global ruby_version %{major_minor_version}.%{teeny_version}
 %global ruby_release %{ruby_version}
 
+# Determine if this should be the default Ruby version for this Fedora/RHEL release
+# The default version will own /usr/bin/ruby
+%global ruby_pkg_major %{major_version}%{minor_version}
+%if 0%{?fedora} >= 41 && 0%{?fedora} < 42
+%global ruby_default %{ruby_pkg_major}
+%endif
+
 # Specify the named version. It has precedense to revision.
 #%%global milestone rc1
 
 # Keep the revision enabled for pre-releases from GIT.
 #%%global revision ef084cc8f4
 
-%global ruby_archive %{name}-%{ruby_version}
+%global ruby_archive ruby-%{ruby_version}
 
 # If revision and milestone are removed/commented out, the official release build is expected.
 %if 0%{?milestone:1}%{?revision:1} != 0
@@ -171,7 +178,7 @@
 %undefine _package_note_flags
 
 Summary: An interpreter of object-oriented scripting language
-Name: ruby
+Name: ruby%{major_version}.%{minor_version}
 Version: %{ruby_version}%{?development_release}
 Release: 21%{?dist}
 # Licenses, which are likely not included in binary RPMs:
@@ -816,10 +823,20 @@ rm -rf %{buildroot}
 
 # Rename ruby/config.h to ruby/config-<arch>.h to avoid file conflicts on
 # multilib systems and install config.h wrapper
-%multilib_fix_c_header --file %{_includedir}/%{name}/config.h
+%multilib_fix_c_header --file %{_includedir}/ruby/config.h
+
+# Rename the ruby executable to the versioned name
+mv %{buildroot}%{_bindir}/ruby %{buildroot}%{_bindir}/%{name}
 
 # Rename the ruby executable. It is replaced by RubyPick.
 %{?with_rubypick:mv %{buildroot}%{_bindir}/%{name}{,-mri}}
+
+# Handle the default ruby symlink
+# Conditionally create symlink if this is the default version
+%if 0%{?ruby_default}
+ln -srf %{buildroot}%{_bindir}/%{name}%{?with_rubypick:-mri} \
+        %{buildroot}%{_bindir}/ruby
+%endif
 
 # Version is empty if --with-ruby-version is specified.
 # http://bugs.ruby-lang.org/issues/7807
@@ -1208,6 +1225,9 @@ make -C %{_vpath_builddir} runruby TESTRUN_SCRIPT=" \
 %license GPL
 %license LEGAL
 %{_bindir}/%{name}%{?with_rubypick:-mri}
+%if 0%{?ruby_default}
+%{_bindir}/ruby
+%endif
 %{_mandir}/man1/ruby*
 
 %files devel
@@ -1435,7 +1455,7 @@ make -C %{_vpath_builddir} runruby TESTRUN_SCRIPT=" \
 %dir %{gem_dir}/specifications
 %dir %{gem_dir}/specifications/default
 %dir %{_exec_prefix}/lib*/gems
-%dir %{_exec_prefix}/lib*/gems/ruby
+%dir %{_exec_prefix}/lib*/gems/%{name}
 
 %exclude %{gem_dir}/cache/*
 
