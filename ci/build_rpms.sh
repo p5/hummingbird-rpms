@@ -1,38 +1,51 @@
 #! /bin/bash -e
 
-# Build RPMs for a given package using mock in a containerized environment.
-#
-# This script:
-# - Builds the RPM using mock in the upstream RPM Build Pipeline container
-# - Outputs binary RPMs to builds/PACKAGE_NAME/RPMS/
-# - Outputs source RPMs to builds/PACKAGE_NAME/SRPMS/
-#
-# Usage: ./ci/build_rpms.sh [OPTIONS] PACKAGE_NAME
-#   PACKAGE_NAME       - Name of the package directory in rpms/
-#   --arch ARCH        - Target architecture (default: $(uname -m))
-#   --build-dir DIR    - Custom build directory (default: builds/PACKAGE_NAME)
-#   --local-rpms-dir DIR - Directory containing local RPMs to use as an additional
-#                        high-priority repo (useful for testing build compatibility)
-#
-# The built RPMs can be found in: builds/PACKAGE_NAME/RPMS/ and builds/PACKAGE_NAME/SRPMS/
-#
-# Note: This performs a non-hermetic package build in the same container
-# environment as used by Konflux, but is not a drop-in replacement for the
-# full Tekton pipeline.
-#
+# See usage in help text below.
+
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 RPM_DIR=${SCRIPT_DIR}/../rpms
 OUT_DIR=${SCRIPT_DIR}/../builds
 REPO_ROOT=${SCRIPT_DIR}/..
 
+show_help() {
+    cat << 'EOF'
+
+Build RPMs for a given package using mock in a containerized environment.
+
+This script:
+- Builds the RPM using mock in the upstream RPM Build Pipeline container
+- Outputs binary RPMs to builds/PACKAGE_NAME/RPMS/
+- Outputs source RPMs to builds/PACKAGE_NAME/SRPMS/
+
+Usage: ./ci/build_rpms.sh [OPTIONS] PACKAGE_NAME
+  PACKAGE_NAME       - Name of the package directory in rpms/
+  --arch ARCH        - Target architecture (default: $(uname -m))
+  --build-dir DIR    - Custom build directory (default: builds/PACKAGE_NAME)
+  --local-rpms-dir DIR - Directory containing local RPMs to use as an additional
+                       high-priority repo (useful for testing build compatibility)
+  --help, -h         - Show this help message
+
+The built RPMs can be found in: builds/PACKAGE_NAME/RPMS/ and builds/PACKAGE_NAME/SRPMS/
+
+Note: This performs a non-hermetic package build in the same container
+environment as used by Konflux, but is not a drop-in replacement for the
+full Tekton pipeline.
+EOF
+}
+
 image=quay.io/redhat-user-workloads/rpm-build-pipeline-tenant/environment:latest@sha256:56bde7a1040650bc14ee927534426a52d88de30d588048c6a08be7a8758372cb
 arch=$(uname -m)
 build_dir=""
 local_rpms_dir=""
+package_name=""
 
 # Parse arguments
 while [[ $# -gt 0 ]]; do
     case $1 in
+        --help|-h)
+            show_help
+            exit 0
+            ;;
         --arch)
             arch="$2"
             shift 2
@@ -46,13 +59,25 @@ while [[ $# -gt 0 ]]; do
             shift 2
             ;;
         *)
+            if [[ -n "${package_name}" ]]; then
+                echo "Error: Multiple package names provided. Only one package can be built at a time." >&2
+                echo "" >&2
+                show_help
+                exit 1
+            fi
             package_name="$1"
             shift
             ;;
     esac
 done
 
-test -n "${package_name}" || exit 1
+# Validate exactly one package name was provided
+if [[ -z "${package_name}" ]]; then
+    echo "Error: No package name provided" >&2
+    echo "" >&2
+    show_help
+    exit 1
+fi
 
 # Use builds directory as workdir for easier debugging
 if [[ -n "${build_dir}" ]]; then
