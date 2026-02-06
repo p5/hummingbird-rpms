@@ -57,7 +57,6 @@ echo "${COMMITS_AHEAD} commit(s) detected, creating MR..."
 git switch --quiet --force-create "${BRANCH_NAME}"
 
 push_options=(
-    --quiet
     --force-with-lease
     --push-option merge_request.create
     --push-option "merge_request.title=${MR_TITLE}"
@@ -68,6 +67,35 @@ if [[ -n ${AUTO_MERGE}  ]]; then
     push_options+=(--push-option merge_request.merge_when_pipeline_succeeds)
 fi
 
-git push "${push_options[@]}" "${REMOTE:-origin}" "${BRANCH_NAME}"
+# Capture push output to check if MR was created
+echo "Pushing branch with MR creation options..."
+PUSH_OUTPUT=$(git push "${push_options[@]}" "${REMOTE:-origin}" "${BRANCH_NAME}" 2>&1)
+PUSH_EXIT=$?
 
-echo "SUCCESS: Created/updated MR for ${BRANCH_NAME}"
+echo ""
+echo "Git push output:"
+echo "----------------------------------------"
+echo "${PUSH_OUTPUT}"
+echo "----------------------------------------"
+echo ""
+
+if [[ ${PUSH_EXIT} -ne 0 ]]; then
+    echo "ERROR: git push failed" >&2
+    exit 1
+fi
+
+# Check if the output indicates MR was created (look for actual MR URL with number)
+if echo "${PUSH_OUTPUT}" | grep -q "merge_requests/[0-9]"; then
+    MR_URL=$(echo "${PUSH_OUTPUT}" | grep -o "https://[^[:space:]]*merge_requests/[0-9]*" | head -1)
+    echo "SUCCESS: Created MR at ${MR_URL}"
+elif echo "${PUSH_OUTPUT}" | grep -qi "merge.request"; then
+    echo "WARNING: Push options sent but MR may already exist or push options not working" >&2
+    echo "Check manually at:" >&2
+    echo "  https://gitlab.com/redhat/hummingbird/rpms/-/merge_requests?source_branch=${BRANCH_NAME}" >&2
+    exit 1
+else
+    echo "WARNING: Branch pushed but MR was not created" >&2
+    echo "You may need to create the MR manually at:" >&2
+    echo "  https://gitlab.com/redhat/hummingbird/rpms/-/merge_requests/new?merge_request[source_branch]=${BRANCH_NAME}" >&2
+    exit 1
+fi

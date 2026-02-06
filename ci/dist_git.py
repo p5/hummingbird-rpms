@@ -17,6 +17,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import time
 import urllib.parse
 import xmlrpc.client
 from pathlib import Path
@@ -125,8 +126,33 @@ def get_all_imported_packages() -> dict[str, PackageMetadata]:
 
 
 def run_git(*args: str, cwd: Path | str | None = None, check: bool = True) -> subprocess.CompletedProcess[str]:
-    """Run git command and return its stdout/exit code."""
-    return subprocess.run(['git', *args], cwd=cwd, check=check, stdout=subprocess.PIPE, text=True)
+    """Run git command and return its stdout/exit code.
+
+    For network operations (clone, fetch, pull), retries up to 3 times with exponential backoff
+    to handle transient network failures.
+    """
+    # Network operations that should be retried on failure
+    network_ops = {'clone', 'fetch', 'pull'}
+    should_retry = len(args) > 0 and args[0] in network_ops
+
+    max_retries = 3 if should_retry else 1
+    retry_delay = 2  # Initial delay in seconds
+
+    for attempt in range(max_retries):
+        try:
+            return subprocess.run(['git', *args], cwd=cwd, check=check, stdout=subprocess.PIPE, text=True)
+        except subprocess.CalledProcessError as e:
+            if attempt < max_retries - 1:
+                logging.warning("Git %s failed (attempt %d/%d): %s", args[0], attempt + 1, max_retries, e)
+                logging.info("Retrying in %d seconds...", retry_delay)
+                time.sleep(retry_delay)
+                retry_delay *= 2  # Exponential backoff
+            else:
+                # Last attempt failed, re-raise the exception
+                raise
+
+    # This should never be reached since max_retries >= 1 and loop always returns or raises
+    raise RuntimeError("Unexpected: git command loop completed without return or exception")
 
 
 def run_git_commit(*args: str, cwd: Path | str | None = None) -> subprocess.CompletedProcess[str]:
