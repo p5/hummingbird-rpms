@@ -92,7 +92,14 @@ LIBGCRYPT_FORCE_FIPS_MODE=1 make check
 
 %define libpath $RPM_BUILD_ROOT%{gcrylibdir}/%{gcrysoname}.?.?
 
-PROFILE=%{?dist} annocheck --ignore-unknown --verbose --profile=${PROFILE:1} %{libpath}
+# Skip tests that fail with MAYB/FAIL for assembly code (libgcrypt contains hand-written asm)
+# Regression in annobin 13.04: assembly not detected, causing MAYB instead of SKIP
+# Tests affected: notes, pic, gaps, stack-prot, stack-clash, optimization
+# Upstream bug: https://bugzilla.redhat.com/show_bug.cgi?id=2434753
+annocheck --ignore-unknown --verbose --profile=rawhide \
+    --skip-notes --skip-pic --skip-gaps \
+    --skip-stack-prot --skip-stack-clash --skip-optimization \
+    %{libpath}
 
 # Add generation of HMAC checksums of the final stripped binaries 
 %define __spec_install_post \
