@@ -319,7 +319,18 @@ if [[ -f ${package_tests_file} ]]; then
     package_test_data=$(yaml_to_json < "${package_tests_file}")
     # Handle empty/null YAML files (files with only comments)
     if [[ ${package_test_data} != "null" && -n ${package_test_data} ]]; then
-        package_test_data=$(jq --arg dir "${package_dir}" 'to_entries | map(.value.source_dir = $dir) | from_entries' <<< "${package_test_data}")
+        # Only set source_dir for package tests that define their own command.
+        # Tests that only add known_issues (no command) are extending default tests
+        # and should inherit the default test's source_dir to preserve path resolution.
+        package_test_data=$(jq --arg dir "${package_dir}" '
+            to_entries | map(
+                if .value.command then
+                    .value.source_dir = $dir
+                else
+                    .
+                end
+            ) | from_entries
+        ' <<< "${package_test_data}")
         # Merge tests (package-specific tests override default tests with same name)
         test_data=$(jq -s '.[0] * .[1]' <(echo "${test_data}") <(echo "${package_test_data}"))
     else
