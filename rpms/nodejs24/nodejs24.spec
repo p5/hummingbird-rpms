@@ -3,7 +3,7 @@
 %{load:%{_sourcedir}/nodejs.srpm.macros}
 
 # === Versions of any software shipped in the main nodejs tarball
-%nodejs_define_version node 1:24.11.1-%{autorelease} -p
+%nodejs_define_version node 1:24.13.0-%{autorelease} -p
 
 # Special release for sub-packages with their own version string.
 # The complex release string ensures that the subpackage release is always increasing,
@@ -15,44 +15,44 @@
 # expect anything between the markers to be overwritten on any update.
 
 # BEGIN automatic-version-macros  # DO NOT REMOVE THIS LINE!
-# Version from node-v24.11.1/src/node_version.h
+# Version from node-v24.13.0/src/node_version.h
 %global node_soversion 137
 
-# Version from node-v24.11.1/deps/ada/ada.h
+# Version from node-v24.13.0/deps/ada/ada.h
 %nodejs_define_version ada 3.3.0
-# Version from node-v24.11.1/deps/brotli/c/common/version.h
+# Version from node-v24.13.0/deps/brotli/c/common/version.h
 %nodejs_define_version brotli 1.1.0
-# Version from node-v24.11.1/deps/cares/include/ares_version.h
-%nodejs_define_version c_ares 1.34.5
-# Version from node-v24.11.1/deps/histogram/include/hdr/hdr_histogram_version.h
+# Version from node-v24.13.0/deps/cares/include/ares_version.h
+%nodejs_define_version c_ares 1.34.6
+# Version from node-v24.13.0/deps/histogram/include/hdr/hdr_histogram_version.h
 %nodejs_define_version histogram 0.11.9
-# Version from node-v24.11.1/tools/icu/current_ver.dep
+# Version from node-v24.13.0/tools/icu/current_ver.dep
 %nodejs_define_version icu 77.1 -p
-# Version from node-v24.11.1/deps/uv/include/uv/version.h
+# Version from node-v24.13.0/deps/uv/include/uv/version.h
 %nodejs_define_version libuv 1.51.0
-# Version from node-v24.11.1/deps/llhttp/include/llhttp.h
+# Version from node-v24.13.0/deps/llhttp/include/llhttp.h
 %nodejs_define_version llhttp 9.3.0
-# Version from node-v24.11.1/deps/nghttp2/lib/includes/nghttp2/nghttp2ver.h
-%nodejs_define_version nghttp2 1.66.0
-# Version from node-v24.11.1/deps/ngtcp2/nghttp3/lib/includes/nghttp3/version.h
+# Version from node-v24.13.0/deps/nghttp2/lib/includes/nghttp2/nghttp2ver.h
+%nodejs_define_version nghttp2 1.67.1
+# Version from node-v24.13.0/deps/ngtcp2/nghttp3/lib/includes/nghttp3/version.h
 %nodejs_define_version nghttp3 1.6.0
-# Version from node-v24.11.1/deps/ngtcp2/ngtcp2/lib/includes/ngtcp2/version.h
+# Version from node-v24.13.0/deps/ngtcp2/ngtcp2/lib/includes/ngtcp2/version.h
 %nodejs_define_version ngtcp2 1.11.0
-# Version from node-v24.11.1/deps/cjs-module-lexer/src/package.json
+# Version from node-v24.13.0/deps/cjs-module-lexer/src/package.json
 %nodejs_define_version nodejs-cjs-module-lexer 2.1.0
-# Version from node-v24.11.1/lib/punycode.js
+# Version from node-v24.13.0/lib/punycode.js
 %nodejs_define_version nodejs-punycode 2.1.0
-# Version from node-v24.11.1/deps/undici/src/package.json
-%nodejs_define_version nodejs-undici 7.16.0
-# Version from node-v24.11.1/deps/npm/package.json
+# Version from node-v24.13.0/deps/undici/src/package.json
+%nodejs_define_version nodejs-undici 7.18.2
+# Version from node-v24.13.0/deps/npm/package.json
 %nodejs_define_version npm 1:11.6.2-%{nodejs_subpackage_release}
-# Version from node-v24.11.1/deps/sqlite/sqlite3.h
+# Version from node-v24.13.0/deps/sqlite/sqlite3.h
 %nodejs_define_version sqlite 3.50.4
-# Version from node-v24.11.1/deps/uvwasi/include/uvwasi.h
+# Version from node-v24.13.0/deps/uvwasi/include/uvwasi.h
 %nodejs_define_version uvwasi 0.0.23
-# Version from node-v24.11.1/deps/v8/include/v8-version.h
-%nodejs_define_version v8 3:13.6.233.10-%{nodejs_subpackage_release} -p
-# Version from node-v24.11.1/deps/zlib/zlib.h
+# Version from node-v24.13.0/deps/v8/include/v8-version.h
+%nodejs_define_version v8 3:13.6.233.17-%{nodejs_subpackage_release} -p
+# Version from node-v24.13.0/deps/zlib/zlib.h
 %nodejs_define_version zlib 1.3.1
 # END automatic-version-macros  # DO NOT REMOVE THIS LINE!
 
@@ -122,9 +122,11 @@ BuildRequires:  pkgconfig(openssl) >= 3.0.2
 Requires:   ca-certificates
 # Required and/or recommended sub-packages
 Requires:   %{name}-libs%{?_isa}      = %{node_evr}
+Recommends: %{name}-bin               = %{node_evr}
 Recommends: %{name}-docs              = %{node_evr}
 Recommends: %{name}-full-i18n%{?_isa} = %{node_evr}
 Recommends: %{name}-npm              >= %{npm_evr}
+Recommends: %{name}-npm-bin          >= %{npm_evr}
 # Virtual provides
 Provides:   nodejs(abi) = %{node_soversion}, nodejs(abi%{node_version_major}) = %{node_soversion}
 Provides:   nodejs(engine) = %{node_version}
@@ -155,6 +157,7 @@ Source101:      nodejs.srpm.macros
 0001-Remove-unused-OpenSSL-config.patch
 0005-v8-highway-Fix-for-GCC-15-compiler-error-on-PPC8-PPC.patch
 0001-fips-disable-options.patch
+0001-expose-libplatform-symbols-in-shared-libnode.patch
 
 %description
 Node.js is a platform built on Chrome's JavaScript runtime
@@ -238,12 +241,36 @@ Release:        %{npm_release}
 BuildArch:      noarch
 Requires:       nodejs%{node_version_major}         = %{node_evr}
 Recommends:     nodejs%{node_version_major}-docs    = %{node_evr}
+Provides:       npm = %{npm_evr}
 Provides:       npm(npm) = %{npm_version}
 
 %description    npm
 npm is a package manager for node.js. You can use it to install and publish
 your node programs. It manages dependencies and does other cool stuff.
 
+%package        bin
+Summary:        Node.js JavaScript runtime – unversioned symlinks
+Group:          Development/Languages
+BuildArch:      noarch
+Requires:       nodejs%{node_version_major} = %{node_evr}
+Requires:       (nodejs%{node_version_major}-npm-bin if nodejs%{node_version_major}-npm)
+Provides:       alternative-for(nodejs-bin) = %{node_evr}
+Conflicts:      alternative-for(nodejs-bin)
+
+%description    bin
+Binary symlinks for Node.js JavaScript runtime.
+
+%package        npm-bin
+Summary:        Node.js Package Manager – binary symlinks
+Group:          Development/Languages
+BuildArch:      noarch
+Requires:       nodejs%{node_version_major}-npm = %{npm_evr}
+Requires(meta): nodejs%{node_version_major}-bin = %{node_evr}
+Provides:       alternative-for(nodejs-npm-bin) = %{npm_evr}
+Conflicts:      alternative-for(nodejs-npm-bin)
+
+%description    npm-bin
+Binary symlinks for Node.js Package Manager.
 
 %prep
 %autosetup -n node-v%{node_version} -S git_am
@@ -494,15 +521,33 @@ mkdir -p "${VERSIONED_MANDIR}"
 mv    -t "${VERSIONED_MANDIR}" "${RPM_BUILD_ROOT}%{_mandir}"/man?
 # - compress the man-pages manually so that rpm will (re-)create valid symlinks
 # FIXME: This should probably be replaced with ading /usr/share/node-*/man dir to /usr/lib/rpm/brp-compress
-find "${VERSIONED_MANDIR}" -type f -name '*.[123456789]' -execdir %{_man_info_compress} '{}' +
+readonly MAN_INFO_COMPRESS="%{?_man_info_compress}%{!?_man_info_compress:gzip -9 -n}"
+find "${VERSIONED_MANDIR}" -type f -name '*.[123456789]' -execdir ${MAN_INFO_COMPRESS} '{}' +
 # – update npm man symlink
 ln -srfn "${VERSIONED_MANDIR}" "${NPM_DIR}/man"
-# - create symlinks for the versioned binaries
+
+# === stuff related to -bin packages
+# Create versioned man pages symlinks for base package (when no -bins present)
 mkdir -p "${RPM_BUILD_ROOT}%{_mandir}/man1"
 ln -srf  "${VERSIONED_MANDIR}/man1/node.1.gz" "${RPM_BUILD_ROOT}%{_mandir}/man1/node-%{node_version_major}.1.gz"
 ln -srf  "${VERSIONED_MANDIR}/man1/npm.1.gz" "${RPM_BUILD_ROOT}%{_mandir}/man1/npm-%{node_version_major}.1.gz"
 ln -srf  "${VERSIONED_MANDIR}/man1/npx.1.gz" "${RPM_BUILD_ROOT}%{_mandir}/man1/npx-%{node_version_major}.1.gz"
 
+# Create symlinks to the versioned binaries
+pushd '%{buildroot}%{_bindir}'
+for binname in node npm npx; do
+    ln -srfL "${binname}-%{node_version_major}" "${binname}"
+done
+popd
+
+# Create unversioned man page symlinks
+# Iterating through versioned manpages location, creating symlinks in standard location
+
+find "${VERSIONED_MANDIR}" -type d -name 'man[123456789]' -printf "${RPM_BUILD_ROOT}%{_mandir}/%%P\0" | xargs -0 mkdir -p
+# link all the individual manpages
+find "${VERSIONED_MANDIR}" -type f -name '*.[123456789]*' -printf '%%P\n' | while read -r man_stem; do
+    ln -srfL "${VERSIONED_MANDIR}/${man_stem}" "${RPM_BUILD_ROOT}%{_mandir}/${man_stem}"
+done
 
 %check
 # === Common test environment
@@ -548,9 +593,16 @@ bash '%{SOURCE10}' "${RPM_BUILD_ROOT}%{_bindir}/node-%{node_version_major}" test
 %dir        %{nodejs_datadir}/man/man1/
 #%%dir        %%{nodejs_common_sitelib}/
 %dir        %{nodejs_private_sitelib}/
+# Symlink to versioned binary
 %{_bindir}/node-%{node_version_major}
 %{nodejs_datadir}/man/man1/node.1*
+# Versioned man page when -bin is not installed
 %{_mandir}/man1/node-%{node_version_major}.1*
+
+%files      bin
+%license    LICENSE
+%{_bindir}/node
+%{_mandir}/man1/node.1*
 
 %files      libs
 %license    LICENSE
@@ -592,13 +644,26 @@ bash '%{SOURCE10}' "${RPM_BUILD_ROOT}%{_bindir}/node-%{node_version_major}" test
 %license    deps/npm/LICENSE
 %dir        %{nodejs_datadir}/
 %dir        %{nodejs_private_sitelib}/
+# Symlinks to binaries
 %{_bindir}/npm-%{node_version_major}
 %{_bindir}/npx-%{node_version_major}
+# Versioned man pages for case when -bins are not installed
 %{_mandir}/man1/npm-%{node_version_major}.1*
 %{_mandir}/man1/npx-%{node_version_major}.1*
+# No %dir means recursive (own files)
 %{nodejs_datadir}/man
 %{nodejs_private_sitelib}/npm/
 %exclude    %{nodejs_datadir}/man/man1/node*.1*
+
+%files      npm-bin
+%license    deps/npm/LICENSE
+%{_bindir}/npm
+%{_bindir}/npx
+%{_mandir}/
+%exclude %{_mandir}/man1/node.1*
+%exclude %{_mandir}/man1/node-%{node_version_major}.1*
+%exclude %{_mandir}/man1/npm-%{node_version_major}.1*
+%exclude %{_mandir}/man1/npx-%{node_version_major}.1*
 
 %files      docs
 %doc        doc/README.md
