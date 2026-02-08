@@ -1,0 +1,4 @@
+summary: Upstream tests
+component: perl-TermReadKey
+require: perl-TermReadKey-tests
+test: /usr/libexec/perl-TermReadKey/test

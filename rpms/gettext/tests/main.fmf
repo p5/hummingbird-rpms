@@ -1,0 +1,5 @@
+summary: Run gettext test
+test: ./test.sh
+framework: beakerlib
+require:
+  - gettext

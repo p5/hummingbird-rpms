@@ -2523,6 +2523,45 @@ spec:
 # PENDING
 # --- emacs ---
 # PENDING
+# --- emacs-filesystem ---
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
+  name: emacs-filesystem-main
+spec:
+  application: rpms-main
+  componentName: emacs-filesystem-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/emacs-filesystem-main
+  source:
+    git:
+      context: rpms/emacs-filesystem
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: emacs-filesystem-main
+  name: emacs-filesystem-main
+spec:
+  image:
+    name: hummingbird-tenant/emacs-filesystem-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
 # --- execstack ---
 # PENDING
 # --- expat ---
@@ -3289,7 +3328,44 @@ spec:
     method: webhook
     title: SBOM-event-to-Bombino
 # --- gettext ---
-# PENDING
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
+  name: gettext-main
+spec:
+  application: rpms-main
+  componentName: gettext-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/gettext-main
+  source:
+    git:
+      context: rpms/gettext
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: gettext-main
+  name: gettext-main
+spec:
+  image:
+    name: hummingbird-tenant/gettext-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
 # --- gettext-autopoint ---
 # PENDING
 # --- ghc ---
@@ -8016,7 +8092,44 @@ spec:
     method: webhook
     title: SBOM-event-to-Bombino
 # --- m4 ---
-# PENDING
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
+  name: m4-main
+spec:
+  application: rpms-main
+  componentName: m4-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/m4-main
+  source:
+    git:
+      context: rpms/m4
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: m4-main
+  name: m4-main
+spec:
+  image:
+    name: hummingbird-tenant/m4-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
 # --- mailcap ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
@@ -10342,6 +10455,45 @@ metadata:
 spec:
   image:
     name: hummingbird-tenant/perl-term-cap-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
+# --- perl-TermReadKey ---
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
+  name: perl-termreadkey-main
+spec:
+  application: rpms-main
+  componentName: perl-termreadkey-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/perl-termreadkey-main
+  source:
+    git:
+      context: rpms/perl-TermReadKey
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: perl-termreadkey-main
+  name: perl-termreadkey-main
+spec:
+  image:
+    name: hummingbird-tenant/perl-termreadkey-main
     visibility: public
   notifications:
   - config:
