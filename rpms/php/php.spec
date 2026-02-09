@@ -70,7 +70,7 @@
 # use bundled library instead for now
 %bcond_with          liburiparser
 
-%global upver        8.5.2
+%global upver        8.5.3
 %global rcver        RC1
 
 Summary: PHP scripting language for creating dynamic web sites
@@ -80,7 +80,7 @@ Name: php%{major_version}
 Name: php
 %endif
 Version: %{upver}%{?rcver:~%{rcver}}
-Release: 1%{?dist}
+Release: 2%{?dist}
 # All files licensed under PHP version 3.01, except
 # Zend is licensed under Zend
 # TSRM is licensed under BSD
@@ -136,7 +136,6 @@ Patch47: php-8.4.0-phpinfo.patch
 Patch48: php-8.5.0-openssl-ec-param.patch
 
 # Upstream fixes (100+)
-Patch100: upstream.patch
 
 # Security fixes (200+)
 
@@ -854,7 +853,6 @@ in pure PHP.
 %patch -P48 -p1 -b .ec-param
 
 # upstream patches
-%patch -P100 -p1 -b .liburiparser
 
 # security patches
 
@@ -1647,6 +1645,21 @@ systemctl try-restart php-fpm.service >/dev/null 2>&1 || :
 
 
 %changelog
+* Wed Jan 28 2026 Remi Collet <remi@remirepo.net> - 8.5.3~RC1-2
+- Rebuilt for net-snmp 5.9.5.2 FTI #2433757
+
+* Wed Jan 28 2026 Remi Collet <remi@remirepo.net> - 8.5.3~RC1-1
+- update to 8.5.3RC1
+
+* Fri Jan 23 2026 Benjamin A. Beasley <code@musicinmybrain.net> - 8.5.2-3
+- Rebuilt for net-snmp 5.9.5.2
+
+* Sat Jan 17 2026 Fedora Release Engineering <releng@fedoraproject.org> - 8.5.2-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_44_Mass_Rebuild
+
+* Wed Jan 14 2026 Remi Collet <remi@remirepo.net> - 8.5.2-1
+- Update to 8.5.2 - http://www.php.net/releases/8_5_2.php
+
 * Mon Jan  5 2026 Remi Collet <remi@remirepo.net> - 8.5.2~RC1-1
 - update to 8.5.2RC1
 - use system liburiparser
