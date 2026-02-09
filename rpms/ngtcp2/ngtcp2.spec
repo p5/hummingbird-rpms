@@ -2,7 +2,7 @@
 
 Name:           ngtcp2
 Version:        1.19.0
-Release:        %autorelease
+Release:        2%{?dist}
 Summary:        Implementation of RFC 9000 QUIC protocol
 
 License:        MIT
