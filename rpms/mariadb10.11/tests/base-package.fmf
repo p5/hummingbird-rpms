@@ -1,0 +1,18 @@
+summary: centos stream tests for mariadb10.11
+
+environment:
+  BUILD_PACKAGE: mariadb-server
+
+prepare:
+  how: shell
+  script: |
+    dnf install -y $BUILD_PACKAGE
+
+discover:
+  how: fmf
+  url: https://gitlab.com/redhat/centos-stream/tests/mariadb/
+  ref: main
+  filter: tag:base-package
+
+execute:
+  how: tmt

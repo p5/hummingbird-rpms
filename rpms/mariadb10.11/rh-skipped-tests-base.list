@@ -63,5 +63,6 @@ mariabackup.slave_provision_nolock          :
 rpl.rpl_mixed_mixing_engines                :
 rpl.rpl_non_direct_mixed_mixing_engines     :
 
-# fails since 10.11.5 and pcre 10.47
-main.func_regexp_pcre                       :
+# Fails since 10.11.16
+main.chained_ssl_certificates               :
+plugins.mdev38431                           :
