@@ -1,11 +1,11 @@
 %bcond_with bootstrap
 
-%global split_min_version 2.4.8-2
+%global split_min_version 2.4.9-4.fc42.1
 
 Summary: Utility for secure communication and data storage
 Name:    gnupg2
 Version: 2.4.9
-release: 1%{?dist}
+Release: 5%{?dist}
 
 License: CC0-1.0 AND GPL-2.0-or-later AND GPL-3.0-or-later AND LGPL-2.1-or-later AND LGPL-3.0-or-later AND (BSD-3-Clause OR LGPL-3.0-or-later OR GPL-2.0-or-later) AND CC-BY-4.0 AND MIT
 Source0: https://gnupg.org/ftp/gcrypt/%{?pre:alpha/}gnupg/gnupg-%{version}%{?pre}.tar.bz2
@@ -20,6 +20,9 @@ Patch2:  gnupg-2.4.7-file-is-digest.patch
 # Disable brainpool tests as they are not built into our libgcrypt
 # Disable MD160 in FIPS mode (#879047)
 Patch3:  gnupg-2.4.7-fips-algo.patch
+# CVE-2026-24882: Stack-based buffer overflow in tpm2daemon allows arbitrary code execution
+# https://dev.gnupg.org/T8045
+Patch4:  gnupg-2.4.9-tpm2daemon.patch
 
 # Patches from FreePG:
 # https://gitlab.com/freepg/gnupg/-/tree/main/STABLE-BRANCH-2-4-freepg
@@ -217,6 +220,7 @@ package contains the GnuPG Web Key Service client and server.
 %patch 1 -p1 -b .secmem
 %patch 2 -p1 -b .file-is-digest
 %patch 3 -p1 -b .fips
+%patch 4 -p1 -b .tpm2d
 
 %patch 20 -p1 -b .good_revoc
 %patch 21 -p1 -b .prev_known_key
@@ -430,6 +434,18 @@ make -k check
 
 
 %changelog
+* Wed Jan 28 2026 Jakub Jelen <jjelen@redhat.com> - 2.4.9-5
+- Fix CVE-2026-24882: Stack-based buffer overflow in tpm2daemon allows arbitrary code execution
+
+* Wed Jan 21 2026 Jakub Jelen <jjelen@redhat.com> - 2.4.9-4
+- Unbreak Release tag to make rpminspect in gating tests happy
+
+* Wed Jan 21 2026 Jakub Jelen <jjelen@redhat.com> - 2.4.9-3
+- Update split_min_version to provide clean update path from Fedora 42 (#2429875)
+
+* Fri Jan 16 2026 Fedora Release Engineering <releng@fedoraproject.org> - 2.4.9-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_44_Mass_Rebuild
+
 * Thu Jan 01 2026 Clemens Lang <cllang@redhat.com> - 2.4.9-1
 - New upstream release 2.4.9
 - Fixes CVE-2025-68973 (https://gpg.fail/memcpy)
