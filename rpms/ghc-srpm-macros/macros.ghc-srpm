@@ -4,14 +4,12 @@
 # former archs: alpha ppc ppc64 sparcv9 armv5tel armv7hl
 %ghc_arches %{ix86} x86_64 ppc64le aarch64 s390x riscv64
 
-# deprecated - kept for ghc.spec back compatibility
-%ghc_devel_prof prof
-
-# enable profiling libraries in prof subpkgs (deprecated)
+# enable ghc's profiling libraries
 %with_ghc_prof 1
 
+# controls profiling libraries of Haskell library packages
 %ghc_profiling\
-%bcond ghc_prof 1
+%bcond ghc_prof %["%{_arch}" == "x86_64" || "%{_arch}" == "aarch64"]
 
 # -q for quick build
 # -p for no prof
