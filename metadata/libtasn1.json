@@ -1,7 +1,7 @@
 {
   "branch": "rawhide",
-  "release": "1",
-  "sha": "e45807df8fb9eb79c957805f6a3b00e9d07520f9",
+  "release": "3",
+  "sha": "60dbb05d96009c4bd39bf316bed2f37bf39637f4",
   "source": "https://src.fedoraproject.org/rpms/libtasn1.git",
   "version": "4.20.0"
 }
