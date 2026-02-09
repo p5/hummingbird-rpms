@@ -1,7 +1,7 @@
 {
   "branch": "rawhide",
-  "release": "17",
-  "sha": "866e1217169247473ad626eecd88772eef9dd679",
+  "release": "18",
+  "sha": "957022cc0915b94cf6cd04633b95df7fa49a8a57",
   "source": "https://src.fedoraproject.org/rpms/libyaml.git",
   "version": "0.2.5"
 }
