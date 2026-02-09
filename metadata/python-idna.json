@@ -1,7 +1,7 @@
 {
   "branch": "rawhide",
-  "release": "1",
-  "sha": "988832036f54d17abe049b953747eb74d9d3296d",
+  "release": "2",
+  "sha": "3882f62cfb3f567a8954dd34032a112f0d209576",
   "source": "https://src.fedoraproject.org/rpms/python-idna.git",
   "version": "3.11"
 }
