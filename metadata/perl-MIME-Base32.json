@@ -1,7 +1,7 @@
 {
   "branch": "rawhide",
-  "release": "24",
-  "sha": "ea550d337a3a5388abb05e3df86101d772bf0e7a",
+  "release": "25",
+  "sha": "acb153bc086a699ca715884e584b002bd75d3a25",
   "source": "https://src.fedoraproject.org/rpms/perl-MIME-Base32.git",
   "version": "1.303"
 }
