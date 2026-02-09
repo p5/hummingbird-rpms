@@ -1,7 +1,7 @@
 {
   "branch": "rawhide",
-  "release": "1",
-  "sha": "8571450e099e72110eece7efcd7d0280cd0273b1",
+  "release": "2",
+  "sha": "69b8d22a0c7cdec58759f6177dea13ba4b85adb8",
   "source": "https://src.fedoraproject.org/rpms/perl-HTTP-Tiny.git",
   "version": "0.092"
 }
