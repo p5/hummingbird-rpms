@@ -1,7 +1,7 @@
 {
   "branch": "rawhide",
-  "release": "521",
-  "sha": "189cc7c25448db8e63678a3be934393d845a971a",
+  "release": "522",
+  "sha": "3e8968f6f626b54247e7de9d78ce2086d6082ae8",
   "source": "https://src.fedoraproject.org/rpms/perl-Data-Dumper.git",
   "version": "2.191"
 }
