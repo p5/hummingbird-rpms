@@ -1,7 +1,7 @@
 {
   "branch": "rawhide",
-  "release": "520",
-  "sha": "7ac087592562782133f4a85aeaa2481cd35a7bd0",
+  "release": "521",
+  "sha": "8d0a740f39cbd2c1af75ad80280eb0bd7597f264",
   "source": "https://src.fedoraproject.org/rpms/perl-Encode.git",
   "version": "3.21"
 }
