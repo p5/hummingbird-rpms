@@ -1,7 +1,7 @@
 {
   "branch": "rawhide",
-  "release": "1",
-  "sha": "2bb0b91c53b6610b3990f51f09ad34152f39e37a",
+  "release": "3",
+  "sha": "ee6d77285a9303ec005c67376d35c3647eed8e30",
   "source": "https://src.fedoraproject.org/rpms/alsa-lib.git",
-  "version": "1.2.15.2"
+  "version": "1.2.15.3"
 }
