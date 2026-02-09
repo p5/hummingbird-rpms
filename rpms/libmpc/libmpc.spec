@@ -5,7 +5,7 @@
 Summary: C library for multiple precision complex arithmetic
 Name: libmpc
 Version: 1.3.1
-Release: 8%{?dist}
+Release: 9%{?dist}
 # LGPL-3.0-or-later: the library
 # FSFAP: README and NEWS
 License: LGPL-3.0-or-later AND FSFAP
@@ -26,9 +26,9 @@ Provides: compat-libmpc = %{version}-%{release}
 %endif
 
 %description
-MPC is a C library for the arithmetic of complex numbers with
-arbitrarily high precision and correct rounding of the result. It is
-built upon and follows the same principles as Mpfr.
+MPC is a C library for the arithmetic of complex numbers with arbitrarily high
+precision and correct rounding of the result.  It is built upon and follows
+the same principles as Mpfr.
 
 %package devel
 Summary: Headers and shared development libraries for MPC
@@ -95,7 +95,6 @@ rm -fv %{buildroot}%{_infodir}/*
 %endif
 
 %make_install
-rm -f %{buildroot}%{_libdir}/*.la
 rm -f %{buildroot}%{_infodir}/dir
 
 %check
@@ -105,7 +104,7 @@ make check
 %files
 %license COPYING.LESSER
 %doc README NEWS
-%{_libdir}/libmpc.so.3*
+%{_libdir}/libmpc.so.3{,.*}
 
 %files devel
 %{_libdir}/libmpc.so
@@ -117,10 +116,13 @@ make check
 
 %if 0%{?bootstrap}
 %files -n compat-libmpc
-%{_libdir}/libmpc.so.2*
+%{_libdir}/libmpc.so.2{,.*}
 %endif
 
 %changelog
+* Fri Jan 16 2026 Fedora Release Engineering <releng@fedoraproject.org> - 1.3.1-9
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_44_Mass_Rebuild
+
 * Thu Jul 24 2025 Fedora Release Engineering <releng@fedoraproject.org> - 1.3.1-8
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_43_Mass_Rebuild
 
