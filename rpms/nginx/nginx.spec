@@ -56,8 +56,8 @@
 
 Name:              nginx
 Epoch:             2
-Version:           1.28.1
-Release:           %autorelease
+Version:           1.28.2
+Release:           1%{?dist}
 
 Summary:           A high performance web server and reverse proxy server
 License:           BSD-2-Clause
@@ -66,7 +66,6 @@ URL:               https://nginx.org
 Source0:           https://nginx.org/download/nginx-%{version}.tar.gz
 Source1:           https://nginx.org/download/nginx-%{version}.tar.gz.asc
 # Keys are found here: https://nginx.org/en/pgp_keys.html
-Source2:           https://nginx.org/keys/maxim.key
 Source3:           https://nginx.org/keys/arut.key
 Source4:           https://nginx.org/keys/pluknet.key
 Source5:           https://nginx.org/keys/sb.key
@@ -103,6 +102,9 @@ Patch3:            0004-Disable-ENGINE-support.patch
 
 # downstream patch - Compile perl module with O2
 Patch4:            0005-Compile-perl-module-with-O2.patch
+
+# upstream patch - https://github.com/nginx/nginx/pull/1089
+Patch5:            0006-Clarify-binding-behavior-of-t-option.patch
 
 BuildRequires:     make
 BuildRequires:     gcc
@@ -255,7 +257,7 @@ Requires:          zlib-devel
 
 %prep
 # Combine all keys from upstream into one file
-cat %{S:2} %{S:3} %{S:4} %{S:5} %{S:6} > %{_builddir}/%{name}.gpg
+cat %{S:3} %{S:4} %{S:5} %{S:6} > %{_builddir}/%{name}.gpg
 %{gpgverify} --keyring='%{_builddir}/%{name}.gpg' --signature='%{SOURCE1}' --data='%{SOURCE0}'
 %autosetup -p1
 cp %{SOURCE200} %{SOURCE10} %{SOURCE12} %{SOURCE18} %{SOURCE220} .
@@ -553,7 +555,6 @@ fi
 %config(noreplace) %{_sysconfdir}/logrotate.d/nginx
 %attr(770,%{nginx_user},root) %dir %{_localstatedir}/lib/nginx
 %attr(770,%{nginx_user},root) %dir %{_localstatedir}/lib/nginx/tmp
-%attr(711,root,root) %dir %{_localstatedir}/log/nginx
 %{_tmpfilesdir}/nginx.conf
 %ghost %attr(640,%{nginx_user},root) %{_localstatedir}/log/nginx/access.log
 %ghost %attr(640,%{nginx_user},root) %{_localstatedir}/log/nginx/error.log
@@ -570,6 +571,7 @@ fi
 %dir %{_sysconfdir}/nginx/default.d
 %dir %{_sysconfdir}/systemd/system/nginx.service.d
 %dir %{_unitdir}/nginx.service.d
+%attr(711,root,root) %dir %{_localstatedir}/log/nginx
 %{_sysusersdir}/nginx.conf
 
 %if %{with geoip}
