@@ -28,7 +28,7 @@
 
 Name:           lib%{libname}
 Version:        0.7.35
-Release:        %autorelease
+Release:        4%{?dist}
 Summary:        Package dependency solver
 
 # LICENSE.BSD:      BSD-3-Clause text
@@ -51,6 +51,10 @@ License:        BSD-3-Clause
 SourceLicense:  %{license} AND BSD-2-Clause AND MIT
 URL:            https://github.com/openSUSE/libsolv
 Source:         %{url}/archive/%{version}/%{name}-%{version}.tar.gz
+# Provides: python3dist(solv) in python3-solv
+# https://github.com/openSUSE/libsolv/pull/602
+# https://bugzilla.redhat.com/show_bug.cgi?id=2252743
+Patch:          0001-Python-Provide-dist-info-metadata.patch
 
 BuildRequires:  cmake >= 3.5
 BuildRequires:  gcc-c++
@@ -199,6 +203,10 @@ Python 3 version.
 %install
 %cmake_install
 
+%if %{with python_bindings}
+echo "rpm" > %{buildroot}%{python3_sitearch}/%{libname}-%{version}.dist-info/INSTALLER
+%endif
+
 %check
 %ctest
 
@@ -288,6 +296,7 @@ export LD_LIBRARY_PATH=%{buildroot}%{_libdir}
 %{python3_sitearch}/_%{libname}.so
 %{python3_sitearch}/%{libname}.py
 %{python3_sitearch}/__pycache__/%{libname}.*
+%{python3_sitearch}/%{libname}-%{version}.dist-info/
 %endif
 
 %changelog
