@@ -1,7 +1,7 @@
 {
   "branch": "rawhide",
-  "release": "1",
-  "sha": "8dffd23608a2f97c8c3cd089b8b6fa5f6cbdd0a8",
+  "release": "2",
+  "sha": "0a498b7cadf7589c35b414a29c8a5daf3ea2c3a8",
   "source": "https://src.fedoraproject.org/rpms/gnulib-l10n.git",
   "version": "20241231"
 }
