@@ -78,7 +78,7 @@
 %global _package_note_file  %{_builddir}/%{name}-%{real_version}/.package_note-%{name}-%{version}-%{release}.%{_arch}.ld
 
 Name:           git
-Version:        2.52.0
+Version:        2.53.0
 Release:        1%{?dist}
 Summary:        Fast Version Control System
 License:        BSD-3-Clause AND GPL-2.0-only AND GPL-2.0-or-later AND LGPL-2.1-or-later AND MIT
@@ -1041,6 +1041,15 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %{?with_docs:%{_pkgdocdir}/git-svn.html}
 
 %changelog
+* Tue Feb 03 2026 Ondřej Pohořelský <opohorel@redhat.com> - 2.53.0-1
+- update to 2.53.0
+
+* Tue Jan 27 2026 Ondřej Pohořelský <opohorel@redhat.com> - 2.52.0-3
+- fix test failures with curl 8.18.0
+
+* Fri Jan 16 2026 Fedora Release Engineering <releng@fedoraproject.org> - 2.52.0-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_44_Mass_Rebuild
+
 * Thu Nov 20 2025 Ondřej Pohořelský <opohorel@redhat.com> - 2.52.0-1
 - update to 2.52.0
 
