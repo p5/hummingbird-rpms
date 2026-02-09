@@ -7,7 +7,7 @@
 
 Name:           dnf5
 Version:        %{project_version_prime}.%{project_version_major}.%{project_version_minor}.%{project_version_micro}
-Release:        7.2%{?dist}
+Release:        7.3%{?dist}
 Summary:        Command-line package manager
 License:        GPL-2.0-or-later
 URL:            https://github.com/rpm-software-management/dnf5
@@ -22,6 +22,7 @@ Patch7:         0007-Add-a-couple-of-missing-includes-to-fix-builds.patch
 Patch8:         0008-Replace-all-std-format-with-fmt-format.patch
 Patch9:         0009-transaction-sort-packages-when-SOURCE_DATE_EPOCH-set.patch
 Patch10:        0010-transaction-honor-SOURCE_DATE_EPOCH-for-history-timestamps.patch
+Patch11:        0011-transaction-sort-history-db-packages-when-SOURCE_DATE_EPOCH-set.patch
 
 Requires:       libdnf5%{?_isa} = %{version}-%{release}
 Requires:       libdnf5-cli%{?_isa} = %{version}-%{release}
@@ -1092,6 +1093,9 @@ mkdir -p %{buildroot}%{_libdir}/libdnf5/plugins
 %ldconfig_scriptlets
 
 %changelog
+* Thu Feb 06 2026 Jonathan Lebon <jonathan@jlebon.com> - 5.3.0.0-7.3
+- Backport upstream PR#2593: sort history db packages when SOURCE_DATE_EPOCH set
+
 * Tue Jan 27 2026 Jonathan Lebon <jonathan@jlebon.com> - 5.3.0.0-7.2
 - Backport upstream PR#2584: honor SOURCE_DATE_EPOCH for history timestamps
 
