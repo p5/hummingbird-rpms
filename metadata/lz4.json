@@ -1,7 +1,7 @@
 {
   "branch": "rawhide",
-  "release": "3",
-  "sha": "9152e2d5ec8eb4b69854e862a2091bcf7aa03df1",
+  "release": "4",
+  "sha": "96913980bb0b518d3588b719ce3bc0659d7cfed5",
   "source": "https://src.fedoraproject.org/rpms/lz4.git",
   "version": "1.10.0"
 }
