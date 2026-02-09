@@ -1,7 +1,7 @@
 {
   "branch": "rawhide",
-  "release": "2",
-  "sha": "ed339551edbc52870c9c47a890610610c22191ae",
+  "release": "3",
+  "sha": "de3064f2f2214967eb48f5245ee3a00ea23bc2cd",
   "source": "https://src.fedoraproject.org/rpms/fedora-logos.git",
   "version": "42.0.1"
 }
