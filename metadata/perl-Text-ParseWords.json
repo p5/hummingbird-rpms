@@ -1,7 +1,7 @@
 {
   "branch": "rawhide",
-  "release": "520",
-  "sha": "21973df9c28fbfeeebc5b7390e8c2f8ed74e128b",
+  "release": "521",
+  "sha": "d6c1010a936ae20542945820f9a470816f6b2fb1",
   "source": "https://src.fedoraproject.org/rpms/perl-Text-ParseWords.git",
   "version": "3.31"
 }
