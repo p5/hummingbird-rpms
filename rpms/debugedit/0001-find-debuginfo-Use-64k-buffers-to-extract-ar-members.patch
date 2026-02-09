@@ -1,0 +1,73 @@
+From d98caeee595e77f67b9d96473487d3c03023722b Mon Sep 17 00:00:00 2001
+From: Mark Wielaard <mark@klomp.org>
+Date: Tue, 13 Jan 2026 14:54:30 +0100
+Subject: [PATCH] find-debuginfo: Use 64k buffers to extract ar members with dd
+
+If the dd implemention support the skip_bytes and count_bytes iflags
+then use them with a blocksize of 64k. skip_bytes will use bytes to
+skip and count_bytes will use bytes for count. Otherwise we have to
+use bs=1 because skip and count would be interpreted as the number of
+blocks (to skip or copy). Using a blocksize of 64k will speed up dd
+processing. Also allow much more members to be extracted if we have a
+fast dd.
+
+Suggested-by: Ben Beasley <code@musicinmybrain.net>
+Signed-off-by: Mark Wielaard <mark@klomp.org>
+---
+ scripts/find-debuginfo.in | 26 ++++++++++++++++++++++++--
+ 1 file changed, 24 insertions(+), 2 deletions(-)
+
+diff --git a/scripts/find-debuginfo.in b/scripts/find-debuginfo.in
+index 40cd1820ab3d..950a77cb0565 100755
+--- a/scripts/find-debuginfo.in
++++ b/scripts/find-debuginfo.in
+@@ -174,6 +174,9 @@ quiet=false
+ # add more non-error output
+ verbose=false
+ 
++# set before processing ar files
++dd_skip_bytes=
++
+ # process static libraries if ar is new enough (binutils 2.31+) to support O
+ if [ -n "`ar 2>&1 | grep -F '[O]'`" ]; then
+     process_ar=true
+@@ -539,7 +542,14 @@ do_ar_file()
+           # is hard, in case the same name exists multiple times.  A
+           # distinct instance-number would have to be given to ar ("N ###"),
+           # kept on a per-name basis.
+-          (cd "$tmpdir"; dd status=none if="$f" of="$member_dn$member_bn" bs=1 skip="$offset" count="$size")
++          (cd "$tmpdir";
++           if [ "$dd_skip_bytes" = "yes" ]; then
++	    # Use blocksize of 64k, skip and count are still in bytes.
++            dd status=none if="$f" of="$member_dn$member_bn" bs=64k skip="$offset" count="$size" iflag=skip_bytes,count_bytes
++           else
++	    # Use blocksize of 1 bytes, because skip and count are in blocks.
++            dd status=none if="$f" of="$member_dn$member_bn" bs=1 skip="$offset" count="$size"
++           fi)
+           if [ $? -ne 0 ]; then
+               res=1
+           fi
+@@ -610,9 +610,22 @@
+ 
+   local ar_re="^.*\.a$"
+   if [[ $f =~ $ar_re ]]; then # treat as static archive
++      # Make sure to test once if dd supports the skip_bytes flag.
++      if [ -z "$dd_skip_bytes" ]; then
++        if dd status=none iflag=skip_bytes,count_bytes if=/dev/null &>/dev/null; then
++           dd_skip_bytes="yes"
++        else
++           dd_skip_bytes="no"
++        fi
++      fi
+       # Sanity check the ar file, skip if it doesn't have debuginfo
+       # or too many members.
+-      if debugedit-classify-ar -m 768 "$f"; then
++      if [ "$dd_skip_bytes" = "yes" ]; then
++          classify_opts="-m 7168"
++      else
++          classify_opts="-m 768"
++      fi
++      if debugedit-classify-ar $classify_opts "$f"; then
+ 	  do_ar_file "$1" "$2" "$3"
+       fi
+       return
