@@ -1,7 +1,7 @@
 {
   "branch": "rawhide",
-  "release": "1",
-  "sha": "cbe66ee3a7ed9f212234affb5c13bb6db66103f0",
+  "release": "10",
+  "sha": "206dea995ca738072873f0dea822e72d982d380b",
   "source": "https://src.fedoraproject.org/rpms/gnutls.git",
   "version": "3.8.11"
 }
