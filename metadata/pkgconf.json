@@ -1,7 +1,7 @@
 {
   "branch": "rawhide",
-  "release": "3",
-  "sha": "a6c50c2405b2b6f9725d5ed77325ddf8181e5adc",
+  "release": "4",
+  "sha": "452ba2859e004f9f0ac8cc9998432f506cc82434",
   "source": "https://src.fedoraproject.org/rpms/pkgconf.git",
   "version": "2.3.0"
 }
