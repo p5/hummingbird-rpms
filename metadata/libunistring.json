@@ -1,7 +1,7 @@
 {
   "branch": "rawhide",
-  "release": "1",
-  "sha": "af99b2f9c3c0d9d47008ff9927eb941d3630eb3c",
+  "release": "11",
+  "sha": "924a284041afab6792e72ef6e388dd2f2d19f601",
   "source": "https://src.fedoraproject.org/rpms/libunistring.git",
   "version": "1.1"
 }
