@@ -1,7 +1,7 @@
 {
   "branch": "rawhide",
-  "release": "2",
-  "sha": "890fe3200ab39c9ddf5317f2dd8e0c2a4c320ca5",
+  "release": "3",
+  "sha": "8b045bf36247a54ac38b48e19511aa945cedd80c",
   "source": "https://src.fedoraproject.org/rpms/rust.git",
   "version": "1.93.0"
 }
