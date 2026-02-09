@@ -1,7 +1,7 @@
 {
   "branch": "rawhide",
-  "release": "15",
-  "sha": "8b7871353b6395a263e44712f10eb334f65dd4fc",
+  "release": "16",
+  "sha": "67fc0c2761282f257cef9eae198d24bd62247016",
   "source": "https://src.fedoraproject.org/rpms/yarnpkg.git",
   "version": "1.22.22"
 }
