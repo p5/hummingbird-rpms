@@ -3787,6 +3787,8 @@ spec:
 # --- gobject-introspection ---
 # PENDING
 # --- golang ---
+# PENDING
+# --- golang1.26 ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Component
@@ -3797,14 +3799,14 @@ metadata:
     git-provider-url: https://gitlab.com
     mintmaker.appstudio.redhat.com/disabled: "true"
     test.appstudio.openshift.io/comment_strategy: disable_all
-  name: golang-main
+  name: golang1-26-main
 spec:
   application: rpms-main
-  componentName: golang-main
-  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/golang-main
+  componentName: golang1-26-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/golang1-26-main
   source:
     git:
-      context: rpms/golang
+      context: rpms/golang1.26
       revision: main
       url: https://gitlab.com/redhat/hummingbird/rpms.git
 ---
@@ -3813,11 +3815,11 @@ kind: ImageRepository
 metadata:
   labels:
     appstudio.redhat.com/application: rpms-main
-    appstudio.redhat.com/component: golang-main
-  name: golang-main
+    appstudio.redhat.com/component: golang1-26-main
+  name: golang1-26-main
 spec:
   image:
-    name: hummingbird-tenant/golang-main
+    name: hummingbird-tenant/golang1-26-main
     visibility: public
   notifications:
   - config:

@@ -6355,6 +6355,8 @@ spec:
 # --- gobject-introspection ---
 # PENDING
 # --- golang ---
+# PENDING
+# --- golang1.26 ---
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
@@ -6367,13 +6369,13 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "false"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[push]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/golang/***]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/golang1.26/***]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
-    appstudio.openshift.io/component: golang-main
+    appstudio.openshift.io/component: golang1-26-main
     pipelines.appstudio.openshift.io/type: build
-  name: golang-main-on-push
+  name: golang1-26-main-on-push
   namespace: hummingbird-tenant
 spec:
   params:
@@ -6382,7 +6384,7 @@ spec:
     - name: revision
       value: '{{revision}}'
     - name: ociStorage
-      value: quay.io/redhat-user-workloads/hummingbird-tenant/golang-main:{{revision}}
+      value: quay.io/redhat-user-workloads/hummingbird-tenant/golang1-26-main:{{revision}}
     - name: package-name
       value: golang
     - name: target-branch
@@ -6398,7 +6400,7 @@ spec:
     - name: specfile
       value: "golang.spec"
     - name: monorepo-subdir
-      value: "rpms/golang"
+      value: "rpms/golang1.26"
     - name: mock-config-template-filename-in-sources
       value: "mock/mock.cfg"
   pipelineRef:
@@ -6412,7 +6414,7 @@ spec:
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
         value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:9674b53c53c6e20850ddd257aad199dc2dd9a2a295e65eea5bda9d679341cb9c"
   taskRunTemplate:
-    serviceAccountName: build-pipeline-golang-main
+    serviceAccountName: build-pipeline-golang1-26-main
   timeouts:
     pipeline: 4h
     tasks: 4h
