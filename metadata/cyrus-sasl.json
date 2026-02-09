@@ -1,7 +1,7 @@
 {
   "branch": "rawhide",
-  "release": "1",
-  "sha": "d53f626c5da122c39bfe6b8799210865ad5478f7",
+  "release": "35",
+  "sha": "c0c316e2f501a471102fd3de9ae3e738a82201e1",
   "source": "https://src.fedoraproject.org/rpms/cyrus-sasl.git",
   "version": "2.1.28"
 }
