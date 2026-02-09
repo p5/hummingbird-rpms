@@ -1,0 +1,15 @@
+diff --git a/configure.ac b/configure.ac
+index 4537210..4f342ec 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -257,8 +257,9 @@ echo .
+ echo "
+ 
+   libcap-ng Version:      $VERSION
+-  Target:                 $target
++  Target:                 $target
+   Installation prefix:    $prefix
++  Build Kernel:           `uname -r`
+   Compiler:               $CC
+   Compiler flags:
+ `echo $CFLAGS | fmt -w 50 | sed 's,^,                          ,'`
