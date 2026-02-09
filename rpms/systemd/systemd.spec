@@ -73,11 +73,11 @@ Url:            https://systemd.io
 # But don't do that on OBS, otherwise the version subst fails, and will be
 # like 257-123-gabcd257.1 instead of 257-123-gabcd
 %if %{without obs}
-Version:        %{?version_override}%{!?version_override:259}
+Version:        %{?version_override}%{!?version_override:259.1}
 %else
 Version:        %{?version_override}%{!?version_override:%(cat meson.version)}
 %endif
-Release:        %autorelease
+Release:        1%{?dist}
 
 %global stable %(c="%version"; [ "$c" = "${c#*.*}" ]; echo $?)
 
@@ -152,6 +152,7 @@ Patch:          38769.patch
 
 # Workaround for https://bugzilla.redhat.com/show_bug.cgi?id=2415701
 Patch:          0002-machined-continue-without-resolve.hook-socket.patch
+
 %endif
 
 %ifarch %{ix86} x86_64 aarch64 riscv64
@@ -931,6 +932,8 @@ CONFIGURE_OPTS=(
         -Dsbat-distro-url=https://github.com/systemd/systemd
         -Dsbat-distro=upstream
         -Dsbat-distro-summary='Upstream build from git'
+        -Defi-stub-extra-sections=500
+        -Defi-addon-extra-sections=100
 %endif
 )
 
@@ -1263,8 +1266,8 @@ systemctl --no-reload preset systemd-journald-audit.socket &>/dev/null || :
                         sleep.target
                         suspend-then-hibernate.target
                         suspend.target
-                        system-systemd\\x2dcryptsetup.slice
-                        system-systemd\\x2dveritysetup.slice
+                        system-systemd\\\\x2dcryptsetup.slice
+                        system-systemd\\\\x2dveritysetup.slice
                         systemd-backlight@.service
                         systemd-binfmt.service
                         systemd-bless-boot.service
@@ -1317,6 +1320,7 @@ systemctl --no-reload preset systemd-journald-audit.socket &>/dev/null || :
                         systemd-suspend.service
                         systemd-sysctl.service
                         systemd-timesyncd.service
+                        systemd-tmpfiles-clear.service
                         systemd-tmpfiles-setup-dev-early.service
                         systemd-tmpfiles-setup-dev.service
                         systemd-udev-load-credentials.service
