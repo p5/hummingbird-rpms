@@ -1,7 +1,7 @@
 {
   "branch": "rawhide",
-  "release": "9",
-  "sha": "b4d0a0c63f8d2315b5208a604a455510fe0cc774",
+  "release": "10",
+  "sha": "6d4bd3f2b3195974a1fa4a2490579f4f47f58cb9",
   "source": "https://src.fedoraproject.org/rpms/popt.git",
   "version": "1.19"
 }
