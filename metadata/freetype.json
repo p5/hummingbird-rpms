@@ -1,7 +1,7 @@
 {
   "branch": "rawhide",
-  "release": "1",
-  "sha": "e6cc53fb5f04e16f208ec3b9ae9ee802d2157699",
+  "release": "2",
+  "sha": "3fe096ec99d7e8ac0061e7d6bb5d546275187d08",
   "source": "https://src.fedoraproject.org/rpms/freetype.git",
   "version": "2.14.1"
 }
