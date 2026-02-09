@@ -1,7 +1,7 @@
 {
   "branch": "rawhide",
-  "release": "15",
-  "sha": "612db90205f90b5a5d22d6138485a6bbbaab1df2",
+  "release": "17",
+  "sha": "d6b7462edc18ee3b2572b43ae98d002852aec202",
   "source": "https://src.fedoraproject.org/rpms/abattis-cantarell-fonts.git",
   "version": "0.301"
 }
