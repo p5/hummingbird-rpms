@@ -1,7 +1,7 @@
 {
   "branch": "rawhide",
-  "release": "3",
-  "sha": "a08ff1c9af969affa6b728fdbf0503c00dea2eda",
+  "release": "4",
+  "sha": "19a62d3fb88d134a2d7d8bbd736129d248e6fbdd",
   "source": "https://src.fedoraproject.org/rpms/zchunk.git",
   "version": "1.5.1"
 }
