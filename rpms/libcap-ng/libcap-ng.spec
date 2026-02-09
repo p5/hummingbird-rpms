@@ -1,14 +1,23 @@
+%global bpf_supported_arches aarch64 x86_64 ppc64le riscv64 s390x
 Summary: Alternate posix capabilities library
 Name: libcap-ng
-Version: 0.8.5
-Release: 8%{?dist}
+Version: 0.9
+Release: 7%{?dist}
 License: LGPL-2.0-or-later
-URL: https://people.redhat.com/sgrubb/libcap-ng/
-Source0: https://people.redhat.com/sgrubb/libcap-ng/%{name}-%{version}.tar.gz
-BuildRequires: gcc
-BuildRequires: make
+URL: https://github.com/stevegrubb/libcap-ng
+Source0: %{name}-%{version}.tar.gz
+Patch0: kernel.patch
+Patch1: drop-captest.patch
+BuildRequires: gcc make
+BuildRequires: autoconf automake libtool
 BuildRequires: kernel-headers >= 2.6.11 
 BuildRequires: libattr-devel
+%ifarch %{bpf_supported_arches}
+# These next ones are needed by cap-audit
+BuildRequires: clang
+BuildRequires: bpftool libbpf-devel
+BuildRequires: audit-libs-devel
+%endif
 
 %description
 Libcap-ng is a library that makes using posix capabilities easier
@@ -36,19 +45,33 @@ and can be used by python3 applications.
 
 %package utils
 Summary: Utilities for analyzing and setting file capabilities
-License: LGPL-2.0-or-later
+License: GPL-2.0-or-later
 Requires: %{name}%{?_isa} = %{version}-%{release}
+%ifarch %{bpf_supported_arches}
+Provides: %{name}-audit
+Obsoletes: %{name}-audit < %{version}-%{release}
+%endif
 
 %description utils
 The libcap-ng-utils package contains applications to analyze the
 posix capabilities of all the program running on a system. It also
-lets you set the file system based capabilities.
+lets you set the file system based capabilities, and use cap-audit
+to determine the necessary capabilities for a program.
 
 %prep
 %setup -q
+%patch -P 0 -p1
+%patch -P 1 -p1
+touch NEWS
+autoreconf -fv --install
 
 %build
-%configure --libdir=%{_libdir} --with-python=no --with-python3
+%configure --libdir=%{_libdir} \
+%ifarch %{bpf_supported_arches}
+	 --enable-cap-audit=yes \
+%endif
+	--with-python3
+
 %make_build CFLAGS="%{optflags}"
 
 %install
@@ -83,14 +106,43 @@ make check
 
 %files python3
 %attr(755,root,root) %{python3_sitearch}/*
-%{python3_sitearch}/capng.py*
 
 %files utils
 %license COPYING
-%attr(0755,root,root) %{_bindir}/*
-%attr(0644,root,root) %{_mandir}/man8/*
+%attr(0755,root,root) %{_bindir}/filecap
+%attr(0755,root,root) %{_bindir}/netcap
+%attr(0755,root,root) %{_bindir}/pscap
+%attr(0644,root,root) %{_mandir}/man8/filecap.8.gz
+%attr(0644,root,root) %{_mandir}/man8/netcap.8.gz
+%attr(0644,root,root) %{_mandir}/man8/pscap.8.gz
+%ifarch %{bpf_supported_arches}
+%attr(0755,root,root) %{_bindir}/cap-audit
+%attr(0644,root,root) %{_mandir}/man8/cap-audit.8.gz
+%endif
 
 %changelog
+* Mon Jan 26 2026 Steve Grubb <sgrubb@redhat.com> 0.9-7
+- Add Obsoletes libcap-ng-audit to remove old package
+
+* Mon Jan 26 2026 Steve Grubb <sgrubb@redhat.com> 0.9-6
+- Deprecate captest and move cap-audit into utils package
+
+* Fri Jan 23 2026 Steve Grubb <sgrubb@redhat.com> 0.9-5
+- Add s390x to libcap-ng-audit build arches
+
+* Fri Jan 23 2026 Steve Grubb <sgrubb@redhat.com> 0.9-4
+- Expand libcap-ng-audit to non-x86_64 arches
+
+* Fri Jan 16 2026 Fedora Release Engineering <releng@fedoraproject.org> - 0.9-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_44_Mass_Rebuild
+
+* Mon Jan 12 2026 Steve Grubb <sgrubb@redhat.com> 0.9-2
+- Fix SPDX licence on audit package
+
+* Sun Jan 11 2026 Steve Grubb <sgrubb@redhat.com> 0.9-1
+- New upstream feature release
+- Make libcap-ng-audit exclusive to x86_64 for now
+
 * Fri Sep 19 2025 Python Maint <python-maint@redhat.com> - 0.8.5-8
 - Rebuilt for Python 3.14.0rc3 bytecode
 
