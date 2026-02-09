@@ -1,8 +1,8 @@
 %global abi_ver 9
 
 Name:           nghttp3
-Version:        1.14.0
-Release:        %autorelease
+Version:        1.15.0
+Release:        1%{?dist}
 Summary:        HTTP/3 library written in C
 
 License:        MIT
