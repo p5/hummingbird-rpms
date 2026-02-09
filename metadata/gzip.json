@@ -1,7 +1,7 @@
 {
   "branch": "rawhide",
-  "release": "1",
-  "sha": "176a9b412f80c1d19b07f24133d044231645b5b2",
+  "release": "2",
+  "sha": "39b40a601737d169d98c361deabf84c6c744054b",
   "source": "https://src.fedoraproject.org/rpms/gzip.git",
   "version": "1.14"
 }
