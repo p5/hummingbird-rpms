@@ -1,7 +1,7 @@
 {
   "branch": "rawhide",
-  "release": "1",
-  "sha": "8829c783ae6726a78d030f5be0ae76c0970ff696",
+  "release": "2",
+  "sha": "dd57cef80faf39d6a0251dda21db596d806a6cc0",
   "source": "https://src.fedoraproject.org/rpms/xz.git",
   "version": "5.8.2"
 }
