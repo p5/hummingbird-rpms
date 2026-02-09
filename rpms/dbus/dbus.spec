@@ -19,7 +19,7 @@
 Name:    dbus
 Epoch:   1
 Version: 1.16.0
-Release: %autorelease
+Release: 8%{?dist}
 Summary: D-BUS message bus
 
 # The effective license of the majority of the package, including the shared
