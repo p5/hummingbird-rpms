@@ -1,10 +1,10 @@
 # Plain package name for cases, where %%{name} differs (e.g. for versioned packages)
 %global majorname mariadb
-%define package_version 10.11.15
+%define package_version 10.11.16
 %define majorversion %(echo %{package_version} | cut -d'.' -f1-2 )
 
 # Set if this package will be the default one in distribution
-%{!?mariadb_default:%global mariadb_default 1}
+%{!?mariadb_default:%global mariadb_default 0}
 
 # Regression tests may take a long time (many cores recommended), skip them by
 %{!?runselftest:%global runselftest 1}
@@ -15,7 +15,7 @@
 # The last version on which the full testsuite has been run
 # In case of further rebuilds of that version, don't require full testsuite to be run
 # run only "main" suite
-%global last_tested_version 10.11.15
+%global last_tested_version 10.11.16
 # Set to 1 to force run the testsuite even if it was already tested in current version
 %global force_run_testsuite 0
 
@@ -154,16 +154,13 @@
 
 # Set explicit conflicts with 'mysql' packages
 %bcond_without conflicts_mysql
-# Set explicit conflicts with 'community-mysql' names, provided by 'mysql' packages
-#   'community-mysql' names are deprecated and to be removed in future Fedora
-%bcond_without conflicts_community_mysql
 
 # Make long macros shorter
 %global sameevr   %{epoch}:%{version}-%{release}
 
 Name:             %{majorname}%{majorversion}
 Version:          %{package_version}
-Release:          2%{?with_debug:.debug}%{?dist}
+Release:          1%{?with_debug:.debug}%{?dist}
 Epoch:            3
 
 Summary:          A very fast and robust SQL database server
@@ -229,6 +226,8 @@ Patch9:           %{majorname}-ownsetup.patch
 Patch13:          %{majorname}-libfmt.patch
 #   Patch14: make MTR port calculation reasonably predictable
 Patch14:          %{majorname}-mtr.patch
+#   Patch15: mark RISC-V64 as 64-bit architecture
+Patch15:          mark-RISC-V64-as-64-bit-architecture.patch
 
 # This macro is used for package/sub-package names in the entire specfile
 %if %?mariadb_default
@@ -338,10 +337,8 @@ Recommends:       %{pkgname}-client-utils
 Suggests:         %{pkgname}-server%{?_isa} = %{sameevr}
 
 %{?with_conflicts_mysql:Conflicts: mysql-any}
-%{?with_conflicts_community_mysql:Conflicts: community-mysql}
 # Explicitly disallow combination mariadb + mysql-server
 %{?with_conflicts_mysql:Conflicts: mysql-server-any}
-%{?with_conflicts_community_mysql:Conflicts: community-mysql-server}
 
 %define conflict_with_other_streams() %{expand:\
 Provides: %{majorname}%{?1:-%{1}}-any\
@@ -406,7 +403,6 @@ Requires:         %{pkgname}-common = %{sameevr}
 %virtual_conflicts_and_provides libs
 
 %{?with_conflicts_mysql:Conflicts: mysql-libs-any}
-%{?with_conflicts_community_mysql:Conflicts: community-mysql-libs}
 
 %description      -n %{pkgname}-libs
 The mariadb-libs package provides the essential shared libraries for any
@@ -557,10 +553,8 @@ Requires:         iproute
 %{?with_galera:Requires: which}
 
 %{?with_conflicts_mysql:Conflicts: mysql-server-any}
-%{?with_conflicts_community_mysql:Conflicts: community-mysql-server}
 # Explicitly disallow combination mariadb-server + mysql
 %{?with_conflicts_mysql:Conflicts: mysql-any}
-%{?with_conflicts_community_mysql:Conflicts: community-mysql}
 
 %description      -n %{pkgname}-server
 MariaDB is a multi-user, multi-threaded SQL database server. It is a
@@ -743,7 +737,6 @@ Requires:         perl(DBI) perl(DBD::MariaDB)
 %conflict_with_other_streams server-utils
 
 %{?with_conflicts_mysql:Conflicts: mysql-server-any}
-%{?with_conflicts_community_mysql:Conflicts: community-mysql-server}
 
 %description      -n %{pkgname}-server-utils
 This package contains all non-essential server utilities and scripts for
@@ -764,7 +757,6 @@ Requires:         mariadb-connector-c-devel >= 3.0
 %virtual_conflicts_and_provides devel
 
 %{?with_conflicts_mysql:Conflicts: mysql-devel-any}
-%{?with_conflicts_community_mysql:Conflicts: community-mysql-devel}
 
 %description      -n %{pkgname}-devel
 MariaDB is a multi-user, multi-threaded SQL database server.
@@ -834,7 +826,6 @@ Requires:         perl(Time::HiRes)
 %virtual_conflicts_and_provides test
 
 %{?with_conflicts_mysql:Conflicts: mysql-test-any}
-%{?with_conflicts_community_mysql:Conflicts: community-mysql-test}
 
 %description      -n %{pkgname}-test
 MariaDB is a multi-user, multi-threaded SQL database server.
@@ -881,6 +872,7 @@ rm -r storage/rocksdb/
 %endif
 
 %patch -P14 -p1
+%patch -P15 -p1
 
 # generate a list of tests that fail, but are not disabled by upstream
 cat %{SOURCE50} | tee -a mysql-test/unstable-tests
@@ -994,7 +986,6 @@ CXXFLAGS="$CFLAGS"; CPPFLAGS="$CFLAGS"; export CFLAGS CXXFLAGS CPPFLAGS
          -DINSTALL_SCRIPTDIR=bin \
          -DINSTALL_SUPPORTFILESDIR=share/%{majorname} \
          -DMYSQL_DATADIR="%{dbdatadir}" \
-         -DMYSQL_UNIX_ADDR="%{dbdatadir}/mysql.sock" \
          -DTMPDIR=%{_localstatedir}/tmp \
          -DINSTALL_SYSTEMD_TMPFILESDIR="" \
          -DINSTALL_SYSTEMD_SYSUSERSDIR="" \
@@ -1853,6 +1844,22 @@ fi
 %endif
 
 %changelog
+* Sat Feb 07 2026 Michal Schorm <mschorm@redhat.com> - 3:10.11.16-1
+- Rebase to 10.11.16
+
+* Tue Feb 03 2026 Michal Schorm <mschorm@redhat.com> - 3:10.11.15-100
+- Disable the 'distribution default' in MariaDB 10.11 in this package
+- Enable the 'distribution default' in MariaDB 11.8 (package 'mariadb11.8')
+
+* Sat Jan 24 2026 Michal Schorm <mschorm@redhat.com> - 3:10.11.15-5
+- Fedora 44 change: Remove 'community-mysql' names
+
+* Sat Jan 24 2026 Marcin Juszkiewicz <mjuszkiewicz@redhat.com> -  3:10.11.15-4
+- Mark RISC-V64 as 64-bit architecture
+
+* Tue Jan 20 2026 Petr Khartskhaev <pkhartsk@redhat.com> - 3:10.11.15-3
+- Updated service files to work with environment files
+
 * Fri Jan 16 2026 Fedora Release Engineering <releng@fedoraproject.org> - 3:10.11.15-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_44_Mass_Rebuild
 
