@@ -175,13 +175,7 @@ Source301: test-should-pass.txt
 Patch: 0001-Remove-unused-OpenSSL-config.patch
 Patch: 0001-fips-disable-options.patch
 
-%if 0%{?nodejs_default}
-%global pkgname nodejs
-%package -n %{pkgname}
-Summary: JavaScript runtime
-%else
 %global pkgname nodejs22
-%endif
 
 BuildRequires: make
 BuildRequires: python%{python3_pkgversion}-devel
@@ -376,18 +370,7 @@ Node.js is a platform built on Chrome's JavaScript runtime \
 for easily building fast, scalable network applications. \
 Node.js uses an event-driven, non-blocking I/O model that \
 makes it lightweight and efficient, perfect for data-intensive \
-real-time applications that run across distributed devices.}
-
-
-%if 0%{?nodejs_default}
-%description -n %{pkgname}
-Node.js is a platform built on Chrome's JavaScript runtime \
-for easily building fast, scalable network applications. \
-Node.js uses an event-driven, non-blocking I/O model that \
-makes it lightweight and efficient, perfect for data-intensive \
-real-time applications that run across distributed devices.}
-%endif
-
+real-time applications that run across distributed devices.
 
 %package -n %{pkgname}-devel
 Summary: JavaScript runtime - development headers
@@ -853,14 +836,14 @@ NODE_PATH=%{buildroot}%{_prefix}/lib/node_modules:%{buildroot}%{nodejs_private_s
 LD_LIBRARY_PATH=%{buildroot}%{_libdir} %{buildroot}/%{_bindir}/node-%{nodejs_pkg_major} %{buildroot}%{_bindir}/npm-%{nodejs_pkg_major} --globalconfig=%{buildroot}%{_sysconfdir}/npmrc config list --json | jq -e '.["update-notifier"] == false'
 %endif
 
-%pretrans -n %{pkgname} -p <lua>
+%pretrans -p <lua>
 path = "/usr/lib/node_modules"
 st = posix.stat(path)
 if st and st.type == "link" then
   os.remove(path)
 end
 
-%files -n %{pkgname}
+%files
 %doc CHANGELOG.md onboarding.md GOVERNANCE.md README.md
 
 %if 0%{?nodejs_default}
