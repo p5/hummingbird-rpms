@@ -1,7 +1,7 @@
 {
   "branch": "rawhide",
-  "release": "3",
-  "sha": "fcfa905419796bde85f9d531a7a9db3c3d0d2bbf",
+  "release": "4",
+  "sha": "6e4e54be4ccb5e526d008e5087105ec3e54976cd",
   "source": "https://src.fedoraproject.org/rpms/oniguruma.git",
   "version": "6.9.10"
 }
