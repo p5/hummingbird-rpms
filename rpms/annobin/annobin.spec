@@ -1,7 +1,7 @@
 
 Name:    annobin
 Summary: Annotate and examine compiled binary files
-Version: 13.04
+Version: 13.05
 Release: 3%{?dist}
 License: GPL-3.0-or-later AND LGPL-2.0-or-later AND (GPL-2.0-or-later WITH GCC-exception-2.0) AND (LGPL-2.0-or-later WITH GCC-exception-2.0) AND GFDL-1.3-or-later
 URL: https://sourceware.org/annobin/
@@ -536,6 +536,15 @@ make check
 #---------------------------------------------------------------------------------
 
 %changelog
+* Fri Jan 16 2026 Fedora Release Engineering <releng@fedoraproject.org> - 13.05-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_44_Mass_Rebuild
+
+* Fri Jan 16 2026 Fedora Release Engineering <releng@fedoraproject.org> - 13.05-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_44_Mass_Rebuild
+
+* Thu Jan 15 2026 Nick Clifton  <nickc@redhat.com> - 13.05-1
+- Annocheck: Add .fc44 to list of known rpm file extensions.
+
 * Sat Dec 20 2025 Jakub Jelinek  <jakub@redhat.com> - 13.04-3
 - NVR bump to allow rebuild for new GCC in a side-tag.
 
