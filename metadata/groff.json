@@ -1,7 +1,7 @@
 {
   "branch": "rawhide",
-  "release": "11",
-  "sha": "1cab785b3eeb39641c85ef254de3edf231f01fff",
+  "release": "12",
+  "sha": "219ee364fcba5ef5090c717f5c2b4225c19676a3",
   "source": "https://src.fedoraproject.org/rpms/groff.git",
   "version": "1.23.0"
 }
