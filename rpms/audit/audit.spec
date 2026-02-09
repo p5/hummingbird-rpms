@@ -1,7 +1,7 @@
 Summary: User space tools for kernel auditing
 Name: audit
-Version: 4.1.2
-Release: 2%{?dist}
+Version: 4.1.3
+Release: 1%{?dist}
 License: GPL-2.0-or-later AND LGPL-2.0-or-later
 URL: https://github.com/linux-audit/audit-userspace/
 Source0: audit-userspace-%{version}.tar.gz
@@ -41,7 +41,7 @@ applications to use the audit framework.
 Summary: Header files for libaudit
 License: LGPL-2.0-or-later
 Requires: %{name}-libs%{?_isa} = %{version}-%{release}
-Requires: kernel-headers >= 5.0
+Requires: kernel-headers >= 5.15
 
 %description libs-devel
 The audit-libs-devel package contains the header files needed for
@@ -88,7 +88,7 @@ Management Facility) database, through an IBM Tivoli Directory Server
 %package rules
 Summary: audit rules and utilities
 License: GPL-2.0-or-later
-Requires(post): coreutils
+Requires(post): coreutils gawk grep
 Requires: %{name}-libs%{?_isa} = %{version}-%{release}
 Recommends: %{name} = %{version}-%{release}
 
@@ -301,6 +301,21 @@ fi
 %attr(750,root,root) %{_sbindir}/audispd-zos-remote
 
 %changelog
+* Sun Feb 01 2026 Steve Grubb <sgrubb@redhat.com> 4.1.3-1
+- New upstream release
+
+* Tue Jan 27 2026 Steve Grubb <sgrubb@redhat.com> 4.1.2-6
+- Change awk to gawk
+
+* Tue Jan 27 2026 Steve Grubb <sgrubb@redhat.com> 4.1.2-5
+- Update requires for audit-rules package (#2415124)
+
+* Fri Jan 16 2026 Fedora Release Engineering <releng@fedoraproject.org> - 4.1.2-4
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_44_Mass_Rebuild
+
+* Fri Jan 16 2026 Fedora Release Engineering <releng@fedoraproject.org> - 4.1.2-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_44_Mass_Rebuild
+
 * Fri Sep 19 2025 Python Maint <python-maint@redhat.com> - 4.1.2-2
 - Rebuilt for Python 3.14.0rc3 bytecode
 
