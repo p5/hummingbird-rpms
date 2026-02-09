@@ -1,7 +1,7 @@
 {
   "branch": "rawhide",
   "release": "1",
-  "sha": "d26aa7fb8f9b90bf6bbe012224d359820c7a18c0",
+  "sha": "9f6d0c3ac2381b21cda31eaedc465030a6491286",
   "source": "https://src.fedoraproject.org/rpms/authselect.git",
-  "version": "1.6.2"
+  "version": "1.7.1"
 }
