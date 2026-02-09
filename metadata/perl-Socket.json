@@ -1,7 +1,7 @@
 {
   "branch": "rawhide",
-  "release": "2",
-  "sha": "9a05f3407243f41eecdf0392e5dc23a5094bcaba",
+  "release": "3",
+  "sha": "95ce9959eda9fe8416048adb31421e0043c02198",
   "source": "https://src.fedoraproject.org/rpms/perl-Socket.git",
   "version": "2.040"
 }
