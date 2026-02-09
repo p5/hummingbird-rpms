@@ -1,7 +1,7 @@
 {
   "branch": "rawhide",
-  "release": "4",
-  "sha": "99a5b31f9eb0cc622c8235889b03fdc4afb53196",
+  "release": "5",
+  "sha": "de3ebcec0a38f38e69a431a523897833b7ed8263",
   "source": "https://src.fedoraproject.org/rpms/python-pluggy.git",
   "version": "1.6.0"
 }
