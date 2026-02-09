@@ -1,7 +1,7 @@
 {
   "branch": "rawhide",
-  "release": "68",
-  "sha": "97c9106ddc217ee17c1e9c7b73270cce1c424183",
+  "release": "69",
+  "sha": "dcc10bc2ce9c47e15c3b130f30da5408461219c9",
   "source": "https://src.fedoraproject.org/rpms/unzip.git",
   "version": "6.0"
 }
