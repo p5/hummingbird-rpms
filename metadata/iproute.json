@@ -1,7 +1,7 @@
 {
   "branch": "rawhide",
-  "release": "1",
-  "sha": "e2fb4f806782daf154762a8e4b63ebaae16349f8",
+  "release": "2",
+  "sha": "c6935a491e1fe722e8af5301563afb18c2022566",
   "source": "https://src.fedoraproject.org/rpms/iproute.git",
   "version": "6.17.0"
 }
