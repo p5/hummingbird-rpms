@@ -36,7 +36,7 @@ Epoch: 4
 # to the correct value by Packit for copr and koji builds.
 # IGNORE this comment if you're looking at it in dist-git.
 Version: 2.245.0
-Release: %autorelease
+Release: 3%{?dist}
 License: GPL-2.0-only
 URL: https://github.com/containers/%{name}
 Summary: SELinux policies for container runtimes
