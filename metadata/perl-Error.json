@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "3",
+  "sha": "173d80c1f000032070941bd8b951cf9b08804755",
+  "source": "https://src.fedoraproject.org/rpms/perl-Error.git",
+  "version": "0.17030"
+}
