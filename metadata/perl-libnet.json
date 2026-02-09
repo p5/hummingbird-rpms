@@ -1,7 +1,7 @@
 {
   "branch": "rawhide",
-  "release": "521",
-  "sha": "3fda6835b8956ff18c9a86d7b1d39b32b2bafdf3",
+  "release": "522",
+  "sha": "a10e009cd434690da1de9ff0163c9d0c90054ed4",
   "source": "https://src.fedoraproject.org/rpms/perl-libnet.git",
   "version": "3.15"
 }
