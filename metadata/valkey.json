@@ -1,7 +1,7 @@
 {
   "branch": "rawhide",
-  "release": "2",
-  "sha": "a8894f50bd61a2b4dd978ae51c5f29cf16b06969",
+  "release": "1",
+  "sha": "bceb22b702b83e070c1b157f5b0209ea4577a328",
   "source": "https://src.fedoraproject.org/rpms/valkey.git",
-  "version": "9.0.1"
+  "version": "9.0.2"
 }
