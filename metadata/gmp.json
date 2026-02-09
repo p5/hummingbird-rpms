@@ -1,7 +1,7 @@
 {
   "branch": "rawhide",
-  "release": "4",
-  "sha": "56096312a18ac561c1d3c79c11c7e4ed52a8afc8",
+  "release": "5",
+  "sha": "262e6901f376fafb620dff101a304d01494dcad1",
   "source": "https://src.fedoraproject.org/rpms/gmp.git",
   "version": "6.3.0"
 }
