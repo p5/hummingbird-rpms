@@ -10,7 +10,7 @@
 %bcond servers 1
 
 # Build with argon2 support
-%bcond argon2 1
+%bcond argon2 %{undefined rhel}
 
 # When you change "Version: " to the new major version, remember to change this value too
 %global major_version 2.6
@@ -20,7 +20,7 @@
 
 Name: openldap
 Version: 2.6.10
-Release: 4%{?dist}
+Release: 7%{?dist}
 Summary: LDAP support libraries
 License: OLDAP-2.8
 URL: http://www.openldap.org/
@@ -565,6 +565,16 @@ exit 0
 %endif
 
 %changelog
+* Fri Jan 16 2026 Fedora Release Engineering <releng@fedoraproject.org> - 2.6.10-7
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_44_Mass_Rebuild
+
+* Wed Jan 14 2026 Yaakov Selkowitz <yselkowi@redhat.com> - 2.6.10-6
+- Enable argon2 only in Fedora
+
+* Tue Jan 13 2026 Simon Pichugin <spichugi@redhat.com> - 2.6.10-5
+- Add support for argon2 (rhbz#2229405)
+- Bump version 2.6.10-5
+
 * Fri Aug 29 2025 Simon Pichugin <spichugi@redhat.com> - 2.6.10-4
 - Fix LDAP initialization does unnecessary resolution of hostname (rhbz#2331728)
 - Convert STI tests to FMF (rhbz#2382998)
