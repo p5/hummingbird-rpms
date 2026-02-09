@@ -1,6 +1,6 @@
 Name:           pytest
 Version:        8.4.2
-Release:        %autorelease
+Release:        2%{?dist}
 Summary:        Simple powerful testing with Python
 # SPDX
 License:        MIT
