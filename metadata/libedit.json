@@ -1,7 +1,7 @@
 {
   "branch": "rawhide",
-  "release": "57.20251016cvs",
-  "sha": "c51489c500f8884ed4932b5fbf31aab21ed8de08",
+  "release": "58.20251016cvs",
+  "sha": "bbb0f53588dd609569cd331867b17193f4a2098b",
   "source": "https://src.fedoraproject.org/rpms/libedit.git",
   "version": "3.1"
 }
