@@ -1,7 +1,7 @@
 {
   "branch": "rawhide",
-  "release": "1",
-  "sha": "352535de0d3a31f54267786211f0d4c8e0cae7b2",
+  "release": "3",
+  "sha": "34f0087fd6d89e80761b56446cc19c3e2e079ec1",
   "source": "https://src.fedoraproject.org/rpms/brotli.git",
   "version": "1.2.0"
 }
