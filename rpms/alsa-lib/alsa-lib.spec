@@ -2,8 +2,8 @@
 #define  prever_dot .rc3
 #define  postver    a
 
-%define version_alsa_lib  1.2.15.2
-%define version_alsa_ucm  1.2.15.2
+%define version_alsa_lib  1.2.15.3
+%define version_alsa_ucm  1.2.15.3
 %define version_alsa_tplg 1.2.5
 
 %global lib_patch         0
@@ -12,7 +12,7 @@
 Summary:  The Advanced Linux Sound Architecture (ALSA) library
 Name:     alsa-lib
 Version:  %{version_alsa_lib}
-Release:  1%{?prever_dot}%{?dist}
+Release:  3%{?prever_dot}%{?dist}
 License:  LGPL-2.1-or-later
 URL:      http://www.alsa-project.org/
 
@@ -178,6 +178,15 @@ rm %{buildroot}/%{_includedir}/asoundlib.h
 %{_datadir}/alsa/topology
 
 %changelog
+* Fri Jan 16 2026 Fedora Release Engineering <releng@fedoraproject.org> - 1.2.15.3-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_44_Mass_Rebuild
+
+* Fri Jan 16 2026 Fedora Release Engineering <releng@fedoraproject.org> - 1.2.15.3-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_44_Mass_Rebuild
+
+* Tue Jan 13 2026 Jaroslav Kysela <perex@perex.cz> - 1.2.15.3-1
+- update to 1.2.15.3
+
 * Thu Jan  8 2026 Jaroslav Kysela <perex@perex.cz> - 1.2.15.2-1
 - update to 1.2.15.2
 
