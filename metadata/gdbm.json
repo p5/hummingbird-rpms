@@ -1,7 +1,7 @@
 {
   "branch": "rawhide",
-  "release": "10",
-  "sha": "870811290fc8a18c7798959d1a0e9e17c018022f",
+  "release": "11",
+  "sha": "81ec9dcdf759b32a066b926d5e9eadc2f3a26d22",
   "source": "https://src.fedoraproject.org/rpms/gdbm.git",
   "version": "1.23"
 }
