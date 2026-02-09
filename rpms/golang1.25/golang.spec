@@ -106,7 +106,7 @@
 %global go_version %{go_api}%{?go_patch:.%{go_patch}}%{?go_prerelease:~%{go_prerelease}}
 %global go_source %{go_api}%{?go_patch:.%{go_patch}}%{?go_prerelease}
 
-Name:           golang
+Name:           golang1.25
 Version:        %{go_version}
 Release:        1%{?dist}
 Summary:        The Go Programming Language
