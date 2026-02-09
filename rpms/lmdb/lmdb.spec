@@ -1,6 +1,6 @@
 Name:           lmdb
-Version:        0.9.33
-Release:        %autorelease
+Version:        0.9.34
+Release:        2%{?dist}
 Summary:        Memory-mapped key-value database
 License:        OLDAP-2.8
 URL:            https://www.symas.com/lmdb
@@ -22,6 +22,8 @@ Patch:          lmdb-s390-check.patch
 BuildRequires:  make
 BuildRequires:  gcc
 BuildRequires:  doxygen
+
+Requires:       %{name}-libs%{?_isa} = %{version}-%{release}
 
 %description
 LMDB is an ultra-fast, ultra-compact key-value embedded data
