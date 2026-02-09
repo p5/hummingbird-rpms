@@ -1,7 +1,7 @@
 {
   "branch": "rawhide",
-  "release": "7",
-  "sha": "667e783b37838ccb6a2cb2198a22f280b2bb5548",
+  "release": "8",
+  "sha": "780bde13310df957d5e1a7c5740f3e9ac8555ee6",
   "source": "https://src.fedoraproject.org/rpms/ima-evm-utils.git",
   "version": "1.6.2"
 }
