@@ -1,7 +1,7 @@
 {
   "branch": "rawhide",
-  "release": "2",
-  "sha": "21bdb752afed7b868513eb9b9ce95516a6742fff",
+  "release": "3",
+  "sha": "6d3bb06f94205178c177f74443a1f88a8bcfd780",
   "source": "https://src.fedoraproject.org/rpms/perl-URI.git",
   "version": "5.34"
 }
