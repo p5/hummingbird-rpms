@@ -1,7 +1,7 @@
 {
   "branch": "rawhide",
-  "release": "1",
-  "sha": "3584e2e32ea9b9b2acf3d2f6002806c662678a59",
+  "release": "2",
+  "sha": "5058d4308d2297a1d887ffa04234cc528eb32c5f",
   "source": "https://src.fedoraproject.org/rpms/python-productmd.git",
   "version": "1.50"
 }
