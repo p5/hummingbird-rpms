@@ -1,7 +1,7 @@
 {
   "branch": "rawhide",
-  "release": "6",
-  "sha": "21e6d401985ec1d9cc35944a9e6d92c48efad01e",
+  "release": "8",
+  "sha": "9b8709a75091d2fa82d667a4f37d37e9b9b1c74c",
   "source": "https://src.fedoraproject.org/rpms/tar.git",
   "version": "1.35"
 }
