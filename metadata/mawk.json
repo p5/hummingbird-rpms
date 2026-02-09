@@ -1,7 +1,7 @@
 {
   "branch": "rawhide",
-  "release": "6.20250131",
-  "sha": "107865f3e21471c4556635f77c3dbc28fdd38ba5",
+  "release": "6.20260129",
+  "sha": "651339a5ee1436add65dc443806eafcd45fc0f61",
   "source": "https://src.fedoraproject.org/rpms/mawk.git",
   "version": "1.3.4"
 }
