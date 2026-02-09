@@ -2,7 +2,7 @@
 
 Name:           python-%{srcname}
 Version:        0.36.2
-Release:        %autorelease
+Release:        6%{?dist}
 Summary:        An implementation-agnostic implementation of JSON reference resolution
 License:        MIT
 URL:            https://pypi.python.org/pypi/%{srcname}
