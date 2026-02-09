@@ -1,7 +1,7 @@
 {
   "branch": "rawhide",
-  "release": "5",
-  "sha": "a9a3403052d90cd0c2102cfa496ca371c95016c4",
+  "release": "6",
+  "sha": "0bc5e084a262d440ebc24524ba0596a1565093d5",
   "source": "https://src.fedoraproject.org/rpms/libmodulemd.git",
   "version": "2.15.2"
 }
