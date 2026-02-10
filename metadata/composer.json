@@ -1,7 +1,7 @@
 {
   "branch": "rawhide",
   "release": "1",
-  "sha": "37be2c86fa224089736cb0de23b30bc85df20471",
+  "sha": "bf47137490d857144f00e60663a41086d371d74e",
   "source": "https://src.fedoraproject.org/rpms/composer.git",
-  "version": "2.9.3"
+  "version": "2.9.5"
 }

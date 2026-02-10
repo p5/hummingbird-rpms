@@ -1,6 +1,6 @@
 # remirepo/fedora spec file for composer
 #
-# SPDX-FileCopyrightText:  Copyright 2015-2025 Remi Collet
+# SPDX-FileCopyrightText:  Copyright 2015-2026 Remi Collet
 # SPDX-License-Identifier: CECILL-2.1
 # http://www.cecill.info/licences/Licence_CeCILL_V2-en.txt
 #
@@ -8,7 +8,7 @@
 #
 
 
-%global gh_commit    fb3bee27676fd852a8a11ebbb1de19b4dada5aba
+%global gh_commit    72a8f8e653710e18d83e5dd531eb5a71fc3223e6
 %global gh_short     %(c=%{gh_commit}; echo ${c:0:7})
 %global gh_branch    2.0-dev
 %global gh_owner     composer
@@ -16,7 +16,7 @@
 %global api_version  2.9.0
 %global run_version  2.2.2
 
-%global upstream_version 2.9.3
+%global upstream_version 2.9.5
 #global upstream_prever  RC1
 #global upstream_lower   rc1
 
@@ -214,6 +214,18 @@ php -r '
 
 
 %changelog
+* Thu Jan 29 2026 Remi Collet <remi@remirepo.net> - 2.9.5-1
+- update to 2.9.5
+
+* Thu Jan 22 2026 Remi Collet <remi@remirepo.net> - 2.9.4-1
+- update to 2.9.4
+
+* Fri Jan 16 2026 Fedora Release Engineering <releng@fedoraproject.org> - 2.9.3-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_44_Mass_Rebuild
+
+* Fri Jan 16 2026 Fedora Release Engineering <releng@fedoraproject.org> - 2.9.3-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_44_Mass_Rebuild
+
 * Wed Dec 31 2025 Remi Collet <remi@remirepo.net> - 2.9.3-1
 - update to 2.9.3
 
