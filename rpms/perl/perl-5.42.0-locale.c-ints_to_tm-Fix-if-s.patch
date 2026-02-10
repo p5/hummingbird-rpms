@@ -1,0 +1,177 @@
+From b62ff81707d991558398f52d2aa4b11850360b4e Mon Sep 17 00:00:00 2001
+From: Karl Williamson <khw@cpan.org>
+Date: Sun, 9 Nov 2025 14:44:58 -0700
+Subject: [PATCH 04/10] locale.c: ints_to_tm: Fix #if's
+
+tl;dr:
+
+Fixes GH #23878
+
+I botched this in Perl 5.42.  These conditional compilation statements
+were just plain wrong, causing code to be skipped that should have been
+compiled.  It only affected the few hours of the year when daylight
+savings time is removed, so that the hour value is repeated.  We didn't
+have a good test for that.
+
+gory details:
+
+libc uses 'struct tm' to hold information about a given instant in
+time, containing fields for things like the year, month, hour, etc.  The
+libc function mktime() is used to normalize the structure, adjusting,
+say, an input Nov 31 to be Dec 01.
+
+One of the fields in the structure, 'is_dst', indicates if daylight
+savings is in effect, or whether that fact is unknown.  If unknown,
+mktime() is supposed to calculate the answer and to change 'is_dst'
+accordingly.  Some implementations appear to always do this calculation
+even when the input value says the result is known.  Others appear to
+honor it.
+
+Some libc implementations have extra fields in 'struct tm'.
+
+Perl has a stripped down version of mktime(), called mini_mktime(),
+written by Larry Wall a long time ago.  I don't know why.  This crippled
+version ignores locale and daylight time.  It also doesn't know about
+the extra fields in 'struct tm' that some implementations have.  Nor can
+it be extended to know about those fields, as they are dependent on
+timezone and daylight time, which it deliberately doesn't consider.
+
+The botched #ifdef's were supposed to compensate for both the extra
+fields in the struct and that some libc implementations always
+recalculate 'is_dst'.
+
+On systems with these fields, the botched #if's caused only
+mini_mktime() to be called.  This meant that these extra fields didn't
+get populated, and daylight time is never considered to be in effect.
+And 'is_dst' does not get changed from the input.
+
+On systems without these fields, the regular libc mktime() would be
+called appropriately.
+
+The bottom line is that for the portion of the year when daylight
+savings is not in effect, that portion worked properly.  The two extra
+fields would not be populated, so if some code were to read them, it
+would only get the proper values by chance.  We got no reports of this.
+I attribute that to the fact that the use of these is not portable, so
+code wouldn't tend to use them.  There are portable ways to access the
+information they contain.
+
+Tests were failing for the portions of the year when daylight savings is
+in effect; see GH #22351.  The code looked correct just reading it (not
+seeing the flaw in the #ifdef's), so I assumed that it was an issue in
+the libc implementations and instituted a workaround.  (I can't now
+think of a platform where there hasn't been a problem with a libc with
+something regarding locales, so that was a reasonable assumption.)
+
+Among other things (fixed in the next commit), that workaround overrode
+the 'is_dst' field after the call to mini_mktime(), so that the value
+actually passed to libc strftime() indicated that daylight is in effect.
+
+What happens next depends on the libc strftime() implementation.  It
+could conceivably itself call mktime() which might choose to override
+is_dst to be the correct value, and everything would always work.  The
+more likely possibility is that it just takes the values in the struct
+as-is.  Remember that those values on systems with the extra fields were
+calculated as if daylight savings wasn't in effect, but now we're
+telling strftime() to use those values as if it were in effect.  This
+is a discrepancy.  I'd have to trace through some libc implementations
+to understand why this discrepancy seems to not matter except at the
+transition time.
+
+But the bottom line is this commit removes that discrepancy, and causes
+mktime() to be called appropriately on systems where it wasn't, so
+strftime() should now function properly.
+
+(cherry picked from commit 63a16623780f2704009d0b7a5ed4e7f35230c392)
+---
+ locale.c | 47 ++++++++++++++++++++++++-----------------------
+ 1 file changed, 24 insertions(+), 23 deletions(-)
+
+diff --git a/locale.c b/locale.c
+index 8c153c8db0..5fab47b9af 100644
+--- a/locale.c
++++ b/locale.c
+@@ -8260,15 +8260,8 @@ Perl_sv_strftime_ints(pTHX_ SV * fmt, int sec, int min, int hour,
+     const char * locale = "C";
+ #endif
+ 
+-    /* A negative 'isdst' triggers backwards compatibility mode for
+-     * POSIX::strftime(), in which 0 is always passed to ints_to_tm() so that
+-     * the possibility of daylight savings time is never considered,  But, a 1
+-     * is eventually passed to libc strftime() so that it returns the results
+-     * it always has for a non-zero 'isdst'.  See GH #22351 */
+     struct tm  mytm;
+-    ints_to_tm(&mytm, locale, sec, min, hour, mday, mon, year,
+-                              MAX(0, isdst));
+-    mytm.tm_isdst = MIN(1, abs(isdst));
++    ints_to_tm(&mytm, locale, sec, min, hour, mday, mon, year, isdst);
+     return sv_strftime_common(fmt, locale, &mytm);
+ }
+ 
+@@ -8376,30 +8369,35 @@ S_ints_to_tm(pTHX_ struct tm * mytm,
+     if (isdst == 0) {
+         mini_mktime(mytm);
+ 
+-#  ifndef ALWAYS_RUN_MKTIME
+-
+-    /* When we don't always need libc mktime(), we call it only when we didn't
+-     * call mini_mktime() */
+-    } else {
++#  ifdef ALWAYS_RUN_MKTIME
+ 
+-#  else
+         /* Here will have to run libc mktime() in order to get the values of
+          * some fields that mini_mktime doesn't populate.  We don't want
+-         * mktime's side effect of looking for dst, so we have to have a
+-         * separate tm structure from which we copy just those fields into the
+-         * returned structure.  Initialize its values.  mytm should now be a
+-         * normalized version of the input. */
++         * mktime's side effect of looking for dst (because isdst==0), so we
++         * have to have a separate tm structure from which we copy just those
++         * fields into the structure we return.  Initialize its values, which
++         * have now been normalized by mini_mktime. */
+         aux_tm = *mytm;
+-        aux_tm.tm_isdst = isdst;
+         which_tm = &aux_tm;
+ 
++#  endif
++
++    }
++
++#  ifndef ALWAYS_RUN_MKTIME
++
++    else {  /* Don't run libc mktime if both:
++                1) we ran mini_mktime above; and
++                2) we don't have to always run libc mktime */
++
+ #  endif
+ 
+         /* Here, we need to run libc mktime(), either because we want to take
+          * dst into consideration, or because it calculates one or two fields
+-         * that we need that mini_mktime() doesn't handle.
+-         *
+-         * Unlike mini_mktime(), it does consider the locale, so have to switch
++         * that we need that mini_mktime() doesn't handle. */
++        which_tm->tm_isdst = isdst;
++
++        /* Unlike mini_mktime(), it does consider the locale, so have to switch
+          * to the correct one. */
+         const char * orig_TIME_locale = toggle_locale_c(LC_TIME, locale);
+         MKTIME_LOCK;
+@@ -8411,9 +8409,12 @@ S_ints_to_tm(pTHX_ struct tm * mytm,
+ 
+         MKTIME_UNLOCK;
+         restore_toggled_locale_c(LC_TIME, orig_TIME_locale);
++
++#  ifndef ALWAYS_RUN_MKTIME
++
+     }
+ 
+-#  if defined(HAS_TM_TM_GMTOFF) || defined(HAS_TM_TM_ZONE)
++#  else
+ 
+     /* And use the saved libc values for tm_gmtoff and tm_zone if we used an
+      * auxiliary struct to get them */
+-- 
+2.53.0
+

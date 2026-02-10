@@ -1,0 +1,26 @@
+From 82ace4467b92f48c4a7b4137f0ddd7e3673c5cf5 Mon Sep 17 00:00:00 2001
+From: Karl Williamson <khw@cpan.org>
+Date: Sun, 9 Nov 2025 14:42:00 -0700
+Subject: [PATCH 03/10] locale.c: Slight comment clarification
+
+(cherry picked from commit fae271acf4c75ba128115435bbc0ab50c3d69cf3)
+---
+ locale.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/locale.c b/locale.c
+index dda5e10e8c..8c153c8db0 100644
+--- a/locale.c
++++ b/locale.c
+@@ -8404,7 +8404,7 @@ S_ints_to_tm(pTHX_ struct tm * mytm,
+         const char * orig_TIME_locale = toggle_locale_c(LC_TIME, locale);
+         MKTIME_LOCK;
+ 
+-        /* which_tm points to an auxiliary copy if we ran mini_mktime().
++        /* 'which_tm' points to an auxiliary copy if we ran mini_mktime().
+          * Otherwise it points to the passed-in one which now gets populated
+          * directly. */
+         (void) mktime(which_tm);
+-- 
+2.53.0
+
