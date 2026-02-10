@@ -1,6 +1,6 @@
 Summary: A set of basic GNU tools commonly used in shell scripts
 Name:    coreutils
-Version: 9.9
+Version: 9.10
 Release: 1%{?dist}
 # some used parts of gnulib are under various variants of LGPL
 License: GPL-3.0-or-later AND GFDL-1.3-no-invariants-or-later AND LGPL-2.1-or-later AND LGPL-3.0-or-later
@@ -31,10 +31,6 @@ Patch103: coreutils-python3.patch
 
 # df --direct
 Patch104: coreutils-df-direct.patch
-
-# gnulib C23 support
-# https://github.com/coreutils/gnulib/commit/df17f4f37ed3ca373d23ad42eae51122bdb96626
-Patch105: coreutils-9.9-gnulib-c23.patch
 
 # (sb) lin18nux/lsb compliance - multibyte functionality patch
 Patch800: coreutils-i18n.patch
@@ -83,10 +79,7 @@ BuildRequires: python3-inotify
 
 %if 23 < 0%{?fedora} || 7 < 0%{?rhel}
 # needed by i18n test-cases
-BuildRequires: glibc-langpack-en
-BuildRequires: glibc-langpack-fr
-BuildRequires: glibc-langpack-ko
-BuildRequires: glibc-langpack-sv
+BuildRequires: glibc-all-langpacks
 %endif
 
 Requires: %{name}-common = %{version}-%{release}
@@ -196,6 +189,7 @@ for type in separate single; do
              --enable-install-program=arch \
              --enable-no-install-program=kill,uptime \
              --enable-systemd \
+             --enable-manual-url \
              --with-tty-group \
              DEFAULT_POSIX2_VERSION=200112 alternative=199209 || :
   %make_build all V=1
@@ -282,6 +276,21 @@ rm -f $RPM_BUILD_ROOT%{_infodir}/dir
 %license COPYING
 
 %changelog
+* Thu Feb 05 2026 Lukáš Zaoral <lzaoral@redhat.com> - 9.10-1
+- rebase to the latest upstream release (rhbz#2436690)
+- enable manual URLs in --help
+- use glibc-all-langpacks to make sure that all locale data required by tests
+  will be always present
+
+* Fri Jan 16 2026 Fedora Release Engineering <releng@fedoraproject.org> - 9.9-4
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_44_Mass_Rebuild
+
+* Fri Jan 16 2026 Fedora Release Engineering <releng@fedoraproject.org> - 9.9-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_44_Mass_Rebuild
+
+* Tue Jan 13 2026 Lukáš Zaoral <lzaoral@redhat.com> - 9.9-2
+- fix cut test failure on aarch64 rawhide (rhbz#2424302)
+
 * Wed Nov 26 2025 Lukáš Zaoral <lzaoral@redhat.com> - 9.9-1
 - rebase to latest upstream release (rhbz#2413803)
 
