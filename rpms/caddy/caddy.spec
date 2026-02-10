@@ -8,7 +8,7 @@
 
 Name:           caddy
 Version:        2.10.2
-Release:        %autorelease
+Release:        5%{?dist}
 Summary:        Web server with automatic HTTPS
 URL:            https://caddyserver.com
 
