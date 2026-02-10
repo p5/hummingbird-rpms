@@ -1,7 +1,7 @@
 {
   "branch": "rawhide",
-  "release": "3",
-  "sha": "6e8a1ea5f0c6c5a9d10784c718aac68eaa75f2c6",
+  "release": "1",
+  "sha": "46c8f24468c555741ea8063986751c42342cc2d2",
   "source": "https://src.fedoraproject.org/rpms/libssh.git",
-  "version": "0.11.3"
+  "version": "0.12.0"
 }
