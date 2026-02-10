@@ -1,6 +1,6 @@
 Name:           glib2
-Version:        2.87.0
-Release:        %autorelease
+Version:        2.87.2
+Release:        2%{?dist}
 Summary:        A library of handy utility functions
 
 License:        LGPL-2.1-or-later
@@ -14,6 +14,8 @@ Patch:          gnutls-hmac.patch
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=2192204
 Patch:          default-terminal.patch
+
+Patch:          glib2-girepository-fixup-ffi-test-for-big-endian-systems.patch
 
 BuildRequires:  gcc
 BuildRequires:  gcc-c++
@@ -90,7 +92,6 @@ Summary: glib static
 Requires: %{name}-devel = %{version}-%{release}
 Requires: pcre2-static
 Requires: sysprof-capture-static
-Requires: libatomic-static
 
 %description static
 The %{name}-static subpackage contains static libraries for %{name}.
