@@ -1,7 +1,7 @@
 {
   "branch": "rawhide",
-  "release": "15",
-  "sha": "ec9fef3124af9d35b4896cb725119ad281d2701c",
+  "release": "17",
+  "sha": "035ea525875ec9898604dd0b3af586eb8bec6f09",
   "source": "https://src.fedoraproject.org/rpms/babeltrace.git",
   "version": "1.5.11"
 }
