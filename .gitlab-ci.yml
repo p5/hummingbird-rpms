@@ -124,11 +124,37 @@ dist_git_update:
       git branch --quiet --force "${CI_COMMIT_BRANCH:-$CI_DEFAULT_BRANCH}" "origin/${CI_COMMIT_BRANCH:-$CI_DEFAULT_BRANCH}"
   script:
     - |
-      ./ci/dist_git.py update
-      ./ci/create_mr.sh --branch chore/dist-git-update --title "chore(rpms): Update dist-git packages"
+      # FIXME: Limited to 100 packages due to OOM kills on large-runner.
+      # Job was killed at package 275/368 with exit code 137 (OOMKilled).
+      # Need either: (1) larger runner with more memory, or (2) code optimization (shallow clones, batching).
+      ./ci/dist_git_update_multi_mr.sh --max=100
   rules:
     - !reference [.rules, schedule]
     - !reference [.rules, mr_manual]
+
+chore_mr_approval:
+  stage: deploy
+  environment:
+    name: chore-mr-approval
+    action: access
+  script:
+    - gitlab
+      --private-token "${CHORE_MR_APPROVAL_GITLAB_TOKEN}"
+      project-merge-request approve
+      --project-id "${CI_PROJECT_ID}"
+      --iid "${CI_MERGE_REQUEST_IID}"
+  allow_failure: true
+  rules:
+    - if: |
+        ($GITLAB_USER_NAME != 'chore-mr') && (
+          $GITLAB_USER_NAME != 'pipelines-as-code' ||
+          $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME !~ /chore\//
+        )
+      when: never
+    - !reference [.rules, mr]
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+      when: delayed
+      start_in: 10 minutes  # give Konflux some time to post its commit statuses
 
 deploy_hugo_tag:
   environment:
