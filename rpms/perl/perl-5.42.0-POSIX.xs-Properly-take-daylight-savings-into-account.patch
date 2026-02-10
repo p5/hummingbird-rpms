@@ -1,0 +1,55 @@
+From 3a828c0f51971eafa9b4c56bbc4ed273d22d2be1 Mon Sep 17 00:00:00 2001
+From: Karl Williamson <khw@cpan.org>
+Date: Sun, 25 Jan 2026 17:19:00 +0000
+Subject: [PATCH 06/10] POSIX.xs: Properly take daylight savings into account
+
+Because of the bug fixed two commits ago, this function was changed in
+5.42 to have a work around, which is no longer needed.
+
+(cherry picked from commit fe93cfc3c5837dc63888ff4c767481f2fce9f48f)
+---
+ ext/POSIX/POSIX.xs     | 6 ++----
+ ext/POSIX/lib/POSIX.pm | 2 +-
+ 2 files changed, 3 insertions(+), 5 deletions(-)
+
+diff --git a/ext/POSIX/POSIX.xs b/ext/POSIX/POSIX.xs
+index 2a8feae404..2a0573299b 100644
+--- a/ext/POSIX/POSIX.xs
++++ b/ext/POSIX/POSIX.xs
+@@ -3588,7 +3588,7 @@ difftime(time1, time2)
+ #     sv_setpv(TARG, ...) could be used rather than
+ #     ST(0) = sv_2mortal(newSVpv(...))
+ void
+-strftime(fmt, sec, min, hour, mday, mon, year, wday = -1, yday = -1, isdst = 0)
++strftime(fmt, sec, min, hour, mday, mon, year, wday = -1, yday = -1, isdst = -1)
+ 	SV *		fmt
+ 	int		sec
+ 	int		min
+@@ -3604,10 +3604,8 @@ strftime(fmt, sec, min, hour, mday, mon, year, wday = -1, yday = -1, isdst = 0)
+             PERL_UNUSED_ARG(wday);
+             PERL_UNUSED_ARG(yday);
+ 
+-            /* -isdst triggers backwards compatibility mode for non-zero
+-             * 'isdst' */
+             SV *sv = sv_strftime_ints(fmt, sec, min, hour, mday, mon, year,
+-                                           -abs(isdst));
++                                      isdst);
+ 	    if (sv) {
+                 sv = sv_2mortal(sv);
+             }
+diff --git a/ext/POSIX/lib/POSIX.pm b/ext/POSIX/lib/POSIX.pm
+index 688b2c0875..af5789a612 100644
+--- a/ext/POSIX/lib/POSIX.pm
++++ b/ext/POSIX/lib/POSIX.pm
+@@ -4,7 +4,7 @@ use warnings;
+ 
+ our ($AUTOLOAD, %SIGRT);
+ 
+-our $VERSION = '2.23';
++our $VERSION = '2.23_01';
+ 
+ require XSLoader;
+ 
+-- 
+2.53.0
+

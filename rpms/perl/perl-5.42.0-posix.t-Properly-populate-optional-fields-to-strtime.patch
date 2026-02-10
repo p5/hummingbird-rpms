@@ -1,0 +1,34 @@
+From 9dce4787ecf375b3b434e36c28ad6fc052c12818 Mon Sep 17 00:00:00 2001
+From: Karl Williamson <khw@cpan.org>
+Date: Fri, 14 Nov 2025 07:04:29 -0700
+Subject: [PATCH 01/10] posix.t: Properly populate optional fields to strtime
+
+The next commits that fix some bugs showed these were not properly
+getting initialized.
+
+(cherry picked from commit aaaad57879ff127415f470d6c29777a696e97459)
+---
+ ext/POSIX/t/posix.t | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/ext/POSIX/t/posix.t b/ext/POSIX/t/posix.t
+index 999197aa91..b4b82e7fb1 100644
+--- a/ext/POSIX/t/posix.t
++++ b/ext/POSIX/t/posix.t
+@@ -273,7 +273,12 @@ print POSIX::strftime("ok $test # %H:%M, on %m/%d/%y\n", localtime());
+ # input fields to strftime().
+ sub try_strftime {
+     my $expect = shift;
+-    my $got = POSIX::strftime("%a %b %d %H:%M:%S %Y %j", @_);
++    my @input = @_;
++
++    # Add zeros to missing parameters.  The final 0 is for isdst, and the zero
++    # forces use of mini_mktime (unless the code changes).
++    push @input, 0 while @input < 9;
++    my $got = POSIX::strftime("%a %b %d %H:%M:%S %Y %j", @input);
+     is($got, $expect, "validating mini_mktime() and strftime(): $expect");
+ }
+ 
+-- 
+2.53.0
+
