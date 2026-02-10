@@ -3,5 +3,7 @@
   "release": "1",
   "sha": "cd3e490d533b1b4c3aaea5cddbc7aec5e0e82fb0",
   "source": "https://src.fedoraproject.org/rpms/python-urllib3.git",
-  "version": "2.6.3"
+  "version": "2.6.3",
+  "modification_status": "modified",
+  "modification_reason": "Pre-existing modification - requires review"
 }

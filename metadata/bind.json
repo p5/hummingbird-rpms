@@ -3,5 +3,6 @@
   "release": "2",
   "sha": "c92030d6aabf59165bee67af13eddecb6e14c82d",
   "source": "https://src.fedoraproject.org/rpms/bind.git",
-  "version": "9.18.44"
+  "version": "9.18.44",
+  "modification_status": "clean"
 }

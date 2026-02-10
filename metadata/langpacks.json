@@ -3,5 +3,6 @@
   "release": "6",
   "sha": "a62cc78985ac7e81674d86c2a1c2c6dcbc0729b9",
   "source": "https://src.fedoraproject.org/rpms/langpacks.git",
-  "version": "4.2"
+  "version": "4.2",
+  "modification_status": "clean"
 }

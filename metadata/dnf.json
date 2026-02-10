@@ -3,5 +3,6 @@
   "release": "1",
   "sha": "dd7d4efb45cb58e1df05e6c192ffb4aef54946ff",
   "source": "https://src.fedoraproject.org/rpms/dnf.git",
-  "version": "4.24.0"
+  "version": "4.24.0",
+  "modification_status": "clean"
 }

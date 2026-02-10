@@ -3,5 +3,6 @@
   "release": "1",
   "sha": "985170fdc65195ca5c0b94edba879c19585653b2",
   "source": "https://src.fedoraproject.org/rpms/systemd.git",
-  "version": "259.1"
+  "version": "259.1",
+  "modification_status": "clean"
 }

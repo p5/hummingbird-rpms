@@ -3,5 +3,6 @@
   "release": "2",
   "sha": "cdbfb1b7d00e057f541bb2c88fd8aa5d09bc235d",
   "source": "https://src.fedoraproject.org/rpms/rust-rpm-sequoia.git",
-  "version": "1.10.0"
+  "version": "1.10.0",
+  "modification_status": "clean"
 }

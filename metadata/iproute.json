@@ -3,5 +3,6 @@
   "release": "2",
   "sha": "c6935a491e1fe722e8af5301563afb18c2022566",
   "source": "https://src.fedoraproject.org/rpms/iproute.git",
-  "version": "6.17.0"
+  "version": "6.17.0",
+  "modification_status": "clean"
 }

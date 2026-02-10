@@ -3,5 +3,6 @@
   "release": "3",
   "sha": "14592e725f91942bccc34f0f9603c0ac781e20dd",
   "source": "https://src.fedoraproject.org/rpms/mariadb-connector-c.git",
-  "version": "3.4.8"
+  "version": "3.4.8",
+  "modification_status": "clean"
 }

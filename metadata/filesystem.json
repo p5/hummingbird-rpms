@@ -3,5 +3,6 @@
   "release": "52",
   "sha": "cf9061fec83ccac5a1ef2359b7a91e39f0c406f6",
   "source": "https://src.fedoraproject.org/rpms/filesystem.git",
-  "version": "3.18"
+  "version": "3.18",
+  "modification_status": "clean"
 }

@@ -3,5 +3,6 @@
   "release": "3",
   "sha": "a7b014aeb627386f4a1dbaa9957c51257ce8cefe",
   "source": "https://src.fedoraproject.org/rpms/mpfr.git",
-  "version": "4.2.2"
+  "version": "4.2.2",
+  "modification_status": "clean"
 }

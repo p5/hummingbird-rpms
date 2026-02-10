@@ -3,5 +3,6 @@
   "release": "5",
   "sha": "0f2dfcde9312201012d21149c7488e4d9b12e247",
   "source": "https://src.fedoraproject.org/rpms/libfido2.git",
-  "version": "1.16.0"
+  "version": "1.16.0",
+  "modification_status": "clean"
 }

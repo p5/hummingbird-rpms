@@ -3,5 +3,6 @@
   "release": "2",
   "sha": "f0ec5d61facb0fda9660ab735b55825151257fb5",
   "source": "https://src.fedoraproject.org/rpms/libarchive.git",
-  "version": "3.8.4"
+  "version": "3.8.4",
+  "modification_status": "clean"
 }

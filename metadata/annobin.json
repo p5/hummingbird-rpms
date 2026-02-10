@@ -3,5 +3,6 @@
   "release": "3",
   "sha": "c31c4933043c343ce2c7d2a0c634d167b02ff09d",
   "source": "https://src.fedoraproject.org/rpms/annobin.git",
-  "version": "13.05"
+  "version": "13.05",
+  "modification_status": "clean"
 }

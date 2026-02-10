@@ -3,5 +3,6 @@
   "release": "2",
   "sha": "dfd0ae1fe56159ce390b6aa02941495b23b56476",
   "source": "https://src.fedoraproject.org/rpms/expat.git",
-  "version": "2.7.3"
+  "version": "2.7.3",
+  "modification_status": "clean"
 }

@@ -3,5 +3,6 @@
   "release": "18",
   "sha": "363b30b44060d1b6ee32465eaf0e86a05a20ed93",
   "source": "https://src.fedoraproject.org/rpms/python-types-requests.git",
-  "version": "2.26.1"
+  "version": "2.26.1",
+  "modification_status": "clean"
 }

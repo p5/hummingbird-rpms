@@ -3,5 +3,6 @@
   "release": "20.1",
   "sha": "888473271d1159f60f9ba1c39856bf522fbdd120",
   "source": "https://src.fedoraproject.org/rpms/ansible-packaging.git",
-  "version": "1"
+  "version": "1",
+  "modification_status": "clean"
 }

@@ -3,5 +3,6 @@
   "release": "4",
   "sha": "cf9fe3ec7187a4c0507f6be0f896d32bc27b97ba",
   "source": "https://src.fedoraproject.org/rpms/npth.git",
-  "version": "1.8"
+  "version": "1.8",
+  "modification_status": "clean"
 }

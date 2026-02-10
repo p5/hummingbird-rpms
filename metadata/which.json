@@ -3,5 +3,6 @@
   "release": "4",
   "sha": "5c7ab752a3bd9264b2e8f5b0fe444457e45e9ce3",
   "source": "https://src.fedoraproject.org/rpms/which.git",
-  "version": "2.23"
+  "version": "2.23",
+  "modification_status": "clean"
 }

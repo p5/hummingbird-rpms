@@ -3,5 +3,6 @@
   "release": "6",
   "sha": "9ccbe5c8fe5e1a83916ed7c51888fb89cca7a2db",
   "source": "https://src.fedoraproject.org/rpms/python-referencing.git",
-  "version": "0.36.2"
+  "version": "0.36.2",
+  "modification_status": "clean"
 }

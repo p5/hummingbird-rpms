@@ -3,5 +3,6 @@
   "release": "9",
   "sha": "2054b5691be6e18547764a6339bfa5e85c881086",
   "source": "https://src.fedoraproject.org/rpms/python-pygments.git",
-  "version": "2.19.1"
+  "version": "2.19.1",
+  "modification_status": "clean"
 }

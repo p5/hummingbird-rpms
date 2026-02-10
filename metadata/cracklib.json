@@ -3,5 +3,6 @@
   "release": "10",
   "sha": "af9621917af4a63e9fb41b6b9184bdf1efbfefeb",
   "source": "https://src.fedoraproject.org/rpms/cracklib.git",
-  "version": "2.9.11"
+  "version": "2.9.11",
+  "modification_status": "clean"
 }

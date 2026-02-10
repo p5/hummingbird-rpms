@@ -3,5 +3,6 @@
   "release": "2",
   "sha": "5481649b06747b8e4c9e07f8d246468c26d4e04d",
   "source": "https://src.fedoraproject.org/rpms/ngtcp2.git",
-  "version": "1.19.0"
+  "version": "1.19.0",
+  "modification_status": "clean"
 }

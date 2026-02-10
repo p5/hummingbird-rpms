@@ -3,5 +3,6 @@
   "release": "4",
   "sha": "5b39e1ec2abd12c6ef67c773237930a07d0fe663",
   "source": "https://src.fedoraproject.org/rpms/libXrender.git",
-  "version": "0.9.12"
+  "version": "0.9.12",
+  "modification_status": "clean"
 }

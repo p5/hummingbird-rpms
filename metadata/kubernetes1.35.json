@@ -3,5 +3,6 @@
   "release": "3",
   "sha": "fdf5aba905bbdac70dfb3786a9b2fce86e38ecd7",
   "source": "https://src.fedoraproject.org/rpms/kubernetes1.35.git",
-  "version": "1.35.0"
+  "version": "1.35.0",
+  "modification_status": "clean"
 }

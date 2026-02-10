@@ -3,5 +3,6 @@
   "release": "6",
   "sha": "945137d5a93aee583d765e95f1c4feb7a602e363",
   "source": "https://src.fedoraproject.org/rpms/debugedit.git",
-  "version": "5.2"
+  "version": "5.2",
+  "modification_status": "clean"
 }

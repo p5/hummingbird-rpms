@@ -92,7 +92,12 @@ def build_pac_variables(branch: str, tenant: str, resource_type: str) -> dict:
             metadata_file = ROOT_DIR / "metadata" / f"{dname}.json"
             metadata = load_yaml_file(metadata_file)
             upstream_name = dname  # Default to directory name
-            if metadata and "source" in metadata:
+
+            # For native packages, use the directory name as the package name
+            # For Fedora packages, extract from source URL (handles renamed packages like golang1.25 -> golang)
+            if metadata and metadata.get("modification_status") == "native":
+                upstream_name = dname
+            elif metadata and "source" in metadata:
                 # Extract package name from source URL (e.g., https://.../rpms/tomcat.git -> tomcat)
                 upstream_name = Path(metadata["source"]).stem
 

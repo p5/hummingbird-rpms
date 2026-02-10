@@ -3,5 +3,6 @@
   "release": "28",
   "sha": "a8cc6d6c589217eb539f1aa8be152f63a79cab45",
   "source": "https://src.fedoraproject.org/rpms/kernel-srpm-macros.git",
-  "version": "1.0"
+  "version": "1.0",
+  "modification_status": "clean"
 }

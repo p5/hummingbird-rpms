@@ -3,5 +3,6 @@
   "release": "5",
   "sha": "359527df1112dcf1d963818819742a8867299437",
   "source": "https://src.fedoraproject.org/rpms/gnupg2.git",
-  "version": "2.4.9"
+  "version": "2.4.9",
+  "modification_status": "clean"
 }

@@ -3,5 +3,6 @@
   "release": "6",
   "sha": "2cab7e7b6325c467f7f8e556b5d07149f84f9ffa",
   "source": "https://src.fedoraproject.org/rpms/efi-rpm-macros.git",
-  "version": "6"
+  "version": "6",
+  "modification_status": "clean"
 }

@@ -3,5 +3,6 @@
   "release": "6",
   "sha": "075f81d536230479fe40a7079ef5c53d0eeeb2c0",
   "source": "https://src.fedoraproject.org/rpms/rootfiles.git",
-  "version": "9.0"
+  "version": "9.0",
+  "modification_status": "clean"
 }

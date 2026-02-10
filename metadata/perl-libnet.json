@@ -3,5 +3,6 @@
   "release": "522",
   "sha": "a10e009cd434690da1de9ff0163c9d0c90054ed4",
   "source": "https://src.fedoraproject.org/rpms/perl-libnet.git",
-  "version": "3.15"
+  "version": "3.15",
+  "modification_status": "clean"
 }

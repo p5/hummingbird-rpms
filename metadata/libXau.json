@@ -3,5 +3,6 @@
   "release": "4",
   "sha": "9a1ce3347610e851acec29c200b99ccf29f01369",
   "source": "https://src.fedoraproject.org/rpms/libXau.git",
-  "version": "1.0.12"
+  "version": "1.0.12",
+  "modification_status": "clean"
 }

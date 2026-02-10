@@ -3,5 +3,6 @@
   "release": "521",
   "sha": "ac3cb68f1820735b7b8b3ae0834c214cdc25a960",
   "source": "https://src.fedoraproject.org/rpms/perl-MIME-Base64.git",
-  "version": "3.16"
+  "version": "3.16",
+  "modification_status": "clean"
 }

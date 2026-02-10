@@ -3,5 +3,6 @@
   "release": "9",
   "sha": "fbe80fe0cd3bc267bebf650a889626e225ca6312",
   "source": "https://src.fedoraproject.org/rpms/libmpc.git",
-  "version": "1.3.1"
+  "version": "1.3.1",
+  "modification_status": "clean"
 }

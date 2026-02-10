@@ -3,5 +3,6 @@
   "release": "3",
   "sha": "da4ebbd1399bfc4dc96cec0dad7db4abf81490c6",
   "source": "https://src.fedoraproject.org/rpms/libxcrypt.git",
-  "version": "4.5.2"
+  "version": "4.5.2",
+  "modification_status": "clean"
 }

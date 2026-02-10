@@ -44,9 +44,9 @@ sign_off: bool = False
 
 class PackageMetadata(TypedDict):
     """Metadata stored in metadata/<package>.json for each package."""
-    source: str
-    branch: str
-    sha: str
+    source: NotRequired[str]  # Not present for native packages
+    branch: NotRequired[str]  # Not present for native packages
+    sha: NotRequired[str]  # Not present for native packages
     version: str
     release: str
     modification_status: NotRequired[Literal["clean", "modified", "native"]]

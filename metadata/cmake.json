@@ -3,5 +3,6 @@
   "release": "3",
   "sha": "aaa289ec8e04448b1b35e24f7b5d9edf0fad135a",
   "source": "https://src.fedoraproject.org/rpms/cmake.git",
-  "version": "3.31.10"
+  "version": "3.31.10",
+  "modification_status": "clean"
 }

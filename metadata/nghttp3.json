@@ -3,5 +3,6 @@
   "release": "1",
   "sha": "9ebec8bc5d9b5a6e7f0cdb5d9608408fd130fa9f",
   "source": "https://src.fedoraproject.org/rpms/nghttp3.git",
-  "version": "1.15.0"
+  "version": "1.15.0",
+  "modification_status": "clean"
 }

@@ -3,5 +3,6 @@
   "release": "3",
   "sha": "8b045bf36247a54ac38b48e19511aa945cedd80c",
   "source": "https://src.fedoraproject.org/rpms/rust.git",
-  "version": "1.93.0"
+  "version": "1.93.0",
+  "modification_status": "clean"
 }

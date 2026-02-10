@@ -3,5 +3,6 @@
   "release": "2",
   "sha": "874f6f56bf59ee2722eb8374dca609c55a6b0676",
   "source": "https://src.fedoraproject.org/rpms/perl-File-Temp.git",
-  "version": "0.231.200"
+  "version": "0.231.200",
+  "modification_status": "clean"
 }

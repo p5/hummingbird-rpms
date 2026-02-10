@@ -3,5 +3,6 @@
   "release": "2",
   "sha": "80bc682b8faedb3880d9ea427d11d8baeb0fb581",
   "source": "https://src.fedoraproject.org/rpms/python-pip.git",
-  "version": "25.3"
+  "version": "25.3",
+  "modification_status": "clean"
 }

@@ -3,5 +3,6 @@
   "release": "2",
   "sha": "947969671e5f6179d586e82d653d038882a07532",
   "source": "https://src.fedoraproject.org/rpms/perl-IO-Socket-SSL.git",
-  "version": "2.098"
+  "version": "2.098",
+  "modification_status": "clean"
 }

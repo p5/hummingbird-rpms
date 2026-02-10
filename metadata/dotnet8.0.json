@@ -3,5 +3,7 @@
   "release": "3",
   "sha": "d46707aa89b1ce3873546354180673e511d9f126",
   "source": "https://src.fedoraproject.org/rpms/dotnet8.0.git",
-  "version": "8.0.123"
+  "version": "8.0.123",
+  "modification_status": "modified",
+  "modification_reason": "Pre-existing modification - requires review"
 }

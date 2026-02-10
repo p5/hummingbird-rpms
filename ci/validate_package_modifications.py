@@ -9,7 +9,7 @@ accurately reflects the actual state of packages.
 import argparse
 import json
 import logging
-import subprocess
+import os
 import sys
 import tempfile
 from pathlib import Path
@@ -94,10 +94,10 @@ def validate_package(package_name: str, check_actual_state: bool = True) -> tupl
     if status not in ['clean', 'modified', 'native']:
         return False, f"{package_name}: Invalid modification_status '{status}'"
 
-    # Check 3: Native packages must point to Hummingbird
+    # Check 3: Native packages should not have source/branch/sha fields
     if status == 'native':
-        if 'gitlab.com/redhat/hummingbird' not in metadata['source']:
-            return False, f"{package_name}: Marked as native but source is {metadata['source']}"
+        if 'source' in metadata or 'branch' in metadata or 'sha' in metadata:
+            return False, f"{package_name}: Native package should not have source/branch/sha fields"
         # Native packages don't need further validation
         return True, None
 
@@ -130,6 +130,13 @@ def validate_package(package_name: str, check_actual_state: bool = True) -> tupl
             # This could be due to network issues, missing branches, etc.
 
     return True, None
+
+
+def find_packages_without_metadata() -> list[str]:
+    """Find packages in rpms/ that don't have metadata files."""
+    all_packages = {p.name for p in RPMS_DIR.iterdir() if p.is_dir()}
+    packages_with_metadata = {p.stem for p in METADATA_DIR.glob('*.json')}
+    return sorted(all_packages - packages_with_metadata)
 
 
 def validate_packages(packages: list[str], check_actual_state: bool = True) -> int:
@@ -166,8 +173,6 @@ def validate_packages(packages: list[str], check_actual_state: bool = True) -> i
 
 
 def main():
-    import os  # Import here for get_changed_packages_in_mr
-
     parser = argparse.ArgumentParser(
         description='Validate package modification_status metadata',
         formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -213,6 +218,16 @@ Examples:
         for pkg in packages:
             print(f"  - {pkg}")
     elif args.all:
+        # Check for packages missing metadata files
+        missing_metadata = find_packages_without_metadata()
+        if missing_metadata:
+            print(f"\nERROR: Found {len(missing_metadata)} package(s) without metadata files:", file=sys.stderr)
+            for pkg in missing_metadata:
+                print(f"  - {pkg}", file=sys.stderr)
+            print("\nRun the migration script to create metadata for these packages:", file=sys.stderr)
+            print("  ./ci/migrate_metadata.py", file=sys.stderr)
+            return 1
+
         # Get all packages with metadata
         packages = sorted([p.stem for p in METADATA_DIR.glob('*.json')])
         print(f"Validating all {len(packages)} packages...")

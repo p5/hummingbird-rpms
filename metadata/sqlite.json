@@ -3,5 +3,6 @@
   "release": "1",
   "sha": "9685f7028013003dd494070e79e8b80a9e88e6ea",
   "source": "https://src.fedoraproject.org/rpms/sqlite.git",
-  "version": "3.51.2"
+  "version": "3.51.2",
+  "modification_status": "clean"
 }

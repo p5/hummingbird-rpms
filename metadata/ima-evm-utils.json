@@ -3,5 +3,6 @@
   "release": "8",
   "sha": "780bde13310df957d5e1a7c5740f3e9ac8555ee6",
   "source": "https://src.fedoraproject.org/rpms/ima-evm-utils.git",
-  "version": "1.6.2"
+  "version": "1.6.2",
+  "modification_status": "clean"
 }

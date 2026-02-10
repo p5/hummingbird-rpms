@@ -3,5 +3,6 @@
   "release": "5",
   "sha": "210c26553207899b2091010b732571d3ba11dd14",
   "source": "https://src.fedoraproject.org/rpms/libksba.git",
-  "version": "1.6.7"
+  "version": "1.6.7",
+  "modification_status": "clean"
 }

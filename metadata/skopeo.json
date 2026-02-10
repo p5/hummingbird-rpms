@@ -3,5 +3,6 @@
   "release": "1",
   "sha": "54387fa261062ed63d80640338e445a0e68a2e05",
   "source": "https://src.fedoraproject.org/rpms/skopeo.git",
-  "version": "1.21.0"
+  "version": "1.21.0",
+  "modification_status": "clean"
 }

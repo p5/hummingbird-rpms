@@ -3,5 +3,6 @@
   "release": "5",
   "sha": "c1bfd2e6c2ce52689d8c6aa0907309729b8c02d8",
   "source": "https://src.fedoraproject.org/rpms/vmaf.git",
-  "version": "3.0.0"
+  "version": "3.0.0",
+  "modification_status": "clean"
 }

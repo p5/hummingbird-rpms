@@ -3,5 +3,6 @@
   "release": "12",
   "sha": "8dd1f0bf3513c430e49cfd2b125a3422ecb778b0",
   "source": "https://src.fedoraproject.org/rpms/krb5.git",
-  "version": "1.21.3"
+  "version": "1.21.3",
+  "modification_status": "clean"
 }

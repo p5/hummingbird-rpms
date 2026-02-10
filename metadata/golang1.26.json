@@ -3,5 +3,7 @@
   "release": "1",
   "sha": "30f6caf69bce62c0317748568e3c82ded2e7feb2",
   "source": "https://src.fedoraproject.org/rpms/golang.git",
-  "version": "1.26~rc1"
+  "version": "1.26~rc1",
+  "modification_status": "modified",
+  "modification_reason": "Pre-existing modification - requires review"
 }

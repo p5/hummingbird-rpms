@@ -3,5 +3,6 @@
   "release": "3",
   "sha": "9d45b2347c1b45b93dd2ee39b281b677d83e4e1b",
   "source": "https://src.fedoraproject.org/rpms/ctags.git",
-  "version": "6.2.1"
+  "version": "6.2.1",
+  "modification_status": "clean"
 }

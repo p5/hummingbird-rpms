@@ -3,5 +3,6 @@
   "release": "4",
   "sha": "452ba2859e004f9f0ac8cc9998432f506cc82434",
   "source": "https://src.fedoraproject.org/rpms/pkgconf.git",
-  "version": "2.3.0"
+  "version": "2.3.0",
+  "modification_status": "clean"
 }

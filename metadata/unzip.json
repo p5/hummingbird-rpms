@@ -3,5 +3,6 @@
   "release": "69",
   "sha": "dcc10bc2ce9c47e15c3b130f30da5408461219c9",
   "source": "https://src.fedoraproject.org/rpms/unzip.git",
-  "version": "6.0"
+  "version": "6.0",
+  "modification_status": "clean"
 }

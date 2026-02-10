@@ -3,5 +3,6 @@
   "release": "1",
   "sha": "349a1a64829ae05a7b151aafffe152058988bd53",
   "source": "https://src.fedoraproject.org/rpms/nss.git",
-  "version": "3.119.1"
+  "version": "3.119.1",
+  "modification_status": "clean"
 }

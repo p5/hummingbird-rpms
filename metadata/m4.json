@@ -3,5 +3,6 @@
   "release": "4",
   "sha": "691fa34ab7474eb9b052b78683bc62d91444925f",
   "source": "https://src.fedoraproject.org/rpms/m4.git",
-  "version": "1.4.20"
+  "version": "1.4.20",
+  "modification_status": "clean"
 }

@@ -3,5 +3,6 @@
   "release": "4",
   "sha": "9e5f82701e2f5132dd549c98666135b9c01725fb",
   "source": "https://src.fedoraproject.org/rpms/php-pecl-zip.git",
-  "version": "1.22.7"
+  "version": "1.22.7",
+  "modification_status": "clean"
 }

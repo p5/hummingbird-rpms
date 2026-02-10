@@ -3,5 +3,6 @@
   "release": "2",
   "sha": "2cb24a7e723bf909bafea7a1c76a381314c934b0",
   "source": "https://src.fedoraproject.org/rpms/libpng.git",
-  "version": "1.6.53"
+  "version": "1.6.53",
+  "modification_status": "clean"
 }

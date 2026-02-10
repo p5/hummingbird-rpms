@@ -3,5 +3,6 @@
   "release": "1",
   "sha": "1ce085a0c64ec86069a2986c09c7fca1e3152a35",
   "source": "https://src.fedoraproject.org/rpms/nginx.git",
-  "version": "1.28.2"
+  "version": "1.28.2",
+  "modification_status": "clean"
 }

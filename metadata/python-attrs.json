@@ -3,5 +3,6 @@
   "release": "2",
   "sha": "9a1859380d8fd86bc34e3426774b4dc325796f4b",
   "source": "https://src.fedoraproject.org/rpms/python-attrs.git",
-  "version": "25.4.0"
+  "version": "25.4.0",
+  "modification_status": "clean"
 }

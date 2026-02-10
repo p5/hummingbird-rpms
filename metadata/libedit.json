@@ -3,5 +3,6 @@
   "release": "58.20251016cvs",
   "sha": "bbb0f53588dd609569cd331867b17193f4a2098b",
   "source": "https://src.fedoraproject.org/rpms/libedit.git",
-  "version": "3.1"
+  "version": "3.1",
+  "modification_status": "clean"
 }

@@ -3,5 +3,6 @@
   "release": "4",
   "sha": "fa7bd4af8fb66691219b10da88f69ed88a6b3388",
   "source": "https://src.fedoraproject.org/rpms/gettext.git",
-  "version": "0.26"
+  "version": "0.26",
+  "modification_status": "clean"
 }

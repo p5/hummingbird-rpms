@@ -3,5 +3,6 @@
   "release": "2",
   "sha": "3ed1feca0e1f02d46784bb10fea748ab8b94c143",
   "source": "https://src.fedoraproject.org/rpms/less.git",
-  "version": "691"
+  "version": "691",
+  "modification_status": "clean"
 }

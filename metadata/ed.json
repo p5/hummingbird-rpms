@@ -3,5 +3,6 @@
   "release": "2",
   "sha": "2547f2022ade477a2291137e8d3207fba4cce8b1",
   "source": "https://src.fedoraproject.org/rpms/ed.git",
-  "version": "1.22.4"
+  "version": "1.22.4",
+  "modification_status": "clean"
 }

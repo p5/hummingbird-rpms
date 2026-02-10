@@ -3,5 +3,6 @@
   "release": "4",
   "sha": "94fa6309c9de53c4c9e2ad69be6ff23c8d094b46",
   "source": "https://src.fedoraproject.org/rpms/hostname.git",
-  "version": "3.25"
+  "version": "3.25",
+  "modification_status": "clean"
 }

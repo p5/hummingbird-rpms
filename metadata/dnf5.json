@@ -3,5 +3,7 @@
   "release": "7",
   "sha": "5e8cce04396a4c2b1bf2e41d2219a78989f8a61d",
   "source": "https://src.fedoraproject.org/rpms/dnf5.git",
-  "version": "5.3.0.0"
+  "version": "5.3.0.0",
+  "modification_status": "modified",
+  "modification_reason": "Pre-existing modification - requires review"
 }

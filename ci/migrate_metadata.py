@@ -15,13 +15,13 @@ import logging
 import sys
 import tempfile
 from pathlib import Path
+from typing import Literal
 
 # Import from dist_git.py
 sys.path.insert(0, str(Path(__file__).parent))
 from dist_git import (
     METADATA_DIR,
     RPMS_DIR,
-    ROOT_DIR,
     PackageMetadata,
     is_package_unmodified,
     run_git,
@@ -67,9 +67,6 @@ def create_native_metadata(package_name: str) -> PackageMetadata:
     version, release = get_package_version_release(package_name)
 
     metadata: PackageMetadata = {
-        "source": "https://gitlab.com/redhat/hummingbird/rpms",
-        "branch": "main",
-        "sha": "native-package",
         "version": version,
         "release": release,
         "modification_status": "native",
@@ -94,6 +91,7 @@ def migrate_metadata_file(metadata_path: Path, dry_run: bool = False) -> tuple[s
         return package_name, metadata['modification_status']
 
     # Determine status
+    status: Literal["clean", "modified", "native"]
     if is_native_package(metadata['source']):
         status = 'native'
         logging.info(f"{package_name}: Native package")
@@ -137,7 +135,7 @@ def migrate_metadata_file(metadata_path: Path, dry_run: bool = False) -> tuple[s
 def migrate_all(dry_run: bool = False):
     """Migrate all metadata files and create missing ones."""
 
-    stats = {
+    stats: dict[str, list[str]] = {
         'clean': [],
         'modified': [],
         'native': [],

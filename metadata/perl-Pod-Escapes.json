@@ -3,5 +3,6 @@
   "release": "521",
   "sha": "13f66a4319ed5877caacde03ad81cccc12b03bb1",
   "source": "https://src.fedoraproject.org/rpms/perl-Pod-Escapes.git",
-  "version": "1.07"
+  "version": "1.07",
+  "modification_status": "clean"
 }

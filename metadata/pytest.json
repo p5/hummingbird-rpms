@@ -3,5 +3,6 @@
   "release": "2",
   "sha": "0ef593a830a8129b2d273520d10d3591c6eeb14d",
   "source": "https://src.fedoraproject.org/rpms/pytest.git",
-  "version": "8.4.2"
+  "version": "8.4.2",
+  "modification_status": "clean"
 }

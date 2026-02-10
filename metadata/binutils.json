@@ -3,5 +3,6 @@
   "release": "4",
   "sha": "1ff5036d073647776041628b5646fef4f2b832d4",
   "source": "https://src.fedoraproject.org/rpms/binutils.git",
-  "version": "2.45.1"
+  "version": "2.45.1",
+  "modification_status": "clean"
 }

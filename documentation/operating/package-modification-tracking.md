@@ -133,7 +133,7 @@ This validation ensures:
 1. All packages have a `modification_status` field
 2. The value is one of: `clean`, `modified`, `native`
 3. Modified packages have a `modification_reason`
-4. Native packages point to Hummingbird GitLab repo
+4. Native packages do not have source/branch/sha fields (Hummingbird-native only)
 
 The validation runs on every merge request and push to main, failing the build
 if metadata is inconsistent.

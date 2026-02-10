@@ -3,5 +3,6 @@
   "release": "521",
   "sha": "8d0a740f39cbd2c1af75ad80280eb0bd7597f264",
   "source": "https://src.fedoraproject.org/rpms/perl-Encode.git",
-  "version": "3.21"
+  "version": "3.21",
+  "modification_status": "clean"
 }

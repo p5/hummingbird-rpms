@@ -3,5 +3,7 @@
   "release": "2",
   "sha": "fb708e916db7dbee6cfa8186cc79a1bf56b95b8b",
   "source": "https://src.fedoraproject.org/rpms/dbus-broker.git",
-  "version": "37"
+  "version": "37",
+  "modification_status": "modified",
+  "modification_reason": "Pre-existing modification - requires review"
 }
