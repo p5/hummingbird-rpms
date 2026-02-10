@@ -1,7 +1,7 @@
 {
   "branch": "rawhide",
-  "release": "6",
-  "sha": "b19244db41146b4456d09f0fb9872da5b04a59b6",
+  "release": "8",
+  "sha": "195919c9f9a8dff0e996921afd8736df8f12715b",
   "source": "https://src.fedoraproject.org/rpms/avahi.git",
   "version": "0.9~rc2"
 }
