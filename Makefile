@@ -24,6 +24,7 @@ check-host:
 	git ls-files -z 'ci/*.py' | xargs -0 -r mypy
 	find rpms -name 'import.json' -type f -exec jq empty {} \; 2>/dev/null || \
 	  (echo "jq not installed, skipping JSON validation" || true)
+	./ci/validate_package_modifications.py --all --no-check-state
 	if command -v pytest > /dev/null; then \
 	  pytest -v test/; \
 	else \

@@ -137,6 +137,19 @@ Expected output should show exactly 1 insertion and 1 deletion:
 
 If the commit shows more changes, amend or reset and redo the change using `sed`.
 
+### 7. Mark package as modified (optional for rebuild-only)
+
+For no-change rebuilds, marking the package as modified is **optional** since the
+automation already ignores Release-only changes. However, you may want to mark
+it to explicitly document the rebuild:
+
+```bash
+./ci/dist_git.py mark-modified <package> --modified --reason "Rebuild for <reason>"
+```
+
+Note: This will prevent automatic Fedora updates until you mark it clean again.
+For most rebuilds, you can skip this step and allow automatic updates to continue.
+
 ## Backporting a Patch
 
 Use this workflow when you need to fast-track an upstream fix or feature that
@@ -209,7 +222,27 @@ dnf5: backport reproducible build sorting fix
 Upstream: https://github.com/rpm-software-management/dnf5/pull/2522
 ```
 
-### 6. Test the build locally (optional)
+### 6. Mark package as modified
+
+Mark the package as modified to prevent automatic Fedora updates from overwriting
+your backport:
+
+```bash
+./ci/dist_git.py mark-modified <package> --modified \
+  --reason "Backport fix for <issue description>"
+```
+
+Example:
+
+```bash
+./ci/dist_git.py mark-modified dnf5 --modified \
+  --reason "Backport reproducible build sorting fix from upstream PR#2522"
+```
+
+This ensures the package won't be automatically updated from Fedora until the
+backported patch lands upstream and you explicitly mark it clean again.
+
+### 7. Test the build locally (optional)
 
 Build the package locally to verify the patch applies cleanly:
 

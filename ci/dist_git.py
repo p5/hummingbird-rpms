@@ -23,7 +23,7 @@ import xmlrpc.client
 import yaml
 from pathlib import Path
 from specfile import Specfile
-from typing import TypedDict, cast
+from typing import Literal, NotRequired, TypedDict, cast
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
 RPMS_DIR = ROOT_DIR / 'rpms'
@@ -49,6 +49,8 @@ class PackageMetadata(TypedDict):
     sha: str
     version: str
     release: str
+    modification_status: NotRequired[Literal["clean", "modified", "native"]]
+    modification_reason: NotRequired[str]
 
 
 class KojiBuild(TypedDict, total=False):
@@ -606,6 +608,13 @@ def import_(url: str, branch: str, ref: str | None = None, directory: str | None
         'version': version,
         'release': release,
     }
+
+    # Set modification_status based on source
+    if 'gitlab.com/redhat/hummingbird' in url:
+        metadata['modification_status'] = 'native'
+    else:
+        metadata['modification_status'] = 'clean'
+
     save_package_metadata(dir_name, metadata)
     # Update global imports dict
     imports[dir_name] = metadata
@@ -636,6 +645,16 @@ def update(package_name: str, skip_build_check: bool = False, sync: bool = False
     assert package_dir.exists()
 
     metadata = imports[package_name]
+
+    # Check modification_status - block updates for modified/native packages (unless sync forced)
+    if not sync:
+        status = metadata.get('modification_status', 'clean')
+        if status in ['modified', 'native']:
+            reason = metadata.get('modification_reason', 'No reason provided')
+            sys.exit(f"ERROR: Cannot auto-update {package_name}\n"
+                    f"       Status: {status}\n"
+                    f"       Reason: {reason}\n"
+                    f"       Use 'sync' to force update or 'mark-modified --clean' to allow updates")
 
     # Extract the upstream package name from the source URL (for Koji queries)
     # This may differ from the directory name
@@ -725,6 +744,12 @@ def update(package_name: str, skip_build_check: bool = False, sync: bool = False
         imports[package_name]['sha'] = latest_sha
         imports[package_name]['version'] = version
         imports[package_name]['release'] = release
+
+        # Reset modification_status to clean after successful update/sync
+        imports[package_name]['modification_status'] = 'clean'
+        # Remove modification_reason if it exists
+        imports[package_name].pop('modification_reason', None)
+
         save_package_metadata(package_name, imports[package_name])
 
         # Commit the changes
@@ -748,6 +773,45 @@ def check_git_config() -> None:
             "   git config user.name 'Your Name'\n"
             "   git config user.email 'you@example.com'"
         )
+
+
+def mark_modified(package_name: str, modified: bool, reason: str | None = None) -> None:
+    """Mark a package as modified or clean.
+
+    Args:
+        package_name: Package name to mark
+        modified: True to mark as modified, False to mark as clean
+        reason: Reason for modification (required if modified=True)
+    """
+    if package_name not in imports:
+        sys.exit(f"ERROR: Package {package_name} not found (missing metadata/{package_name}.json)")
+
+    metadata = imports[package_name]
+
+    if modified:
+        # Mark as modified
+        metadata['modification_status'] = 'modified'
+
+        # Get reason (prompt if not provided)
+        if not reason:
+            try:
+                reason = input("Reason for modification: ").strip()
+                if not reason:
+                    sys.exit("ERROR: Reason is required when marking as modified")
+            except (EOFError, KeyboardInterrupt):
+                sys.exit("\nAborted")
+
+        metadata['modification_reason'] = reason
+        logging.info("Marked %s as modified: %s", package_name, reason)
+    else:
+        # Mark as clean
+        metadata['modification_status'] = 'clean'
+        metadata.pop('modification_reason', None)
+        logging.info("Marked %s as clean (auto-updates enabled)", package_name)
+
+    # Save updated metadata
+    save_package_metadata(package_name, metadata)
+    imports[package_name] = metadata
 
 
 def main() -> None:
@@ -815,6 +879,17 @@ Examples:
     rename_parser = subparsers.add_parser('rename', help='Rename a package')
     rename_parser.add_argument('package', help='Current package name (new name will be read from spec file)')
 
+    # mark-modified command
+    mark_parser = subparsers.add_parser('mark-modified',
+                                       help='Mark a package as modified or clean')
+    mark_parser.add_argument('package', help='Package name to mark')
+    mark_group = mark_parser.add_mutually_exclusive_group(required=True)
+    mark_group.add_argument('--modified', action='store_true',
+                           help='Mark as modified (blocks auto-updates)')
+    mark_group.add_argument('--clean', action='store_true',
+                           help='Mark as clean (allows auto-updates)')
+    mark_parser.add_argument('--reason', help='Reason for modification (required for --modified)')
+
     args = parser.parse_args()
 
     # Set global sign-off flag
@@ -842,6 +917,8 @@ Examples:
             update_releases()
         case 'rename':
             rename(args.package)
+        case 'mark-modified':
+            mark_modified(args.package, args.modified, args.reason)
 
 
 if __name__ == '__main__':
