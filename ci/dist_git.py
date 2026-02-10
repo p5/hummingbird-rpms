@@ -20,13 +20,17 @@ import tempfile
 import time
 import urllib.parse
 import xmlrpc.client
+import yaml
 from pathlib import Path
+from specfile import Specfile
 from typing import TypedDict, cast
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
 RPMS_DIR = ROOT_DIR / 'rpms'
 METADATA_DIR = ROOT_DIR / 'metadata'
 RELEASES_JSON = ROOT_DIR / 'upstream-releases.json'
+PACKAGE_OVERRIDES_YAML = ROOT_DIR / 'ci' / 'package-overrides.yaml'
+RENAMED_PACKAGES_JSON = ROOT_DIR / 'ci' / 'renamed_packages.json'
 
 # Global imports dict, loaded at startup
 imports: dict[str, 'PackageMetadata'] = {}
@@ -87,6 +91,42 @@ def parse_spec_version(package_dir: Path) -> tuple[str, str]:
         return lines[0], lines[1]
     except IndexError as e:
         raise ValueError(f"Unexpected rpmspec output for {spec_file}: {rpmspec.stdout}") from e
+
+
+def rename_spec_validate(original_name: str, original_dir: Path) -> str:
+    """Read the new package name from spec file and validate it has been changed.
+
+    Returns the new package name from the spec file.
+    Exits with error if the Name field has not been changed from the original.
+    """
+
+    spec_file = original_dir / f"{original_name}.spec"
+    current_spec = Specfile(str(spec_file), sourcedir=original_dir)
+    new_name = current_spec.name
+
+    spec_file_git_path = f'rpms/{original_name}/{original_name}.spec'
+
+    git_result = run_git('show', f'HEAD:{spec_file_git_path}', cwd=ROOT_DIR, check=False)
+    if git_result.returncode != 0:
+        sys.exit(f"ERROR: Could not retrieve original spec file from git: {spec_file_git_path}")
+
+    # Use a temp directory so we can copy source files needed by %load directives
+    with tempfile.TemporaryDirectory() as tmpdir:
+        tmp_spec = Path(tmpdir) / f"{original_name}.spec"
+        tmp_spec.write_text(git_result.stdout)
+
+        # Copy all non-spec source files to temp dir (for %load macros.* etc.)
+        for src_file in original_dir.iterdir():
+            if src_file.is_file() and src_file.suffix != '.spec':
+                shutil.copy(src_file, tmpdir)
+
+        original_spec = Specfile(str(tmp_spec), sourcedir=Path(tmpdir))
+        original_spec_name = original_spec.name
+
+    if original_spec_name == new_name:
+        sys.exit(f"ERROR: Name field in {spec_file.name} has not been changed (still '{new_name}')\n"
+                 f"       Please edit the spec file and change the Name: field before running rename")
+    return new_name
 
 
 def load_package_metadata(package_name: str) -> PackageMetadata | None:
@@ -207,6 +247,87 @@ def update_releases() -> None:
         f.write('\n')
 
     logging.info("Updated upstream-releases.json")
+
+
+def update_package_overrides(original_name: str, new_name: str) -> None:
+    """Update package name in package-overrides.yaml."""
+    with open(PACKAGE_OVERRIDES_YAML, 'r') as f:
+        overrides = yaml.safe_load(f) or {}
+    if original_name in overrides:
+        # Rename the key while preserving order
+        overrides[new_name] = overrides.pop(original_name)
+        with open(PACKAGE_OVERRIDES_YAML, 'w') as f:
+            yaml.dump(overrides, f, default_flow_style=False, sort_keys=False)
+        logging.info(f"Renamed {original_name} to {new_name} in {PACKAGE_OVERRIDES_YAML}")
+
+
+def update_rename_record(old: str, new: str) -> None:
+    """Record a package rename in renamed_packages.json."""
+    # Load existing rename records
+    renames = {}
+    if RENAMED_PACKAGES_JSON.exists():
+        with open(RENAMED_PACKAGES_JSON, 'r') as f:
+            renames = json.load(f)
+
+        if new in renames:
+            logging.info(f"Package '{new}' already exists in rename records (was renamed from '{renames[new]}')")
+            return
+
+    renames[new] = old
+
+    with open(RENAMED_PACKAGES_JSON, 'w') as f:
+        json.dump(renames, f, indent=2, sort_keys=True)
+        f.write('\n')  # Ensure trailing newline
+
+    logging.info(f"Recorded rename: {old} -> {new} in {RENAMED_PACKAGES_JSON}")
+
+
+def rename(original_name: str) -> None:
+    """Rename a package for RPM versioning (i.e. tomcat -> tomcat11"""
+
+    original_dir = RPMS_DIR / original_name
+
+    if not original_dir.exists():
+        sys.exit(f"ERROR: Package directory {original_dir} does not exist")
+
+    new_name = rename_spec_validate(original_name, original_dir)
+    logging.info("Renaming package '%s' to '%s' in '%s'", original_name, new_name, RPMS_DIR)
+
+    new_dir = RPMS_DIR / new_name
+    original_metadata_file = METADATA_DIR / f'{original_name}.json'
+    new_metadata_file = METADATA_DIR / f'{new_name}.json'
+
+    if new_dir.exists():
+        sys.exit(f"ERROR: Package directory {new_dir} already exists")
+
+    if not original_metadata_file.exists():
+        sys.exit(f"ERROR: Package metadata file {original_metadata_file} does not exist")
+
+    if new_metadata_file.exists():
+        sys.exit(f"ERROR: Package metadata file {new_metadata_file} already exists")
+
+
+    run_git('mv', f'rpms/{original_name}', f'rpms/{new_name}', cwd=ROOT_DIR)
+    logging.info(f"Successfully renamed {original_dir} to {new_dir}")
+    run_git('mv', f'metadata/{original_name}.json', f'metadata/{new_name}.json', cwd=ROOT_DIR)
+    logging.info(f"Successfully renamed {original_metadata_file} to {new_metadata_file}")
+
+    update_package_overrides(original_name, new_name)
+    update_rename_record(original_name, new_name)
+
+    logging.info("Running make generate to update Tekton resources...")
+    subprocess.run(['make', 'generate'], cwd=ROOT_DIR, check=True)
+
+    # Commit the changes
+    logging.info("Committing changes for rename.")
+    run_git('add', '-f',
+            str(PACKAGE_OVERRIDES_YAML.relative_to(ROOT_DIR)),
+            str(RENAMED_PACKAGES_JSON.relative_to(ROOT_DIR)),
+            'konflux-templates', '.tekton', cwd=ROOT_DIR)
+    commit_msg = f"Rename {original_name} to {new_name}"
+    run_git_commit('-m', commit_msg, cwd=ROOT_DIR)
+
+    logging.info("Renaming complete")
 
 
 def get_dist_tag(branch: str) -> str:
@@ -690,29 +811,37 @@ Examples:
     # update-releases command
     subparsers.add_parser('update-releases', help='Update upstream-releases.json')
 
+    # rename command
+    rename_parser = subparsers.add_parser('rename', help='Rename a package')
+    rename_parser.add_argument('package', help='Current package name (new name will be read from spec file)')
+
     args = parser.parse_args()
 
     # Set global sign-off flag
     global sign_off
     sign_off = args.sign_off
 
-    if not args.dry_run:
+    # Reject --dry-run with rename (rename doesn't support dry-run)
+    if args.command == 'rename' and args.dry_run:
+        sys.exit("ERROR: --dry-run is not supported with the rename command")
+
+    # Check git config for commands that will commit
+    if not args.dry_run or args.command == 'rename':
         check_git_config()
 
-    if args.command == 'import':
-        import_(args.url, args.branch, args.ref, args.directory, args.dry_run)
-    elif args.command == 'update':
-        if args.package:
-            packages = [args.package]
-        else:
-            packages = list(imports.keys())
-
-        for pkg in packages:
-            update(pkg, args.skip_build_check, dry_run=args.dry_run)
-    elif args.command == 'sync':
-        update(args.package, sync=True, dry_run=args.dry_run)
-    elif args.command == 'update-releases':
-        update_releases()
+    match args.command:
+        case 'import':
+            import_(args.url, args.branch, args.ref, args.directory, args.dry_run)
+        case 'update':
+            packages = [args.package] if args.package else list(imports.keys())
+            for pkg in packages:
+                update(pkg, args.skip_build_check, dry_run=args.dry_run)
+        case 'sync':
+            update(args.package, sync=True, dry_run=args.dry_run)
+        case 'update-releases':
+            update_releases()
+        case 'rename':
+            rename(args.package)
 
 
 if __name__ == '__main__':
