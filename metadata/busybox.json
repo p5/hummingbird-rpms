@@ -1,7 +1,7 @@
 {
   "branch": "rawhide",
-  "release": "5",
-  "sha": "4eab778df4ee5d34e9042ad2a04b20f38d01acf5",
+  "release": "7",
+  "sha": "513901a550025eb1a6cb831123a37ddc10b6612c",
   "source": "https://src.fedoraproject.org/rpms/busybox.git",
   "version": "1.37.0"
 }
