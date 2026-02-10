@@ -1,7 +1,7 @@
 {
   "branch": "rawhide",
-  "release": "1",
-  "sha": "aa3dd8e0019ebda48a93a97b07657ea7c9d127bf",
+  "release": "2",
+  "sha": "e12e499b61f7ac63258215a455837a02af64e3ad",
   "source": "https://src.fedoraproject.org/rpms/gperftools.git",
   "version": "2.17.2"
 }
