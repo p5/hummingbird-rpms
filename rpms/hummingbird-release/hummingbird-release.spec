@@ -69,7 +69,7 @@ ln -s hummingbird-release %{buildroot}%{_sysconfdir}/redhat-release
 # Name of vendor / name of distribution. Typically used to identify where
 # the binary comes from in --help or --version messages of programs.
 # Examples: gdb.spec, clang.spec
-%global dist_vendor Hummingbird Project
+%global dist_vendor Red Hat
 %global dist_name   %{distro}
 
 # The namespace for purl
@@ -100,7 +100,7 @@ ID="hummingbird"
 ID_LIKE="fedora rhel"
 CPE_NAME="cpe:/a:redhat:hummingbird:1"
 HOME_URL="%{dist_home_url}"
-VENDOR_NAME="Hummingbird"
+VENDOR_NAME="%{dist_vendor}"
 VENDOR_URL="%{dist_home_url}"
 BUG_REPORT_URL="%{dist_bug_report_url}"
 PRETTY_NAME="%{distro} %{version}"
