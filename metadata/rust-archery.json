@@ -1,0 +1,7 @@
+{
+  "branch": "rawhide",
+  "release": "2",
+  "sha": "4d778d0abaa3c007bad26bc1dddf2a9c48604134",
+  "source": "https://src.fedoraproject.org/rpms/rust-archery.git",
+  "version": "1.2.2"
+}
