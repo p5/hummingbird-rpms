@@ -1,7 +1,7 @@
 {
   "branch": "rawhide",
-  "release": "1",
-  "sha": "a15349e233220da16028e9ffd3c5339d890f0b1e",
+  "release": "4",
+  "sha": "6ae6bcb25955c41deafe1d334f935e9ee712475a",
   "source": "https://src.fedoraproject.org/rpms/capstone.git",
   "version": "5.0.6"
 }
