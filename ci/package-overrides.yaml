@@ -31,22 +31,13 @@ chunkah:
   forked_from: "https://gitlab.com/redhat/hummingbird/rpms"
 
 dotnet8.0:
-  # Use machines with 320GB disk space for large builds
-  build_platforms:
-    - "linux-d320-c4xlarge/arm64"
-    - "linux-d320-c4xlarge/amd64"
+  timeout_hours: 12
 
 dotnet9.0:
-  # Use machines with 320GB disk space for large builds
-  build_platforms:
-    - "linux-d320-c4xlarge/arm64"
-    - "linux-d320-c4xlarge/amd64"
+  timeout_hours: 12
 
 dotnet10.0:
-  # Use machines with 320GB disk space for large builds
-  build_platforms:
-    - "linux-d320-c4xlarge/arm64"
-    - "linux-d320-c4xlarge/amd64"
+  timeout_hours: 12
 
 gcc:
   # Larger builders are required for the build to complete in a reasonable time
