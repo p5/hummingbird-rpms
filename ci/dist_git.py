@@ -813,6 +813,112 @@ def mark_modified(package_name: str, modified: bool, reason: str | None = None) 
     save_package_metadata(package_name, metadata)
     imports[package_name] = metadata
 
+
+def diff_package(package_name: str, output_mode: str = 'full', raw: bool = False) -> bool | None:
+    """Show diff between local package and upstream Fedora.
+
+    Args:
+        package_name: Name of package to diff
+        output_mode: 'full' (default), 'stat', or 'name-only'
+        raw: If True, show raw diff with no filters
+
+    Returns:
+        True if differences exist, False if clean, None if native package
+
+    Behavior:
+        - Native packages: Print message and return None
+        - Clean packages: Print nothing, return False
+        - Modified packages: Print diff, return True
+    """
+    metadata = load_package_metadata(package_name)
+    if not metadata:
+        sys.exit(f"ERROR: Package {package_name} not found")
+
+    # Skip native packages
+    if metadata.get('modification_status') == 'native':
+        print(f"{package_name}: Native package (no upstream to diff against)")
+        return None
+
+    # Clone upstream to temp directory
+    with tempfile.TemporaryDirectory() as tmpdir:
+        upstream_dir = Path(tmpdir) / 'upstream'
+
+        logging.info("Cloning %s from %s (branch: %s, SHA: %s)",
+                    package_name, metadata['source'], metadata['branch'], metadata['sha'][:8])
+
+        # Clone and checkout exact SHA
+        run_git('clone', '--quiet', '--branch', metadata['branch'],
+                '--single-branch', metadata['source'], str(upstream_dir))
+        run_git('checkout', '--quiet', metadata['sha'], cwd=upstream_dir)
+
+        # Remove .git to avoid comparing git metadata
+        shutil.rmtree(upstream_dir / '.git')
+
+        # Build diff command based on mode and filters
+        diff_cmd = ['diff', '--recursive', '--unified', '--exclude=.git']
+
+        if not raw:
+            # Apply same filters as is_package_unmodified()
+            diff_cmd.extend([
+                '--ignore-trailing-space',
+                '--ignore-blank-lines',
+                '--ignore-matching-lines=^Release:',
+            ])
+
+        # Add mode-specific flags
+        if output_mode == 'stat':
+            # For stat mode, we need actual diff output to compute stats
+            pass  # Will process output below
+        elif output_mode == 'name-only':
+            diff_cmd.append('--brief')
+
+        diff_cmd.extend([str(upstream_dir), str(RPMS_DIR / package_name)])
+
+        # Run diff and capture output
+        result = subprocess.run(diff_cmd, capture_output=True, text=True)
+
+        if result.returncode == 0:
+            # No differences
+            return False
+        elif result.returncode == 1:
+            # Differences found
+            if output_mode == 'name-only':
+                # Parse --brief output to show only filenames
+                for line in result.stdout.splitlines():
+                    if line.startswith('Files '):
+                        # Extract filename from "Files <upstream>/file and <local>/file differ"
+                        parts = line.split(' and ')
+                        if len(parts) == 2:
+                            local_path = parts[1].split(' differ')[0]
+                            filename = Path(local_path).name
+                            print(filename)
+                    elif line.startswith('Only in '):
+                        # Handle files that exist in only one location
+                        print(line)
+            elif output_mode == 'stat':
+                # Parse diff output to create stat-style summary
+                # For simplicity, just use diffstat if available, otherwise show file list
+                try:
+                    stat_result = subprocess.run(['diffstat'], input=result.stdout,
+                                                 capture_output=True, text=True, check=True)
+                    print(stat_result.stdout)
+                except (subprocess.CalledProcessError, FileNotFoundError):
+                    # diffstat not available, fall back to simple file count
+                    files_changed = set()
+                    for line in result.stdout.splitlines():
+                        if line.startswith('---') or line.startswith('+++'):
+                            if '/dev/null' not in line:
+                                files_changed.add(line.split('\t')[0][4:])  # Remove '--- ' or '+++ '
+                    print(f"{len(files_changed)} file(s) changed")
+            else:
+                # Full diff output
+                print(result.stdout)
+            return True
+        else:
+            # Error occurred
+            sys.exit(f"Error running diff: {result.stderr}")
+
+
 def list_packages(status_filter: str | None = None) -> None:
     """List packages with their modification status.
 
@@ -956,6 +1062,21 @@ Examples:
     list_filter.add_argument('--native', action='store_true',
                             help='Show only native packages')
 
+    # diff command
+    diff_parser = subparsers.add_parser('diff',
+                                       help='Show differences between local and upstream packages')
+    diff_parser.add_argument('packages', nargs='*',
+                            help='Package names to diff (default: all modified packages if --all)')
+    diff_parser.add_argument('--all', action='store_true',
+                            help='Diff all modified packages')
+    diff_mode = diff_parser.add_mutually_exclusive_group()
+    diff_mode.add_argument('--stat', action='store_true',
+                          help='Show only summary statistics (like git diff --stat)')
+    diff_mode.add_argument('--name-only', action='store_true',
+                          help='Show only names of changed files')
+    diff_parser.add_argument('--raw', action='store_true',
+                            help='Show raw diff without filters (includes Release:, whitespace)')
+
     args = parser.parse_args()
 
     # Set global sign-off flag
@@ -967,7 +1088,7 @@ Examples:
         sys.exit("ERROR: --dry-run is not supported with the rename command")
 
     # Check git config for commands that will commit
-    if args.command not in ['list'] and (not args.dry_run or args.command == 'rename'):
+    if args.command not in ['list', 'diff'] and (not args.dry_run or args.command == 'rename'):
         check_git_config()
 
     match args.command:
@@ -995,6 +1116,41 @@ Examples:
             elif args.native:
                 status_filter = 'native'
             list_packages(status_filter)
+        case 'diff':
+            # Determine output mode
+            output_mode = 'full'
+            if args.stat:
+                output_mode = 'stat'
+            elif args.name_only:
+                output_mode = 'name-only'
+
+            # Determine which packages to diff
+            if args.all:
+                # Diff all modified packages
+                packages = [
+                    pkg for pkg, meta in imports.items()
+                    if meta.get('modification_status') == 'modified'
+                ]
+                if not packages:
+                    print("No modified packages found")
+                    sys.exit(0)
+            elif args.packages:
+                packages = args.packages
+            else:
+                sys.exit("ERROR: Specify package names or use --all")
+
+            # Diff each package
+            has_diffs = False
+            for pkg in packages:
+                if len(packages) > 1:
+                    print(f"\n=== {pkg} ===")
+
+                result = diff_package(pkg, output_mode, args.raw)
+                if result:
+                    has_diffs = True
+
+            # Exit with code 1 if any diffs found
+            sys.exit(1 if has_diffs else 0)
 
 
 if __name__ == '__main__':

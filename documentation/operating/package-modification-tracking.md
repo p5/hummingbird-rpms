@@ -48,6 +48,37 @@ for f in metadata/*.json; do
 done
 ```
 
+## Viewing Package Differences
+
+To see what changes exist in a modified package compared to upstream Fedora:
+
+```bash
+# Show full diff for a package
+./ci/dist_git.py diff bash
+
+# Show summary statistics
+./ci/dist_git.py diff bash --stat
+
+# Show only which files changed
+./ci/dist_git.py diff bash --name-only
+
+# Show raw diff (includes Release: bumps and whitespace)
+./ci/dist_git.py diff bash --raw
+
+# Diff all modified packages
+./ci/dist_git.py diff --all
+```
+
+**What's shown:**
+- By default, the diff ignores Release: number changes (no-change rebuilds)
+- Trailing whitespace and blank line changes are ignored
+- Use `--raw` to see absolutely everything, including Release: bumps
+
+**Package types:**
+- **Modified packages**: Shows the differences
+- **Clean packages**: Shows nothing (useful for verification)
+- **Native packages**: Skips with message "no upstream to diff against"
+
 ## Marking Packages
 
 ### Mark as Modified

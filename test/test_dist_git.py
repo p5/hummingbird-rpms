@@ -1069,3 +1069,206 @@ Native package
     assert 'native-pkg' in result.stdout
     assert '[native]' in result.stdout
     assert 'vanilla' not in result.stdout
+
+
+def test_diff_modified_package(workdir: Path, upstream_repos: dict[str, Path]) -> None:
+    """Test diff shows changes for modified package."""
+    # Import vanilla
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["vanilla"]}'],
+        cwd=workdir, check=True,
+    )
+
+    # Modify spec file
+    vanilla_spec = workdir / 'rpms' / 'vanilla' / 'vanilla.spec'
+    spec_content = vanilla_spec.read_text()
+    modified_content = spec_content.replace('Version: 1.0', 'Version: 1.1')
+    vanilla_spec.write_text(modified_content)
+    subprocess.run(['git', 'commit', '-a', '-m', 'Bump version'], cwd=workdir, check=True)
+
+    # Mark as modified
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'mark-modified', 'vanilla', '--modified',
+         '--reason', 'Test modification'],
+        cwd=workdir, check=True,
+    )
+
+    # Run diff command
+    result = subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'diff', 'vanilla'],
+        cwd=workdir, capture_output=True, text=True,
+    )
+
+    # Should show the modification
+    assert result.returncode == 1  # Exit code 1 means diffs found
+    assert 'Version: 1.0' in result.stdout
+    assert 'Version: 1.1' in result.stdout
+
+
+def test_diff_clean_package(workdir: Path, upstream_repos: dict[str, Path]) -> None:
+    """Test diff shows nothing for clean package."""
+    # Import vanilla
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["vanilla"]}'],
+        cwd=workdir, check=True,
+    )
+
+    # Run diff command
+    result = subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'diff', 'vanilla'],
+        cwd=workdir, capture_output=True, text=True, check=True,
+    )
+
+    # Should show nothing and exit with 0
+    assert result.returncode == 0
+    assert result.stdout.strip() == ''
+
+
+def test_diff_native_package(workdir: Path) -> None:
+    """Test diff skips native packages with message."""
+    # Create a native package
+    native_dir = workdir / 'rpms' / 'native-pkg'
+    native_dir.mkdir()
+    (native_dir / 'native-pkg.spec').write_text("""Name: native-pkg
+Version: 1.0
+Release: 1
+Summary: Native package
+License: MIT
+
+%description
+Native package
+
+%files
+""")
+
+    metadata_file = workdir / 'metadata' / 'native-pkg.json'
+    with open(metadata_file, 'w') as f:
+        json.dump({
+            'version': '1.0',
+            'release': '1',
+            'modification_status': 'native',
+        }, f, indent=2)
+
+    subprocess.run(['git', 'add', '.'], cwd=workdir, check=True)
+    subprocess.run(['git', 'commit', '-m', 'Add native package'], cwd=workdir, check=True)
+
+    # Run diff command
+    result = subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'diff', 'native-pkg'],
+        cwd=workdir, capture_output=True, text=True, check=True,
+    )
+
+    # Should skip with message
+    assert result.returncode == 0
+    assert 'Native package (no upstream to diff against)' in result.stdout
+
+
+def test_diff_raw_mode(workdir: Path, upstream_repos: dict[str, Path]) -> None:
+    """Test --raw mode shows Release: changes."""
+    # Import vanilla
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["vanilla"]}'],
+        cwd=workdir, check=True,
+    )
+
+    # Bump Release only
+    vanilla_spec = workdir / 'rpms' / 'vanilla' / 'vanilla.spec'
+    spec_content = vanilla_spec.read_text()
+    modified_content = spec_content.replace('Release: 1', 'Release: 2')
+    vanilla_spec.write_text(modified_content)
+    subprocess.run(['git', 'commit', '-a', '-m', 'Rebuild'], cwd=workdir, check=True)
+
+    # Run diff without --raw (should show nothing)
+    result = subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'diff', 'vanilla'],
+        cwd=workdir, capture_output=True, text=True, check=True,
+    )
+    assert result.returncode == 0
+    assert result.stdout.strip() == ''
+
+    # Run diff with --raw (should show Release change)
+    result = subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'diff', 'vanilla', '--raw'],
+        cwd=workdir, capture_output=True, text=True,
+    )
+    assert result.returncode == 1
+    assert 'Release: 1' in result.stdout
+    assert 'Release: 2' in result.stdout
+
+
+def test_diff_name_only_mode(workdir: Path, upstream_repos: dict[str, Path]) -> None:
+    """Test --name-only mode shows only filenames."""
+    # Import vanilla
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["vanilla"]}'],
+        cwd=workdir, check=True,
+    )
+
+    # Modify spec file
+    vanilla_spec = workdir / 'rpms' / 'vanilla' / 'vanilla.spec'
+    spec_content = vanilla_spec.read_text()
+    modified_content = spec_content.replace('Version: 1.0', 'Version: 1.1')
+    vanilla_spec.write_text(modified_content)
+    subprocess.run(['git', 'commit', '-a', '-m', 'Bump version'], cwd=workdir, check=True)
+
+    # Run diff --name-only
+    result = subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'diff', 'vanilla', '--name-only'],
+        cwd=workdir, capture_output=True, text=True,
+    )
+
+    # Should show only filename
+    assert result.returncode == 1
+    assert 'vanilla.spec' in result.stdout
+    # Should NOT show diff content
+    assert 'Version:' not in result.stdout or 'differ' in result.stdout
+
+
+def test_diff_all_modified(workdir: Path, upstream_repos: dict[str, Path]) -> None:
+    """Test --all diffs all modified packages."""
+    # Import multiple packages
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["vanilla"]}'],
+        cwd=workdir, check=True,
+    )
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["chocolate"]}'],
+        cwd=workdir, check=True,
+    )
+
+    # Mark vanilla as modified and modify it
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'mark-modified', 'vanilla', '--modified',
+         '--reason', 'Test'],
+        cwd=workdir, check=True,
+    )
+    vanilla_spec = workdir / 'rpms' / 'vanilla' / 'vanilla.spec'
+    spec_content = vanilla_spec.read_text()
+    modified_content = spec_content.replace('Version: 1.0', 'Version: 1.1')
+    vanilla_spec.write_text(modified_content)
+    subprocess.run(['git', 'commit', '-a', '-m', 'Bump vanilla version'], cwd=workdir, check=True)
+
+    # Mark chocolate as modified and modify it
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'mark-modified', 'chocolate', '--modified',
+         '--reason', 'Test2'],
+        cwd=workdir, check=True,
+    )
+    chocolate_spec = workdir / 'rpms' / 'chocolate' / 'chocolate.spec'
+    spec_content = chocolate_spec.read_text()
+    modified_content = spec_content.replace('Version: 10', 'Version: 11')
+    chocolate_spec.write_text(modified_content)
+    subprocess.run(['git', 'commit', '-a', '-m', 'Bump chocolate version'], cwd=workdir, check=True)
+
+    # Run diff --all
+    result = subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'diff', '--all'],
+        cwd=workdir, capture_output=True, text=True,
+    )
+
+    # Should show both modified packages
+    assert result.returncode == 1
+    assert '=== vanilla ===' in result.stdout
+    assert '=== chocolate ===' in result.stdout
+    assert 'Version: 1.1' in result.stdout
+    assert 'Version: 11' in result.stdout
