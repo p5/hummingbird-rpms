@@ -88,17 +88,28 @@ def build_pac_variables(branch: str, tenant: str, resource_type: str) -> dict:
                 # Fallback to default naming if no spec file found
                 rpm_data["specfile"] = f"{dname}.spec"
 
-            # Load metadata to get upstream package name from source URL
+            # Determine the upstream package name for Tekton pipeline
+            #
+            # For most packages, the directory name (dname) matches the package name.
+            # However, for renamed packages (e.g., golang1.25, ruby3.3, tomcat10),
+            # we need the upstream package name for lookaside cache and SRPM naming.
+            #
+            # Native packages (Hummingbird-specific) have no source URL in metadata,
+            # so we use the directory name directly.
             metadata_file = ROOT_DIR / "metadata" / f"{dname}.json"
             metadata = load_yaml_file(metadata_file)
             upstream_name = dname  # Default to directory name
 
-            # For native packages, use the directory name as the package name
-            # For Fedora packages, extract from source URL (handles renamed packages like golang1.25 -> golang)
             if metadata and metadata.get("modification_status") == "native":
+                # Native packages: Use directory name (no upstream source)
+                # Examples: chunkah, hummingbird-release, openssl-fips-provider
                 upstream_name = dname
             elif metadata and "source" in metadata:
-                # Extract package name from source URL (e.g., https://.../rpms/tomcat.git -> tomcat)
+                # Fedora packages: Extract from source URL to handle renamed packages
+                # Examples:
+                #   - rpms/golang1.25 -> source: .../golang.git -> upstream_name: golang
+                #   - rpms/ruby3.3 -> source: .../ruby.git -> upstream_name: ruby
+                #   - rpms/tomcat10 -> source: .../tomcat.git -> upstream_name: tomcat
                 upstream_name = Path(metadata["source"]).stem
 
             # Store upstream package name for use in pipeline
