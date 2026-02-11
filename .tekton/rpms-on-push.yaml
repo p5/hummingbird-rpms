@@ -2789,7 +2789,7 @@ metadata:
     pipelinesascode.tekton.dev/cancel-in-progress: "false"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[push]"
-    pipelinesascode.tekton.dev/on-path-change: "[rpms/crypto-policies/***]"
+    pipelinesascode.tekton.dev/on-path-change: "[rpms/crypto-policies/***, test/rpms/crypto-policies.yml]"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
