@@ -781,3 +781,137 @@ def test_update_of_rebuild(workdir: Path, upstream_repos: dict[str, Path]) -> No
     subject, body = get_last_commit_info(workdir)
     assert subject == 'Update vanilla to 2.0-1'
     assert f"Upstream: {new_sha}" in body
+
+def test_mark_modified_with_reason(workdir: Path, upstream_repos: dict[str, Path]) -> None:
+    """Mark a clean package as modified with a reason."""
+    # Import vanilla package
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["vanilla"]}'],
+        cwd=workdir, check=True,
+    )
+
+    # Verify it starts as clean
+    metadata_file = workdir / 'metadata' / 'vanilla.json'
+    with open(metadata_file) as f:
+        metadata = json.load(f)
+    assert metadata['modification_status'] == 'clean'
+    assert 'modification_reason' not in metadata
+
+    # Mark as modified with a reason
+    result = subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'mark-modified', 'vanilla', '--modified',
+         '--reason', 'Backport CVE fix from upstream'],
+        cwd=workdir, capture_output=True, text=True, check=True,
+    )
+
+    # Verify metadata updated
+    with open(metadata_file) as f:
+        metadata = json.load(f)
+    assert metadata['modification_status'] == 'modified'
+    assert metadata['modification_reason'] == 'Backport CVE fix from upstream'
+
+
+def test_mark_clean(workdir: Path, upstream_repos: dict[str, Path]) -> None:
+    """Mark a modified package back to clean."""
+    # Import vanilla package
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["vanilla"]}'],
+        cwd=workdir, check=True,
+    )
+
+    # Mark as modified
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'mark-modified', 'vanilla', '--modified',
+         '--reason', 'Test modification'],
+        cwd=workdir, check=True,
+    )
+
+    metadata_file = workdir / 'metadata' / 'vanilla.json'
+    with open(metadata_file) as f:
+        metadata = json.load(f)
+    assert metadata['modification_status'] == 'modified'
+    assert 'modification_reason' in metadata
+
+    # Mark back to clean
+    result = subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'mark-modified', 'vanilla', '--clean'],
+        cwd=workdir, capture_output=True, text=True, check=True,
+    )
+
+    # Verify metadata updated
+    with open(metadata_file) as f:
+        metadata = json.load(f)
+    assert metadata['modification_status'] == 'clean'
+    assert 'modification_reason' not in metadata
+
+
+def test_modified_package_blocks_update(workdir: Path, upstream_repos: dict[str, Path]) -> None:
+    """Verify that modified packages block automatic updates."""
+    # Import vanilla package
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["vanilla"]}'],
+        cwd=workdir, check=True,
+    )
+
+    # Mark as modified
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'mark-modified', 'vanilla', '--modified',
+         '--reason', 'Local patch applied'],
+        cwd=workdir, check=True,
+    )
+
+    # Add upstream commit with new version
+    add_upstream_commit(upstream_repos["vanilla"], 'vanilla', '1.0', '2.0')
+
+    # Update should fail
+    result = subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'update', 'vanilla'],
+        cwd=workdir, capture_output=True, text=True,
+    )
+
+    # Should exit with error
+    assert result.returncode != 0
+    assert "Cannot auto-update vanilla" in result.stderr
+    assert "Status: modified" in result.stderr
+    assert "Local patch applied" in result.stderr
+
+
+def test_native_package_blocks_update(workdir: Path, upstream_repos: dict[str, Path]) -> None:
+    """Verify that native packages block automatic updates."""
+    # Create a native package manually
+    native_dir = workdir / 'rpms' / 'native-pkg'
+    native_dir.mkdir()
+    (native_dir / 'native-pkg.spec').write_text("""Name: native-pkg
+Version: 1.0
+Release: 1
+Summary: Native package
+License: MIT
+
+%description
+Native package
+
+%files
+""")
+
+    # Create metadata for native package
+    metadata_file = workdir / 'metadata' / 'native-pkg.json'
+    with open(metadata_file, 'w') as f:
+        json.dump({
+            'version': '1.0',
+            'release': '1',
+            'modification_status': 'native',
+        }, f, indent=2)
+
+    subprocess.run(['git', 'add', '.'], cwd=workdir, check=True)
+    subprocess.run(['git', 'commit', '-m', 'Add native package'], cwd=workdir, check=True)
+
+    # Update should fail
+    result = subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'update', 'native-pkg'],
+        cwd=workdir, capture_output=True, text=True,
+    )
+
+    # Should exit with error
+    assert result.returncode != 0
+    assert "Cannot auto-update native-pkg" in result.stderr
+    assert "Status: native" in result.stderr
