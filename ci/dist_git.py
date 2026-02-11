@@ -813,6 +813,61 @@ def mark_modified(package_name: str, modified: bool, reason: str | None = None) 
     save_package_metadata(package_name, metadata)
     imports[package_name] = metadata
 
+def list_packages(status_filter: str | None = None) -> None:
+    """List packages with their modification status.
+
+    Args:
+        status_filter: Filter by status ('clean', 'modified', 'native', or None for all)
+    """
+    metadata_files = sorted(METADATA_DIR.glob('*.json'))
+
+    if not metadata_files:
+        print("No packages found")
+        return
+
+    # Collect packages with their status
+    packages: list[tuple[str, str, str | None]] = []  # (name, status, reason)
+
+    for metadata_file in metadata_files:
+        package_name = metadata_file.stem
+        with open(metadata_file) as f:
+            metadata: PackageMetadata = json.load(f)
+
+        status = metadata.get('modification_status', 'unknown')
+        reason = metadata.get('modification_reason')
+
+        # Apply filter if specified
+        if status_filter and status != status_filter:
+            continue
+
+        packages.append((package_name, status, reason))
+
+    if not packages:
+        if status_filter:
+            print(f"No {status_filter} packages found")
+        else:
+            print("No packages found")
+        return
+
+    # Print header
+    if status_filter:
+        print(f"{status_filter.upper()} PACKAGES ({len(packages)}):")
+    else:
+        print(f"ALL PACKAGES ({len(packages)}):")
+    print()
+
+    # Print packages
+    for name, status, reason in packages:
+        status_indicator = {
+            'clean': '✓',
+            'modified': '⚠',
+            'native': '●',
+        }.get(status, '?')
+
+        print(f"  {status_indicator} {name:<40} [{status}]")
+        if reason and status == 'modified':
+            print(f"    → {reason}")
+
 
 def main() -> None:
     global imports, releases
@@ -890,6 +945,17 @@ Examples:
                            help='Mark as clean (allows auto-updates)')
     mark_parser.add_argument('--reason', help='Reason for modification (required for --modified)')
 
+    # list command
+    list_parser = subparsers.add_parser('list',
+                                       help='List packages with modification status')
+    list_filter = list_parser.add_mutually_exclusive_group()
+    list_filter.add_argument('--clean', action='store_true',
+                            help='Show only clean packages')
+    list_filter.add_argument('--modified', action='store_true',
+                            help='Show only modified packages')
+    list_filter.add_argument('--native', action='store_true',
+                            help='Show only native packages')
+
     args = parser.parse_args()
 
     # Set global sign-off flag
@@ -901,7 +967,7 @@ Examples:
         sys.exit("ERROR: --dry-run is not supported with the rename command")
 
     # Check git config for commands that will commit
-    if not args.dry_run or args.command == 'rename':
+    if args.command not in ['list'] and (not args.dry_run or args.command == 'rename'):
         check_git_config()
 
     match args.command:
@@ -919,6 +985,16 @@ Examples:
             rename(args.package)
         case 'mark-modified':
             mark_modified(args.package, args.modified, args.reason)
+        case 'list':
+            # Determine filter based on flags
+            status_filter = None
+            if args.clean:
+                status_filter = 'clean'
+            elif args.modified:
+                status_filter = 'modified'
+            elif args.native:
+                status_filter = 'native'
+            list_packages(status_filter)
 
 
 if __name__ == '__main__':
