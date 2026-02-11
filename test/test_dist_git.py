@@ -915,3 +915,157 @@ Native package
     assert result.returncode != 0
     assert "Cannot auto-update native-pkg" in result.stderr
     assert "Status: native" in result.stderr
+
+
+def test_list_all_packages(workdir: Path, upstream_repos: dict[str, Path]) -> None:
+    """Test list command shows all packages."""
+    # Import vanilla package
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["vanilla"]}'],
+        cwd=workdir, check=True,
+    )
+
+    # Create a native package
+    native_dir = workdir / 'rpms' / 'native-pkg'
+    native_dir.mkdir()
+    (native_dir / 'native-pkg.spec').write_text("""Name: native-pkg
+Version: 1.0
+Release: 1
+Summary: Native package
+License: MIT
+
+%description
+Native package
+
+%files
+""")
+
+    metadata_file = workdir / 'metadata' / 'native-pkg.json'
+    with open(metadata_file, 'w') as f:
+        json.dump({
+            'version': '1.0',
+            'release': '1',
+            'modification_status': 'native',
+        }, f, indent=2)
+
+    subprocess.run(['git', 'add', '.'], cwd=workdir, check=True)
+    subprocess.run(['git', 'commit', '-m', 'Add native package'], cwd=workdir, check=True)
+
+    # List all packages
+    result = subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'list'],
+        cwd=workdir, capture_output=True, text=True, check=True,
+    )
+
+    # Should show both packages
+    assert 'ALL PACKAGES (2)' in result.stdout
+    assert 'vanilla' in result.stdout
+    assert 'native-pkg' in result.stdout
+    assert '[clean]' in result.stdout
+    assert '[native]' in result.stdout
+
+
+def test_list_modified_only(workdir: Path, upstream_repos: dict[str, Path]) -> None:
+    """Test list --modified shows only modified packages."""
+    # Import vanilla package
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["vanilla"]}'],
+        cwd=workdir, check=True,
+    )
+
+    # Mark as modified
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'mark-modified', 'vanilla', '--modified',
+         '--reason', 'Test modification'],
+        cwd=workdir, check=True,
+    )
+
+    # List modified packages
+    result = subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'list', '--modified'],
+        cwd=workdir, capture_output=True, text=True, check=True,
+    )
+
+    # Should show modified package with reason
+    assert 'MODIFIED PACKAGES (1)' in result.stdout
+    assert 'vanilla' in result.stdout
+    assert '[modified]' in result.stdout
+    assert 'Test modification' in result.stdout
+
+
+def test_list_clean_only(workdir: Path, upstream_repos: dict[str, Path]) -> None:
+    """Test list --clean shows only clean packages."""
+    # Import vanilla and chocolate
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["vanilla"]}'],
+        cwd=workdir, check=True,
+    )
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["chocolate"]}'],
+        cwd=workdir, check=True,
+    )
+
+    # Mark vanilla as modified
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'mark-modified', 'vanilla', '--modified',
+         '--reason', 'Test'],
+        cwd=workdir, check=True,
+    )
+
+    # List clean packages
+    result = subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'list', '--clean'],
+        cwd=workdir, capture_output=True, text=True, check=True,
+    )
+
+    # Should show only chocolate
+    assert 'CLEAN PACKAGES (1)' in result.stdout
+    assert 'chocolate' in result.stdout
+    assert 'vanilla' not in result.stdout
+
+
+def test_list_native_only(workdir: Path, upstream_repos: dict[str, Path]) -> None:
+    """Test list --native shows only native packages."""
+    # Import vanilla package (clean)
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["vanilla"]}'],
+        cwd=workdir, check=True,
+    )
+
+    # Create a native package
+    native_dir = workdir / 'rpms' / 'native-pkg'
+    native_dir.mkdir()
+    (native_dir / 'native-pkg.spec').write_text("""Name: native-pkg
+Version: 1.0
+Release: 1
+Summary: Native package
+License: MIT
+
+%description
+Native package
+
+%files
+""")
+
+    metadata_file = workdir / 'metadata' / 'native-pkg.json'
+    with open(metadata_file, 'w') as f:
+        json.dump({
+            'version': '1.0',
+            'release': '1',
+            'modification_status': 'native',
+        }, f, indent=2)
+
+    subprocess.run(['git', 'add', '.'], cwd=workdir, check=True)
+    subprocess.run(['git', 'commit', '-m', 'Add native package'], cwd=workdir, check=True)
+
+    # List native packages
+    result = subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'list', '--native'],
+        cwd=workdir, capture_output=True, text=True, check=True,
+    )
+
+    # Should show only native package
+    assert 'NATIVE PACKAGES (1)' in result.stdout
+    assert 'native-pkg' in result.stdout
+    assert '[native]' in result.stdout
+    assert 'vanilla' not in result.stdout
