@@ -1,0 +1,9 @@
+{
+  "branch": "rawhide",
+  "release": "2",
+  "sha": "f289011003bcdd8d1f1927005e5107a793c92e4f",
+  "source": "https://src.fedoraproject.org/rpms/rust-rpds.git",
+  "version": "1.2.0",
+  "modification_status": "modified",
+  "modification_reason": "Fix rpm warning of files listed multiple times."
+}
