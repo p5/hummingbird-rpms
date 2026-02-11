@@ -3,5 +3,6 @@
   "release": "522",
   "sha": "304b0bbde8e77ccb28466429dd8438df09b0964c",
   "source": "https://src.fedoraproject.org/rpms/perl.git",
-  "version": "5.42.0"
+  "version": "5.42.0",
+  "modification_status": "clean"
 }

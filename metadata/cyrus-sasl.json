@@ -3,5 +3,6 @@
   "release": "35",
   "sha": "c0c316e2f501a471102fd3de9ae3e738a82201e1",
   "source": "https://src.fedoraproject.org/rpms/cyrus-sasl.git",
-  "version": "2.1.28"
+  "version": "2.1.28",
+  "modification_status": "clean"
 }

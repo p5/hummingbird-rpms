@@ -3,5 +3,6 @@
   "release": "9",
   "sha": "7f30c059f4a6fe9ef51234ac3833ff5091fc7f10",
   "source": "https://src.fedoraproject.org/rpms/glibc.git",
-  "version": "2.42"
+  "version": "2.42",
+  "modification_status": "clean"
 }

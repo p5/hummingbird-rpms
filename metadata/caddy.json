@@ -3,5 +3,6 @@
   "release": "5",
   "sha": "27556fc66f904b7fddb7cd3f244e44042ed662ca",
   "source": "https://src.fedoraproject.org/rpms/caddy.git",
-  "version": "2.10.2"
+  "version": "2.10.2",
+  "modification_status": "clean"
 }

@@ -3,5 +3,6 @@
   "release": "7",
   "sha": "6fd33144b6cfef3ed48ccaec53fbf4b241fdb144",
   "source": "https://src.fedoraproject.org/rpms/keyutils.git",
-  "version": "1.6.3"
+  "version": "1.6.3",
+  "modification_status": "clean"
 }

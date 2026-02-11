@@ -3,5 +3,6 @@
   "release": "1",
   "sha": "f309cd3f13ca16ef464a35f69a02b0eb9b6caa6f",
   "source": "https://src.fedoraproject.org/rpms/publicsuffix-list.git",
-  "version": "20260116"
+  "version": "20260116",
+  "modification_status": "clean"
 }

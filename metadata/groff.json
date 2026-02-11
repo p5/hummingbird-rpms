@@ -3,5 +3,6 @@
   "release": "12",
   "sha": "219ee364fcba5ef5090c717f5c2b4225c19676a3",
   "source": "https://src.fedoraproject.org/rpms/groff.git",
-  "version": "1.23.0"
+  "version": "1.23.0",
+  "modification_status": "clean"
 }

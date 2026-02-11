@@ -3,5 +3,6 @@
   "release": "1",
   "sha": "bf47137490d857144f00e60663a41086d371d74e",
   "source": "https://src.fedoraproject.org/rpms/composer.git",
-  "version": "2.9.5"
+  "version": "2.9.5",
+  "modification_status": "clean"
 }

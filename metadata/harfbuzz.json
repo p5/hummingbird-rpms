@@ -3,5 +3,6 @@
   "release": "1",
   "sha": "99d9a289cd40a9dbe84e4f57cd2af21f6ab09c0e",
   "source": "https://src.fedoraproject.org/rpms/harfbuzz.git",
-  "version": "12.3.2"
+  "version": "12.3.2",
+  "modification_status": "clean"
 }

@@ -3,5 +3,6 @@
   "release": "5",
   "sha": "7b6ede5c5bb776f958fe2065c35c6c2fd58d0d47",
   "source": "https://src.fedoraproject.org/rpms/zstd.git",
-  "version": "1.5.7"
+  "version": "1.5.7",
+  "modification_status": "clean"
 }

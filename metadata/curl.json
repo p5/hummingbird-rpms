@@ -3,5 +3,6 @@
   "release": "4",
   "sha": "ae6a02c25ef6db6aab2735e1bba51cb61145809a",
   "source": "https://src.fedoraproject.org/rpms/curl.git",
-  "version": "8.18.0"
+  "version": "8.18.0",
+  "modification_status": "clean"
 }

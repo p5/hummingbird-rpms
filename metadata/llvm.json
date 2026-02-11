@@ -3,5 +3,7 @@
   "release": "1",
   "sha": "659c0740e5c29098632207467aa89ce0083d5892",
   "source": "https://src.fedoraproject.org/rpms/llvm.git",
-  "version": "21.1.8"
+  "version": "21.1.8",
+  "modification_status": "modified",
+  "modification_reason": "Pre-existing modification - requires review"
 }

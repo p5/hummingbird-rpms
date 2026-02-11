@@ -3,5 +3,6 @@
   "release": "3",
   "sha": "2b273685fa599f82c9b8d89c1810856e8216de91",
   "source": "https://src.fedoraproject.org/rpms/c-ares.git",
-  "version": "1.34.6"
+  "version": "1.34.6",
+  "modification_status": "clean"
 }

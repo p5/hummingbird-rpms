@@ -3,5 +3,6 @@
   "release": "3",
   "sha": "8a3c0e127b694460d0ffb52f27ddef4b9c95c060",
   "source": "https://src.fedoraproject.org/rpms/container-selinux.git",
-  "version": "2.245.0"
+  "version": "2.245.0",
+  "modification_status": "clean"
 }

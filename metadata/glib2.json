@@ -3,5 +3,6 @@
   "release": "2",
   "sha": "b02a6280d34cd886ad0b139d4f49107d459020c1",
   "source": "https://src.fedoraproject.org/rpms/glib2.git",
-  "version": "2.87.2"
+  "version": "2.87.2",
+  "modification_status": "clean"
 }

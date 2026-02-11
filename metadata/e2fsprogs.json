@@ -3,5 +3,6 @@
   "release": "4",
   "sha": "9c43a3bd17df757242d7a7a7f1b5f3ec8259f333",
   "source": "https://src.fedoraproject.org/rpms/e2fsprogs.git",
-  "version": "1.47.3"
+  "version": "1.47.3",
+  "modification_status": "clean"
 }

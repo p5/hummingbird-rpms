@@ -3,5 +3,6 @@
   "release": "2",
   "sha": "2f1770af45eab9c28d8913be50756a82ef56b711",
   "source": "https://src.fedoraproject.org/rpms/java-21-openjdk.git",
-  "version": "21.0.10.0.7"
+  "version": "21.0.10.0.7",
+  "modification_status": "clean"
 }

@@ -3,5 +3,6 @@
   "release": "522",
   "sha": "a827f0914ac279af1a8763b1d6324ec8bb8ccbce",
   "source": "https://src.fedoraproject.org/rpms/perl-File-Path.git",
-  "version": "2.18"
+  "version": "2.18",
+  "modification_status": "clean"
 }

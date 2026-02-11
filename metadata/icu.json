@@ -3,5 +3,6 @@
   "release": "2",
   "sha": "60d3169963e07a03a8a1416a4212ee26c05aaf55",
   "source": "https://src.fedoraproject.org/rpms/icu.git",
-  "version": "77.1"
+  "version": "77.1",
+  "modification_status": "clean"
 }

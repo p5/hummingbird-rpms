@@ -3,5 +3,6 @@
   "release": "4",
   "sha": "483e4d30c584bd7a05c6ea0724a837c0b6f2b4ba",
   "source": "https://src.fedoraproject.org/rpms/readline.git",
-  "version": "8.3"
+  "version": "8.3",
+  "modification_status": "clean"
 }

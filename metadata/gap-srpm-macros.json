@@ -3,5 +3,6 @@
   "release": "2",
   "sha": "73a5d2ae3d22d6b9ea9a088edd1e6b933f5ffa35",
   "source": "https://src.fedoraproject.org/rpms/gap-srpm-macros.git",
-  "version": "2"
+  "version": "2",
+  "modification_status": "clean"
 }

@@ -3,5 +3,6 @@
   "release": "5",
   "sha": "eec0062fcd7fe1efadec279786073a77b7f241d2",
   "source": "https://src.fedoraproject.org/rpms/chkconfig.git",
-  "version": "1.33"
+  "version": "1.33",
+  "modification_status": "clean"
 }

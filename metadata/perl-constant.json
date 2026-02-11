@@ -3,5 +3,6 @@
   "release": "522",
   "sha": "af378359e0bd8936d70b4a011e81879bf49660f3",
   "source": "https://src.fedoraproject.org/rpms/perl-constant.git",
-  "version": "1.33"
+  "version": "1.33",
+  "modification_status": "clean"
 }

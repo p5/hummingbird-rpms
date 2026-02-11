@@ -3,5 +3,6 @@
   "release": "1",
   "sha": "3156264f2a9f0703ff08a14b1cef2cee74dd3b64",
   "source": "https://src.fedoraproject.org/rpms/audit.git",
-  "version": "4.1.3"
+  "version": "4.1.3",
+  "modification_status": "clean"
 }

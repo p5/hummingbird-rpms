@@ -3,5 +3,6 @@
   "release": "1",
   "sha": "fac8417de4014feb12351fd262b891f683432db7",
   "source": "https://src.fedoraproject.org/rpms/qt6.git",
-  "version": "6.10.2"
+  "version": "6.10.2",
+  "modification_status": "clean"
 }

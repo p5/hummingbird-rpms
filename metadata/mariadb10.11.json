@@ -3,5 +3,6 @@
   "release": "1",
   "sha": "fd603469eaea40f0495937133e517334c6c1bbb3",
   "source": "https://src.fedoraproject.org/rpms/mariadb10.11.git",
-  "version": "10.11.16"
+  "version": "10.11.16",
+  "modification_status": "clean"
 }

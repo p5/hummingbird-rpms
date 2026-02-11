@@ -3,5 +3,6 @@
   "release": "1",
   "sha": "4a3bd6f9ecaa4e74bda93b1ad449fd51f00adf7b",
   "source": "https://src.fedoraproject.org/rpms/libusb1.git",
-  "version": "1.0.29"
+  "version": "1.0.29",
+  "modification_status": "clean"
 }

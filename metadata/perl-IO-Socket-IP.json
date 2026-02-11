@@ -3,5 +3,6 @@
   "release": "522",
   "sha": "15b58e22cf2f188d0cd6d87dc4311514eb17261f",
   "source": "https://src.fedoraproject.org/rpms/perl-IO-Socket-IP.git",
-  "version": "0.43"
+  "version": "0.43",
+  "modification_status": "clean"
 }

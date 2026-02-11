@@ -3,5 +3,6 @@
   "release": "3",
   "sha": "5b39a9fe3fa5e0f9a635fc546e47b85301a5a59e",
   "source": "https://src.fedoraproject.org/rpms/elfutils.git",
-  "version": "0.194"
+  "version": "0.194",
+  "modification_status": "clean"
 }

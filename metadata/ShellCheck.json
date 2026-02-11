@@ -3,5 +3,6 @@
   "release": "4",
   "sha": "b5bca03c143924b9767a56c454068d3030a5ded2",
   "source": "https://src.fedoraproject.org/rpms/ShellCheck.git",
-  "version": "0.11.0"
+  "version": "0.11.0",
+  "modification_status": "clean"
 }

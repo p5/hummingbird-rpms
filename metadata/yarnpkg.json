@@ -3,5 +3,6 @@
   "release": "16",
   "sha": "67fc0c2761282f257cef9eae198d24bd62247016",
   "source": "https://src.fedoraproject.org/rpms/yarnpkg.git",
-  "version": "1.22.22"
+  "version": "1.22.22",
+  "modification_status": "clean"
 }

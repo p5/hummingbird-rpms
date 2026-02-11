@@ -3,5 +3,6 @@
   "release": "1",
   "sha": "46c8f24468c555741ea8063986751c42342cc2d2",
   "source": "https://src.fedoraproject.org/rpms/libssh.git",
-  "version": "0.12.0"
+  "version": "0.12.0",
+  "modification_status": "clean"
 }

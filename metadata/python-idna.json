@@ -3,5 +3,6 @@
   "release": "2",
   "sha": "3882f62cfb3f567a8954dd34032a112f0d209576",
   "source": "https://src.fedoraproject.org/rpms/python-idna.git",
-  "version": "3.11"
+  "version": "3.11",
+  "modification_status": "clean"
 }

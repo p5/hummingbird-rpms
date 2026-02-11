@@ -3,5 +3,6 @@
   "release": "4",
   "sha": "421cac19d150985b5d45c097b0ed90c369834edd",
   "source": "https://src.fedoraproject.org/rpms/perl-Pod-Simple.git",
-  "version": "3.47"
+  "version": "3.47",
+  "modification_status": "clean"
 }

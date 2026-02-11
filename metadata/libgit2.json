@@ -3,5 +3,6 @@
   "release": "1",
   "sha": "01266919e328a79869a9fc3ad53ef18ce637d7bc",
   "source": "https://src.fedoraproject.org/rpms/libgit2.git",
-  "version": "1.9.2"
+  "version": "1.9.2",
+  "modification_status": "clean"
 }

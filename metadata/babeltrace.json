@@ -3,5 +3,6 @@
   "release": "17",
   "sha": "035ea525875ec9898604dd0b3af586eb8bec6f09",
   "source": "https://src.fedoraproject.org/rpms/babeltrace.git",
-  "version": "1.5.11"
+  "version": "1.5.11",
+  "modification_status": "clean"
 }

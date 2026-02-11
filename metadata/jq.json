@@ -3,5 +3,6 @@
   "release": "2",
   "sha": "1597363a1cdd9a3513d2d24b84e8de545412290d",
   "source": "https://src.fedoraproject.org/rpms/jq.git",
-  "version": "1.8.1"
+  "version": "1.8.1",
+  "modification_status": "clean"
 }

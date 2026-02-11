@@ -3,5 +3,6 @@
   "release": "10",
   "sha": "f106b265c124b12eba0d599601b7a05cb96c9f83",
   "source": "https://src.fedoraproject.org/rpms/python-rpm-macros.git",
-  "version": "3.14"
+  "version": "3.14",
+  "modification_status": "clean"
 }

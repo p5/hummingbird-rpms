@@ -3,5 +3,6 @@
   "release": "3",
   "sha": "d824d32a82811ec55dc61bd008043854d7db9217",
   "source": "https://src.fedoraproject.org/rpms/containers-common.git",
-  "version": "0.64.2"
+  "version": "0.64.2",
+  "modification_status": "clean"
 }

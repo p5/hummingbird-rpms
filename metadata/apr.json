@@ -3,5 +3,6 @@
   "release": "5",
   "sha": "a0c81e3ab0ca3dad70115d72210323142943b40a",
   "source": "https://src.fedoraproject.org/rpms/apr.git",
-  "version": "1.7.6"
+  "version": "1.7.6",
+  "modification_status": "clean"
 }

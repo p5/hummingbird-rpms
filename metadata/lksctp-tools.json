@@ -3,5 +3,6 @@
   "release": "3",
   "sha": "0b5c3370066641df45064aab6a4496444b308d0d",
   "source": "https://src.fedoraproject.org/rpms/lksctp-tools.git",
-  "version": "1.0.21"
+  "version": "1.0.21",
+  "modification_status": "clean"
 }

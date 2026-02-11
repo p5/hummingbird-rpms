@@ -23,7 +23,7 @@ import xmlrpc.client
 import yaml
 from pathlib import Path
 from specfile import Specfile
-from typing import TypedDict, cast
+from typing import Literal, NotRequired, TypedDict, cast
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
 RPMS_DIR = ROOT_DIR / 'rpms'
@@ -44,11 +44,13 @@ sign_off: bool = False
 
 class PackageMetadata(TypedDict):
     """Metadata stored in metadata/<package>.json for each package."""
-    source: str
-    branch: str
-    sha: str
+    source: NotRequired[str]  # Not present for native packages
+    branch: NotRequired[str]  # Not present for native packages
+    sha: NotRequired[str]  # Not present for native packages
     version: str
     release: str
+    modification_status: NotRequired[Literal["clean", "modified", "native"]]
+    modification_reason: NotRequired[str]
 
 
 class KojiBuild(TypedDict, total=False):
@@ -606,6 +608,13 @@ def import_(url: str, branch: str, ref: str | None = None, directory: str | None
         'version': version,
         'release': release,
     }
+
+    # Set modification_status based on source
+    if 'gitlab.com/redhat/hummingbird' in url:
+        metadata['modification_status'] = 'native'
+    else:
+        metadata['modification_status'] = 'clean'
+
     save_package_metadata(dir_name, metadata)
     # Update global imports dict
     imports[dir_name] = metadata
@@ -636,6 +645,16 @@ def update(package_name: str, skip_build_check: bool = False, sync: bool = False
     assert package_dir.exists()
 
     metadata = imports[package_name]
+
+    # Check modification_status - block updates for modified/native packages (unless sync forced)
+    if not sync:
+        status = metadata.get('modification_status', 'clean')
+        if status in ['modified', 'native']:
+            reason = metadata.get('modification_reason', 'No reason provided')
+            sys.exit(f"ERROR: Cannot auto-update {package_name}\n"
+                    f"       Status: {status}\n"
+                    f"       Reason: {reason}\n"
+                    f"       Use 'sync' to force update or 'mark-modified --clean' to allow updates")
 
     # Extract the upstream package name from the source URL (for Koji queries)
     # This may differ from the directory name
@@ -725,6 +744,12 @@ def update(package_name: str, skip_build_check: bool = False, sync: bool = False
         imports[package_name]['sha'] = latest_sha
         imports[package_name]['version'] = version
         imports[package_name]['release'] = release
+
+        # Reset modification_status to clean after successful update/sync
+        imports[package_name]['modification_status'] = 'clean'
+        # Remove modification_reason if it exists
+        imports[package_name].pop('modification_reason', None)
+
         save_package_metadata(package_name, imports[package_name])
 
         # Commit the changes
@@ -748,6 +773,206 @@ def check_git_config() -> None:
             "   git config user.name 'Your Name'\n"
             "   git config user.email 'you@example.com'"
         )
+
+
+def mark_modified(package_name: str, modified: bool, reason: str | None = None) -> None:
+    """Mark a package as modified or clean.
+
+    Args:
+        package_name: Package name to mark
+        modified: True to mark as modified, False to mark as clean
+        reason: Reason for modification (required if modified=True)
+    """
+    if package_name not in imports:
+        sys.exit(f"ERROR: Package {package_name} not found (missing metadata/{package_name}.json)")
+
+    metadata = imports[package_name]
+
+    if modified:
+        # Mark as modified
+        metadata['modification_status'] = 'modified'
+
+        # Get reason (prompt if not provided)
+        if not reason:
+            try:
+                reason = input("Reason for modification: ").strip()
+                if not reason:
+                    sys.exit("ERROR: Reason is required when marking as modified")
+            except (EOFError, KeyboardInterrupt):
+                sys.exit("\nAborted")
+
+        metadata['modification_reason'] = reason
+        logging.info("Marked %s as modified: %s", package_name, reason)
+    else:
+        # Mark as clean
+        metadata['modification_status'] = 'clean'
+        metadata.pop('modification_reason', None)
+        logging.info("Marked %s as clean (auto-updates enabled)", package_name)
+
+    # Save updated metadata
+    save_package_metadata(package_name, metadata)
+    imports[package_name] = metadata
+
+
+def diff_package(package_name: str, output_mode: str = 'full', raw: bool = False) -> bool | None:
+    """Show diff between local package and upstream Fedora.
+
+    Args:
+        package_name: Name of package to diff
+        output_mode: 'full' (default), 'stat', or 'name-only'
+        raw: If True, show raw diff with no filters
+
+    Returns:
+        True if differences exist, False if clean, None if native package
+
+    Behavior:
+        - Native packages: Print message and return None
+        - Clean packages: Print nothing, return False
+        - Modified packages: Print diff, return True
+    """
+    metadata = load_package_metadata(package_name)
+    if not metadata:
+        sys.exit(f"ERROR: Package {package_name} not found")
+
+    # Skip native packages
+    if metadata.get('modification_status') == 'native':
+        print(f"{package_name}: Native package (no upstream to diff against)")
+        return None
+
+    # Clone upstream to temp directory
+    with tempfile.TemporaryDirectory() as tmpdir:
+        upstream_dir = Path(tmpdir) / 'upstream'
+
+        logging.info("Cloning %s from %s (branch: %s, SHA: %s)",
+                    package_name, metadata['source'], metadata['branch'], metadata['sha'][:8])
+
+        # Clone and checkout exact SHA
+        run_git('clone', '--quiet', '--branch', metadata['branch'],
+                '--single-branch', metadata['source'], str(upstream_dir))
+        run_git('checkout', '--quiet', metadata['sha'], cwd=upstream_dir)
+
+        # Remove .git to avoid comparing git metadata
+        shutil.rmtree(upstream_dir / '.git')
+
+        # Build diff command based on mode and filters
+        diff_cmd = ['diff', '--recursive', '--unified', '--exclude=.git']
+
+        if not raw:
+            # Apply same filters as is_package_unmodified()
+            diff_cmd.extend([
+                '--ignore-trailing-space',
+                '--ignore-blank-lines',
+                '--ignore-matching-lines=^Release:',
+            ])
+
+        # Add mode-specific flags
+        if output_mode == 'stat':
+            # For stat mode, we need actual diff output to compute stats
+            pass  # Will process output below
+        elif output_mode == 'name-only':
+            diff_cmd.append('--brief')
+
+        diff_cmd.extend([str(upstream_dir), str(RPMS_DIR / package_name)])
+
+        # Run diff and capture output
+        result = subprocess.run(diff_cmd, capture_output=True, text=True)
+
+        if result.returncode == 0:
+            # No differences
+            return False
+        elif result.returncode == 1:
+            # Differences found
+            if output_mode == 'name-only':
+                # Parse --brief output to show only filenames
+                for line in result.stdout.splitlines():
+                    if line.startswith('Files '):
+                        # Extract filename from "Files <upstream>/file and <local>/file differ"
+                        parts = line.split(' and ')
+                        if len(parts) == 2:
+                            local_path = parts[1].split(' differ')[0]
+                            filename = Path(local_path).name
+                            print(filename)
+                    elif line.startswith('Only in '):
+                        # Handle files that exist in only one location
+                        print(line)
+            elif output_mode == 'stat':
+                # Parse diff output to create stat-style summary
+                # For simplicity, just use diffstat if available, otherwise show file list
+                try:
+                    stat_result = subprocess.run(['diffstat'], input=result.stdout,
+                                                 capture_output=True, text=True, check=True)
+                    print(stat_result.stdout)
+                except (subprocess.CalledProcessError, FileNotFoundError):
+                    # diffstat not available, fall back to simple file count
+                    files_changed = set()
+                    for line in result.stdout.splitlines():
+                        if line.startswith('---') or line.startswith('+++'):
+                            if '/dev/null' not in line:
+                                files_changed.add(line.split('\t')[0][4:])  # Remove '--- ' or '+++ '
+                    print(f"{len(files_changed)} file(s) changed")
+            else:
+                # Full diff output
+                print(result.stdout)
+            return True
+        else:
+            # Error occurred
+            sys.exit(f"Error running diff: {result.stderr}")
+
+
+def list_packages(status_filter: str | None = None) -> None:
+    """List packages with their modification status.
+
+    Args:
+        status_filter: Filter by status ('clean', 'modified', 'native', or None for all)
+    """
+    metadata_files = sorted(METADATA_DIR.glob('*.json'))
+
+    if not metadata_files:
+        print("No packages found")
+        return
+
+    # Collect packages with their status
+    packages: list[tuple[str, str, str | None]] = []  # (name, status, reason)
+
+    for metadata_file in metadata_files:
+        package_name = metadata_file.stem
+        with open(metadata_file) as f:
+            metadata: PackageMetadata = json.load(f)
+
+        status = metadata.get('modification_status', 'unknown')
+        reason = metadata.get('modification_reason')
+
+        # Apply filter if specified
+        if status_filter and status != status_filter:
+            continue
+
+        packages.append((package_name, status, reason))
+
+    if not packages:
+        if status_filter:
+            print(f"No {status_filter} packages found")
+        else:
+            print("No packages found")
+        return
+
+    # Print header
+    if status_filter:
+        print(f"{status_filter.upper()} PACKAGES ({len(packages)}):")
+    else:
+        print(f"ALL PACKAGES ({len(packages)}):")
+    print()
+
+    # Print packages
+    for name, status, reason in packages:
+        status_indicator = {
+            'clean': '✓',
+            'modified': '⚠',
+            'native': '●',
+        }.get(status, '?')
+
+        print(f"  {status_indicator} {name:<40} [{status}]")
+        if reason and status == 'modified':
+            print(f"    → {reason}")
 
 
 def main() -> None:
@@ -815,6 +1040,43 @@ Examples:
     rename_parser = subparsers.add_parser('rename', help='Rename a package')
     rename_parser.add_argument('package', help='Current package name (new name will be read from spec file)')
 
+    # mark-modified command
+    mark_parser = subparsers.add_parser('mark-modified',
+                                       help='Mark a package as modified or clean')
+    mark_parser.add_argument('package', help='Package name to mark')
+    mark_group = mark_parser.add_mutually_exclusive_group(required=True)
+    mark_group.add_argument('--modified', action='store_true',
+                           help='Mark as modified (blocks auto-updates)')
+    mark_group.add_argument('--clean', action='store_true',
+                           help='Mark as clean (allows auto-updates)')
+    mark_parser.add_argument('--reason', help='Reason for modification (required for --modified)')
+
+    # list command
+    list_parser = subparsers.add_parser('list',
+                                       help='List packages with modification status')
+    list_filter = list_parser.add_mutually_exclusive_group()
+    list_filter.add_argument('--clean', action='store_true',
+                            help='Show only clean packages')
+    list_filter.add_argument('--modified', action='store_true',
+                            help='Show only modified packages')
+    list_filter.add_argument('--native', action='store_true',
+                            help='Show only native packages')
+
+    # diff command
+    diff_parser = subparsers.add_parser('diff',
+                                       help='Show differences between local and upstream packages')
+    diff_parser.add_argument('packages', nargs='*',
+                            help='Package names to diff (default: all modified packages if --all)')
+    diff_parser.add_argument('--all', action='store_true',
+                            help='Diff all modified packages')
+    diff_mode = diff_parser.add_mutually_exclusive_group()
+    diff_mode.add_argument('--stat', action='store_true',
+                          help='Show only summary statistics (like git diff --stat)')
+    diff_mode.add_argument('--name-only', action='store_true',
+                          help='Show only names of changed files')
+    diff_parser.add_argument('--raw', action='store_true',
+                            help='Show raw diff without filters (includes Release:, whitespace)')
+
     args = parser.parse_args()
 
     # Set global sign-off flag
@@ -826,7 +1088,7 @@ Examples:
         sys.exit("ERROR: --dry-run is not supported with the rename command")
 
     # Check git config for commands that will commit
-    if not args.dry_run or args.command == 'rename':
+    if args.command not in ['list', 'diff'] and (not args.dry_run or args.command == 'rename'):
         check_git_config()
 
     match args.command:
@@ -842,6 +1104,53 @@ Examples:
             update_releases()
         case 'rename':
             rename(args.package)
+        case 'mark-modified':
+            mark_modified(args.package, args.modified, args.reason)
+        case 'list':
+            # Determine filter based on flags
+            status_filter = None
+            if args.clean:
+                status_filter = 'clean'
+            elif args.modified:
+                status_filter = 'modified'
+            elif args.native:
+                status_filter = 'native'
+            list_packages(status_filter)
+        case 'diff':
+            # Determine output mode
+            output_mode = 'full'
+            if args.stat:
+                output_mode = 'stat'
+            elif args.name_only:
+                output_mode = 'name-only'
+
+            # Determine which packages to diff
+            if args.all:
+                # Diff all modified packages
+                packages = [
+                    pkg for pkg, meta in imports.items()
+                    if meta.get('modification_status') == 'modified'
+                ]
+                if not packages:
+                    print("No modified packages found")
+                    sys.exit(0)
+            elif args.packages:
+                packages = args.packages
+            else:
+                sys.exit("ERROR: Specify package names or use --all")
+
+            # Diff each package
+            has_diffs = False
+            for pkg in packages:
+                if len(packages) > 1:
+                    print(f"\n=== {pkg} ===")
+
+                result = diff_package(pkg, output_mode, args.raw)
+                if result:
+                    has_diffs = True
+
+            # Exit with code 1 if any diffs found
+            sys.exit(1 if has_diffs else 0)
 
 
 if __name__ == '__main__':

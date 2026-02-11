@@ -3,5 +3,6 @@
   "release": "2",
   "sha": "8fe40f9e3ea4e3be7fff409317dbd3df1d0aaa02",
   "source": "https://src.fedoraproject.org/rpms/fonts-rpm-macros.git",
-  "version": "5.0.0"
+  "version": "5.0.0",
+  "modification_status": "clean"
 }

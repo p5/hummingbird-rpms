@@ -3,5 +3,6 @@
   "release": "5",
   "sha": "262e6901f376fafb620dff101a304d01494dcad1",
   "source": "https://src.fedoraproject.org/rpms/gmp.git",
-  "version": "6.3.0"
+  "version": "6.3.0",
+  "modification_status": "clean"
 }

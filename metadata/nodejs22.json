@@ -3,5 +3,7 @@
   "release": "1",
   "sha": "957388792cd718381ce526a9eb8ab222e3ea563a",
   "source": "https://src.fedoraproject.org/rpms/nodejs22.git",
-  "version": "22.22.0"
+  "version": "22.22.0",
+  "modification_status": "modified",
+  "modification_reason": "Pre-existing modification - requires review"
 }

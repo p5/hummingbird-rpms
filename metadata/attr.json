@@ -3,5 +3,6 @@
   "release": "8",
   "sha": "d7e38cfa172b96c455e8ee073727c0705449051e",
   "source": "https://src.fedoraproject.org/rpms/attr.git",
-  "version": "2.5.2"
+  "version": "2.5.2",
+  "modification_status": "clean"
 }

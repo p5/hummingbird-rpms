@@ -3,5 +3,6 @@
   "release": "2",
   "sha": "fada398a0950263da63e9c35cc4a689409d543c6",
   "source": "https://src.fedoraproject.org/rpms/python-sentry-sdk.git",
-  "version": "2.48.0"
+  "version": "2.48.0",
+  "modification_status": "clean"
 }

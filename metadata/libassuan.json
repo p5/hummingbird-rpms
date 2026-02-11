@@ -3,5 +3,6 @@
   "release": "5",
   "sha": "1291733fff41aa1265429eaeed46cfa068b0bd15",
   "source": "https://src.fedoraproject.org/rpms/libassuan.git",
-  "version": "2.5.7"
+  "version": "2.5.7",
+  "modification_status": "clean"
 }

@@ -3,5 +3,6 @@
   "release": "2",
   "sha": "11e3ad9369a33df84193e08202e5dbd0be4790e8",
   "source": "https://src.fedoraproject.org/rpms/qt5.git",
-  "version": "5.15.18"
+  "version": "5.15.18",
+  "modification_status": "clean"
 }

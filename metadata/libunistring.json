@@ -3,5 +3,6 @@
   "release": "11",
   "sha": "924a284041afab6792e72ef6e388dd2f2d19f601",
   "source": "https://src.fedoraproject.org/rpms/libunistring.git",
-  "version": "1.1"
+  "version": "1.1",
+  "modification_status": "clean"
 }

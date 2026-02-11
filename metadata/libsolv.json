@@ -3,5 +3,6 @@
   "release": "4",
   "sha": "eb6a608ad3319f8bdcb07f8e9ca1c86f320a4ec5",
   "source": "https://src.fedoraproject.org/rpms/libsolv.git",
-  "version": "0.7.35"
+  "version": "0.7.35",
+  "modification_status": "clean"
 }

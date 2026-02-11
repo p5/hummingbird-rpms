@@ -3,5 +3,6 @@
   "release": "1",
   "sha": "0280de2689bdaed0f1ae50f9cb87d0a67853dac8",
   "source": "https://src.fedoraproject.org/rpms/llhttp.git",
-  "version": "9.3.0"
+  "version": "9.3.0",
+  "modification_status": "clean"
 }

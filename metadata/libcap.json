@@ -3,5 +3,6 @@
   "release": "3",
   "sha": "516924a6ceff74ee29091bcda31a42e8b4ae5aec",
   "source": "https://src.fedoraproject.org/rpms/libcap.git",
-  "version": "2.77"
+  "version": "2.77",
+  "modification_status": "clean"
 }

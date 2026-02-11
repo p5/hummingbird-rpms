@@ -3,5 +3,6 @@
   "release": "12",
   "sha": "a00e7f843fa72136b1ffb92b018c408423cae600",
   "source": "https://src.fedoraproject.org/rpms/perl-Net-SSLeay.git",
-  "version": "1.94"
+  "version": "1.94",
+  "modification_status": "clean"
 }

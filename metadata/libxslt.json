@@ -3,5 +3,6 @@
   "release": "6",
   "sha": "79d83b8d5cd5ff67383dd98fcab09bcda632ed10",
   "source": "https://src.fedoraproject.org/rpms/libxslt.git",
-  "version": "1.1.43"
+  "version": "1.1.43",
+  "modification_status": "clean"
 }

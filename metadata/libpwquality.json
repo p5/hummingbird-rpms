@@ -3,5 +3,6 @@
   "release": "15",
   "sha": "6d925f39058bede820f0a374926a809ae7099730",
   "source": "https://src.fedoraproject.org/rpms/libpwquality.git",
-  "version": "1.4.5"
+  "version": "1.4.5",
+  "modification_status": "clean"
 }

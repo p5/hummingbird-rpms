@@ -3,5 +3,6 @@
   "release": "1",
   "sha": "258dd5b7e72cae72a0e0b53dfe2df653fad6cbe2",
   "source": "https://src.fedoraproject.org/rpms/rdma-core.git",
-  "version": "61.0"
+  "version": "61.0",
+  "modification_status": "clean"
 }

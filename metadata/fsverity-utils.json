@@ -3,5 +3,6 @@
   "release": "4",
   "sha": "76ecf8e33824f6275a4fc883858e6f8e7f155df8",
   "source": "https://src.fedoraproject.org/rpms/fsverity-utils.git",
-  "version": "1.6"
+  "version": "1.6",
+  "modification_status": "clean"
 }

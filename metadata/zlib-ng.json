@@ -3,5 +3,6 @@
   "release": "2",
   "sha": "24eab478f5cc531c7ce060976dcc0dba98d62d6d",
   "source": "https://src.fedoraproject.org/rpms/zlib-ng.git",
-  "version": "2.3.3"
+  "version": "2.3.3",
+  "modification_status": "clean"
 }

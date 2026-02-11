@@ -3,5 +3,6 @@
   "release": "1",
   "sha": "e145a90beda7f74756e067e2a03123469c507860",
   "source": "https://src.fedoraproject.org/rpms/ncurses.git",
-  "version": "6.6"
+  "version": "6.6",
+  "modification_status": "clean"
 }

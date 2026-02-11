@@ -3,5 +3,6 @@
   "release": "9",
   "sha": "5b94b9e120f08f5a68418110138e70b7bb184e8a",
   "source": "https://src.fedoraproject.org/rpms/file.git",
-  "version": "5.46"
+  "version": "5.46",
+  "modification_status": "clean"
 }

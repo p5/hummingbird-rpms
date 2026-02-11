@@ -3,5 +3,6 @@
   "release": "1",
   "sha": "c702e42b65aa8027e5066cb1be2001192af85a21",
   "source": "https://src.fedoraproject.org/rpms/tree-sitter-srpm-macros.git",
-  "version": "0.4.2"
+  "version": "0.4.2",
+  "modification_status": "clean"
 }

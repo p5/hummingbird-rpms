@@ -3,5 +3,6 @@
   "release": "8",
   "sha": "b31b82df5e2eff0b220b03c2aa656bd2a2506051",
   "source": "https://src.fedoraproject.org/rpms/python-packaging.git",
-  "version": "25.0"
+  "version": "25.0",
+  "modification_status": "clean"
 }

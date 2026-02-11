@@ -3,5 +3,6 @@
   "release": "1",
   "sha": "329f8adf4f7beeffcffa30c2c734e8671074e7e5",
   "source": "https://src.fedoraproject.org/rpms/coreutils.git",
-  "version": "9.10"
+  "version": "9.10",
+  "modification_status": "clean"
 }

@@ -3,5 +3,6 @@
   "release": "6",
   "sha": "0d3fec10dcb670794939bc3fb9aba33759e51120",
   "source": "https://src.fedoraproject.org/rpms/cups.git",
-  "version": "2.4.16"
+  "version": "2.4.16",
+  "modification_status": "clean"
 }

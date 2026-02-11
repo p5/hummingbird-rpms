@@ -3,5 +3,6 @@
   "release": "1",
   "sha": "bceb22b702b83e070c1b157f5b0209ea4577a328",
   "source": "https://src.fedoraproject.org/rpms/valkey.git",
-  "version": "9.0.2"
+  "version": "9.0.2",
+  "modification_status": "clean"
 }

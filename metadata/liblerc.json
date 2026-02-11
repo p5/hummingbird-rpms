@@ -3,5 +3,6 @@
   "release": "10",
   "sha": "9f1ad64868cb6be5c2ba590ff1fd1aaa64cc308c",
   "source": "https://src.fedoraproject.org/rpms/liblerc.git",
-  "version": "4.0.0"
+  "version": "4.0.0",
+  "modification_status": "clean"
 }

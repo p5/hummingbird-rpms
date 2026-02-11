@@ -3,5 +3,6 @@
   "release": "2",
   "sha": "7480b47f5b57022dc52473d66de427d1a73690eb",
   "source": "https://src.fedoraproject.org/rpms/libgpg-error.git",
-  "version": "1.58"
+  "version": "1.58",
+  "modification_status": "clean"
 }

@@ -3,5 +3,6 @@
   "release": "2",
   "sha": "698ed2398b2fa731273dd68f14bfc1cbfa3ecdf2",
   "source": "https://src.fedoraproject.org/rpms/python-pathspec.git",
-  "version": "1.0.3"
+  "version": "1.0.3",
+  "modification_status": "clean"
 }
