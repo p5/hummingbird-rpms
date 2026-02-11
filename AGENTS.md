@@ -11,3 +11,17 @@ Common operational tasks that users or AI agents may need to perform:
 | Mark package modified       | [Package Modification Tracking](documentation/operating/package-modification-tracking.md) | Track local changes; prevent automatic Fedora updates    |
 | Update dist-git packages    | [Updating Dist-git Packages](documentation/operating/updating-dist-git-packages.md) | Test or trigger automated package updates from Fedora    |
 | Konflux resource deployment | [Konflux Resource Deployment](documentation/background/konflux-resource-deployment.md) | Understand how Konflux resources are deployed          |
+
+## Development Guidelines
+
+### Testing Requirements
+
+When modifying `ci/dist_git.py`:
+- **Add tests** for new commands or functionality in `test/test_dist_git.py`
+- Run `make check` to verify all tests pass before committing
+- Test coverage is tracked - aim to test all user-facing behavior
+- Examples: See existing tests like `test_import`, `test_update`, `test_mark_modified_with_reason`
+
+When modifying validation or CI scripts:
+- Ensure `make check` passes (includes linting, type checking, and validation)
+- Add tests if the change affects user-facing behavior
