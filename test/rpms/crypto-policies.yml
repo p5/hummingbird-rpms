@@ -1,0 +1,110 @@
+---
+# Tests for crypto-policies config subpackages (config-default, config-fips)
+
+config-subpackages:
+  command: |
+    # Test that crypto-policies config subpackages work correctly:
+    # 1. config-default is pulled in via Suggests and applies DEFAULT policy
+    # 2. dnf swap to config-fips applies FIPS policy (ChaCha20 disabled)
+    # 3. dnf swap back to config-default restores DEFAULT policy
+    
+    # Only run on the main crypto-policies package
+    rpm_name=$(rpm -qp --queryformat '%{NAME}' "${TEST_RPM}")
+    if [[ "${rpm_name}" != "crypto-policies" ]]; then
+      echo "Skipping: This test only runs on crypto-policies (got: ${rpm_name})"
+      exit 0
+    fi
+
+    # Setup: create local repo with our RPMs
+    build_dir=$(mktemp -d)
+    trap 'rm -rf "${build_dir}"' EXIT
+    mkdir -p "${build_dir}/local-repo"
+    
+    if [[ -n ${TEST_REPO_DIR:-} ]]; then
+      cp "${TEST_REPO_DIR}"/*.rpm "${build_dir}/local-repo/"
+    else
+      cp "${TEST_RPM}" "${build_dir}/local-repo/"
+    fi
+    
+    createrepo_c "${build_dir}/local-repo" || \
+      "${TEST_ENGINE}" run --rm --user 0 -v "${build_dir}/local-repo:/repo:z" \
+        quay.io/hummingbird-ci/builder:latest createrepo_c /repo
+
+    repo_root=$(git rev-parse --show-toplevel)
+
+    "${TEST_ENGINE}" run --rm --cap-add=ALL \
+      -v "${repo_root}/ci/repos:/tmp/repos:ro,z" \
+      -v "${build_dir}/local-repo:/tmp/local-repo:ro,z" \
+      quay.io/hummingbird-ci/builder:latest-hatchling \
+      bash -c '
+        set -e
+        NEWROOT=/new-root-fs
+        
+        # Setup repos
+        cp /tmp/repos/*.repo /etc/yum.repos.d/
+        printf "[local-repo]\nname=Local\nbaseurl=file:///tmp/local-repo\nenabled=1\ngpgcheck=0\npriority=1\n" \
+          > /etc/yum.repos.d/local.repo
+
+        DNF="dnf-installroot ${NEWROOT} -y --use-host-config --nodocs --setopt=install_weak_deps=True"
+        
+        mkdir -p "${NEWROOT}"
+        rpmkeys --import /etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-43-primary --root "${NEWROOT}"
+        
+        # Install crypto-policies (Suggests pulls in config-default) + gnutls + dnf for swap
+        ${DNF} install filesystem
+        ${DNF} install crypto-policies gnutls-utils dnf
+
+        echo "=== Test 1: config-default installed via Suggests ==="
+        rpm --root="${NEWROOT}" -q crypto-policies-config-default || \
+          { echo "FAIL: config-default not installed"; exit 1; }
+        
+        policy=$(cat "${NEWROOT}/etc/crypto-policies/config")
+        [[ "${policy}" == "DEFAULT" ]] || { echo "FAIL: expected DEFAULT, got ${policy}"; exit 1; }
+        
+        # Verify ChaCha20 available in DEFAULT
+        chroot "${NEWROOT}" gnutls-cli --list --priority @SYSTEM 2>&1 | grep -qi CHACHA20 || \
+          { echo "FAIL: ChaCha20 should be available in DEFAULT"; exit 1; }
+        echo "PASS: DEFAULT policy active, ChaCha20 available"
+
+        echo ""
+        echo "=== Test 2: dnf swap to config-fips ==="
+        # Setup local repo in chroot for swap
+        mkdir -p "${NEWROOT}/etc/yum.repos.d" "${NEWROOT}/tmp/local-repo"
+        cp /etc/yum.repos.d/local.repo "${NEWROOT}/etc/yum.repos.d/"
+        cp -r /tmp/local-repo/* "${NEWROOT}/tmp/local-repo/"
+        
+        chroot "${NEWROOT}" dnf swap -y --disablerepo="*" --enablerepo=local-repo \
+          crypto-policies-config-default crypto-policies-config-fips
+
+        rpm --root="${NEWROOT}" -q crypto-policies-config-fips || \
+          { echo "FAIL: config-fips not installed after swap"; exit 1; }
+        ! rpm --root="${NEWROOT}" -q crypto-policies-config-default 2>/dev/null || \
+          { echo "FAIL: config-default still installed after swap"; exit 1; }
+        
+        policy=$(cat "${NEWROOT}/etc/crypto-policies/config")
+        [[ "${policy}" == "FIPS" ]] || { echo "FAIL: expected FIPS, got ${policy}"; exit 1; }
+        
+        # Verify ChaCha20 NOT available in FIPS
+        ! chroot "${NEWROOT}" gnutls-cli --list --priority @SYSTEM 2>&1 | grep -qi CHACHA20 || \
+          { echo "FAIL: ChaCha20 should NOT be available in FIPS"; exit 1; }
+        echo "PASS: FIPS policy active, ChaCha20 disabled"
+
+        echo ""
+        echo "=== Test 3: dnf swap back to config-default ==="
+        chroot "${NEWROOT}" dnf swap -y --disablerepo="*" --enablerepo=local-repo \
+          crypto-policies-config-fips crypto-policies-config-default
+
+        rpm --root="${NEWROOT}" -q crypto-policies-config-default || \
+          { echo "FAIL: config-default not installed after swap back"; exit 1; }
+        
+        policy=$(cat "${NEWROOT}/etc/crypto-policies/config")
+        [[ "${policy}" == "DEFAULT" ]] || { echo "FAIL: expected DEFAULT, got ${policy}"; exit 1; }
+        
+        # Verify ChaCha20 available again
+        chroot "${NEWROOT}" gnutls-cli --list --priority @SYSTEM 2>&1 | grep -qi CHACHA20 || \
+          { echo "FAIL: ChaCha20 should be available after swap back"; exit 1; }
+        echo "PASS: DEFAULT policy restored, ChaCha20 available"
+
+        echo ""
+        echo "SUCCESS: All crypto-policies config subpackage tests passed"
+      '
