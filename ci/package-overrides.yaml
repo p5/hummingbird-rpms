@@ -96,3 +96,6 @@ rust:
               memory: 10Gi
             limits:
               memory: 10Gi
+
+syft:
+  forked_from: "https://gitlab.com/redhat/hummingbird/rpms"

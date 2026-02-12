@@ -1,0 +1,106 @@
+---
+# Tests specific to the syft package
+
+syft-version:
+  command: |
+    # Skip if not the main syft RPM
+    rpm_name=$(rpm -qp --queryformat '%{NAME}' "${TEST_RPM}")
+    if [[ "${rpm_name}" != "syft" ]]; then
+      echo "Skipping: Not the main syft package (got: ${rpm_name})"
+      exit 0
+    fi
+
+    # Test that syft binary runs and reports its version
+    "${TEST_ENGINE}" run --rm \
+      -v "${TEST_RPM}:/tmp/test.rpm:ro,z" \
+      quay.io/hummingbird-ci/builder:latest \
+      bash -c '
+        set -e
+        dnf install -y /tmp/test.rpm
+        syft version
+      '
+
+syft-scan-rpm:
+  command: |
+    # Skip if not the main syft RPM
+    rpm_name=$(rpm -qp --queryformat '%{NAME}' "${TEST_RPM}")
+    if [[ "${rpm_name}" != "syft" ]]; then
+      echo "Skipping: Not the main syft package (got: ${rpm_name})"
+      exit 0
+    fi
+
+    # Test that syft can scan an RPM file and produce SBOM output
+    "${TEST_ENGINE}" run --rm \
+      -v "${TEST_RPM}:/tmp/test.rpm:ro,z" \
+      quay.io/hummingbird-ci/builder:latest \
+      bash -c '
+        set -e
+        dnf install -y /tmp/test.rpm
+        
+        # Scan the RPM itself and output as JSON
+        syft /tmp/test.rpm -o json > /tmp/sbom.json
+        
+        # Verify the output is valid JSON
+        if ! jq empty /tmp/sbom.json; then
+          echo "Error: syft output is not valid JSON"
+          exit 1
+        fi
+        
+        echo "syft successfully scanned RPM and produced valid JSON output"
+      '
+
+syft-scan-directory:
+  command: |
+    # Skip if not the main syft RPM
+    rpm_name=$(rpm -qp --queryformat '%{NAME}' "${TEST_RPM}")
+    if [[ "${rpm_name}" != "syft" ]]; then
+      echo "Skipping: Not the main syft package (got: ${rpm_name})"
+      exit 0
+    fi
+
+    # Test that syft can scan a directory
+    "${TEST_ENGINE}" run --rm \
+      -v "${TEST_RPM}:/tmp/test.rpm:ro,z" \
+      quay.io/hummingbird-ci/builder:latest \
+      bash -c '
+        set -e
+        dnf install -y /tmp/test.rpm
+        
+        # Scan /usr/bin directory
+        syft dir:/usr/bin -o table
+        
+        echo "syft successfully scanned directory"
+      '
+
+syft-output-formats:
+  command: |
+    # Skip if not the main syft RPM
+    rpm_name=$(rpm -qp --queryformat '%{NAME}' "${TEST_RPM}")
+    if [[ "${rpm_name}" != "syft" ]]; then
+      echo "Skipping: Not the main syft package (got: ${rpm_name})"
+      exit 0
+    fi
+
+    # Test that syft can produce output in various formats
+    "${TEST_ENGINE}" run --rm \
+      -v "${TEST_RPM}:/tmp/test.rpm:ro,z" \
+      quay.io/hummingbird-ci/builder:latest \
+      bash -c '
+        set -e
+        dnf install -y /tmp/test.rpm
+        
+        # Test different output formats
+        syft /tmp/test.rpm -o json > /dev/null
+        echo "JSON output: OK"
+        
+        syft /tmp/test.rpm -o table > /dev/null
+        echo "Table output: OK"
+        
+        syft /tmp/test.rpm -o cyclonedx-json > /dev/null
+        echo "CycloneDX JSON output: OK"
+        
+        syft /tmp/test.rpm -o spdx-json > /dev/null
+        echo "SPDX JSON output: OK"
+        
+        echo "All output formats working correctly"
+      '
