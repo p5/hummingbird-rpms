@@ -17,6 +17,7 @@ set -o pipefail
 
 # default configuration file name
 CFG_NAME=./newrelease.conf
+GVTOML=go-vendor-tools.toml
 
 # default template name postfix
 # TEMPLATE_POSTFIX="-template.spec"
@@ -153,6 +154,9 @@ echo "${SPEC} created"
 # download source
 echo "Downloading source if needed"
 spectool -g -s 0 "${SPEC}"
+
+go_vendor_archive create --config "${GVTOML}" --idempotent "${SPEC}"
+go_vendor_license --config "${GVTOML}" --path "${SPEC}" report expression --update-spec
 
 SPEC_URL=$(spectool -l "${SPEC}" | head -n1 | awk '{print $2}')
 TAR_NAME=$(basename "$SPEC_URL")
