@@ -1272,3 +1272,197 @@ def test_diff_all_modified(workdir: Path, upstream_repos: dict[str, Path]) -> No
     assert '=== chocolate ===' in result.stdout
     assert 'Version: 1.1' in result.stdout
     assert 'Version: 11' in result.stdout
+
+
+def test_is_prerelease_tilde_notation(dist_git_module) -> None:
+    """Test pre-release detection for tilde notation."""
+    assert dist_git_module.is_prerelease("5.3.0~rc1") == (True, "tilde pre-release marker (~rc1)")
+    assert dist_git_module.is_prerelease("2.0~beta1")[0] is True
+    assert dist_git_module.is_prerelease("1.0~alpha")[0] is True
+    assert dist_git_module.is_prerelease("3.0~pre")[0] is True
+
+
+def test_is_prerelease_suffix_notation(dist_git_module) -> None:
+    """Test pre-release detection for suffix notation."""
+    assert dist_git_module.is_prerelease("5.3.0-rc1")[0] is True
+    assert dist_git_module.is_prerelease("2.0.beta1")[0] is True
+    assert dist_git_module.is_prerelease("1.0-alpha")[0] is True
+    assert dist_git_module.is_prerelease("3.0.dev")[0] is True
+
+
+def test_is_prerelease_stable_versions(dist_git_module) -> None:
+    """Test that stable versions are not flagged as pre-release."""
+    assert dist_git_module.is_prerelease("1.0") == (False, None)
+    assert dist_git_module.is_prerelease("2.5.3") == (False, None)
+    assert dist_git_module.is_prerelease("10.11.12") == (False, None)
+    # Edge case: package with "dev" in name shouldn't match
+    assert dist_git_module.is_prerelease("1.0device") == (False, None)
+
+
+def test_update_skips_prerelease(workdir: Path, upstream_repos: dict[str, Path]) -> None:
+    """Update skips pre-release versions by default."""
+    # Import vanilla
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["vanilla"]}'],
+        cwd=workdir, check=True,
+    )
+
+    # Update upstream to pre-release version
+    vanilla_spec = upstream_repos["vanilla"] / 'vanilla.spec'
+    spec_content = vanilla_spec.read_text()
+    modified_content = spec_content.replace('Version: 1.0', 'Version: 2.0~rc1')
+    vanilla_spec.write_text(modified_content)
+    subprocess.run(['git', 'add', 'vanilla.spec'], cwd=upstream_repos["vanilla"], check=True)
+    subprocess.run(['git', 'commit', '-m', 'Update to 2.0~rc1'], cwd=upstream_repos["vanilla"], check=True)
+
+    # Update should skip
+    result = subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'update', 'vanilla'],
+        cwd=workdir, capture_output=True, text=True, check=True,
+    )
+
+    assert "pre-release version detected" in result.stderr
+    assert "2.0~rc1" in result.stderr
+
+    # Verify package not updated
+    vanilla_import_json = workdir / 'metadata' / 'vanilla.json'
+    with open(vanilla_import_json) as f:
+        import_data = json.load(f)
+    assert import_data['version'] == '1.0'
+
+
+def test_update_allow_prerelease_flag(workdir: Path, upstream_repos: dict[str, Path]) -> None:
+    """Update with --allow-prerelease accepts pre-release versions."""
+    # Import vanilla
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["vanilla"]}'],
+        cwd=workdir, check=True,
+    )
+
+    # Update upstream to pre-release version
+    vanilla_spec = upstream_repos["vanilla"] / 'vanilla.spec'
+    spec_content = vanilla_spec.read_text()
+    modified_content = spec_content.replace('Version: 1.0', 'Version: 2.0~rc1')
+    vanilla_spec.write_text(modified_content)
+    subprocess.run(['git', 'add', 'vanilla.spec'], cwd=upstream_repos["vanilla"], check=True)
+    subprocess.run(['git', 'commit', '-m', 'Update to 2.0~rc1'], cwd=upstream_repos["vanilla"], check=True)
+
+    # Update with --allow-prerelease should proceed
+    result = subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'update', '--skip-build-check',
+         '--allow-prerelease', 'vanilla'],
+        cwd=workdir, capture_output=True, text=True, check=True,
+    )
+
+    assert "Updating vanilla" in result.stderr
+
+    # Verify package updated
+    vanilla_import_json = workdir / 'metadata' / 'vanilla.json'
+    with open(vanilla_import_json) as f:
+        import_data = json.load(f)
+    assert import_data['version'] == '2.0~rc1'
+
+
+def test_update_batch_continues_on_prerelease(workdir: Path, upstream_repos: dict[str, Path]) -> None:
+    """Batch update continues processing after encountering pre-release."""
+    # Import vanilla and chocolate
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["vanilla"]}'],
+        cwd=workdir, check=True,
+    )
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["chocolate"]}'],
+        cwd=workdir, check=True,
+    )
+
+    # Update vanilla to pre-release
+    vanilla_spec = upstream_repos["vanilla"] / 'vanilla.spec'
+    spec_content = vanilla_spec.read_text()
+    modified_content = spec_content.replace('Version: 1.0', 'Version: 2.0~rc1')
+    vanilla_spec.write_text(modified_content)
+    subprocess.run(['git', 'add', 'vanilla.spec'], cwd=upstream_repos["vanilla"], check=True)
+    subprocess.run(['git', 'commit', '-m', 'Update to 2.0~rc1'], cwd=upstream_repos["vanilla"], check=True)
+
+    # Update chocolate to stable version
+    add_upstream_commit(upstream_repos["chocolate"], 'chocolate', '10', '11')
+
+    # Batch update should skip vanilla but update chocolate
+    result = subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'update', '--skip-build-check'],
+        cwd=workdir, capture_output=True, text=True,
+    )
+
+    assert "Skipping vanilla" in result.stderr or "pre-release" in result.stderr
+    assert "Updating chocolate" in result.stderr
+    # Exit code may be non-zero if updates occurred, that's ok
+    assert result.returncode in (0, 1)
+
+
+def test_sync_bypasses_prerelease_check(workdir: Path, upstream_repos: dict[str, Path]) -> None:
+    """Sync command bypasses pre-release check."""
+    # Import vanilla
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["vanilla"]}'],
+        cwd=workdir, check=True,
+    )
+
+    # Update upstream to pre-release version
+    vanilla_spec = upstream_repos["vanilla"] / 'vanilla.spec'
+    spec_content = vanilla_spec.read_text()
+    modified_content = spec_content.replace('Version: 1.0', 'Version: 2.0~rc1')
+    vanilla_spec.write_text(modified_content)
+    subprocess.run(['git', 'add', 'vanilla.spec'], cwd=upstream_repos["vanilla"], check=True)
+    subprocess.run(['git', 'commit', '-m', 'Update to 2.0~rc1'], cwd=upstream_repos["vanilla"], check=True)
+
+    # Sync should update despite pre-release version
+    result = subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'sync', 'vanilla'],
+        cwd=workdir, capture_output=True, text=True, check=True,
+    )
+
+    assert "Syncing vanilla" in result.stderr
+
+    # Verify package updated
+    vanilla_import_json = workdir / 'metadata' / 'vanilla.json'
+    with open(vanilla_import_json) as f:
+        import_data = json.load(f)
+    assert import_data['version'] == '2.0~rc1'
+
+
+def test_list_prerelease_packages(workdir: Path, upstream_repos: dict[str, Path]) -> None:
+    """Test list --prerelease shows only packages with pre-release versions."""
+    # Import vanilla and chocolate
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["vanilla"]}'],
+        cwd=workdir, check=True,
+    )
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["chocolate"]}'],
+        cwd=workdir, check=True,
+    )
+
+    # Update vanilla to pre-release version
+    vanilla_spec = upstream_repos["vanilla"] / 'vanilla.spec'
+    spec_content = vanilla_spec.read_text()
+    modified_content = spec_content.replace('Version: 1.0', 'Version: 2.0~rc1')
+    vanilla_spec.write_text(modified_content)
+    subprocess.run(['git', 'add', 'vanilla.spec'], cwd=upstream_repos["vanilla"], check=True)
+    subprocess.run(['git', 'commit', '-m', 'Update to 2.0~rc1'], cwd=upstream_repos["vanilla"], check=True)
+
+    # Update vanilla package to pre-release
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'sync', 'vanilla'],
+        cwd=workdir, check=True,
+    )
+
+    # List pre-release packages
+    result = subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'list', '--prerelease'],
+        cwd=workdir, capture_output=True, text=True, check=True,
+    )
+
+    # Should only show vanilla, not chocolate
+    assert 'vanilla' in result.stdout
+    assert '2.0~rc1' in result.stdout
+    assert 'chocolate' not in result.stdout
+    assert 'PRE-RELEASE PACKAGES (1):' in result.stdout

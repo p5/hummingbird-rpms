@@ -95,6 +95,48 @@ def parse_spec_version(package_dir: Path) -> tuple[str, str]:
         raise ValueError(f"Unexpected rpmspec output for {spec_file}: {rpmspec.stdout}") from e
 
 
+# Pre-release detection patterns (compiled at module level for performance)
+PRERELEASE_PATTERNS = [
+    # Tilde notation (RPM-style: 5.3.0~rc1)
+    (re.compile(r'~(rc|alpha|beta|pre|dev|snapshot|git)\d*', re.IGNORECASE),
+     "tilde pre-release marker"),
+
+    # Hyphen/dot with pre-release suffix (use word boundaries to avoid false matches)
+    (re.compile(r'[-.](?:rc|alpha|beta|pre|dev|snapshot)\d*\b', re.IGNORECASE),
+     "pre-release suffix"),
+
+    # Git/snapshot timestamps (git20240101, snapshot20240101)
+    (re.compile(r'\b(git|snapshot)\d{6,}', re.IGNORECASE),
+     "development snapshot"),
+
+    # Standalone development markers at end (1.0dev, 2.0pre)
+    (re.compile(r'(dev|pre)\b', re.IGNORECASE),
+     "development marker"),
+]
+
+
+def is_prerelease(version: str) -> tuple[bool, str | None]:
+    """Detect if a version string contains pre-release markers.
+
+    Args:
+        version: Version string to check (e.g., "5.3.0~rc1", "2.0-beta1")
+
+    Returns:
+        (is_prerelease, pattern_matched): Tuple of boolean and optional pattern description
+
+    Examples:
+        >>> is_prerelease("5.3.0~rc1")
+        (True, "tilde pre-release marker (~rc1)")
+        >>> is_prerelease("2.0.3")
+        (False, None)
+    """
+    for pattern, description in PRERELEASE_PATTERNS:
+        match = pattern.search(version)
+        if match:
+            return (True, f"{description} ({match.group(0)})")
+    return (False, None)
+
+
 def rename_spec_validate(original_name: str, original_dir: Path) -> str:
     """Read the new package name from spec file and validate it has been changed.
 
@@ -636,7 +678,7 @@ def import_(url: str, branch: str, ref: str | None = None, directory: str | None
 
 
 def update(package_name: str, skip_build_check: bool = False, sync: bool = False,
-           dry_run: bool = False) -> None:
+           dry_run: bool = False, allow_prerelease: bool = False) -> None:
     """Update a single package from upstream."""
     if package_name not in imports:
         sys.exit(f"ERROR: Package {package_name} not found (missing metadata/{package_name}.json)")
@@ -684,6 +726,15 @@ def update(package_name: str, skip_build_check: bool = False, sync: bool = False
         # Parse spec file to get version-release
         version, release = parse_spec_version(upstream_dir)
         logging.info("Version: %s-%s", version, release)
+
+        # Check for pre-release version (unless sync or --allow-prerelease)
+        if not sync and not allow_prerelease:
+            is_pre, pattern = is_prerelease(version)
+            if is_pre:
+                logging.warning("Skipping %s: pre-release version detected - %s (version: %s)",
+                               package_name, pattern, version)
+                logging.info("Use --allow-prerelease to override this check")
+                return
 
         dist_tag = get_dist_tag(metadata['branch'])
 
@@ -919,11 +970,12 @@ def diff_package(package_name: str, output_mode: str = 'full', raw: bool = False
             sys.exit(f"Error running diff: {result.stderr}")
 
 
-def list_packages(status_filter: str | None = None) -> None:
+def list_packages(status_filter: str | None = None, prerelease_filter: bool = False) -> None:
     """List packages with their modification status.
 
     Args:
         status_filter: Filter by status ('clean', 'modified', 'native', or None for all)
+        prerelease_filter: If True, show only packages with pre-release versions
     """
     metadata_files = sorted(METADATA_DIR.glob('*.json'))
 
@@ -932,7 +984,7 @@ def list_packages(status_filter: str | None = None) -> None:
         return
 
     # Collect packages with their status
-    packages: list[tuple[str, str, str | None]] = []  # (name, status, reason)
+    packages: list[tuple[str, str, str | None, str]] = []  # (name, status, reason, version)
 
     for metadata_file in metadata_files:
         package_name = metadata_file.stem
@@ -941,36 +993,52 @@ def list_packages(status_filter: str | None = None) -> None:
 
         status = metadata.get('modification_status', 'unknown')
         reason = metadata.get('modification_reason')
+        version = metadata.get('version', '')
 
-        # Apply filter if specified
+        # Apply status filter if specified
         if status_filter and status != status_filter:
             continue
 
-        packages.append((package_name, status, reason))
+        # Apply prerelease filter if specified
+        if prerelease_filter:
+            is_pre, _ = is_prerelease(version)
+            if not is_pre:
+                continue
+
+        packages.append((package_name, status, reason, version))
 
     if not packages:
-        if status_filter:
+        if prerelease_filter:
+            print("No pre-release packages found")
+        elif status_filter:
             print(f"No {status_filter} packages found")
         else:
             print("No packages found")
         return
 
     # Print header
-    if status_filter:
+    if prerelease_filter:
+        print(f"PRE-RELEASE PACKAGES ({len(packages)}):")
+    elif status_filter:
         print(f"{status_filter.upper()} PACKAGES ({len(packages)}):")
     else:
         print(f"ALL PACKAGES ({len(packages)}):")
     print()
 
     # Print packages
-    for name, status, reason in packages:
+    for name, status, reason, version in packages:
         status_indicator = {
             'clean': '✓',
             'modified': '⚠',
             'native': '●',
         }.get(status, '?')
 
-        print(f"  {status_indicator} {name:<40} [{status}]")
+        if prerelease_filter:
+            # Show version for pre-release packages
+            print(f"  {status_indicator} {name:<40} [{status}] v{version}")
+        else:
+            print(f"  {status_indicator} {name:<40} [{status}]")
+
         if reason and status == 'modified':
             print(f"    → {reason}")
 
@@ -1028,6 +1096,8 @@ Examples:
                               help='Package name to update (default: all packages)')
     update_parser.add_argument('--skip-build-check', action='store_true',
                               help='Skip Koji build verification (for testing)')
+    update_parser.add_argument('--allow-prerelease', action='store_true',
+                              help='Allow updating to pre-release versions (rc, alpha, beta, dev, etc.)')
 
     # sync command
     sync_parser = subparsers.add_parser('sync', help='Force-sync package to upstream (discards local changes)')
@@ -1061,6 +1131,8 @@ Examples:
                             help='Show only modified packages')
     list_filter.add_argument('--native', action='store_true',
                             help='Show only native packages')
+    list_filter.add_argument('--prerelease', action='store_true',
+                            help='Show only packages with pre-release versions')
 
     # diff command
     diff_parser = subparsers.add_parser('diff',
@@ -1097,7 +1169,8 @@ Examples:
         case 'update':
             packages = [args.package] if args.package else list(imports.keys())
             for pkg in packages:
-                update(pkg, args.skip_build_check, dry_run=args.dry_run)
+                update(pkg, args.skip_build_check, dry_run=args.dry_run,
+                       allow_prerelease=args.allow_prerelease)
         case 'sync':
             update(args.package, sync=True, dry_run=args.dry_run)
         case 'update-releases':
@@ -1115,7 +1188,7 @@ Examples:
                 status_filter = 'modified'
             elif args.native:
                 status_filter = 'native'
-            list_packages(status_filter)
+            list_packages(status_filter, prerelease_filter=args.prerelease)
         case 'diff':
             # Determine output mode
             output_mode = 'full'
