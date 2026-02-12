@@ -1,8 +1,8 @@
 {
   "branch": "rawhide",
-  "release": "1",
-  "sha": "a98e348fb9e801f7ea20f6add417a177f415a3c2",
+  "modification_status": "clean",
+  "release": "3",
+  "sha": "e8a88aca9a6495a67593a0f4cdec7b440c698015",
   "source": "https://src.fedoraproject.org/rpms/gpgme.git",
-  "version": "2.0.1",
-  "modification_status": "clean"
+  "version": "2.0.1"
 }
