@@ -1427,3 +1427,42 @@ def test_sync_bypasses_prerelease_check(workdir: Path, upstream_repos: dict[str,
     with open(vanilla_import_json) as f:
         import_data = json.load(f)
     assert import_data['version'] == '2.0~rc1'
+
+
+def test_list_prerelease_packages(workdir: Path, upstream_repos: dict[str, Path]) -> None:
+    """Test list --prerelease shows only packages with pre-release versions."""
+    # Import vanilla and chocolate
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["vanilla"]}'],
+        cwd=workdir, check=True,
+    )
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["chocolate"]}'],
+        cwd=workdir, check=True,
+    )
+
+    # Update vanilla to pre-release version
+    vanilla_spec = upstream_repos["vanilla"] / 'vanilla.spec'
+    spec_content = vanilla_spec.read_text()
+    modified_content = spec_content.replace('Version: 1.0', 'Version: 2.0~rc1')
+    vanilla_spec.write_text(modified_content)
+    subprocess.run(['git', 'add', 'vanilla.spec'], cwd=upstream_repos["vanilla"], check=True)
+    subprocess.run(['git', 'commit', '-m', 'Update to 2.0~rc1'], cwd=upstream_repos["vanilla"], check=True)
+
+    # Update vanilla package to pre-release
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'sync', 'vanilla'],
+        cwd=workdir, check=True,
+    )
+
+    # List pre-release packages
+    result = subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'list', '--prerelease'],
+        cwd=workdir, capture_output=True, text=True, check=True,
+    )
+
+    # Should only show vanilla, not chocolate
+    assert 'vanilla' in result.stdout
+    assert '2.0~rc1' in result.stdout
+    assert 'chocolate' not in result.stdout
+    assert 'PRE-RELEASE PACKAGES (1):' in result.stdout

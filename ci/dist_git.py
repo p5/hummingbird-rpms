@@ -970,11 +970,12 @@ def diff_package(package_name: str, output_mode: str = 'full', raw: bool = False
             sys.exit(f"Error running diff: {result.stderr}")
 
 
-def list_packages(status_filter: str | None = None) -> None:
+def list_packages(status_filter: str | None = None, prerelease_filter: bool = False) -> None:
     """List packages with their modification status.
 
     Args:
         status_filter: Filter by status ('clean', 'modified', 'native', or None for all)
+        prerelease_filter: If True, show only packages with pre-release versions
     """
     metadata_files = sorted(METADATA_DIR.glob('*.json'))
 
@@ -983,7 +984,7 @@ def list_packages(status_filter: str | None = None) -> None:
         return
 
     # Collect packages with their status
-    packages: list[tuple[str, str, str | None]] = []  # (name, status, reason)
+    packages: list[tuple[str, str, str | None, str]] = []  # (name, status, reason, version)
 
     for metadata_file in metadata_files:
         package_name = metadata_file.stem
@@ -992,36 +993,52 @@ def list_packages(status_filter: str | None = None) -> None:
 
         status = metadata.get('modification_status', 'unknown')
         reason = metadata.get('modification_reason')
+        version = metadata.get('version', '')
 
-        # Apply filter if specified
+        # Apply status filter if specified
         if status_filter and status != status_filter:
             continue
 
-        packages.append((package_name, status, reason))
+        # Apply prerelease filter if specified
+        if prerelease_filter:
+            is_pre, _ = is_prerelease(version)
+            if not is_pre:
+                continue
+
+        packages.append((package_name, status, reason, version))
 
     if not packages:
-        if status_filter:
+        if prerelease_filter:
+            print("No pre-release packages found")
+        elif status_filter:
             print(f"No {status_filter} packages found")
         else:
             print("No packages found")
         return
 
     # Print header
-    if status_filter:
+    if prerelease_filter:
+        print(f"PRE-RELEASE PACKAGES ({len(packages)}):")
+    elif status_filter:
         print(f"{status_filter.upper()} PACKAGES ({len(packages)}):")
     else:
         print(f"ALL PACKAGES ({len(packages)}):")
     print()
 
     # Print packages
-    for name, status, reason in packages:
+    for name, status, reason, version in packages:
         status_indicator = {
             'clean': '✓',
             'modified': '⚠',
             'native': '●',
         }.get(status, '?')
 
-        print(f"  {status_indicator} {name:<40} [{status}]")
+        if prerelease_filter:
+            # Show version for pre-release packages
+            print(f"  {status_indicator} {name:<40} [{status}] v{version}")
+        else:
+            print(f"  {status_indicator} {name:<40} [{status}]")
+
         if reason and status == 'modified':
             print(f"    → {reason}")
 
@@ -1114,6 +1131,8 @@ Examples:
                             help='Show only modified packages')
     list_filter.add_argument('--native', action='store_true',
                             help='Show only native packages')
+    list_filter.add_argument('--prerelease', action='store_true',
+                            help='Show only packages with pre-release versions')
 
     # diff command
     diff_parser = subparsers.add_parser('diff',
@@ -1169,7 +1188,7 @@ Examples:
                 status_filter = 'modified'
             elif args.native:
                 status_filter = 'native'
-            list_packages(status_filter)
+            list_packages(status_filter, prerelease_filter=args.prerelease)
         case 'diff':
             # Determine output mode
             output_mode = 'full'
