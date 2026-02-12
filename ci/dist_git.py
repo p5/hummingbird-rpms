@@ -95,6 +95,48 @@ def parse_spec_version(package_dir: Path) -> tuple[str, str]:
         raise ValueError(f"Unexpected rpmspec output for {spec_file}: {rpmspec.stdout}") from e
 
 
+# Pre-release detection patterns (compiled at module level for performance)
+PRERELEASE_PATTERNS = [
+    # Tilde notation (RPM-style: 5.3.0~rc1)
+    (re.compile(r'~(rc|alpha|beta|pre|dev|snapshot|git)\d*', re.IGNORECASE),
+     "tilde pre-release marker"),
+
+    # Hyphen/dot with pre-release suffix (use word boundaries to avoid false matches)
+    (re.compile(r'[-.](?:rc|alpha|beta|pre|dev|snapshot)\d*\b', re.IGNORECASE),
+     "pre-release suffix"),
+
+    # Git/snapshot timestamps (git20240101, snapshot20240101)
+    (re.compile(r'\b(git|snapshot)\d{6,}', re.IGNORECASE),
+     "development snapshot"),
+
+    # Standalone development markers at end (1.0dev, 2.0pre)
+    (re.compile(r'(dev|pre)\b', re.IGNORECASE),
+     "development marker"),
+]
+
+
+def is_prerelease(version: str) -> tuple[bool, str | None]:
+    """Detect if a version string contains pre-release markers.
+
+    Args:
+        version: Version string to check (e.g., "5.3.0~rc1", "2.0-beta1")
+
+    Returns:
+        (is_prerelease, pattern_matched): Tuple of boolean and optional pattern description
+
+    Examples:
+        >>> is_prerelease("5.3.0~rc1")
+        (True, "tilde pre-release marker (~rc1)")
+        >>> is_prerelease("2.0.3")
+        (False, None)
+    """
+    for pattern, description in PRERELEASE_PATTERNS:
+        match = pattern.search(version)
+        if match:
+            return (True, f"{description} ({match.group(0)})")
+    return (False, None)
+
+
 def rename_spec_validate(original_name: str, original_dir: Path) -> str:
     """Read the new package name from spec file and validate it has been changed.
 
@@ -636,7 +678,7 @@ def import_(url: str, branch: str, ref: str | None = None, directory: str | None
 
 
 def update(package_name: str, skip_build_check: bool = False, sync: bool = False,
-           dry_run: bool = False) -> None:
+           dry_run: bool = False, allow_prerelease: bool = False) -> None:
     """Update a single package from upstream."""
     if package_name not in imports:
         sys.exit(f"ERROR: Package {package_name} not found (missing metadata/{package_name}.json)")
@@ -684,6 +726,15 @@ def update(package_name: str, skip_build_check: bool = False, sync: bool = False
         # Parse spec file to get version-release
         version, release = parse_spec_version(upstream_dir)
         logging.info("Version: %s-%s", version, release)
+
+        # Check for pre-release version (unless sync or --allow-prerelease)
+        if not sync and not allow_prerelease:
+            is_pre, pattern = is_prerelease(version)
+            if is_pre:
+                logging.warning("Skipping %s: pre-release version detected - %s (version: %s)",
+                               package_name, pattern, version)
+                logging.info("Use --allow-prerelease to override this check")
+                return
 
         dist_tag = get_dist_tag(metadata['branch'])
 
@@ -1028,6 +1079,8 @@ Examples:
                               help='Package name to update (default: all packages)')
     update_parser.add_argument('--skip-build-check', action='store_true',
                               help='Skip Koji build verification (for testing)')
+    update_parser.add_argument('--allow-prerelease', action='store_true',
+                              help='Allow updating to pre-release versions (rc, alpha, beta, dev, etc.)')
 
     # sync command
     sync_parser = subparsers.add_parser('sync', help='Force-sync package to upstream (discards local changes)')
@@ -1097,7 +1150,8 @@ Examples:
         case 'update':
             packages = [args.package] if args.package else list(imports.keys())
             for pkg in packages:
-                update(pkg, args.skip_build_check, dry_run=args.dry_run)
+                update(pkg, args.skip_build_check, dry_run=args.dry_run,
+                       allow_prerelease=args.allow_prerelease)
         case 'sync':
             update(args.package, sync=True, dry_run=args.dry_run)
         case 'update-releases':

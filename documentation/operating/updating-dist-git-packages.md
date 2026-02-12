@@ -30,3 +30,30 @@ export CHORE_MR_GITLAB_TOKEN="glpat-xxxxxxxxxxxxxxxxxxxx"
 MRs created by this script are configured to:
 - **Auto-merge** when pipeline succeeds (set via `merge_request.merge_when_pipeline_succeeds`)
 - **Auto-approve** after 10 minutes via the `chore_mr_approval` CI job (gives Konflux time to post commit statuses)
+
+## Pre-Release Version Filtering
+
+By default, the update mechanism skips pre-release versions to prevent unstable packages from entering the repository automatically. Pre-release patterns include:
+
+- **Tilde notation**: `5.3.0~rc1`, `2.0~beta1`, `1.0~alpha` (RPM standard)
+- **Suffix notation**: `5.3.0-rc1`, `2.0.beta1`, `3.0-alpha`, `1.0.dev`
+- **Development markers**: `1.5git20240101`, `2024.01.snapshot`, `1.0dev`
+
+### Manual Override
+
+To explicitly update to a pre-release version:
+
+```bash
+# Update single package to pre-release version
+./ci/dist_git.py update --allow-prerelease package-name --skip-build-check
+
+# Batch update allowing pre-releases
+./ci/dist_git.py update --allow-prerelease --skip-build-check
+```
+
+### Behavior
+
+- Pre-release detection occurs before Koji build checks (saves API calls)
+- Skipped packages log a warning with the detected pattern
+- Batch updates continue processing other packages
+- The `sync` command bypasses this check (explicit force operation)
