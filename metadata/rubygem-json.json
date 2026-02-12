@@ -1,8 +1,8 @@
 {
   "branch": "rawhide",
-  "release": "2",
-  "sha": "5b5099c90d4072ee7827bf3cd5156c3a44a15bc7",
+  "modification_status": "clean",
+  "release": "1",
+  "sha": "2d687edf00a5fb015524ef96f26507406c05951f",
   "source": "https://src.fedoraproject.org/rpms/rubygem-json.git",
-  "version": "2.18.0",
-  "modification_status": "clean"
+  "version": "2.18.1"
 }
