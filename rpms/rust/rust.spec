@@ -1,6 +1,6 @@
 Name:           rust
-Version:        1.93.0
-Release:        3%{?dist}
+Version:        1.93.1
+Release:        1%{?dist}
 Summary:        The Rust Programming Language
 License:        (Apache-2.0 OR MIT) AND (Artistic-2.0 AND BSD-3-Clause AND ISC AND MIT AND MPL-2.0 AND Unicode-3.0)
 # ^ written as: (rust itself) and (bundled libraries)
