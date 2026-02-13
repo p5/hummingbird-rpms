@@ -548,8 +548,10 @@ exit 1
 %define jmodsportablearchiveForFiles()  %(echo %{jmodsportablearchive -- ""})
 
 # JDK to use for bootstrapping
+# Don't require fastdebug for bootstrapping - release JDK works fine
+# and fastdebug variants may not be available in all repos (e.g., during distro bootstrap)
 %ifarch %{fastdebug_arches}
-%global bootdebugpkg fastdebug
+# %%global bootdebugpkg fastdebug
 %endif
 %if %{use_portable_bootjdk}
 %global bootjdkpkg_name java-%{featurever}-%{origin}
