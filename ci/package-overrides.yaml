@@ -111,3 +111,6 @@ rust:
 
 syft:
   forked_from: "https://gitlab.com/redhat/hummingbird/rpms"
+
+oras:
+  forked_from: "https://gitlab.com/redhat/hummingbird/rpms"
