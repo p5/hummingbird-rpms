@@ -117,6 +117,65 @@ rpm-install:
         fi
 
         echo "Verified: '"${rpm_name}"' installed from local-repo"
+
+        # Verify ELF binaries that have CPE strings contain the Hummingbird CPE
+        CPE_STRING="cpe:/a:redhat:hummingbird:1"
+
+        # Install tools needed for CPE check (after package validation)
+        if ! dnf ${DNF_FLAGS} install binutils file >/dev/null 2>&1; then
+          echo "ERROR: Failed to install binutils and file packages needed for CPE check"
+          exit 1
+        fi
+
+        # Get list of files installed by the package and find ELF binaries
+        mapfile -t elf_files < <(rpm --root="${NEWROOT}" -ql '"${rpm_name}"' | \
+          sed "s|^|${NEWROOT}|" | \
+          xargs -r file 2>/dev/null | \
+          grep -E ": +ELF " | \
+          cut -d: -f1)
+
+        if [ ${#elf_files[@]} -eq 0 ]; then
+          echo "No ELF binaries found in package - skipping CPE check"
+          exit 0
+        fi
+
+        echo "Checking ${#elf_files[@]} ELF binary/binaries for CPE string: ${CPE_STRING}"
+
+        failed_files=()
+        skipped_files=0
+        checked_files=0
+        for elf_file in "${elf_files[@]}"; do
+          # Check if the binary has a .note.package section with any CPE
+          note_content=$(readelf -p .note.package "${elf_file}" 2>/dev/null || true)
+          if [ -z "${note_content}" ] || ! echo "${note_content}" | grep -qF "cpe:/"; then
+            # No .note.package section or no CPE string - skip this binary
+            skipped_files=$((skipped_files + 1))
+            continue
+          fi
+
+          # Binary has a CPE - verify it contains the Hummingbird CPE
+          checked_files=$((checked_files + 1))
+          if ! echo "${note_content}" | grep -qF "${CPE_STRING}"; then
+            # Get path relative to NEWROOT for cleaner output
+            rel_path="${elf_file#${NEWROOT}}"
+            failed_files+=("${rel_path}")
+          fi
+        done
+
+        if [ ${#failed_files[@]} -gt 0 ]; then
+          echo "The following ELF binaries have a CPE but do not contain ${CPE_STRING}:"
+          for f in "${failed_files[@]}"; do
+            echo "  - ${f}"
+          done
+          echo "ERROR: Found ${#failed_files[@]} ELF binary/binaries with incorrect CPE in .note.package header"
+          exit 1
+        fi
+
+        if [ ${checked_files} -eq 0 ]; then
+          echo "No ELF binaries with CPE strings found - skipping CPE verification"
+        else
+          echo "Verified ${checked_files} ELF binary/binaries contain the correct CPE string (${skipped_files} without CPE skipped)"
+        fi
       '
 
 # Source RPM tests (only run when --src-rpm is provided)
