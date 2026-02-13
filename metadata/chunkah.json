@@ -1,5 +1,6 @@
 {
-  "version": "0.1.1",
+  "modification_reason": "Backport reproducibility fixes from upstream commit 0074ae3",
+  "modification_status": "modified",
   "release": "1.hum1",
-  "modification_status": "native"
+  "version": "0.1.1"
 }
