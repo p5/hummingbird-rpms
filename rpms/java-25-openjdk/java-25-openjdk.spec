@@ -289,7 +289,7 @@
 # New Version-String scheme-style defines
 %global featurever 25
 %global interimver 0
-%global updatever 1
+%global updatever 2
 %global patchver 0
 
 # We don't add any LTS designator for STS packages (Fedora and EPEL).
@@ -345,7 +345,7 @@
 %global origin_nice     OpenJDK
 %global top_level_dir_name   %{vcstag}
 %global top_level_dir_name_backup %{top_level_dir_name}-backup
-%global buildver        8
+%global buildver        10
 %global rpmrelease      3
 # Priority must be 8 digits in total; up to openjdk 1.8, we were using 18..... so when we moved to 11, we had to add another digit
 %if %is_system_jdk
@@ -828,6 +828,7 @@ fi
 %config(noreplace) %{etcjavadir -- %{?1}}/conf/security/policy/unlimited/default_US_export.policy
  %{etcjavadir -- %{?1}}/conf/security/policy/README.txt
 %config(noreplace) %{etcjavadir -- %{?1}}/conf/security/java.security
+%config(noreplace) %{etcjavadir -- %{?1}}/conf/security/java.security.upstream
 %dir %{etcjavadir -- %{?1}}/conf/security/redhat
 %dir %{etcjavadir -- %{?1}}/conf/security/redhat/false
 %dir %{etcjavadir -- %{?1}}/conf/security/redhat/true
@@ -1196,7 +1197,7 @@ Provides: java-%{origin}-src%{?1} = %{epoch}:%{version}-%{release}
 
 Name:    java-25-%{origin}
 Version: %{newjavaver}.%{buildver}
-Release: %{?eaprefix}%{rpmrelease}%{?extraver}%{?dist}.1
+Release: %{?eaprefix}%{rpmrelease}%{?extraver}%{?dist}
 # java-1.5.0-ibm from jpackage.org set Epoch to 1 for unknown reasons
 # and this change was brought into RHEL-4. java-1.5.0-ibm packages
 # also included the epoch in their virtual provides. This created a
@@ -1335,7 +1336,7 @@ Provides: bundled(lcms2) = 2.17.0
 # Version in src/java.desktop/share/native/libjavajpeg/jpeglib.h
 Provides: bundled(libjpeg) = 6b
 # Version in src/java.desktop/share/native/libsplashscreen/libpng/png.h
-Provides: bundled(libpng) = 1.6.47
+Provides: bundled(libpng) = 1.6.51
 # Version in src/java.base/share/native/libzip/zlib/zlib.h
 Provides: bundled(zlib) = 1.3.1
 %endif
@@ -1903,7 +1904,7 @@ function customisejdkTzdata() {
     if [ -d ${imagepath} ] ; then
         # Use system-wide tzdata
         mv ${imagepath}/lib/tzdb.dat{,.upstream}
-        ln -s %{_datadir}/javazi-1.8/tzdb.dat ${imagepath}/lib/tzdb.dat
+        ln -s %{javazidir}/tzdb.dat ${imagepath}/lib/tzdb.dat
     fi
 }
 
@@ -2555,7 +2556,4 @@ exit 0
 %endif
 
 %changelog
-* Fri Jan 16 2026 Fedora Release Engineering <releng@fedoraproject.org> - 1:25.0.1.0.8-3.1
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_44_Mass_Rebuild
-
 %autochangelog

@@ -109,11 +109,18 @@ security.provider.8=
 keystore.type=pkcs12
 EOF
 
-ls "${SECURITY}"/java.security 1>&2 # check the file to append exists
+# Make sure java.security exists before appending
+test -e "${SECURITY}"/java.security || ( echo "${SECURITY}/java.security not found" && false )
+cp -v "${SECURITY}"/java.security "${SECURITY}"/java.security.upstream
 cat >> "${SECURITY}"/java.security <<'EOF'
 
 #
 # System-wide crypto-policies and FIPS setup
+# If you need to use (eg for jlinked image without jmods) the  original one
+# backup this, and rename java.security.upstream to java.security
+# in case of jlinked image, you can use also --ignore-modified-runtime,
+# but it may misbehave later.
+#
 #
 # The following crypto-policies setup automatically detects when the system
 # is in FIPS mode and configures OpenJDK accordingly. If OpenJDK needs to
