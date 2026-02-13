@@ -1,0 +1,9 @@
+{
+  "branch": "rawhide",
+  "modification_status": "modified",
+  "modification_reason": "Add changelog separator to spec file",
+  "release": "2",
+  "sha": "13d4a131f5e449a181971aea308b49f7b114b031",
+  "source": "https://src.fedoraproject.org/rpms/java-25-openjdk-portable.git",
+  "version": "25.0.2.0.10"
+}

@@ -58,7 +58,19 @@ glibc:
     - "linux-d160-c8xlarge/arm64"
     - "linux-d160-c8xlarge/amd64"
 
+java-21-openjdk-portable:
+  timeout_hours: 8
+  build_platforms:
+    - "linux-d160-c8xlarge/arm64"
+    - "linux-d160-c8xlarge/amd64"
+
 java-25-openjdk:
+  timeout_hours: 8
+  build_platforms:
+    - "linux-d160-c8xlarge/arm64"
+    - "linux-d160-c8xlarge/amd64"
+
+java-25-openjdk-portable:
   timeout_hours: 8
   build_platforms:
     - "linux-d160-c8xlarge/arm64"
