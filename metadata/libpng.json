@@ -1,8 +1,8 @@
 {
   "branch": "rawhide",
-  "release": "2",
-  "sha": "2cb24a7e723bf909bafea7a1c76a381314c934b0",
+  "modification_status": "clean",
+  "release": "1",
+  "sha": "d675d42b5197b714ac63d336851d845551a1097b",
   "source": "https://src.fedoraproject.org/rpms/libpng.git",
-  "version": "1.6.53",
-  "modification_status": "clean"
+  "version": "1.6.55"
 }
