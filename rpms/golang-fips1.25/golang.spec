@@ -526,8 +526,9 @@ touch $src_list $pkg_list $docs_list $misc_list $tests_list $shared_list $race_l
 pushd $RPM_BUILD_ROOT%{goroot}
 
 # Src
+# Note: Exclude .syso files from src (noarch) - they are arch-specific and belong in -race subpackage
 find src/ -type d -a \( ! -name testdata -a ! -ipath '*/testdata/*' \) -printf '%%%dir %{goroot}/%p\n' >> $src_list
-find src/ ! -type d -a \( ! -ipath '*/testdata/*' -a ! -name '*_test.go' \) -printf '%{goroot}/%p\n' >> $src_list
+find src/ ! -type d -a \( ! -ipath '*/testdata/*' -a ! -name '*_test.go' -a ! -name '*.syso' \) -printf '%{goroot}/%p\n' >> $src_list
 
 # Bin
 find bin/ pkg/ -type d -a ! -path '*_dynlink/*' -a ! -path '*_race/*' -printf '%%%dir %{goroot}/%p\n' >> $pkg_list
@@ -703,14 +704,8 @@ fi
 %{_sysconfdir}/prelink.conf.d
 
 %files src -f go-src.list
-%if %{race}
-%ifarch x86_64
-%exclude %{goroot}/src/runtime/race/internal/amd64v1/race_linux.syso
-%exclude %{goroot}/src/runtime/race/internal/amd64v3/race_linux.syso
-%else
-%exclude %{goroot}/src/runtime/race/race_linux_%{gohostarch}.syso
-%endif
-%endif
+# Note: .syso files are excluded from go-src.list during generation (see find command)
+# They are packaged in the arch-specific -race subpackage instead
 
 %files docs -f go-docs.list
 
