@@ -215,6 +215,8 @@ Patch1:         0001-Modify-go.env.patch
 Patch6:         0006-Default-to-ld.bfd-on-ARM64.patch
 # Related: https://sourceware.org/bugzilla/show_bug.cgi?id=33204
 Patch7:         revert_dwarf5.patch
+# Skip TestTerminalSignal in podman containers - wait4() hangs with --init
+Patch10:        0010-Skip-TestTerminalSignal.patch
 
 # Having documentation separate was broken
 Obsoletes:      %{name}-docs < 1.1-4
@@ -332,6 +334,7 @@ Summary:        Golang shared object libraries
 %{summary}.
 %endif
 
+%if ! %{defined hummingbird}
 %package -n go-toolset
 Summary:        Package that installs go-toolset
 Requires:       %{name} = %{version}-%{release}
@@ -341,6 +344,7 @@ Requires:       delve
 
 %description -n go-toolset
 This is the main package for go-toolset.
+%endif
 
 %if %{race}
 %package race
@@ -725,7 +729,9 @@ fi
 %files shared -f go-shared.list
 %endif
 
+%if ! %{defined hummingbird}
 %files -n go-toolset
+%endif
 
 %if %{race}
 %files race
