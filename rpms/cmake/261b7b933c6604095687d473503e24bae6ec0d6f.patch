@@ -1,0 +1,91 @@
+From 261b7b933c6604095687d473503e24bae6ec0d6f Mon Sep 17 00:00:00 2001
+From: Anton Melnikov <antonsm21@gmail.com>
+Date: Mon, 22 Dec 2025 13:55:41 -0500
+Subject: [PATCH] FindLua: Add support for Lua 5.5
+
+Fixes: #27476
+
+Co-authored-by: Tyler Yankee <tyler.yankee@kitware.com>
+---
+ Modules/FindLua.cmake                               | 11 +++++++----
+ Tests/RunCMake/FindLua/FindLuaTest.cmake            |  8 ++++----
+ Tests/RunCMake/FindLua/prefix2/include/lua5.5/lua.h | 10 ++++++++++
+ 3 files changed, 21 insertions(+), 8 deletions(-)
+ create mode 100644 Tests/RunCMake/FindLua/prefix2/include/lua5.5/lua.h
+
+diff --git a/Modules/FindLua.cmake b/Modules/FindLua.cmake
+index 33fd8fde9f5..d37ad81a924 100644
+--- a/Modules/FindLua.cmake
++++ b/Modules/FindLua.cmake
+@@ -16,6 +16,9 @@ Lua is a embeddable scripting language.
+ .. versionadded:: 3.18
+   Support for Lua 5.4.
+ 
++.. versionadded:: 4.3
++  Support for Lua 5.5.
++
+ When working with Lua, its library headers are intended to be included in
+ project source code as:
+ 
+@@ -144,7 +147,7 @@ unset(_lua_append_versions)
+ 
+ # this is a function only to have all the variables inside go away automatically
+ function(_lua_get_versions)
+-    set(LUA_VERSIONS5 5.4 5.3 5.2 5.1 5.0)
++    set(LUA_VERSIONS5 5.5 5.4 5.3 5.2 5.1 5.0)
+ 
+     if (Lua_FIND_VERSION_EXACT)
+         if (Lua_FIND_VERSION_COUNT GREATER 1)
+@@ -214,11 +217,11 @@ function(_lua_get_header_version)
+   file(STRINGS "${_hdr_file}" lua_version_strings
+        REGEX "^#define[ \t]+LUA_(RELEASE[ \t]+\"Lua [0-9]|VERSION([ \t]+\"Lua [0-9]|_[MR])).*")
+ 
+-  string(REGEX REPLACE ".*;#define[ \t]+LUA_VERSION_MAJOR[ \t]+\"([0-9])\"[ \t]*;.*" "\\1" Lua_VERSION_MAJOR ";${lua_version_strings};")
++  string(REGEX REPLACE ".*;#define[ \t]+LUA_VERSION_MAJOR(_N)?[ \t]+\"?([0-9])\"?[ \t]*;.*" "\\2" Lua_VERSION_MAJOR ";${lua_version_strings};")
+ 
+   if (Lua_VERSION_MAJOR MATCHES "^[0-9]+$")
+-    string(REGEX REPLACE ".*;#define[ \t]+LUA_VERSION_MINOR[ \t]+\"([0-9])\"[ \t]*;.*" "\\1" Lua_VERSION_MINOR ";${lua_version_strings};")
+-    string(REGEX REPLACE ".*;#define[ \t]+LUA_VERSION_RELEASE[ \t]+\"([0-9])\"[ \t]*;.*" "\\1" Lua_VERSION_PATCH ";${lua_version_strings};")
++    string(REGEX REPLACE ".*;#define[ \t]+LUA_VERSION_MINOR(_N)?[ \t]+\"?([0-9])\"?[ \t]*;.*" "\\2" Lua_VERSION_MINOR ";${lua_version_strings};")
++    string(REGEX REPLACE ".*;#define[ \t]+LUA_VERSION_RELEASE(_N)?[ \t]+\"?([0-9])\"?[ \t]*;.*" "\\2" Lua_VERSION_PATCH ";${lua_version_strings};")
+     set(Lua_VERSION "${Lua_VERSION_MAJOR}.${Lua_VERSION_MINOR}.${Lua_VERSION_PATCH}")
+   else ()
+     string(REGEX REPLACE ".*;#define[ \t]+LUA_RELEASE[ \t]+\"Lua ([0-9.]+)\"[ \t]*;.*" "\\1" Lua_VERSION ";${lua_version_strings};")
+diff --git a/Tests/RunCMake/FindLua/FindLuaTest.cmake b/Tests/RunCMake/FindLua/FindLuaTest.cmake
+index df3fc567415..da29d06f58b 100644
+--- a/Tests/RunCMake/FindLua/FindLuaTest.cmake
++++ b/Tests/RunCMake/FindLua/FindLuaTest.cmake
+@@ -64,13 +64,13 @@ endfunction()
+ # Simple test
+ test_path(prefix1 prefix1/include 5.3)
+ # Find highest version
+-test_path(prefix2 prefix2/include/lua5.3 5.3)
+-foreach(ver 5.3 5.2 5.1)
++test_path(prefix2 prefix2/include/lua5.5 5.5)
++foreach(ver 5.5 5.3 5.2 5.1)
+     # At least X or X.0 -> Highest
+     set(VERSION "${ver}")
+-    test_path(prefix2 prefix2/include/lua5.3 5.3)
++    test_path(prefix2 prefix2/include/lua5.5 5.5)
+     set(VERSION "${ver}.0")
+-    test_path(prefix2 prefix2/include/lua5.3 5.3)
++    test_path(prefix2 prefix2/include/lua5.5 5.5)
+     # Exactly X/X.0
+     set(VERSION "${ver}" EXACT)
+     test_path(prefix2 prefix2/include/lua${ver} ${ver})
+diff --git a/Tests/RunCMake/FindLua/prefix2/include/lua5.5/lua.h b/Tests/RunCMake/FindLua/prefix2/include/lua5.5/lua.h
+new file mode 100644
+index 00000000000..1588b480d33
+--- /dev/null
++++ b/Tests/RunCMake/FindLua/prefix2/include/lua5.5/lua.h
+@@ -0,0 +1,10 @@
++
++#define LUA_VERSION_MAJOR_N 5
++#define LUA_VERSION_MINOR_N 5
++#define LUA_VERSION_RELEASE_N 0
++
++#define LUA_VERSION_NUM (LUA_VERSION_MAJOR_N * 100 + LUA_VERSION_MINOR_N)
++#define LUA_VERSION_RELEASE_NUM (LUA_VERSION_NUM * 100 + LUA_VERSION_RELEASE_N)
++
++#define LUA_VERSION "Lua " LUA_VERSION_MAJOR "." LUA_VERSION_MINOR
++#define LUA_RELEASE LUA_VERSION "." LUA_VERSION_RELEASE
