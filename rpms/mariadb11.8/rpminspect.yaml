@@ -1,0 +1,39 @@
+# Set up global ignore list
+ignore:
+    # mariadb-test/ directory contains an extensive test-suite of about 20.000 files;
+    # It is very time consuming to be fully analysed and the results aren't useful anyway
+    # It is expected the tests change during rebases, as the underlying functionality the test evolve
+    # Some of the tests contain broken or problematic code, however that is on purpose
+    - /usr/share/mariadb-test/
+
+# based on https://lists.launchpad.net/maria-discuss/msg06133.html discussion
+# are the invalid xmls (except for Index.xml) present in the sources on purpose
+# and they can be removed from xmllint rpminspect check in the CI process.
+#
+# A bug report [https://jira.mariadb.org/browse/MDEV-26905] was created in the upstream
+# for the Index.xml file.
+#
+# Fedora CI picks up the rpmlimspect.yaml for specific package in the dist-git repo
+#[ref: https://rpminspect.readthedocs.io/en/latest/configuration.html#rpminspect-yaml]
+#
+xml:
+  ignore:
+    - /usr/share/mariadb-test/std_data/loadxml.dat
+    - /usr/share/mariadb-test/std_data/loaddata/mdev9874.xml
+    - /usr/share/mariadb-test/std_data/ldml/Index.xml
+    - /usr/share/mariadb-test/plugin/sphinx/sphinx/testdata.xml
+    - /usr/share/mariadb-test/plugin/connect/connect/std_data/nocs.xml
+    - /usr/share/mariadb/charsets/Index.xml
+
+# ignore bad functions in resolveip binary, based on BZ1973194
+# all forbidden functions listed in main rpminspect config
+# have to be menioned also here, else it would not be checked for them
+badfuncs:
+  allowed:
+    /usr/bin/resolveip:
+      - gethostbyname
+      - gethostbyaddr
+      - inet_aton
+      - inet_ntoa
+    /usr/lib*/mariadb/plugin/ha_sphinx.so:
+      - inet_addr
