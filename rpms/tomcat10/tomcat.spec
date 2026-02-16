@@ -52,7 +52,7 @@
 %global tempdir %{cachedir}/temp
 %global workdir %{cachedir}/work
 
-Name:          tomcat
+Name:          tomcat10
 Epoch:         1
 Version:       %{major_version}.%{minor_version}.%{micro_version}
 Release:       %autorelease
@@ -62,25 +62,25 @@ Summary:       Apache Servlet/JSP Engine, RI for Servlet %{servletspec}/JSP %{js
 License:       Apache-2.0
 URL:           http://tomcat.apache.org/
 Source0:       http://www.apache.org/dist/tomcat/tomcat-%{major_version}/v%{version}/src/%{packdname}.tar.gz
-Source1:       %{name}-%{major_version}.%{minor_version}.conf
-Source2:       %{name}-%{major_version}.%{minor_version}.sysconfig
-Source3:       %{name}-%{major_version}.%{minor_version}.wrapper
-Source4:       %{name}-%{major_version}.%{minor_version}.logrotate
-Source5:       %{name}-%{major_version}.%{minor_version}-digest.script
-Source6:       %{name}-%{major_version}.%{minor_version}-tool-wrapper.script
-Source7:       %{name}-%{major_version}.%{minor_version}.service
-Source8:       %{name}-functions
-Source9:       %{name}-preamble
-Source10:      %{name}-server
-Source11:      %{name}-named.service
+Source1:       tomcat-%{major_version}.%{minor_version}.conf
+Source2:       tomcat-%{major_version}.%{minor_version}.sysconfig
+Source3:       tomcat-%{major_version}.%{minor_version}.wrapper
+Source4:       tomcat-%{major_version}.%{minor_version}.logrotate
+Source5:       tomcat-%{major_version}.%{minor_version}-digest.script
+Source6:       tomcat-%{major_version}.%{minor_version}-tool-wrapper.script
+Source7:       tomcat-%{major_version}.%{minor_version}.service
+Source8:       tomcat-functions
+Source9:       tomcat-preamble
+Source10:      tomcat-server
+Source11:      tomcat-named.service
 Source12:      module-start-up-parameters.conf
 
-Patch0:        %{name}-%{major_version}.%{minor_version}-bootstrap-MANIFEST.MF.patch
-Patch1:        %{name}-%{major_version}.%{minor_version}-tomcat-users-webapp.patch
-Patch2:        %{name}-build.patch
-Patch3:        %{name}-%{major_version}.%{minor_version}-catalina-policy.patch
-Patch4:        %{name}-%{major_version}.%{minor_version}-bnd-annotation.patch
-Patch5:        %{name}-%{major_version}.%{minor_version}-JDTCompiler.patch
+Patch0:        tomcat-%{major_version}.%{minor_version}-bootstrap-MANIFEST.MF.patch
+Patch1:        tomcat-%{major_version}.%{minor_version}-tomcat-users-webapp.patch
+Patch2:        tomcat-build.patch
+Patch3:        tomcat-%{major_version}.%{minor_version}-catalina-policy.patch
+Patch4:        tomcat-%{major_version}.%{minor_version}-bnd-annotation.patch
+Patch5:        tomcat-%{major_version}.%{minor_version}-JDTCompiler.patch
 Patch6:        rhbz-1857043.patch
 
 BuildArch:     noarch
