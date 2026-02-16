@@ -34,7 +34,7 @@ print(string.sub(hash, 0, 16))
 Summary: Utilities from the general purpose cryptography library with TLS implementation
 Name: openssl
 Version: 3.5.4
-Release: 2%{?dist}
+Release: 3%{?dist}
 Epoch: 1
 Source0: openssl-%{version}.tar.gz
 Source1: fips-hmacify.sh
@@ -42,6 +42,7 @@ Source3: genpatches
 Source4: openssl.rpmlintrc
 Source9: configuration-switch.h
 Source10: configuration-prefix.h
+Source11: openssl-fips-provider-enable.cnf
 
 Patch0001: 0001-RH-Aarch64-and-ppc64le-use-lib64.patch
 Patch0002: 0002-Add-a-separate-config-file-to-use-for-rpm-installs.patch
@@ -179,6 +180,18 @@ Requires: %{name}%{?_isa} = %{epoch}:%{version}-%{release}
 OpenSSL is a toolkit for supporting cryptography. The openssl-perl
 package provides Perl scripts for converting certificates and keys
 from other formats to the formats used by the OpenSSL toolkit.
+
+%package config-fips
+Summary: Enable OpenSSL FIPS provider by default
+Requires: %{name}-libs%{?_isa} = %{epoch}:%{version}-%{release}
+%if ( ( %{defined rhel} || %{defined hummingbird} ) && (! %{defined centos}) && (! %{defined eln}) )
+Requires: openssl-fips-provider
+%endif
+
+%description config-fips
+This package configures OpenSSL to load and activate the FIPS provider by
+default, without requiring kernel FIPS mode to be enabled. This is useful
+for container images that need FIPS-compliant cryptography by default.
 
 %prep
 %autosetup -S git -n %{name}-%{version}
@@ -414,6 +427,10 @@ install -m644 %{SOURCE9} \
 %endif
 ln -s /etc/crypto-policies/back-ends/openssl_fips.config $RPM_BUILD_ROOT%{_sysconfdir}/pki/tls/fips_local.cnf
 
+# Install FIPS provider drop-in config for config-fips subpackage
+# This gets included via .include /etc/pki/tls/openssl.d in the main config
+install -m 644 %{SOURCE11} $RPM_BUILD_ROOT%{_sysconfdir}/pki/tls/openssl.d/fips-provider-enable.cnf
+
 %files
 %{!?_licensedir:%global license %%doc}
 %license LICENSE.txt
@@ -475,7 +492,14 @@ ln -s /etc/crypto-policies/back-ends/openssl_fips.config $RPM_BUILD_ROOT%{_sysco
 
 %ldconfig_scriptlets libs
 
+%files config-fips
+# Drop-in config - automatically included via .include /etc/pki/tls/openssl.d
+%{_sysconfdir}/pki/tls/openssl.d/fips-provider-enable.cnf
+
 %changelog
+* Thu Feb 12 2026 Robert Sturla <rsturla@redhat.com> - 1:3.5.4-3
+- Add config-fips subpackage for FIPS provider without kernel FIPS mode
+
 * Mon Jan 26 2026 Robert Sturla <rsturla@redhat.com> - 1:3.5.4-2
 - Remove upstream fips.so from openssl-libs for Hummingbird
 
