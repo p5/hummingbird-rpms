@@ -734,13 +734,32 @@ def test_update_releases(workdir: Path, dist_git_module) -> None:
         dist_git_module.update_releases()
 
     assert json.loads((workdir / 'upstream-releases.json').read_text()) == {
+        'centos': {
+            'c9s': 'el9',
+            'c10s': 'el10',
+        },
         'fedora': {
             'eln': 'eln',
             'f41': 'f41',
             'rawhide': 'f44',
             # EPEL should be filtered out (not FEDORA id_prefix)
-        }
+        },
     }
+
+
+def test_expand_url_shortcut(dist_git_module) -> None:
+    """expand_url_shortcut resolves fedora/ and centos/ shortcuts."""
+    # Fedora shortcut
+    assert dist_git_module.expand_url_shortcut('fedora/bash') == \
+        'https://src.fedoraproject.org/rpms/bash.git'
+
+    # CentOS shortcut
+    assert dist_git_module.expand_url_shortcut('centos/kernel') == \
+        'https://gitlab.com/redhat/centos-stream/rpms/kernel.git'
+
+    # Full URL passes through unchanged
+    full_url = 'https://gitlab.com/redhat/centos-stream/rpms/golang.git'
+    assert dist_git_module.expand_url_shortcut(full_url) == full_url
 
 
 def test_update_of_rebuild(workdir: Path, upstream_repos: dict[str, Path]) -> None:

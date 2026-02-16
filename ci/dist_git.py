@@ -258,10 +258,18 @@ def check_jinja2_available() -> None:
 
 
 def expand_url_shortcut(url: str) -> str:
-    """Expand URL shortcuts to full dist-git URLs."""
+    """Expand URL shortcuts to full dist-git URLs.
+
+    Supported shortcuts:
+        fedora/<package>  -> https://src.fedoraproject.org/rpms/<package>.git
+        centos/<package>  -> https://gitlab.com/redhat/centos-stream/rpms/<package>.git
+    """
     if url.startswith('fedora/'):
         package = url.removeprefix('fedora/')
         return f'https://src.fedoraproject.org/rpms/{package}.git'
+    if url.startswith('centos/'):
+        package = url.removeprefix('centos/')
+        return f'https://gitlab.com/redhat/centos-stream/rpms/{package}.git'
     return url
 
 
@@ -285,6 +293,14 @@ def update_releases() -> None:
     fedora_releases_list = [r for r in data['releases'] if r['id_prefix'] == 'FEDORA']
     for release in fedora_releases_list:
         releases['fedora'][release['branch']] = release['dist_tag']
+
+    # CentOS Stream: add known active streams
+    # These don't have a dynamic API, so we hardcode active versions
+    logging.info("Adding CentOS Stream releases...")
+    releases['centos'] = {
+        'c9s': 'el9',
+        'c10s': 'el10',
+    }
 
     with open(RELEASES_JSON, 'w') as f:
         json.dump(releases, f, indent=2, sort_keys=True)
@@ -1068,8 +1084,11 @@ Examples:
   # Import glibc from Fedora 42 (using full URL), don't commit the update
   %(prog)s --dry-run import --branch f42 https://src.fedoraproject.org/rpms/glibc.git
 
-  # Import from CentOS Stream
-  %(prog)s import --branch c10s https://gitlab.com/redhat/centos-stream/rpms/kernel.git
+  # Import from CentOS Stream (using shortcut)
+  %(prog)s import --branch c10s centos/kernel
+
+  # Import CentOS Stream golang as golang-fips
+  %(prog)s import --branch c10s --directory golang-fips centos/golang
 """
     )
 
