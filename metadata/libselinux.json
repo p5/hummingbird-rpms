@@ -1,8 +1,8 @@
 {
   "branch": "rawhide",
-  "release": "6",
-  "sha": "cd8a8113177b8fdd1c39432dbe31ebd5afda252e",
+  "modification_status": "clean",
+  "release": "1",
+  "sha": "b501f7369c31168077d69abdc0209fb862c6df23",
   "source": "https://src.fedoraproject.org/rpms/libselinux.git",
-  "version": "3.9",
-  "modification_status": "clean"
+  "version": "3.10"
 }
