@@ -1,9 +1,8 @@
 {
   "branch": "rawhide",
+  "modification_status": "clean",
   "release": "1",
-  "sha": "425848de92b44066cf953f94630e3aee526f1aba",
+  "sha": "6550e2a1eee3069ed6cfe796d504fc8ec98acc92",
   "source": "https://src.fedoraproject.org/rpms/nodejs20.git",
-  "version": "20.19.6",
-  "modification_status": "modified",
-  "modification_reason": "Pre-existing modification - requires review"
+  "version": "20.20.0"
 }
