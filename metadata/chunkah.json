@@ -1,6 +1,8 @@
 {
-  "modification_reason": "Backport reproducibility fixes from upstream commit 0074ae3",
-  "modification_status": "modified",
-  "release": "1.hum1",
-  "version": "0.1.1"
+  "branch": "rawhide",
+  "modification_status": "clean",
+  "release": "1",
+  "sha": "6f75ee95980a1257bab64925d173f18315cee955",
+  "source": "https://src.fedoraproject.org/rpms/chunkah.git",
+  "version": "0.2.0"
 }
