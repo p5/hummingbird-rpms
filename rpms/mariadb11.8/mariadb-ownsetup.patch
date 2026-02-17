@@ -1,0 +1,37 @@
+--- mariadb-10.4.14/support-files/CMakeLists.txt	2020-08-06 17:28:28.000000000 +0200
++++ mariadb-10.4.14/support-files/CMakeLists.txt_patched	2020-09-03 13:21:07.826658279 +0200
+@@ -187,6 +187,7 @@ IF(UNIX)
+               COMPONENT SharedLibraries)
+       INSTALL(FILES rpm/mysql-clients.cnf DESTINATION ${INSTALL_SYSCONF2DIR}
+               COMPONENT Client)
++      CONFIGURE_FILE(rpm/server.cnf ${CMAKE_CURRENT_SOURCE_DIR}/rpm/server.cnf @ONLY)
+       INSTALL(FILES rpm/server.cnf DESTINATION ${INSTALL_SYSCONF2DIR}
+               COMPONENT IniFiles)
+       INSTALL(FILES rpm/enable_encryption.preset DESTINATION ${INSTALL_SYSCONF2DIR}
+
+diff -Naurp mariadb-11.4.5/support-files/rpm/server.cnf*
+--- mariadb-11.4.5/support-files/rpm/server.cnf	2025-01-30 18:54:57.000000000 +0100
++++ mariadb-11.4.5/support-files/rpm/server.cnf_patched	2025-04-23 12:25:38.052571209 +0200
+@@ -3,6 +3,11 @@
+ # Use it for options that only the server (but not clients) should see
+ #
+ 
++# Settings user and group are ignored when systemd is used.
++# If you need to run mysqld under a different user or group,
++# customize your systemd unit file for MariaDB according to the
++# instructions in http://fedoraproject.org/wiki/Systemd
++
+ # this is read by the standalone daemon and embedded servers
+ [server]
+ 
+@@ -10,6 +15,10 @@
+ # If you use the same .cnf file for MySQL and MariaDB,
+ # you can put MariaDB-only options here
+ [mariadb]
++datadir=@MYSQL_DATADIR@
++socket=@MYSQL_UNIX_ADDR@
++log-error=@LOG_LOCATION@
++pid-file=@PID_FILE_DIR@/@DAEMON_NO_PREFIX@.pid
+ 
+ #
+ # * Enable the Feedback plugin and submit anonymous usage information
