@@ -49,7 +49,7 @@ URL: https://www.python.org/
 #global prerel ...
 %global upstream_version %{general_version}%{?prerel}
 Version: %{general_version}%{?prerel:~%{prerel}}
-Release: 2%{?dist}
+Release: 2.1%{?dist}
 License: Python-2.0.1
 
 
@@ -81,10 +81,6 @@ License: Python-2.0.1
 # Only possible on certain architectures: https://peps.python.org/pep-0744/#support
 # The freethreading build (when enabled) does not support JIT yet
 %bcond jit %["%{_arch}" == "x86_64" || "%{_arch}" == "aarch64"]
-# Whether to build the JIT stencils (or else use the prebuilt ones)
-# We can only do this on Fedora 41+, where clang 19 is available
-# We don't do it in RHEL, see https://github.com/fedora-eln/eln/issues/207
-%bcond jit_build_stencils %[%{with jit} && 0%{?fedora} >= 41]
 %if %{with jit}
 # When built with JIT, it still needs to be enabled on runtime via PYTHON_JIT=1
 %global jit_flag --enable-experimental-jit=yes-off
@@ -296,7 +292,7 @@ BuildRequires: glibc-all-langpacks
 BuildRequires: tzdata
 %endif
 
-%if %{with jit_build_stencils}
+%if %{with jit}
 BuildRequires: clang(major) = 19
 BuildRequires: llvm(major) = 19
 %endif
@@ -350,26 +346,10 @@ Source10: idle3.desktop
 # AppData file for idle3
 Source11: idle3.appdata.xml
 
-# Pre-generated JIT stencils (see PEP 774)
-# As the PEP was deferred, we use stencils we built for ourselves.
-# Only used on platforms without the required LLVM version.
-#
-# When updating Python:
-#  1. scratch build Python on platform with required LLVM version (usually rawhide)
-#  2. download the files from Koji:
-#    $ bash download-jit-stencils-from-koji.sh KOJI_TASK_URL|KOJI_TASK_ID
-#  3. add the files to lookaside cache with fedpkg new-sources
-Source30: download-jit-stencils-from-koji.sh
-# This %%if-hack makes it easier to do step 1. from the above.
-# Use `fedpkg sources --force` to get the conditionally defined sources from the lookaside cache.
-%if %{without jit_build_stencils} || %{exists:%{_sourcedir}/Python-%{upstream_version}-x86_64-optimized-jit_stencils.h}
-Source31: Python-%{upstream_version}-aarch64-debug-jit_stencils.h
-Source32: Python-%{upstream_version}-aarch64-optimized-jit_stencils.h
-Source33: Python-%{upstream_version}-x86_64-debug-jit_stencils.h
-Source34: Python-%{upstream_version}-x86_64-optimized-jit_stencils.h
-%endif
-%global jit_stencils_source %{_sourcedir}/Python-%{upstream_version}-%{_arch}-${ConfName}-jit_stencils.h
-%global jit_stencils_filename jit_stencils-%{_arch}-redhat-linux-gnu.h
+# JIT stencils are always built from source (matching CentOS Stream).
+# Fedora uses pre-generated stencils for platforms without clang 19, but
+# that approach breaks when build config changes (e.g. FIPS hashlib flags)
+# cause the stencils to differ from the pre-generated ones.
 
 # (Patches taken from github.com/fedora-python/cpython)
 
@@ -415,6 +395,21 @@ Patch464: 00464-enable-pac-and-bti-protections-for-aarch64.patch
 # in the conditionalized skip to a release available in CentOS Stream 10,
 # which is tested as working.
 Patch466: 00466-downstream-only-skip-tests-not-working-with-older-expat-version.patch
+
+# 00329 #
+# Support OpenSSL FIPS mode
+# - In FIPS mode, OpenSSL wrappers are always used in hashlib
+# - The "usedforsecurity" keyword argument can be used to the various digest
+#   algorithms in hashlib so that you can whitelist a callsite with
+#   "usedforsecurity=False"
+# - OpenSSL wrappers for the hashes blake2{b512,s256},
+# - In FIPS mode, the blake2 hashes use OpenSSL wrappers
+#   and do not offer extended functionality (keys, tree hashing, custom digest size)
+#
+# - In FIPS mode, hmac.HMAC can only be instantiated with an OpenSSL wrapper
+#   or a string with OpenSSL hash name as the "digestmod" argument.
+#   The argument must be specified (instead of defaulting to 'md5').
+Patch329: 00329-fips.patch
 
 # (New patches go here ^^^)
 #
@@ -1069,6 +1064,7 @@ BuildPython() {
   --with-dtrace \
   --with-lto \
   --with-ssl-default-suites=openssl \
+  --with-builtin-hashlib-hashes=blake2 \
   --without-static-libpython \
 %if %{with rpmwheels}
   --with-wheel-pkg-dir=%{python_wheel_dir} \
@@ -1078,12 +1074,6 @@ BuildPython() {
 %endif
   $ExtraConfigArgs \
   %{nil}
-
-%if %{with jit} && %{without jit_build_stencils}
-  if [[ ! "$ConfName" =~ ^freethreading ]]; then
-    cp -a %{jit_stencils_source} %{jit_stencils_filename}
-  fi
-%endif
 
 %global flags_override EXTRA_CFLAGS="$MoreCFlags" CFLAGS_NODIST="$CFLAGS_NODIST $MoreCFlags"
 
@@ -1442,17 +1432,6 @@ for Module in %{buildroot}/%{dynload_dir}/*.so ; do
     esac
 done
 
-# Assert the pre-generated JIT stencils are up to date
-%if %{with jit_build_stencils}
-for ConfName in %{?with_debug_build:debug} optimized; do
-  if [ -s %{jit_stencils_source} ]; then
-    diff -u %{jit_stencils_source} build/${ConfName}/%{jit_stencils_filename}
-  else
-    echo "%{jit_stencils_source} is empty, not checking if it is up to date"
-  fi
-done
-%endif
-
 # ======================================================
 # Running the upstream test suite
 # ======================================================
@@ -1654,14 +1633,12 @@ CheckPython freethreading
 %{1}/_elementtree.%{2}.so\
 %{1}/_hashlib.%{2}.so\
 %{1}/_heapq.%{2}.so\
-%{1}/_hmac.%{2}.so\
 %{1}/_interpchannels.%{2}.so\
 %{1}/_interpqueues.%{2}.so\
 %{1}/_interpreters.%{2}.so\
 %{1}/_json.%{2}.so\
 %{1}/_lsprof.%{2}.so\
 %{1}/_lzma.%{2}.so\
-%{1}/_md5.%{2}.so\
 %{1}/_multibytecodec.%{2}.so\
 %{1}/_multiprocessing.%{2}.so\
 %{1}/_pickle.%{2}.so\
@@ -1670,9 +1647,6 @@ CheckPython freethreading
 %{1}/_queue.%{2}.so\
 %{1}/_random.%{2}.so\
 %{1}/_remote_debugging.%{2}.so\
-%{1}/_sha1.%{2}.so\
-%{1}/_sha2.%{2}.so\
-%{1}/_sha3.%{2}.so\
 %{1}/_socket.%{2}.so\
 %{1}/_sqlite3.%{2}.so\
 %{1}/_ssl.%{2}.so\
