@@ -1,8 +1,8 @@
 %global crate chunkah
 
 Name:           chunkah
-Version:        0.1.1
-Release:        1.1%{?dist}
+Version:        0.2.0
+Release:        1%{?dist}
 Summary:        OCI building tool for content-based container image layers
 
 # chunkah itself is MIT OR Apache-2.0
@@ -11,8 +11,6 @@ License:        MIT OR Apache-2.0
 URL:            https://github.com/jlebon/chunkah
 Source0:        %{url}/releases/download/v%{version}/%{crate}-%{version}.tar.gz
 Source1:        %{url}/releases/download/v%{version}/%{crate}-%{version}-vendor.tar.gz
-
-Patch1:         0001-fix-various-reproducibility-issues.patch
 
 BuildRequires:  cargo-rpm-macros >= 26
 BuildRequires:  openssl-devel
@@ -33,6 +31,7 @@ tar xf %{SOURCE1}
 
 %build
 %cargo_build
+%cargo_vendor_manifest
 %{cargo_license_summary}
 %{cargo_license} > LICENSE.dependencies
 
@@ -45,12 +44,13 @@ tar xf %{SOURCE1}
 %files
 %license LICENSE-MIT LICENSE-APACHE
 %license LICENSE.dependencies
+%license cargo-vendor.txt
 %doc README.md
 %{_bindir}/chunkah
 
 %changelog
-* Thu Feb 12 2026 Jonathan Lebon <jonathan@jlebon.com> - 0.1.1-1.1
-- Backport upstream commit 0074ae3: fix various reproducibility issues
+* Tue Feb 17 2026 Packit <hello@packit.dev> - 0.2.0-1
+- Update to version 0.2.0
 
 * Fri Jan 30 2026 Jonathan Lebon <jonathan@jlebon.com> - 0.1.1-1
 - Update to 0.1.1
