@@ -1,4 +1,4 @@
-From 6c472efbaa21e0ea57f98135f41c9000f4bf039a Mon Sep 17 00:00:00 2001
+From 88d5a8f269c9c5ea69707c5fa8e77718707edf44 Mon Sep 17 00:00:00 2001
 From: Stephen Gallagher <sgallagh@redhat.com>
 Date: Fri, 17 Apr 2020 12:59:44 +0200
 Subject: [PATCH] Remove unused OpenSSL config
@@ -8,15 +8,16 @@ using the system OpenSSL and will thus fail since we strip this path
 from the tarball.
 
 Signed-off-by: Stephen Gallagher <sgallagh@redhat.com>
+Signed-off-by: rpm-build <rpm-build>
 ---
  node.gyp | 17 -----------------
  1 file changed, 17 deletions(-)
 
 diff --git a/node.gyp b/node.gyp
-index 49e39c3ce8b2e29871333cee99dfd9646358df56..fb5f587d258700ccc390c387bce138c58d2fb078 100644
+index e88c7de..5850c07 100644
 --- a/node.gyp
 +++ b/node.gyp
-@@ -739,23 +739,6 @@
+@@ -797,23 +797,6 @@
                ],
              },
            ],
@@ -41,5 +42,5 @@ index 49e39c3ce8b2e29871333cee99dfd9646358df56..fb5f587d258700ccc390c387bce138c5
        ],
      }, # node_core_target_name
 -- 
-2.41.0
+2.52.0
 
