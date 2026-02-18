@@ -88,9 +88,9 @@ fi
 mkdir -p "${workdir}"
 
 cd "${workdir}"
-mkdir -p results
-mkdir -p config
-mkdir -p sources
+mkdir -p results config sources RPMS SRPMS
+# Clean previous build artifacts so this run only shows current outputs
+rm -f RPMS/*.rpm SRPMS/*.src.rpm 2>/dev/null || true
 
 # Create directory for mock buildroot on host filesystem (avoids overlayfs xattr issues)
 mkdir -p var_lib_mock

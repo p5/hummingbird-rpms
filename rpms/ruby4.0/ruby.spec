@@ -2,6 +2,8 @@
 %global minor_version 0
 %global teeny_version 0
 %global major_minor_version %{major_version}.%{minor_version}
+%global ruby_major_minor %{major_version}.%{minor_version}
+%global _rubygem_pkg rubygem%{ruby_major_minor}
 
 %global ruby_version %{major_minor_version}.%{teeny_version}
 %global ruby_release %{ruby_version}
@@ -197,7 +199,7 @@
 Summary: An interpreter of object-oriented scripting language
 Name: ruby%{major_version}.%{minor_version}
 Version: %{ruby_version}%{?development_release}
-Release: 30%{?dist}
+Release: 32%{?dist}
 # Licenses, which are likely not included in binary RPMs:
 # Apache-2.0:
 #   benchmark/gc/redblack.rb
@@ -375,7 +377,7 @@ Summary:    A Ruby development environment
 Requires:   %{name}%{?_isa} = %{version}-%{release}
 # This would not be needed if ~50 packages depending on -devel used
 # --disable-gems
-Requires:   rubygems
+Requires:   %{_rubygem_pkg}-rubygems
 # Users need CFLAGS from /usr/lib/rpm/redhat/redhat-hardened-cc1
 # for building gems with binary extensions (rhbz#1905222).
 Recommends: redhat-rpm-config
@@ -405,7 +407,7 @@ This package includes the libruby, necessary to run Ruby.
 
 
 # TODO: Rename or not rename to ruby-rubygems?
-%package -n rubygems
+%package -n %{_rubygem_pkg}-rubygems
 Summary:    The Ruby standard for packaging ruby libraries
 Version:    %{rubygems_version}
 # BSD-2-Clause OR Ruby:
@@ -439,12 +441,12 @@ Provides:   bundled(rubygem-uri) = %{rubygems_uri_version}
 
 BuildArch:  noarch
 
-%description -n rubygems
+%description -n %{_rubygem_pkg}-rubygems
 RubyGems is the Ruby standard for publishing and managing third party
 libraries.
 
 
-%package -n rubygems-devel
+%package -n %{_rubygem_pkg}-devel
 Summary:    Macros and development tools for packaging RubyGems
 Version:    %{rubygems_version}
 License:    MIT
@@ -454,7 +456,7 @@ Requires:   rubygem(json) >= %{json_version}
 Requires:   rubygem(rdoc) >= %{rdoc_version}
 BuildArch:  noarch
 
-%description -n rubygems-devel
+%description -n %{_rubygem_pkg}-devel
 Macros and development tools for packaging RubyGems.
 
 
@@ -475,7 +477,7 @@ The .gemspec files and executables of default gems, which are part of Ruby
 StdLib.
 
 
-%package -n rubygem-irb
+%package -n %{_rubygem_pkg}-irb
 Summary:    The Interactive Ruby
 Version:    %{irb_version}
 License:    Ruby OR BSD-2-Clause
@@ -483,12 +485,12 @@ Provides:   irb = %{version}-%{release}
 Provides:   bundled(rubygem-irb) = %{irb_version}
 BuildArch:  noarch
 
-%description -n rubygem-irb
+%description -n %{_rubygem_pkg}-irb
 The irb is acronym for Interactive Ruby.  It evaluates ruby expression
 from the terminal.
 
 
-%package -n rubygem-rdoc
+%package -n %{_rubygem_pkg}-rdoc
 Summary:    A tool to generate HTML and command-line documentation for Ruby projects
 Version:    %{rdoc_version}
 # BSD-3-Clause: lib/rdoc/generator/darkfish.rb
@@ -508,7 +510,7 @@ Provides:   ri = %{version}-%{release}
 Provides:   bundled(rubygem-rdoc) = %{rdoc_version}
 BuildArch:  noarch
 
-%description -n rubygem-rdoc
+%description -n %{_rubygem_pkg}-rdoc
 RDoc produces HTML and command-line documentation for Ruby projects.  RDoc
 includes the 'rdoc' and 'ri' tools for generating and displaying online
 documentation.
@@ -523,14 +525,14 @@ BuildArch:  noarch
 This package contains documentation for %{name}.
 
 
-%package -n rubygem-bigdecimal
+%package -n %{_rubygem_pkg}-bigdecimal
 Summary:    BigDecimal provides arbitrary-precision floating point decimal arithmetic
 Version:    %{bigdecimal_version}
 # dtoa: missing/dtoa.c
 License:    (Ruby OR BSD-2-Clause) AND dtoa
 Provides:   bundled(rubygem-bigdecimal) = %{bigdecimal_version}
 
-%description -n rubygem-bigdecimal
+%description -n %{_rubygem_pkg}-bigdecimal
 Ruby provides built-in support for arbitrary precision integer arithmetic.
 For example:
 
@@ -543,18 +545,18 @@ floating point arithmetic often introduces subtle errors because of the
 conversion between base 10 and base 2.
 
 
-%package -n rubygem-io-console
+%package -n %{_rubygem_pkg}-io-console
 Summary:    IO/Console is a simple console utilizing library
 Version:    %{io_console_version}
 License:    Ruby OR BSD-2-Clause
 Provides:   bundled(rubygem-io-console) = %{io_console_version}
 
-%description -n rubygem-io-console
+%description -n %{_rubygem_pkg}-io-console
 IO/Console provides very simple and portable access to console. It doesn't
 provide higher layer features, such like curses and readline.
 
 
-%package -n rubygem-json
+%package -n %{_rubygem_pkg}-json
 Summary:    This is a JSON implementation as a Ruby extension in C
 Version:    %{json_version}
 # Apache-2.0 OR BSL-1.0: ext/json/vendor/ryu.h
@@ -570,27 +572,27 @@ Provides:   bundled(itoa)
 # https://github.com/night-shift/fpconv
 Provides:   bundled(fpconv)
 
-%description -n rubygem-json
+%description -n %{_rubygem_pkg}-json
 This is a implementation of the JSON specification according to RFC 4627.
 You can think of it as a low fat alternative to XML, if you want to store
 data to disk or transmit it over a network rather than use a verbose
 markup language.
 
 
-%package -n rubygem-psych
+%package -n %{_rubygem_pkg}-psych
 Summary:    A libyaml wrapper for Ruby
 Version:    %{psych_version}%{?psych_prerelease:~%{sub %{psych_prerelease} 2 -1}}
 License:    MIT
 Provides:   bundled(rubygem-psych) = %{psych_version}%{?psych_prerelease:~%{sub %{psych_prerelease} 2 -1}}
 
-%description -n rubygem-psych
+%description -n %{_rubygem_pkg}-psych
 Psych is a YAML parser and emitter. Psych leverages
 libyaml[http://pyyaml.org/wiki/LibYAML] for its YAML parsing and emitting
 capabilities. In addition to wrapping libyaml, Psych also knows how to
 serialize and de-serialize most Ruby objects to and from the YAML format.
 
 
-%package -n rubygem-bundler
+%package -n %{_rubygem_pkg}-bundler
 Summary:    Library and utilities to manage a Ruby application's gem dependencies
 Version:    %{bundler_version}
 # BSD-2-Clause OR Ruby:
@@ -617,7 +619,7 @@ Provides:   bundled(rubygem-tsort) = %{bundler_tsort_version}
 Provides:   bundled(rubygem-uri) = %{bundler_uri_version}
 BuildArch:  noarch
 
-%description -n rubygem-bundler
+%description -n %{_rubygem_pkg}-bundler
 Bundler manages an application's dependencies through its entire life, across
 many machines, systematically and repeatably.
 
@@ -666,14 +668,14 @@ Bundled gems which are part of Ruby StdLib. While being part of Ruby, these
 needs to be listed in Gemfile to be used by Bundler.
 
 
-%package -n rubygem-minitest
+%package -n %{_rubygem_pkg}-minitest
 Summary:    Minitest provides a complete suite of testing facilities
 Version:    %{minitest_version}
 License:    MIT
 Provides:   bundled(rubygem-minitest) = %{minitest_version}
 BuildArch:  noarch
 
-%description -n rubygem-minitest
+%description -n %{_rubygem_pkg}-minitest
 minitest/test is a small and incredibly fast unit testing framework.
 
 minitest/spec is a functionally complete spec engine.
@@ -685,20 +687,20 @@ minitest/pride shows pride in testing and adds coloring to your test
 output.
 
 
-%package -n rubygem-power_assert
+%package -n %{_rubygem_pkg}-power_assert
 Summary:    Power Assert for Ruby
 Version:    %{power_assert_version}
 License:    Ruby OR BSD-2-Clause
 Provides:   bundled(rubygem-power_assert) = %{power_assert_version}
 BuildArch:  noarch
 
-%description -n rubygem-power_assert
+%description -n %{_rubygem_pkg}-power_assert
 Power Assert shows each value of variables and method calls in the expression.
 It is useful for testing, providing which value wasn't correct when the
 condition is not satisfied.
 
 
-%package -n rubygem-rake
+%package -n %{_rubygem_pkg}-rake
 Summary:    Ruby based make-like utility
 Version:    %{rake_version}
 License:    MIT
@@ -706,23 +708,23 @@ Provides:   rake = %{version}-%{release}
 Provides:   bundled(rubygem-rake) = %{rake_version}
 BuildArch:  noarch
 
-%description -n rubygem-rake
+%description -n %{_rubygem_pkg}-rake
 Rake is a Make-like program implemented in Ruby. Tasks and dependencies are
 specified in standard Ruby syntax.
 
 
-%package -n rubygem-rbs
+%package -n %{_rubygem_pkg}-rbs
 Summary:    Type signature for Ruby
 Version:    %{rbs_version}
 License:    Ruby OR BSD-2-Clause
 Provides:   bundled(rubygem-rbs) = %{rbs_version}
 
-%description -n rubygem-rbs
+%description -n %{_rubygem_pkg}-rbs
 RBS is the language for type signatures for Ruby and standard library
 definitions.
 
 
-%package -n rubygem-test-unit
+%package -n %{_rubygem_pkg}-test-unit
 Summary:    An xUnit family unit testing framework for Ruby
 Version:    %{test_unit_version}
 # lib/test/unit/diff.rb is a double license of the Ruby license and PSF license.
@@ -730,26 +732,26 @@ License:    (Ruby OR BSD-2-Clause) AND (Ruby OR BSD-2-Clause OR Python-2.0.1)
 Provides:   bundled(rubygem-test-unit) = %{test_unit_version}
 BuildArch:  noarch
 
-%description -n rubygem-test-unit
+%description -n %{_rubygem_pkg}-test-unit
 Test::Unit (test-unit) is unit testing framework for Ruby, based on xUnit
 principles. These were originally designed by Kent Beck, creator of extreme
 programming software development methodology, for Smalltalk's SUnit. It allows
 writing tests, checking results and automated testing in Ruby.
 
 
-%package -n rubygem-racc
+%package -n %{_rubygem_pkg}-racc
 Version:    %{racc_version}
 Summary:    Racc is a LALR(1) parser generator
 License:    Ruby OR BSD-2-Clause
 URL:        https://github.com/ruby/racc
 Provides:   bundled(rubygem-racc) = %{racc_version}
 
-%description -n rubygem-racc
+%description -n %{_rubygem_pkg}-racc
 Racc is a LALR(1) parser generator.
 It is written in Ruby itself, and generates Ruby program.
 
 
-%package -n rubygem-rexml
+%package -n %{_rubygem_pkg}-rexml
 Summary:    An XML toolkit for Ruby
 Version:    %{rexml_version}
 License:    BSD-2-Clause
@@ -757,7 +759,7 @@ URL:        https://github.com/ruby/rexml
 Provides:   bundled(rubygem-rexml) = %{rexml_version}
 BuildArch:  noarch
 
-%description -n rubygem-rexml
+%description -n %{_rubygem_pkg}-rexml
 REXML was inspired by the Electric XML library for Java, which features an
 easy-to-use API, small size, and speed. Hopefully, REXML, designed with the same
 philosophy, has these same features. I've tried to keep the API as intuitive as
@@ -769,7 +771,7 @@ REXML supports both tree and stream document parsing. Stream parsing is faster
 features such as XPath.
 
 
-%package -n rubygem-rss
+%package -n %{_rubygem_pkg}-rss
 Summary:    Family of libraries that support various formats of XML "feeds"
 Version:    %{rss_version}
 License:    BSD-2-Clause
@@ -777,14 +779,14 @@ URL:        https://github.com/ruby/rss
 Provides:   bundled(rubygem-rss) = %{rss_version}
 BuildArch:  noarch
 
-%description -n rubygem-rss
+%description -n %{_rubygem_pkg}-rss
 Really Simple Syndication (RSS) is a family of formats that describe 'feeds',
 specially constructed XML documents that allow an interested person to subscribe
 and receive updates from a particular web service. This library provides tooling
 to read and create these feeds.
 
 
-%package -n rubygem-typeprof
+%package -n %{_rubygem_pkg}-typeprof
 Summary:    TypeProf is a type analysis tool for Ruby code based on abstract interpretation
 Version:    %{typeprof_version}
 License:    MIT
@@ -792,7 +794,7 @@ URL:        https://github.com/ruby/typeprof
 Provides:   bundled(rubygem-typeprof) = %{typeprof_version}
 BuildArch:  noarch
 
-%description -n rubygem-typeprof
+%description -n %{_rubygem_pkg}-typeprof
 TypeProf performs a type analysis of non-annotated Ruby code.
 It abstractly executes input Ruby code in a level of types instead of values,
 gathers what types are passed to and returned by methods, and prints the
@@ -1444,7 +1446,7 @@ make -C %{_vpath_builddir} runruby TESTRUN_SCRIPT=" \
 
 %{?with_systemtap:%{_systemtap_datadir}}
 
-%files -n rubygems
+%files -n %{_rubygem_pkg}-rubygems
 %{_bindir}/gem
 %dir %{rubygems_dir}
 %{rubygems_dir}/rubygems
@@ -1466,7 +1468,7 @@ make -C %{_vpath_builddir} runruby TESTRUN_SCRIPT=" \
 
 %exclude %{gem_dir}/cache/*
 
-%files -n rubygems-devel
+%files -n %{_rubygem_pkg}-devel
 %{_rpmmacrodir}/macros.rubygems
 %{_fileattrsdir}/rubygems.attr
 %{_rpmconfigdir}/rubygems.req
@@ -1524,7 +1526,7 @@ make -C %{_vpath_builddir} runruby TESTRUN_SCRIPT=" \
 %gem_spec -d prism
 %gem_spec -d zlib
 
-%files -n rubygem-irb
+%files -n %{_rubygem_pkg}-irb
 %{_bindir}/irb
 %dir %{gem_instdir irb}
 %{gem_libdir irb}
@@ -1539,7 +1541,7 @@ make -C %{_vpath_builddir} runruby TESTRUN_SCRIPT=" \
 %doc %{gem_instdir irb}/EXTEND_IRB.md
 %{_mandir}/man1/irb.1*
 
-%files -n rubygem-rdoc
+%files -n %{_rubygem_pkg}-rdoc
 %{_bindir}/rdoc
 %{_bindir}/ri
 %{gem_instdir rdoc}
@@ -1553,26 +1555,26 @@ make -C %{_vpath_builddir} runruby TESTRUN_SCRIPT=" \
 %{?with_systemtap:%doc ruby-exercise.stp}
 %{_datadir}/ri
 
-%files -n rubygem-bigdecimal
+%files -n %{_rubygem_pkg}-bigdecimal
 %{gem_extdir_mri bigdecimal}
 %{gem_instdir bigdecimal}
 %{gem_spec bigdecimal}
 
-%files -n rubygem-io-console
+%files -n %{_rubygem_pkg}-io-console
 %{ruby_libdir}/io
 %{ruby_libarchdir}/io/console.so
 %{gem_extdir_mri io-console}
 %{gem_instdir io-console}
 %{gem_spec io-console}
 
-%files -n rubygem-json
+%files -n %{_rubygem_pkg}-json
 %{ruby_libdir}/json*
 %{ruby_libarchdir}/json*
 %{gem_extdir_mri json}
 %{gem_instdir json}
 %{gem_spec json}
 
-%files -n rubygem-psych
+%files -n %{_rubygem_pkg}-psych
 %{ruby_libdir}/psych
 %{ruby_libdir}/psych.rb
 %{ruby_libarchdir}/psych.so
@@ -1581,7 +1583,7 @@ make -C %{_vpath_builddir} runruby TESTRUN_SCRIPT=" \
 %{gem_libdir psych}
 %{gem_spec psych}
 
-%files -n rubygem-bundler
+%files -n %{_rubygem_pkg}-bundler
 %{_bindir}/bundle
 %{_bindir}/bundler
 %{gem_instdir bundler}
@@ -1863,7 +1865,7 @@ make -C %{_vpath_builddir} runruby TESTRUN_SCRIPT=" \
 %doc %{gem_instdir syslog}/README.md
 %{gem_instdir syslog}/Rakefile
 
-%files -n rubygem-minitest
+%files -n %{_rubygem_pkg}-minitest
 %{_bindir}/minitest
 %dir %{gem_instdir minitest}
 %exclude %{gem_instdir minitest}/.*
@@ -1877,7 +1879,7 @@ make -C %{_vpath_builddir} runruby TESTRUN_SCRIPT=" \
 %{gem_instdir minitest}/Rakefile
 %{gem_instdir minitest}/test
 
-%files -n rubygem-power_assert
+%files -n %{_rubygem_pkg}-power_assert
 %dir %{gem_instdir power_assert}
 %exclude %{gem_instdir power_assert}/.*
 %license %{gem_instdir power_assert}/BSDL
@@ -1889,13 +1891,13 @@ make -C %{_vpath_builddir} runruby TESTRUN_SCRIPT=" \
 %doc %{gem_instdir power_assert}/README.md
 %{gem_instdir power_assert}/Rakefile
 
-%files -n rubygem-rake
+%files -n %{_rubygem_pkg}-rake
 %{_bindir}/rake
 %{gem_instdir rake}
 %{gem_spec rake}
 %{_mandir}/man1/rake.1*
 
-%files -n rubygem-rbs
+%files -n %{_rubygem_pkg}-rbs
 %{_bindir}/rbs
 %dir %{gem_extdir_mri rbs}
 %{gem_extdir_mri rbs}/gem.build_complete
@@ -1920,7 +1922,7 @@ make -C %{_vpath_builddir} runruby TESTRUN_SCRIPT=" \
 %{gem_instdir rbs}/stdlib
 %{gem_spec rbs}
 
-%files -n rubygem-test-unit
+%files -n %{_rubygem_pkg}-test-unit
 %{_bindir}/test-unit
 %dir %{gem_instdir test-unit}
 %license %{gem_instdir test-unit}/BSDL
@@ -1934,7 +1936,7 @@ make -C %{_vpath_builddir} runruby TESTRUN_SCRIPT=" \
 %{gem_instdir test-unit}/Rakefile
 %doc %{gem_instdir test-unit}/doc
 
-%files -n rubygem-racc
+%files -n %{_rubygem_pkg}-racc
 %dir %{gem_instdir racc}
 %{_bindir}/racc
 %{gem_extdir_mri racc}
@@ -1949,7 +1951,7 @@ make -C %{_vpath_builddir} runruby TESTRUN_SCRIPT=" \
 %{gem_libdir racc}
 %{gem_spec racc}
 
-%files -n rubygem-rexml
+%files -n %{_rubygem_pkg}-rexml
 %dir %{gem_instdir rexml}
 %license %{gem_instdir rexml}/LICENSE.txt
 %doc %{gem_instdir rexml}/NEWS.md
@@ -1958,7 +1960,7 @@ make -C %{_vpath_builddir} runruby TESTRUN_SCRIPT=" \
 %{gem_spec rexml}
 %doc %{gem_instdir rexml}/README.md
 
-%files -n rubygem-rss
+%files -n %{_rubygem_pkg}-rss
 %dir %{gem_instdir rss}
 %exclude %{gem_instdir rss}/.*
 %license %{gem_instdir rss}/LICENSE.txt
@@ -1967,7 +1969,7 @@ make -C %{_vpath_builddir} runruby TESTRUN_SCRIPT=" \
 %{gem_spec rss}
 %doc %{gem_instdir rss}/README.md
 
-%files -n rubygem-typeprof
+%files -n %{_rubygem_pkg}-typeprof
 %dir %{gem_instdir typeprof}
 %{_bindir}/typeprof
 %exclude %{gem_instdir typeprof}/.*
