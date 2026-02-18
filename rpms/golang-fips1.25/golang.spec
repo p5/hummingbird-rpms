@@ -48,8 +48,8 @@
 
 # Disable FIPS by default
 %global fips 0
-# Enable FIPS by default in RHEL
-%if 0%{?rhel}
+# Enable FIPS by default in RHEL and Hummingbird
+%if 0%{?rhel} || 0%{?hummingbird}
 %global fips 1
 %endif
 
@@ -129,7 +129,7 @@
 
 Name:           golang-fips%{go_api}
 Version:	%{go_version}
-Release:        %autorelease
+Release:        1.1%{?dist}
 Summary:        The Go Programming Language
 # source tree includes several copies of Mark.Twain-Tom.Sawyer.txt under Public Domain
 License:        BSD-3-Clause AND LicenseRef-Fedora-Public-Domain
