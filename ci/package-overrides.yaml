@@ -86,6 +86,11 @@ openssl-fips-provider:
   # Use hummingbird lookaside cache instead of Fedora
   forked_from: "https://gitlab.com/redhat/hummingbird/rpms"
 
+python3.14:
+  build_platforms:
+    - "linux-d160-c8xlarge/arm64"
+    - "linux-d160-c8xlarge/amd64"
+
 ruff:
   timeout_hours: 8
   build_platforms:
