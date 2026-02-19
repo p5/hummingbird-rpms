@@ -1,8 +1,8 @@
 {
   "branch": "rawhide",
-  "release": "7",
-  "sha": "be5a0cdcb6810df8e521e250d95df72feff7ba6a",
+  "modification_status": "clean",
+  "release": "1",
+  "sha": "c46184ec7f45cfe1a18c26fec912e94654915545",
   "source": "https://src.fedoraproject.org/rpms/libcap-ng.git",
-  "version": "0.9",
-  "modification_status": "clean"
+  "version": "0.9.1"
 }
