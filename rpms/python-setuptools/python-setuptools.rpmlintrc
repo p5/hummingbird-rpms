@@ -1,0 +1,14 @@
+# let's not report duplicate __init__s
+addFilter(r'W: files-duplicate .+__init__\.py ')
+
+# setuptools and pkg_resources have duplicated vendored libraries
+# we might want to de-duplicate this somehow in the future, but not yet
+# regex a bit complex to allow arbitrary order
+addFilter(r'W: files-duplicate .+/(setuptools/_vendor/.+ .+/pkg_resources|pkg_resources/_vendor/.+ .+/setuptools)/_vendor/')
+
+# When duplicate files are found, this errors is produced
+# as long as we filter out the warnings, we need to filter the error as well
+addFilter(r'E: files-duplicated-waste')
+
+# no %doc in the wheel packages
+addFilter(r'python-setuptools-wheel.noarch: (E|W): no-documentation')
