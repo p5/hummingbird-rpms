@@ -39,16 +39,20 @@
 # Recommended version is specified in java/org/apache/catalina/core/AprLifecycleListener.java
 %global native_version 2.0.8
 
+# With BH naming conventions where name == tomcastVERSION
+# a basepackagename variable is handy
+%global basepackagename tomcat
+
 
 # FHS 3.0 compliant tree structure - http://refspecs.linuxfoundation.org/FHS_3.0/fhs/index.html
-%global basedir %{_var}/lib/%{name}
+%global basedir %{_var}/lib/%{basepackagename}
 %global appdir %{basedir}/webapps
-%global homedir %{_datadir}/%{name}
+%global homedir %{_datadir}/%{basepackagename}
 %global bindir %{homedir}/bin
-%global confdir %{_sysconfdir}/%{name}
-%global libdir %{_javadir}/%{name}
-%global logdir %{_var}/log/%{name}
-%global cachedir %{_var}/cache/%{name}
+%global confdir %{_sysconfdir}/%{basepackagename}
+%global libdir %{_javadir}/%{basepackagename}
+%global logdir %{_var}/log/%{basepackagename}
+%global cachedir %{_var}/cache/%{basepackagename}
 %global tempdir %{cachedir}/temp
 %global workdir %{cachedir}/work
 
@@ -316,12 +320,12 @@ sed -i \
 
 # create jsp and servlet API symlinks
 pushd ${RPM_BUILD_ROOT}%{_javadir}
-   %{__mv} %{name}/jsp-api.jar %{name}-jsp-%{jspspec}-api.jar
-   %{__ln_s} %{name}-jsp-%{jspspec}-api.jar %{name}-jsp-api.jar
-   %{__mv} %{name}/servlet-api.jar %{name}-servlet-%{servletspec}-api.jar
-   %{__ln_s} %{name}-servlet-%{servletspec}-api.jar %{name}-servlet-api.jar
-   %{__mv} %{name}/el-api.jar %{name}-el-%{elspec}-api.jar
-   %{__ln_s} %{name}-el-%{elspec}-api.jar %{name}-el-api.jar
+   %{__mv} %{basepackagename}/jsp-api.jar %{name}-jsp-%{jspspec}-api.jar
+   %{__ln_s} %{basepackagename}-jsp-%{jspspec}-api.jar %{name}-jsp-api.jar
+   %{__mv} %{basepackagename}/servlet-api.jar %{name}-servlet-%{servletspec}-api.jar
+   %{__ln_s} %{basepackagename}-servlet-%{servletspec}-api.jar %{name}-servlet-api.jar
+   %{__mv} %{basepackagename}/el-api.jar %{name}-el-%{elspec}-api.jar
+   %{__ln_s} %{basepackagename}-el-%{elspec}-api.jar %{name}-el-api.jar
 popd
 
 pushd output/build
@@ -336,8 +340,7 @@ pushd ${RPM_BUILD_ROOT}%{libdir}
     %{__ln_s} ../../java/%{name}-el-%{elspec}-api.jar .
     %{__ln_s} $(build-classpath ecj/ecj) jasper-jdt.jar
     %{__ln_s} $(build-classpath tomcat-jakartaee-migration/jakartaee-migration) jakartaee-migration.jar
-    
-    cp ../../%{name}/bin/tomcat-juli.jar .
+    cp ../../%{basepackagename}/bin/tomcat-juli.jar .
 popd
 
 # symlink to the FHS locations where we've installed things
