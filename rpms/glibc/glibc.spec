@@ -1,4 +1,4 @@
-%global glibcsrcdir glibc-2.42-51-gcbf39c26b2
+%global glibcsrcdir glibc-2.42-55-gebd45473f5
 %global glibcversion 2.42
 # Pre-release tarballs are pulled in from git using a command that is
 # effectively:
@@ -152,7 +152,7 @@ Version: %{glibcversion}
 # - It allows using the Release number without the %%dist tag in the dependency
 #   generator to make the generated requires interchangeable between Rawhide
 #   and ELN (.elnYY < .fcXX).
-%global baserelease 9
+%global baserelease 10
 Release: %{baserelease}%{?dist}
 
 # Licenses:
@@ -339,8 +339,7 @@ rpm.define("__debug_install_post bash " .. wrapper
 Patch13: glibc-fedora-localedata-rh61908.patch
 Patch17: glibc-cs-path.patch
 Patch23: glibc-python3.patch
-Patch24: glibc-rh2429016.patch
-Patch25: glibc-rh2432405.patch
+Patch24: glibc-rh2432405.patch
 # https://bugs.winehq.org/show_bug.cgi?id=58523
 # revert 3d3572f59059e2b19b8541ea648a6172136ec42e to fix wine build
 # applied with PP powers as we really need to build wine to fix scriptlet problems
@@ -2389,6 +2388,16 @@ update_gconv_modules_cache ()
 %endif
 
 %changelog
+* Wed Feb 18 2026 Frédéric Bérat <fberat@redhat.com> - 2.42-10
+- Auto-sync with upstream branch release/2.42/master,
+  commit ebd45473f5421e0fced5ba2cde0f1aaa36e79b61:
+- nss: Missing checks in __nss_configure_lookup, __nss_database_get (bug 28940) (Florian Weimer)
+- Linux: In getlogin_r, use utmp fallback only for specific errors (Florian Weimer)
+- nss: Introduce dedicated struct nss_database_for_fork type (Florian Weimer)
+- Switch currency symbol for the bg_BG locale to euro (Florian Weimer)
+- Remove patches already applied upstream:
+  - glibc-rh2429016.patch
+
 * Fri Jan 23 2026 Florian Weimer  <fweimer@redhat.com> - 2.42-9
 - Ignore LD_PROFILE if LD_PROFILE_OUTPUT is not set (#2432405)
 
