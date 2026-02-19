@@ -1,8 +1,8 @@
 {
   "branch": "f43",
-  "release": "9",
-  "sha": "7f30c059f4a6fe9ef51234ac3833ff5091fc7f10",
+  "modification_status": "clean",
+  "release": "10",
+  "sha": "105bf4c71d7b55fdccc028b22dce154c5d5b6228",
   "source": "https://src.fedoraproject.org/rpms/glibc.git",
-  "version": "2.42",
-  "modification_status": "clean"
+  "version": "2.42"
 }
