@@ -1,0 +1,8 @@
+{
+  "branch": "rawhide",
+  "modification_status": "clean",
+  "release": "1",
+  "sha": "d82f06a025c9fbb69192a5408d5469323a7104bc",
+  "source": "https://src.fedoraproject.org/rpms/python-specfile.git",
+  "version": "0.39.1"
+}
