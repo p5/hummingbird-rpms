@@ -1,8 +1,8 @@
 {
   "branch": "rawhide",
-  "release": "8",
-  "sha": "f4e2ed180bc82fb18914b64fd9ff3b42ecbf9dba",
+  "modification_status": "clean",
+  "release": "1",
+  "sha": "8b08d4f2e3d44d0595b79990f0d83e5b09d5e60a",
   "source": "https://src.fedoraproject.org/rpms/dbus.git",
-  "version": "1.16.0",
-  "modification_status": "clean"
+  "version": "1.16.2"
 }
