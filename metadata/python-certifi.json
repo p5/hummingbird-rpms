@@ -1,8 +1,8 @@
 {
   "branch": "rawhide",
-  "release": "4",
-  "sha": "7cc5a01bf99ce4cd12106cd13eefbf4cd1046674",
+  "modification_status": "clean",
+  "release": "1",
+  "sha": "9e4cdebe483f1c57e5f876c26881e4189071061a",
   "source": "https://src.fedoraproject.org/rpms/python-certifi.git",
-  "version": "2025.07.09",
-  "modification_status": "clean"
+  "version": "2026.01.04"
 }
