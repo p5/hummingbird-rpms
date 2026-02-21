@@ -1,6 +1,6 @@
 Name:           R-rpm-macros
-Version:        1.3.4
-Release:        3%{?dist}
+Version:        1.3.5
+Release:        1%{?dist}
 Summary:        Macros to help produce R packages
 
 License:        MIT
