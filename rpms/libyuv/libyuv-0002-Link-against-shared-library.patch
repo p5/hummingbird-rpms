@@ -5,29 +5,19 @@ Subject: [PATCH] Link against shared library
 Signed-off-by: Peter Lemenkov <lemenkov@gmail.com>
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 408032c6..a8368af4 100644
+index 76937d78..dc76ed6f 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -130,15 +130,15 @@ endif()
+@@ -187,7 +187,7 @@ endif()
  
  # this creates the cpuid tool
- ADD_EXECUTABLE      ( cpuid ${ly_base_dir}/util/cpuid.c )
--TARGET_LINK_LIBRARIES  ( cpuid ${ly_lib_static} )
-+TARGET_LINK_LIBRARIES  ( cpuid ${ly_lib_shared} )
+ add_executable      ( cpuid ${ly_base_dir}/util/cpuid.c )
+-target_link_libraries  ( cpuid ${ly_lib_static} )
++target_link_libraries  ( cpuid ${ly_lib_shared} )
  
  # this creates the conversion tool
- ADD_EXECUTABLE			( yuvconvert ${ly_base_dir}/util/yuvconvert.cc )
--TARGET_LINK_LIBRARIES	( yuvconvert ${ly_lib_static} )
-+TARGET_LINK_LIBRARIES	( yuvconvert ${ly_lib_shared} )
- 
- # this creates the yuvconstants tool
- ADD_EXECUTABLE      ( yuvconstants ${ly_base_dir}/util/yuvconstants.c )
--TARGET_LINK_LIBRARIES  ( yuvconstants ${ly_lib_static} )
-+TARGET_LINK_LIBRARIES  ( yuvconstants ${ly_lib_shared} )
- 
- find_package ( JPEG )
- if (JPEG_FOUND)
-@@ -168,7 +168,7 @@ if(UNIT_TEST)
+ add_executable			( yuvconvert ${ly_base_dir}/util/yuvconvert.cc )
+@@ -225,7 +225,7 @@ if(UNIT_TEST)
    endif()
  
    add_executable(libyuv_unittest ${ly_unittest_sources})
