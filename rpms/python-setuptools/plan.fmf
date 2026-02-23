@@ -1,0 +1,87 @@
+execute:
+  how: tmt
+
+discover:
+  - name: rpms_pyproject-rpm-macros
+    how: shell
+    url: https://src.fedoraproject.org/rpms/pyproject-rpm-macros.git
+    tests:
+    - name: pyproject_pytest
+      path: /tests
+      test: ./mocktest.sh python-pytest
+    - name: pyproject_pluggy
+      path: /tests
+      test: ./mocktest.sh python-pluggy
+  - name: same_repo
+    how: shell
+    dist-git-source: true
+    dist-git-download-only: true
+    tests:
+    - name: import_test
+      test: python3 -c "import setuptools"
+    - name: mock_bootstrap_build
+      # Needs cwd to contain downloaded sources, path to mocktest.sh depends on tmt tree structure
+      test: |
+        cd $TMT_SOURCE_DIR &&
+        $TMT_TREE/../discover/rpms_pyproject-rpm-macros/tests/tests/mocktest.sh python-setuptools --with bootstrap
+  - name: tests_python
+    how: shell
+    url: https://src.fedoraproject.org/tests/python.git
+    tests:
+    - name: smoke36
+      path: /smoke
+      test:  VERSION=3.6 TOX=false ./venv.sh
+    - name: smoke39
+      path: /smoke
+      test:  VERSION=3.9 ./venv.sh
+    - name: smoke310
+      path: /smoke
+      test:  VERSION=3.10 ./venv.sh
+    - name: smoke311
+      path: /smoke
+      test:  VERSION=3.11 ./venv.sh
+    - name: smoke39_virtualenv
+      path: /smoke
+      test:  VERSION=3.9 METHOD=virtualenv ./venv.sh
+    - name: smoke310_virtualenv
+      path: /smoke
+      test:  VERSION=3.10 METHOD=virtualenv ./venv.sh
+    - name: smoke311_virtualenv
+      path: /smoke
+      test:  VERSION=3.11 METHOD=virtualenv ./venv.sh
+    - name: smoke312_virtualenv
+      path: /smoke
+      test:  VERSION=3.12 METHOD=virtualenv VIRTUALENV_SETUPTOOLS=bundle ./venv.sh
+    - name: smoke313_virtualenv
+      path: /smoke
+      test:  VERSION=3.13 METHOD=virtualenv VIRTUALENV_SETUPTOOLS=bundle ./venv.sh
+    - name: smoke314_virtualenv
+      path: /smoke
+      test:  VERSION=3.14 METHOD=virtualenv VIRTUALENV_SETUPTOOLS=bundle ./venv.sh
+
+prepare:
+  - name: Install dependencies
+    how: install
+    package:
+    - gcc
+    - virtualenv
+    - python3.6-devel
+    - python3.9-devel
+    - python3.10-devel
+    - python3.11-devel
+    - python3.12-devel
+    - python3.13-devel
+    - python3.14-devel
+    - python3-devel
+    - python3-tox
+    - mock
+    - rpmdevtools
+    - rpm-build
+    - dnf
+  - name: Update packages
+    how: shell
+    script: dnf upgrade -y
+  - name: rpm_qa
+    order: 100
+    how: shell
+    script: rpm -qa | sort | tee $TMT_PLAN_DATA/rpmqa.txt

@@ -1,0 +1,6 @@
+/setuptools-*.tar.gz
+/setuptools-*.zip
+/setuptools-*/
+/pkg_resources-tests-data-*.tar.gz
+/results_python-setuptools/
+*.rpm
