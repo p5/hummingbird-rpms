@@ -338,7 +338,7 @@
 %global top_level_dir_name   %{vcstag}
 %global top_level_dir_name_backup %{top_level_dir_name}-backup
 %global buildver        7
-%global rpmrelease      2
+%global rpmrelease      2.1
 # Priority must be 8 digits in total; up to openjdk 1.8, we were using 18..... so when we moved to 11, we had to add another digit
 %if %is_system_jdk
 # Using 10 digits may overflow the int used for priority, so we combine the patch and build versions
@@ -1037,7 +1037,7 @@ Requires: tzdata-java >= 2024a
 # libsctp.so.1 is being `dlopen`ed on demand
 Requires: lksctp-tools%{?_isa}
 # for printing support
-Requires: cups-libs
+Recommends: cups-libs
 # for system security properties
 Requires: crypto-policies
 # for FIPS PKCS11 provider
