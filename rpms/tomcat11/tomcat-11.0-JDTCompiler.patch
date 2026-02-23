@@ -1,0 +1,78 @@
+--- java/org/apache/jasper/compiler/JDTCompiler.java.orig	2025-02-23 00:00:00.000000000 +0000
++++ java/org/apache/jasper/compiler/JDTCompiler.java	2025-02-23 00:00:00.000000000 +0000
+@@ -320,21 +320,21 @@
+             } else if (opt.equals("17")) {
+                 settings.put(CompilerOptions.OPTION_Source, CompilerOptions.VERSION_17);
+             } else if (opt.equals("18")) {
+-                settings.put(CompilerOptions.OPTION_Source, CompilerOptions.VERSION_18);
++                settings.put(CompilerOptions.OPTION_Source, "18");
+             } else if (opt.equals("19")) {
+-                settings.put(CompilerOptions.OPTION_Source, CompilerOptions.VERSION_19);
++                settings.put(CompilerOptions.OPTION_Source, "19");
+             } else if (opt.equals("20")) {
+-                settings.put(CompilerOptions.OPTION_Source, CompilerOptions.VERSION_20);
++                settings.put(CompilerOptions.OPTION_Source, "20");
+             } else if (opt.equals("21")) {
+-                settings.put(CompilerOptions.OPTION_Source, CompilerOptions.VERSION_21);
++                settings.put(CompilerOptions.OPTION_Source, "21");
+             } else if (opt.equals("22")) {
+-                settings.put(CompilerOptions.OPTION_Source, CompilerOptions.VERSION_22);
++                settings.put(CompilerOptions.OPTION_Source, "22");
+             } else if (opt.equals("23")) {
+-                settings.put(CompilerOptions.OPTION_Source, CompilerOptions.VERSION_23);
++                settings.put(CompilerOptions.OPTION_Source, "23");
+             } else if (opt.equals("24")) {
+-                settings.put(CompilerOptions.OPTION_Source, CompilerOptions.VERSION_24);
++                settings.put(CompilerOptions.OPTION_Source, "24");
+             } else if (opt.equals("25")) {
+-                settings.put(CompilerOptions.OPTION_Source, CompilerOptions.VERSION_25);
++                settings.put(CompilerOptions.OPTION_Source, "25");
+             } else if (opt.equals("26")) {
+                 // Constant not available in latest ECJ version shipped with
+                 // Tomcat. May be supported in a snapshot build.
+@@ -402,29 +402,29 @@
+                 settings.put(CompilerOptions.OPTION_TargetPlatform, CompilerOptions.VERSION_17);
+                 settings.put(CompilerOptions.OPTION_Compliance, CompilerOptions.VERSION_17);
+             } else if (opt.equals("18")) {
+-                settings.put(CompilerOptions.OPTION_TargetPlatform, CompilerOptions.VERSION_18);
+-                settings.put(CompilerOptions.OPTION_Compliance, CompilerOptions.VERSION_18);
++                settings.put(CompilerOptions.OPTION_TargetPlatform, "18");
++                settings.put(CompilerOptions.OPTION_Compliance, "18");
+             } else if (opt.equals("19")) {
+-                settings.put(CompilerOptions.OPTION_TargetPlatform, CompilerOptions.VERSION_19);
+-                settings.put(CompilerOptions.OPTION_Compliance, CompilerOptions.VERSION_19);
++                settings.put(CompilerOptions.OPTION_TargetPlatform, "19");
++                settings.put(CompilerOptions.OPTION_Compliance, "19");
+             } else if (opt.equals("20")) {
+-                settings.put(CompilerOptions.OPTION_TargetPlatform, CompilerOptions.VERSION_20);
+-                settings.put(CompilerOptions.OPTION_Compliance, CompilerOptions.VERSION_20);
++                settings.put(CompilerOptions.OPTION_TargetPlatform, "20");
++                settings.put(CompilerOptions.OPTION_Compliance, "20");
+             } else if (opt.equals("21")) {
+-                settings.put(CompilerOptions.OPTION_TargetPlatform, CompilerOptions.VERSION_21);
+-                settings.put(CompilerOptions.OPTION_Compliance, CompilerOptions.VERSION_21);
++                settings.put(CompilerOptions.OPTION_TargetPlatform, "21");
++                settings.put(CompilerOptions.OPTION_Compliance, "21");
+             } else if (opt.equals("22")) {
+-                settings.put(CompilerOptions.OPTION_TargetPlatform, CompilerOptions.VERSION_22);
+-                settings.put(CompilerOptions.OPTION_Compliance, CompilerOptions.VERSION_22);
++                settings.put(CompilerOptions.OPTION_TargetPlatform, "22");
++                settings.put(CompilerOptions.OPTION_Compliance, "22");
+             } else if (opt.equals("23")) {
+-                settings.put(CompilerOptions.OPTION_TargetPlatform, CompilerOptions.VERSION_23);
+-                settings.put(CompilerOptions.OPTION_Compliance, CompilerOptions.VERSION_23);
++                settings.put(CompilerOptions.OPTION_TargetPlatform, "23");
++                settings.put(CompilerOptions.OPTION_Compliance, "23");
+             } else if (opt.equals("24")) {
+-                settings.put(CompilerOptions.OPTION_TargetPlatform, CompilerOptions.VERSION_24);
+-                settings.put(CompilerOptions.OPTION_Compliance, CompilerOptions.VERSION_24);
++                settings.put(CompilerOptions.OPTION_TargetPlatform, "24");
++                settings.put(CompilerOptions.OPTION_Compliance, "24");
+             } else if (opt.equals("25")) {
+-                settings.put(CompilerOptions.OPTION_TargetPlatform, CompilerOptions.VERSION_25);
+-                settings.put(CompilerOptions.OPTION_Compliance, CompilerOptions.VERSION_25);
++                settings.put(CompilerOptions.OPTION_TargetPlatform, "25");
++                settings.put(CompilerOptions.OPTION_Compliance, "25");
+             } else if (opt.equals("26")) {
+                 // Constant not available in latest ECJ version shipped with
+                 // Tomcat. May be supported in a snapshot build.
