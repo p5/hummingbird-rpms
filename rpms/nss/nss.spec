@@ -70,13 +70,17 @@ rpm.define(string.format("nss_release_tag NSS_%s_RTM",
 Summary:          Network Security Services
 Name:             nss
 Version:          %{nss_version}
-Release:          %{nss_release}%{?dist}
+Release:          %{nss_release}.1%{?dist}
 License:          MPL-2.0
 URL:              http://www.mozilla.org/projects/security/pki/nss/
 Requires:         nspr >= %{nspr_version}
 Requires:         nss-util >= %{nss_version}
-# TODO: revert to same version as nss once we are done with the merge
-Requires:         nss-softokn%{_isa} >= %{nss_version}
+# The nss-softokn minimum is set to 3.90.0 to allow using older
+# FIPS-certified softokn/freebl binaries (e.g., from RHEL 9.2).
+# NSS loads softokn via the PKCS#11 interface (C_GetFunctionList),
+# not through direct linking, so version skew is safe as long as the
+# PKCS#11 contract is maintained.
+Requires:         nss-softokn%{_isa} >= 3.90.0
 Requires:         nss-system-init
 Requires:         p11-kit-trust
 Requires:         crypto-policies >= %{crypto_policies_version}

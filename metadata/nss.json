@@ -4,5 +4,6 @@
   "sha": "349a1a64829ae05a7b151aafffe152058988bd53",
   "source": "https://src.fedoraproject.org/rpms/nss.git",
   "version": "3.119.1",
-  "modification_status": "clean"
+  "modification_status": "modified",
+  "modification_reason": "Lower nss-softokn minimum version to 3.90.0 to allow FIPS-certified softokn from RHEL 9.2"
 }
