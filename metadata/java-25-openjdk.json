@@ -1,6 +1,7 @@
 {
   "branch": "rawhide",
-  "modification_status": "clean",
+  "modification_reason": "Weaken cups-libs to Recommends to exclude gnutls from FIPS container images",
+  "modification_status": "modified",
   "release": "3",
   "sha": "f86817c67cb2ca47a49f5c3882ebbb8d0817f2ba",
   "source": "https://src.fedoraproject.org/rpms/java-25-openjdk.git",
