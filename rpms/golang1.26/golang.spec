@@ -106,7 +106,7 @@
 %global go_version %{go_api}%{?go_patch:.%{go_patch}}%{?go_prerelease:~%{go_prerelease}}
 %global go_source %{go_api}%{?go_patch:.%{go_patch}}%{?go_prerelease}
 
-Name:           golang
+Name:           golang1.26
 Version:        %{go_version}
 Release:        %autorelease
 Summary:        The Go Programming Language
@@ -158,6 +158,8 @@ Patch6:         0006-Default-to-ld.bfd-on-ARM64.patch
 Patch8:         fix_cgo_panic-with-gcc15-in-368.patch
 # Related to https://github.com/golang/go/issues/74476
 Patch9:         skip_lsan_tests.patch
+# TestTerminalSignal hangs in mock (podman --init)
+Patch10:        0010-Skip-TestTerminalSignal.patch
 
 # Having documentation separate was broken
 Obsoletes:      %{name}-docs < 1.1-4
