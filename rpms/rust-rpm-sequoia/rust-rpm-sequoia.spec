@@ -4,8 +4,8 @@
 %global crate rpm-sequoia
 
 Name:           rust-rpm-sequoia
-Version:        1.10.0
-Release:        2%{?dist}
+Version:        1.10.1
+Release:        1%{?dist}
 Summary:        Implementation of the RPM PGP interface using Sequoia
 
 License:        LGPL-2.0-or-later

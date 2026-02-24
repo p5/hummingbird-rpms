@@ -1,8 +1,8 @@
 {
   "branch": "rawhide",
-  "release": "2",
-  "sha": "cdbfb1b7d00e057f541bb2c88fd8aa5d09bc235d",
+  "modification_status": "clean",
+  "release": "1",
+  "sha": "0324d11426d45f0bd8a28c6b1cd28162731e16cd",
   "source": "https://src.fedoraproject.org/rpms/rust-rpm-sequoia.git",
-  "version": "1.10.0",
-  "modification_status": "clean"
+  "version": "1.10.1"
 }
