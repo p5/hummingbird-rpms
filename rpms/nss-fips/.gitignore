@@ -1,0 +1,6 @@
+# Source tarball (stored in lookaside cache)
+nss-fips-*.tar.gz
+
+# Build artifacts
+*.rpm
+*.log
