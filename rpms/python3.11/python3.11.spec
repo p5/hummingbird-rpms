@@ -17,7 +17,7 @@ URL: https://www.python.org/
 #global prerel ...
 %global upstream_version %{general_version}%{?prerel}
 Version: %{general_version}%{?prerel:~%{prerel}}
-Release: 4%{?dist}
+Release: 4.1%{?dist}
 License: Python-2.0.1
 
 
@@ -366,6 +366,21 @@ Patch471: 00471-cve-2025-12084.patch
 # therefore the amount of consumed memory is proportional to the amount
 # of sent data.
 Patch472: 00472-cve-2025-13836.patch
+
+# 00329 #
+# Support OpenSSL FIPS mode
+# - In FIPS mode, OpenSSL wrappers are always used in hashlib
+# - The "usedforsecurity" keyword argument can be used to the various digest
+#   algorithms in hashlib so that you can whitelist a callsite with
+#   "usedforsecurity=False"
+# - OpenSSL wrappers for the hashes blake2{b512,s256},
+# - In FIPS mode, the blake2 hashes use OpenSSL wrappers
+#   and do not offer extended functionality (keys, tree hashing, custom digest size)
+#
+# - In FIPS mode, hmac.HMAC can only be instantiated with an OpenSSL wrapper
+#   or a string with OpenSSL hash name as the "digestmod" argument.
+#   The argument must be specified (instead of defaulting to 'md5').
+Patch329: 00329-fips.patch
 
 # (New patches go here ^^^)
 #
@@ -789,6 +804,7 @@ BuildPython() {
   --with-dtrace \
   --with-lto \
   --with-ssl-default-suites=openssl \
+  --with-builtin-hashlib-hashes=blake2 \
   --without-static-libpython \
 %if %{with rpmwheels}
   --with-wheel-pkg-dir=%{python_wheel_dir} \
@@ -1270,11 +1286,6 @@ CheckPython optimized
 %{pylibdir}/pydoc_data
 
 %{dynload_dir}/_blake2.%{SOABI_optimized}.so
-%{dynload_dir}/_md5.%{SOABI_optimized}.so
-%{dynload_dir}/_sha1.%{SOABI_optimized}.so
-%{dynload_dir}/_sha256.%{SOABI_optimized}.so
-%{dynload_dir}/_sha3.%{SOABI_optimized}.so
-%{dynload_dir}/_sha512.%{SOABI_optimized}.so
 
 %{dynload_dir}/_asyncio.%{SOABI_optimized}.so
 %{dynload_dir}/_bisect.%{SOABI_optimized}.so
@@ -1564,11 +1575,6 @@ CheckPython optimized
 # ...with debug builds of the built-in "extension" modules:
 
 %{dynload_dir}/_blake2.%{SOABI_debug}.so
-%{dynload_dir}/_md5.%{SOABI_debug}.so
-%{dynload_dir}/_sha1.%{SOABI_debug}.so
-%{dynload_dir}/_sha256.%{SOABI_debug}.so
-%{dynload_dir}/_sha3.%{SOABI_debug}.so
-%{dynload_dir}/_sha512.%{SOABI_debug}.so
 
 %{dynload_dir}/_asyncio.%{SOABI_debug}.so
 %{dynload_dir}/_bisect.%{SOABI_debug}.so
