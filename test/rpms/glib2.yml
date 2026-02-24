@@ -1,0 +1,125 @@
+---
+# Tests for glib2 FIPS compliance
+#
+# GLib's built-in HMAC (GHmac) is disabled: g_hmac_new() always returns
+# NULL so that applications must use a FIPS-certified crypto library
+# (e.g. OpenSSL, GnuTLS) directly.
+
+no-crypto-dependency:
+  summary: glib2 RPM must not depend on any crypto library
+  command: |
+    rpm_name=$(rpm -qp --queryformat '%{NAME}' "${TEST_RPM:?}")
+    if [[ "${rpm_name}" != "glib2" ]]; then
+      echo "Skipping: only applies to glib2 (got: ${rpm_name})"
+      exit 0
+    fi
+
+    deps=$(rpm -qRp "${TEST_RPM}")
+
+    if grep -q "libcrypto" <<<"${deps}"; then
+      TEST_FAIL "glib2 depends on libcrypto -- must not with HMAC disabled"
+    fi
+    echo "PASS: no libcrypto dependency"
+
+    if grep -q "libgnutls" <<<"${deps}"; then
+      TEST_FAIL "glib2 depends on libgnutls -- must not with HMAC disabled"
+    fi
+    echo "PASS: no libgnutls dependency"
+
+    if grep -q "libssl" <<<"${deps}"; then
+      TEST_FAIL "glib2 depends on libssl -- must not with HMAC disabled"
+    fi
+    echo "PASS: no libssl dependency"
+
+no-crypto-in-binary:
+  summary: libglib-2.0.so must not contain references to crypto libraries
+  command: |
+    rpm_name=$(rpm -qp --queryformat '%{NAME}' "${TEST_RPM:?}")
+    if [[ "${rpm_name}" != "glib2" ]]; then
+      echo "Skipping: only applies to glib2 (got: ${rpm_name})"
+      exit 0
+    fi
+
+    build_dir=$(mktemp -d)
+    cleanup() { rm -rf "${build_dir}"; }
+    trap cleanup EXIT
+
+    mkdir -p "${build_dir}/extract"
+    rpm2cpio "${TEST_RPM}" | (cd "${build_dir}/extract" && cpio -idm 2>/dev/null)
+
+    libglib=$(find "${build_dir}/extract" -name 'libglib-2.0.so.0.*' -type f | head -1)
+    if [[ -z "${libglib}" ]]; then
+      echo "Skipping: libglib-2.0.so not found in this RPM"
+      exit 0
+    fi
+
+    echo "Checking ${libglib##*/} for crypto library references..."
+
+    for lib in libcrypto.so libssl.so libgnutls.so; do
+      if strings "${libglib}" | grep -q "${lib}"; then
+        TEST_FAIL "libglib-2.0.so contains reference to ${lib}"
+      fi
+      echo "PASS: no reference to ${lib}"
+    done
+
+ghmac-returns-null:
+  summary: g_hmac_new() must return NULL for every digest type
+  command: |
+    rpm_name=$(rpm -qp --queryformat '%{NAME}' "${TEST_RPM:?}")
+    if [[ "${rpm_name}" != "glib2" ]]; then
+      echo "Skipping: only applies to glib2 (got: ${rpm_name})"
+      exit 0
+    fi
+
+    build_dir=$(mktemp -d)
+    cleanup() { rm -rf "${build_dir}"; }
+    trap cleanup EXIT
+
+    # Create local repo from built RPMs
+    mkdir -p "${build_dir}/local-repo"
+    if [[ -n ${TEST_REPO_DIR:-} ]]; then
+      cp "${TEST_REPO_DIR}"/*.rpm "${build_dir}/local-repo/"
+    else
+      cp "${TEST_RPM}" "${build_dir}/local-repo/"
+    fi
+
+    if command -v createrepo_c &>/dev/null; then
+      createrepo_c "${build_dir}/local-repo"
+    else
+      "${TEST_ENGINE}" run --rm --user 0 -e HOME=/root \
+        -v "${build_dir}/local-repo:/repo:z" \
+        quay.io/hummingbird-ci/builder:latest \
+        createrepo_c /repo
+    fi
+
+    cp "${TEST_FILES_DIR}/test_hmac.c" "${build_dir}/test_hmac.c"
+
+    "${TEST_ENGINE}" run --rm \
+      --cap-add=ALL \
+      -v "${CI_REPOS_DIR}:/tmp/repos:ro,z" \
+      -v "${build_dir}/local-repo:/tmp/local-repo:ro,z" \
+      -v "${build_dir}/test_hmac.c:/tmp/test_hmac.c:ro,z" \
+      quay.io/hummingbird-ci/builder:latest-hatchling \
+      bash -c '
+        set -e
+
+        # Set up repos
+        cp /tmp/repos/fedora-43.repo /etc/yum.repos.d/
+        cp /tmp/repos/hummingbird.repo /etc/yum.repos.d/
+
+        printf "%s\n" \
+          "[local-repo]" \
+          "name=Local Repository" \
+          "baseurl=file:///tmp/local-repo" \
+          "enabled=1" \
+          "gpgcheck=0" \
+          "priority=1" \
+          > /etc/yum.repos.d/local.repo
+
+        dnf -y install glib2 glib2-devel gcc pkg-config
+
+        # Compile and run the HMAC test
+        gcc -Wall -Werror -o /tmp/test_hmac /tmp/test_hmac.c \
+          $(pkg-config --cflags --libs glib-2.0)
+        /tmp/test_hmac
+      '

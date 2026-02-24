@@ -1,6 +1,7 @@
 {
   "branch": "rawhide",
-  "modification_status": "clean",
+  "modification_reason": "Removed GLib built-in HMAC backend for FIPS compliance",
+  "modification_status": "modified",
   "release": "1",
   "sha": "d3175793ec0d503777c9c546c39323965ade9ad3",
   "source": "https://src.fedoraproject.org/rpms/glib2.git",
