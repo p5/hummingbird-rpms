@@ -24,6 +24,12 @@ jobs:
     dist_git_branches: fedora-43
     upstream_tag_include: "^go1.25.+"
 
+  # Fedora 44 follows Go 1.26
+  - job: pull_from_upstream
+    trigger: release
+    dist_git_branches: fedora-rawhide
+    upstream_tag_include: "^go1.26.+"
+
   # Fedora Rawhide follows the latest version
   - job: pull_from_upstream
     trigger: release
