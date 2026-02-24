@@ -1,9 +1,8 @@
 {
   "branch": "rawhide",
+  "modification_status": "clean",
   "release": "1",
-  "sha": "30f6caf69bce62c0317748568e3c82ded2e7feb2",
+  "sha": "336c560fb8670fbb5081b1bcaebcd8a36da6ee7d",
   "source": "https://src.fedoraproject.org/rpms/golang.git",
-  "version": "1.26~rc1",
-  "modification_status": "modified",
-  "modification_reason": "Pre-existing modification - requires review"
+  "version": "1.26.0"
 }
