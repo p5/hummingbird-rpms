@@ -8,16 +8,3 @@
 {%- endif %}
 {%- endfor %}
 {{ policy("registry-hummingbird") }}
-{#- To disable Renovate updates, rename "release_catalog_revision" to "release_catalog_revision_pinned"
-   and update the commit. This disables tracking in both template and rendered output. -#}
-{#- renovate: datasource=git-refs depName=konflux-ci/release-service-catalog branch=production #}
-{%- set release_catalog_revision_pinned = "0364b9af283a593ed6b1e97f9d720f2852ff3252" %}
-{{ release_plan_admission(
-    plan_name="hummingbird-rpm-release",
-    pulp_domain="public-hummingbird",
-    pulp_credentials_secret="pulp-public-hummingbird-config-file-secret",
-    pipeline_url="https://github.com/konflux-ci/release-service-catalog.git",
-    pipeline_path="pipelines/managed/push-rpms-to-pulp/push-rpms-to-pulp.yaml",
-    policy="registry-hummingbird",
-    pipeline_revision=release_catalog_revision | default(none),
-    pipeline_revision_pinned=release_catalog_revision_pinned | default(none)) }}
