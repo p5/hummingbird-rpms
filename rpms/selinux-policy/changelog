@@ -1,3 +1,46 @@
+* Fri Feb 13 2026 Zdenek Pytela <zpytela@redhat.com> - 42.24-1
+- Allow mdadm to use CAP_BPF during RAID monitoring
+- Allow rhsmcertd read anaconda run files
+- Allow rpc.mountd setuid and setgid capabilities
+- Use kernel_dgram_send() for systemd_notify_t
+- Allow lttng-sessiond to use sd_notify
+- Label /etc/aliases.cdb with etc_aliases_t
+- Add aliases.lmdb to mta_filetrans_named_content()
+- Update gpg_role() interface with unix_stream_socket permissions
+- Allow systemd-hostnamed to create its Varlink socket
+
+* Wed Feb 04 2026 Zdenek Pytela <zpytela@redhat.com> - 42.23-1
+- Allow thumbnailer mount on fonts cache directories
+- Support confined users usage of bubblewrap
+- Allow vdagent get attributes of the pidfs filesystem
+- Allow sshd-session inherit limits from its parent sshd process
+- Revert "Allow sshd-session inherit limits from its parent process"
+- Allow sshd-session read network sysctls
+- Add the fs_write_tmpfs_files() interface
+- Update gpg policy for interactions with rhc-playbook-verifier
+- Allow rhc_playbook_verifier_t stream connect to itself
+- Update policy for rhc-worker-playbook
+- Allow sudodomain connect to gkeyringd over a unix stream socket
+- Allow tlshd communication to unconfined_t over a tcp socket
+- Allow tlshd write generic certificates
+- Allow thumbnailer connect to abrt over a unix stream socket
+
+* Fri Jan 23 2026 Zdenek Pytela <zpytela@redhat.com> - 42.22-1
+- Allow thumb_t stream connect to systemd-machined
+- Allow thumb_t stream connect to systemd-homed
+- Allow aide get attributes of tmpfs and devtmpfs filesystems
+- Allow sshd noatsecure on sshd-session execution
+- Confine rhc-worker-playbook.worker and rhc-playbook-verifier
+- Allow kernel_t to read/write all domains' pipes
+- Allow domain read sysfs files
+- allow abrt_dump_oops to write to init sockets
+- Add insights_client service interfaces
+- Allow plasma login manager stop login services
+- Allow NM nvme dispatcher script start systemd services
+
+* Sat Jan 17 2026 Fedora Release Engineering <releng@fedoraproject.org> - 42.21-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_44_Mass_Rebuild
+
 * Sat Jan 10 2026 Zdenek Pytela <zpytela@redhat.com> - 42.21-1
 - Allow sshd_net_t ioctl on unix_stream_socket of sshd_session_t
 - Allow sshd-session read, write, and map ica tmpfs files
