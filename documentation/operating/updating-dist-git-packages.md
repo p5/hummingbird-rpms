@@ -8,9 +8,16 @@ Packages are automatically updated from Fedora dist-git. Each update creates a s
 # Dry-run (check first 5 packages, no MRs)
 ./ci/dist_git_update_multi_mr.sh --clone --max=5
 
+# Check only clean packages (skip modified/native)
+./ci/dist_git_update_multi_mr.sh --clone --clean-only
+
 # Create up to 3 test MRs (checks all packages, stops after finding 3 updates)
 export CHORE_MR_GITLAB_TOKEN="glpat-xxxxxxxxxxxxxxxxxxxx"
 ./ci/dist_git_update_multi_mr.sh --clone --max=3 --create-mrs
+
+# Create MRs only for clean packages (skip modified/native)
+export CHORE_MR_GITLAB_TOKEN="glpat-xxxxxxxxxxxxxxxxxxxx"
+./ci/dist_git_update_multi_mr.sh --clone --clean-only --create-mrs
 ```
 
 ## Environment Variables
@@ -24,6 +31,26 @@ export CHORE_MR_GITLAB_TOKEN="glpat-xxxxxxxxxxxxxxxxxxxx"
 - `--clone` - Clone from GitLab to /tmp (safe for local testing, uses latest main branch)
 - `--max=N` - When creating MRs: checks packages until N updates found. When dry-run: checks first N packages
 - `--create-mrs` - Actually create MRs (requires token)
+- `--clean-only` - Skip packages with `modification_status` of 'modified' or 'native', only process clean packages
+
+### Using --clean-only
+
+The `--clean-only` flag filters out packages marked as 'modified' or 'native' before attempting updates. This is useful for:
+
+1. **Better failure detection** - Exit code 1 indicates real update failures, not expected errors from modified/native packages
+2. **Cleaner output** - No error messages for packages that can't be auto-updated by design
+3. **Efficient CI** - Focus on packages that should update automatically
+4. **Performance** - Avoids invoking `dist_git.py` for packages that will fail
+
+Without `--clean-only`, the script attempts to update all packages. Modified/native packages fail with:
+```
+ERROR: Cannot auto-update <package>
+       Status: modified/native
+       Reason: <reason>
+       Use 'sync' to force update or 'mark-modified --clean' to allow updates
+```
+
+These expected failures can mask genuine update issues. Using `--clean-only` prevents these false failures.
 
 ## Auto-Merge and Auto-Approval
 
