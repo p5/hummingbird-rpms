@@ -136,3 +136,6 @@ tomcat11:
 
 oras:
   forked_from: "https://gitlab.com/redhat/hummingbird/rpms"
+
+xcaddy:
+  forked_from: "https://gitlab.com/redhat/hummingbird/rpms"
