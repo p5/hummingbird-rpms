@@ -1,8 +1,8 @@
 {
   "branch": "rawhide",
-  "release": "3",
-  "sha": "47a6b82879ef92422e7278496859b04e8b78cc86",
+  "modification_status": "clean",
+  "release": "1",
+  "sha": "949b376d29d18e24aea89b865987fe8f5d2bb40e",
   "source": "https://src.fedoraproject.org/rpms/dav1d.git",
-  "version": "1.5.2",
-  "modification_status": "clean"
+  "version": "1.5.3"
 }
