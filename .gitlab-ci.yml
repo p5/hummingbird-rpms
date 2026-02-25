@@ -106,6 +106,7 @@ deploy_releases_to_konflux:
     - !reference [.rules, web]
 
 dist_git_update:
+  tags: [big-runner]
   environment:
     name: chore-mr
     action: access
@@ -127,7 +128,8 @@ dist_git_update:
       # FIXME: Limited to 100 packages due to OOM kills on large-runner.
       # Job was killed at package 275/368 with exit code 137 (OOMKilled).
       # Need either: (1) larger runner with more memory, or (2) code optimization (shallow clones, batching).
-      ./ci/dist_git_update_multi_mr.sh --max=100
+      # Using --clean-only to skip modified/native packages (prevents expected failures from masking real issues).
+      ./ci/dist_git_update_multi_mr.sh --max=500 --clean-only
   rules:
     - !reference [.rules, schedule]
     - !reference [.rules, mr_manual]

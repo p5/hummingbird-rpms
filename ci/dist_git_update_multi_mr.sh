@@ -8,6 +8,9 @@
 #   ./ci/dist_git_update_multi_mr.sh --clone --max=10     # Clone to /tmp, check first 10 packages, dry-run
 #   ./ci/dist_git_update_multi_mr.sh --clone --max=3 --create-mrs  # Clone to /tmp, check all packages, create up to 3 MRs
 #   ./ci/dist_git_update_multi_mr.sh --max=100            # Check all packages, create up to 100 MRs (in current repo)
+#   ./ci/dist_git_update_multi_mr.sh --clean-only         # Check only clean packages (skip modified/native)
+#   ./ci/dist_git_update_multi_mr.sh --clean-only --max=10     # Check clean packages, create up to 10 MRs
+#   ./ci/dist_git_update_multi_mr.sh --clone --clean-only      # Clone mode, check only clean packages
 #
 # Environment variables:
 #   CHORE_MR_GITLAB_TOKEN    - GitLab API token with write_repository scope (required for --create-mrs)
@@ -19,6 +22,7 @@ set -euo pipefail
 CLONE_MODE=false
 CREATE_MRS=false
 MAX_PACKAGES=0  # 0 means process all packages
+CLEAN_ONLY=false
 TEMP_DIR=""
 
 while [[ $# -gt 0 ]]; do
@@ -39,9 +43,13 @@ while [[ $# -gt 0 ]]; do
             CREATE_MRS=true
             shift
             ;;
+        --clean-only)
+            CLEAN_ONLY=true
+            shift
+            ;;
         *)
             echo "Unknown option: $1"
-            echo "Usage: $0 [--clone] [--max=N] [--create-mrs]"
+            echo "Usage: $0 [--clone] [--max=N] [--create-mrs] [--clean-only]"
             exit 1
             ;;
     esac
@@ -147,6 +155,7 @@ PACKAGES_UPDATED=0
 UPDATE_FAILURES=0
 MR_FAILURES=0
 PACKAGES_SKIPPED=0
+PACKAGES_SKIPPED_MODIFIED_NATIVE=0
 FAILED_PACKAGES=()
 CREATED_MR_URLS=()
 
@@ -193,6 +202,23 @@ else
     fi
 fi
 echo ""
+
+# Pre-filter packages if --clean-only is set
+if [[ "${CLEAN_ONLY}" == true ]]; then
+    echo "Filtering for clean packages only (skipping modified/native)..."
+    filtered_packages=()
+    for metadata_file in "${packages_to_check[@]}"; do
+        status=$(jq -r '.modification_status // "clean"' "${metadata_file}")
+        if [[ "${status}" == "clean" ]]; then
+            filtered_packages+=("${metadata_file}")
+        else
+            PACKAGES_SKIPPED_MODIFIED_NATIVE=$((PACKAGES_SKIPPED_MODIFIED_NATIVE + 1))
+        fi
+    done
+    packages_to_check=("${filtered_packages[@]}")
+    echo "After filtering: ${#packages_to_check[@]} packages to check (${PACKAGES_SKIPPED_MODIFIED_NATIVE} skipped)"
+    echo ""
+fi
 
 # Make sure we're on the target branch before running updates
 git checkout --quiet "${TARGET_BRANCH}" 2>/dev/null || true
@@ -364,6 +390,9 @@ else
     echo "  MRs: ${PACKAGES_UPDATED} created"
 fi
 echo "  Packages checked:        ${#packages_to_check[@]}"
+if [[ "${CLEAN_ONLY}" == true && ${PACKAGES_SKIPPED_MODIFIED_NATIVE} -gt 0 ]]; then
+    echo "  Packages skipped (modified/native): ${PACKAGES_SKIPPED_MODIFIED_NATIVE}"
+fi
 echo "  Updates succeeded:       $((${#packages_to_check[@]} - UPDATE_FAILURES))"
 echo "  Updates failed:          ${UPDATE_FAILURES}"
 echo "  Commits created:         ${COMMITS_CREATED}"
