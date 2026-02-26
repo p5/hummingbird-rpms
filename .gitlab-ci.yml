@@ -125,10 +125,6 @@ dist_git_update:
       git branch --quiet --force "${CI_COMMIT_BRANCH:-$CI_DEFAULT_BRANCH}" "origin/${CI_COMMIT_BRANCH:-$CI_DEFAULT_BRANCH}"
   script:
     - |
-      # FIXME: Limited to 100 packages due to OOM kills on large-runner.
-      # Job was killed at package 275/368 with exit code 137 (OOMKilled).
-      # Need either: (1) larger runner with more memory, or (2) code optimization (shallow clones, batching).
-      # Using --clean-only to skip modified/native packages (prevents expected failures from masking real issues).
       ./ci/dist_git_update_multi_mr.sh --max=500 --clean-only
   rules:
     - !reference [.rules, schedule]

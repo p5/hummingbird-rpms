@@ -1,9 +1,13 @@
 {
+  "centos": {
+    "c10s": "el10",
+    "c9s": "el9"
+  },
   "fedora": {
     "eln": "eln",
-    "f41": "f41",
     "f42": "f42",
     "f43": "f43",
-    "rawhide": "f44"
+    "f44": "f44",
+    "rawhide": "f45"
   }
 }
