@@ -19,13 +19,14 @@
 
 Name:		zlib-ng
 Version:	2.3.3
-Release:	2%{?dist}
+Release:	5%{?dist}
 Summary:	Zlib replacement with optimizations
 License:	Zlib
 Url:		https://github.com/zlib-ng/zlib-ng
 Source0:	https://github.com/zlib-ng/zlib-ng/archive/%{version}/%{name}-%{version}.tar.gz
 
 Patch:		far.diff
+Patch:		pr2152.patch
 
 BuildRequires:	cmake >= 3.1
 BuildRequires:	gcc-c++
