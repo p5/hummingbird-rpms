@@ -1,8 +1,8 @@
 {
   "branch": "rawhide",
-  "release": "7",
-  "sha": "d39147a22233042f440eae625add65ddefeaa4bc",
+  "modification_status": "clean",
+  "release": "1",
+  "sha": "77fbaa4e9a6b97735947d575ade3f167fad09b59",
   "source": "https://src.fedoraproject.org/rpms/shadow-utils.git",
-  "version": "4.18.0",
-  "modification_status": "clean"
+  "version": "4.19.3"
 }
