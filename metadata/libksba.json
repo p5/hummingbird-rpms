@@ -1,8 +1,8 @@
 {
   "branch": "rawhide",
-  "release": "5",
-  "sha": "210c26553207899b2091010b732571d3ba11dd14",
+  "modification_status": "clean",
+  "release": "1",
+  "sha": "8c0110918e4860247cb32659d7c262ec50bd6765",
   "source": "https://src.fedoraproject.org/rpms/libksba.git",
-  "version": "1.6.7",
-  "modification_status": "clean"
+  "version": "1.6.8"
 }
