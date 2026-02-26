@@ -40,14 +40,12 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest
-        DUMMY_MAKER_BIN="/etc/pki/tls/certs/make-dummy-cert"
-        [ -x /usr/bin/make-dummy-cert ] && DUMMY_MAKER_BIN="/usr/bin/make-dummy-cert"
-        rlRun "$DUMMY_MAKER_BIN mycert-tmp.pem"
+        rlRun "openssl req -x509 -newkey rsa -keyout localhost.key -out mycert-tmp.pem -subj /CN=localhost -nodes -batch"
         rlRun "openssl x509 -in mycert-tmp.pem -addtrust clientAuth -addtrust serverAuth -addtrust emailProtection -out mycert.pem"
-        rlAssertNotExists "/etc/pki/ca-trust/source/localhost.localdomain.p11-kit"
+        rlAssertNotExists "/etc/pki/ca-trust/source/localhost.p11-kit"
         rlRun -s "trust anchor --store mycert.pem"
         rlAssertNotGrep "p11-kit:" $rlRun_LOG
-        rlAssertExists "/etc/pki/ca-trust/source/localhost.localdomain.p11-kit"
+        rlAssertExists "/etc/pki/ca-trust/source/localhost.p11-kit"
     rlPhaseEnd
 
     rlPhaseStartCleanup

@@ -1,8 +1,8 @@
 {
   "branch": "rawhide",
-  "release": "2",
-  "sha": "8e568aa6f4a808baec4d96be5b8e4ef262a21086",
+  "modification_status": "clean",
+  "release": "1",
+  "sha": "266c61fa31abc2948be66f7b473be7b4966c1419",
   "source": "https://src.fedoraproject.org/rpms/p11-kit.git",
-  "version": "0.25.8",
-  "modification_status": "clean"
+  "version": "0.26.2"
 }
