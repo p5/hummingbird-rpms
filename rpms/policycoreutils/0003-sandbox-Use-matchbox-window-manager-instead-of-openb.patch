@@ -1,4 +1,4 @@
-From 16fd581da479f80b8f8ff8ae8ff58a4f0a610d54 Mon Sep 17 00:00:00 2001
+From 740ef2e87ee34612ac62c60a70fc155e8c69f6fe Mon Sep 17 00:00:00 2001
 From: Petr Lautrbach <plautrba@redhat.com>
 Date: Wed, 18 Jul 2018 09:09:35 +0200
 Subject: [PATCH] sandbox: Use matchbox-window-manager instead of openbox
@@ -71,5 +71,5 @@ index 28169182ce42..e2a7ad9b2ac7 100644
      if [ -z "$WAYLAND_DISPLAY" ]; then
          DISPLAY_COMMAND='/usr/bin/Xephyr -resizeable -title "$TITLE" -terminate -screen $SCREENSIZE -dpi $DPI -nolisten tcp -displayfd 5 5>&1 2>/dev/null'
 -- 
-2.50.1
+2.52.0
 

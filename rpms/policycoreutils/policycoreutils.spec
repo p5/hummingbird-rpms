@@ -1,7 +1,7 @@
-%global libauditver     3.0
-%global libsepolver     3.9-1
-%global libsemanagever  3.9-1
-%global libselinuxver   3.9-1
+%global libauditver     4.0
+%global libsepolver     3.10-1
+%global libsemanagever  3.10-1
+%global libselinuxver   3.10-1
 
 %global generatorsdir %{_prefix}/lib/systemd/system-generators
 
@@ -10,13 +10,13 @@
 
 Summary: SELinux policy core utilities
 Name:    policycoreutils
-Version: 3.9
-Release: 8%{?dist}
+Version: 3.10
+Release: 2%{?dist}
 License: GPL-2.0-or-later
 # https://github.com/SELinuxProject/selinux/wiki/Releases
 Source0: https://github.com/SELinuxProject/selinux/releases/download/%{version}/selinux-%{version}.tar.gz
 Source1: https://github.com/SELinuxProject/selinux/releases/download/%{version}/selinux-%{version}.tar.gz.asc
-Source2: https://github.com/bachradsusi.gpg
+Source2: https://github.com/perfinion.gpg
 Source3: changelog
 Source4: macros
 URL:     https://github.com/SELinuxProject/selinux
@@ -37,7 +37,7 @@ Source22: selinux-gui.zip
 # wlc --key <apikey> --url https://translate.fedoraproject.org/api/ download selinux/sandbox --output ./
 Source23: selinux-sandbox.zip
 # https://github.com/fedora-selinux/selinux
-# $ git format-patch -N 3.9 -- policycoreutils python gui sandbox dbus semodule-utils restorecond
+# $ git format-patch -N 3.10 -- policycoreutils python gui sandbox dbus semodule-utils restorecond
 # $ for j in [0-9]*.patch; do printf "Patch%s: %s\n" ${j/-*/} $j; done
 # Patch list start
 Patch0001: 0001-Don-t-be-verbose-if-you-are-not-on-a-tty.patch
@@ -46,8 +46,6 @@ Patch0003: 0003-sandbox-Use-matchbox-window-manager-instead-of-openb.patch
 Patch0004: 0004-Use-SHA-2-instead-of-SHA-1.patch
 Patch0005: 0005-python-sepolicy-Fix-spec-file-dependencies.patch
 Patch0006: 0006-sepolicy-Fix-detection-of-writeable-locations.patch
-Patch0007: 0007-setfiles-Add-A-option-to-disable-SELINUX_RESTORECON_.patch
-Patch0008: 0008-semanage-Reset-active-value-when-deleting-boolean-cu.patch
 # Patch list end
 
 # gen_changelog
@@ -277,7 +275,12 @@ by python 3 in an SELinux environment.
 %package devel
 Summary: SELinux policy core policy devel utilities
 Requires: policycoreutils-python-utils = %{version}-%{release}
-Requires: /usr/bin/make python3-dnf
+Requires: /usr/bin/make
+%if 0%{?fedora} || 0%{?rhel} >= 11
+Requires: python3-libdnf5
+%else
+Requires: python3-dnf
+%endif
 Requires: (selinux-policy-devel if selinux-policy)
 
 %description devel
@@ -461,7 +464,4 @@ The policycoreutils-restorecond package contains the restorecond service.
 %systemd_postun_with_restart restorecond.service
 
 %changelog
-* Sat Jan 17 2026 Fedora Release Engineering <releng@fedoraproject.org>
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_44_Mass_Rebuild
-
 %add_changelog %SOURCE3
