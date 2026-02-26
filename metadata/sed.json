@@ -1,8 +1,8 @@
 {
   "branch": "rawhide",
-  "release": "7",
-  "sha": "6272d3feff575d9bf68a5c5ee5bbce8db41b0bc4",
+  "modification_status": "clean",
+  "release": "8",
+  "sha": "55d8977250cc8b82991be5010dee4b3ba0e8d3ac",
   "source": "https://src.fedoraproject.org/rpms/sed.git",
-  "version": "4.9",
-  "modification_status": "clean"
+  "version": "4.9"
 }
