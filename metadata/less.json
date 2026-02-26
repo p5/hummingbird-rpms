@@ -1,8 +1,8 @@
 {
   "branch": "rawhide",
-  "release": "2",
-  "sha": "3ed1feca0e1f02d46784bb10fea748ab8b94c143",
+  "modification_status": "clean",
+  "release": "1",
+  "sha": "461b58d68510e351fc7d17aa0de9cd0324d2a10c",
   "source": "https://src.fedoraproject.org/rpms/less.git",
-  "version": "691",
-  "modification_status": "clean"
+  "version": "692"
 }
