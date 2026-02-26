@@ -1,0 +1,62 @@
+{%- macro release_plan_admission(name, application_prefix, component_list, release_org, single_component_mode, service_account_name) -%}---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ReleasePlanAdmission
+metadata:
+  labels:
+    release.appstudio.openshift.io/block-releases: 'false'
+    pp.engineering.redhat.com/business-unit: rhel-platforms
+  name: {{ name }}
+  namespace: {{ release_tenant }}
+spec:
+  applications:
+    - {{ application_prefix }}-{{ branch }}
+  data:
+    intention: staging
+    pulp:
+      domain: public-hummingbird
+      secretName: hummingbird-pulp-credentials-production-secret
+    releaseNotes:
+      product_id: [1071]
+      product_name: "Red Hat Hardened Images"
+      product_version: "1"
+      solution: |
+        Red Hat Hardened Images RPM Release
+      synopsis: Red Hat Hardened Images RPM Release
+      topic: |
+        Red Hat Hardened Images RPM Release
+      description: |
+        Red Hat Hardened Images RPM Release
+    singleComponentMode: {{ single_component_mode | tojson }}
+    sign:
+      configMapName: hacbs-signing-pipeline-config-staging-redhatrelease2
+      cosignSecretName: konflux-cosign-signing-stage
+    pyxis:
+      secret: pyxis-staging-secret
+      server: stage
+    atlas:
+      server: stage
+    mapping:
+      defaults:
+        pushSourceContainer: true
+      components:
+{%- for component in component_list %}
+        - name: {{ component.component_name }}
+          contentType: rpm
+{%- endfor %}
+  origin: {{ tenant }}
+  pipeline:
+    pipelineRef:
+      params:
+        - name: url
+          value: "https://github.com/konflux-ci/release-service-catalog.git"
+        - name: revision
+          value: development
+        - name: pathInRepo
+          value: "pipelines/managed/push-rpms-to-pulp/push-rpms-to-pulp.yaml"
+      resolver: git
+    serviceAccountName: {{ service_account_name }}
+    timeouts:
+      pipeline: 4h0m0s
+      tasks: 4h0m0s
+  policy: rpm-hummingbird-stage
+{%- endmacro -%}

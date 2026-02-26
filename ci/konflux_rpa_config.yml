@@ -1,0 +1,23 @@
+# Configuration for ReleasePlanAdmission generation
+# Defines which RPAs to generate and where to place them in konflux-release-data repo
+
+# Global settings
+global:
+  branch: main
+  tenant: hummingbird-tenant
+  release_tenant: rhtap-releng-tenant
+  git_repo: https://gitlab.com/redhat/hummingbird/rpms.git
+
+# ReleasePlanAdmission configurations
+rpas:
+  - name: hummingbird-rpms-tech-preview-staging
+    target_file: config/kflux-prd-rh03.nnv1.p1/product/ReleasePlanAdmission/hummingbird/hummingbird-rpms-tech-preview-staging.yaml
+    template: macros/releng/release-plan-admission.yml.j2  # Path relative to konflux-templates directory
+    application_prefix: rpms
+    release_org: registry.stage.redhat.io/hummingbird-tech-preview
+    single_component_mode: true
+    service_account_name: hummingbird-rpm-release-staging
+    skip_pyxis_mr: true  # Set to true to skip pyxis-repo-configs MR for this RPA
+    component_filter:
+      path_prefix: rpms/  # Only components from this directory (e.g., images/, rpms/)
+      exclude_patterns: []  # Optional: patterns to exclude
