@@ -1318,6 +1318,29 @@ def test_is_prerelease_stable_versions(dist_git_module) -> None:
     assert dist_git_module.is_prerelease("1.0device") == (False, None)
 
 
+def test_is_prerelease_in_release_field(dist_git_module) -> None:
+    """Test pre-release detection in release field (e.g., kernel-headers pattern)."""
+    # Kernel-style pre-release in release field (7.0.0-0.rc1.15)
+    is_pre, pattern = dist_git_module.is_prerelease("7.0.0", "0.rc1.15")
+    assert is_pre is True
+    assert "rc1" in pattern
+    assert "in release" in pattern
+
+    # Other release field pre-release patterns
+    assert dist_git_module.is_prerelease("2.5.0", "0.beta1")[0] is True
+    assert dist_git_module.is_prerelease("3.0.0", "0.1.alpha")[0] is True
+    assert dist_git_module.is_prerelease("1.0.0", "0.rc2.5")[0] is True
+
+    # Stable version with stable release
+    assert dist_git_module.is_prerelease("1.0", "1") == (False, None)
+    assert dist_git_module.is_prerelease("2.5.3", "59") == (False, None)
+
+    # Pre-release in version should still be detected
+    is_pre, pattern = dist_git_module.is_prerelease("5.3.0~rc1", "1")
+    assert is_pre is True
+    assert "in release" not in pattern  # Should be detected in version, not release
+
+
 def test_update_skips_prerelease(workdir: Path, upstream_repos: dict[str, Path]) -> None:
     """Update skips pre-release versions by default."""
     # Import vanilla
