@@ -2,8 +2,8 @@
 %global modname rpds_py
 
 Name:           python-rpds-py
-Version:        0.29.0
-Release:        %autorelease
+Version:        0.30.0
+Release:        1%{?dist}
 Summary:        Python bindings to the Rust rpds crate
 # Full license breakdown in LICENSES.dependencies
 License:        MIT AND Apache-2.0 AND (MIT OR Apache-2.0) AND MPL-2.0
