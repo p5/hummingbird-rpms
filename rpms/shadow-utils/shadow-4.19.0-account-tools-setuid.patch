@@ -1,7 +1,7 @@
-diff -up shadow-4.18.0-rc1/src/chpasswd.c.account-tools-setuid shadow-4.18.0-rc1/src/chpasswd.c
---- shadow-4.18.0-rc1/src/chpasswd.c.account-tools-setuid	2025-06-08 15:58:36.650175673 +0200
-+++ shadow-4.18.0-rc1/src/chpasswd.c	2025-06-09 10:09:17.902939220 +0200
-@@ -448,9 +448,11 @@ int main (int argc, char **argv)
+diff -up shadow-4.19.0-rc1/src/chpasswd.c.account-tools-setuid shadow-4.19.0-rc1/src/chpasswd.c
+--- shadow-4.19.0-rc1/src/chpasswd.c.account-tools-setuid	2025-12-07 16:56:38.563285789 +0100
++++ shadow-4.19.0-rc1/src/chpasswd.c	2025-12-09 14:54:29.232282499 +0100
+@@ -466,9 +466,11 @@ int main (int argc, char **argv)
  	char *newpwd;
  	const char *salt;
  
@@ -13,7 +13,7 @@ diff -up shadow-4.18.0-rc1/src/chpasswd.c.account-tools-setuid shadow-4.18.0-rc1
  
  	bool errors = false;
  	intmax_t line = 0;
-@@ -474,19 +476,23 @@ int main (int argc, char **argv)
+@@ -495,19 +497,23 @@ int main (int argc, char **argv)
  	process_root_flag ("-R", argc, argv);
  	prefix = process_prefix_flag ("-P", argc, argv);
  
@@ -37,7 +37,7 @@ diff -up shadow-4.18.0-rc1/src/chpasswd.c.account-tools-setuid shadow-4.18.0-rc1
  	{
  		is_shadow_pwd = spw_file_present ();
  
-@@ -543,6 +549,7 @@ int main (int argc, char **argv)
+@@ -562,6 +568,7 @@ int main (int argc, char **argv)
  		}
  		newpwd = cp;
  
@@ -45,15 +45,15 @@ diff -up shadow-4.18.0-rc1/src/chpasswd.c.account-tools-setuid shadow-4.18.0-rc1
  #ifdef USE_PAM
  		if (use_pam) {
  			if (do_pam_passwd_non_interactive (Prog, name, newpwd) != 0) {
-@@ -553,6 +560,7 @@ int main (int argc, char **argv)
+@@ -572,6 +579,7 @@ int main (int argc, char **argv)
  			}
  		} else
  #endif				/* USE_PAM */
 +#endif /* ACCT_TOOLS_SETUID */
  		{
- 		const struct spwd *sp;
- 		struct spwd newsp;
-@@ -672,9 +680,11 @@ int main (int argc, char **argv)
+ 
+ 		/*
+@@ -706,9 +714,11 @@ int main (int argc, char **argv)
  	 * password database.
  	 */
  	if (errors) {
@@ -65,8 +65,8 @@ diff -up shadow-4.18.0-rc1/src/chpasswd.c.account-tools-setuid shadow-4.18.0-rc1
  		{
  			fprintf (stderr,
  			         _("%s: error detected, changes ignored\n"),
-@@ -683,9 +693,11 @@ int main (int argc, char **argv)
- 		fail_exit (1);
+@@ -717,9 +727,11 @@ int main (int argc, char **argv)
+ 		fail_exit (1, process_selinux);
  	}
  
 +#ifdef ACCT_TOOLS_SETUID
@@ -76,10 +76,10 @@ diff -up shadow-4.18.0-rc1/src/chpasswd.c.account-tools-setuid shadow-4.18.0-rc1
 +#endif /* ACCT_TOOLS_SETUID */
  	{
  	/* Save the changes */
- 		close_files ();
-diff -up shadow-4.18.0-rc1/src/groupmems.c.account-tools-setuid shadow-4.18.0-rc1/src/groupmems.c
---- shadow-4.18.0-rc1/src/groupmems.c.account-tools-setuid	2025-06-08 15:58:36.651250652 +0200
-+++ shadow-4.18.0-rc1/src/groupmems.c	2025-06-09 10:08:59.836763261 +0200
+ 		close_files (&flags);
+diff -up shadow-4.19.0-rc1/src/groupmems.c.account-tools-setuid shadow-4.19.0-rc1/src/groupmems.c
+--- shadow-4.19.0-rc1/src/groupmems.c.account-tools-setuid	2025-12-07 16:56:38.564285805 +0100
++++ shadow-4.19.0-rc1/src/groupmems.c	2025-12-09 14:57:23.767054141 +0100
 @@ -14,9 +14,11 @@
  #include <grp.h>
  #include <stdio.h>
@@ -91,17 +91,17 @@ diff -up shadow-4.18.0-rc1/src/groupmems.c.account-tools-setuid shadow-4.18.0-rc
 +#endif /* ACCT_TOOLS_SETUID */
  #include <pwd.h>
  
- #include "alloc/x/xmalloc.h"
-@@ -417,6 +419,7 @@ static void process_flags (int argc, cha
- static void check_perms (void)
+ #include "alloc/malloc.h"
+@@ -432,6 +434,7 @@ static void
+ check_perms(MAYBE_UNUSED bool process_selinux)
  {
  	if (!list) {
 +#ifdef ACCT_TOOLS_SETUID
  #ifdef USE_PAM
  		pam_handle_t *pamh = NULL;
  		int retval;
-@@ -450,7 +453,8 @@ static void check_perms (void)
- 			fail_exit (1);
+@@ -465,7 +468,8 @@ check_perms(MAYBE_UNUSED bool process_se
+ 			fail_exit (1, process_selinux);
  		}
  		(void) pam_end (pamh, retval);
 -#endif
@@ -110,10 +110,10 @@ diff -up shadow-4.18.0-rc1/src/groupmems.c.account-tools-setuid shadow-4.18.0-rc
  	}
  }
  
-diff -up shadow-4.18.0-rc1/src/newusers.c.account-tools-setuid shadow-4.18.0-rc1/src/newusers.c
---- shadow-4.18.0-rc1/src/newusers.c.account-tools-setuid	2025-06-08 15:58:36.652250643 +0200
-+++ shadow-4.18.0-rc1/src/newusers.c	2025-06-09 10:08:59.836928828 +0200
-@@ -67,6 +67,7 @@
+diff -up shadow-4.19.0-rc1/src/newusers.c.account-tools-setuid shadow-4.19.0-rc1/src/newusers.c
+--- shadow-4.19.0-rc1/src/newusers.c.account-tools-setuid	2025-12-07 16:56:38.565285821 +0100
++++ shadow-4.19.0-rc1/src/newusers.c	2025-12-09 15:07:40.115500988 +0100
+@@ -74,6 +74,7 @@ struct option_flags {
  static const char Prog[] = "newusers";
  
  static bool rflg = false;	/* create a system account */
@@ -121,7 +121,7 @@ diff -up shadow-4.18.0-rc1/src/newusers.c.account-tools-setuid shadow-4.18.0-rc1
  #ifndef USE_PAM
  static /*@null@*//*@observer@*/char *crypt_method = NULL;
  #define cflg (NULL != crypt_method)
-@@ -83,6 +84,7 @@ static long bcrypt_rounds = 13;
+@@ -90,6 +91,7 @@ static long bcrypt_rounds = 13;
  static long yescrypt_cost = 5;
  #endif				/* USE_YESCRYPT */
  #endif				/* !USE_PAM */
@@ -129,7 +129,7 @@ diff -up shadow-4.18.0-rc1/src/newusers.c.account-tools-setuid shadow-4.18.0-rc1
  
  static bool is_shadow;
  #ifdef SHADOWGRP
-@@ -105,9 +107,11 @@ NORETURN static void fail_exit (int);
+@@ -112,9 +114,11 @@ NORETURN static void fail_exit (int, boo
  static int add_group (const char *, const char *, gid_t *, gid_t);
  static int get_user_id (const char *, uid_t *);
  static int add_user (const char *, uid_t, gid_t);
@@ -139,9 +139,9 @@ diff -up shadow-4.18.0-rc1/src/newusers.c.account-tools-setuid shadow-4.18.0-rc1
  #endif				/* !USE_PAM */
 +#endif /* !ACCT_TOOLS_SETUID */
  static int add_passwd (struct passwd *, const char *);
- static void process_flags (int argc, char **argv);
+ static void process_flags (int argc, char **argv, struct option_flags *flags);
  static void check_flags (void);
-@@ -129,6 +133,7 @@ static void usage (int status)
+@@ -136,6 +140,7 @@ static void usage (int status)
  	                  "Options:\n"),
  	                Prog);
  	(void) fputs (_("  -b, --badname                 allow bad names\n"), usageout);
@@ -149,7 +149,7 @@ diff -up shadow-4.18.0-rc1/src/newusers.c.account-tools-setuid shadow-4.18.0-rc1
  #ifndef USE_PAM
  	(void) fprintf (usageout,
  	                _("  -c, --crypt-method METHOD     the crypt method (one of %s)\n"),
-@@ -144,9 +149,11 @@ static void usage (int status)
+@@ -151,9 +156,11 @@ static void usage (int status)
  #endif
  	               );
  #endif				/* !USE_PAM */
@@ -161,7 +161,7 @@ diff -up shadow-4.18.0-rc1/src/newusers.c.account-tools-setuid shadow-4.18.0-rc1
  #ifndef USE_PAM
  #if defined(USE_SHA_CRYPT) || defined(USE_BCRYPT) || defined(USE_YESCRYPT)
  	(void) fputs (_("  -s, --sha-rounds              number of rounds for the SHA, BCRYPT\n"
-@@ -154,6 +161,7 @@ static void usage (int status)
+@@ -161,6 +168,7 @@ static void usage (int status)
  	              usageout);
  #endif				/* USE_SHA_CRYPT || USE_BCRYPT || USE_YESCRYPT */
  #endif				/* !USE_PAM */
@@ -169,7 +169,7 @@ diff -up shadow-4.18.0-rc1/src/newusers.c.account-tools-setuid shadow-4.18.0-rc1
  	(void) fputs ("\n", usageout);
  
  	exit (status);
-@@ -419,6 +427,7 @@ static int add_user (const char *name, u
+@@ -426,6 +434,7 @@ static int add_user (const char *name, u
  	return (pw_update (&pwent) == 0) ? -1 : 0;
  }
  
@@ -177,7 +177,7 @@ diff -up shadow-4.18.0-rc1/src/newusers.c.account-tools-setuid shadow-4.18.0-rc1
  #ifndef USE_PAM
  /*
   * update_passwd - update the password in the passwd entry
-@@ -471,6 +480,7 @@ static int update_passwd (struct passwd
+@@ -478,6 +487,7 @@ static int update_passwd (struct passwd
  	return 0;
  }
  #endif				/* !USE_PAM */
@@ -185,7 +185,7 @@ diff -up shadow-4.18.0-rc1/src/newusers.c.account-tools-setuid shadow-4.18.0-rc1
  
  /*
   * add_passwd - add or update the encrypted password
-@@ -479,10 +489,13 @@ static int add_passwd (struct passwd *pw
+@@ -487,10 +497,13 @@ add_passwd(struct passwd *pwd, MAYBE_UNU
  {
  	const struct spwd *sp;
  	struct spwd spent;
@@ -199,7 +199,7 @@ diff -up shadow-4.18.0-rc1/src/newusers.c.account-tools-setuid shadow-4.18.0-rc1
  #ifndef USE_PAM
  	void *crypt_arg = NULL;
  	if (NULL != crypt_method) {
-@@ -520,13 +533,14 @@ static int add_passwd (struct passwd *pw
+@@ -528,13 +541,14 @@ add_passwd(struct passwd *pwd, MAYBE_UNU
  		return update_passwd (pwd, password);
  	}
  #endif				/* USE_PAM */
@@ -215,7 +215,7 @@ diff -up shadow-4.18.0-rc1/src/newusers.c.account-tools-setuid shadow-4.18.0-rc1
  	if (NULL != sp) {
  		spent = *sp;
  		if (   (NULL != crypt_method)
-@@ -563,7 +577,7 @@ static int add_passwd (struct passwd *pw
+@@ -571,7 +585,7 @@ add_passwd(struct passwd *pwd, MAYBE_UNU
  	if (!streq(pwd->pw_passwd, "x")) {
  		return update_passwd (pwd, password);
  	}
@@ -224,7 +224,7 @@ diff -up shadow-4.18.0-rc1/src/newusers.c.account-tools-setuid shadow-4.18.0-rc1
  	/*
  	 * If there is already a shadow entry, do not touch it.
  	 * If there is already a passwd entry with a password, do not
-@@ -574,14 +588,14 @@ static int add_passwd (struct passwd *pw
+@@ -582,14 +596,14 @@ add_passwd(struct passwd *pwd, MAYBE_UNU
  	    || !streq(pwd->pw_passwd, "x")) {
  		return 0;
  	}
@@ -241,14 +241,14 @@ diff -up shadow-4.18.0-rc1/src/newusers.c.account-tools-setuid shadow-4.18.0-rc1
  	if ((crypt_method != NULL) && streq(crypt_method, "NONE")) {
  		spent.sp_pwdp = (char *)password;
  	} else {
-@@ -626,35 +640,41 @@ static int add_passwd (struct passwd *pw
- static void process_flags (int argc, char **argv)
+@@ -647,32 +647,38 @@ add_passwd(struct passwd *pwd, MAYBE_UNU
+ static void process_flags (int argc, char **argv, struct option_flags *flags)
  {
  	int c;
 +#ifndef ACCT_TOOLS_SETUID
  #ifndef USE_PAM
  #if defined(USE_SHA_CRYPT) || defined(USE_BCRYPT) || defined(USE_YESCRYPT)
-         int bad_s;
+ 	int bad_s;
  #endif				/* USE_SHA_CRYPT || USE_BCRYPT || USE_YESCRYPT */
  #endif 				/* !USE_PAM */
 +#endif /* !ACCT_TOOLS_SETUID */
@@ -277,15 +277,12 @@ diff -up shadow-4.18.0-rc1/src/newusers.c.account-tools-setuid shadow-4.18.0-rc1
 +#if !defined(ACCT_TOOLS_SETUID) && !defined(USE_PAM)
  #if defined(USE_SHA_CRYPT) || defined(USE_BCRYPT) || defined(USE_YESCRYPT)
  	                         "c:bhrs:",
- #else				/* !USE_SHA_CRYPT && !USE_BCRYPT && !USE_YESCRYPT */
+-#else				/* !USE_SHA_CRYPT && !USE_BCRYPT && !USE_YESCRYPT */
++#else				/* !ACCT_TOOLS_SETUID && !USE_PAM */
  	                         "c:bhr",
  #endif				/* USE_SHA_CRYPT || USE_BCRYPT || USE_YESCRYPT */
--#else				/* USE_PAM */
-+#else				/* !ACCT_TOOLS_SETUID && !USE_PAM */
- 	                         "bhr",
- #endif
- 	                         long_options, NULL)) != -1) {
-@@ -662,11 +682,13 @@ static void process_flags (int argc, cha
+ #else				/* USE_PAM */
+@@ -670,11 +690,13 @@ static void process_flags (int argc, cha
  		case 'b':
  			allow_bad_names = true;
  			break;
@@ -299,15 +296,15 @@ diff -up shadow-4.18.0-rc1/src/newusers.c.account-tools-setuid shadow-4.18.0-rc1
  		case 'h':
  			usage (EXIT_SUCCESS);
  			break;
-@@ -675,6 +697,7 @@ static void process_flags (int argc, cha
- 			break;
+@@ -684,6 +706,7 @@ static void process_flags (int argc, cha
  		case 'R': /* no-op, handled in process_root_flag () */
+ 			flags->chroot = true;
  			break;
 +#ifndef ACCT_TOOLS_SETUID
  #ifndef USE_PAM
  #if defined(USE_SHA_CRYPT) || defined(USE_BCRYPT) || defined(USE_YESCRYPT)
  		case 's':
-@@ -714,6 +737,7 @@ static void process_flags (int argc, cha
+@@ -723,6 +746,7 @@ static void process_flags (int argc, cha
  			break;
  #endif				/* USE_SHA_CRYPT || USE_BCRYPT || USE_YESCRYPT */
  #endif				/* !USE_PAM */
@@ -315,7 +312,7 @@ diff -up shadow-4.18.0-rc1/src/newusers.c.account-tools-setuid shadow-4.18.0-rc1
  		default:
  			usage (EXIT_FAILURE);
  			break;
-@@ -746,6 +770,7 @@ static void process_flags (int argc, cha
+@@ -755,6 +779,7 @@ static void process_flags (int argc, cha
   */
  static void check_flags (void)
  {
@@ -323,7 +320,7 @@ diff -up shadow-4.18.0-rc1/src/newusers.c.account-tools-setuid shadow-4.18.0-rc1
  #ifndef USE_PAM
  #if defined(USE_SHA_CRYPT) || defined(USE_BCRYPT) || defined(USE_YESCRYPT)
  	if (sflg && !cflg) {
-@@ -778,6 +803,7 @@ static void check_flags (void)
+@@ -787,6 +812,7 @@ static void check_flags (void)
  		}
  	}
  #endif				/* !USE_PAM */
@@ -331,7 +328,7 @@ diff -up shadow-4.18.0-rc1/src/newusers.c.account-tools-setuid shadow-4.18.0-rc1
  }
  
  /*
-@@ -1066,12 +1092,14 @@ int main (int argc, char **argv)
+@@ -1065,12 +1091,14 @@ int main (int argc, char **argv)
  	intmax_t line = 0;
  	uid_t uid;
  	gid_t gid;
@@ -343,10 +340,10 @@ diff -up shadow-4.18.0-rc1/src/newusers.c.account-tools-setuid shadow-4.18.0-rc1
  	size_t nusers = 0;
  #endif				/* USE_PAM */
 +#endif /* ACCT_TOOLS_SETUID */
+ 	struct option_flags  flags = {.chroot = false};
+ 	bool process_selinux;
  
- 	log_set_progname(Prog);
- 	log_set_logfd(stderr);
-@@ -1191,6 +1219,7 @@ int main (int argc, char **argv)
+@@ -1193,6 +1221,7 @@ int main (int argc, char **argv)
  		}
  		newpw = *pw;
  
@@ -359,10 +356,10 @@ diff -up shadow-4.18.0-rc1/src/newusers.c.account-tools-setuid shadow-4.18.0-rc1
  		passwords[nusers-1] = xstrdup(fields[1]);
  #endif				/* USE_PAM */
 +#endif /* ACCT_TOOLS_SETUID */
- 		if (add_passwd (&newpw, fields[1]) != 0) {
+ 		if (!streq(fields[1], "") && add_passwd(&newpw, fields[1]) != 0) {
  			fprintf (stderr,
  			         _("%s: line %jd: can't update password\n"),
-@@ -1323,6 +1353,7 @@ int main (int argc, char **argv)
+@@ -1321,6 +1351,7 @@ int main (int argc, char **argv)
  	nscd_flush_cache ("group");
  	sssd_flush_cache (SSSD_DB_PASSWD | SSSD_DB_GROUP);
  
