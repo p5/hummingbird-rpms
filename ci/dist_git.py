@@ -115,11 +115,12 @@ PRERELEASE_PATTERNS = [
 ]
 
 
-def is_prerelease(version: str) -> tuple[bool, str | None]:
-    """Detect if a version string contains pre-release markers.
+def is_prerelease(version: str, release: str | None = None) -> tuple[bool, str | None]:
+    """Detect if a version or release string contains pre-release markers.
 
     Args:
         version: Version string to check (e.g., "5.3.0~rc1", "2.0-beta1")
+        release: Optional release string to check (e.g., "0.rc1.15", "59")
 
     Returns:
         (is_prerelease, pattern_matched): Tuple of boolean and optional pattern description
@@ -129,11 +130,22 @@ def is_prerelease(version: str) -> tuple[bool, str | None]:
         (True, "tilde pre-release marker (~rc1)")
         >>> is_prerelease("2.0.3")
         (False, None)
+        >>> is_prerelease("7.0.0", "0.rc1.15")
+        (True, "pre-release suffix (.rc1) in release")
     """
+    # Check version first
     for pattern, description in PRERELEASE_PATTERNS:
         match = pattern.search(version)
         if match:
             return (True, f"{description} ({match.group(0)})")
+
+    # Check release if provided
+    if release:
+        for pattern, description in PRERELEASE_PATTERNS:
+            match = pattern.search(release)
+            if match:
+                return (True, f"{description} ({match.group(0)}) in release")
+
     return (False, None)
 
 
@@ -745,10 +757,10 @@ def update(package_name: str, skip_build_check: bool = False, sync: bool = False
 
         # Check for pre-release version (unless sync or --allow-prerelease)
         if not sync and not allow_prerelease:
-            is_pre, pattern = is_prerelease(version)
+            is_pre, pattern = is_prerelease(version, release)
             if is_pre:
-                logging.warning("Skipping %s: pre-release version detected - %s (version: %s)",
-                               package_name, pattern, version)
+                logging.warning("Skipping %s: pre-release version detected - %s (version: %s-%s)",
+                               package_name, pattern, version, release)
                 logging.info("Use --allow-prerelease to override this check")
                 return
 
@@ -1010,6 +1022,7 @@ def list_packages(status_filter: str | None = None, prerelease_filter: bool = Fa
         status = metadata.get('modification_status', 'unknown')
         reason = metadata.get('modification_reason')
         version = metadata.get('version', '')
+        release = metadata.get('release', '')
 
         # Apply status filter if specified
         if status_filter and status != status_filter:
@@ -1017,7 +1030,7 @@ def list_packages(status_filter: str | None = None, prerelease_filter: bool = Fa
 
         # Apply prerelease filter if specified
         if prerelease_filter:
-            is_pre, _ = is_prerelease(version)
+            is_pre, _ = is_prerelease(version, release)
             if not is_pre:
                 continue
 
