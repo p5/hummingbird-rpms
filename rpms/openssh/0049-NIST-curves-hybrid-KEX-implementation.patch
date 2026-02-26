@@ -1,11 +1,13 @@
-From 3642efdf9be4d377cfd802d6a33cb083f0d846b8 Mon Sep 17 00:00:00 2001
+From 2aa2132038cdaab44a9177453afe50ae44a7fa00 Mon Sep 17 00:00:00 2001
 From: Dmitry Belyavskiy <beldmit@gmail.com>
 Date: Mon, 20 Oct 2025 16:07:31 +0200
 Subject: [PATCH 49/53] NIST curves hybrid KEX implementation
 
 ---
+ compat.c                         |  23 +-
+ compat.h                         |   1 +
  crypto_api.h                     |   4 +
- kex-names.c                      |  78 +++-
+ kex-names.c                      |  95 ++++-
  kex.c                            |   1 +
  kex.h                            |  19 +
  kexgen.c                         |  56 ++-
@@ -17,8 +19,67 @@ Subject: [PATCH 49/53] NIST curves hybrid KEX implementation
  ssh_api.c                        |   4 +
  sshconnect2.c                    |   2 +
  sshd-auth.c                      |   2 +
- 13 files changed, 819 insertions(+), 37 deletions(-)
+ 15 files changed, 856 insertions(+), 41 deletions(-)
 
+diff --git a/compat.c b/compat.c
+index 4e611dc39..b5f4cc685 100644
+--- a/compat.c
++++ b/compat.c
+@@ -36,6 +36,7 @@
+ #include "compat.h"
+ #include "log.h"
+ #include "match.h"
++#include <openssl/fips.h>
+ 
+ /* determine bug flags from SSH protocol banner */
+ void
+@@ -148,8 +149,9 @@ char *
+ compat_kex_proposal(struct ssh *ssh, const char *p)
+ {
+ 	char *cp = NULL, *cp2 = NULL;
++	int mlkem_available = is_mlkem768_available();
+ 
+-	if ((ssh->compat & (SSH_BUG_CURVE25519PAD|SSH_OLD_DHGEX)) == 0)
++	if ((ssh->compat & (SSH_BUG_CURVE25519PAD|SSH_OLD_DHGEX)) == 0 && mlkem_available == 2)
+ 		return xstrdup(p);
+ 	debug2_f("original KEX proposal: %s", p);
+ 	if ((ssh->compat & SSH_BUG_CURVE25519PAD) != 0)
+@@ -164,6 +166,25 @@ compat_kex_proposal(struct ssh *ssh, const char *p)
+ 		free(cp);
+ 		cp = cp2;
+ 	}
++	if (mlkem_available == 2)
++		return cp ? cp : xstrdup(p);
++	if (mlkem_available == 1 && FIPS_mode()) {
++		if ((cp2 = match_filter_denylist(cp ? cp : p,
++		    "mlkem768x25519-sha256")) == NULL)
++			fatal("match_filter_denylist failed");
++		free(cp);
++		cp = cp2;
++	}
++	if (mlkem_available == 0) {
++		if ((cp2 = match_filter_denylist(cp ? cp : p,
++		    "mlkem768x25519-sha256,"
++		    "mlkem768nistp256-sha256,"
++		    "mlkem1024nistp384-sha384")) == NULL)
++			fatal("match_filter_denylist failed");
++		free(cp);
++		cp = cp2;
++	}
++
+ 	if (cp == NULL || *cp == '\0')
+ 		fatal("No supported key exchange algorithms found");
+ 	debug2_f("compat KEX proposal: %s", cp);
+diff --git a/compat.h b/compat.h
+index 2e6db5bf9..b78e55b69 100644
+--- a/compat.h
++++ b/compat.h
+@@ -62,4 +62,5 @@ struct ssh;
+ 
+ void    compat_banner(struct ssh *, const char *);
+ char	*compat_kex_proposal(struct ssh *, const char *);
++int is_mlkem768_available(void);
+ #endif
 diff --git a/crypto_api.h b/crypto_api.h
 index 693b67bbc..ec3d2f277 100644
 --- a/crypto_api.h
@@ -33,10 +94,18 @@ index 693b67bbc..ec3d2f277 100644
 +
  #endif /* crypto_api_h */
 diff --git a/kex-names.c b/kex-names.c
-index 9c96e5cb0..ceecd9312 100644
+index 9c96e5cb0..d6e897301 100644
 --- a/kex-names.c
 +++ b/kex-names.c
-@@ -91,6 +91,10 @@ static const struct kexalg kexalgs[] = {
+@@ -35,6 +35,7 @@
+ #include <openssl/crypto.h>
+ #include <openssl/fips.h>
+ #include <openssl/evp.h>
++#include <openssl/err.h>
+ #endif
+ 
+ #include "kex.h"
+@@ -91,6 +92,10 @@ static const struct kexalg kexalgs[] = {
  #ifdef USE_MLKEM768X25519
  	{ KEX_MLKEM768X25519_SHA256, KEX_KEM_MLKEM768X25519_SHA256, 0,
  	    SSH_DIGEST_SHA256, KEX_IS_PQ },
@@ -47,16 +116,17 @@ index 9c96e5cb0..ceecd9312 100644
  #endif
  #endif /* HAVE_EVP_SHA256 || !WITH_OPENSSL */
  	{ NULL, 0, -1, -1, 0 },
-@@ -109,13 +113,30 @@ static const struct kexalg gss_kexalgs[] = {
+@@ -109,14 +114,33 @@ static const struct kexalg gss_kexalgs[] = {
  	{ NULL, 0, -1, -1, 0},
  };
  
+-static int is_mlkem768_available()
 +/*
 + * 0 - unavailable
 + * 1 - available in non-FIPS mode
-+ * 2 - available in FIPS mode
++ * 2 - available always
 + */
- static int is_mlkem768_available()
++int is_mlkem768_available()
  {
  	static int is_fetched = -1;
  
@@ -65,6 +135,7 @@ index 9c96e5cb0..ceecd9312 100644
 -		is_fetched = mlkem768 != NULL ? 1 : 0;
 +		EVP_KEM *mlkem768 = NULL;
 +
++		ERR_set_mark();
 +		if (FIPS_mode() == 1) {
 +		    mlkem768 = EVP_KEM_fetch(NULL, "mlkem768", NULL);
 +		    is_fetched = mlkem768 != NULL ? 2 : 0;
@@ -75,12 +146,14 @@ index 9c96e5cb0..ceecd9312 100644
 +		    }
 +		} else {
 +		    mlkem768 = EVP_KEM_fetch(NULL, "mlkem768", NULL);
-+		    is_fetched = mlkem768 != NULL ? 1 : 0;
++		    is_fetched = mlkem768 != NULL ? 2 : 0;
 +		}
  		EVP_KEM_free(mlkem768);
++		ERR_pop_to_mark();
  	}
  
-@@ -128,11 +149,32 @@ kex_alg_list_internal(char sep, const struct kexalg *algs)
+ 	return is_fetched;
+@@ -128,11 +152,32 @@ kex_alg_list_internal(char sep, const struct kexalg *algs)
  	char *ret = NULL;
  	const struct kexalg *k;
  	char sep_str[2] = {sep, '\0'};
@@ -116,7 +189,7 @@ index 9c96e5cb0..ceecd9312 100644
  		xextendf(&ret, sep_str, "%s", k->name);
  	}
  
-@@ -155,10 +197,30 @@ static const struct kexalg *
+@@ -155,10 +200,30 @@ static const struct kexalg *
  kex_alg_by_name(const char *name)
  {
  	const struct kexalg *k;
@@ -150,6 +223,25 @@ index 9c96e5cb0..ceecd9312 100644
  
  	for (k = kexalgs; k->name != NULL; k++) {
  		if (strcmp(k->name, name) == 0)
+@@ -230,8 +295,16 @@ kex_names_valid(const char *names)
+ 	for ((p = strsep(&cp, ",")); p && *p != '\0';
+ 	    (p = strsep(&cp, ","))) {
+ 		if (kex_alg_by_name(p) == NULL) {
+-			if (FIPS_mode())
+-				error("\"%.100s\" is not allowed in FIPS mode", p);
++			if (FIPS_mode()) {
++				if ((strcmp(p, KEX_MLKEM768X25519_SHA256) == 0)
++				    || (strcmp(p, KEX_MLKEM768NISTP256_SHA256) == 0)
++				    || (strcmp(p, KEX_MLKEM1024NISTP384_SHA384) == 0)) {
++					debug("\"%.100s\" is not allowed in FIPS mode", p);
++					continue;
++				}
++				else
++					error("\"%.100s\" is not allowed in FIPS mode", p);
++			}
+ 			else
+ 				error("Unsupported KEX algorithm \"%.100s\"", p);
+ 			free(s);
 diff --git a/kex.c b/kex.c
 index 56c80395c..7dd16ba2b 100644
 --- a/kex.c
@@ -1212,5 +1304,5 @@ index f3c38a7d1..698ef83f3 100644
  	kex->load_host_private_key=&get_hostkey_private_by_type;
  	kex->host_key_index=&get_hostkey_index;
 -- 
-2.52.0
+2.53.0
 
