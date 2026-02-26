@@ -1,4 +1,4 @@
-From 68de580f973ca32e7c6b05fa9803046b1478d961 Mon Sep 17 00:00:00 2001
+From 337e392431ceb6fdf8936b8a1ad4a2301461cb4c Mon Sep 17 00:00:00 2001
 From: rpm-build <rpm-build>
 Date: Wed, 30 Aug 2023 17:19:58 +0200
 Subject: [PATCH] coreutils-i18n.patch
@@ -3764,7 +3764,7 @@ index 0000000..26c95de
 +
 +Exit $fail
 diff --git a/tests/local.mk b/tests/local.mk
-index e337235..8c85baf 100644
+index 1682d1b..b341dd9 100644
 --- a/tests/local.mk
 +++ b/tests/local.mk
 @@ -423,6 +423,8 @@ all_tests =					\
@@ -3776,7 +3776,7 @@ index e337235..8c85baf 100644
    tests/sort/sort-h-thousands-sep.sh		\
    tests/sort/sort-locale.sh			\
    tests/sort/sort-merge.pl			\
-@@ -639,6 +641,7 @@ all_tests =					\
+@@ -640,6 +642,7 @@ all_tests =					\
    tests/du/threshold.sh				\
    tests/du/trailing-slash.sh			\
    tests/du/two-args.sh				\
@@ -3784,7 +3784,7 @@ index e337235..8c85baf 100644
    tests/id/gnu-zero-uids.sh			\
    tests/id/no-context.sh			\
    tests/id/context.sh				\
-@@ -796,6 +799,7 @@ all_tests =					\
+@@ -797,6 +800,7 @@ all_tests =					\
    tests/touch/read-only.sh			\
    tests/touch/relative.sh			\
    tests/touch/trailing-slash.sh			\
@@ -4276,5 +4276,5 @@ index fd64f0f..0c718ab 100755
  my $verbose = $ENV{VERBOSE};
  
 -- 
-2.52.0
+2.53.0
 

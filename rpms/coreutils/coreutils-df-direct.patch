@@ -1,4 +1,4 @@
-From 92a50e9a0965298a75283daaf0f7fe6b89806ee8 Mon Sep 17 00:00:00 2001
+From 7726f5fb4e833b23f95120ff7f29d10b4f36185d Mon Sep 17 00:00:00 2001
 From: Kamil Dudka <kdudka@redhat.com>
 Date: Mon, 29 Mar 2010 17:20:34 +0000
 Subject: [PATCH] coreutils-df-direct.patch
@@ -7,7 +7,8 @@ Subject: [PATCH] coreutils-df-direct.patch
  doc/coreutils.texi |  6 +++++
  src/df.c           | 37 +++++++++++++++++++++++++++++--
  tests/df/direct.sh | 55 ++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 96 insertions(+), 2 deletions(-)
+ tests/local.mk     |  1 +
+ 4 files changed, 97 insertions(+), 2 deletions(-)
  create mode 100755 tests/df/direct.sh
 
 diff --git a/doc/coreutils.texi b/doc/coreutils.texi
@@ -125,7 +126,7 @@ index 25235a2..7f8faac 100644
        if (posix_format)
 diff --git a/tests/df/direct.sh b/tests/df/direct.sh
 new file mode 100755
-index 0000000..8e4cfb8
+index 0000000..1428779
 --- /dev/null
 +++ b/tests/df/direct.sh
 @@ -0,0 +1,55 @@
@@ -147,7 +148,7 @@ index 0000000..8e4cfb8
 +# You should have received a copy of the GNU General Public License
 +# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 +
-+. "${srcdir=.}/init.sh"; path_prepend_ ../src
++. "${srcdir=.}/tests/init.sh"; path_prepend_ ./src
 +print_ver_ df
 +
 +df || skip_ "df fails"
@@ -184,6 +185,18 @@ index 0000000..8e4cfb8
 +compare file_out file_exp || fail=1
 +
 +Exit $fail
+diff --git a/tests/local.mk b/tests/local.mk
+index e337235..1682d1b 100644
+--- a/tests/local.mk
++++ b/tests/local.mk
+@@ -590,6 +590,7 @@ all_tests =					\
+   tests/df/no-mtab-status-masked-proc.sh			\
+   tests/df/skip-duplicates.sh			\
+   tests/df/skip-rootfs.sh			\
++  tests/df/direct.sh				\
+   tests/dd/ascii.sh				\
+   tests/dd/conv-case.sh				\
+   tests/dd/direct.sh				\
 -- 
-2.52.0
+2.53.0
 
