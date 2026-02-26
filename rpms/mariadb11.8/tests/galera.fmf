@@ -3,7 +3,7 @@ summary: centos stream tests for galera
 prepare:
   how: shell
   script: |
-    dnf install -y mariadb11.8-server-galera wireshark-cli
+    dnf install -y mariadb-server-galera wireshark-cli
 
 discover:
   how: fmf
