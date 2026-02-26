@@ -46,8 +46,9 @@ def workdir(tmp_path: Path) -> Path:
     (tmp_path / 'metadata').mkdir()
 
     # Create default upstream-releases.json for tests
+    # Note: rawhide is not included as it's auto-resolved to the highest version
     (tmp_path / 'upstream-releases.json').write_text(
-        json.dumps({'fedora': {'f40': 'f40', 'rawhide': 'f99'}}) + '\n'
+        json.dumps({'fedora': {'f40': 'f40', 'f99': 'f99'}}) + '\n'
     )
 
     # no-op generate_resources.py
@@ -714,12 +715,18 @@ def test_git_config_required(workdir: Path, upstream_repos: dict[str, Path]) -> 
 
 
 def test_update_releases(workdir: Path, dist_git_module) -> None:
-    """update-releases fetches from Bodhi and writes upstream-releases.json."""
-    # mock curl response
+    """update-releases fetches from Bodhi and writes upstream-releases.json.
+
+    Rawhide should NOT be written to the JSON file since it's automatically
+    resolved to the highest numbered Fedora release at runtime.
+    """
+    # mock curl response - rawhide is included but should be filtered out
     mock_bodhi_response = {
         'releases': [
             {'id_prefix': 'FEDORA', 'branch': 'f41', 'dist_tag': 'f41'},
-            {'id_prefix': 'FEDORA', 'branch': 'rawhide', 'dist_tag': 'f44'},
+            {'id_prefix': 'FEDORA', 'branch': 'f43', 'dist_tag': 'f43'},
+            {'id_prefix': 'FEDORA', 'branch': 'f44', 'dist_tag': 'f44'},
+            {'id_prefix': 'FEDORA', 'branch': 'rawhide', 'dist_tag': 'f45'},
             {'id_prefix': 'FEDORA', 'branch': 'eln', 'dist_tag': 'eln'},
             {'id_prefix': 'FEDORA-EPEL', 'branch': 'epel9', 'dist_tag': 'epel9'},
         ]
@@ -733,6 +740,7 @@ def test_update_releases(workdir: Path, dist_git_module) -> None:
         dist_git_module.RELEASES_JSON = workdir / 'upstream-releases.json'
         dist_git_module.update_releases()
 
+    # Rawhide should NOT be in the JSON file
     assert json.loads((workdir / 'upstream-releases.json').read_text()) == {
         'centos': {
             'c9s': 'el9',
@@ -741,10 +749,37 @@ def test_update_releases(workdir: Path, dist_git_module) -> None:
         'fedora': {
             'eln': 'eln',
             'f41': 'f41',
-            'rawhide': 'f44',
+            'f43': 'f43',
+            'f44': 'f44',
+            # rawhide is NOT stored - it's auto-resolved at runtime
             # EPEL should be filtered out (not FEDORA id_prefix)
         },
     }
+
+
+def test_get_dist_tag_rawhide_auto_resolution(dist_git_module) -> None:
+    """get_dist_tag automatically resolves rawhide to the highest Fedora release."""
+    # Set up releases with various Fedora versions (rawhide not in the dict)
+    dist_git_module.releases = {
+        'fedora': {
+            'f40': 'f40',
+            'f42': 'f42',
+            'f43': 'f43',
+            'eln': 'eln',
+        },
+    }
+
+    # rawhide should resolve to f43 (highest numbered release)
+    assert dist_git_module.get_dist_tag('rawhide') == 'f43'
+
+    # Other branches should work normally
+    assert dist_git_module.get_dist_tag('f40') == 'f40'
+    assert dist_git_module.get_dist_tag('f42') == 'f42'
+    assert dist_git_module.get_dist_tag('eln') == 'eln'
+
+    # CentOS Stream branches should still work
+    assert dist_git_module.get_dist_tag('c9s') == 'el9'
+    assert dist_git_module.get_dist_tag('c10s') == 'el10'
 
 
 def test_expand_url_shortcut(dist_git_module) -> None:

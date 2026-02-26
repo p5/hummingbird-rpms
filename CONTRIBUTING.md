@@ -97,15 +97,17 @@ If you need longer time in Testing Farm, the FMF test includes `duration`, which
 
 The `ci/dist_git.py` tool imports Fedora/CentOS dist-git packages into the `rpms/` directory. We expect most packages to not have (permanent) Hummingbird specific changes, so most of them will keep syncing with upstream dist-gits. In most cases that will be Fedora rawhide, but for some packages we may pick a different upstream, e.g. stable Fedora or even CentOS Stream.
 
-The status of all imports is tracked in [imports.json](./imports.json). Active Fedora releases are tracked in [upstream-releases.json](./upstream-releases.json), which is updated from the Bodhi API.
+The status of all imports is tracked in [imports.json](./imports.json). Active Fedora releases are tracked in [upstream-releases.json](./upstream-releases.json), which is updated from the Bodhi API. Note that `rawhide` is automatically resolved to the highest numbered Fedora release at runtime and is not stored in the JSON file.
 
 See `./ci/dist_git.py --help` for all available options. Some examples:
 
-- Update upstream-releases.json from Bodhi API (should be done periodically, e.g., weekly via CI):
+- Update upstream-releases.json from Bodhi API (should be done periodically, e.g., when new Fedora versions are released):
 
 ```bash
 ./ci/dist_git.py update-releases
 ```
+
+This fetches the latest Fedora releases from Bodhi. The `rawhide` branch automatically resolves to the highest numbered Fedora version (e.g., if f43 and f44 are available, rawhide uses f44).
 
 - Import a new package. This requires specifying the dist-git URL (with `fedora/` being a shortcut for the Fedora dist-git URL) and optionally a branch (default: rawhide):
 

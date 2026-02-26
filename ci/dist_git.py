@@ -286,7 +286,12 @@ def expand_url_shortcut(url: str) -> str:
 
 
 def update_releases() -> None:
-    """Update upstream-releases.json"""
+    """Update upstream-releases.json from Bodhi API and known CentOS Stream versions.
+
+    Fetches active Fedora releases from Bodhi. The 'rawhide' branch is automatically
+    excluded from the JSON file since it's resolved at runtime to the highest numbered
+    Fedora release (e.g., if f43 and f44 exist, rawhide resolves to f44).
+    """
 
     releases: dict[str, dict[str, str]] = {}
 
@@ -304,7 +309,18 @@ def update_releases() -> None:
     data = json.loads(output)
     fedora_releases_list = [r for r in data['releases'] if r['id_prefix'] == 'FEDORA']
     for release in fedora_releases_list:
-        releases['fedora'][release['branch']] = release['dist_tag']
+        # Skip rawhide - it will be automatically resolved to the highest version
+        if release['branch'] != 'rawhide':
+            releases['fedora'][release['branch']] = release['dist_tag']
+
+    # Log what rawhide will resolve to (for informational purposes)
+    numbered_releases = []
+    for dist_tag in releases['fedora'].values():
+        if match := re.match(r'^f(\d+)$', dist_tag):
+            numbered_releases.append(int(match.group(1)))
+    if numbered_releases:
+        highest = f'f{max(numbered_releases)}'
+        logging.info(f"Rawhide will auto-resolve to {highest} (highest Fedora release)")
 
     # CentOS Stream: add known active streams
     # These don't have a dynamic API, so we hardcode active versions
@@ -406,8 +422,16 @@ def get_dist_tag(branch: str) -> str:
     """Get dist_tag for a branch from upstream-releases.json.
 
     For Fedora branches, looks up in upstream-releases.json.
+    For rawhide, automatically returns the highest numbered Fedora release.
     For CentOS Stream, uses direct conversion.
     """
+    # Special case: rawhide always maps to the highest Fedora release
+    if branch == 'rawhide':
+        highest = get_highest_fedora_release()
+        if highest:
+            return highest
+        # Fall through to regular lookup if no numbered releases found
+
     # Check Fedora releases first
     if branch in releases.get('fedora', {}):
         return releases['fedora'][branch]
@@ -447,6 +471,25 @@ def get_previous_fedora_release(dist_tag: str) -> str | None:
 
     # Return highest number less than current
     return f'f{max(previous_releases)}'
+
+
+def get_highest_fedora_release() -> str | None:
+    """Get the dist_tag for the highest numbered Fedora release.
+
+    Scans all Fedora releases and returns the highest fNN dist_tag.
+    Returns None if no numbered releases found.
+    Used to automatically resolve 'rawhide' to the current development version.
+    """
+    fedora_releases = releases.get('fedora', {})
+    numbered_releases = []
+    for release_dist_tag in fedora_releases.values():
+        if match := re.match(r'^f(\d+)$', release_dist_tag):
+            numbered_releases.append(int(match.group(1)))
+
+    if not numbered_releases:
+        return None
+
+    return f'f{max(numbered_releases)}'
 
 
 class KojiTransport(xmlrpc.client.SafeTransport):
@@ -1136,7 +1179,8 @@ Examples:
     sync_parser.add_argument('package', help='Package name to sync')
 
     # update-releases command
-    subparsers.add_parser('update-releases', help='Update upstream-releases.json')
+    subparsers.add_parser('update-releases',
+                          help='Update upstream-releases.json from Bodhi API (rawhide auto-resolves to highest version)')
 
     # rename command
     rename_parser = subparsers.add_parser('rename', help='Rename a package')
