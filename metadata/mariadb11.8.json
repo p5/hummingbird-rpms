@@ -1,8 +1,8 @@
 {
   "branch": "rawhide",
   "modification_status": "clean",
-  "release": "1",
-  "sha": "2c6e74c9a9a2cb2d0baf358b231dd2ffbfa0deb4",
+  "release": "2",
+  "sha": "fdc27849ae7e0ea4e434d351b56bc2a3c62008c1",
   "source": "https://src.fedoraproject.org/rpms/mariadb11.8.git",
   "version": "11.8.6"
 }
