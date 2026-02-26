@@ -1,0 +1,73 @@
+---
+# Tests specific to the xcaddy package
+
+xcaddy-smoke:
+  command: |
+    # Skip if not the main xcaddy RPM
+    rpm_name=$(rpm -qp --queryformat '%{NAME}' "${TEST_RPM}")
+    if [[ "${rpm_name}" != "xcaddy" ]]; then
+      echo "Skipping: Not the main xcaddy package (got: ${rpm_name})"
+      exit 0
+    fi
+
+    # Smoke test: install xcaddy and verify it runs
+    "${TEST_ENGINE}" run --rm \
+      -v "${TEST_RPM}:/tmp/test.rpm:ro,z" \
+      quay.io/hummingbird-ci/builder:latest \
+      bash -c '
+        set -e
+        dnf install -y /tmp/test.rpm
+
+        # Verify xcaddy reports its version
+        xcaddy version
+
+        # Verify help mentions the build command
+        xcaddy help 2>&1 | grep -q "build"
+
+        echo "xcaddy smoke test passed"
+      '
+
+xcaddy-build-caddy:
+  command: |
+    # Skip if not the main xcaddy RPM
+    rpm_name=$(rpm -qp --queryformat '%{NAME}' "${TEST_RPM}")
+    if [[ "${rpm_name}" != "xcaddy" ]]; then
+      echo "Skipping: Not the main xcaddy package (got: ${rpm_name})"
+      exit 0
+    fi
+
+    # Build a custom caddy binary with a plugin to verify xcaddy works end-to-end
+    "${TEST_ENGINE}" run --rm \
+      -v "${TEST_RPM}:/tmp/test.rpm:ro,z" \
+      quay.io/hummingbird-ci/builder:latest \
+      bash -c '
+        set -e
+        dnf install -y /tmp/test.rpm
+
+        cd /tmp
+        xcaddy build --output /tmp/caddy \
+          --with github.com/caddy-dns/cloudflare
+
+        # Verify the built binary is executable
+        test -x /tmp/caddy
+        /tmp/caddy version
+
+        # Verify the cloudflare DNS plugin was compiled in
+        /tmp/caddy list-modules | grep -q "dns.providers.cloudflare"
+
+        echo "xcaddy build test passed"
+      '
+
+xcaddy-binary-location:
+  command: |
+    # Skip if not the main xcaddy RPM
+    rpm_name=$(rpm -qp --queryformat '%{NAME}' "${TEST_RPM}")
+    if [[ "${rpm_name}" != "xcaddy" ]]; then
+      echo "Skipping: Not the main xcaddy package (got: ${rpm_name})"
+      exit 0
+    fi
+
+    # Verify the xcaddy binary is installed in the expected location
+    files=$(rpm -qlp "${TEST_RPM}")
+    echo "$files" | grep -q "/usr/bin/xcaddy" || TEST_FAIL "Expected /usr/bin/xcaddy not found in RPM"
+    echo "xcaddy binary correctly installed at /usr/bin/xcaddy"
