@@ -862,6 +862,10 @@ def update(package_name: str, skip_build_check: bool = False, sync: bool = False
 
         logging.info("Updated to %s-%s", version, release)
 
+        # Capture old version-release for commit message
+        old_version = metadata['version']
+        old_release = metadata['release']
+
         # Update package metadata
         imports[package_name]['sha'] = latest_sha
         imports[package_name]['version'] = version
@@ -878,7 +882,7 @@ def update(package_name: str, skip_build_check: bool = False, sync: bool = False
         if not dry_run:
             run_git('add', '-f', f'rpms/{package_name}', f'metadata/{package_name}.json', cwd=ROOT_DIR)
             verb = "Sync" if sync else "Update"
-            commit_msg = f"{verb} {upstream_package_name} to {version}-{release}\n\nUpstream: {latest_sha}"
+            commit_msg = f"{verb} {upstream_package_name} from {old_version}-{old_release} to {version}-{release}\n\nUpstream: {latest_sha}"
             run_git_commit('-m', commit_msg, cwd=ROOT_DIR)
 
 

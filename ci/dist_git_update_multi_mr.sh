@@ -294,10 +294,11 @@ for COMMIT_SHA in "${COMMIT_SHAS[@]}"; do
     COMMIT_MSG=$(git log -1 --format=%s "${COMMIT_SHA}")
 
     # Extract package name from commit message
-    # Example: "Update bash to 5.3.9-1" -> extract "bash"
-    # The pattern is: "Update <package> to <version>"
-    if [[ ${COMMIT_MSG} =~ ^Update\ ([^\ ]+)\ to\ .* ]]; then
-        PACKAGE="${BASH_REMATCH[1]}"
+    # Examples: "Update bash from 5.2.0-1 to 5.3.9-1" -> extract "bash"
+    #           "Sync chocolate from 10-1 to 11-1" -> extract "chocolate"
+    # The pattern handles both "Update" and "Sync" verbs with "from X to Y" format
+    if [[ ${COMMIT_MSG} =~ ^(Update|Sync)\ ([^\ ]+)\ from\ [^\ ]+\ to\ .* ]]; then
+        PACKAGE="${BASH_REMATCH[2]}"
     else
         echo "----------------------------------------"
         echo "⚠ Skipping commit ${COMMIT_SHA:0:8}: cannot parse package name from: ${COMMIT_MSG}"

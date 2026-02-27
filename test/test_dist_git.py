@@ -329,7 +329,7 @@ def test_import_with_ref(workdir: Path, upstream_repos: dict[str, Path]) -> None
 
     # Verify update commit was created
     subject, body = get_last_commit_info(workdir)
-    assert subject == 'Update chocolate to 12-1'
+    assert subject == 'Update chocolate from 10-1 to 12-1'
     assert f"Upstream: {new_sha}" in body
 
 
@@ -393,7 +393,7 @@ def test_update(workdir: Path, upstream_repos: dict[str, Path]) -> None:
 
     # Verify commit was created for chocolate update
     subject, body = get_last_commit_info(workdir)
-    assert subject == 'Update chocolate to 11-1'
+    assert subject == 'Update chocolate from 10-1 to 11-1'
     assert f"Upstream: {chocolate_import_data['sha']}" in body
 
     # Case 3: strawberry should be skipped (has upstream update but also has local modifications)
@@ -643,7 +643,7 @@ def test_sync(workdir: Path, upstream_repos: dict[str, Path]) -> None:
 
     # Verify sync commit was created
     subject, body = get_last_commit_info(workdir)
-    assert subject == 'Sync chocolate to 11-1'
+    assert subject == 'Sync chocolate from 10-1 to 11-1'
     assert f"Upstream: {new_sha}" in body
 
     # Add another upstream commit
@@ -664,7 +664,7 @@ def test_sync(workdir: Path, upstream_repos: dict[str, Path]) -> None:
 
     # Verify update commit was created
     subject, body = get_last_commit_info(workdir)
-    assert subject == 'Update chocolate to 12-1'
+    assert subject == 'Update chocolate from 11-1 to 12-1'
     assert f"Upstream: {new_sha2}" in body
 
 
@@ -833,7 +833,7 @@ def test_update_of_rebuild(workdir: Path, upstream_repos: dict[str, Path]) -> No
     assert import_data['sha'] == new_sha
     assert import_data['version'] == '2.0'
     subject, body = get_last_commit_info(workdir)
-    assert subject == 'Update vanilla to 2.0-1'
+    assert subject == 'Update vanilla from 1.0-1 to 2.0-1'
     assert f"Upstream: {new_sha}" in body
 
 def test_mark_modified_with_reason(workdir: Path, upstream_repos: dict[str, Path]) -> None:
