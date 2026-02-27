@@ -1,0 +1,8 @@
+{
+  "branch": "rawhide",
+  "modification_status": "clean",
+  "release": "2",
+  "sha": "174db9795e54abf412824d4c2d1de52e0bc031a6",
+  "source": "https://src.fedoraproject.org/rpms/dns-root-data.git",
+  "version": "2026260100"
+}
