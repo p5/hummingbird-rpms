@@ -1,7 +1,9 @@
 summary: Basic smoke test
 provision:
-    disk: 20
-    memory: 5120
+    hardware:
+        disk:
+            - size: ">= 20 GiB"
+        memory: ">= 5120 MiB"
 prepare:
     how: install
     package:

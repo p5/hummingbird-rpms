@@ -18,7 +18,7 @@ print_usage() {
 download_release_json() {
     version=$1
     cat > query <<EOF
-    [ .[] | select(.name | contains(".NET $version")) ]
+    [ .[] | select(.name | contains(".NET $dotnet_major_minor_version")) | select(.author.login | contains("dotnet-sb-bot")) ]
     | first
     | { tag_name: .tag_name,
         tarball: .tarball_url,
