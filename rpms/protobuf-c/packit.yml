@@ -1,0 +1,23 @@
+upstream_package_name: protobuf-c
+upstream_project_url: https://github.com/protobuf-c/protobuf-c
+upstream_tag_template: v{version}
+
+downstream_package_name: protobuf-c
+
+specfile_path: protobuf-c.spec
+
+jobs:
+  - job: pull_from_upstream
+    trigger: release
+    dist_git_branches:
+      - rawhide
+
+  - job: koji_build
+    trigger: commit
+    dist_git_branches:
+      - rawhide
+
+  - job: bodhi_update
+    trigger: commit
+    dist_git_branches:
+      - rawhide
