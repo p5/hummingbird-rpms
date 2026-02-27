@@ -1,0 +1,30 @@
+addFilter(r'crypto-policy-non-compliance-openssl')
+
+# Ignore generated certificates
+addFilter(r'non-readable /etc/unbound/unbound_control.key')
+addFilter(r'non-readable /etc/unbound/unbound_control.pem')
+addFilter(r'non-readable /etc/unbound/unbound_server.key')
+addFilter(r'non-readable /etc/unbound/unbound_server.pem')
+
+addFilter(r'non-standard-gid /etc/unbound/unbound_control.pem')
+addFilter(r'non-standard-gid /etc/unbound/unbound_control.key')
+addFilter(r'non-standard-gid /etc/unbound/unbound_server.pem')
+addFilter(r'non-standard-gid /etc/unbound/unbound_server.key')
+
+# Yes, it is indeed certificate
+addFilter(r'pem-certificate /etc/unbound/icannbundle.pem')
+
+# These files are intentionally replaceable.
+addFilter(r'conffile-without-noreplace-flag /etc/unbound/icannbundle.pem')
+addFilter(r'conffile-without-noreplace-flag /etc/unbound/root.key')
+addFilter(r'conffile-without-noreplace-flag /var/lib/unbound/root.key')
+
+# ldconfig is no longer required
+addFilter(r'post[iu]n-without-ldconfig /usr/lib64/libunbound.so')
+
+# Ignore unbound owned files 
+addFilter(r'non-standard-[ug]id (/var/lib|/etc|/run)/unbound')
+
+# Ignore spelling errors
+addFilter(r'spelling-error %description -l en_US ep ')
+addFilter(r'spelling-error %description -l en_US resolvers ')
