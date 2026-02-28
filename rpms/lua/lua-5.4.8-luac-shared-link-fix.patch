@@ -1,0 +1,24 @@
+diff -up lua-5.4.8/src/lundump.h.luac-shared lua-5.4.8/src/lundump.h
+--- lua-5.4.8/src/lundump.h.luac-shared	2026-01-14 16:49:45.565546208 -0500
++++ lua-5.4.8/src/lundump.h	2026-01-14 16:50:08.410037821 -0500
+@@ -29,7 +29,7 @@
+ LUAI_FUNC LClosure* luaU_undump (lua_State* L, ZIO* Z, const char* name);
+ 
+ /* dump one chunk; from ldump.c */
+-LUAI_FUNC int luaU_dump (lua_State* L, const Proto* f, lua_Writer w,
++LUA_API int luaU_dump (lua_State* L, const Proto* f, lua_Writer w,
+                          void* data, int strip);
+ 
+ #endif
+diff -up lua-5.4.8/src/ldebug.h.luac-shared lua-5.4.8/src/ldebug.h
+--- lua-5.4.8/src/ldebug.h.luac-shared	2026-01-14 17:07:17.961998927 -0500
++++ lua-5.4.8/src/ldebug.h	2026-01-14 17:07:40.401669828 -0500
+@@ -36,7 +36,7 @@
+ #endif
+ 
+ 
+-LUAI_FUNC int luaG_getfuncline (const Proto *f, int pc);
++LUA_API int luaG_getfuncline (const Proto *f, int pc);
+ LUAI_FUNC const char *luaG_findlocal (lua_State *L, CallInfo *ci, int n,
+                                                     StkId *pos);
+ LUAI_FUNC l_noret luaG_typeerror (lua_State *L, const TValue *o,

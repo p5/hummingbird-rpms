@@ -1,8 +1,8 @@
 {
   "branch": "rawhide",
-  "release": "5",
-  "sha": "50a1d18ea319352ec3f153ae29e3acad3dec4313",
+  "modification_status": "clean",
+  "release": "1",
+  "sha": "2a09bbe17ae2691c4a5ac31fd443dbf86dc1a14e",
   "source": "https://src.fedoraproject.org/rpms/lua.git",
-  "version": "5.4.8",
-  "modification_status": "clean"
+  "version": "5.5.0"
 }
