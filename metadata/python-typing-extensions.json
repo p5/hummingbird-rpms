@@ -1,8 +1,8 @@
 {
   "branch": "rawhide",
-  "release": "3",
-  "sha": "9a12ea38339b6edb940100bf047ce78f919555b7",
+  "modification_status": "clean",
+  "release": "4",
+  "sha": "9682b60f0139750eab9c773969157fc82fadebd3",
   "source": "https://src.fedoraproject.org/rpms/python-typing-extensions.git",
-  "version": "4.15.0",
-  "modification_status": "clean"
+  "version": "4.15.0"
 }
