@@ -12,6 +12,7 @@ Common operational tasks that users or AI agents may need to perform:
 | Mark package modified       | [Package Modification Tracking](documentation/operating/package-modification-tracking.md) | Track local changes; prevent automatic Fedora updates    |
 | View package differences    | [Package Modification Tracking](documentation/operating/package-modification-tracking.md) | See what changed in modified packages vs Fedora          |
 | Update dist-git packages    | [Updating Dist-git Packages](documentation/operating/updating-dist-git-packages.md) | Test or trigger automated package updates from Fedora    |
+| Lookaside cache access      | [Lookaside Cache Access](documentation/operating/lookaside-cache-access.md)            | Set up AWS credentials to upload source tarballs       |
 | Konflux resource deployment | [Konflux Resource Deployment](documentation/background/konflux-resource-deployment.md) | Understand how Konflux resources are deployed          |
 
 ## Development Guidelines
