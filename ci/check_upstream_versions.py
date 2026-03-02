@@ -6,21 +6,31 @@ This script queries release-monitoring.org (Anitya) to check if there are
 newer versions available for RPM packages in the repository. It can also
 update the spec files to the new version.
 
+Subcommands:
+    check   Check tracked packages for updates
+    list    List ALL packages with version and tracking status
+
 Usage:
-    # Check all packages
-    ./ci/check_upstream_versions.py
+    # Check tracked packages
+    ./ci/check_upstream_versions.py check
 
     # Check specific packages
-    ./ci/check_upstream_versions.py curl openssl gnutls
+    ./ci/check_upstream_versions.py check curl openssl gnutls
 
     # Show all packages (including up-to-date ones)
-    ./ci/check_upstream_versions.py --all
+    ./ci/check_upstream_versions.py check --all
 
     # Output as JSON
-    ./ci/check_upstream_versions.py --json
+    ./ci/check_upstream_versions.py check --json
 
     # Update spec files to new versions
-    ./ci/check_upstream_versions.py --update curl gnutls
+    ./ci/check_upstream_versions.py check --update curl gnutls
+
+    # List all packages with status table
+    ./ci/check_upstream_versions.py list
+
+    # List all packages as JSON
+    ./ci/check_upstream_versions.py list --json
 """
 
 import argparse
@@ -627,70 +637,106 @@ def get_all_packages() -> list[str]:
     return sorted(packages)
 
 
-def main():
-    parser = argparse.ArgumentParser(
-        description="Check for upstream version updates using release-monitoring.org",
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog="""
-Examples:
-  %(prog)s                    Check all packages, show only updates
-  %(prog)s curl openssl       Check specific packages
-  %(prog)s --all              Show all packages including up-to-date
-  %(prog)s --json             Output results as JSON
-  %(prog)s --json --all       JSON output with all packages
-  %(prog)s --update curl      Update curl spec to new upstream version
-        """,
-    )
-    parser.add_argument(
-        "packages", nargs="*", help="Package names to check (default: all packages)"
-    )
-    parser.add_argument(
-        "--all",
-        "-a",
-        action="store_true",
-        help="Show all packages, not just those with updates",
-    )
-    parser.add_argument(
-        "--json", "-j", action="store_true", help="Output results as JSON"
-    )
-    parser.add_argument(
-        "--update",
-        "-u",
-        action="store_true",
-        help="Update spec files to the new upstream version",
-    )
-    parser.add_argument(
-        "--distro",
-        "-d",
-        default=DEFAULT_DISTRO,
-        help=f"Distribution to look up in Anitya (default: {DEFAULT_DISTRO})",
-    )
-    parser.add_argument(
-        "--verbose", "-v", action="store_true", help="Enable verbose output"
-    )
-    parser.add_argument(
-        "--quiet",
-        "-q",
-        action="store_true",
-        help="Suppress progress output (implies not --verbose)",
-    )
-    parser.add_argument(
-        "--delay",
-        type=float,
-        default=API_DELAY,
-        help=f"Delay between API requests in seconds (default: {API_DELAY})",
-    )
-    parser.add_argument(
-        "-s",
-        "--sign-off",
-        action="store_true",
-        help="Add Signed-off-by trailer to commit messages",
-    )
+def list_all(args: argparse.Namespace) -> None:
+    """
+    List ALL packages and display a single sorted table.
 
-    args = parser.parse_args()
+    This ignores the track_upstream metadata filter and checks every
+    package in the rpms directory.
+    """
+    if args.verbose:
+        logger.setLevel(logging.DEBUG)
+    if args.quiet:
+        logger.setLevel(logging.WARNING)
 
+    packages = get_all_packages()
+    if not args.quiet and not args.json:
+        logger.info(f"Checking {len(packages)} packages...")
+
+    entries: list[dict[str, str]] = []
+
+    for i, package in enumerate(packages):
+        if not args.quiet and not args.json:
+            print(
+                f"\rChecking {i + 1}/{len(packages)}: {package:<40}",
+                end="",
+                flush=True,
+            )
+
+        result = check_package_version(package, args.distro)
+
+        # Determine tracking status from metadata
+        meta = get_package_metadata(package)
+        tracking = "yes" if (meta and meta.get("track_upstream") is True) else "no"
+
+        # Determine status and upstream version display
+        if result.error:
+            if "not found" in result.error.lower():
+                status = "not found in release-monitoring.org"
+            else:
+                status = result.error
+            upstream_display = "-"
+        elif result.has_update:
+            status = "update available"
+            upstream_display = result.upstream_version or "-"
+        else:
+            status = "up-to-date"
+            upstream_display = result.upstream_version or "-"
+
+        entries.append(
+            {
+                "package": package,
+                "current_version": result.current_version,
+                "upstream_version": upstream_display,
+                "tracking": tracking,
+                "status": status,
+            }
+        )
+
+        # Rate limiting
+        if i < len(packages) - 1:
+            time.sleep(args.delay)
+
+    # Clear progress line
+    if not args.quiet and not args.json:
+        print("\r" + " " * 60 + "\r", end="")
+
+    # Sort alphabetically by package name
+    entries.sort(key=lambda e: e["package"])
+
+    if args.json:
+        print(json.dumps(entries, indent=2))
+    else:
+        # Table output
+        header = (
+            f"{'Package':<30} {'Current':<15} {'Upstream':<15}"
+            f" {'Tracking':<10} {'Status'}"
+        )
+        print()
+        print(header)
+        print("-" * len(header))
+        for e in entries:
+            print(
+                f"{e['package']:<30} {e['current_version']:<15}"
+                f" {e['upstream_version']:<15} {e['tracking']:<10}"
+                f" {e['status']}"
+            )
+        print()
+        print(f"Total: {len(entries)} packages")
+
+    sys.exit(0)
+
+
+
+def run_check(args: argparse.Namespace) -> None:
+    """
+    Check tracked packages for upstream version updates.
+
+    This is the core logic shared by the 'check' subcommand and the
+    legacy (no subcommand) invocation.
+    """
     global sign_off
-    sign_off = args.sign_off
+    sign_off = getattr(args, "sign_off", False)
 
     if args.verbose:
         logger.setLevel(logging.DEBUG)
@@ -869,6 +915,109 @@ Examples:
         sys.exit(1)
     else:
         sys.exit(0)
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Check for upstream version updates using release-monitoring.org",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+Examples:
+  %(prog)s check              Check tracked packages, show only updates
+  %(prog)s check curl openssl Check specific packages
+  %(prog)s check --all        Show all packages including up-to-date
+  %(prog)s check --json       Output results as JSON
+  %(prog)s check --update curl  Update curl spec to new upstream version
+  %(prog)s list               List all packages with status table
+  %(prog)s list --json        List all packages as JSON
+        """,
+    )
+    subparsers = parser.add_subparsers(dest="subcommand")
+    subparsers.required = True
+
+    # 'check' subcommand
+    check_parser = subparsers.add_parser(
+        "check",
+        help="Check tracked packages for upstream updates",
+        description=(
+            "Check tracked packages for upstream version updates. "
+            "When package names are given, checks those specific packages. "
+            "Otherwise checks all packages with track_upstream: true."
+        ),
+    )
+    check_parser.add_argument(
+        "packages", nargs="*",
+        help="Package names to check (default: all tracked)",
+    )
+    check_parser.add_argument(
+        "--all", "-a", action="store_true",
+        help="Show all packages, not just those with updates",
+    )
+    check_parser.add_argument(
+        "--json", "-j", action="store_true",
+        help="Output results as JSON",
+    )
+    check_parser.add_argument(
+        "--update", "-u", action="store_true",
+        help="Update spec files to the new upstream version",
+    )
+    check_parser.add_argument(
+        "--distro", "-d", default=DEFAULT_DISTRO,
+        help=f"Distribution to look up in Anitya (default: {DEFAULT_DISTRO})",
+    )
+    check_parser.add_argument(
+        "--verbose", "-v", action="store_true",
+        help="Enable verbose output",
+    )
+    check_parser.add_argument(
+        "--quiet", "-q", action="store_true",
+        help="Suppress progress output (implies not --verbose)",
+    )
+    check_parser.add_argument(
+        "--delay", type=float, default=API_DELAY,
+        help=f"Delay between API requests in seconds (default: {API_DELAY})",
+    )
+    check_parser.add_argument(
+        "-s", "--sign-off", action="store_true",
+        help="Add Signed-off-by trailer to commit messages",
+    )
+
+    # 'list' subcommand
+    list_parser = subparsers.add_parser(
+        "list",
+        help="List ALL packages with upstream version status",
+        description=(
+            "List all packages with upstream version status in a single "
+            "table, regardless of tracking configuration."
+        ),
+    )
+    list_parser.add_argument(
+        "--distro", "-d", default=DEFAULT_DISTRO,
+        help=f"Distribution to look up in Anitya (default: {DEFAULT_DISTRO})",
+    )
+    list_parser.add_argument(
+        "--verbose", "-v", action="store_true",
+        help="Enable verbose output",
+    )
+    list_parser.add_argument(
+        "--quiet", "-q", action="store_true",
+        help="Suppress progress output",
+    )
+    list_parser.add_argument(
+        "--delay", type=float, default=API_DELAY,
+        help=f"Delay between API requests in seconds (default: {API_DELAY})",
+    )
+    list_parser.add_argument(
+        "--json", "-j", action="store_true",
+        help="Output results as JSON",
+    )
+
+    args = parser.parse_args()
+
+    if args.subcommand == "check":
+        run_check(args)
+    elif args.subcommand == "list":
+        list_all(args)
 
 
 if __name__ == "__main__":

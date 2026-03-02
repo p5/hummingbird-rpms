@@ -23,8 +23,9 @@ field with one of three values:
 
 An optional `track_upstream` boolean field controls whether a package is
 checked by `check_upstream_versions.py` for new upstream releases (via
-release-monitoring.org). When that script runs without explicit package
-arguments, only packages with `"track_upstream": true` are checked.
+release-monitoring.org). The `check` subcommand only checks packages with
+`"track_upstream": true` when no explicit package arguments are given. The
+`list` subcommand shows all packages regardless of this field.
 
 ## Checking Package Status
 
@@ -137,7 +138,9 @@ Use this to opt a package into automatic upstream version checking via
 
 When enabled, `"track_upstream": true` is set in the metadata. When disabled,
 the field is removed. Only packages with this field set to `true` are checked
-by `check_upstream_versions.py` when it runs without explicit package arguments.
+by `check_upstream_versions.py check` when no explicit package arguments are
+given. To see all packages regardless of tracking status, use
+`check_upstream_versions.py list`.
 
 ## How Auto-Updates Work
 

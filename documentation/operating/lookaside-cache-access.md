@@ -76,11 +76,13 @@ Example:
 uploads them to the lookaside cache automatically:
 
 ```bash
-./ci/check_upstream_versions.py --update <package>
+./ci/check_upstream_versions.py check --update <package>
 ```
 
-When run without explicit package arguments, only packages with
-`"track_upstream": true` in their metadata are checked. See
+The `check` subcommand only processes packages with `"track_upstream": true`
+in their metadata when no explicit package arguments are given. To see all
+packages and their upstream status, use `check_upstream_versions.py list`.
+See
 [Package Modification Tracking](package-modification-tracking.md) for how
 to enable tracking.
 
