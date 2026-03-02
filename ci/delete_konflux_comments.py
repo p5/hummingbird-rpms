@@ -4,7 +4,6 @@
 import argparse
 from enum import Enum
 import re
-import sys
 import typing
 
 from cki_lib import gitlab
@@ -159,9 +158,8 @@ def process_merge_request(
     comment_types: list[str],
     *,
     dry_run: bool,
-) -> bool:
+) -> None:
     """Process a single merge request and return whether any failures occurred."""
-    any_failures = False
     deleted_count = 0
     would_delete_count = 0
 
@@ -184,19 +182,13 @@ def process_merge_request(
                 would_delete_count += 1
             else:
                 print(f"MR !{gl_mr.iid}: Deleting comment: {truncated_line}")
-                try:
-                    note.delete()
-                    deleted_count += 1
-                except Exception as e:
-                    print(f"MR !{gl_mr.iid}: Failed to delete comment: {e}")
-                    any_failures = True
+                note.delete()
+                deleted_count += 1
 
     if dry_run and would_delete_count > 0:
         print(f"MR !{gl_mr.iid}: Would delete {would_delete_count} comments (dry-run mode)")
     elif deleted_count > 0:
         print(f"MR !{gl_mr.iid}: Total deleted {deleted_count} comments")
-
-    return any_failures
 
 
 def main() -> None:
@@ -204,15 +196,8 @@ def main() -> None:
     args = parse_arguments()
     comment_types = get_comment_types(args)
     gl_mrs = get_merge_requests(args.url)
-    any_failures = False
-
     for gl_mr in gl_mrs:
-        if process_merge_request(gl_mr, comment_types, dry_run=args.dry_run):
-            any_failures = True
-
-    if any_failures:
-        sys.exit(1)
-
+        process_merge_request(gl_mr, comment_types, dry_run=args.dry_run)
 
 if __name__ == "__main__":
     main()

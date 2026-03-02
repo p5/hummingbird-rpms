@@ -486,7 +486,7 @@ def test_download_new_sources(cuv_module, workdir: Path) -> None:
 
 
 def test_download_new_sources_download_failure(cuv_module, workdir: Path) -> None:
-    """Continues gracefully when download fails."""
+    """Crashes with exception when download fails."""
     _create_package(
         workdir, 'pkg', '2.0',
         sources={'pkg-1.0.tar.gz': 'oldhash'},
@@ -498,9 +498,8 @@ def test_download_new_sources_download_failure(cuv_module, workdir: Path) -> Non
                       return_value={0: 'https://example.com/pkg/pkg-2.0.tar.gz'}):
 
         cuv_module.RPMS_DIR = workdir / 'rpms'
-        downloaded = cuv_module.download_new_sources('pkg', '1.0', '2.0')
-
-    assert downloaded == []
+        with pytest.raises(Exception, match='network error'):
+            cuv_module.download_new_sources('pkg', '1.0', '2.0')
 
 
 def test_download_new_sources_no_version_in_filename(cuv_module, workdir: Path) -> None:
@@ -677,5 +676,3 @@ def test_cli_error_exit_two(cuv_module, workdir: Path) -> None:
         cuv_module.main()
 
     assert exc_info.value.code == 2
-
-
