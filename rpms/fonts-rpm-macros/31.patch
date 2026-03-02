@@ -1,0 +1,24 @@
+From 172c8f55c217456a5d0721d2348259dda5fb9553 Mon Sep 17 00:00:00 2001
+From: Jerry James <loganjerry@gmail.com>
+Date: Feb 20 2026 19:01:03 +0000
+Subject: Avoid assigning to a const lua variable
+
+
+---
+
+diff --git a/rpm/macros.d/macros.fonts-rpm.deprecated b/rpm/macros.d/macros.fonts-rpm.deprecated
+index bbd75cc..a00f5fe 100644
+--- a/rpm/macros.d/macros.fonts-rpm.deprecated
++++ b/rpm/macros.d/macros.fonts-rpm.deprecated
+@@ -53,8 +53,8 @@ end
+ local function meld(name1,name2)
+   local name3 = "-" .. name2 .. "-"
+   for token in string.gmatch(name1 .. "-" , "..-%-") do
+-    token = string.gsub(token, "%-", "%%-")
+-    name3 = string.gsub(name3, "%-" .. token, "-")
++    token2 = string.gsub(token, "%-", "%%-")
++    name3 = string.gsub(name3, "%-" .. token2, "-")
+   end
+   return string.gsub( name1 .. name3 , "%-+$", "")
+ end
+
