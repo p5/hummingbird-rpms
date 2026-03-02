@@ -1,6 +1,6 @@
 Name:           glib2
-Version:        2.87.2
-Release:        2%{?dist}
+Version:        2.87.3
+Release:        1%{?dist}
 Summary:        A library of handy utility functions
 
 License:        LGPL-2.1-or-later
@@ -15,7 +15,11 @@ Patch:          gnutls-hmac.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=2192204
 Patch:          default-terminal.patch
 
-Patch:          glib2-girepository-fixup-ffi-test-for-big-endian-systems.patch
+# Drop test introduced in:
+# https://gitlab.gnome.org/GNOME/glib/-/commit/867ea9c10
+# This will be (hopefully) changed in the following glib releases
+# where the symlinks for the tests will be created at runtime.
+Patch:          glib-do-not-install-localtime-test.patch
 
 BuildRequires:  gcc
 BuildRequires:  gcc-c++
