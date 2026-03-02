@@ -43,6 +43,8 @@
 # a basepackagename variable is handy
 %global basepackagename tomcat
 
+# Override default doc directory to use basepackagename instead of name
+%global _docdir_fmt %{basepackagename}
 
 # FHS 3.0 compliant tree structure - http://refspecs.linuxfoundation.org/FHS_3.0/fhs/index.html
 %global basedir %{_var}/lib/%{basepackagename}
@@ -65,7 +67,8 @@ Summary:       Apache Servlet/JSP Engine, RI for Servlet %{servletspec}/JSP %{js
 # Automatically converted from old format: ASL 2.0 - review is highly recommended.
 License:       Apache-2.0
 URL:           http://tomcat.apache.org/
-Source0:       http://www.apache.org/dist/tomcat/tomcat-%{major_version}/v%{version}/src/%{packdname}.tar.gz
+#Source0:       http://www.apache.org/dist/tomcat/tomcat-%{major_version}/v%{version}/src/%{packdname}.tar.gz
+Source0:       https://archive.apache.org/dist/tomcat/tomcat-%{major_version}/v%{version}/src/%{packdname}.tar.gz
 Source1:       tomcat-%{major_version}.%{minor_version}.conf
 Source2:       tomcat-%{major_version}.%{minor_version}.sysconfig
 Source3:       tomcat-%{major_version}.%{minor_version}.wrapper
@@ -323,11 +326,11 @@ sed -i \
 # create jsp and servlet API symlinks
 pushd ${RPM_BUILD_ROOT}%{_javadir}
    %{__mv} %{basepackagename}/jsp-api.jar %{name}-jsp-%{jspspec}-api.jar
-   %{__ln_s} %{basepackagename}-jsp-%{jspspec}-api.jar %{name}-jsp-api.jar
+   %{__ln_s} %{name}-jsp-%{jspspec}-api.jar %{basepackagename}-jsp-api.jar
    %{__mv} %{basepackagename}/servlet-api.jar %{name}-servlet-%{servletspec}-api.jar
-   %{__ln_s} %{basepackagename}-servlet-%{servletspec}-api.jar %{name}-servlet-api.jar
+   %{__ln_s} %{name}-servlet-%{servletspec}-api.jar %{basepackagename}-servlet-api.jar
    %{__mv} %{basepackagename}/el-api.jar %{name}-el-%{elspec}-api.jar
-   %{__ln_s} %{basepackagename}-el-%{elspec}-api.jar %{name}-el-api.jar
+   %{__ln_s} %{name}-el-%{elspec}-api.jar %{basepackagename}-el-api.jar
 popd
 
 pushd output/build
@@ -508,19 +511,19 @@ install -m0644 -D tomcat.sysusers.conf %{buildroot}%{_sysusersdir}/tomcat.conf
 %files jsp-%{jspspec}-api -f .mfiles-tomcat-jsp-api
 %{_javadir}/%{name}-jsp-%{jspspec}*.jar
 %{libdir}/%{name}-jsp-%{jspspec}*.jar
-%{_javadir}/%{name}-jsp-api.jar
+%{_javadir}/%{basepackagename}-jsp-api.jar
 
 %files servlet-%{servletspec}-api -f .mfiles-tomcat-servlet-api
 %doc LICENSE
 %{_javadir}/%{name}-servlet-%{servletspec}*.jar
 %{libdir}/%{name}-servlet-%{servletspec}*.jar
-%{_javadir}/%{name}-servlet-api.jar
+%{_javadir}/%{basepackagename}-servlet-api.jar
 
 %files el-%{elspec}-api -f .mfiles-tomcat-el-api
 %doc LICENSE
 %{_javadir}/%{name}-el-%{elspec}-api.jar
 %{libdir}/%{name}-el-%{elspec}-api.jar
-%{_javadir}/%{name}-el-api.jar
+%{_javadir}/%{basepackagename}-el-api.jar
 
 %files webapps
 %defattr(0644,tomcat,tomcat,0755)
