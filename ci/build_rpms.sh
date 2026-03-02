@@ -170,7 +170,7 @@ fi
 
 # Determine the upstream repo URL for dist-git-client
 if [[ -n "${forked_from}" ]]; then
-    upstream_repo_url="${forked_from}/${upstream_package_name}.git"
+    upstream_repo_url="${forked_from}/${package_name}.git"
     echo "Using custom lookaside cache: ${forked_from}"
 else
     upstream_repo_url="https://src.fedoraproject.org/rpms/${upstream_package_name}.git"
