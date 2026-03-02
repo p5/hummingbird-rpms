@@ -1,0 +1,8 @@
+{
+  "branch": "rawhide",
+  "modification_status": "clean",
+  "release": "2",
+  "sha": "605b02d5c1d2dc349171fe352758ed9ee0867ca1",
+  "source": "https://src.fedoraproject.org/rpms/ostree.git",
+  "version": "2025.7"
+}

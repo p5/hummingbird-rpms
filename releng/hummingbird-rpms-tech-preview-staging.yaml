@@ -525,6 +525,8 @@ spec:
           contentType: rpm
         - name: oras-main
           contentType: rpm
+        - name: ostree-main
+          contentType: rpm
         - name: p11-kit-main
           contentType: rpm
         - name: package-notes-main
