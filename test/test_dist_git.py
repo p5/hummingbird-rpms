@@ -611,6 +611,124 @@ def test_update_rawhide_fallback(workdir: Path, upstream_repos: dict[str, Path],
         assert import_data['sha'] == new_sha
 
 
+def test_koji_retry_on_transient_error(dist_git_module) -> None:
+    """Verify that 502 Bad Gateway errors are retried and eventually succeed."""
+    import http.client
+
+    with patch('xmlrpc.client.ServerProxy') as mock_server_class:
+        mock_server = MagicMock()
+
+        # First two attempts fail with 502, third succeeds
+        call_count = 0
+        def getBuild_side_effect(nvr):
+            nonlocal call_count
+            call_count += 1
+            if call_count <= 2:
+                raise http.client.HTTPException("502 Bad Gateway")
+            return {
+                'build_id': 12345,
+                'nvr': 'test-1.0-1.fc40',
+                'state': 1,
+                'source': 'git://example.com/test#abc123',
+            }
+
+        mock_server.getBuild.side_effect = getBuild_side_effect
+        mock_server_class.return_value = mock_server
+
+        # Call should succeed after retries
+        result = dist_git_module.call_koji_with_retry(
+            mock_server.getBuild, 'test-1.0-1.fc40',
+            method_name="Koji getBuild(test-1.0-1.fc40)"
+        )
+
+        assert result is not None
+        assert result['build_id'] == 12345
+        assert mock_server.getBuild.call_count == 3  # 2 failures + 1 success
+
+
+def test_koji_no_retry_on_fault(dist_git_module) -> None:
+    """Ensure XML-RPC Fault errors fail immediately without retries."""
+    import xmlrpc.client
+
+    with patch('xmlrpc.client.ServerProxy') as mock_server_class:
+        mock_server = MagicMock()
+
+        # Raise Fault on every call
+        mock_server.getBuild.side_effect = xmlrpc.client.Fault(1000, "Invalid build")
+        mock_server_class.return_value = mock_server
+
+        # Should raise immediately without retrying
+        with pytest.raises(xmlrpc.client.Fault):
+            dist_git_module.call_koji_with_retry(
+                mock_server.getBuild, 'test-1.0-1.fc40',
+                method_name="Koji getBuild(test-1.0-1.fc40)"
+            )
+
+        # Should have called only once (no retries)
+        assert mock_server.getBuild.call_count == 1
+
+
+def test_koji_no_retry_on_auth_error(dist_git_module) -> None:
+    """Ensure HTTP 401/403 errors fail immediately without retries."""
+    import http.client
+
+    with patch('xmlrpc.client.ServerProxy') as mock_server_class:
+        mock_server = MagicMock()
+
+        # Raise 401 Unauthorized
+        mock_server.getBuild.side_effect = http.client.HTTPException("401 Unauthorized")
+        mock_server_class.return_value = mock_server
+
+        # Should raise immediately without retrying
+        with pytest.raises(http.client.HTTPException):
+            dist_git_module.call_koji_with_retry(
+                mock_server.getBuild, 'test-1.0-1.fc40',
+                method_name="Koji getBuild(test-1.0-1.fc40)"
+            )
+
+        # Should have called only once (no retries)
+        assert mock_server.getBuild.call_count == 1
+
+
+def test_koji_retry_on_connection_error(dist_git_module) -> None:
+    """Verify network connection errors are retried with exponential backoff."""
+    import time
+
+    with patch('xmlrpc.client.ServerProxy') as mock_server_class:
+        mock_server = MagicMock()
+
+        # First attempt fails with ConnectionError, second succeeds
+        call_count = 0
+        def getBuild_side_effect(nvr):
+            nonlocal call_count
+            call_count += 1
+            if call_count == 1:
+                raise ConnectionError("Connection reset by peer")
+            return {
+                'build_id': 12345,
+                'nvr': 'test-1.0-1.fc40',
+                'state': 1,
+                'source': 'git://example.com/test#abc123',
+            }
+
+        mock_server.getBuild.side_effect = getBuild_side_effect
+        mock_server_class.return_value = mock_server
+
+        # Mock time.sleep to verify exponential backoff
+        with patch('time.sleep') as mock_sleep:
+            result = dist_git_module.call_koji_with_retry(
+                mock_server.getBuild, 'test-1.0-1.fc40',
+                method_name="Koji getBuild(test-1.0-1.fc40)"
+            )
+
+            assert result is not None
+            assert result['build_id'] == 12345
+            assert mock_server.getBuild.call_count == 2  # 1 failure + 1 success
+
+            # Verify sleep was called with 2 seconds (first retry delay)
+            mock_sleep.assert_called_once_with(2)
+
+
 def test_sync(workdir: Path, upstream_repos: dict[str, Path]) -> None:
     """Sync discards local modifications."""
     # Import chocolate (automatically commits)
