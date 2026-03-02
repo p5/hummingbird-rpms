@@ -179,11 +179,15 @@ def validate_package(package_name: str, check_actual_state: bool = True) -> tupl
         # Native packages don't need further validation
         return True, None
 
-    # Check 4: Modified packages must have reason
+    # Check 4: track_upstream must be a boolean if present
+    if 'track_upstream' in metadata and not isinstance(metadata['track_upstream'], bool):
+        return False, f"{package_name}: track_upstream must be a boolean, got {type(metadata['track_upstream']).__name__}"
+
+    # Check 5: Modified packages must have reason
     if status == 'modified' and not metadata.get('modification_reason'):
         return False, f"{package_name}: Marked as modified but missing modification_reason"
 
-    # Check 5: Verify git history matches metadata (fast check)
+    # Check 6: Verify git history matches metadata (fast check)
     # Skip if running expensive check (which uses filesystem comparison instead)
     if not check_actual_state and status in ['clean', 'modified']:
         is_clean_by_history, history_error = check_git_history_state(package_name)
@@ -197,7 +201,7 @@ def validate_package(package_name: str, check_actual_state: bool = True) -> tupl
                 f"standard Import/Update/Sync commits. Consider marking as clean."
             )
 
-    # Check 6: Verify actual state matches metadata (expensive check, optional)
+    # Check 7: Verify actual state matches metadata (expensive check, optional)
     if check_actual_state and status in ['clean', 'modified']:
         with tempfile.TemporaryDirectory() as tmpdir:
             upstream_dir = Path(tmpdir) / 'upstream'

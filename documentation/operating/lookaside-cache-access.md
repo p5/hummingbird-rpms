@@ -79,6 +79,11 @@ uploads them to the lookaside cache automatically:
 ./ci/check_upstream_versions.py --update <package>
 ```
 
+When run without explicit package arguments, only packages with
+`"track_upstream": true` in their metadata are checked. See
+[Package Modification Tracking](package-modification-tracking.md) for how
+to enable tracking.
+
 ## See Also
 
 - [Adding Native Packages](adding-native-packages.md) - Adding new packages

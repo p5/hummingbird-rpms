@@ -676,3 +676,89 @@ def test_cli_error_exit_two(cuv_module, workdir: Path) -> None:
         cuv_module.main()
 
     assert exc_info.value.code == 2
+
+
+#
+# Tests — track_upstream filtering
+#
+
+
+def test_main_skips_packages_without_track_upstream(cuv_module, workdir: Path) -> None:
+    """main() skips packages without track_upstream when no CLI args given."""
+    _create_package(workdir, 'tracked', '1.0',
+                    metadata={'version': '1.0', 'release': '1',
+                              'track_upstream': True})
+    _create_package(workdir, 'untracked', '1.0',
+                    metadata={'version': '1.0', 'release': '1'})
+
+    cuv_module.RPMS_DIR = workdir / 'rpms'
+    cuv_module.METADATA_DIR = workdir / 'metadata'
+
+    mock_response = {
+        'version': '1.0',
+        'stable_versions': ['1.0'],
+        'id': 42,
+    }
+
+    checked = []
+    original_check = cuv_module.check_package_version
+
+    def tracking_check(pkg, distro='Fedora'):
+        checked.append(pkg)
+        return original_check(pkg, distro)
+
+    with patch.object(cuv_module, 'query_anitya', return_value=mock_response), \
+         patch.object(cuv_module, 'check_package_version', side_effect=tracking_check), \
+         patch('sys.argv', ['check_upstream_versions.py', '--quiet']), \
+         pytest.raises(SystemExit):
+        cuv_module.main()
+
+    assert 'tracked' in checked
+    assert 'untracked' not in checked
+
+
+def test_main_checks_tracked_packages(cuv_module, workdir: Path) -> None:
+    """main() checks packages that have track_upstream: true."""
+    _create_package(workdir, 'pkg', '1.0',
+                    metadata={'version': '1.0', 'release': '1',
+                              'track_upstream': True})
+
+    cuv_module.RPMS_DIR = workdir / 'rpms'
+    cuv_module.METADATA_DIR = workdir / 'metadata'
+
+    mock_response = {
+        'version': '2.0',
+        'stable_versions': ['2.0'],
+        'id': 42,
+    }
+
+    with patch.object(cuv_module, 'query_anitya', return_value=mock_response), \
+         patch('sys.argv', ['check_upstream_versions.py', '--quiet']), \
+         pytest.raises(SystemExit) as exc_info:
+        cuv_module.main()
+
+    # Exit code 1 means updates found
+    assert exc_info.value.code == 1
+
+
+def test_main_explicit_args_bypass_track_filter(cuv_module, workdir: Path) -> None:
+    """Explicit CLI package args bypass the track_upstream filter."""
+    _create_package(workdir, 'untracked', '1.0',
+                    metadata={'version': '1.0', 'release': '1'})
+
+    cuv_module.RPMS_DIR = workdir / 'rpms'
+    cuv_module.METADATA_DIR = workdir / 'metadata'
+
+    mock_response = {
+        'version': '2.0',
+        'stable_versions': ['2.0'],
+        'id': 42,
+    }
+
+    with patch.object(cuv_module, 'query_anitya', return_value=mock_response), \
+         patch('sys.argv', ['check_upstream_versions.py', '--quiet', 'untracked']), \
+         pytest.raises(SystemExit) as exc_info:
+        cuv_module.main()
+
+    # Should check the package even though it doesn't have track_upstream
+    assert exc_info.value.code == 1

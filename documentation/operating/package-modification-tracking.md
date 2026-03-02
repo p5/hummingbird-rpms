@@ -21,6 +21,11 @@ field with one of three values:
 | `modified` | Local changes (patches, spec modifications)| ❌ Blocked   |
 | `native`   | Hummingbird-native package (not from Fedora)| ❌ Blocked  |
 
+An optional `track_upstream` boolean field controls whether a package is
+checked by `check_upstream_versions.py` for new upstream releases (via
+release-monitoring.org). When that script runs without explicit package
+arguments, only packages with `"track_upstream": true` are checked.
+
 ## Checking Package Status
 
 View a package's modification status:
@@ -117,6 +122,23 @@ longer needed (e.g., the fix landed in Fedora):
 This removes the `modified` status and allows the package to receive automatic
 updates from Fedora again.
 
+### Enable/Disable Upstream Version Tracking
+
+Use this to opt a package into automatic upstream version checking via
+`check_upstream_versions.py`:
+
+```bash
+# Enable upstream version tracking
+./ci/dist_git.py mark-track-upstream <package> --enable
+
+# Disable upstream version tracking
+./ci/dist_git.py mark-track-upstream <package> --disable
+```
+
+When enabled, `"track_upstream": true` is set in the metadata. When disabled,
+the field is removed. Only packages with this field set to `true` are checked
+by `check_upstream_versions.py` when it runs without explicit package arguments.
+
 ## How Auto-Updates Work
 
 The `./ci/dist_git.py update` command (used by automation) checks modification
@@ -163,9 +185,10 @@ This validation ensures:
 
 1. All packages have a `modification_status` field
 2. The value is one of: `clean`, `modified`, `native`
-3. Modified packages have a `modification_reason`
-4. Native packages do not have source/branch/sha fields (Hummingbird-native only)
-5. Git commit history matches the declared modification status
+3. If `track_upstream` is present, it must be a boolean
+4. Modified packages have a `modification_reason`
+5. Native packages do not have source/branch/sha fields (Hummingbird-native only)
+6. Git commit history matches the declared modification status
 
 The validation runs on every merge request and push to main, failing the build
 if metadata is inconsistent.

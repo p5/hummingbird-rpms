@@ -702,6 +702,13 @@ Examples:
         packages = args.packages
     else:
         packages = get_all_packages()
+        # Filter to only packages with track_upstream: true in metadata
+        tracked = []
+        for pkg in packages:
+            meta = get_package_metadata(pkg)
+            if meta and meta.get("track_upstream") is True:
+                tracked.append(pkg)
+        packages = tracked
         if not args.quiet:
             logger.info(f"Checking {len(packages)} packages...")
 
