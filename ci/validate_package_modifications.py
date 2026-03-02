@@ -224,8 +224,6 @@ Examples:
             print(f"\nERROR: Found {len(missing_metadata)} package(s) without metadata files:", file=sys.stderr)
             for pkg in missing_metadata:
                 print(f"  - {pkg}", file=sys.stderr)
-            print("\nRun the migration script to create metadata for these packages:", file=sys.stderr)
-            print("  ./ci/migrate_metadata.py", file=sys.stderr)
             return 1
 
         # Get all packages with metadata
