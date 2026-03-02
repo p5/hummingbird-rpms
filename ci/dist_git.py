@@ -14,6 +14,7 @@ import logging
 import os
 import re
 import shutil
+import socket
 import subprocess
 import sys
 import tempfile
@@ -527,6 +528,66 @@ def get_koji_server() -> xmlrpc.client.ServerProxy:
                                       allow_none=True)
 
 
+def call_koji_with_retry(method, *args, method_name: str = "Koji method"):
+    """Call a Koji XML-RPC method with retry logic for transient errors.
+
+    Retries up to 3 times with exponential backoff (2s, 4s, 8s) on transient errors:
+    - HTTP 5xx errors (server errors like 502, 503)
+    - HTTP 408 (Request Timeout)
+    - OSError and subclasses (ConnectionError, TimeoutError, socket errors)
+
+    Does NOT retry on:
+    - xmlrpc.client.Fault (server-side application errors)
+    - HTTP 4xx errors except 408 (client errors like 401, 403)
+
+    Args:
+        method: The Koji ServerProxy method to call (e.g., server.getBuild)
+        *args: Arguments to pass to the method
+        method_name: Human-readable name for logging (e.g., "Koji getBuild(nvr)")
+
+    Returns:
+        The result from the Koji method call
+    """
+    max_retries = 3
+    retry_delay = 2  # Initial delay in seconds
+
+    for attempt in range(max_retries):
+        try:
+            return method(*args)
+        except xmlrpc.client.Fault:
+            # Don't retry on Fault - these are application-level errors
+            raise
+        except (OSError, http.client.HTTPException) as e:
+            # Check if it's a retryable error
+            should_retry = False
+            error_msg = str(e)
+
+            # Retry on HTTP 5xx errors, 408, and network errors
+            if isinstance(e, http.client.HTTPException):
+                # Parse HTTP status from error message
+                if any(status in error_msg for status in ['502', '503', '504', '408']):
+                    should_retry = True
+                elif '5' in error_msg and any(word in error_msg.lower() for word in ['server', 'gateway', 'timeout']):
+                    should_retry = True
+            elif isinstance(e, (ConnectionError, TimeoutError, socket.error, OSError)):
+                # Retry on network/connection errors
+                should_retry = True
+
+            # Check for 4xx errors that should not be retried
+            if any(status in error_msg for status in ['401', '403', '404']):
+                should_retry = False
+
+            if not should_retry or attempt >= max_retries - 1:
+                # Don't retry or last attempt failed
+                raise
+
+            # Retry with exponential backoff
+            logging.warning("%s failed (attempt %d/%d): %s", method_name, attempt + 1, max_retries, e)
+            logging.info("Retrying in %d seconds...", retry_delay)
+            time.sleep(retry_delay)
+            retry_delay *= 2  # Exponential backoff
+
+
 class MdapiPackageInfo(TypedDict, total=False):
     """Result from MDAPI srcpkg endpoint."""
     version: str
@@ -567,7 +628,10 @@ def check_koji_build(package_name: str, version: str, release: str, expected_com
     nvr = f'{package_name}-{version}-{release}.{koji_dist_tag}'
 
     server = get_koji_server()
-    build_result = server.getBuild(nvr)
+    build_result = call_koji_with_retry(
+        server.getBuild, nvr,
+        method_name=f"Koji getBuild({nvr})"
+    )
 
     # If build not found, try previous release as fallback
     # (packages are rebuilt once per release, so may still have old dist tag)
@@ -580,7 +644,10 @@ def check_koji_build(package_name: str, version: str, release: str, expected_com
 
             fallback_nvr = f'{package_name}-{version}-{release}.{previous_koji_dist_tag}'
             logging.info("Build %s not found in Koji, trying %s", nvr, fallback_nvr)
-            build_result = server.getBuild(fallback_nvr)
+            build_result = call_koji_with_retry(
+                server.getBuild, fallback_nvr,
+                method_name=f"Koji getBuild({fallback_nvr})"
+            )
             if build_result:
                 nvr = fallback_nvr  # Update for logging below
 
