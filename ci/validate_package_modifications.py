@@ -78,11 +78,8 @@ def validate_package(package_name: str, check_actual_state: bool = True) -> tupl
         return False, f"{package_name}: Missing package directory"
 
     # Load metadata
-    try:
-        with open(metadata_file) as f:
-            metadata: PackageMetadata = json.load(f)
-    except Exception as e:
-        return False, f"{package_name}: Failed to load metadata: {e}"
+    with open(metadata_file) as f:
+        metadata: PackageMetadata = json.load(f)
 
     # Check 1: Field must exist
     if 'modification_status' not in metadata:
@@ -107,27 +104,21 @@ def validate_package(package_name: str, check_actual_state: bool = True) -> tupl
 
     # Check 5 & 6: Verify actual state matches metadata (if requested)
     if check_actual_state and status in ['clean', 'modified']:
-        try:
-            with tempfile.TemporaryDirectory() as tmpdir:
-                upstream_dir = Path(tmpdir) / 'upstream'
+        with tempfile.TemporaryDirectory() as tmpdir:
+            upstream_dir = Path(tmpdir) / 'upstream'
 
-                logging.debug(f"{package_name}: Cloning {metadata['source']} at {metadata['branch']}...")
-                run_git('clone', '--quiet', '--branch', metadata['branch'],
-                       '--single-branch', metadata['source'], str(upstream_dir))
+            logging.debug(f"{package_name}: Cloning {metadata['source']} at {metadata['branch']}...")
+            run_git('clone', '--quiet', '--branch', metadata['branch'],
+                   '--single-branch', metadata['source'], str(upstream_dir))
 
-                logging.debug(f"{package_name}: Checking if modified...")
-                actually_unmodified = is_package_unmodified(package_name, metadata, upstream_dir)
+            logging.debug(f"{package_name}: Checking if modified...")
+            actually_unmodified = is_package_unmodified(package_name, metadata, upstream_dir)
 
-                if status == 'clean' and not actually_unmodified:
-                    return False, f"{package_name}: Marked as clean but package has modifications"
+            if status == 'clean' and not actually_unmodified:
+                return False, f"{package_name}: Marked as clean but package has modifications"
 
-                if status == 'modified' and actually_unmodified:
-                    return False, f"{package_name}: Marked as modified but package is actually clean"
-
-        except Exception as e:
-            logging.warning(f"{package_name}: Error checking actual state: {e}")
-            # Don't fail validation on errors checking actual state
-            # This could be due to network issues, missing branches, etc.
+            if status == 'modified' and actually_unmodified:
+                return False, f"{package_name}: Marked as modified but package is actually clean"
 
     return True, None
 
@@ -224,8 +215,6 @@ Examples:
             print(f"\nERROR: Found {len(missing_metadata)} package(s) without metadata files:", file=sys.stderr)
             for pkg in missing_metadata:
                 print(f"  - {pkg}", file=sys.stderr)
-            print("\nRun the migration script to create metadata for these packages:", file=sys.stderr)
-            print("  ./ci/migrate_metadata.py", file=sys.stderr)
             return 1
 
         # Get all packages with metadata
@@ -248,13 +237,4 @@ Examples:
 
 
 if __name__ == '__main__':
-    try:
-        sys.exit(main())
-    except KeyboardInterrupt:
-        print("\nValidation interrupted by user", file=sys.stderr)
-        sys.exit(130)
-    except Exception as e:
-        logging.error(f"Validation failed with error: {e}")
-        import traceback
-        traceback.print_exc()
-        sys.exit(1)
+    sys.exit(main())

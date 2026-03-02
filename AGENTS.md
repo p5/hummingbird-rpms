@@ -28,3 +28,33 @@ When modifying `ci/dist_git.py`:
 When modifying validation or CI scripts:
 - Ensure `make check` passes (includes linting, type checking, and validation)
 - Add tests if the change affects user-facing behavior
+
+### Code Style
+
+**Exception Handling:**
+- **Never use bare `except Exception:` handlers** - they hide bugs like `AttributeError`, `TypeError`, and other programming errors
+- Only catch specific exception types that you expect and know how to handle (e.g., `json.JSONDecodeError`, `OSError`, `subprocess.CalledProcessError`)
+- Let unexpected errors crash with a traceback - this helps identify bugs during development and prevents silent failures in production
+- If you need to catch an exception for cleanup or logging, re-raise it afterward so the error isn't silently ignored
+
+Bad:
+```python
+try:
+    process_package(pkg)
+except Exception:
+    logger.warning(f"Error processing {pkg}")
+    # Silently continues, hiding the real error!
+```
+
+Good:
+```python
+# Let it crash - we want to see AttributeError, TypeError, etc.
+process_package(pkg)
+
+# Or catch only specific expected errors:
+try:
+    with open(metadata_file) as f:
+        data = json.load(f)
+except (json.JSONDecodeError, OSError) as e:
+    return False, f"Failed to load metadata: {e}"
+```

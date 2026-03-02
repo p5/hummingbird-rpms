@@ -168,9 +168,6 @@ def parse_spec_version(package_dir: Path) -> Optional[str]:
         return version if version else None
     except subprocess.CalledProcessError:
         return None
-    except Exception as e:
-        logger.debug(f"Error parsing spec for {package_dir.name}: {e}")
-        return None
 
 
 def get_package_metadata(package: str) -> Optional[dict]:
@@ -355,25 +352,13 @@ def download_new_sources(
 
         # Download the new source
         dest = package_dir / new_filename
-        try:
-            logger.info(f"{package}: downloading {new_url}")
-            _download_file(new_url, dest)
-        except Exception as e:
-            logger.error(f"{package}: failed to download {new_url}: {e}")
-            # Clean up partial download
-            dest.unlink(missing_ok=True)
-            continue
+        logger.info(f"{package}: downloading {new_url}")
+        _download_file(new_url, dest)
 
         # Upload to lookaside cache
         old_entry = next(e for e in sources_entries if e["filename"] == old_filename)
         algo = old_entry["algo"]
-        try:
-            _upload_to_lookaside(dest, package, algo)
-        except Exception as e:
-            logger.error(
-                f"{package}: failed to upload {new_filename} to lookaside cache: {e}"
-            )
-            # Continue anyway — the file is downloaded, just not uploaded
+        _upload_to_lookaside(dest, package, algo)
 
         # Compute hash and update the sources entry
         new_hash = _compute_file_hash(dest, algo)
@@ -599,14 +584,6 @@ def check_package_version(
             has_update=False,
             error=str(e),
         )
-    except Exception as e:
-        return VersionCheckResult(
-            package=package,
-            current_version=current_version,
-            upstream_version=None,
-            has_update=False,
-            error=f"API error: {e}",
-        )
 
     # Prefer stable_versions[0] over version field, as version can sometimes
     # contain incorrect data (e.g., development tags that aren't real releases)
@@ -761,36 +738,32 @@ Examples:
         for result in results:
             if not result.has_update or not result.upstream_version:
                 continue
-            try:
-                downloaded = update_spec_version(
-                    result.package, result.upstream_version
-                )
-                result.updated = True
-                result.downloaded_sources = downloaded
-                updates_applied += 1
+            downloaded = update_spec_version(
+                result.package, result.upstream_version
+            )
+            result.updated = True
+            result.downloaded_sources = downloaded
+            updates_applied += 1
 
-                # Add downloaded sources to .gitignore so they
-                # are not committed (they live in the lookaside cache)
-                if downloaded:
-                    _update_gitignore(RPMS_DIR / result.package, downloaded)
+            # Add downloaded sources to .gitignore so they
+            # are not committed (they live in the lookaside cache)
+            if downloaded:
+                _update_gitignore(RPMS_DIR / result.package, downloaded)
 
-                # Commit the changes (no -f so .gitignore is respected)
-                run_git(
-                    "add",
-                    f"rpms/{result.package}",
-                    f"metadata/{result.package}.json",
-                    cwd=ROOT_DIR,
-                )
-                commit_msg = (
-                    f"Update {result.package} to"
-                    f" {result.upstream_version}\n\n"
-                    f"Upstream version detected via"
-                    f" release-monitoring.org"
-                )
-                run_git_commit("-m", commit_msg, cwd=ROOT_DIR)
-            except Exception as e:
-                result.update_error = str(e)
-                logger.error(f"{result.package}: failed to update spec: {e}")
+            # Commit the changes (no -f so .gitignore is respected)
+            run_git(
+                "add",
+                f"rpms/{result.package}",
+                f"metadata/{result.package}.json",
+                cwd=ROOT_DIR,
+            )
+            commit_msg = (
+                f"Update {result.package} to"
+                f" {result.upstream_version}\n\n"
+                f"Upstream version detected via"
+                f" release-monitoring.org"
+            )
+            run_git_commit("-m", commit_msg, cwd=ROOT_DIR)
 
     # Output results
     if args.json:

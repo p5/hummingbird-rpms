@@ -229,13 +229,8 @@ No manual marking needed for imports.
 
 ### CI Fails: "Missing modification_status field"
 
-This means a metadata file is missing the required field. To fix:
-
-1. Run the migration script to add the field to all metadata:
-   ```bash
-   ./ci/migrate_metadata.py --dry-run  # Preview changes
-   ./ci/migrate_metadata.py            # Apply changes
-   ```
+This means a metadata file is missing the required field. This means that the
+package was not imported properly.
 
 ### CI Fails: "Marked as clean but package has modifications"
 
