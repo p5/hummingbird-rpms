@@ -737,9 +737,15 @@ def test_sync(workdir: Path, upstream_repos: dict[str, Path]) -> None:
         cwd=workdir, check=True
     )
 
-    # Make local modification and commit it
+    # Make local modification, declare, and commit it
     choc_spec = workdir / 'rpms' / 'chocolate' / 'chocolate.spec'
     choc_spec.write_text(choc_spec.read_text() + '\n# Local modification\n')
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), '--dry-run', 'mark-modified', 'chocolate', '--modified',
+         '--reason', 'Local test modification'],
+        cwd=workdir, check=True,
+    )
+
     subprocess.run(['git', 'commit', '-a', '-m', 'Local modification'], cwd=workdir, check=True)
 
     new_sha = add_upstream_commit(upstream_repos["chocolate"], 'chocolate', '10', '11')
@@ -758,6 +764,8 @@ def test_sync(workdir: Path, upstream_repos: dict[str, Path]) -> None:
         import_data = json.load(f)
     assert import_data['sha'] == new_sha
     assert import_data['version'] == '11'
+    assert import_data['modification_status'] == 'clean'
+    assert 'modification_reason' not in import_data
 
     # Verify sync commit was created
     subject, body = get_last_commit_info(workdir)
