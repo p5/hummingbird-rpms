@@ -18,8 +18,10 @@ xcaddy-smoke:
         set -e
         dnf install -y /tmp/test.rpm
 
-        # Verify xcaddy reports its version
-        xcaddy version
+        # Verify xcaddy reports the correct version (not "(devel)" or "unknown")
+        xcaddy_version=$(xcaddy version)
+        echo "xcaddy version: ${xcaddy_version}"
+        echo "${xcaddy_version}" | grep -qE "^v[0-9]+\.[0-9]+\.[0-9]+"
 
         # Verify help mentions the build command
         xcaddy help 2>&1 | grep -q "build"
