@@ -197,7 +197,13 @@
 %undefine _package_note_flags
 
 Summary: An interpreter of object-oriented scripting language
-Name: ruby%{major_version}.%{minor_version}
+
+%global basepackagename ruby
+
+# Override default doc directory to use basepackagename instead of name
+%global _docdir_fmt %{basepackagename}
+
+Name: %{basepackagename}%{major_version}.%{minor_version}
 Version: %{ruby_version}%{?development_release}
 Release: 32%{?dist}
 # Licenses, which are likely not included in binary RPMs:
@@ -844,7 +850,7 @@ pushd %{_vpath_builddir}
         --with-sitearchhdrdir='$(sitehdrdir)/$(arch)' \
         --with-vendorarchhdrdir='$(vendorhdrdir)/$(arch)' \
         --with-rubygemsdir='%{rubygems_dir}' \
-        --with-ruby-pc='%{name}.pc' \
+        --with-ruby-pc='%{basepackagename}.pc' \
         --with-compress-debug-sections=no \
         --disable-rpath \
         --enable-mkmf-verbose \
@@ -895,7 +901,7 @@ ln -srf %{buildroot}%{_bindir}/%{name}%{?with_rubypick:-mri} \
 
 # Version is empty if --with-ruby-version is specified.
 # http://bugs.ruby-lang.org/issues/7807
-sed -i 's/Version: \${ruby_version}/Version: %{ruby_version}/' %{buildroot}%{_libdir}/pkgconfig/%{name}.pc
+sed -i 's/Version: \${ruby_version}/Version: %{ruby_version}/' %{buildroot}%{_libdir}/pkgconfig/%{basepackagename}.pc
 
 # Kill bundled certificates, as they should be part of ca-certificates.
 for cert in \
@@ -1275,7 +1281,7 @@ make -C %{_vpath_builddir} runruby TESTRUN_SCRIPT=" \
 
 %{_includedir}/*
 %{_libdir}/libruby.so
-%{_libdir}/pkgconfig/%{name}.pc
+%{_libdir}/pkgconfig/%{basepackagename}.pc
 
 %files libs
 %license COPYING
