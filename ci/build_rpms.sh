@@ -23,6 +23,7 @@ Usage: ./ci/build_rpms.sh [OPTIONS] PACKAGE_NAME
   --build-dir DIR    - Custom build directory (default: builds/PACKAGE_NAME)
   --local-rpms-dir DIR - Directory containing local RPMs to use as an additional
                        high-priority repo (useful for testing build compatibility)
+  --nocheck          - Skip running %check tests during the build
   --help, -h         - Show this help message
 
 The built RPMs can be found in: builds/PACKAGE_NAME/RPMS/ and builds/PACKAGE_NAME/SRPMS/
@@ -37,6 +38,7 @@ image=quay.io/redhat-user-workloads/rpm-build-pipeline-tenant/environment:latest
 arch=$(uname -m)
 build_dir=""
 local_rpms_dir=""
+nocheck=""
 package_name=""
 
 # Parse arguments
@@ -57,6 +59,10 @@ while [[ $# -gt 0 ]]; do
         --local-rpms-dir)
             local_rpms_dir="$(realpath "$2")"
             shift 2
+            ;;
+        --nocheck)
+            nocheck="--nocheck"
+            shift
             ;;
         *)
             if [[ -n "${package_name}" ]]; then
@@ -246,7 +252,8 @@ cp -v * /sources/ 2>/dev/null || true
 mock -r /config/mock.cfg \
      --spec '/repo/rpms/${package_name}/${spec_file_name}' \
      --sources /sources \
-     --resultdir /results
+     --resultdir /results \
+     ${nocheck}
 
 popd
 "
