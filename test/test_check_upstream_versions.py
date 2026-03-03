@@ -139,6 +139,25 @@ def test_parse_spec_version_multiple_specs(cuv_module, tmp_path: Path) -> None:
 
 
 #
+# Tests — parse_spec_version_release
+#
+
+
+def test_parse_spec_version_release(cuv_module, workdir: Path) -> None:
+    """Extract version and release from a spec file."""
+    pkg_dir = _create_package(workdir, 'testpkg', '3.5.1')
+    result = cuv_module.parse_spec_version_release(pkg_dir)
+    assert result is not None
+    assert result[0] == '3.5.1'
+    assert result[1] == '1'
+
+
+def test_parse_spec_version_release_no_spec(cuv_module, tmp_path: Path) -> None:
+    """Returns None when no spec file exists."""
+    assert cuv_module.parse_spec_version_release(tmp_path) is None
+
+
+#
 # Tests — get_version_from_metadata
 #
 
@@ -540,11 +559,13 @@ def test_update_spec_version(cuv_module, workdir: Path) -> None:
     assert downloaded == ['pkg-2.0.tar.gz']
     mock_dl.assert_called_once_with('pkg', '1.0', '2.0')
 
-    # Metadata should be marked as modified
+    # Metadata should be marked as modified with updated version/release
     with open(workdir / 'metadata' / 'pkg.json') as f:
         data = json.load(f)
     assert data['modification_status'] == 'modified'
     assert 'Update to upstream version 2.0' in data['modification_reason']
+    assert data['version'] == '2.0'
+    assert data['release'] == '0.1'
 
 
 def test_update_spec_version_sets_release_0_1(cuv_module, workdir: Path) -> None:
