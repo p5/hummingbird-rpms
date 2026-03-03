@@ -816,7 +816,7 @@ def import_(url: str, branch: str, ref: str | None = None, directory: str | None
 
 
 def update(package_name: str, skip_build_check: bool = False, sync: bool = False,
-           dry_run: bool = False, allow_prerelease: bool = False) -> None:
+           dry_run: bool = False, allow_prerelease: bool = False, mark: bool = False) -> None:
     """Update a single package from upstream."""
     if package_name not in imports:
         sys.exit(f"ERROR: Package {package_name} not found (missing metadata/{package_name}.json)")
@@ -848,9 +848,33 @@ def update(package_name: str, skip_build_check: bool = False, sync: bool = False
 
     # Check if there's an update
     if latest_sha == metadata['sha']:
-        if sync:
+        if sync and not mark:
             sys.exit(f"ERROR: Package {package_name} is already at upstream {latest_sha[:8]}")
-        logging.info("Skipping %s: already up-to-date", package_name)
+        if not mark:
+            logging.info("Skipping %s: already up-to-date", package_name)
+            return
+
+        # Mark mode: verify package is actually unmodified and create empty commit
+        with tempfile.TemporaryDirectory() as tmpdir:
+            upstream_dir = Path(tmpdir) / package_name
+            run_git('clone', '--quiet', '--branch', metadata['branch'], '--single-branch',
+                    metadata['source'], str(upstream_dir))
+
+            if not is_package_unmodified(package_name, metadata, upstream_dir):
+                sys.exit(f"ERROR: Cannot mark {package_name} as synced - package has modifications\n"
+                        f"       Use 'sync' without --mark to discard local changes")
+
+            # Parse spec file to get version-release for commit message
+            version, release = parse_spec_version(upstream_dir)
+            upstream_package_name = Path(metadata['source']).stem
+            old_version, old_release = metadata['version'], metadata['release']
+
+        # Create empty commit with proper Upstream: trailer
+        if not dry_run:
+            commit_msg = f"Sync {upstream_package_name} to {version}-{release} (mark)\n\nUpstream: {latest_sha}"
+            run_git_commit('--allow-empty', '-m', commit_msg, cwd=ROOT_DIR)
+
+        logging.info("Marked %s as synced (no changes, empty commit)", package_name)
         return
 
     # There's an update available
@@ -1248,6 +1272,8 @@ Examples:
     # sync command
     sync_parser = subparsers.add_parser('sync', help='Force-sync package to upstream (discards local changes)')
     sync_parser.add_argument('package', help='Package name to sync')
+    sync_parser.add_argument('--mark', action='store_true',
+                            help='Mark package as synced even if already at upstream (creates empty commit with Upstream: trailer). Fails if package has actual modifications.')
 
     # update-releases command
     subparsers.add_parser('update-releases',
@@ -1319,7 +1345,7 @@ Examples:
                 update(pkg, args.skip_build_check, dry_run=args.dry_run,
                        allow_prerelease=args.allow_prerelease)
         case 'sync':
-            update(args.package, sync=True, dry_run=args.dry_run)
+            update(args.package, sync=True, dry_run=args.dry_run, mark=args.mark)
         case 'update-releases':
             update_releases()
         case 'rename':
