@@ -851,6 +851,40 @@ def test_sync_mark(workdir: Path, upstream_repos: dict[str, Path]) -> None:
     assert diff_result.stdout == '', "Commit should be empty"
 
 
+def test_sync_mark_resets_modification_status(workdir: Path, upstream_repos: dict[str, Path]) -> None:
+    """Sync --mark resets modification_status to clean and removes modification_reason."""
+    # Import chocolate (automatically commits)
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["chocolate"]}'],
+        cwd=workdir, check=True,
+    )
+
+    chocolate_json = workdir / 'metadata' / 'chocolate.json'
+
+    # Mark package as modified
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'mark-modified', 'chocolate', '--modified',
+         '--reason', 'Test modification'],
+        cwd=workdir, check=True,
+    )
+
+    # Verify it's marked as modified
+    metadata = json.loads(chocolate_json.read_text())
+    assert metadata['modification_status'] == 'modified'
+    assert metadata['modification_reason'] == 'Test modification'
+
+    # Sync --mark should reset to clean
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'sync', '--mark', 'chocolate'],
+        cwd=workdir, check=True,
+    )
+
+    # Verify modification_status is clean and modification_reason is removed
+    metadata = json.loads(chocolate_json.read_text())
+    assert metadata['modification_status'] == 'clean'
+    assert 'modification_reason' not in metadata
+
+
 def test_git_config_required(workdir: Path, upstream_repos: dict[str, Path]) -> None:
     """Fails with helpful message if git user/email not configured."""
 

@@ -870,8 +870,15 @@ def update(package_name: str, skip_build_check: bool = False, sync: bool = False
             upstream_package_name = Path(metadata['source']).stem
             old_version, old_release = metadata['version'], metadata['release']
 
+        # Reset modification status to clean
+        metadata['modification_status'] = 'clean'
+        if 'modification_reason' in metadata:
+            del metadata['modification_reason']
+
         # Create empty commit with proper Upstream: trailer
         if not dry_run:
+            save_package_metadata(package_name, metadata)
+            run_git('add', str(METADATA_DIR / f'{package_name}.json'), cwd=ROOT_DIR)
             commit_msg = f"Sync {upstream_package_name} to {version}-{release} (mark)\n\nUpstream: {latest_sha}"
             run_git_commit('--allow-empty', '-m', commit_msg, cwd=ROOT_DIR)
 
