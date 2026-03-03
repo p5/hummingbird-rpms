@@ -1,9 +1,8 @@
 {
   "branch": "rawhide",
+  "modification_status": "clean",
   "release": "1",
   "sha": "1ff084a44cb053e8f5a63871962f8082babb864f",
   "source": "https://src.fedoraproject.org/rpms/nodejs24.git",
-  "version": "24.13.0",
-  "modification_status": "modified",
-  "modification_reason": "Pre-existing modification - requires review"
+  "version": "24.13.0"
 }

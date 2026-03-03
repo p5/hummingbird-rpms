@@ -1,8 +1,9 @@
 {
   "branch": "rawhide",
+  "modification_reason": "Local changes in commit 642ebe20",
+  "modification_status": "modified",
   "release": "3.git19878fe",
   "sha": "0da1c8d7a7ed49c46c39f65f760febb699643a55",
   "source": "https://src.fedoraproject.org/rpms/crypto-policies.git",
-  "version": "20251128",
-  "modification_status": "clean"
+  "version": "20251128"
 }
