@@ -43,6 +43,8 @@
 # a basepackagename variable is handy
 %global basepackagename tomcat
 
+# Override default doc directory to use basepackagename instead of name
+%global _docdir_fmt %{basepackagename}
 
 # FHS 3.0 compliant tree structure - http://refspecs.linuxfoundation.org/FHS_3.0/fhs/index.html
 %global basedir %{_var}/lib/%{basepackagename}
@@ -266,7 +268,7 @@ touch HACK
 %{__install} -d -m 0775 ${RPM_BUILD_ROOT}%{tempdir}
 %{__install} -d -m 0775 ${RPM_BUILD_ROOT}%{workdir}
 %{__install} -d -m 0755 ${RPM_BUILD_ROOT}%{_unitdir}
-%{__install} -d -m 0755 ${RPM_BUILD_ROOT}%{_libexecdir}/%{name}
+%{__install} -d -m 0755 ${RPM_BUILD_ROOT}%{_libexecdir}/%{basepackagename}
 
 # move things into place
 # First copy supporting libs to tomcat lib
@@ -280,34 +282,34 @@ popd
 %{__sed} -e "s|\@\@\@TCHOME\@\@\@|%{homedir}|g" \
    -e "s|\@\@\@TCTEMP\@\@\@|%{tempdir}|g" \
    -e "s|\@\@\@LIBDIR\@\@\@|%{_libdir}|g" %{SOURCE1} \
-    > ${RPM_BUILD_ROOT}%{confdir}/%{name}.conf
+    > ${RPM_BUILD_ROOT}%{confdir}/%{basepackagename}.conf
 %{__sed} -e "s|\@\@\@TCHOME\@\@\@|%{homedir}|g" \
    -e "s|\@\@\@TCTEMP\@\@\@|%{tempdir}|g" \
    -e "s|\@\@\@LIBDIR\@\@\@|%{_libdir}|g" %{SOURCE2} \
-    > ${RPM_BUILD_ROOT}%{_sysconfdir}/sysconfig/%{name}
+    > ${RPM_BUILD_ROOT}%{_sysconfdir}/sysconfig/%{basepackagename}
 %{__install} -m 0755 %{SOURCE3} \
-    ${RPM_BUILD_ROOT}%{_sbindir}/%{name}
+    ${RPM_BUILD_ROOT}%{_sbindir}/%{basepackagename}
 %{__install} -m 0644 %{SOURCE7} \
-    ${RPM_BUILD_ROOT}%{_unitdir}/%{name}.service
+    ${RPM_BUILD_ROOT}%{_unitdir}/%{basepackagename}.service
 %{__sed} -e "s|\@\@\@TCLOG\@\@\@|%{logdir}|g" %{SOURCE4} \
-    > ${RPM_BUILD_ROOT}%{_sysconfdir}/logrotate.d/%{name}.disabled
+    > ${RPM_BUILD_ROOT}%{_sysconfdir}/logrotate.d/%{basepackagename}.disabled
 %{__sed} -e "s|\@\@\@TCHOME\@\@\@|%{homedir}|g" \
    -e "s|\@\@\@TCTEMP\@\@\@|%{tempdir}|g" \
    -e "s|\@\@\@LIBDIR\@\@\@|%{_libdir}|g" %{SOURCE5} \
-    > ${RPM_BUILD_ROOT}%{_bindir}/%{name}-digest
+    > ${RPM_BUILD_ROOT}%{_bindir}/%{basepackagename}-digest
 %{__sed} -e "s|\@\@\@TCHOME\@\@\@|%{homedir}|g" \
    -e "s|\@\@\@TCTEMP\@\@\@|%{tempdir}|g" \
    -e "s|\@\@\@LIBDIR\@\@\@|%{_libdir}|g" %{SOURCE6} \
-    > ${RPM_BUILD_ROOT}%{_bindir}/%{name}-tool-wrapper
+    > ${RPM_BUILD_ROOT}%{_bindir}/%{basepackagename}-tool-wrapper
 
 %{__install} -m 0644 %{SOURCE8} \
-    ${RPM_BUILD_ROOT}%{_libexecdir}/%{name}/functions
+    ${RPM_BUILD_ROOT}%{_libexecdir}/%{basepackagename}/functions
 %{__install} -m 0755 %{SOURCE9} \
-    ${RPM_BUILD_ROOT}%{_libexecdir}/%{name}/preamble
+    ${RPM_BUILD_ROOT}%{_libexecdir}/%{basepackagename}/preamble
 %{__install} -m 0755 %{SOURCE10} \
-    ${RPM_BUILD_ROOT}%{_libexecdir}/%{name}/server
+    ${RPM_BUILD_ROOT}%{_libexecdir}/%{basepackagename}/server
 %{__install} -m 0644 %{SOURCE11} \
-    ${RPM_BUILD_ROOT}%{_unitdir}/%{name}@.service
+    ${RPM_BUILD_ROOT}%{_unitdir}/%{basepackagename}@.service
 
 %{__install} -m 0644 %{SOURCE12} ${RPM_BUILD_ROOT}%{confdir}/conf.d/
 
@@ -321,11 +323,11 @@ sed -i \
 # create jsp and servlet API symlinks
 pushd ${RPM_BUILD_ROOT}%{_javadir}
    %{__mv} %{basepackagename}/jsp-api.jar %{name}-jsp-%{jspspec}-api.jar
-   %{__ln_s} %{basepackagename}-jsp-%{jspspec}-api.jar %{name}-jsp-api.jar
+   %{__ln_s} %{name}-jsp-%{jspspec}-api.jar %{basepackagename}-jsp-api.jar
    %{__mv} %{basepackagename}/servlet-api.jar %{name}-servlet-%{servletspec}-api.jar
-   %{__ln_s} %{basepackagename}-servlet-%{servletspec}-api.jar %{name}-servlet-api.jar
+   %{__ln_s} %{name}-servlet-%{servletspec}-api.jar %{basepackagename}-servlet-api.jar
    %{__mv} %{basepackagename}/el-api.jar %{name}-el-%{elspec}-api.jar
-   %{__ln_s} %{basepackagename}-el-%{elspec}-api.jar %{name}-el-api.jar
+   %{__ln_s} %{name}-el-%{elspec}-api.jar %{basepackagename}-el-api.jar
 popd
 
 pushd output/build
@@ -416,31 +418,31 @@ install -m0644 -D tomcat.sysusers.conf %{buildroot}%{_sysusersdir}/tomcat.conf
 
 %post
 # install but don't activate
-%systemd_post %{name}.service
+%systemd_post %{basepackagename}.service
 
 %preun
 # clean tempdir and workdir on removal or upgrade
 %{__rm} -rf %{workdir}/* %{tempdir}/*
-%systemd_preun %{name}.service
+%systemd_preun %{basepackagename}.service
 
 %postun
-%systemd_postun_with_restart %{name}.service
+%systemd_postun_with_restart %{basepackagename}.service
 
 %files 
 %defattr(0664,root,tomcat,0755)
 %doc {LICENSE,NOTICE,RELEASE*}
-%attr(0755,root,root) %{_bindir}/%{name}-digest
-%attr(0755,root,root) %{_bindir}/%{name}-tool-wrapper
-%attr(0755,root,root) %{_sbindir}/%{name}
-%attr(0644,root,root) %{_unitdir}/%{name}.service
-%attr(0644,root,root) %{_unitdir}/%{name}@.service
-%attr(0755,root,root) %dir %{_libexecdir}/%{name}
+%attr(0755,root,root) %{_bindir}/%{basepackagename}-digest
+%attr(0755,root,root) %{_bindir}/%{basepackagename}-tool-wrapper
+%attr(0755,root,root) %{_sbindir}/%{basepackagename}
+%attr(0644,root,root) %{_unitdir}/%{basepackagename}.service
+%attr(0644,root,root) %{_unitdir}/%{basepackagename}@.service
+%attr(0755,root,root) %dir %{_libexecdir}/%{basepackagename}
 %attr(0755,root,root) %dir %{_localstatedir}/lib/tomcats
-%attr(0644,root,root) %{_libexecdir}/%{name}/functions
-%attr(0755,root,root) %{_libexecdir}/%{name}/preamble
-%attr(0755,root,root) %{_libexecdir}/%{name}/server
-%attr(0644,root,root) %config(noreplace) %{_sysconfdir}/sysconfig/%{name}
-%attr(0644,root,root) %config(noreplace) %{_sysconfdir}/logrotate.d/%{name}.disabled
+%attr(0644,root,root) %{_libexecdir}/%{basepackagename}/functions
+%attr(0755,root,root) %{_libexecdir}/%{basepackagename}/preamble
+%attr(0755,root,root) %{_libexecdir}/%{basepackagename}/server
+%attr(0644,root,root) %config(noreplace) %{_sysconfdir}/sysconfig/%{basepackagename}
+%attr(0644,root,root) %config(noreplace) %{_sysconfdir}/logrotate.d/%{basepackagename}.disabled
 %attr(0755,root,tomcat) %dir %{basedir}
 %attr(0755,root,tomcat) %dir %{confdir}
 
@@ -459,7 +461,7 @@ install -m0644 -D tomcat.sysusers.conf %{buildroot}%{_sysusersdir}/tomcat.conf
 %attr(0755,root,tomcat) %dir %{confdir}/conf.d
 %{confdir}/conf.d/README
 %{confdir}/conf.d/module-start-up-parameters.conf
-%config(noreplace) %{confdir}/%{name}.conf
+%config(noreplace) %{confdir}/%{basepackagename}.conf
 %config(noreplace) %{confdir}/*.policy
 %config(noreplace) %{confdir}/*.properties
 %config(noreplace) %{confdir}/context.xml
@@ -507,19 +509,19 @@ install -m0644 -D tomcat.sysusers.conf %{buildroot}%{_sysusersdir}/tomcat.conf
 %files jsp-%{jspspec}-api -f .mfiles-tomcat-jsp-api
 %{_javadir}/%{name}-jsp-%{jspspec}*.jar
 %{libdir}/%{name}-jsp-%{jspspec}*.jar
-%{_javadir}/%{name}-jsp-api.jar
+%{_javadir}/%{basepackagename}-jsp-api.jar
 
 %files servlet-%{servletspec}-api -f .mfiles-tomcat-servlet-api
 %doc LICENSE
 %{_javadir}/%{name}-servlet-%{servletspec}*.jar
 %{libdir}/%{name}-servlet-%{servletspec}*.jar
-%{_javadir}/%{name}-servlet-api.jar
+%{_javadir}/%{basepackagename}-servlet-api.jar
 
 %files el-%{elspec}-api -f .mfiles-tomcat-el-api
 %doc LICENSE
 %{_javadir}/%{name}-el-%{elspec}-api.jar
 %{libdir}/%{name}-el-%{elspec}-api.jar
-%{_javadir}/%{name}-el-api.jar
+%{_javadir}/%{basepackagename}-el-api.jar
 
 %files webapps
 %defattr(0644,tomcat,tomcat,0755)
