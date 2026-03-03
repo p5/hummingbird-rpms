@@ -136,6 +136,21 @@ This only imports changes if these were actually built in Koji, to ensure we onl
 
 All of these commands automatically commit changes with descriptive commit messages including the upstream SHA. To avoid that, you can use the `--dry-run` option.
 
+- Enable upstream version tracking for a package (used by `check_upstream_versions.py check`). These commands modify the metadata file but do not create a git commit:
+
+```bash
+./ci/dist_git.py mark-track-upstream bash --enable
+./ci/dist_git.py mark-track-upstream bash --disable
+```
+
+- Check upstream version status. The `check` subcommand checks tracked packages; `list` shows all packages in a table:
+
+```bash
+./ci/check_upstream_versions.py check
+./ci/check_upstream_versions.py list
+./ci/check_upstream_versions.py list --json
+```
+
 ## Package-specific overrides
 
 Per-package build configuration can be customized in `ci/package-overrides.yaml`. If a package is not listed, it uses default settings.

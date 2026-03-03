@@ -52,6 +52,7 @@ class PackageMetadata(TypedDict):
     release: str
     modification_status: NotRequired[Literal["clean", "modified", "native"]]
     modification_reason: NotRequired[str]
+    track_upstream: NotRequired[bool]
 
 
 class KojiBuild(TypedDict, total=False):
@@ -1031,6 +1032,30 @@ def mark_modified(package_name: str, modified: bool, reason: str | None = None) 
     imports[package_name] = metadata
 
 
+def mark_track_upstream(package_name: str, enable: bool) -> None:
+    """Enable or disable upstream version tracking for a package.
+
+    Args:
+        package_name: Package name to update
+        enable: True to enable tracking, False to disable
+    """
+    if package_name not in imports:
+        sys.exit(f"ERROR: Package {package_name} not found (missing metadata/{package_name}.json)")
+
+    metadata = imports[package_name]
+
+    if enable:
+        metadata['track_upstream'] = True
+        logging.info("Enabled upstream version tracking for %s", package_name)
+    else:
+        metadata.pop('track_upstream', None)
+        logging.info("Disabled upstream version tracking for %s", package_name)
+
+    # Save updated metadata
+    save_package_metadata(package_name, metadata)
+    imports[package_name] = metadata
+
+
 def diff_package(package_name: str, output_mode: str = 'full', raw: bool = False) -> bool | None:
     """Show diff between local package and upstream Fedora.
 
@@ -1294,6 +1319,16 @@ Examples:
                            help='Mark as clean (allows auto-updates)')
     mark_parser.add_argument('--reason', help='Reason for modification (required for --modified)')
 
+    # mark-track-upstream command
+    track_parser = subparsers.add_parser('mark-track-upstream',
+                                         help='Enable or disable upstream version tracking')
+    track_parser.add_argument('package', help='Package name')
+    track_group = track_parser.add_mutually_exclusive_group(required=True)
+    track_group.add_argument('--enable', action='store_true',
+                             help='Enable upstream version tracking')
+    track_group.add_argument('--disable', action='store_true',
+                             help='Disable upstream version tracking')
+
     # list command
     list_parser = subparsers.add_parser('list',
                                        help='List packages with modification status')
@@ -1352,6 +1387,8 @@ Examples:
             rename(args.package)
         case 'mark-modified':
             mark_modified(args.package, args.modified, args.reason)
+        case 'mark-track-upstream':
+            mark_track_upstream(args.package, args.enable)
         case 'list':
             # Determine filter based on flags
             status_filter = None

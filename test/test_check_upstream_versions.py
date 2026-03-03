@@ -631,7 +631,7 @@ def test_cli_check_json_output(cuv_module, workdir: Path) -> None:
     }
 
     with patch.object(cuv_module, 'query_anitya', return_value=mock_response), \
-         patch('sys.argv', ['check_upstream_versions.py', '--json', 'pkg']), \
+         patch('sys.argv', ['check_upstream_versions.py', 'check', '--json', 'pkg']), \
          pytest.raises(SystemExit) as exc_info, \
          patch('sys.stdout') as mock_stdout:
         # Capture print output
@@ -656,7 +656,7 @@ def test_cli_no_updates_exit_zero(cuv_module, workdir: Path) -> None:
     }
 
     with patch.object(cuv_module, 'query_anitya', return_value=mock_response), \
-         patch('sys.argv', ['check_upstream_versions.py', '--quiet', 'pkg']), \
+         patch('sys.argv', ['check_upstream_versions.py', 'check', '--quiet', 'pkg']), \
          pytest.raises(SystemExit) as exc_info:
         cuv_module.main()
 
@@ -671,8 +671,284 @@ def test_cli_error_exit_two(cuv_module, workdir: Path) -> None:
 
     with patch.object(cuv_module, 'query_anitya',
                       side_effect=ConnectionError('timeout')), \
-         patch('sys.argv', ['check_upstream_versions.py', '--quiet', 'pkg']), \
+         patch('sys.argv', ['check_upstream_versions.py', 'check', '--quiet', 'pkg']), \
          pytest.raises(SystemExit) as exc_info:
         cuv_module.main()
 
     assert exc_info.value.code == 2
+
+
+#
+# Tests — track_upstream filtering
+#
+
+
+def test_main_skips_packages_without_track_upstream(cuv_module, workdir: Path) -> None:
+    """main() skips packages without track_upstream when no CLI args given."""
+    _create_package(workdir, 'tracked', '1.0',
+                    metadata={'version': '1.0', 'release': '1',
+                              'track_upstream': True})
+    _create_package(workdir, 'untracked', '1.0',
+                    metadata={'version': '1.0', 'release': '1'})
+
+    cuv_module.RPMS_DIR = workdir / 'rpms'
+    cuv_module.METADATA_DIR = workdir / 'metadata'
+
+    mock_response = {
+        'version': '1.0',
+        'stable_versions': ['1.0'],
+        'id': 42,
+    }
+
+    checked = []
+    original_check = cuv_module.check_package_version
+
+    def tracking_check(pkg, distro='Fedora'):
+        checked.append(pkg)
+        return original_check(pkg, distro)
+
+    with patch.object(cuv_module, 'query_anitya', return_value=mock_response), \
+         patch.object(cuv_module, 'check_package_version', side_effect=tracking_check), \
+         patch('sys.argv', ['check_upstream_versions.py', 'check', '--quiet']), \
+         pytest.raises(SystemExit):
+        cuv_module.main()
+
+    assert 'tracked' in checked
+    assert 'untracked' not in checked
+
+
+def test_main_checks_tracked_packages(cuv_module, workdir: Path) -> None:
+    """main() checks packages that have track_upstream: true."""
+    _create_package(workdir, 'pkg', '1.0',
+                    metadata={'version': '1.0', 'release': '1',
+                              'track_upstream': True})
+
+    cuv_module.RPMS_DIR = workdir / 'rpms'
+    cuv_module.METADATA_DIR = workdir / 'metadata'
+
+    mock_response = {
+        'version': '2.0',
+        'stable_versions': ['2.0'],
+        'id': 42,
+    }
+
+    with patch.object(cuv_module, 'query_anitya', return_value=mock_response), \
+         patch('sys.argv', ['check_upstream_versions.py', 'check', '--quiet']), \
+         pytest.raises(SystemExit) as exc_info:
+        cuv_module.main()
+
+    # Exit code 1 means updates found
+    assert exc_info.value.code == 1
+
+
+def test_main_explicit_args_bypass_track_filter(cuv_module, workdir: Path) -> None:
+    """Explicit CLI package args bypass the track_upstream filter."""
+    _create_package(workdir, 'untracked', '1.0',
+                    metadata={'version': '1.0', 'release': '1'})
+
+    cuv_module.RPMS_DIR = workdir / 'rpms'
+    cuv_module.METADATA_DIR = workdir / 'metadata'
+
+    mock_response = {
+        'version': '2.0',
+        'stable_versions': ['2.0'],
+        'id': 42,
+    }
+
+    with patch.object(cuv_module, 'query_anitya', return_value=mock_response), \
+         patch('sys.argv', ['check_upstream_versions.py', 'check', '--quiet', 'untracked']), \
+         pytest.raises(SystemExit) as exc_info:
+        cuv_module.main()
+
+    # Should check the package even though it doesn't have track_upstream
+    assert exc_info.value.code == 1
+
+
+#
+# Tests — list subcommand
+#
+
+
+def test_list_subcommand_includes_all_packages(
+    cuv_module, workdir: Path, capsys
+) -> None:
+    """list subcommand includes both tracked and untracked packages."""
+    _create_package(workdir, 'tracked-pkg', '1.0',
+                    metadata={'version': '1.0', 'release': '1',
+                              'track_upstream': True})
+    _create_package(workdir, 'untracked-pkg', '1.0',
+                    metadata={'version': '1.0', 'release': '1'})
+
+    cuv_module.RPMS_DIR = workdir / 'rpms'
+    cuv_module.METADATA_DIR = workdir / 'metadata'
+
+    mock_response = {
+        'version': '1.0',
+        'stable_versions': ['1.0'],
+        'id': 42,
+    }
+
+    with patch.object(cuv_module, 'query_anitya', return_value=mock_response), \
+         patch('sys.argv', ['check_upstream_versions.py', 'list', '--quiet']), \
+         pytest.raises(SystemExit) as exc_info:
+        cuv_module.main()
+
+    assert exc_info.value.code == 0
+    output = capsys.readouterr().out
+    assert 'tracked-pkg' in output
+    assert 'untracked-pkg' in output
+
+
+def test_list_subcommand_shows_not_found(
+    cuv_module, workdir: Path, capsys
+) -> None:
+    """list subcommand shows not-found status for missing packages."""
+    _create_package(workdir, 'missing-pkg', '1.0',
+                    metadata={'version': '1.0', 'release': '1'})
+
+    cuv_module.RPMS_DIR = workdir / 'rpms'
+    cuv_module.METADATA_DIR = workdir / 'metadata'
+
+    with patch.object(cuv_module, 'query_anitya',
+                      side_effect=ValueError('Package not found in Fedora')), \
+         patch('sys.argv', ['check_upstream_versions.py', 'list', '--quiet']), \
+         pytest.raises(SystemExit) as exc_info:
+        cuv_module.main()
+
+    assert exc_info.value.code == 0
+    output = capsys.readouterr().out
+    assert 'missing-pkg' in output
+    assert 'not found in release-monitoring.org' in output
+
+
+def test_list_subcommand_json_output(
+    cuv_module, workdir: Path, capsys
+) -> None:
+    """list subcommand with --json produces valid JSON with all packages."""
+    _create_package(workdir, 'alpha', '1.0',
+                    metadata={'version': '1.0', 'release': '1',
+                              'track_upstream': True})
+    _create_package(workdir, 'beta', '2.0',
+                    metadata={'version': '2.0', 'release': '1'})
+
+    cuv_module.RPMS_DIR = workdir / 'rpms'
+    cuv_module.METADATA_DIR = workdir / 'metadata'
+
+    mock_response = {
+        'version': '2.0',
+        'stable_versions': ['2.0'],
+        'id': 42,
+    }
+
+    with patch.object(cuv_module, 'query_anitya', return_value=mock_response), \
+         patch('sys.argv', ['check_upstream_versions.py', 'list',
+                            '--quiet', '--json']), \
+         pytest.raises(SystemExit) as exc_info:
+        cuv_module.main()
+
+    assert exc_info.value.code == 0
+    output = capsys.readouterr().out
+    data = json.loads(output)
+    assert isinstance(data, list)
+    names = [entry['package'] for entry in data]
+    assert 'alpha' in names
+    assert 'beta' in names
+    # Verify sorted alphabetically
+    assert names == sorted(names)
+
+
+def test_list_subcommand_shows_tracking_status(
+    cuv_module, workdir: Path, capsys
+) -> None:
+    """list subcommand shows correct tracking status from metadata."""
+    _create_package(workdir, 'tracked', '1.0',
+                    metadata={'version': '1.0', 'release': '1',
+                              'track_upstream': True})
+    _create_package(workdir, 'untracked', '1.0',
+                    metadata={'version': '1.0', 'release': '1'})
+
+    cuv_module.RPMS_DIR = workdir / 'rpms'
+    cuv_module.METADATA_DIR = workdir / 'metadata'
+
+    mock_response = {
+        'version': '1.0',
+        'stable_versions': ['1.0'],
+        'id': 42,
+    }
+
+    with patch.object(cuv_module, 'query_anitya', return_value=mock_response), \
+         patch('sys.argv', ['check_upstream_versions.py', 'list',
+                            '--quiet', '--json']), \
+         pytest.raises(SystemExit) as exc_info:
+        cuv_module.main()
+
+    assert exc_info.value.code == 0
+    output = capsys.readouterr().out
+    data = json.loads(output)
+
+    by_name = {entry['package']: entry for entry in data}
+    assert by_name['tracked']['tracking'] == 'yes'
+    assert by_name['untracked']['tracking'] == 'no'
+
+
+#
+# Tests — check subcommand
+#
+
+
+def test_check_subcommand_filters_tracked(cuv_module, workdir: Path) -> None:
+    """check subcommand only checks packages with track_upstream: true."""
+    _create_package(workdir, 'tracked', '1.0',
+                    metadata={'version': '1.0', 'release': '1',
+                              'track_upstream': True})
+    _create_package(workdir, 'untracked', '1.0',
+                    metadata={'version': '1.0', 'release': '1'})
+
+    cuv_module.RPMS_DIR = workdir / 'rpms'
+    cuv_module.METADATA_DIR = workdir / 'metadata'
+
+    mock_response = {
+        'version': '1.0',
+        'stable_versions': ['1.0'],
+        'id': 42,
+    }
+
+    checked = []
+    original_check = cuv_module.check_package_version
+
+    def tracking_check(pkg, distro='Fedora'):
+        checked.append(pkg)
+        return original_check(pkg, distro)
+
+    with patch.object(cuv_module, 'query_anitya', return_value=mock_response), \
+         patch.object(cuv_module, 'check_package_version',
+                      side_effect=tracking_check), \
+         patch('sys.argv', ['check_upstream_versions.py', 'check', '--quiet']), \
+         pytest.raises(SystemExit):
+        cuv_module.main()
+
+    assert 'tracked' in checked
+    assert 'untracked' not in checked
+
+
+def test_check_subcommand_with_packages(cuv_module, workdir: Path) -> None:
+    """check subcommand with explicit packages bypasses track filter."""
+    _create_package(workdir, 'untracked', '1.0',
+                    metadata={'version': '1.0', 'release': '1'})
+
+    cuv_module.RPMS_DIR = workdir / 'rpms'
+    cuv_module.METADATA_DIR = workdir / 'metadata'
+
+    mock_response = {
+        'version': '2.0',
+        'stable_versions': ['2.0'],
+        'id': 42,
+    }
+
+    with patch.object(cuv_module, 'query_anitya', return_value=mock_response), \
+         patch('sys.argv', ['check_upstream_versions.py', 'check',
+                            '--quiet', 'untracked']), \
+         pytest.raises(SystemExit) as exc_info:
+        cuv_module.main()
+
+    assert exc_info.value.code == 1

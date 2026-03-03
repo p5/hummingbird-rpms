@@ -1672,6 +1672,63 @@ def test_sync_bypasses_prerelease_check(workdir: Path, upstream_repos: dict[str,
     assert import_data['version'] == '2.0~rc1'
 
 
+def test_mark_track_upstream_enable(workdir: Path, upstream_repos: dict[str, Path]) -> None:
+    """mark-track-upstream --enable sets track_upstream to true."""
+    # Import vanilla package
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["vanilla"]}'],
+        cwd=workdir, check=True,
+    )
+
+    # Verify track_upstream is not present initially
+    metadata_file = workdir / 'metadata' / 'vanilla.json'
+    with open(metadata_file) as f:
+        metadata = json.load(f)
+    assert 'track_upstream' not in metadata
+
+    # Enable track_upstream
+    result = subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'mark-track-upstream', 'vanilla', '--enable'],
+        cwd=workdir, capture_output=True, text=True, check=True,
+    )
+
+    # Verify metadata updated
+    with open(metadata_file) as f:
+        metadata = json.load(f)
+    assert metadata['track_upstream'] is True
+
+
+def test_mark_track_upstream_disable(workdir: Path, upstream_repos: dict[str, Path]) -> None:
+    """mark-track-upstream --disable removes track_upstream from metadata."""
+    # Import vanilla package
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["vanilla"]}'],
+        cwd=workdir, check=True,
+    )
+
+    # Enable track_upstream first
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'mark-track-upstream', 'vanilla', '--enable'],
+        cwd=workdir, check=True,
+    )
+
+    metadata_file = workdir / 'metadata' / 'vanilla.json'
+    with open(metadata_file) as f:
+        metadata = json.load(f)
+    assert metadata['track_upstream'] is True
+
+    # Disable track_upstream
+    result = subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'mark-track-upstream', 'vanilla', '--disable'],
+        cwd=workdir, capture_output=True, text=True, check=True,
+    )
+
+    # Verify track_upstream removed from metadata
+    with open(metadata_file) as f:
+        metadata = json.load(f)
+    assert 'track_upstream' not in metadata
+
+
 def test_list_prerelease_packages(workdir: Path, upstream_repos: dict[str, Path]) -> None:
     """Test list --prerelease shows only packages with pre-release versions."""
     # Import vanilla and chocolate
