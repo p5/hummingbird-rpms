@@ -27,7 +27,7 @@
 %global _binaries_in_noarch_packages_terminate_build 0
 
 # Do not check any files in doc or src for requires
-%global __requires_exclude_from ^(%{_datadir}|/usr/lib)/%{name}/(doc|src)/.*$
+%global __requires_exclude_from ^(%{_datadir}|/usr/lib)/%{basepackagename}/(doc|src)/.*$
 
 # Don't alter timestamps of especially the .a files (or else go will rebuild later)
 # Actually, don't strip at all since we are not even building debug packages and this corrupts the dwarf testdata
@@ -85,7 +85,7 @@
 %global shared 0
 
 # Fedora GOROOT
-%global goroot          /usr/lib/%{name}
+%global goroot          /usr/lib/%{basepackagename}
 
 %ifarch x86_64
 %global gohostarch  amd64
@@ -127,7 +127,12 @@
 # LLVM compiler-rt version for race detector
 %global llvm_compiler_rt_version 18.1.8
 
-Name:           golang-fips%{go_api}
+%global basepackagename golang-fips
+
+# Override default doc directory to use basepackagename instead of name
+%global _docdir_fmt %{basepackagename}
+
+Name:           %{basepackagename}%{go_api}
 Version:	%{go_version}
 Release:        1.1%{?dist}
 Summary:        The Go Programming Language
