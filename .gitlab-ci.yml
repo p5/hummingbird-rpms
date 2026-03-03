@@ -57,6 +57,8 @@ tree_status:
 
 check:
   script:
+    # Fetch full history for git commit trailer validation
+    - git fetch --unshallow --quiet
     - make check-host
   rules:
     - !reference [.rules, mr]

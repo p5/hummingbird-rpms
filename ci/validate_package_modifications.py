@@ -55,6 +55,87 @@ def get_changed_packages_in_mr() -> list[str]:
     return sorted(changed_packages)
 
 
+def check_git_history_state(package_name: str) -> tuple[bool, str | None]:
+    """
+    Check if package is clean based on git commit history.
+
+    A package is considered "clean" if all commits since the last Sync
+    (or all commits if no Sync exists) have the "Upstream:" trailer.
+
+    Uses git's native filtering for speed:
+    - Finds last "Sync" commit by searching subjects only
+    - Uses --grep to find commits missing "Upstream:" trailer
+
+    Args:
+        package_name: Package name to check
+
+    Returns:
+        (is_clean, error_message) tuple
+    """
+    # can't validate without full history
+    result = run_git('rev-parse', '--is-shallow-repository', cwd=ROOT_DIR, check=False)
+    if result.stdout.strip() == 'true':
+        logging.error("Cannot validate git history in shallow clone")
+        sys.exit(1)
+
+    package_path = f'rpms/{package_name}'
+
+    # Step 1: Find the last Sync commit for this package
+    # Note: Sync commits with --mark are empty commits, so we can't filter by path
+    # We search for "Sync <package>" in the subject line
+    result = run_git(
+        'log',
+        '--format=%H %s',
+        '--grep',
+        f'^Sync {package_name} ',
+        cwd=ROOT_DIR,
+        check=False
+    )
+
+    last_sync_sha = None
+    if result.stdout.strip():
+        # Take the first (most recent) Sync commit for this package
+        first_line = result.stdout.strip().split('\n')[0]
+        last_sync_sha = first_line.split(' ', 1)[0]
+
+    # Step 2: Find commits without "Upstream:" trailer
+    # Range: from HEAD to last Sync (exclusive), or all commits if no Sync
+    if last_sync_sha:
+        # Check commits from HEAD to last Sync (not including the Sync itself)
+        git_range = f'{last_sync_sha}..HEAD'
+    else:
+        # No Sync found, check all commits
+        git_range = 'HEAD'
+
+    result = run_git(
+        'log',
+        '--format=%H %s',
+        '--invert-grep',
+        '--grep=^Upstream:',
+        git_range,
+        '--',
+        package_path,
+        cwd=ROOT_DIR,
+        check=False
+    )
+
+    # If any commits found, package has modifications
+    bad_commits = [line for line in result.stdout.strip().split('\n') if line]
+
+    if bad_commits:
+        # Report the first problematic commit
+        parts = bad_commits[0].split(' ', 1)
+        sha = parts[0]
+        subject = parts[1] if len(parts) == 2 else '(no subject)'
+
+        return False, (
+            f"{package_name}: Commit {sha[:8]} ('{subject}') is missing "
+            f"'Upstream:' trailer. Package appears to be locally modified."
+        )
+
+    return True, None
+
+
 def validate_package(package_name: str, check_actual_state: bool = True) -> tuple[bool, str | None]:
     """
     Validate modification_status for a package.
@@ -102,7 +183,21 @@ def validate_package(package_name: str, check_actual_state: bool = True) -> tupl
     if status == 'modified' and not metadata.get('modification_reason'):
         return False, f"{package_name}: Marked as modified but missing modification_reason"
 
-    # Check 5 & 6: Verify actual state matches metadata (if requested)
+    # Check 5: Verify git history matches metadata (fast check)
+    # Skip if running expensive check (which uses filesystem comparison instead)
+    if not check_actual_state and status in ['clean', 'modified']:
+        is_clean_by_history, history_error = check_git_history_state(package_name)
+
+        if status == 'clean' and not is_clean_by_history:
+            return False, history_error
+
+        if status == 'modified' and is_clean_by_history:
+            return False, (
+                f"{package_name}: Marked as modified but git history shows only "
+                f"standard Import/Update/Sync commits. Consider marking as clean."
+            )
+
+    # Check 6: Verify actual state matches metadata (expensive check, optional)
     if check_actual_state and status in ['clean', 'modified']:
         with tempfile.TemporaryDirectory() as tmpdir:
             upstream_dir = Path(tmpdir) / 'upstream'
@@ -172,14 +267,14 @@ Examples:
   # Validate packages changed in current MR (fast)
   %(prog)s --mr
 
-  # Validate all packages (slow, checks actual state)
+  # Validate all packages (fast git history check)
   %(prog)s --all
 
   # Validate specific packages
   %(prog)s bash glibc gcc
 
-  # Validate without checking actual state (fast)
-  %(prog)s --no-check-state --all
+  # Thorough validation with upstream clone check (slow)
+  %(prog)s --all --thorough
 """
     )
 
@@ -189,8 +284,8 @@ Examples:
                        help='Validate only packages changed in current MR')
     parser.add_argument('--all', action='store_true',
                        help='Validate all packages')
-    parser.add_argument('--no-check-state', action='store_true',
-                       help='Skip checking actual package state (faster)')
+    parser.add_argument('--thorough', action='store_true',
+                       help='Perform expensive upstream clone diff check instead of git history')
     parser.add_argument('--verbose', '-v', action='store_true',
                        help='Enable verbose logging')
 
@@ -226,14 +321,12 @@ Examples:
     else:
         parser.error("Must specify --mr, --all, or package names")
 
-    check_actual_state = not args.no_check_state
-
-    if check_actual_state:
+    if args.thorough:
         print("Note: Checking actual package state (this may take a while)...")
     else:
         print("Note: Skipping actual state verification (fast mode)")
 
-    return validate_packages(packages, check_actual_state)
+    return validate_packages(packages, args.thorough)
 
 
 if __name__ == '__main__':

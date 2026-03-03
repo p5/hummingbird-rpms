@@ -156,7 +156,7 @@ The CI pipeline validates modification status consistency using
 `make check`, which runs:
 
 ```bash
-./ci/validate_package_modifications.py --all --no-check-state
+./ci/validate_package_modifications.py --all
 ```
 
 This validation ensures:
@@ -165,6 +165,7 @@ This validation ensures:
 2. The value is one of: `clean`, `modified`, `native`
 3. Modified packages have a `modification_reason`
 4. Native packages do not have source/branch/sha fields (Hummingbird-native only)
+5. Git commit history matches the declared modification status
 
 The validation runs on every merge request and push to main, failing the build
 if metadata is inconsistent.
@@ -180,6 +181,30 @@ Or validate specific packages:
 ```bash
 ./ci/validate_package_modifications.py bash glibc gcc
 ```
+
+### Validation Modes
+
+The validation script has two modes:
+
+**Fast mode (default)**: Checks git commit history patterns
+```bash
+./ci/validate_package_modifications.py --all
+```
+This validates that all commits since the last Sync follow standard patterns
+(have Upstream: trailers). Runs in less than a minute for all packages.
+
+**Thorough mode**: Clones upstream repos and compares filesystems
+```bash
+./ci/validate_package_modifications.py --all --thorough
+```
+This performs full filesystem comparisons with upstream Fedora repositories.
+Slow and unreliable (hundreds of upstream dist-git clones) but authoritative -
+validates actual state regardless of git commit history.
+
+For CI and daily development, fast mode is sufficient. Use thorough mode when:
+- Debugging discrepancies between metadata and actual state
+- Auditing the entire repository for hidden modifications
+- Investigating why a package can't be updated
 
 ## Workflow Examples
 
