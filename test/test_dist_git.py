@@ -737,9 +737,15 @@ def test_sync(workdir: Path, upstream_repos: dict[str, Path]) -> None:
         cwd=workdir, check=True
     )
 
-    # Make local modification and commit it
+    # Make local modification, declare, and commit it
     choc_spec = workdir / 'rpms' / 'chocolate' / 'chocolate.spec'
     choc_spec.write_text(choc_spec.read_text() + '\n# Local modification\n')
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), '--dry-run', 'mark-modified', 'chocolate', '--modified',
+         '--reason', 'Local test modification'],
+        cwd=workdir, check=True,
+    )
+
     subprocess.run(['git', 'commit', '-a', '-m', 'Local modification'], cwd=workdir, check=True)
 
     new_sha = add_upstream_commit(upstream_repos["chocolate"], 'chocolate', '10', '11')
@@ -758,6 +764,8 @@ def test_sync(workdir: Path, upstream_repos: dict[str, Path]) -> None:
         import_data = json.load(f)
     assert import_data['sha'] == new_sha
     assert import_data['version'] == '11'
+    assert import_data['modification_status'] == 'clean'
+    assert 'modification_reason' not in import_data
 
     # Verify sync commit was created
     subject, body = get_last_commit_info(workdir)
@@ -801,6 +809,46 @@ def test_sync_already_in_sync(workdir: Path, upstream_repos: dict[str, Path]) ->
     )
     assert result.returncode != 0
     assert "already at upstream" in result.stderr
+
+
+def test_sync_mark(workdir: Path, upstream_repos: dict[str, Path]) -> None:
+    """Sync --mark creates proper commit when already at upstream."""
+    # Import chocolate (automatically commits)
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["chocolate"]}'],
+        cwd=workdir, check=True,
+    )
+
+    chocolate_import_json = workdir / 'metadata' / 'chocolate.json'
+    original_metadata = chocolate_import_json.read_bytes()
+
+    # Get the import commit sha to extract Upstream value
+    subject, body = get_last_commit_info(workdir)
+    import re
+    upstream_match = re.search(r'Upstream: ([0-9a-f]{40})', body)
+    assert upstream_match
+    original_sha = upstream_match.group(1)
+
+    # Sync --mark when already at upstream should succeed
+    result = subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'sync', '--mark', 'chocolate'],
+        cwd=workdir, capture_output=True, text=True, check=True
+    )
+
+    # Verify sync commit was created even though no upstream changes
+    subject, body = get_last_commit_info(workdir)
+    assert subject == 'Sync chocolate to 10-1 (mark)'
+    assert f"Upstream: {original_sha}" in body
+
+    # Metadata file should be bitwise identical
+    assert chocolate_import_json.read_bytes() == original_metadata
+
+    # Verify commit is empty (no actual changes)
+    diff_result = subprocess.run(
+        ['git', 'diff', 'HEAD~1', 'HEAD'],
+        cwd=workdir, capture_output=True, text=True, check=True
+    )
+    assert diff_result.stdout == '', "Commit should be empty"
 
 
 def test_git_config_required(workdir: Path, upstream_repos: dict[str, Path]) -> None:

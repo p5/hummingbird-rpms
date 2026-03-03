@@ -1,6 +1,7 @@
 {
   "branch": "rawhide",
-  "modification_status": "clean",
+  "modification_reason": "Local changes in commit be5558a2",
+  "modification_status": "modified",
   "release": "1",
   "sha": "6550e2a1eee3069ed6cfe796d504fc8ec98acc92",
   "source": "https://src.fedoraproject.org/rpms/nodejs20.git",
