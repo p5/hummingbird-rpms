@@ -650,12 +650,11 @@ def check_koji_build(package_name: str, version: str, release: str, expected_com
 
             fallback_nvr = f'{package_name}-{version}-{release}.{previous_koji_dist_tag}'
             logging.info("Build %s not found in Koji, trying %s", nvr, fallback_nvr)
+            nvr = fallback_nvr  # Use fallback NVR for subsequent logging
             build_result = call_koji_with_retry(
                 server.getBuild, fallback_nvr,
                 method_name=f"Koji getBuild({fallback_nvr})"
             )
-            if build_result:
-                nvr = fallback_nvr  # Update for logging below
 
     if not build_result:
         logging.info("Build %s not found in Koji", nvr)
