@@ -153,6 +153,19 @@ def compare_versions(current: str, upstream: str) -> int:
 
 def parse_spec_version(package_dir: Path) -> Optional[str]:
     """Extract version from package's spec file using rpmspec."""
+    result = parse_spec_version_release(package_dir)
+    if result is None:
+        return None
+    return result[0]
+
+
+def parse_spec_version_release(package_dir: Path) -> Optional[tuple[str, str]]:
+    """Extract version and release from package's spec file using rpmspec.
+
+    Returns:
+        (version, release) tuple, or None if the spec cannot be parsed.
+        The release has the dist suffix stripped (queried with dist set to nil).
+    """
     spec_files = list(package_dir.glob("*.spec"))
     if len(spec_files) != 1:
         return None
@@ -164,7 +177,7 @@ def parse_spec_version(package_dir: Path) -> Optional[str]:
                 "rpmspec",
                 "-q",
                 "--qf",
-                "%{VERSION}\n",
+                "%{VERSION}\n%{RELEASE}\n",
                 "--define=dist %{nil}",
                 f"--define=_sourcedir {package_dir}",
                 "--srpm",
@@ -174,8 +187,12 @@ def parse_spec_version(package_dir: Path) -> Optional[str]:
             text=True,
             check=True,
         )
-        version = result.stdout.strip().split("\n")[0]
-        return version if version else None
+        lines = result.stdout.strip().split("\n")
+        if len(lines) < 2:
+            return None
+        version = lines[0]
+        release = lines[1]
+        return (version, release) if version else None
     except subprocess.CalledProcessError:
         return None
 
@@ -419,7 +436,12 @@ def _update_gitignore(package_dir: Path, filenames: list[str]) -> None:
         )
 
 
-def mark_package_modified(package: str, reason: str) -> None:
+def mark_package_modified(
+    package: str,
+    reason: str,
+    version: Optional[str] = None,
+    release: Optional[str] = None,
+) -> None:
     """
     Mark a package's metadata as modified.
 
@@ -430,6 +452,8 @@ def mark_package_modified(package: str, reason: str) -> None:
     Args:
         package: Package name
         reason: Reason for the update
+        version: If provided, update the version field in metadata
+        release: If provided, update the release field in metadata
     """
     metadata_file = METADATA_DIR / f"{package}.json"
     if not metadata_file.exists():
@@ -447,6 +471,10 @@ def mark_package_modified(package: str, reason: str) -> None:
 
     data["modification_status"] = "modified"
     data["modification_reason"] = reason
+    if version is not None:
+        data["version"] = version
+    if release is not None:
+        data["release"] = release
 
     try:
         with open(metadata_file, "w") as f:
@@ -513,8 +541,18 @@ def update_spec_version(package: str, new_version: str) -> list[str]:
     # Download new source archives
     downloaded = download_new_sources(package, old_version, new_version)
 
+    # Read back the resolved version and release from the updated spec
+    vr = parse_spec_version_release(package_dir)
+    resolved_version = vr[0] if vr else new_version
+    resolved_release = vr[1] if vr else None
+
     # Mark metadata as modified to prevent auto-updates from overwriting
-    mark_package_modified(package, f"Update to upstream version {new_version}")
+    mark_package_modified(
+        package,
+        f"Update to upstream version {new_version}",
+        version=resolved_version,
+        release=resolved_release,
+    )
 
     return downloaded
 
