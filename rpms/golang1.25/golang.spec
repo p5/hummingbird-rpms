@@ -12,7 +12,7 @@
 %global _binaries_in_noarch_packages_terminate_build 0
 
 # Do not check any files in doc or src for requires
-%global __requires_exclude_from ^(%{_datadir}|/usr/lib)/%{name}/(doc|src)/.*$
+%global __requires_exclude_from ^(%{_datadir}|/usr/lib)/%{basepackagename}/(doc|src)/.*$
 
 # Don't alter timestamps of especially the .a files (or else go will rebuild later)
 # Actually, don't strip at all since we are not even building debug packages and this corrupts the dwarf testdata
@@ -71,7 +71,7 @@
 %global race 0
 
 # Fedora GOROOT
-%global goroot          /usr/lib/%{name}
+%global goroot          /usr/lib/%{basepackagename}
 
 %ifarch x86_64
 %global gohostarch  amd64
@@ -106,9 +106,14 @@
 %global go_version %{go_api}%{?go_patch:.%{go_patch}}%{?go_prerelease:~%{go_prerelease}}
 %global go_source %{go_api}%{?go_patch:.%{go_patch}}%{?go_prerelease}
 
-Name:           golang1.25
+%global basepackagename golang
+
+# Override default doc directory to use basepackagename instead of name
+%global _docdir_fmt %{basepackagename}
+
+Name:           %{basepackagename}1.25
 Version:        %{go_version}
-Release:        1.1%{?dist}
+Release:        1.2%{?dist}
 Summary:        The Go Programming Language
 # source tree includes several copies of Mark.Twain-Tom.Sawyer.txt under Public Domain
 License:        BSD-3-Clause AND LicenseRef-Fedora-Public-Domain
