@@ -364,6 +364,8 @@ def test_update(workdir: Path, upstream_repos: dict[str, Path]) -> None:
     # Add strawberry metadata (copy chocolate's old metadata, so it has an update available)
     strawberry_import_json = workdir / 'metadata' / 'strawberry.json'
     strawberry_import_data = chocolate_import_data.copy()
+    strawberry_import_data['modification_status'] = 'modified'
+    strawberry_import_data['modification_reason'] = 'Test local modification'
     with open(strawberry_import_json, 'w') as f:
         json.dump(strawberry_import_data, f, indent=2, sort_keys=True)
         f.write('\n')
