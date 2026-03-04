@@ -1,9 +1,8 @@
 {
   "branch": "rawhide",
-  "modification_reason": "Update to upstream version 3.8.12",
-  "modification_status": "modified",
-  "release": "10",
-  "sha": "206dea995ca738072873f0dea822e72d982d380b",
+  "modification_status": "clean",
+  "release": "1",
+  "sha": "6777b603e5f25a0d2e383724724ecc26b537a6af",
   "source": "https://src.fedoraproject.org/rpms/gnutls.git",
-  "version": "3.8.11"
+  "version": "3.8.12"
 }

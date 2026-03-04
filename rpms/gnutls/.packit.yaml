@@ -28,4 +28,5 @@ actions:
 jobs:
   - job: propose_downstream
     trigger: release
-    dist_git_branches: fedora-all
+    metadata:
+      dist_git_branches: fedora-all
