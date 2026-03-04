@@ -311,8 +311,13 @@ def update_releases() -> None:
     data = json.loads(output)
     fedora_releases_list = [r for r in data['releases'] if r['id_prefix'] == 'FEDORA']
     for release in fedora_releases_list:
-        # Skip rawhide - it will be automatically resolved to the highest version
-        if release['branch'] != 'rawhide':
+        if release['branch'] == 'rawhide':
+            # Don't add rawhide as a branch key, but DO add its dist_tag (e.g., f45)
+            # This handles the case where a new Fedora version hasn't branched yet
+            # and only exists as rawhide in Bodhi
+            releases['fedora'][release['dist_tag']] = release['dist_tag']
+        else:
+            # Add normal branches (f43, f44, etc.)
             releases['fedora'][release['branch']] = release['dist_tag']
 
     # Log what rawhide will resolve to (for informational purposes)
@@ -645,12 +650,11 @@ def check_koji_build(package_name: str, version: str, release: str, expected_com
 
             fallback_nvr = f'{package_name}-{version}-{release}.{previous_koji_dist_tag}'
             logging.info("Build %s not found in Koji, trying %s", nvr, fallback_nvr)
+            nvr = fallback_nvr  # Use fallback NVR for subsequent logging
             build_result = call_koji_with_retry(
                 server.getBuild, fallback_nvr,
                 method_name=f"Koji getBuild({fallback_nvr})"
             )
-            if build_result:
-                nvr = fallback_nvr  # Update for logging below
 
     if not build_result:
         logging.info("Build %s not found in Koji", nvr)
