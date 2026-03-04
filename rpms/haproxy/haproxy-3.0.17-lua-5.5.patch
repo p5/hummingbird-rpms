@@ -1,0 +1,15 @@
+diff -up haproxy-3.0.17/src/hlua.c.lua55 haproxy-3.0.17/src/hlua.c
+--- haproxy-3.0.17/src/hlua.c.lua55	2026-03-03 13:24:01.561209842 -0500
++++ haproxy-3.0.17/src/hlua.c	2026-03-03 13:25:08.965834568 -0500
+@@ -13887,7 +13887,11 @@ lua_State *hlua_init_state(int thread_nu
+ 	struct prepend_path *pp;
+ 
+ 	/* Init main lua stack. */
++#if defined(LUA_VERSION_NUM) && LUA_VERSION_NUM >= 505
++	L = lua_newstate(hlua_alloc, &hlua_global_allocator, luaL_makeseed(0));
++#else
+ 	L = lua_newstate(hlua_alloc, &hlua_global_allocator);
++#endif
+ 
+ 	if (!L) {
+ 		fprintf(stderr,
