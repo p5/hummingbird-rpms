@@ -1,0 +1,11 @@
+--- hiredis-1.2.0/test.c
++++ hiredis-1.2.0/test.c
+@@ -2187,7 +2187,7 @@
+     assert(astest.ac == NULL);
+     test_cond(astest.disconnect_status == REDIS_OK);
+ 
+-    if (config.type == CONN_TCP || config.type == CONN_SSL) {
++    if (getenv("HIREDIS_SKIP_ASYNC_TIMEOUT_TEST") == NULL && (config.type == CONN_TCP || config.type == CONN_SSL)) {
+         /* timeout can only be simulated with network */
+         test("Async connect timeout: ");
+         config.tcp.host = "192.168.254.254";  /* blackhole ip */

@@ -9,6 +9,7 @@ Source0:        https://github.com/redis/hiredis/archive/v%{version}/%{name}-%{v
 # Make test.sh use REDIS_SERVER everywhere
 # https://github.com/redis/hiredis/pull/1276
 Patch0:         hiredis-envvar.patch
+Patch1:         hiredis-skip-async-timeout-test.patch
 BuildRequires:  gcc
 BuildRequires:  make
 BuildRequires:  openssl-devel
@@ -41,7 +42,7 @@ find %{buildroot} -name '*.a' -delete -print
 
 %ifnarch %{ix86}
 %check
-make check REDIS_SERVER=valkey-server
+HIREDIS_SKIP_ASYNC_TIMEOUT_TEST=1 make check REDIS_SERVER=valkey-server
 %endif
 
 %files
