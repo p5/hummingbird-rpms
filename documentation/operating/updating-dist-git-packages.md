@@ -11,6 +11,9 @@ Packages are automatically updated from Fedora dist-git. Each update creates a s
 # Check only clean packages (skip modified/native)
 ./ci/dist_git_update_multi_mr.sh --clone --clean-only
 
+# Check only modified packages (skip clean/native)
+./ci/dist_git_update_multi_mr.sh --clone --modified-only
+
 # Create up to 3 test MRs (checks all packages, stops after finding 3 updates)
 export CHORE_MR_GITLAB_TOKEN="glpat-xxxxxxxxxxxxxxxxxxxx"
 ./ci/dist_git_update_multi_mr.sh --clone --max=3 --create-mrs
@@ -32,6 +35,7 @@ export CHORE_MR_GITLAB_TOKEN="glpat-xxxxxxxxxxxxxxxxxxxx"
 - `--max=N` - When creating MRs: checks packages until N updates found. When dry-run: checks first N packages
 - `--create-mrs` - Actually create MRs (requires token)
 - `--clean-only` - Skip packages with `modification_status` of 'modified' or 'native', only process clean packages
+- `--modified-only` - Skip packages with `modification_status` of 'clean' or 'native', only process modified packages (mutually exclusive with `--clean-only`)
 
 ### Using --clean-only
 
@@ -51,6 +55,10 @@ ERROR: Cannot auto-update <package>
 ```
 
 These expected failures can mask genuine update issues. Using `--clean-only` prevents these false failures.
+
+### Using --modified-only
+
+The `--modified-only` flag filters to only process packages marked as 'modified', skipping clean and native packages. This is useful for checking the merge logic, as well as getting an overview of current merge conflicts.
 
 ## Auto-Merge and Auto-Approval
 
