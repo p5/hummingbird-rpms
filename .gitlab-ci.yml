@@ -127,7 +127,7 @@ dist_git_update:
       git branch --quiet --force "${CI_COMMIT_BRANCH:-$CI_DEFAULT_BRANCH}" "origin/${CI_COMMIT_BRANCH:-$CI_DEFAULT_BRANCH}"
   script:
     - |
-      ./ci/dist_git_update_multi_mr.sh --max=500 --clean-only
+      ./ci/dist_git_update_multi_mr.sh
   rules:
     - !reference [.rules, schedule]
     - !reference [.rules, mr_manual]
