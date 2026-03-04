@@ -398,8 +398,9 @@ def test_update(workdir: Path, upstream_repos: dict[str, Path]) -> None:
     assert subject == 'Update chocolate from 10-1 to 11-1'
     assert f"Upstream: {chocolate_import_data['sha']}" in body
 
-    # Case 3: strawberry should be skipped (has upstream update but also has local modifications)
-    assert "Skipping strawberry: package has local modifications" in result.stderr
+    # Case 3: strawberry should be updated with merge (has upstream update and local modifications)
+    assert "Updating strawberry" in result.stderr
+    assert "Local modifications applied successfully" in result.stderr
 
     # Case 4: mango should not be mentioned (no metadata)
     assert "mango" not in result.stderr
@@ -1102,35 +1103,104 @@ def test_mark_clean(workdir: Path, upstream_repos: dict[str, Path]) -> None:
     assert 'modification_reason' not in metadata
 
 
-def test_modified_package_blocks_update(workdir: Path, upstream_repos: dict[str, Path]) -> None:
-    """Verify that modified packages block automatic updates."""
-    # Import vanilla package
+@pytest.mark.parametrize("modify_release", [False, True], ids=["clean", "with_release"])
+def test_update_merge_clean(workdir: Path, upstream_repos: dict[str, Path], modify_release: bool) -> None:
+    """Update automatically merges non-conflicting local and upstream changes.
+
+    Tests both:
+    - Clean merge without local Release: changes
+    - Merge with local Release: bump that is normalized out
+    """
+    # Import vanilla
     subprocess.run(
         [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["vanilla"]}'],
         cwd=workdir, check=True,
     )
 
-    # Mark as modified
+    # Make local modification: add comment and optionally bump Release
+    vanilla_spec = workdir / 'rpms' / 'vanilla' / 'vanilla.spec'
+    spec_content = vanilla_spec.read_text()
+    modified_spec = spec_content.replace('%description', '# Local comment\n%description')
+    if modify_release:
+        modified_spec = modified_spec.replace('Release: 1', 'Release: 1.1')
+
+    vanilla_spec.write_text(modified_spec)
     subprocess.run(
-        [str(workdir / 'ci' / 'dist_git.py'), 'mark-modified', 'vanilla', '--modified',
-         '--reason', 'Local patch applied'],
+        [str(workdir / 'ci' / 'dist_git.py'), '--dry-run', 'mark-modified', '--modified',
+         '--reason', 'Local comment added', 'vanilla'], cwd=workdir, check=True,
+    )
+    subprocess.run(['git', 'commit', '-a', '-m', 'Local modification'], cwd=workdir, check=True)
+
+    # Make upstream change: bump Release and add different comment
+    upstream_spec = upstream_repos['vanilla'] / 'vanilla.spec'
+    upstream_content = upstream_spec.read_text()
+    updated_upstream = upstream_content.replace('Release: 1', 'Release: 2')
+    updated_upstream = updated_upstream.replace('%files', '# Upstream comment\n%files')
+    upstream_spec.write_text(updated_upstream)
+    subprocess.run(['git', 'commit', '-a', '-m', 'Bump release and add comment'],
+                   cwd=upstream_repos['vanilla'], check=True)
+
+    # update automatically merges
+    result = subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'update', '--skip-build-check', 'vanilla'],
+        cwd=workdir, capture_output=True, text=True,
+    )
+    assert result.returncode == 0, f"Merge failed: {result.stderr}"
+
+    # Verify both local and upstream comments are present, upstream Release wins
+    merged_spec = vanilla_spec.read_text()
+    assert '# Local comment' in merged_spec, "Local modification missing"
+    assert '# Upstream comment' in merged_spec, "Upstream change missing"
+    assert 'Release: 2' in merged_spec, "Should use upstream Release"
+    if modify_release:
+        assert 'Release: 1.1' not in merged_spec, "Local Release bump should not persist"
+
+    # Verify commit message
+    subject, body = get_last_commit_info(workdir)
+    assert subject.startswith('Update vanilla from')
+    assert 'Upstream:' in body
+
+    # Verify modification_status is still 'modified'
+    metadata = json.loads((workdir / 'metadata' / 'vanilla.json').read_text())
+    assert metadata['modification_status'] == 'modified'
+
+
+def test_update_merge_conflict(workdir: Path, upstream_repos: dict[str, Path]) -> None:
+    """Update fails when local and upstream changes conflict."""
+    # Import chocolate
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["chocolate"]}'],
         cwd=workdir, check=True,
     )
 
-    # Add upstream commit with new version
-    add_upstream_commit(upstream_repos["vanilla"], 'vanilla', '1.0', '2.0')
+    # Make local modification: change License line
+    chocolate_spec = workdir / 'rpms' / 'chocolate' / 'chocolate.spec'
+    spec_content = chocolate_spec.read_text()
+    modified_spec = spec_content.replace('License: GPL', 'License: MIT')
+    chocolate_spec.write_text(modified_spec)
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), '--dry-run', 'mark-modified', '--modified',
+         '--reason', 'Local comment added', 'chocolate'], cwd=workdir, check=True,
+    )
+    subprocess.run(['git', 'commit', '-a', '-m', 'Local modification'], cwd=workdir, check=True)
 
-    # Update should fail
+    # Make conflicting upstream change: change the same License line differently
+    upstream_spec = upstream_repos['chocolate'] / 'chocolate.spec'
+    upstream_content = upstream_spec.read_text()
+    updated_upstream = upstream_content.replace('License: GPL', 'License: Apache-2.0')
+    upstream_spec.write_text(updated_upstream)
+    subprocess.run(['git', 'commit', '-a', '-m', 'Change license to Apache'],
+                   cwd=upstream_repos['chocolate'], check=True)
+
+    # update fails due to conflict
     result = subprocess.run(
-        [str(workdir / 'ci' / 'dist_git.py'), 'update', 'vanilla'],
+        [str(workdir / 'ci' / 'dist_git.py'), 'update', '--skip-build-check', 'chocolate'],
         cwd=workdir, capture_output=True, text=True,
     )
-
-    # Should exit with error
     assert result.returncode != 0
-    assert "Cannot auto-update vanilla" in result.stderr
-    assert "Status: modified" in result.stderr
-    assert "Local patch applied" in result.stderr
+    assert 'conflict' in result.stderr
+    assert 'Manual resolution required' in result.stderr
+    assert 'chocolate.spec.rej' in result.stderr
 
 
 def test_native_package_blocks_update(workdir: Path, upstream_repos: dict[str, Path]) -> None:
@@ -1170,8 +1240,7 @@ Native package
 
     # Should exit with error
     assert result.returncode != 0
-    assert "Cannot auto-update native-pkg" in result.stderr
-    assert "Status: native" in result.stderr
+    assert "Cannot update native package native-pkg" in result.stderr
 
 
 def test_list_all_packages(workdir: Path, upstream_repos: dict[str, Path]) -> None:

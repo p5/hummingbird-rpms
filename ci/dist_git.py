@@ -51,7 +51,7 @@ class PackageMetadata(TypedDict):
     version: str
     release: str
     modification_status: NotRequired[Literal["clean", "modified", "native"]]
-    modification_reason: NotRequired[str]
+    modification_reason: NotRequired[str]  # Only for 'modified'
     track_upstream: NotRequired[bool]
 
 
@@ -820,9 +820,93 @@ def import_(url: str, branch: str, ref: str | None = None, directory: str | None
         run_git_commit('-m', commit_msg, cwd=ROOT_DIR)
 
 
+def merge_local_modifications(package_name: str, package_dir: Path, tmpdir: Path,
+                              metadata: PackageMetadata, upstream_dir: Path,
+                              new_sha: str) -> None:
+    """Merge local modifications with new upstream version.
+
+    Create a diff of local changes against old upstream, apply it on top of new upstream.
+    Exit with error on conflicts.
+    """
+    assert metadata.get('modification_status') == 'modified'
+    assert 'branch' in metadata
+    assert 'sha' in metadata
+    assert 'source' in metadata
+
+    old_sha = metadata['sha']
+
+    # Clone old upstream to compute diff
+    old_upstream_dir = tmpdir / f'{package_name}-old'
+    run_git('clone', '--quiet', '--branch', metadata['branch'], '--single-branch',
+            metadata['source'], str(old_upstream_dir))
+    run_git('checkout', '--quiet', old_sha, cwd=old_upstream_dir)
+    shutil.rmtree(old_upstream_dir / '.git')
+
+    # Copy current local package to tmpdir for easier patching
+    local_copy = tmpdir / f'{package_name}-local'
+    shutil.copytree(package_dir, local_copy)
+
+    # Normalize Release: lines in spec files before diffing
+    # Avoid that our downstream Release: changes create conflicts, we always want upstream to win
+    for dir_path in [old_upstream_dir, local_copy]:
+        for spec_file in dir_path.glob('*.spec'):
+            content = spec_file.read_text()
+            # Replace Release: line with a normalized value
+            normalized = re.sub(r'^Release:.*$', 'Release: 0%{?dist}', content, flags=re.MULTILINE)
+            spec_file.write_text(normalized)
+
+    # Compute diff: old upstream → local (our modifications)
+    # Release: changes are normalized out, so only real modifications remain
+    logging.info("Computing local modifications diff...")
+    result = subprocess.run(
+        ['diff', '-Nur', '--exclude=.git', f'{package_name}-old', f'{package_name}-local'],
+        cwd=tmpdir,
+        capture_output=True,
+        text=True
+    )
+    local_patch = result.stdout
+
+    # Update to new upstream
+    logging.info("Updating %s: %s -> %s (merging local changes)", package_name, old_sha[:8], new_sha[:8])
+    shutil.rmtree(package_dir)
+    shutil.rmtree(upstream_dir / '.git')
+    shutil.copytree(upstream_dir, package_dir)
+
+    # Apply local modifications patch
+    if local_patch:
+        logging.info("Applying local modifications...")
+        # Patch paths are like "vanilla-old/file" → "vanilla-local/file"
+        # Replace "package-old" with "a/package" and "package-local" with "b/package"
+        adjusted_patch = local_patch.replace(f'{package_name}-old/', f'a/{package_name}/')
+        adjusted_patch = adjusted_patch.replace(f'{package_name}-local/', f'b/{package_name}/')
+
+        # Apply with -p2 to strip both a/ and package_name/
+        result = subprocess.run(
+            ['patch', '-p2', '--no-backup-if-mismatch', '--directory', str(package_dir)],
+            input=adjusted_patch,
+            capture_output=True,
+            text=True
+        )
+
+        if result.returncode != 0:
+            # Merge conflict
+            logging.error("Merge conflict applying local modifications")
+            logging.error("Patch output:\n%s", result.stdout)
+            logging.error("Patch errors:\n%s", result.stderr)
+            sys.exit(f"ERROR: Merge conflict applying local modifications to {package_name}\n"
+                    f"       Manual resolution required\n"
+                    f"       {result.stdout}\n{result.stderr}")
+        logging.info("Local modifications applied successfully")
+
+
 def update(package_name: str, skip_build_check: bool = False, sync: bool = False,
            dry_run: bool = False, allow_prerelease: bool = False, mark: bool = False) -> None:
-    """Update a single package from upstream."""
+    """Update a single package from upstream.
+
+    In update mode (not sync), local modifications are automatically merged with upstream changes.
+    If the merge has conflicts, the operation fails.
+
+    In sync mode, local modifications are discarded."""
     if package_name not in imports:
         sys.exit(f"ERROR: Package {package_name} not found (missing metadata/{package_name}.json)")
 
@@ -831,15 +915,10 @@ def update(package_name: str, skip_build_check: bool = False, sync: bool = False
 
     metadata = imports[package_name]
 
-    # Check modification_status - block updates for modified/native packages (unless sync forced)
-    if not sync:
-        status = metadata.get('modification_status', 'clean')
-        if status in ['modified', 'native']:
-            reason = metadata.get('modification_reason', 'No reason provided')
-            sys.exit(f"ERROR: Cannot auto-update {package_name}\n"
-                    f"       Status: {status}\n"
-                    f"       Reason: {reason}\n"
-                    f"       Use 'sync' to force update or 'mark-modified --clean' to allow updates")
+    # Block native packages from being updated (they have no upstream)
+    status = metadata.get('modification_status', 'clean')
+    if status == 'native':
+        sys.exit(f"ERROR: Cannot update native package {package_name}\n")
 
     # Extract the upstream package name from the source URL (for Koji queries)
     # This may differ from the directory name
@@ -935,17 +1014,20 @@ def update(package_name: str, skip_build_check: bool = False, sync: bool = False
                 logging.info("Skipping %s: %s-%s not built in Koji", package_name, version, release)
                 return
 
-        # Check if local package has modifications (only in update mode)
-        if not sync and not is_package_unmodified(package_name, metadata, upstream_dir):
-            logging.info("Skipping %s: package has local modifications", package_name)
-            return
+        # Update mode: merge local modifications with upstream changes
+        # Sync mode: discard local modifications
+        has_modifications = not is_package_unmodified(package_name, metadata, upstream_dir)
 
-        # Update is available and conditions met - apply it
-        action = "Syncing" if sync else "Updating"
-        logging.info("%s %s: %s -> %s", action, package_name, metadata['sha'][:8], latest_sha[:8])
-        shutil.rmtree(package_dir)
-        shutil.rmtree(upstream_dir / '.git')
-        shutil.copytree(upstream_dir, package_dir)
+        if not sync and metadata.get('modification_status') == 'modified' and has_modifications:
+            merge_local_modifications(package_name, package_dir, Path(tmpdir),
+                                     metadata, upstream_dir, latest_sha)
+        else:
+            # No modifications or sync mode - simple update
+            action = "Syncing" if sync else "Updating"
+            logging.info("%s %s: %s -> %s", action, package_name, metadata['sha'][:8], latest_sha[:8])
+            shutil.rmtree(package_dir)
+            shutil.rmtree(upstream_dir / '.git')
+            shutil.copytree(upstream_dir, package_dir)
 
         # Replace %autorelease with actual release value from MDAPI
         if has_autorelease:
@@ -974,10 +1056,11 @@ def update(package_name: str, skip_build_check: bool = False, sync: bool = False
         imports[package_name]['version'] = version
         imports[package_name]['release'] = release
 
-        # Reset modification_status to clean after successful update/sync
-        imports[package_name]['modification_status'] = 'clean'
-        # Remove modification_reason if it exists
-        imports[package_name].pop('modification_reason', None)
+        if sync or not has_modifications:
+            # Reset modification_status to clean after successful update/sync
+            imports[package_name]['modification_status'] = 'clean'
+            imports[package_name].pop('modification_reason', None)
+        # In merge mode with local modifications, keep modification_status as 'modified'
 
         save_package_metadata(package_name, imports[package_name])
 
@@ -1297,7 +1380,7 @@ Examples:
                                help='Directory name in rpms/ (default: package name from URL)')
 
     # update command
-    update_parser = subparsers.add_parser('update', help='Update packages from upstream if unmodified')
+    update_parser = subparsers.add_parser('update', help='Update packages from upstream (merges local modifications)')
     update_parser.add_argument('package', nargs='?', default=None,
                               help='Package name to update (default: all packages)')
     update_parser.add_argument('--skip-build-check', action='store_true',
