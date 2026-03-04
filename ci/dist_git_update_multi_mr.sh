@@ -9,6 +9,7 @@
 #   ./ci/dist_git_update_multi_mr.sh --clone --max=3 --create-mrs  # Clone to /tmp, check all packages, create up to 3 MRs
 #   ./ci/dist_git_update_multi_mr.sh --max=100            # Check all packages, create up to 100 MRs (in current repo)
 #   ./ci/dist_git_update_multi_mr.sh --clean-only         # Check only clean packages (skip modified/native)
+#   ./ci/dist_git_update_multi_mr.sh --modified-only      # Check only modified packages (skip clean/native)
 #   ./ci/dist_git_update_multi_mr.sh --clean-only --max=10     # Check clean packages, create up to 10 MRs
 #   ./ci/dist_git_update_multi_mr.sh --clone --clean-only      # Clone mode, check only clean packages
 #
@@ -23,6 +24,7 @@ CLONE_MODE=false
 CREATE_MRS=false
 MAX_PACKAGES=0  # 0 means process all packages
 CLEAN_ONLY=false
+MODIFIED_ONLY=false
 TEMP_DIR=""
 
 while [[ $# -gt 0 ]]; do
@@ -47,13 +49,23 @@ while [[ $# -gt 0 ]]; do
             CLEAN_ONLY=true
             shift
             ;;
+        --modified-only)
+            MODIFIED_ONLY=true
+            shift
+            ;;
         *)
             echo "Unknown option: $1"
-            echo "Usage: $0 [--clone] [--max=N] [--create-mrs] [--clean-only]"
+            echo "Usage: $0 [--clone] [--max=N] [--create-mrs] [--clean-only] [--modified-only]"
             exit 1
             ;;
     esac
 done
+
+# Validate mutually exclusive options
+if [[ "${CLEAN_ONLY}" == true && "${MODIFIED_ONLY}" == true ]]; then
+    echo "Error: --clean-only and --modified-only are mutually exclusive"
+    exit 1
+fi
 
 # Cleanup function for clone mode
 # shellcheck disable=SC2329  # Function is invoked via EXIT trap
@@ -203,13 +215,27 @@ else
 fi
 echo ""
 
-# Pre-filter packages if --clean-only is set
+# Pre-filter packages if --clean-only or --modified-only is set
 if [[ "${CLEAN_ONLY}" == true ]]; then
     echo "Filtering for clean packages only (skipping modified/native)..."
     filtered_packages=()
     for metadata_file in "${packages_to_check[@]}"; do
         status=$(jq -r '.modification_status // "clean"' "${metadata_file}")
         if [[ "${status}" == "clean" ]]; then
+            filtered_packages+=("${metadata_file}")
+        else
+            PACKAGES_SKIPPED_MODIFIED_NATIVE=$((PACKAGES_SKIPPED_MODIFIED_NATIVE + 1))
+        fi
+    done
+    packages_to_check=("${filtered_packages[@]}")
+    echo "After filtering: ${#packages_to_check[@]} packages to check (${PACKAGES_SKIPPED_MODIFIED_NATIVE} skipped)"
+    echo ""
+elif [[ "${MODIFIED_ONLY}" == true ]]; then
+    echo "Filtering for modified packages only (skipping clean/native)..."
+    filtered_packages=()
+    for metadata_file in "${packages_to_check[@]}"; do
+        status=$(jq -r '.modification_status // "clean"' "${metadata_file}")
+        if [[ "${status}" == "modified" ]]; then
             filtered_packages+=("${metadata_file}")
         else
             PACKAGES_SKIPPED_MODIFIED_NATIVE=$((PACKAGES_SKIPPED_MODIFIED_NATIVE + 1))
@@ -393,6 +419,8 @@ fi
 echo "  Packages checked:        ${#packages_to_check[@]}"
 if [[ "${CLEAN_ONLY}" == true && ${PACKAGES_SKIPPED_MODIFIED_NATIVE} -gt 0 ]]; then
     echo "  Packages skipped (modified/native): ${PACKAGES_SKIPPED_MODIFIED_NATIVE}"
+elif [[ "${MODIFIED_ONLY}" == true && ${PACKAGES_SKIPPED_MODIFIED_NATIVE} -gt 0 ]]; then
+    echo "  Packages skipped (clean/native): ${PACKAGES_SKIPPED_MODIFIED_NATIVE}"
 fi
 echo "  Updates succeeded:       $((${#packages_to_check[@]} - UPDATE_FAILURES))"
 echo "  Updates failed:          ${UPDATE_FAILURES}"
