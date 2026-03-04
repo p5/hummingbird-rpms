@@ -917,10 +917,11 @@ def test_git_config_required(workdir: Path, upstream_repos: dict[str, Path]) -> 
 def test_update_releases(workdir: Path, dist_git_module) -> None:
     """update-releases fetches from Bodhi and writes upstream-releases.json.
 
-    Rawhide should NOT be written to the JSON file since it's automatically
-    resolved to the highest numbered Fedora release at runtime.
+    Rawhide branch itself is not stored, but its dist_tag (e.g., f45) is captured.
+    This handles the transition period when a new Fedora version hasn't branched
+    yet and only exists as rawhide in Bodhi.
     """
-    # mock curl response - rawhide is included but should be filtered out
+    # mock curl response - rawhide's dist_tag should be captured
     mock_bodhi_response = {
         'releases': [
             {'id_prefix': 'FEDORA', 'branch': 'f41', 'dist_tag': 'f41'},
@@ -940,7 +941,7 @@ def test_update_releases(workdir: Path, dist_git_module) -> None:
         dist_git_module.RELEASES_JSON = workdir / 'upstream-releases.json'
         dist_git_module.update_releases()
 
-    # Rawhide should NOT be in the JSON file
+    # Rawhide branch is NOT stored, but its dist_tag (f45) is captured
     assert json.loads((workdir / 'upstream-releases.json').read_text()) == {
         'centos': {
             'c9s': 'el9',
@@ -951,7 +952,7 @@ def test_update_releases(workdir: Path, dist_git_module) -> None:
             'f41': 'f41',
             'f43': 'f43',
             'f44': 'f44',
-            # rawhide is NOT stored - it's auto-resolved at runtime
+            'f45': 'f45',  # rawhide's dist_tag is captured
             # EPEL should be filtered out (not FEDORA id_prefix)
         },
     }

@@ -311,8 +311,13 @@ def update_releases() -> None:
     data = json.loads(output)
     fedora_releases_list = [r for r in data['releases'] if r['id_prefix'] == 'FEDORA']
     for release in fedora_releases_list:
-        # Skip rawhide - it will be automatically resolved to the highest version
-        if release['branch'] != 'rawhide':
+        if release['branch'] == 'rawhide':
+            # Don't add rawhide as a branch key, but DO add its dist_tag (e.g., f45)
+            # This handles the case where a new Fedora version hasn't branched yet
+            # and only exists as rawhide in Bodhi
+            releases['fedora'][release['dist_tag']] = release['dist_tag']
+        else:
+            # Add normal branches (f43, f44, etc.)
             releases['fedora'][release['branch']] = release['dist_tag']
 
     # Log what rawhide will resolve to (for informational purposes)
