@@ -1,8 +1,8 @@
 {
   "branch": "rawhide",
-  "release": "4",
-  "sha": "3d25d1b8d47dbfc4e972f8df1c7275397b8ac8d4",
+  "modification_status": "clean",
+  "release": "5",
+  "sha": "63754fc20b11357ff109038f20c4897fb9b9ef11",
   "source": "https://src.fedoraproject.org/rpms/httpd.git",
-  "version": "2.4.66",
-  "modification_status": "clean"
+  "version": "2.4.66"
 }
