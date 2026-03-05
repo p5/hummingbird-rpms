@@ -116,7 +116,7 @@ index 9c96e5cb0..d6e897301 100644
  #endif
  #endif /* HAVE_EVP_SHA256 || !WITH_OPENSSL */
  	{ NULL, 0, -1, -1, 0 },
-@@ -109,14 +114,33 @@ static const struct kexalg gss_kexalgs[] = {
+@@ -109,14 +114,27 @@ static const struct kexalg gss_kexalgs[] = {
  	{ NULL, 0, -1, -1, 0},
  };
  
@@ -136,24 +136,18 @@ index 9c96e5cb0..d6e897301 100644
 +		EVP_KEM *mlkem768 = NULL;
 +
 +		ERR_set_mark();
-+		if (FIPS_mode() == 1) {
-+		    mlkem768 = EVP_KEM_fetch(NULL, "mlkem768", NULL);
-+		    is_fetched = mlkem768 != NULL ? 2 : 0;
-+
-+		    if (is_fetched == 0) {
-+		        mlkem768 = EVP_KEM_fetch(NULL, "mlkem768", "provider=default,-fips");
-+		        is_fetched = mlkem768 != NULL ? 1 : 0;
-+		    }
-+		} else {
-+		    mlkem768 = EVP_KEM_fetch(NULL, "mlkem768", NULL);
-+		    is_fetched = mlkem768 != NULL ? 2 : 0;
++		mlkem768 = EVP_KEM_fetch(NULL, "mlkem768", NULL);
++		is_fetched = (mlkem768 == NULL) ? 0 : 2;
++		if (is_fetched == 0 && FIPS_mode() == 1) {
++		    mlkem768 = EVP_KEM_fetch(NULL, "mlkem768", "provider=default,-fips");
++		    is_fetched = (mlkem768 == NULL) ? 0 : 1;
 +		}
  		EVP_KEM_free(mlkem768);
 +		ERR_pop_to_mark();
  	}
  
  	return is_fetched;
-@@ -128,11 +152,32 @@ kex_alg_list_internal(char sep, const struct kexalg *algs)
+@@ -128,11 +146,32 @@ kex_alg_list_internal(char sep, const struct kexalg *algs)
  	char *ret = NULL;
  	const struct kexalg *k;
  	char sep_str[2] = {sep, '\0'};
@@ -189,7 +183,7 @@ index 9c96e5cb0..d6e897301 100644
  		xextendf(&ret, sep_str, "%s", k->name);
  	}
  
-@@ -155,10 +200,30 @@ static const struct kexalg *
+@@ -155,10 +194,30 @@ static const struct kexalg *
  kex_alg_by_name(const char *name)
  {
  	const struct kexalg *k;
@@ -223,7 +217,7 @@ index 9c96e5cb0..d6e897301 100644
  
  	for (k = kexalgs; k->name != NULL; k++) {
  		if (strcmp(k->name, name) == 0)
-@@ -230,8 +295,16 @@ kex_names_valid(const char *names)
+@@ -230,8 +289,16 @@ kex_names_valid(const char *names)
  	for ((p = strsep(&cp, ",")); p && *p != '\0';
  	    (p = strsep(&cp, ","))) {
  		if (kex_alg_by_name(p) == NULL) {
