@@ -55,7 +55,35 @@ def get_changed_packages_in_mr() -> list[str]:
     return sorted(changed_packages)
 
 
-def check_git_history_state(package_name: str) -> tuple[bool, str | None]:
+def find_last_sync_commit(package_name: str) -> str | None:
+    """
+    Find the last Sync commit for a package.
+
+    Args:
+        package_name: Package name to check
+
+    Returns:
+        SHA of the last Sync commit, or None if not found
+    """
+    # Find the last Sync commit for this package
+    # Note: Sync commits with --mark are empty commits, so we can't filter by path
+    # We search for "Sync <package>" in the subject line
+    result = run_git(
+        'log',
+        '--format=%H',
+        '--grep',
+        f'^Sync {package_name} ',
+        cwd=ROOT_DIR,
+        check=False
+    )
+
+    if result.stdout.strip():
+        # Take the first (most recent) Sync commit for this package
+        return result.stdout.strip().split('\n')[0]
+    return None
+
+
+def check_git_history_state(package_name: str, last_sync_sha: str | None) -> tuple[bool, str | None]:
     """
     Check if package is clean based on git commit history.
 
@@ -63,11 +91,11 @@ def check_git_history_state(package_name: str) -> tuple[bool, str | None]:
     (or all commits if no Sync exists) have the "Upstream:" trailer.
 
     Uses git's native filtering for speed:
-    - Finds last "Sync" commit by searching subjects only
     - Uses --grep to find commits missing "Upstream:" trailer
 
     Args:
         package_name: Package name to check
+        last_sync_sha: SHA of last Sync/Import commit, or None
 
     Returns:
         (is_clean, error_message) tuple
@@ -80,25 +108,7 @@ def check_git_history_state(package_name: str) -> tuple[bool, str | None]:
 
     package_path = f'rpms/{package_name}'
 
-    # Step 1: Find the last Sync commit for this package
-    # Note: Sync commits with --mark are empty commits, so we can't filter by path
-    # We search for "Sync <package>" in the subject line
-    result = run_git(
-        'log',
-        '--format=%H %s',
-        '--grep',
-        f'^Sync {package_name} ',
-        cwd=ROOT_DIR,
-        check=False
-    )
-
-    last_sync_sha = None
-    if result.stdout.strip():
-        # Take the first (most recent) Sync commit for this package
-        first_line = result.stdout.strip().split('\n')[0]
-        last_sync_sha = first_line.split(' ', 1)[0]
-
-    # Step 2: Find commits without "Upstream:" trailer
+    # Find commits without "Upstream:" trailer
     # Range: from HEAD to last Sync (exclusive), or all commits if no Sync
     if last_sync_sha:
         # Check commits from HEAD to last Sync (not including the Sync itself)
@@ -136,6 +146,112 @@ def check_git_history_state(package_name: str) -> tuple[bool, str | None]:
             f"{package_name}: Commit {sha[:8]} ('{subject}') is missing "
             f"'Upstream:' trailer. Package appears to be locally modified."
         )
+
+    return True, None
+
+
+def check_changelog_modifications(package_name: str, last_sync_sha: str | None) -> tuple[bool, str | None]:
+    """
+    Check if any local commits (without Upstream: trailer) added to %changelog section.
+
+    Only checks commits after 2026-03-05 (when the rule was introduced).
+
+    Args:
+        package_name: Package name to check
+        last_sync_sha: SHA of last Sync commit, or None if package was never synced
+
+    Returns:
+        (is_valid, error_message) tuple - is_valid=False if any local commit added to %changelog
+    """
+    package_path = f'rpms/{package_name}'
+
+    # Find spec files
+    spec_files = list((RPMS_DIR / package_name).glob('*.spec'))
+    if not spec_files:
+        return True, None  # No spec file, nothing to check
+
+    # Find commits without "Upstream:" trailer (i.e., our local modifications)
+    # Only check commits on or after 2026-03-05 (when the rule was introduced)
+    # Range: from HEAD to last Sync (exclusive), or all commits if no Sync
+    if last_sync_sha:
+        git_range = f'{last_sync_sha}..HEAD'
+    else:
+        # No Sync found, check all commits
+        git_range = 'HEAD'
+    result = run_git(
+        'log',
+        '--format=%H',
+        '--since=2026-03-05',  # Only commits on or after this date
+        '--invert-grep',
+        '--grep=^Upstream:',
+        git_range,
+        '--',
+        package_path,
+        cwd=ROOT_DIR,
+        check=False
+    )
+
+    local_commits = [sha for sha in result.stdout.strip().split('\n') if sha]
+    if not local_commits:
+        # No local commits after cutoff date, nothing to check
+        return True, None
+
+    # Check each local commit for additions to %changelog
+    for spec_file in spec_files:
+        spec_path = f'{package_path}/{spec_file.name}'
+
+        for commit_sha in local_commits:
+
+            # Check if this spec file was added or renamed in this commit
+            # We don't want to flag %changelog in newly added/renamed files
+            status_result = run_git(
+                'show',
+                '--name-status',
+                '--format=',
+                commit_sha,
+                '--',
+                spec_path,
+                cwd=ROOT_DIR,
+                check=False
+            )
+
+            # Status line format: "A\tpath" or "R100\told\tnew" or "M\tpath"
+            if status_result.stdout.strip():
+                status_line = status_result.stdout.strip().split()[0]
+                if status_line.startswith('A') or status_line.startswith('R'):
+                    # File was added or renamed, skip %changelog check
+                    continue
+
+            # Get the diff introduced by this commit
+            result = run_git(
+                'show',
+                commit_sha,
+                '--',
+                spec_path,
+                cwd=ROOT_DIR,
+                check=False
+            )
+
+            if not result.stdout.strip():
+                # This commit didn't touch this spec file
+                continue
+
+            # Check if any hunk adds to %changelog section
+            for hunk in result.stdout.split('\n@@'):
+                if '%changelog' not in hunk:
+                    continue
+
+                # Check if this hunk has any additions (lines starting with +)
+                for line in hunk.split('\n'):
+                    if line.startswith('+') and not line.startswith('+++'):
+                        # Found an addition in a hunk that contains %changelog
+                        subject_result = run_git('log', '--format=%s', '-n1', commit_sha, cwd=ROOT_DIR)
+                        subject = subject_result.stdout.strip()
+                        return False, (
+                            f"{package_name}: Commit {commit_sha[:8]} ('{subject}') added to "
+                            f"%changelog section in {spec_file.name}. Do not add %changelog entries "
+                            f"to avoid merge conflicts with Fedora updates."
+                        )
 
     return True, None
 
@@ -183,6 +299,14 @@ def validate_package(package_name: str, check_actual_state: bool = True) -> tupl
         # Native packages don't need further validation
         return True, None
 
+    # Find the last Sync/Import commit once (used by multiple checks below)
+    last_sync_sha = find_last_sync_commit(package_name)
+
+    # Check 3.5: Spec file %changelog must not be modified in local commits (for non-native packages)
+    is_valid, error = check_changelog_modifications(package_name, last_sync_sha)
+    if not is_valid:
+        return False, error
+
     # Check 4: track_upstream must be a boolean if present
     if 'track_upstream' in metadata and not isinstance(metadata['track_upstream'], bool):
         return False, f"{package_name}: track_upstream must be a boolean, got {type(metadata['track_upstream']).__name__}"
@@ -194,7 +318,7 @@ def validate_package(package_name: str, check_actual_state: bool = True) -> tupl
     # Check 6: Verify git history matches metadata (fast check)
     # Skip if running expensive check (which uses filesystem comparison instead)
     if not check_actual_state and status in ['clean', 'modified']:
-        is_clean_by_history, history_error = check_git_history_state(package_name)
+        is_clean_by_history, history_error = check_git_history_state(package_name, last_sync_sha)
 
         if status == 'clean' and not is_clean_by_history:
             return False, history_error
