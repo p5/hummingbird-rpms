@@ -53,11 +53,17 @@ fi
 
 echo "${COMMITS_AHEAD} commit(s) detected, creating MR..."
 
+# Check if branch already exists on remote
+if git ls-remote --exit-code --heads "${REMOTE:-origin}" "${BRANCH_NAME}" >/dev/null 2>&1; then
+    echo "Branch ${BRANCH_NAME} already exists on remote, skipping push (MR already exists)"
+    echo "  Existing MR: https://gitlab.com/redhat/hummingbird/rpms/-/merge_requests?source_branch=${BRANCH_NAME}"
+    exit 0
+fi
+
 # Create MR branch at current HEAD (which has the commits from dist_git.py)
-git switch --quiet --force-create "${BRANCH_NAME}"
+git switch --quiet --create "${BRANCH_NAME}"
 
 push_options=(
-    --force-with-lease
     --push-option merge_request.create
     --push-option "merge_request.title=${MR_TITLE}"
     --push-option merge_request.remove_source_branch
