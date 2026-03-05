@@ -1,0 +1,5 @@
+/dns-root-data-debian-2025080400.tar.bz2
+/dns-root-data-debian-*.tar.bz2
+/dns-root-data-202*.tar.gz
+/root-anchors.p7s
+/named.root.sig
