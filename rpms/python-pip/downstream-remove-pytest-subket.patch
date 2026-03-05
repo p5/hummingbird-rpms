@@ -1,6 +1,6 @@
-From 35378ae02912d704d466e4809070e17a8d13ad0a Mon Sep 17 00:00:00 2001
+From 9710f03327c685194b7a63c2271a84697425cb47 Mon Sep 17 00:00:00 2001
 From: Karolina Surma <ksurma@redhat.com>
-Date: Thu, 7 Aug 2025 15:05:34 +0200
+Date: Tue, 10 Feb 2026 15:19:10 +0100
 Subject: [PATCH] Downstream-Only: Remove pytest-subket from tests
 
 ---
@@ -8,10 +8,10 @@ Subject: [PATCH] Downstream-Only: Remove pytest-subket from tests
  1 file changed, 17 deletions(-)
 
 diff --git a/tests/conftest.py b/tests/conftest.py
-index c98b871..ada7a7e 100644
+index 1b65e9d..8e1b595 100644
 --- a/tests/conftest.py
 +++ b/tests/conftest.py
-@@ -451,18 +451,6 @@ def coverage_install(
+@@ -447,18 +447,6 @@ def coverage_install(
      return _common_wheel_editable_install(tmpdir_factory, common_wheels, "coverage")
  
  
@@ -30,18 +30,18 @@ index c98b871..ada7a7e 100644
  def install_pth_link(
      venv: VirtualEnvironment, project_name: str, lib_dir: Path
  ) -> None:
-@@ -480,7 +468,6 @@ def virtualenv_template(
+@@ -475,7 +463,6 @@ def virtualenv_template(
+     pip_editable_parts: tuple[Path, ...],
      setuptools_install: Path,
-     wheel_install: Path,
      coverage_install: Path,
 -    socket_install: Path,
  ) -> VirtualEnvironment:
      venv_type: VirtualEnvironmentType
      if request.config.getoption("--use-venv"):
-@@ -495,10 +482,6 @@ def virtualenv_template(
-     # Install setuptools, wheel, pytest-subket, and pip.
+@@ -489,10 +476,6 @@ def virtualenv_template(
+ 
+     # Install setuptools, pytest-subket, and pip.
      install_pth_link(venv, "setuptools", setuptools_install)
-     install_pth_link(venv, "wheel", wheel_install)
 -    install_pth_link(venv, "pytest_subket", socket_install)
 -    # Also copy pytest-subket's .pth file so it can intercept socket calls.
 -    with open(venv.site / "pytest_socket.pth", "w") as f:
@@ -50,5 +50,5 @@ index c98b871..ada7a7e 100644
      pth, dist_info = pip_editable_parts
  
 -- 
-2.50.1
+2.52.0
 
