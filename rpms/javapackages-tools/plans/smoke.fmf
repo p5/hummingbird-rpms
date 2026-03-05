@@ -5,7 +5,5 @@ discover:
   filter: tier:0,1
 prepare:
   how: install
-  exclude:
-    - maven-local-openjdk25
 execute:
   how: tmt

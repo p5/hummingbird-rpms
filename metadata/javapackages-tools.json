@@ -1,8 +1,8 @@
 {
   "branch": "rawhide",
-  "release": "1",
-  "sha": "b281f3ebdddf455e5817642cab0192329f90f9df",
+  "modification_status": "clean",
+  "release": "2",
+  "sha": "1a22bdac573dd37abd3f9b90e562b4589069973c",
   "source": "https://src.fedoraproject.org/rpms/javapackages-tools.git",
-  "version": "6.4.1",
-  "modification_status": "clean"
+  "version": "6.5.1"
 }
