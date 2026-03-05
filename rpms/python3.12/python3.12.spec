@@ -13,11 +13,11 @@ URL: https://www.python.org/
 
 #  WARNING  When rebasing to a new Python version,
 #           remember to update the python3-docs package as well
-%global general_version %{pybasever}.12
+%global general_version %{pybasever}.13
 #global prerel ...
 %global upstream_version %{general_version}%{?prerel}
 Version: %{general_version}%{?prerel:~%{prerel}}
-Release: 3.1%{?dist}
+Release: 1%{?dist}
 License: Python-2.0.1
 
 
@@ -414,26 +414,21 @@ Patch462: 00462-fix-pyssl_seterror-handling-ssl_error_syscall.patch
 # hardware protections can be enabled without losing Perf unwinding.
 Patch464: 00464-enable-pac-and-bti-protections-for-aarch64.patch
 
-# 00471 # 37c05f26d11e8e24f2a760167015a267996b1d69
-# CVE-2025-12084
+# 00474 # 837ddca0372fa87ff9cee47142200caa21e77def
+# CVE-2025-15366
 #
-# * gh-142145: Remove quadratic behavior in node ID cache clearing (GH-142146)
-# * gh-142754: Ensure that Element & Attr instances have the ownerDocument attribute (GH-142794)
-Patch471: 00471-cve-2025-12084.patch
+# gh-143921: Reject control characters in IMAP commands
+#
+# (cherry-picked from commit 6262704b134db2a4ba12e85ecfbd968534f28b45)
+Patch474: 00474-cve-2025-15366.patch
 
-# 00472 # 2ba215eaba508b2cdd7c3acfdf3b9a6e32872274
-# CVE-2025-13836
+# 00475 # 3748209a316662d4e85981ca1a7418547a1d25c6
+# CVE-2025-15367
 #
-# [3.12] gh-119451: Fix a potential denial of service in http.client (GH-119454) (#142140)
+# gh-143923: Reject control characters in POP3 commands
 #
-# gh-119451: Fix a potential denial of service in http.client (GH-119454)
-#
-# Reading the whole body of the HTTP response could cause OOM if
-# the Content-Length value is too large even if the server does not send
-# a large amount of data. Now the HTTP client reads large data by chunks,
-# therefore the amount of consumed memory is proportional to the amount
-# of sent data.
-Patch472: 00472-cve-2025-13836.patch
+# (cherry-picked from commit b234a2b67539f787e191d2ef19a7cbdce32874e7)
+Patch475: 00475-cve-2025-15367.patch
 
 # 00329 #
 # Support OpenSSL FIPS mode
@@ -1775,6 +1770,12 @@ CheckPython optimized
 # ======================================================
 
 %changelog
+* Tue Mar 03 2026 Tomáš Hrnčiar <thrnciar@redhat.com> - 3.12.13-1
+- Update to 3.12.13
+
+* Fri Feb 06 2026 Tomáš Hrnčiar <thrnciar@redhat.com> - 3.12.12-4
+- Security fixes for CVE-2026-0865, CVE-2025-15366 and CVE-2025-15367
+
 * Fri Jan 16 2026 Lumír Balhar <lbalhar@redhat.com> - 3.12.12-3
 - Security fix for CVE-2025-13836
 
