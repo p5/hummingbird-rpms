@@ -405,9 +405,6 @@ rm -f "$TMPRING"
 
 
 %changelog
-* Mon Feb 02 2026 Michael Hofmann <mhofmann@redhat.com> - 43-1.2
-- Hardcode Fedora release version 43 in repo files for Hummingbird
-
 * Fri Oct 10 2025 Jens Petersen <petersen@redhat.com> - 43-1
 - Disable updates-testing for F43 final release
 

@@ -497,12 +497,6 @@ install -m 644 %{SOURCE11} $RPM_BUILD_ROOT%{_sysconfdir}/pki/tls/openssl.d/fips-
 %{_sysconfdir}/pki/tls/openssl.d/fips-provider-enable.cnf
 
 %changelog
-* Thu Feb 12 2026 Robert Sturla <rsturla@redhat.com> - 1:3.5.4-3
-- Add config-fips subpackage for FIPS provider without kernel FIPS mode
-
-* Mon Jan 26 2026 Robert Sturla <rsturla@redhat.com> - 1:3.5.4-2
-- Remove upstream fips.so from openssl-libs for Hummingbird
-
 * Wed Oct 15 2025 Dmitry Belyavskiy <dbelyavs@redhat.com> - 1:3.5.4-1
 - Rebase to OpenSSL 3.5.4, resolving CVE-2025-9230 and CVE-2025-9232
 
