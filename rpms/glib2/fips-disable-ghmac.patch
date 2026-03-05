@@ -1,0 +1,73 @@
+From 81a4f4742f54cbc0240b034d1c5f9a2bf52bebfc Mon Sep 17 00:00:00 2001
+From: Robert Sturla <rsturla@redhat.com>
+Date: Tue, 24 Feb 2026 15:53:32 +0000
+Subject: [PATCH] Disable GHmac for FIPS compliance
+
+For FIPS compliance, GLib's built-in HMAC implementation (which uses
+non-validated crypto) must not be used.  Make g_hmac_new() always
+return NULL so that callers are forced to use a FIPS-certified crypto
+library directly.
+
+The upstream API already documents g_hmac_new() as nullable, and the
+convenience wrappers (g_compute_hmac_for_data, etc.) already handle a
+NULL return gracefully, so this is the smallest possible change.
+
+Bug: https://bugzilla.redhat.com/show_bug.cgi?id=1630260
+---
+ glib/ghmac.c         | 6 ++++++
+ glib/tests/autoptr.c | 7 +++++--
+ glib/tests/hmac.c    | 3 +++
+ 3 files changed, 14 insertions(+), 2 deletions(-)
+
+diff --git a/glib/ghmac.c b/glib/ghmac.c
+index 97e2fff..1c9c4ac 100644
+--- a/glib/ghmac.c
++++ b/glib/ghmac.c
+@@ -100,6 +100,12 @@ g_hmac_new (GChecksumType  digest_type,
+             gsize          key_len)
+ {
+   GChecksum *checksum;
++
++  /* Disabled for FIPS compliance -- applications should use a
++   * FIPS-certified crypto library (e.g. OpenSSL, GnuTLS) directly. */
++  g_warning ("g_hmac_new: GLib HMAC is disabled for FIPS compliance");
++  return NULL;
++
+   GHmac *hmac;
+   guchar *buffer;
+   guchar *pad;
+diff --git a/glib/tests/autoptr.c b/glib/tests/autoptr.c
+index 4ed27f5..a9c805f 100644
+--- a/glib/tests/autoptr.c
++++ b/glib/tests/autoptr.c
+@@ -110,8 +110,11 @@ test_g_hash_table (void)
+ static void
+ test_g_hmac (void)
+ {
+-  g_autoptr(GHmac) val = g_hmac_new (G_CHECKSUM_SHA256, (guint8*)"hello", 5);
+-  g_assert_nonnull (val);
++  /* GHmac is disabled for FIPS compliance; g_hmac_new() always returns NULL. */
++  g_test_expect_message ("GLib", G_LOG_LEVEL_WARNING, "*GLib HMAC is disabled*");
++  GHmac *val = g_hmac_new (G_CHECKSUM_SHA256, (guint8*)"hello", 5);
++  g_test_assert_expected_messages ();
++  g_assert_null (val);
+ }
+ 
+ static void
+diff --git a/glib/tests/hmac.c b/glib/tests/hmac.c
+index 3ac3206..1884883 100644
+--- a/glib/tests/hmac.c
++++ b/glib/tests/hmac.c
+@@ -500,6 +500,9 @@ main (int argc,
+   int i;
+   g_test_init (&argc, &argv, NULL);
+ 
++  /* GHmac is disabled for FIPS compliance; all tests would fail. */
++  return g_test_run ();
++
+   for (i = 0 ; hmac_sha1_tests[i].key_len > 0 ; i++)
+     {
+       gchar *name = g_strdup_printf ("/hmac/sha1-%d", i + 1);
+-- 
+2.53.0
+
