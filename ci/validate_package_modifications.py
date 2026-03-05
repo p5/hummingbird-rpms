@@ -150,18 +150,22 @@ def check_git_history_state(package_name: str, last_sync_sha: str | None) -> tup
     return True, None
 
 
-def check_changelog_modifications(package_name: str, last_sync_sha: str | None) -> tuple[bool, str | None]:
+def check_local_modifications(package_name: str, last_sync_sha: str | None) -> tuple[bool, str | None]:
     """
-    Check if any local commits (without Upstream: trailer) added to %changelog section.
+    Check local modifications for policy compliance.
 
-    Only checks commits after 2026-03-05 (when the rule was introduced).
+    Checks:
+    1. No additions to %changelog section
+    2. Release bumps by 0.1 (not by 1) for local modifications
+
+    Only checks commits after 2026-03-05 (when the rules were introduced).
 
     Args:
         package_name: Package name to check
         last_sync_sha: SHA of last Sync commit, or None if package was never synced
 
     Returns:
-        (is_valid, error_message) tuple - is_valid=False if any local commit added to %changelog
+        (is_valid, error_message) tuple
     """
     package_path = f'rpms/{package_name}'
 
@@ -171,13 +175,14 @@ def check_changelog_modifications(package_name: str, last_sync_sha: str | None) 
         return True, None  # No spec file, nothing to check
 
     # Find commits without "Upstream:" trailer (i.e., our local modifications)
-    # Only check commits on or after 2026-03-05 (when the rule was introduced)
+    # Only check commits on or after 2026-03-05 (when the rules were introduced)
     # Range: from HEAD to last Sync (exclusive), or all commits if no Sync
     if last_sync_sha:
         git_range = f'{last_sync_sha}..HEAD'
     else:
         # No Sync found, check all commits
         git_range = 'HEAD'
+
     result = run_git(
         'log',
         '--format=%H',
@@ -196,12 +201,11 @@ def check_changelog_modifications(package_name: str, last_sync_sha: str | None) 
         # No local commits after cutoff date, nothing to check
         return True, None
 
-    # Check each local commit for additions to %changelog
+    # Check each local commit for policy violations
     for spec_file in spec_files:
         spec_path = f'{package_path}/{spec_file.name}'
 
         for commit_sha in local_commits:
-
             # Check if this spec file was added or renamed in this commit
             # We don't want to flag %changelog in newly added/renamed files
             status_result = run_git(
@@ -236,22 +240,41 @@ def check_changelog_modifications(package_name: str, last_sync_sha: str | None) 
                 # This commit didn't touch this spec file
                 continue
 
-            # Check if any hunk adds to %changelog section
+            # Check for policy violations in hunks
             for hunk in result.stdout.split('\n@@'):
-                if '%changelog' not in hunk:
-                    continue
+                # Check 1: No additions to %changelog section
+                if '%changelog' in hunk:
+                    for line in hunk.split('\n'):
+                        if line.startswith('+') and not line.startswith('+++'):
+                            # Found an addition in a hunk that contains %changelog
+                            subject_result = run_git('log', '--format=%s', '-n1', commit_sha, cwd=ROOT_DIR)
+                            subject = subject_result.stdout.strip()
+                            return False, (
+                                f"{package_name}: Commit {commit_sha[:8]} ('{subject}') added to "
+                                f"%changelog section in {spec_file.name}. Do not add %changelog entries "
+                                f"to avoid merge conflicts with Fedora updates."
+                            )
 
-                # Check if this hunk has any additions (lines starting with +)
-                for line in hunk.split('\n'):
-                    if line.startswith('+') and not line.startswith('+++'):
-                        # Found an addition in a hunk that contains %changelog
-                        subject_result = run_git('log', '--format=%s', '-n1', commit_sha, cwd=ROOT_DIR)
-                        subject = subject_result.stdout.strip()
-                        return False, (
-                            f"{package_name}: Commit {commit_sha[:8]} ('{subject}') added to "
-                            f"%changelog section in {spec_file.name}. Do not add %changelog entries "
-                            f"to avoid merge conflicts with Fedora updates."
-                        )
+                # Check 2: Release bumps must use 0.1 increments
+                if 'Release:' in hunk:
+                    for line in hunk.split('\n'):
+                        if line.startswith('+Release:'):
+                            # Extract release value, remove %{?dist} suffix
+                            release_value = line.split(':')[1].strip().replace('%{?dist}', '').strip()
+                            try:
+                                # Check if it's an integer (bad) vs decimal (good)
+                                val = float(release_value)
+                                if val == int(val):  # It's an integer like 5.0
+                                    subject_result = run_git('log', '--format=%s', '-n1', commit_sha, cwd=ROOT_DIR)
+                                    subject = subject_result.stdout.strip()
+                                    return False, (
+                                        f"{package_name}: Commit {commit_sha[:8]} ('{subject}') sets "
+                                        f"Release to {int(val)} in {spec_file.name}. Local modifications must bump "
+                                        f"Release by 0.1 (e.g., {int(val) - 1}.1) to avoid collisions with Fedora's namespace."
+                                    )
+                            except ValueError:
+                                # Complex Release format (e.g., with macros), skip validation
+                                pass
 
     return True, None
 
@@ -302,8 +325,8 @@ def validate_package(package_name: str, check_actual_state: bool = True) -> tupl
     # Find the last Sync/Import commit once (used by multiple checks below)
     last_sync_sha = find_last_sync_commit(package_name)
 
-    # Check 3.5: Spec file %changelog must not be modified in local commits (for non-native packages)
-    is_valid, error = check_changelog_modifications(package_name, last_sync_sha)
+    # Check 3.5: Local modifications must follow policy (%changelog and Release)
+    is_valid, error = check_local_modifications(package_name, last_sync_sha)
     if not is_valid:
         return False, error
 
