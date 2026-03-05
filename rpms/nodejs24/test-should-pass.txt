@@ -330,24 +330,16 @@ abort/test-signal-handler.js
 abort/test-abort-fatal-error.js
 internet/test-https-issue-43963.js
 internet/test-dns-regress-6244.js
-# Disabled on 12.01.2026
-# As it failed on Konflux due to not having network access
-# internet/test-net-autoselectfamily-events-timeout.js
+internet/test-net-autoselectfamily-events-timeout.js
 internet/test-dns-getDefaultResultOrder.js
 internet/test-dns-cares-domains.js
 internet/test-dgram-connect.js
 internet/test-net-autoselectfamily-events-failure.js
-# Disabled on 12.01.2026
-# As it failed on Konflux due to not having network access
-# internet/test-dgram-membership.js
+internet/test-dgram-membership.js
 internet/test-dns-setserver-in-callback-of-resolve4.js
-# Disabled on 12.01.2026
-# As it failed on Konflux due to not having network access
-# internet/test-dgram-multicast-multi-process.js
+internet/test-dgram-multicast-multi-process.js
 internet/test-trace-events-dns.js
-# Disabled on 12.01.2026
-# As it failed on Konflux due to not having network access
-# internet/test-net-connect-timeout.js
+internet/test-net-connect-timeout.js
 es-module/test-require-module-default-extension.js
 es-module/test-require-module-cached-tla.js
 es-module/test-require-module-detect-entry-point-aou.js
