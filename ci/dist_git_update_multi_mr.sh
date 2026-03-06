@@ -77,6 +77,9 @@ if [[ "${CLEAN_ONLY}" == true && "${MODIFIED_ONLY}" == true ]]; then
     exit 1
 fi
 
+# Configuration
+TARGET_BRANCH=${CI_COMMIT_BRANCH:-${CI_DEFAULT_BRANCH:-main}}
+
 # Cleanup function for clone mode
 # shellcheck disable=SC2329  # Function is invoked via EXIT trap
 cleanup() {
@@ -111,7 +114,7 @@ if [[ "${CLONE_MODE}" == true ]]; then
     fi
 
     echo "Cloning repository from GitLab..."
-    git clone --quiet --depth 1 --single-branch --branch main "${GITLAB_REMOTE_URL}" "${TEMP_DIR}"
+    git clone --quiet --depth 1 --single-branch --branch "${TARGET_BRANCH}" "${GITLAB_REMOTE_URL}" "${TEMP_DIR}"
     cd "${TEMP_DIR}"
 
     # Configure git for the cloned repo
@@ -168,8 +171,7 @@ if [[ -z "$(git config user.email 2>/dev/null || true)" ]]; then
     fi
 fi
 
-# Configuration
-TARGET_BRANCH=${CI_COMMIT_BRANCH:-${CI_DEFAULT_BRANCH:-main}}
+# Additional configuration
 METADATA_DIR="metadata"
 
 # Statistics tracking
