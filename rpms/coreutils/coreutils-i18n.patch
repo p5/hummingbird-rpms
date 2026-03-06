@@ -1,73 +1,45 @@
-From 337e392431ceb6fdf8936b8a1ad4a2301461cb4c Mon Sep 17 00:00:00 2001
+From 17d33fd7908764143a0f5a9b87598b07c49c6fab Mon Sep 17 00:00:00 2001
 From: rpm-build <rpm-build>
 Date: Wed, 30 Aug 2023 17:19:58 +0200
 Subject: [PATCH] coreutils-i18n.patch
 
 ---
- bootstrap.conf              |   2 +
- configure.ac                |   6 +
+ bootstrap.conf              |   1 +
  lib/linebuffer.h            |   8 +
- lib/mbfile.c                |  19 +
- lib/mbfile.h                | 281 +++++++++++++
- m4/mbfile.m4                |  16 +
  src/cut.c                   | 508 +++++++++++++++++++++--
- src/expand-common.c         | 114 ++++++
- src/expand-common.h         |  12 +
- src/expand.c                |  90 +++-
- src/local.mk                |   4 +-
+ src/expand.c                |  36 +-
  src/pr.c                    | 443 ++++++++++++++++++--
  src/sort.c                  | 791 +++++++++++++++++++++++++++++++++---
- src/unexpand.c              | 101 ++++-
+ src/unexpand.c              |  43 +-
  tests/Coreutils.pm          |   3 +
  tests/expand/expand.pl      |  42 ++
- tests/expand/mb.sh          | 183 +++++++++
+ tests/expand/mb.sh          | 171 ++++++++
  tests/i18n/sort.sh          |  29 ++
  tests/local.mk              |   4 +
  tests/misc/sort-mb-tests.sh |  45 ++
  tests/pr/pr-tests.pl        |  49 +++
  tests/sort/sort-merge.pl    |  42 ++
  tests/sort/sort.pl          |  40 +-
- tests/unexpand/mb.sh        | 172 ++++++++
+ tests/unexpand/mb.sh        | 163 ++++++++
  tests/unexpand/unexpand.pl  |  39 ++
- 25 files changed, 2876 insertions(+), 167 deletions(-)
- create mode 100644 lib/mbfile.c
- create mode 100644 lib/mbfile.h
- create mode 100644 m4/mbfile.m4
+ 18 files changed, 2301 insertions(+), 156 deletions(-)
  create mode 100644 tests/expand/mb.sh
  create mode 100644 tests/i18n/sort.sh
  create mode 100644 tests/misc/sort-mb-tests.sh
  create mode 100644 tests/unexpand/mb.sh
 
 diff --git a/bootstrap.conf b/bootstrap.conf
-index 07ab7e7..9b3d3df 100644
+index 07ab7e7..3e08f8a 100644
 --- a/bootstrap.conf
 +++ b/bootstrap.conf
-@@ -171,6 +171,8 @@ gnulib_modules="
+@@ -171,6 +171,7 @@ gnulib_modules="
    malloc-gnu
    manywarnings
    mbbuf
 +  mbchar
-+  mbfile
    mbrlen
    mbrtoc32
    mbrtowc
-diff --git a/configure.ac b/configure.ac
-index ae00396..61e2978 100644
---- a/configure.ac
-+++ b/configure.ac
-@@ -490,6 +490,12 @@ fi
- # I'm leaving it here for now.  This whole thing needs to be modernized...
- gl_WINSIZE_IN_PTEM
- 
-+gl_MBFILE
-+dnl Do not use gl_MODULE_INDICATOR([mbfile]) here: we don't want 'struct mbchar'
-+dnl to have a different size in lib/ than in tests/.
-+AC_DEFINE([GNULIB_MBFILE], [1],
-+  [Define to 1 if the gnulib module 'mbfile' is in use.])
-+
- gl_HEADER_TIOCGWINSZ_IN_TERMIOS_H
- 
- if test $gl_cv_sys_tiocgwinsz_needs_termios_h = no && \
 diff --git a/lib/linebuffer.h b/lib/linebuffer.h
 index af22d27..80119f4 100644
 --- a/lib/linebuffer.h
@@ -94,340 +66,6 @@ index af22d27..80119f4 100644
  };
  
  /* Initialize linebuffer LINEBUFFER for use. */
-diff --git a/lib/mbfile.c b/lib/mbfile.c
-new file mode 100644
-index 0000000..769dd45
---- /dev/null
-+++ b/lib/mbfile.c
-@@ -0,0 +1,19 @@
-+/* Multibyte character I/O: macros for multi-byte encodings.
-+   Copyright (C) 2012-2026 Free Software Foundation, Inc.
-+
-+   This file is free software: you can redistribute it and/or modify
-+   it under the terms of the GNU Lesser General Public License as
-+   published by the Free Software Foundation, either version 3 of the
-+   License, or (at your option) any later version.
-+
-+   This file is distributed in the hope that it will be useful,
-+   but WITHOUT ANY WARRANTY; without even the implied warranty of
-+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+   GNU Lesser General Public License for more details.
-+
-+   You should have received a copy of the GNU Lesser General Public License
-+   along with this program.  If not, see <https://www.gnu.org/licenses/>.  */
-+
-+#define MBFILE_INLINE _GL_EXTERN_INLINE
-+#include <config.h>
-+#include "mbfile.h"
-diff --git a/lib/mbfile.h b/lib/mbfile.h
-new file mode 100644
-index 0000000..c88fcff
---- /dev/null
-+++ b/lib/mbfile.h
-@@ -0,0 +1,281 @@
-+/* Multibyte character I/O: macros for multi-byte encodings.
-+   Copyright (C) 2001, 2005, 2009-2026 Free Software Foundation, Inc.
-+
-+   This file is free software: you can redistribute it and/or modify
-+   it under the terms of the GNU Lesser General Public License as
-+   published by the Free Software Foundation, either version 3 of the
-+   License, or (at your option) any later version.
-+
-+   This file is distributed in the hope that it will be useful,
-+   but WITHOUT ANY WARRANTY; without even the implied warranty of
-+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+   GNU Lesser General Public License for more details.
-+
-+   You should have received a copy of the GNU Lesser General Public License
-+   along with this program.  If not, see <https://www.gnu.org/licenses/>.  */
-+
-+/* Written by Mitsuru Chinen <mchinen@yamato.ibm.com>
-+   and Bruno Haible <bruno@clisp.org>.  */
-+
-+/* The macros in this file implement multi-byte character input from a
-+   stream.
-+
-+   mb_file_t
-+     is the type for multibyte character input stream, usable for variable
-+     declarations.
-+
-+   mbf_char_t
-+     is the type for multibyte character or EOF, usable for variable
-+     declarations.
-+
-+   mbf_init (mbf, stream)
-+     initializes the MB_FILE for reading from stream.
-+
-+   mbf_getc (mbc, mbf)
-+     reads the next multibyte character from mbf and stores it in mbc.
-+
-+   mb_iseof (mbc)
-+     returns true if mbc represents the EOF value.
-+
-+   Here are the function prototypes of the macros.
-+
-+   extern void          mbf_init (mb_file_t mbf, FILE *stream);
-+   extern void          mbf_getc (mbf_char_t mbc, mb_file_t mbf);
-+   extern bool          mb_iseof (const mbf_char_t mbc);
-+ */
-+
-+#ifndef _MBFILE_H
-+#define _MBFILE_H 1
-+
-+/* This file uses _GL_INLINE_HEADER_BEGIN, _GL_INLINE.  */
-+#if !_GL_CONFIG_H_INCLUDED
-+ #error "Please include config.h first."
-+#endif
-+
-+#include <assert.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <wchar.h>
-+
-+#include "mbchar.h"
-+
-+_GL_INLINE_HEADER_BEGIN
-+#ifndef MBFILE_INLINE
-+# define MBFILE_INLINE _GL_INLINE
-+#endif
-+
-+#ifdef __cplusplus
-+extern "C" {
-+#endif
-+
-+
-+/* Guarantee two characters of pushback.  */
-+#define MBFILE_MAX_PUSHBACK 2
-+
-+struct mbfile_multi {
-+  FILE *fp;
-+  bool eof_seen;
-+  unsigned int pushback_count; /* <= MBFILE_MAX_PUSHBACK */
-+  mbstate_t state;
-+  unsigned int bufcount;
-+  char buf[MBCHAR_BUF_SIZE];
-+  struct mbchar pushback[MBFILE_MAX_PUSHBACK];
-+};
-+
-+MBFILE_INLINE void
-+mbfile_multi_getc (struct mbchar *mbc, struct mbfile_multi *mbf)
-+{
-+  /* Return character pushed back, if there is one.  */
-+  if (mbf->pushback_count > 0)
-+    {
-+      mb_copy (mbc, &mbf->pushback[mbf->pushback_count - 1]);
-+      mbf->pushback_count--;
-+      return;
-+    }
-+
-+  /* If EOF has already been seen, don't use getc.  This matters if
-+     mbf->fp is connected to an interactive tty.  */
-+  if (mbf->eof_seen)
-+    goto eof;
-+
-+  unsigned int new_bufcount = mbf->bufcount;
-+
-+  /* If mbf->state is not in an initial state, some more 32-bit wide character
-+     may be hiding in the state.  We need to call mbrtoc32 again.  */
-+  #if GNULIB_MBRTOC32_REGULAR
-+  assert (mbsinit (&mbf->state));
-+  #else
-+  if (mbsinit (&mbf->state))
-+  #endif
-+    {
-+      /* Before using mbrtoc32, we need at least one byte.  */
-+      if (new_bufcount == 0)
-+        {
-+          int c = getc (mbf->fp);
-+          if (c == EOF)
-+            {
-+              mbf->eof_seen = true;
-+              goto eof;
-+            }
-+          mbf->buf[0] = (unsigned char) c;
-+          new_bufcount++;
-+        }
-+
-+      /* Handle most ASCII characters quickly, without calling mbrtoc32().  */
-+      if (new_bufcount == 1 && is_basic (mbf->buf[0]))
-+        {
-+          /* These characters are part of the POSIX portable character set.
-+             For most of them, namely those in the ISO C basic character set,
-+             ISO C 99 guarantees that their wide character code is identical to
-+             their char code.  For the few other ones, this is the case as well,
-+             in all locale encodings that are in use.  The 32-bit wide character
-+             code is the same as well.  */
-+          mbc->wc = mbc->buf[0] = mbf->buf[0];
-+          mbc->wc_valid = true;
-+          mbc->ptr = &mbc->buf[0];
-+          mbc->bytes = 1;
-+          mbf->bufcount = 0;
-+          return;
-+        }
-+    }
-+
-+  /* Use mbrtoc32 on an increasing number of bytes.  Read only as many bytes
-+     from mbf->fp as needed.  This is needed to give reasonable interactive
-+     behaviour when mbf->fp is connected to an interactive tty.  */
-+  size_t bytes;
-+  for (;;)
-+    {
-+      /* Feed the bytes one by one into mbrtoc32.  */
-+      bytes = mbrtoc32 (&mbc->wc, &mbf->buf[mbf->bufcount], new_bufcount - mbf->bufcount, &mbf->state);
-+
-+      if (bytes == (size_t) -1)
-+        {
-+          /* An invalid multibyte sequence was encountered.  */
-+          mbf->bufcount = new_bufcount;
-+          /* Return a single byte.  */
-+          bytes = 1;
-+          mbc->wc_valid = false;
-+          /* Allow the next invocation to continue from a sane state.  */
-+          mbszero (&mbf->state);
-+          break;
-+        }
-+      else if (bytes == (size_t) -2)
-+        {
-+          /* An incomplete multibyte character.  */
-+          mbf->bufcount = new_bufcount;
-+          if (mbf->bufcount == MBCHAR_BUF_SIZE)
-+            {
-+              /* An overlong incomplete multibyte sequence was encountered.  */
-+              /* Return a single byte.  */
-+              bytes = 1;
-+              mbc->wc_valid = false;
-+              break;
-+            }
-+          else
-+            {
-+              /* Read one more byte and retry mbrtoc32.  */
-+              int c = getc (mbf->fp);
-+              if (c == EOF)
-+                {
-+                  /* An incomplete multibyte character at the end.  */
-+                  mbf->eof_seen = true;
-+                  bytes = new_bufcount;
-+                  mbc->wc_valid = false;
-+                  break;
-+                }
-+              mbf->buf[new_bufcount] = (unsigned char) c;
-+              new_bufcount++;
-+            }
-+        }
-+      else
-+        {
-+          #if !GNULIB_MBRTOC32_REGULAR
-+          if (bytes == (size_t) -3)
-+            {
-+              /* The previous multibyte sequence produced an additional 32-bit
-+                 wide character.  */
-+              mbf->bufcount = new_bufcount;
-+              bytes = 0;
-+            }
-+          else
-+          #endif
-+            {
-+              bytes = mbf->bufcount + bytes;
-+              mbf->bufcount = new_bufcount;
-+              if (bytes == 0)
-+                {
-+                  /* A null 32-bit wide character was encountered.  */
-+                  bytes = 1;
-+                  assert (mbf->buf[0] == '\0');
-+                  assert (mbc->wc == 0);
-+                }
-+            }
-+          mbc->wc_valid = true;
-+          break;
-+        }
-+    }
-+
-+  /* Return the multibyte sequence mbf->buf[0..bytes-1].  */
-+  mbc->ptr = &mbc->buf[0];
-+  memcpy (&mbc->buf[0], &mbf->buf[0], bytes);
-+  mbc->bytes = bytes;
-+
-+  mbf->bufcount -= bytes;
-+  if (mbf->bufcount > 0)
-+    {
-+      /* It's not worth calling memmove() for so few bytes.  */
-+      unsigned int count = mbf->bufcount;
-+      char *p = &mbf->buf[0];
-+
-+      do
-+        {
-+          *p = *(p + bytes);
-+          p++;
-+        }
-+      while (--count > 0);
-+    }
-+  return;
-+
-+eof:
-+  /* An mbchar_t with bytes == 0 is used to indicate EOF.  */
-+  mbc->ptr = NULL;
-+  mbc->bytes = 0;
-+  mbc->wc_valid = false;
-+  return;
-+}
-+
-+MBFILE_INLINE void
-+mbfile_multi_ungetc (const struct mbchar *mbc, struct mbfile_multi *mbf)
-+{
-+  if (mbf->pushback_count == MBFILE_MAX_PUSHBACK)
-+    abort ();
-+  mb_copy (&mbf->pushback[mbf->pushback_count], mbc);
-+  mbf->pushback_count++;
-+}
-+
-+typedef struct mbfile_multi mb_file_t;
-+
-+typedef mbchar_t mbf_char_t;
-+
-+#define mbf_init(mbf, stream)                                           \
-+  ((mbf).fp = (stream),                                                 \
-+   (mbf).eof_seen = false,                                              \
-+   (mbf).pushback_count = 0,                                            \
-+   mbszero (&(mbf).state),                                              \
-+   (mbf).bufcount = 0)
-+
-+#define mbf_getc(mbc, mbf) mbfile_multi_getc (&(mbc), &(mbf))
-+
-+#define mbf_ungetc(mbc, mbf) mbfile_multi_ungetc (&(mbc), &(mbf))
-+
-+#define mb_iseof(mbc) ((mbc).bytes == 0)
-+
-+
-+#ifdef __cplusplus
-+}
-+#endif
-+
-+_GL_INLINE_HEADER_END
-+
-+#endif /* _MBFILE_H */
-diff --git a/m4/mbfile.m4 b/m4/mbfile.m4
-new file mode 100644
-index 0000000..9bf7d86
---- /dev/null
-+++ b/m4/mbfile.m4
-@@ -0,0 +1,16 @@
-+# mbfile.m4
-+# serial 7
-+dnl Copyright (C) 2005, 2008-2026 Free Software Foundation, Inc.
-+dnl This file is free software; the Free Software Foundation
-+dnl gives unlimited permission to copy and/or distribute it,
-+dnl with or without modifications, as long as this notice is preserved.
-+dnl This file is offered as-is, without any warranty.
-+
-+dnl autoconf tests required for use of mbfile.h
-+dnl From Bruno Haible.
-+
-+AC_DEFUN([gl_MBFILE],
-+[
-+  AC_REQUIRE([AC_TYPE_MBSTATE_T])
-+  :
-+])
 diff --git a/src/cut.c b/src/cut.c
 index 93f2b1f..9d93ea7 100644
 --- a/src/cut.c
@@ -1088,331 +726,99 @@ index 93f2b1f..9d93ea7 100644
  
  
    if (have_read_stdin && fclose (stdin) == EOF)
-diff --git a/src/expand-common.c b/src/expand-common.c
-index f63e6d8..5f68aa7 100644
---- a/src/expand-common.c
-+++ b/src/expand-common.c
-@@ -18,6 +18,7 @@
- 
- #include <stdio.h>
- #include <sys/types.h>
-+#include <mbfile.h>
- #include "system.h"
- #include "c-ctype.h"
- #include "fadvise.h"
-@@ -131,6 +132,119 @@ set_increment_size (colno tabval)
-   return ok;
- }
- 
-+extern int
-+set_utf_locale (void)
-+{
-+      /*try using some predefined locale */
-+      const char* predef_locales[] = {"C.UTF8","en_US.UTF8","en_GB.UTF8"};
-+
-+      const int predef_locales_count=3;
-+      for (int i=0;i<predef_locales_count;i++)
-+        {
-+          if (setlocale(LC_ALL,predef_locales[i])!=NULL)
-+          {
-+            break;
-+          }
-+          else if (i==predef_locales_count-1)
-+          {
-+            return 1;
-+            error (EXIT_FAILURE, errno, _("cannot set UTF-8 locale"));
-+          }
-+        }
-+        return 0;
-+}
-+
-+extern bool
-+check_utf_locale(void)
-+{
-+  char* locale = setlocale (LC_CTYPE , NULL);
-+  if (locale == NULL)
-+  {
-+    return false;
-+  }
-+  else if (strcasestr(locale, "utf8") == NULL && strcasestr(locale, "utf-8") == NULL)
-+  {
-+    return false;
-+  }
-+  return true;
-+}
-+
-+extern bool
-+check_bom(FILE* fp, mb_file_t *mbf)
-+{
-+  int c;
-+
-+
-+  c=fgetc(fp);
-+
-+  /*test BOM header of the first file */
-+  mbf->bufcount=0;
-+  if (c == 0xEF)
-+  {
-+    c=fgetc(fp);
-+  }
-+  else
-+  {
-+    if (c != EOF)
-+    {
-+      ungetc(c,fp);
-+    }
-+    return false;
-+  }
-+
-+  if (c == 0xBB)
-+  {
-+    c=fgetc(fp);
-+  }
-+  else
-+  {
-+    if ( c!= EOF )
-+    {
-+      mbf->buf[0]=(unsigned char) 0xEF;
-+      mbf->bufcount=1;
-+      ungetc(c,fp);
-+      return false;
-+    }
-+    else
-+    {
-+      ungetc(0xEF,fp);
-+      return false;
-+    }
-+  }
-+  if (c == 0xBF)
-+  {
-+    mbf->bufcount=0;
-+    return true;
-+  }
-+  else
-+  {
-+    if (c != EOF)
-+    {
-+      mbf->buf[0]=(unsigned char) 0xEF;
-+      mbf->buf[1]=(unsigned char) 0xBB;
-+      mbf->bufcount=2;
-+      ungetc(c,fp);
-+      return false;
-+    }
-+    else
-+    {
-+      mbf->buf[0]=(unsigned char) 0xEF;
-+      mbf->bufcount=1;
-+      ungetc(0xBB,fp);
-+      return false;
-+    }
-+  }
-+  return false;
-+}
-+
-+extern void
-+print_bom(void)
-+{
-+  putc (0xEF, stdout);
-+  putc (0xBB, stdout);
-+  putc (0xBF, stdout);
-+}
-+
- /* Add the comma or blank separated list of tab stops STOPS
-    to the list of tab stops.  */
- extern void
-diff --git a/src/expand-common.h b/src/expand-common.h
-index 49cae11..c765071 100644
---- a/src/expand-common.h
-+++ b/src/expand-common.h
-@@ -29,6 +29,18 @@ extern idx_t max_column_width;
- /* The desired exit status.  */
- extern int exit_status;
- 
-+extern int
-+set_utf_locale (void);
-+
-+extern bool
-+check_utf_locale(void);
-+
-+extern bool
-+check_bom(FILE* fp, mb_file_t *mbf);
-+
-+extern void
-+print_bom(void);
-+
- /* Add tab stop TABVAL to the end of 'tab_list'.  */
- extern void
- add_tab_stop (colno tabval);
 diff --git a/src/expand.c b/src/expand.c
-index cbf659c..6c3771b 100644
+index cbf659c..19b36b6 100644
 --- a/src/expand.c
 +++ b/src/expand.c
-@@ -37,6 +37,9 @@
+@@ -37,7 +37,11 @@
  #include <stdio.h>
  #include <getopt.h>
  #include <sys/types.h>
 +
-+#include <mbfile.h>
-+
  #include "system.h"
++#include "ioblksize.h"
++#include "mcel.h"
++#include "mbbuf.h"
  #include "expand-common.h"
  
-@@ -99,19 +102,41 @@ expand (void)
- {
-   /* Input stream.  */
-   FILE *fp = next_file (NULL);
-+  mb_file_t mbf;
-+  mbf_char_t c;
-+  /* True if the starting locale is utf8.  */
-+  bool using_utf_locale;
-+
-+  /* True if the first file contains BOM header.  */
-+  bool found_bom;
-+  using_utf_locale=check_utf_locale();
- 
+ /* The official name of this program (e.g., no 'g' prefix).  */
+@@ -103,10 +107,14 @@ expand (void)
    if (!fp)
      return;
-+  mbf_init (mbf, fp);
-+  found_bom=check_bom(fp,&mbf);
  
--  while (true)
-+  if (using_utf_locale == false && found_bom == true)
-+  {
-+    /*try using some predefined locale */
++  static char line_in[IO_BUFSIZE];
++  mbbuf_t mbbuf;
++  mbbuf_init (&mbbuf, line_in, sizeof line_in, fp);
 +
-+    if (set_utf_locale () != 0)
+   while (true)
      {
--      /* Input character, or EOF.  */
+       /* Input character, or EOF.  */
 -      int c;
-+      error (EXIT_FAILURE, errno, _("cannot set UTF-8 locale"));
-+    }
-+  }
-+
-+
-+  if (found_bom == true)
-+  {
-+    print_bom();
-+  }
++      mcel_t g;
  
-+  while (true)
-+    {
        /* If true, perform translations.  */
        bool convert = true;
- 
--
-       /* The following variables have valid values only when CONVERT
-          is true:  */
- 
-@@ -121,17 +146,48 @@ expand (void)
-       /* Index in TAB_LIST of next tab stop to examine.  */
-       idx_t tab_index = 0;
- 
--
-       /* Convert a line of text.  */
+@@ -126,12 +134,15 @@ expand (void)
  
        do
          {
 -          while ((c = getc (fp)) < 0 && (fp = next_file (fp)))
 -            continue;
-+          while (true) {
-+            mbf_getc (c, mbf);
-+            if ((mb_iseof (c)) && (fp = next_file (fp)))
-+              {
-+                mbf_init (mbf, fp);
-+                if (fp!=NULL)
-+                {
-+                  if (check_bom(fp,&mbf)==true)
-+                  {
-+                    /*Not the first file - check BOM header*/
-+                    if (using_utf_locale==false && found_bom==false)
-+                    {
-+                      /*BOM header in subsequent file but not in the first one. */
-+                      error (EXIT_FAILURE, errno, _("combination of files with and without BOM header"));
-+                    }
-+                  }
-+                  else
-+                  {
-+                    if(using_utf_locale==false && found_bom==true)
-+                    {
-+                      /*First file conatined BOM header - locale was switched to UTF
-+                       *all subsequent files should contain BOM. */
-+                      error (EXIT_FAILURE, errno, _("combination of files with and without BOM header"));
-+                    }
-+                  }
-+                }
-+                continue;
-+              }
-+            else
-+              {
-+                break;
-+              }
-+            }
-+
++          while ((g = mbbuf_get_char (&mbbuf)).ch == MBBUF_EOF && (fp = next_file (fp)))
++            mbbuf_init (&mbbuf, line_in, sizeof line_in, fp);
  
            if (convert)
              {
 -              if (c == '\t')
-+              if (mb_iseq (c, '\t'))
++              convert &= convert_entire_line
++                         || !! (c32isblank (g.ch) && ! c32isnbspace (g.ch));
++
++              if (g.ch == '\t')
                  {
                    /* Column the next input tab stop is on.  */
                    bool last_tab;
-@@ -142,31 +198,33 @@ expand (void)
+@@ -142,9 +153,12 @@ expand (void)
                      if (putchar (' ') < 0)
                        write_error ();
  
 -                  c = ' ';
-+                  mb_setascii (&c, ' ');
++                  if (putchar (' ') < 0)
++                    write_error ();
++
++                  continue;
                  }
 -              else if (c == '\b')
-+              else if (mb_iseq (c, '\b'))
++              else if (g.ch == '\b')
                  {
                    /* Go back one column, and force recalculation of the
                       next tab stop.  */
-                   column -= !!column;
-                   tab_index -= !!tab_index;
+@@ -153,20 +167,21 @@ expand (void)
                  }
--              else
-+              /* A leading control character could make us trip over.  */
-+              else if (!mb_iscntrl (c))
+               else
                  {
 -                  if (ckd_add (&column, column, 1))
-+                  if (ckd_add (&column, column, mb_width (c)))
++                  int width = c32width (g.ch);
++                  if (ckd_add (&column, column, width < 0 ? 1 : width))
                      error (EXIT_FAILURE, 0, _("input line is too long"));
                  }
  
 -              convert &= convert_entire_line || !! isblank (c);
-+              convert &= convert_entire_line || !! mb_isblank (c);
              }
  
 -          if (c < 0)
-+          if (mb_iseof (c))
++          if (g.ch == MBBUF_EOF)
              return;
  
 -          if (putchar (c) < 0)
-+          mb_putc (c, stdout);
++          fwrite (mbbuf_char_offset (&mbbuf, g), sizeof (char), g.len, stdout);
 +          if (ferror (stdout))
              write_error ();
          }
 -      while (c != '\n');
-+      while (!mb_iseq (c, '\n'));
++      while (g.ch != '\n');
      }
  }
  
-diff --git a/src/local.mk b/src/local.mk
-index 29f07f2..470e867 100644
---- a/src/local.mk
-+++ b/src/local.mk
-@@ -491,8 +491,8 @@ src_base32_CPPFLAGS = -DBASE_TYPE=32 $(AM_CPPFLAGS)
- src_basenc_SOURCES = src/basenc.c
- src_basenc_CPPFLAGS = -DBASE_TYPE=42 $(AM_CPPFLAGS)
- 
--src_expand_SOURCES = src/expand.c src/expand-common.c
--src_unexpand_SOURCES = src/unexpand.c src/expand-common.c
-+src_expand_SOURCES = src/expand.c src/expand-common.c lib/mbfile.c lib/mbchar.c
-+src_unexpand_SOURCES = src/unexpand.c src/expand-common.c lib/mbfile.c lib/mbchar.c
- 
- src_wc_SOURCES = src/wc.c
- if USE_AVX512_WC_LINECOUNT
 diff --git a/src/pr.c b/src/pr.c
 index cb2d45d..bf21323 100644
 --- a/src/pr.c
@@ -3255,206 +2661,135 @@ index eaf06d2..edb8130 100644
            break;
  
 diff --git a/src/unexpand.c b/src/unexpand.c
-index b92a951..b2bca73 100644
+index b92a951..24041a9 100644
 --- a/src/unexpand.c
 +++ b/src/unexpand.c
-@@ -38,6 +38,9 @@
+@@ -38,7 +38,11 @@
  #include <stdio.h>
  #include <getopt.h>
  #include <sys/types.h>
 +
-+#include <mbfile.h>
-+
  #include "system.h"
++#include "ioblksize.h"
++#include "mbbuf.h"
++#include "mcel.h"
  #include "expand-common.h"
  
-@@ -111,24 +114,46 @@ unexpand (void)
- {
-   /* Input stream.  */
-   FILE *fp = next_file (NULL);
-+  mb_file_t mbf;
- 
-   /* The array of pending blanks.  In non-POSIX locales, blanks can
-      include characters other than spaces, so the blanks must be
-      stored, not merely counted.  */
--  char *pending_blank;
-+  mbf_char_t *pending_blank;
-+  /* True if the starting locale is utf8.  */
-+  bool using_utf_locale;
-+
-+  /* True if the first file contains BOM header.  */
-+  bool found_bom;
-+  using_utf_locale=check_utf_locale();
- 
+ /* The official name of this program (e.g., no 'g' prefix).  */
+@@ -120,15 +124,19 @@ unexpand (void)
    if (!fp)
      return;
  
-+  mbf_init (mbf, fp);
-+  found_bom=check_bom(fp,&mbf);
-+
-+  if (using_utf_locale == false && found_bom == true)
-+    {
-+      /* Try using some predefined locale */
-+      if (set_utf_locale () != 0)
-+        {
-+          error (EXIT_FAILURE, errno, _("cannot set UTF-8 locale"));
-+        }
-+    }
++  static char line_in[IO_BUFSIZE];
++  mbbuf_t mbbuf;
++  mbbuf_init (&mbbuf, line_in, sizeof line_in, fp);
 +
    /* The worst case is a non-blank character, then one blank, then a
       tab stop, then MAX_COLUMN_WIDTH - 1 blanks, then a non-blank; so
       allocate MAX_COLUMN_WIDTH bytes to store the blanks.  */
 -  pending_blank = ximalloc (max_column_width);
-+  pending_blank = ximalloc (max_column_width * sizeof (mbf_char_t));
-+
-+  if (found_bom == true)
-+    print_bom();
++  pending_blank = ximalloc (max_column_width * sizeof (char) * MB_LEN_MAX);
  
    while (true)
      {
        /* Input character, or EOF.  */
 -      int c;
-+      mbf_char_t c;
++      mcel_t g;
  
        /* If true, perform translations.  */
        bool convert = true;
-@@ -162,12 +187,44 @@ unexpand (void)
+@@ -162,12 +170,12 @@ unexpand (void)
  
        do
          {
 -          while ((c = getc (fp)) < 0 && (fp = next_file (fp)))
 -            continue;
-+          while (true) {
-+            mbf_getc (c, mbf);
-+            if ((mb_iseof (c)) && (fp = next_file (fp)))
-+              {
-+                mbf_init (mbf, fp);
-+                if (fp!=NULL)
-+                {
-+                  if (check_bom(fp,&mbf)==true)
-+                  {
-+                    /*Not the first file - check BOM header*/
-+                    if (using_utf_locale==false && found_bom==false)
-+                    {
-+                      /*BOM header in subsequent file but not in the first one. */
-+                      error (EXIT_FAILURE, errno, _("combination of files with and without BOM header"));
-+                    }
-+                  }
-+                  else
-+                  {
-+                    if(using_utf_locale==false && found_bom==true)
-+                    {
-+                      /*First file conatined BOM header - locale was switched to UTF
-+                       *all subsequent files should contain BOM. */
-+                      error (EXIT_FAILURE, errno, _("combination of files with and without BOM header"));
-+                    }
-+                  }
-+                }
-+                continue;
-+              }
-+            else
-+              {
-+                break;
-+              }
-+            }
-+
++          while ((g = mbbuf_get_char (&mbbuf)).ch == MBBUF_EOF && (fp = next_file (fp)))
++            mbbuf_init (&mbbuf, line_in, sizeof line_in, fp);
  
            if (convert)
              {
 -              bool blank = !! isblank (c);
-+              bool blank = mb_isblank (c);
++              bool blank = !! (c32isblank (g.ch) && ! c32isnbspace (g.ch));
  
                if (blank)
                  {
-@@ -181,16 +238,16 @@ unexpand (void)
+@@ -181,7 +189,7 @@ unexpand (void)
  
                    if (convert)
                      {
 -                      if (c == '\t')
-+                      if (mb_iseq (c, '\t'))
++                      if (g.ch == '\t')
                          {
                            column = next_tab_column;
  
-                           if (pending)
--                            pending_blank[0] = '\t';
-+                            mb_setascii (&pending_blank[0], '\t');
+@@ -190,7 +198,7 @@ unexpand (void)
                          }
                        else
                          {
 -                          column++;
-+                          column += mb_width (c);
++                          column += c32width (g.ch);
  
                            if (! (prev_blank && column == next_tab_column))
                              {
-@@ -198,13 +255,14 @@ unexpand (void)
+@@ -198,13 +206,17 @@ unexpand (void)
                                   will be replaced by tabs.  */
                                if (column == next_tab_column)
                                  one_blank_before_tab_stop = true;
 -                              pending_blank[pending++] = c;
-+                              mb_copy (&pending_blank[pending++], &c);
++                              memcpy (pending_blank + pending, mbbuf_char_offset (&mbbuf, g), g.len);
++                              pending += g.len;
                                prev_blank = true;
                                continue;
                              }
  
                            /* Replace the pending blanks by a tab or two.  */
 -                          pending_blank[0] = c = '\t';
-+                          mb_setascii (&c, '\t');
-+                          mb_setascii (&pending_blank[0], '\t');
++                          g.len = 0;
++                          if (putc ('\t', stdout) < 0)
++                            write_error ();
++                          pending_blank[0] = '\t';
                          }
  
                        /* Discard pending blanks, unless it was a single
-@@ -212,7 +270,7 @@ unexpand (void)
+@@ -212,7 +224,7 @@ unexpand (void)
                        pending = one_blank_before_tab_stop;
                      }
                  }
 -              else if (c == '\b')
-+              else if (mb_iseq (c, '\b'))
++              else if (g.ch == '\b')
                  {
                    /* Go back one column, and force recalculation of the
                       next tab stop.  */
-@@ -222,16 +280,20 @@ unexpand (void)
+@@ -222,8 +234,8 @@ unexpand (void)
                  }
                else
                  {
 -                  column++;
 -                  if (!column)
-+                  const uintmax_t orig_column = column;
-+                  column += mb_width (c);
-+                  if (column < orig_column)
++                  int width = c32width (g.ch);
++                  if (ckd_add (&column, column, width < 0 ? 1 : width))
                      error (EXIT_FAILURE, 0, _("input line is too long"));
                  }
  
-               if (pending)
-                 {
-                   if (pending > 1 && one_blank_before_tab_stop)
--                    pending_blank[0] = '\t';
--                  if (fwrite (pending_blank, 1, pending, stdout) != pending)
-+                    mb_setascii (&pending_blank[0], '\t');
-+
-+                  for (int n = 0; n < pending; ++n)
-+                    mb_putc (pending_blank[n], stdout);
-+                  if (ferror (stdout))
-                     write_error ();
-                   pending = 0;
-                   one_blank_before_tab_stop = false;
-@@ -241,16 +303,17 @@ unexpand (void)
+@@ -241,16 +253,17 @@ unexpand (void)
                convert &= convert_entire_line || blank;
              }
  
 -          if (c < 0)
-+          if (mb_iseof (c))
++          if (g.ch == MBBUF_EOF)
              {
                free (pending_blank);
                return;
              }
  
 -          if (putchar (c) < 0)
-+          mb_putc (c, stdout);
++          fwrite (mbbuf_char_offset (&mbbuf, g), sizeof (char), g.len, stdout);
 +          if (ferror (stdout))
              write_error ();
          }
 -      while (c != '\n');
-+      while (!mb_iseq (c, '\n'));
++      while (g.ch != '\n');
      }
  }
  
@@ -3541,10 +2876,10 @@ index aea388a..5312dba 100755
  
 diff --git a/tests/expand/mb.sh b/tests/expand/mb.sh
 new file mode 100644
-index 0000000..dd6007c
+index 0000000..64fe125
 --- /dev/null
 +++ b/tests/expand/mb.sh
-@@ -0,0 +1,183 @@
+@@ -0,0 +1,171 @@
 +#!/bin/sh
 +
 +# Copyright (C) 2012-2015 Free Software Foundation, Inc.
@@ -3679,16 +3014,8 @@ index 0000000..dd6007c
 +   äöü  .    öüä.       ä xx
 +EOF
 +
-+
 +expand < in > out || fail=1
 +compare exp out > /dev/null 2>&1 || fail=1
-+
-+LANG=C expand < in > out || fail=1
-+compare exp out > /dev/null 2>&1 || fail=1
-+
-+LC_ALL=C expand < in > out || fail=1
-+compare exp out > /dev/null 2>&1 || fail=1
-+
 +
 +printf '\xEF\xBB\xBF' > in1; cat <<\EOF >> in1 || framework_failure_
 +1234567812345678123456781
@@ -3709,6 +3036,8 @@ index 0000000..dd6007c
 +ä       ö       ü       ß
 +.       .       .       .
 +   äöü  .    öüä.       ä xx
++EOF
++printf '\xEF\xBB\xBF' >> exp; cat <<\EOF >> exp || framework_failure_
 +1234567812345678123456781
 +.       .       .       .
 +a       b       c       d
@@ -3721,13 +3050,7 @@ index 0000000..dd6007c
 +expand in1 in1 > out || fail=1
 +compare exp out > /dev/null 2>&1 || fail=1
 +
-+LANG=C expand in1 in1  > out || fail=1
-+compare exp out > /dev/null 2>&1 || fail=1
-+
-+LC_ALL=C expand in1 in1 > out || fail=1
-+compare exp out > /dev/null 2>&1 || fail=1
-+
-+exit $fail
++Exit $fail
 diff --git a/tests/i18n/sort.sh b/tests/i18n/sort.sh
 new file mode 100644
 index 0000000..26c95de
@@ -4042,10 +3365,10 @@ index e37a746..3554bea 100755
  my $verbose = $ENV{VERBOSE};
 diff --git a/tests/unexpand/mb.sh b/tests/unexpand/mb.sh
 new file mode 100644
-index 0000000..8a82d74
+index 0000000..e505b5d
 --- /dev/null
 +++ b/tests/unexpand/mb.sh
-@@ -0,0 +1,172 @@
+@@ -0,0 +1,163 @@
 +#!/bin/sh
 +
 +# Copyright (C) 2012-2015 Free Software Foundation, Inc.
@@ -4115,6 +3438,7 @@ index 0000000..8a82d74
 +\u00E9       |composed(1)
 +e\u0301       |decomposed(1)
 +\u3000      |ideo-space(2)
++\u3000\u3000\u3000\u3000|ideo-space(2) * 4
 +\uFF0D      |full-hypen(2)
 +' > in || framework_failure_
 +
@@ -4122,7 +3446,8 @@ index 0000000..8a82d74
 +e\t|ascii(1)
 +\u00E9\t|composed(1)
 +e\u0301\t|decomposed(1)
-+\u3000\t|ideo-space(2)
++\t|ideo-space(2)
++\t|ideo-space(2) * 4
 +\uFF0D\t|full-hypen(2)
 +' > exp || framework_failure_
 +
@@ -4144,7 +3469,7 @@ index 0000000..8a82d74
 +ä\xFF      |
 +        ä\xFF|
 +\xFF       ä|
-+äbcdef\xFF |
++äbcde\xFF  |
 +' > in || framework_failure_
 +
 +env printf '12345678
@@ -4154,7 +3479,7 @@ index 0000000..8a82d74
 +ä\xFF\t|
 +\tä\xFF|
 +\xFF\tä|
-+äbcdef\xFF\t|
++äbcde\xFF\t|
 +' > exp || framework_failure_
 +
 +unexpand -a < in > out || fail=1
@@ -4170,7 +3495,6 @@ index 0000000..8a82d74
 +.       .       .       .
 +   äöü  .    öüä.       ä xx
 +EOF
-+env printf '   äöü\t.    öüä.   \tä xx\n' >> in || framework_failure_
 +
 +printf "\xEF\xBB\xBF" > exp; cat <<\EOF >> exp || framework_failure_
 +1234567812345678123456781
@@ -4182,15 +3506,8 @@ index 0000000..8a82d74
 +   äöü	.    öüä.	ä xx
 +EOF
 +
-+unexpand < in > out || fail=1
++unexpand -a < in > out || fail=1
 +compare exp out > /dev/null 2>&1 || fail=1
-+
-+LANG=C unexpand < in > out || fail=1
-+compare exp out > /dev/null 2>&1 || fail=1
-+
-+LC_ALL=C unexpand < in > out || fail=1
-+compare exp out > /dev/null 2>&1 || fail=1
-+
 +
 +printf "\xEF\xBB\xBF" > exp; cat <<\EOF >> exp || framework_failure_
 +1234567812345678123456781
@@ -4200,6 +3517,8 @@ index 0000000..8a82d74
 +ä	ö	ü	ß
 +.	.	.	.
 +   äöü	.    öüä.	ä xx
++EOF
++printf "\xEF\xBB\xBF" >> exp; cat <<\EOF >> exp || framework_failure_
 +1234567812345678123456781
 +.	.	.	.
 +a	b	c	d
@@ -4209,15 +3528,10 @@ index 0000000..8a82d74
 +   äöü	.    öüä.	ä xx
 +EOF
 +
-+
-+unexpand in in > out || fail=1
++unexpand -a in in > out || fail=1
 +compare exp out > /dev/null 2>&1 || fail=1
 +
-+LANG=C unexpand in in > out || fail=1
-+compare exp out > /dev/null 2>&1 || fail=1
-+
-+LC_ALL=C unexpand in in > out || fail=1
-+compare exp out > /dev/null 2>&1 || fail=1
++Exit $fail
 diff --git a/tests/unexpand/unexpand.pl b/tests/unexpand/unexpand.pl
 index fd64f0f..0c718ab 100755
 --- a/tests/unexpand/unexpand.pl
