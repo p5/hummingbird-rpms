@@ -1,7 +1,7 @@
-From f320da46f706a8013de532ee1a34703bd814be06 Mon Sep 17 00:00:00 2001
+From 4b634bdcc4dedc8516529d39062adc1305c7bf9b Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Pavol=20=C5=BD=C3=A1=C4=8Dik?= <zacik.pa@gmail.com>
 Date: Tue, 19 Aug 2025 14:26:07 +0200
-Subject: [PATCH 58/59] Add targets to skip build of non-installable programs
+Subject: [PATCH 56/57] Add targets to skip build of non-installable programs
 
 These make it possible to split the build into two
 parts, e.g., when tests should be built with different
@@ -60,7 +60,7 @@ index db6a1b1799..bc7fc36b46 100644
          @ ! Install the main program
          - CREATE/DIR ossl_installroot:[EXE.'arch']
 diff --git a/Configurations/unix-Makefile.tmpl b/Configurations/unix-Makefile.tmpl
-index 74139ec228..16aab9cd76 100644
+index 1920d38655..bfede44ce4 100644
 --- a/Configurations/unix-Makefile.tmpl
 +++ b/Configurations/unix-Makefile.tmpl
 @@ -547,7 +547,9 @@ LANG=C
@@ -91,7 +91,7 @@ index 74139ec228..16aab9cd76 100644
  	@[ -n "$(INSTALLTOP)" ] || (echo INSTALLTOP should not be empty; exit 1)
  	@$(PERL) $(SRCDIR)/util/mkdir-p.pl "$(DESTDIR)$(MODULESDIR)"
  	@$(PERL) $(SRCDIR)/util/mkdir-p.pl "$(DESTDIR)$(OPENSSLDIR)"
-@@ -965,7 +968,7 @@ install_runtime_libs: build_libs
+@@ -966,7 +969,7 @@ install_runtime_libs: build_libs
  		: {- output_on() if windowsdll(); "" -}; \
  	done
  
@@ -154,5 +154,5 @@ index a1614fe8a9..e88ff4bae1 100755
      if (/^##@/) {
  	printf "\n\033[1m%s\033[0m\n", substr($Fld[$_], (5)-1);
 -- 
-2.51.0
+2.52.0
 

@@ -1,7 +1,7 @@
-From 08c4167790785c112357fa769b3e0f11654abd2b Mon Sep 17 00:00:00 2001
+From e43a23f06a9e23f1091f88c6dfa6c1bd4e065a7a Mon Sep 17 00:00:00 2001
 From: rpm-build <rpm-build>
 Date: Wed, 6 Mar 2024 19:17:15 +0100
-Subject: [PATCH 18/59] FIPS: disable fipsinstall
+Subject: [PATCH 18/57] FIPS: disable fipsinstall
 
 Patch-name: 0034.fipsinstall_disable.patch
 Patch-id: 34
@@ -24,10 +24,10 @@ From-dist-git-commit: 4334bc837fbc64d14890fdc51679a80770d498ce
  mode change 100644 => 100755 test/recipes/03-test_fipsinstall.t
 
 diff --git a/apps/fipsinstall.c b/apps/fipsinstall.c
-index 0daa55a1b8..b4e29ac301 100644
+index dcc09a5ed7..e3d5f6e86d 100644
 --- a/apps/fipsinstall.c
 +++ b/apps/fipsinstall.c
-@@ -590,6 +590,9 @@ int fipsinstall_main(int argc, char **argv)
+@@ -636,6 +636,9 @@ int fipsinstall_main(int argc, char **argv)
      EVP_MAC *mac = NULL;
      CONF *conf = NULL;
  
@@ -38,7 +38,7 @@ index 0daa55a1b8..b4e29ac301 100644
          goto end;
  
 diff --git a/doc/man1/openssl-fipsinstall.pod.in b/doc/man1/openssl-fipsinstall.pod.in
-index d44b4a7dac..1c6b783413 100644
+index 2db5acd242..1c6b783413 100644
 --- a/doc/man1/openssl-fipsinstall.pod.in
 +++ b/doc/man1/openssl-fipsinstall.pod.in
 @@ -8,484 +8,9 @@ openssl-fipsinstall - perform FIPS configuration installation
@@ -406,7 +406,7 @@ index d44b4a7dac..1c6b783413 100644
 -
 -=item B<-self_test_oninstall>
 -
--The converse of B<-self_test_oninstall>.  The two fields related to the
+-The converse of B<-self_test_onload>.  The two fields related to the
 -"test status indicator" and "MAC status indicator" are written to the
 -output configuration file.
 -This field is not relevant for an OpenSSL FIPS 140-3 provider, since this is no
@@ -530,7 +530,7 @@ index d44b4a7dac..1c6b783413 100644
  =head1 COPYRIGHT
  
 diff --git a/doc/man1/openssl.pod b/doc/man1/openssl.pod
-index edef2ff598..0762a00d74 100644
+index 635b52aeb1..55bc6e44c6 100644
 --- a/doc/man1/openssl.pod
 +++ b/doc/man1/openssl.pod
 @@ -139,10 +139,6 @@ Engine (loadable module) information and manipulation.
@@ -856,5 +856,5 @@ index 3dcbe67c6d..1a5a475d91
  
  # Compatible options for pedantic FIPS compliance
 -- 
-2.51.0
+2.52.0
 

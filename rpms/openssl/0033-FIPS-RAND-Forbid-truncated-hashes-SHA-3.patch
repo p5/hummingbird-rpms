@@ -1,7 +1,7 @@
-From d0cef8f6f866d1fa37fd1d673e25adba210a3ad3 Mon Sep 17 00:00:00 2001
+From 2d385a2615dd7c6f33f824183ec6f65ef2c9327c Mon Sep 17 00:00:00 2001
 From: rpm-build <rpm-build>
 Date: Wed, 6 Mar 2024 19:17:16 +0100
-Subject: [PATCH 33/59] FIPS: RAND: Forbid truncated hashes & SHA-3
+Subject: [PATCH 33/57] FIPS: RAND: Forbid truncated hashes & SHA-3
 
 Section D.R "Hash Functions Acceptable for Use in the SP 800-90A DRBGs"
 of the Implementation Guidance for FIPS 140-3 [1] notes that there is no
@@ -30,12 +30,12 @@ From-dist-git-commit: 4334bc837fbc64d14890fdc51679a80770d498ce
  3 files changed, 187 insertions(+), 34 deletions(-)
 
 diff --git a/providers/implementations/rands/drbg_hash.c b/providers/implementations/rands/drbg_hash.c
-index 8bb831ae35..cedf5c3894 100644
+index 92eb443c6e..a63b21eade 100644
 --- a/providers/implementations/rands/drbg_hash.c
 +++ b/providers/implementations/rands/drbg_hash.c
 @@ -579,6 +579,18 @@ static int drbg_hash_set_ctx_params_locked(void *vctx, const OSSL_PARAM params[]
          if (!ossl_drbg_verify_digest(ctx, libctx, md))
-             return 0;   /* Error already raised for us */
+             return 0; /* Error already raised for us */
  
 +#ifdef FIPS_MODULE
 +    if (!EVP_MD_is_a(md, SN_sha1)
@@ -53,12 +53,12 @@ index 8bb831ae35..cedf5c3894 100644
          md_size = EVP_MD_get_size(md);
          if (md_size <= 0)
 diff --git a/providers/implementations/rands/drbg_hmac.c b/providers/implementations/rands/drbg_hmac.c
-index 43b3f8766e..64b7610cd1 100644
+index ff8a6cd6f0..d041897bb8 100644
 --- a/providers/implementations/rands/drbg_hmac.c
 +++ b/providers/implementations/rands/drbg_hmac.c
-@@ -505,6 +505,18 @@ static int drbg_hmac_set_ctx_params_locked(void *vctx, const OSSL_PARAM params[]
+@@ -522,6 +522,18 @@ static int drbg_hmac_set_ctx_params_locked(void *vctx, const OSSL_PARAM params[]
      if (md != NULL && !ossl_drbg_verify_digest(ctx, libctx, md))
-         return 0;   /* Error already raised for us */
+         return 0; /* Error already raised for us */
  
 +#ifdef FIPS_MODULE
 +    if (!EVP_MD_is_a(md, SN_sha1)
@@ -1191,5 +1191,5 @@ index 9756859c0e..9baecf6f31 100644
 +#Nonce.0 = 15e32abbae6b7433
 +#Output.0 = ee9f
 -- 
-2.51.0
+2.52.0
 
