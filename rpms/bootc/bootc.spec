@@ -23,8 +23,8 @@
 
 Name:           bootc
 # Ensure this local build overrides anything else.
-Version:        1.12.1
-Release:        %{autorelease}
+Version:        1.14.0
+Release:        0.1%{?dist}
 Summary:        Bootable container system
 
 # Apache-2.0
@@ -146,7 +146,8 @@ sed -i -e '/https:\/\//d' cargo-vendor.txt
 %endif
 
 %install
-%make_install INSTALL="install -p -c"
+# Pass CARGO_FEATURES explicitly to prevent auto-detection rebuild in install environment
+%make_install INSTALL="install -p -c" CARGO_FEATURES="%{?with_rhsm:rhsm}"
 %if %{with ostree_ext}
 make install-ostree-hooks DESTDIR=%{?buildroot}
 %endif
@@ -163,6 +164,9 @@ chmod +x %{?buildroot}/%{system_reinstall_bootc_install_podman_path}
 # https://github.com/coreos/rpm-ostree/issues/5420
 touch %{?buildroot}/%{_docdir}/bootc/baseimage/base/sysroot/.keepdir
 find %{?buildroot}/%{_docdir} ! -type d -printf '%{_docdir}/%%P\n' | sort > bootcdoclist.txt
+
+rm -f %{buildroot}/%{_datadir}/elvish/lib/bootc.elv
+rm -f %{buildroot}/%{_datadir}/powershell/Modules/Bootc/Bootc.psm1
 
 %if %{with check}
 %check
@@ -190,6 +194,15 @@ fi
 %endif
 %{_unitdir}/*
 %{_mandir}/man*/*bootc*
+%if 0%{?rhel} && 0%{?rhel} <= 9
+%{_datadir}/bash-completion/completions/bootc
+%{_datadir}/zsh/site-functions/_bootc
+%{_datadir}/fish/vendor_completions.d/bootc.fish
+%else
+%{bash_completions_dir}/bootc
+%{zsh_completions_dir}/_bootc
+%{fish_completions_dir}/bootc.fish
+%endif
 
 %files -n system-reinstall-bootc
 %{_bindir}/system-reinstall-bootc
@@ -202,4 +215,3 @@ fi
 
 %changelog
 %autochangelog
-
