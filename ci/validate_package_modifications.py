@@ -122,6 +122,10 @@ def check_git_history_state(package_name: str) -> tuple[bool, str | None]:
     # If any commits found, package has modifications
     bad_commits = [line for line in result.stdout.strip().split('\n') if line]
 
+    # historical accident: this commit removed unbound, e729d20ec3c2e9 reintroduced it and
+    # landed in parallel with this validation. Ignore it.
+    bad_commits = [line for line in bad_commits if not line.startswith('e5066a9dca178d5eeba0b1bfdacec5269314e99e ')]
+
     if bad_commits:
         # Report the first problematic commit
         parts = bad_commits[0].split(' ', 1)
