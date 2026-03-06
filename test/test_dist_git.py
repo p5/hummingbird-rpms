@@ -1318,6 +1318,15 @@ def test_list_modified_only(workdir: Path, upstream_repos: dict[str, Path]) -> N
     assert '[modified]' in result.stdout
     assert 'Test modification' in result.stdout
 
+    # --name-only output
+    result = subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'list', '--modified', '--name-only'],
+        cwd=workdir, capture_output=True, text=True, check=True,
+    )
+
+    # Should show only package name without formatting
+    assert result.stdout == 'vanilla\n'
+
 
 def test_list_clean_only(workdir: Path, upstream_repos: dict[str, Path]) -> None:
     """Test list --clean shows only clean packages."""

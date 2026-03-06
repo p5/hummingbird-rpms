@@ -316,10 +316,6 @@ exit 0
 # No files - policy is applied by %post scriptlet
 
 %changelog
-* Wed Feb 11 2026 Robert Sturla <rsturla@redhat.com> - 20251128-4.git19878fe
-- Add config-default and config-fips subpackages for build-time policy selection
-- Remove runtime kernel FIPS detection in favor of declarative package-based configuration
-
 * Fri Jan 16 2026 Fedora Release Engineering <releng@fedoraproject.org> - 20251128-3.git19878fe
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_44_Mass_Rebuild
 
@@ -1120,4 +1116,3 @@ exit 0
 
 * Mon May 19 2014 Nikos Mavrogiannopoulos <nmav@redhat.com> - 0.9-1-20140519gitf15621a
 - Initial package build
-

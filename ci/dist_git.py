@@ -1255,12 +1255,13 @@ def diff_package(package_name: str, output_mode: str = 'full', raw: bool = False
             sys.exit(f"Error running diff: {result.stderr}")
 
 
-def list_packages(status_filter: str | None = None, prerelease_filter: bool = False) -> None:
+def list_packages(status_filter: str | None = None, prerelease_filter: bool = False, name_only: bool = False) -> None:
     """List packages with their modification status.
 
     Args:
         status_filter: Filter by status ('clean', 'modified', 'native', or None for all)
         prerelease_filter: If True, show only packages with pre-release versions
+        name_only: If True, show only package names without formatting (useful for shell scripting)
     """
     metadata_files = sorted(METADATA_DIR.glob('*.json'))
 
@@ -1292,6 +1293,11 @@ def list_packages(status_filter: str | None = None, prerelease_filter: bool = Fa
                 continue
 
         packages.append((package_name, status, reason, version))
+
+    if name_only:
+        for name, _, _, _ in packages:
+            print(name)
+        return
 
     if not packages:
         if prerelease_filter:
@@ -1435,6 +1441,8 @@ Examples:
                             help='Show only native packages')
     list_filter.add_argument('--prerelease', action='store_true',
                             help='Show only packages with pre-release versions')
+    list_parser.add_argument('--name-only', action='store_true',
+                            help='Show only package names (useful for shell scripting)')
 
     # diff command
     diff_parser = subparsers.add_parser('diff',
@@ -1492,7 +1500,7 @@ Examples:
                 status_filter = 'modified'
             elif args.native:
                 status_filter = 'native'
-            list_packages(status_filter, prerelease_filter=args.prerelease)
+            list_packages(status_filter, prerelease_filter=args.prerelease, name_only=args.name_only)
         case 'diff':
             # Determine output mode
             output_mode = 'full'

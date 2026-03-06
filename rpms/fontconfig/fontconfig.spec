@@ -206,9 +206,6 @@ fi
 %doc fontconfig-devel.txt fontconfig-devel.html
 
 %changelog
-* Mon Jan 12 2026 Prarit Bhargava <prarit@redhat.com> - 2.17.0-4
-- Disable test due to namespace permissions
-
 * Wed Jul 23 2025 Fedora Release Engineering <releng@fedoraproject.org> - 2.17.0-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_43_Mass_Rebuild
 
