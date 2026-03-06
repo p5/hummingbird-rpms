@@ -4,14 +4,15 @@
 #
 # Usage:
 #   ./ci/dist_git_update_multi_mr.sh                      # Normal mode: check all packages, create MRs for all updates
-#   ./ci/dist_git_update_multi_mr.sh --clone              # Clone to /tmp, check first 5 packages, dry-run (no MRs)
-#   ./ci/dist_git_update_multi_mr.sh --clone --max=10     # Clone to /tmp, check first 10 packages, dry-run
-#   ./ci/dist_git_update_multi_mr.sh --clone --max=3 --create-mrs  # Clone to /tmp, check all packages, create up to 3 MRs
-#   ./ci/dist_git_update_multi_mr.sh --max=100            # Check all packages, create up to 100 MRs (in current repo)
+#   ./ci/dist_git_update_multi_mr.sh --clone              # Clone to /tmp, check all packages, dry-run (no MRs)
+#   ./ci/dist_git_update_multi_mr.sh --clone --max-packages=10     # Clone to /tmp, check first 10 packages, dry-run
+#   ./ci/dist_git_update_multi_mr.sh --clone --max-updates=3 --create-mrs  # Clone to /tmp, check all packages, create up to 3 MRs
+#   ./ci/dist_git_update_multi_mr.sh --max-updates=100            # Check all packages, create up to 100 MRs (in current repo)
 #   ./ci/dist_git_update_multi_mr.sh --clean-only         # Check only clean packages (skip modified/native)
 #   ./ci/dist_git_update_multi_mr.sh --modified-only      # Check only modified packages (skip clean/native)
-#   ./ci/dist_git_update_multi_mr.sh --clean-only --max=10     # Check clean packages, create up to 10 MRs
+#   ./ci/dist_git_update_multi_mr.sh --clean-only --max-updates=10     # Check clean packages, create up to 10 MRs
 #   ./ci/dist_git_update_multi_mr.sh --clone --clean-only      # Clone mode, check only clean packages
+#   ./ci/dist_git_update_multi_mr.sh --max-packages=50 --max-updates=10  # Check first 50 packages, create up to 10 MRs
 #
 # Environment variables:
 #   CHORE_MR_GITLAB_TOKEN    - GitLab API token with write_repository scope (required for --create-mrs)
@@ -22,7 +23,8 @@ set -euo pipefail
 # Parse arguments
 CLONE_MODE=false
 CREATE_MRS=false
-MAX_PACKAGES=0  # 0 means process all packages
+MAX_PACKAGES=0  # 0 means check all packages
+MAX_UPDATES=0   # 0 means unlimited
 CLEAN_ONLY=false
 MODIFIED_ONLY=false
 TEMP_DIR=""
@@ -33,10 +35,18 @@ while [[ $# -gt 0 ]]; do
             CLONE_MODE=true
             shift
             ;;
-        --max=*)
+        --max-packages=*)
             MAX_PACKAGES="${1#*=}"
             if ! [[ "${MAX_PACKAGES}" =~ ^[0-9]+$ ]]; then
-                echo "Error: --max requires a number (e.g., --max=5)"
+                echo "Error: --max-packages requires a number (e.g., --max-packages=5)"
+                exit 1
+            fi
+            shift
+            ;;
+        --max-updates=*)
+            MAX_UPDATES="${1#*=}"
+            if ! [[ "${MAX_UPDATES}" =~ ^[0-9]+$ ]]; then
+                echo "Error: --max-updates requires a number (e.g., --max-updates=10)"
                 exit 1
             fi
             shift
@@ -55,7 +65,7 @@ while [[ $# -gt 0 ]]; do
             ;;
         *)
             echo "Unknown option: $1"
-            echo "Usage: $0 [--clone] [--max=N] [--create-mrs] [--clean-only] [--modified-only]"
+            echo "Usage: $0 [--clone] [--max-packages=N] [--max-updates=N] [--create-mrs] [--clean-only] [--modified-only]"
             exit 1
             ;;
     esac
@@ -191,27 +201,18 @@ echo ""
 metadata_files=("${METADATA_DIR}"/*.json)
 total_packages=${#metadata_files[@]}
 
-# Apply --max limit
-# When creating MRs (--create-mrs or production mode), --max limits MRs created, not packages checked
-# When doing dry-run (clone mode without --create-mrs), --max limits packages checked
-if [[ "${CLONE_MODE}" == true && "${CREATE_MRS}" == false ]]; then
-    # Dry-run mode: limit packages to check
-    if [[ ${MAX_PACKAGES} -gt 0 ]]; then
-        packages_to_check=("${metadata_files[@]:0:${MAX_PACKAGES}}")
-        echo "Checking ${#packages_to_check[@]} of ${total_packages} packages (--max=${MAX_PACKAGES}, dry-run)"
-    else
-        # Clone mode without --max: default to first 5 packages
-        packages_to_check=("${metadata_files[@]:0:5}")
-        echo "Checking ${#packages_to_check[@]} of ${total_packages} packages (clone mode default, use --max=N to change)"
-    fi
+# Apply --max-packages limit to determine input set
+if [[ ${MAX_PACKAGES} -gt 0 ]]; then
+    packages_to_check=("${metadata_files[@]:0:${MAX_PACKAGES}}")
+    echo "Checking ${#packages_to_check[@]} of ${total_packages} packages (--max-packages=${MAX_PACKAGES})"
 else
-    # MR creation mode: check all packages, limit MRs created later
     packages_to_check=("${metadata_files[@]}")
-    if [[ ${MAX_PACKAGES} -gt 0 ]]; then
-        echo "Checking all ${total_packages} packages (will create up to ${MAX_PACKAGES} MRs)"
-    else
-        echo "Checking all ${total_packages} packages"
-    fi
+    echo "Checking all ${total_packages} packages"
+fi
+
+# Show --max-updates limit if set
+if [[ ${MAX_UPDATES} -gt 0 ]]; then
+    echo "Will stop after finding ${MAX_UPDATES} updates (--max-updates=${MAX_UPDATES})"
 fi
 echo ""
 
@@ -282,10 +283,10 @@ for metadata_file in "${packages_to_check[@]}"; do
         echo "  ✓ Update found"
         updates_found=$((updates_found + 1))
 
-        # If creating MRs and we've found enough updates, stop checking packages
-        if [[ ("${CREATE_MRS}" == true || "${CLONE_MODE}" == false) && ${MAX_PACKAGES} -gt 0 && ${updates_found} -ge ${MAX_PACKAGES} ]]; then
+        # If we've found enough updates, stop checking packages
+        if [[ ${MAX_UPDATES} -gt 0 && ${updates_found} -ge ${MAX_UPDATES} ]]; then
             echo ""
-            echo "Found ${updates_found} updates (reached --max=${MAX_PACKAGES}). Stopping package checks."
+            echo "Found ${updates_found} updates (reached --max-updates=${MAX_UPDATES}). Stopping package checks."
             echo "Skipping remaining $((${#packages_to_check[@]} - package_num)) packages."
             break
         fi

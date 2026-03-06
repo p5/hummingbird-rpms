@@ -5,8 +5,11 @@ Packages are automatically updated from Fedora dist-git. Each update creates a s
 ## Testing Locally
 
 ```bash
+# Dry-run (check all packages, no MRs)
+./ci/dist_git_update_multi_mr.sh --clone
+
 # Dry-run (check first 5 packages, no MRs)
-./ci/dist_git_update_multi_mr.sh --clone --max=5
+./ci/dist_git_update_multi_mr.sh --clone --max-packages=5
 
 # Check only clean packages (skip modified/native)
 ./ci/dist_git_update_multi_mr.sh --clone --clean-only
@@ -16,7 +19,11 @@ Packages are automatically updated from Fedora dist-git. Each update creates a s
 
 # Create up to 3 test MRs (checks all packages, stops after finding 3 updates)
 export CHORE_MR_GITLAB_TOKEN="glpat-xxxxxxxxxxxxxxxxxxxx"
-./ci/dist_git_update_multi_mr.sh --clone --max=3 --create-mrs
+./ci/dist_git_update_multi_mr.sh --clone --max-updates=3 --create-mrs
+
+# Check first 10 packages, create up to 3 MRs
+export CHORE_MR_GITLAB_TOKEN="glpat-xxxxxxxxxxxxxxxxxxxx"
+./ci/dist_git_update_multi_mr.sh --clone --max-packages=10 --max-updates=3 --create-mrs
 
 # Create MRs only for clean packages (skip modified/native)
 export CHORE_MR_GITLAB_TOKEN="glpat-xxxxxxxxxxxxxxxxxxxx"
@@ -32,7 +39,8 @@ export CHORE_MR_GITLAB_TOKEN="glpat-xxxxxxxxxxxxxxxxxxxx"
 ## Flags
 
 - `--clone` - Clone from GitLab to /tmp (safe for local testing, uses latest main branch)
-- `--max=N` - When creating MRs: checks packages until N updates found. When dry-run: checks first N packages
+- `--max-packages=N` - Check only the first N packages (limits input set)
+- `--max-updates=N` - Stop after finding N updates (limits output MRs created)
 - `--create-mrs` - Actually create MRs (requires token)
 - `--clean-only` - Skip packages with `modification_status` of 'modified' or 'native', only process clean packages
 - `--modified-only` - Skip packages with `modification_status` of 'clean' or 'native', only process modified packages (mutually exclusive with `--clean-only`)
