@@ -1,38 +1,37 @@
-From 70094ad6af6b81c1e278b6918fc7a143fbad02a9 Mon Sep 17 00:00:00 2001
+From 7afd41a086ff9d3c39ff592e26d006c769e2a6d7 Mon Sep 17 00:00:00 2001
 From: Simo Sorce <simo@redhat.com>
 Date: Fri, 7 Mar 2025 18:22:07 -0500
-Subject: [PATCH 45/59] FIPS: NO Kmac
+Subject: [PATCH 45/57] FIPS: NO Kmac
 
 Signed-off-by: Simo Sorce <simo@redhat.com>
 ---
- providers/fips/fipsprov.c                     |  10 +-
+ providers/fips/fipsprov.c                     |   9 +-
  providers/fips/self_test_data.inc             |   4 +
  test/recipes/30-test_evp.t                    |   2 +-
  test/recipes/30-test_evp_data/evpkdf_hkdf.txt |   2 +-
  .../30-test_evp_data/evpkdf_kbkdf_counter.txt |   2 +-
  test/recipes/30-test_evp_data/evpkdf_ss.txt   |   6 +-
  .../30-test_evp_data/evpmac_common.txt        | 100 ++++--------------
- 7 files changed, 40 insertions(+), 86 deletions(-)
+ 7 files changed, 39 insertions(+), 86 deletions(-)
 
 diff --git a/providers/fips/fipsprov.c b/providers/fips/fipsprov.c
-index 767073fce4..3d6fe1f244 100644
+index 33e1a179cf..7930cf3241 100644
 --- a/providers/fips/fipsprov.c
 +++ b/providers/fips/fipsprov.c
-@@ -295,10 +295,11 @@ static const OSSL_ALGORITHM fips_digests[] = {
+@@ -294,10 +294,10 @@ static const OSSL_ALGORITHM fips_digests[] = {
       * KECCAK-KMAC-128 and KECCAK-KMAC-256 as hashes are mostly useful for
       * KMAC128 and KMAC256.
       */
 -    { PROV_NAMES_KECCAK_KMAC_128, FIPS_DEFAULT_PROPERTIES,
-+    /* We don't certify KECCAK in our FIPS provider */
 +    /* { PROV_NAMES_KECCAK_KMAC_128, FIPS_DEFAULT_PROPERTIES,
-       ossl_keccak_kmac_128_functions },
+         ossl_keccak_kmac_128_functions },
      { PROV_NAMES_KECCAK_KMAC_256, FIPS_DEFAULT_PROPERTIES,
--      ossl_keccak_kmac_256_functions },
-+      ossl_keccak_kmac_256_functions }, */
+-        ossl_keccak_kmac_256_functions },
++        ossl_keccak_kmac_256_functions }, */
      { NULL, NULL, NULL }
  };
  
-@@ -371,8 +372,9 @@ static const OSSL_ALGORITHM fips_macs[] = {
+@@ -365,8 +365,9 @@ static const OSSL_ALGORITHM fips_macs[] = {
  #endif
      { PROV_NAMES_GMAC, FIPS_DEFAULT_PROPERTIES, ossl_gmac_functions },
      { PROV_NAMES_HMAC, FIPS_DEFAULT_PROPERTIES, ossl_hmac_functions },
@@ -45,10 +44,10 @@ index 767073fce4..3d6fe1f244 100644
  };
  
 diff --git a/providers/fips/self_test_data.inc b/providers/fips/self_test_data.inc
-index c9ce8f3340..3e32a5446a 100644
+index d8d23e6f90..43f7c89fd6 100644
 --- a/providers/fips/self_test_data.inc
 +++ b/providers/fips/self_test_data.inc
-@@ -535,6 +535,7 @@ static const ST_KAT_PARAM kbkdf_params[] = {
+@@ -533,6 +533,7 @@ static const ST_KAT_PARAM kbkdf_params[] = {
      ST_KAT_PARAM_END()
  };
  
@@ -56,7 +55,7 @@ index c9ce8f3340..3e32a5446a 100644
  static const char kbkdf_kmac_mac[] = "KMAC128";
  static unsigned char kbkdf_kmac_label[] = {
      0xB5, 0xB5, 0xF3, 0x71, 0x9F, 0xBE, 0x5B, 0x3D,
-@@ -561,6 +562,7 @@ static const ST_KAT_PARAM kbkdf_kmac_params[] = {
+@@ -559,6 +560,7 @@ static const ST_KAT_PARAM kbkdf_kmac_params[] = {
      ST_KAT_PARAM_OCTET(OSSL_KDF_PARAM_INFO, kbkdf_kmac_context),
      ST_KAT_PARAM_END()
  };
@@ -64,7 +63,7 @@ index c9ce8f3340..3e32a5446a 100644
  
  static const char tls13_kdf_digest[] = "SHA256";
  static int tls13_kdf_extract_mode = EVP_KDF_HKDF_MODE_EXTRACT_ONLY;
-@@ -651,12 +653,14 @@ static const ST_KAT_KDF st_kat_kdf_tests[] =
+@@ -649,12 +651,14 @@ static const ST_KAT_KDF st_kat_kdf_tests[] =
          kbkdf_params,
          ITM(kbkdf_expected)
      },
@@ -422,5 +421,5 @@ index 831eecbac9..af92ceea98 100644
 -Custom = ""
 -Output = 75358CF39E41494E949707927CEE0AF20A3FF553904C86B08F21CC414BCFD691589D27CF5E15369CBBFF8B9A4C2EB17800855D0235FF635DA82533EC6B759B69
 -- 
-2.51.0
+2.52.0
 

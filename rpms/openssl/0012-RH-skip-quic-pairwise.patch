@@ -1,7 +1,7 @@
-From 82c0d773649909ec1883d43e423f886d6424b9af Mon Sep 17 00:00:00 2001
+From 48b4a63db033730ef98eb9968e45ba66688598c9 Mon Sep 17 00:00:00 2001
 From: Dmitry Belyavskiy <dbelyavs@redhat.com>
 Date: Thu, 7 Mar 2024 17:37:09 +0100
-Subject: [PATCH 12/59] RH: skip quic pairwise
+Subject: [PATCH 12/57] RH: skip quic pairwise
 
 Patch-name: 0115-skip-quic-pairwise.patch
 Patch-id: 115
@@ -14,10 +14,10 @@ Patch-status: |
  3 files changed, 12 insertions(+), 3 deletions(-)
 
 diff --git a/test/quicapitest.c b/test/quicapitest.c
-index 4e887c13d1..37acf268cc 100644
+index 6b9ee8e69a..96cd735819 100644
 --- a/test/quicapitest.c
 +++ b/test/quicapitest.c
-@@ -2916,7 +2916,9 @@ int setup_tests(void)
+@@ -3015,7 +3015,9 @@ int setup_tests(void)
      ADD_TEST(test_cipher_find);
      ADD_TEST(test_version);
  #if defined(DO_SSL_TRACE_TEST)
@@ -29,10 +29,10 @@ index 4e887c13d1..37acf268cc 100644
      ADD_TEST(test_quic_forbidden_apis_ctx);
      ADD_TEST(test_quic_forbidden_apis);
 diff --git a/test/recipes/01-test_symbol_presence.t b/test/recipes/01-test_symbol_presence.t
-index 222b1886ae..7e2f65cccb 100644
+index 6c8de64b0b..79a5584099 100644
 --- a/test/recipes/01-test_symbol_presence.t
 +++ b/test/recipes/01-test_symbol_presence.t
-@@ -185,6 +185,7 @@ foreach (sort keys %stlibname) {
+@@ -187,6 +187,7 @@ foreach (sort keys %stlibname) {
      }
  }
  my @duplicates = sort grep { $symbols{$_} > 1 } keys %symbols;
@@ -82,5 +82,5 @@ index eaf0dbbb42..21864ad319 100644
                   "-pairwise", "dsa", "-dsaparam", data_file("dsaparam.pem")])),
         "fips provider dsa keygen pairwise failure test");
 -- 
-2.51.0
+2.52.0
 

@@ -1,7 +1,7 @@
-From 564140b9980fba626d7b52c6072b1d9cb87150da Mon Sep 17 00:00:00 2001
+From 4191527585ab1e8923249885cbf87d2f91b8804f Mon Sep 17 00:00:00 2001
 From: Simo Sorce <simo@redhat.com>
 Date: Fri, 7 Mar 2025 18:20:30 -0500
-Subject: [PATCH 27/59] FIPS: RSA: size/mode restrictions
+Subject: [PATCH 27/57] FIPS: RSA: size/mode restrictions
 
 Signed-off-by: Simo Sorce <simo@redhat.com>
 ---
@@ -12,10 +12,10 @@ Signed-off-by: Simo Sorce <simo@redhat.com>
  4 files changed, 86 insertions(+), 4 deletions(-)
 
 diff --git a/providers/implementations/signature/rsa_sig.c b/providers/implementations/signature/rsa_sig.c
-index 670125464e..664c59d2ef 100644
+index 4e0744eeba..f38431fd60 100644
 --- a/providers/implementations/signature/rsa_sig.c
 +++ b/providers/implementations/signature/rsa_sig.c
-@@ -939,6 +939,19 @@ static int rsa_verify_recover(void *vprsactx,
+@@ -935,6 +935,19 @@ static int rsa_verify_recover(void *vprsactx,
  {
      PROV_RSA_CTX *prsactx = (PROV_RSA_CTX *)vprsactx;
      int ret;
@@ -35,8 +35,8 @@ index 670125464e..664c59d2ef 100644
  
      if (!ossl_prov_is_running())
          return 0;
-@@ -1033,6 +1046,19 @@ static int rsa_verify_directly(PROV_RSA_CTX *prsactx,
-                                const unsigned char *tbs, size_t tbslen)
+@@ -1027,6 +1040,19 @@ static int rsa_verify_directly(PROV_RSA_CTX *prsactx,
+     const unsigned char *tbs, size_t tbslen)
  {
      size_t rslen;
 +# ifdef FIPS_MODULE
@@ -56,7 +56,7 @@ index 670125464e..664c59d2ef 100644
      if (!ossl_prov_is_running())
          return 0;
 diff --git a/ssl/ssl_ciph.c b/ssl/ssl_ciph.c
-index 19420d6c6a..5ab1ccee93 100644
+index 15be7e8067..823ad48e02 100644
 --- a/ssl/ssl_ciph.c
 +++ b/ssl/ssl_ciph.c
 @@ -350,6 +350,9 @@ int ssl_load_ciphers(SSL_CTX *ctx)
@@ -70,7 +70,7 @@ index 19420d6c6a..5ab1ccee93 100644
       * We ignore any errors from the fetches below. They are expected to fail
       * if these algorithms are not available.
 diff --git a/test/recipes/30-test_evp_data/evppkey_rsa.txt b/test/recipes/30-test_evp_data/evppkey_rsa.txt
-index f1dc5dd2a2..6ae973eaac 100644
+index 42819f7c41..65a75469f9 100644
 --- a/test/recipes/30-test_evp_data/evppkey_rsa.txt
 +++ b/test/recipes/30-test_evp_data/evppkey_rsa.txt
 @@ -268,8 +268,19 @@ TwIDAQAB
@@ -437,5 +437,5 @@ index 17ceb59148..972e90f32f 100644
  # Signing with SHA1 is not allowed in fips mode
  Availablein = fips
 -- 
-2.51.0
+2.52.0
 

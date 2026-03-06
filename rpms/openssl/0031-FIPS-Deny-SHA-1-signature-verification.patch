@@ -1,7 +1,7 @@
-From 7e1051bf5a1fb9c3b10e1485550d663b2b1f3ba6 Mon Sep 17 00:00:00 2001
+From 7061b3b659e0386efa58d9dfb94a4f84832884d0 Mon Sep 17 00:00:00 2001
 From: rpm-build <rpm-build>
 Date: Wed, 6 Mar 2024 19:17:15 +0100
-Subject: [PATCH 31/59] FIPS: Deny SHA-1 signature verification
+Subject: [PATCH 31/57] FIPS: Deny SHA-1 signature verification
 
 For RHEL, we already disable SHA-1 signatures by default in the default
 provider, so it is unexpected that the FIPS provider would have a more
@@ -31,62 +31,65 @@ Signed-off-by: Clemens Lang <cllang@redhat.com>
 Bug Id: https://bugzilla.redhat.com/show_bug.cgi?id=2087147
 From-dist-git-commit: 4334bc837fbc64d14890fdc51679a80770d498ce
 ---
- providers/implementations/signature/dsa_sig.c |  4 +-
- .../implementations/signature/ecdsa_sig.c     |  4 +-
- providers/implementations/signature/rsa_sig.c |  8 ++-
+ providers/implementations/signature/dsa_sig.c |  5 +-
+ .../implementations/signature/ecdsa_sig.c     |  5 +-
+ providers/implementations/signature/rsa_sig.c |  9 +--
  .../30-test_evp_data/evppkey_ecdsa.txt        | 11 +++-
  .../30-test_evp_data/evppkey_ecdsa_sigalg.txt | 64 ++++++++++++++++---
  .../30-test_evp_data/evppkey_rsa_common.txt   | 58 +++++++++++++++--
  test/recipes/80-test_cms.t                    |  4 +-
  test/recipes/80-test_ssl_old.t                |  4 ++
- 8 files changed, 130 insertions(+), 27 deletions(-)
+ 8 files changed, 130 insertions(+), 30 deletions(-)
 
 diff --git a/providers/implementations/signature/dsa_sig.c b/providers/implementations/signature/dsa_sig.c
-index 595aed7e07..42085e5ade 100644
+index 31a89133a3..0de750c247 100644
 --- a/providers/implementations/signature/dsa_sig.c
 +++ b/providers/implementations/signature/dsa_sig.c
-@@ -187,9 +187,7 @@ static int dsa_setup_md(PROV_DSA_CTX *ctx,
+@@ -187,10 +187,7 @@ static int dsa_setup_md(PROV_DSA_CTX *ctx,
          }
  #ifdef FIPS_MODULE
          {
 -            int sha1_allowed
 -                = ((ctx->operation
--                    & (EVP_PKEY_OP_SIGN | EVP_PKEY_OP_SIGNMSG)) == 0);
+-                       & (EVP_PKEY_OP_SIGN | EVP_PKEY_OP_SIGNMSG))
+-                    == 0);
 +            int sha1_allowed = 0;
  
              if (!ossl_fips_ind_digest_sign_check(OSSL_FIPS_IND_GET(ctx),
-                                                  OSSL_FIPS_IND_SETTABLE1,
+                     OSSL_FIPS_IND_SETTABLE1,
 diff --git a/providers/implementations/signature/ecdsa_sig.c b/providers/implementations/signature/ecdsa_sig.c
-index 88d83275b1..01b3023891 100644
+index 2a4faf4a71..f5c101005f 100644
 --- a/providers/implementations/signature/ecdsa_sig.c
 +++ b/providers/implementations/signature/ecdsa_sig.c
-@@ -214,9 +214,7 @@ static int ecdsa_setup_md(PROV_ECDSA_CTX *ctx,
+@@ -214,10 +214,7 @@ static int ecdsa_setup_md(PROV_ECDSA_CTX *ctx,
  
  #ifdef FIPS_MODULE
      {
 -        int sha1_allowed
 -            = ((ctx->operation
--                & (EVP_PKEY_OP_SIGN | EVP_PKEY_OP_SIGNMSG)) == 0);
+-                   & (EVP_PKEY_OP_SIGN | EVP_PKEY_OP_SIGNMSG))
+-                == 0);
 +        int sha1_allowed = 0;
  
          if (!ossl_fips_ind_digest_sign_check(OSSL_FIPS_IND_GET(ctx),
-                                              OSSL_FIPS_IND_SETTABLE1,
+                 OSSL_FIPS_IND_SETTABLE1,
 diff --git a/providers/implementations/signature/rsa_sig.c b/providers/implementations/signature/rsa_sig.c
-index 664c59d2ef..1e2394eb7d 100644
+index f38431fd60..e90ce3c223 100644
 --- a/providers/implementations/signature/rsa_sig.c
 +++ b/providers/implementations/signature/rsa_sig.c
-@@ -407,9 +407,7 @@ static int rsa_setup_md(PROV_RSA_CTX *ctx, const char *mdname,
+@@ -407,10 +407,7 @@ static int rsa_setup_md(PROV_RSA_CTX *ctx, const char *mdname,
          }
  #ifdef FIPS_MODULE
          {
 -            int sha1_allowed
 -                = ((ctx->operation
--                    & (EVP_PKEY_OP_SIGN | EVP_PKEY_OP_SIGNMSG)) == 0);
+-                       & (EVP_PKEY_OP_SIGN | EVP_PKEY_OP_SIGNMSG))
+-                    == 0);
 +            int sha1_allowed = 0;
  
              if (!ossl_fips_ind_digest_sign_check(OSSL_FIPS_IND_GET(ctx),
-                                                  OSSL_FIPS_IND_SETTABLE1,
-@@ -1795,11 +1793,15 @@ static int rsa_set_ctx_params(void *vprsactx, const OSSL_PARAM params[])
+                     OSSL_FIPS_IND_SETTABLE1,
+@@ -1790,11 +1787,15 @@ static int rsa_set_ctx_params(void *vprsactx, const OSSL_PARAM params[])
  
      if (prsactx->md == NULL && pmdname == NULL
          && pad_mode == RSA_PKCS1_PSS_PADDING) {
@@ -660,7 +663,7 @@ index 972e90f32f..61e2b4e3ac 100644
  Availablein = fips
  FIPSversion = >=3.4.0
 diff --git a/test/recipes/80-test_cms.t b/test/recipes/80-test_cms.t
-index 92a48a09c6..cf4541449b 100644
+index c278987186..91283c5e74 100644
 --- a/test/recipes/80-test_cms.t
 +++ b/test/recipes/80-test_cms.t
 @@ -183,7 +183,7 @@ my @smime_pkcs7_tests = (
@@ -704,5 +707,5 @@ index 568a1ddba4..6332aaec4b 100755
          SKIP: {
              skip "No IPv4 available on this machine", 4
 -- 
-2.51.0
+2.52.0
 
