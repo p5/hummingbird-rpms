@@ -1,6 +1,7 @@
 {
   "branch": "rawhide",
-  "modification_status": "clean",
+  "modification_status": "modified",
+  "modification_reason": "Conditionally skip timeout to hardcoded IPv4 address via env var",
   "release": "8",
   "sha": "926522e2b7cd5c29635300e880e70158e347f852",
   "source": "https://src.fedoraproject.org/rpms/hiredis.git",
