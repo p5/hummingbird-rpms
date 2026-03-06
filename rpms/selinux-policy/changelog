@@ -1,3 +1,19 @@
+* Thu Mar 05 2026 Zdenek Pytela <zpytela@redhat.com> - 42.25-1
+- Dontaudit ps permissions that tlp_t does not need (bsc#1257527)
+- TLP uses ps aux to check for different services (bsc#1257527)
+- Introduce separate types for generic systemd generators.
+- Confine system generator nm-initrd-generator.sh (bsc#1257754)
+- Allow rtkit-daemon dbus chat with systemd-logind
+- ecryptfs uses /home/.ecryptfs for full homedir encryption (bsc#1258350)
+- Dontaudit tlshd write generic certificate dirs
+- Allow systemd-coredump the kill capability in the user namespace
+- Allow NetworkManager list bpf directories
+- Allow virtnodedevd the dac_read_search capability
+- Allow pkcsslotd read files in /proc and /sys
+- Allow pkcsslotd map its private tmpfs files
+- Allow dovecoth-auth to connect to systemd-logind over a unix socket
+- Allow tlshd write generic certificate dirs
+
 * Fri Feb 13 2026 Zdenek Pytela <zpytela@redhat.com> - 42.24-1
 - Allow mdadm to use CAP_BPF during RAID monitoring
 - Allow rhsmcertd read anaconda run files
