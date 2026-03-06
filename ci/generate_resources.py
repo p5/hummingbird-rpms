@@ -196,6 +196,59 @@ def build_konflux_variables(branch: str, tenant: str, git_repo: str) -> dict:
     }
 
 
+def build_releng_variables() -> dict:
+    """Build variables for releng (ReleasePlanAdmission) templates."""
+    config_path = ROOT_DIR / "ci" / "konflux_rpa_config.yml"
+    with open(config_path) as f:
+        config = yaml.safe_load(f)
+
+    global_config = config["global"]
+    rpa_config = config["rpas"][0]
+
+    packages = get_all_packages()
+
+    component_filter = rpa_config.get("component_filter", {})
+    path_prefix = component_filter.get("path_prefix", "")
+    if path_prefix:
+        filter_dir = ROOT_DIR / path_prefix.rstrip("/")
+        packages = [pkg for pkg in packages if (filter_dir / pkg).is_dir()]
+
+    component_list = [
+        {"component_name": f"{sanitize_component_name(pkg)}-{global_config['branch']}"}
+        for pkg in packages
+    ]
+
+    return {
+        "name": rpa_config["name"],
+        "application_prefix": rpa_config["application_prefix"],
+        "release_org": rpa_config["release_org"],
+        "single_component_mode": rpa_config["single_component_mode"],
+        "service_account_name": rpa_config["service_account_name"],
+        "component_list": component_list,
+        "release_tenant": global_config["release_tenant"],
+        "branch": global_config["branch"],
+        "tenant": global_config["tenant"],
+        "pulp_domain": rpa_config["pulp_domain"],
+        "pulp_secret_name": rpa_config["pulp_secret_name"],
+        "pipeline_revision": rpa_config["pipeline_revision"],
+    }
+
+
+def generate_releng() -> str:
+    """Generate releng (ReleasePlanAdmission) resources."""
+    print("Building releng template variables...", file=sys.stderr)
+    variables = build_releng_variables()
+
+    print("Rendering releng resources...", file=sys.stderr)
+    template_path = ROOT_DIR / "konflux-templates" / "releng-staging.yml.j2"
+    macros_dir = ROOT_DIR / "konflux-templates" / "macros" / "releng"
+
+    result = render_template(template_path, macros_dir, variables)
+    if not result.endswith("\n"):
+        result += "\n"
+    return result
+
+
 def render_template(template_path: Path, macros_dir: Path, variables: dict) -> str:
     """Render a Jinja2 template with the given variables."""
     # Load macros and template
@@ -272,6 +325,9 @@ def main():
     # Konflux subcommand
     subparsers.add_parser("konflux", help="Generate Konflux resources")
 
+    # Releng subcommand
+    subparsers.add_parser("releng", help="Generate releng resources")
+
     # All subcommand (replaces generate.sh)
     subparsers.add_parser("all", help="Generate all resources (replaces generate.sh)")
 
@@ -281,6 +337,8 @@ def main():
         print(generate_pac(args.resource_type, args.branch, args.tenant))
     elif args.command == "konflux":
         print(generate_konflux(args.branch, args.tenant, args.git_repo))
+    elif args.command == "releng":
+        print(generate_releng())
     elif args.command == "all":
         # Generate all resources (equivalent to generate.sh)
         pac_push = generate_pac("push", args.branch, args.tenant)
@@ -291,6 +349,13 @@ def main():
 
         konflux = generate_konflux(args.branch, args.tenant, args.git_repo)
         (ROOT_DIR / "konflux-templates" / "rendered.yml").write_text(konflux)
+
+        releng = generate_releng()
+        releng_dir = ROOT_DIR / "releng"
+        releng_dir.mkdir(exist_ok=True)
+        (releng_dir / "hummingbird-rpms-tech-preview-staging.yaml").write_text(
+            releng
+        )
 
         print("Generated all resources.", file=sys.stderr)
 
