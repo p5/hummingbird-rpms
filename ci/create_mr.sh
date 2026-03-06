@@ -60,8 +60,11 @@ if git ls-remote --exit-code --heads "${REMOTE:-origin}" "${BRANCH_NAME}" >/dev/
     exit 0
 fi
 
-# Create MR branch at current HEAD (which has the commits from dist_git.py)
-git switch --quiet --create "${BRANCH_NAME}"
+# Switch to MR branch (create if needed)
+CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+if [[ "${CURRENT_BRANCH}" != "${BRANCH_NAME}" ]]; then
+    git switch --quiet --create "${BRANCH_NAME}"
+fi
 
 push_options=(
     --push-option merge_request.create
