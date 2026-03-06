@@ -1,8 +1,8 @@
 %global srcname referencing
 
 Name:           python-%{srcname}
-Version:        0.36.2
-Release:        6%{?dist}
+Version:        0.37.0
+Release:        1%{?dist}
 Summary:        An implementation-agnostic implementation of JSON reference resolution
 License:        MIT
 URL:            https://pypi.python.org/pypi/%{srcname}
@@ -44,7 +44,7 @@ Summary:        %{summary}
 
 %install
 %pyproject_install
-%pyproject_save_files %{srcname}
+%pyproject_save_files -l %{srcname}
 
 
 %check
