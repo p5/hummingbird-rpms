@@ -3630,7 +3630,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:9674b53c53c6e20850ddd257aad199dc2dd9a2a295e65eea5bda9d679341cb9c"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:7de23090f8c7785acc7291faf78bd4f13e19d05fba98b82e1b0a36fc0a14e74a"
   taskRunTemplate:
     serviceAccountName: build-pipeline-dns-root-data-main
   timeouts:
@@ -7356,7 +7356,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:9674b53c53c6e20850ddd257aad199dc2dd9a2a295e65eea5bda9d679341cb9c"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:7de23090f8c7785acc7291faf78bd4f13e19d05fba98b82e1b0a36fc0a14e74a"
   taskRunTemplate:
     serviceAccountName: build-pipeline-hiredis-main
   timeouts:
@@ -19576,7 +19576,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:9674b53c53c6e20850ddd257aad199dc2dd9a2a295e65eea5bda9d679341cb9c"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:7de23090f8c7785acc7291faf78bd4f13e19d05fba98b82e1b0a36fc0a14e74a"
   taskRunTemplate:
     serviceAccountName: build-pipeline-protobuf-c-main
   timeouts:
@@ -25243,7 +25243,7 @@ spec:
         value: pipeline
       - name: bundle
         # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
-        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:9674b53c53c6e20850ddd257aad199dc2dd9a2a295e65eea5bda9d679341cb9c"
+        value: "quay.io/hummingbird-ci/rpmbuild-pipeline:latest@sha256:7de23090f8c7785acc7291faf78bd4f13e19d05fba98b82e1b0a36fc0a14e74a"
   taskRunTemplate:
     serviceAccountName: build-pipeline-unbound-main
   timeouts:
