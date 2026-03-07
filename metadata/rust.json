@@ -2,7 +2,7 @@
   "branch": "rawhide",
   "modification_status": "clean",
   "release": "1",
-  "sha": "3f38528182350a54b77019de194a483526791437",
+  "sha": "06d9118e2ba446933493e59980b1b03ecc598935",
   "source": "https://src.fedoraproject.org/rpms/rust.git",
-  "version": "1.93.1"
+  "version": "1.94.0"
 }
