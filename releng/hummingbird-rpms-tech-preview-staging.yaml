@@ -107,6 +107,8 @@ spec:
           contentType: rpm
         - name: chunkah-main
           contentType: rpm
+        - name: cloud-init-main
+          contentType: rpm
         - name: cmake-main
           contentType: rpm
         - name: composer-main

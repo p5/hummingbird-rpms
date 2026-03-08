@@ -1,0 +1,8 @@
+{
+  "branch": "rawhide",
+  "modification_status": "clean",
+  "release": "3",
+  "sha": "7e33cb9a1af701d17d192a49fdb3c979f08d35b9",
+  "source": "https://src.fedoraproject.org/rpms/cloud-init.git",
+  "version": "25.3"
+}
