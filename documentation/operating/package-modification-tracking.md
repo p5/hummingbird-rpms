@@ -161,6 +161,143 @@ The `sync` command bypasses the modification check and force-updates to the
 latest upstream version. After syncing, the package is automatically marked
 clean.
 
+## Resolving Merge Conflicts
+
+When modified packages are updated from Fedora, `dist_git.py update` attempts to automatically merge local changes with the new upstream version using git's three-way merge. When conflicts occur, the update still succeeds but creates a commit with conflict markers, and the automation files a draft merge request labeled with `CONFLICT:` for manual resolution.
+
+### Understanding Conflict Markers
+
+Git uses this conflict marker structure:
+
+```
+<<<<<<< HEAD
+Fedora's version (new upstream)
+=======
+Hummingbird's local modifications
+>>>>>>> hummingbird-local
+```
+
+**ALL THREE markers must be removed** for a clean resolution.
+
+### Update branch/MR structure
+
+MRs are created on branches following the pattern:
+```
+chore/dist-git-update-PACKAGENAME
+```
+
+These branches are automatically created by the `dist_git_update` GitLab schedule.
+If they have conflicts, they result in draft MRs with:
+- Title prefix: `CONFLICT: chore(rpms): Update ...`
+- Description listing the conflicting files
+- `no-test` label to skip CI tests (saves resources since conflicts need manual resolution)
+
+### Resolution Process
+
+1. **Check out the conflict branch:**
+   ```bash
+   git fetch origin
+   git checkout origin/chore/dist-git-update-PACKAGENAME
+   ```
+
+2. **Examine the conflict:**
+   ```bash
+   # Find all files with conflict markers
+   git grep "^<<<<<<< HEAD" rpms/PACKAGENAME/
+
+   # View the specific conflict
+   git show HEAD:rpms/PACKAGENAME/PACKAGENAME.spec | grep -B5 -A10 "^<<<<<<< HEAD"
+   ```
+
+3. **Understand the local changes:**
+   ```bash
+   # Review commit history to understand why changes were made
+   git log --oneline -- rpms/PACKAGENAME/
+   git log -p -- rpms/PACKAGENAME/  # With diffs
+
+   # Check the modification reason
+   jq -r .modification_reason metadata/PACKAGENAME.json
+   ```
+
+   Understand the context for correct resolution:
+   - What was the original purpose of the local change? Is it transient or permanent?
+   - Is it a workaround for a bug, a security patch, or a configuration difference?
+   - Does it affect other packages (e.g., nss builds nspr as a subpackage)?
+   - Check spec file comments (e.g., NOTE: comments) for packaging details
+
+   Decide which version to accept:
+   - **Accept HEAD (Fedora)** for: release number lags, fixed workarounds that Fedora improved or addressed differently
+   - **Keep hummingbird-local** for: security patches not in Fedora, FIPS requirements, critical fixes, and other permanent modifications
+   - **Merge both** for: test skip lists, independent changes that don't conflict logically
+   - **When in doubt:** Accept Fedora's version for packaging metadata (Release:, subpackage versions),
+     keep Hummingbird's version for functional changes (patches, dependencies, build options)
+
+4. **Resolve the conflict:** Edit the file to choose the appropriate version
+   (HEAD, hummingbird-local, or merge both). Verify no markers remain:
+     ```bash
+     git grep -E "^(<<<<<<<|=======|>>>>>>>)" rpms/PACKAGENAME/
+     ```
+
+5. **Validate the resolution:** Check that local modifications are preserved:
+   ```bash
+   # Check the diff against upstream (works on working tree, staging not required)
+   ./ci/dist_git.py diff PACKAGENAME
+
+   # Compare with previous modification commits to verify
+   git log -p -- rpms/PACKAGENAME/
+   ```
+
+   The diff should show only the intended local modifications (ignoring Release: bumps).
+   This confirms the merge preserved your changes correctly. Note: `dist_git.py diff`
+   compares the filesystem working tree against upstream, so it works before or after
+   staging.
+
+6. **Amend the commit:**
+   ```bash
+   git add rpms/PACKAGENAME/
+   git commit --amend --no-edit
+   ```
+
+7. **Push the resolution:**
+   ```bash
+   git push origin HEAD:chore/dist-git-update-PACKAGENAME --force-with-lease --push-option merge_request.unlabel=no-test
+   ```
+
+   This removes the `no-test` label from the MR, which triggers CI tests to run and
+   verifies the resolution works correctly. Some developers might have `origin` as
+   read-only remote, and a different writable remote (e.g. `originw`).
+
+### Common Conflicts
+
+#### nss: Subpackage Release Numbers
+
+The `nss` package builds `nspr` as a subpackage with its own release number offset.
+
+**BACKGROUND:**
+- `nss` builds both `nss` and `nspr` RPMs from the same source
+- `nspr_release` uses an offset (`%[%baserelease+n]`) to avoid NVR clashes
+- The spec file NOTE explains: reset to 1 when `nspr_version` changes, increment when only `nss` changes
+- Fedora manages these offsets in their ecosystem to prevent conflicts
+
+**CONFLICT EXAMPLE:**
+```
+<<<<<<< HEAD
+%global nspr_release %[%baserelease+3]
+=======
+%global nspr_release %[%baserelease+1]
+>>>>>>> hummingbird-local
+```
+
+**REASONING:**
+When updating to a new upstream `nss` version from Fedora:
+- Accept Fedora's `nspr_release` offset (HEAD) - they manage NVR clashes
+- Our local offset was specific to Hummingbird rebuilds
+- New upstream version should reset to Fedora's packaging values
+- Don't try to "calculate" what it should be - trust Fedora's packaging
+
+**RESOLUTION:** Accept HEAD (Fedora's value)
+
+
 ## Special Case: Rebuild-Only Changes
 
 Release-only changes (no-change rebuilds) are automatically ignored by the
