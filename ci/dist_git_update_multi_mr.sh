@@ -408,10 +408,7 @@ for COMMIT_SHA in "${COMMIT_SHAS[@]}"; do
         HAS_CONFLICT=true
         echo "  ⚠ Has conflicts: ${CONFLICT_FILES}"
         MR_TITLE="CONFLICT: chore(rpms): ${COMMIT_MSG}"
-        MR_DESCRIPTION="**Merge conflicts in:**
-${CONFLICT_FILES}
-
-Look for conflict markers in the files above. Resolve and push updates to this branch."
+        MR_DESCRIPTION="**Merge conflicts in:**\n${CONFLICT_FILES}\n\nLook for conflict markers in the files above. Resolve and push updates to this branch."
     else
         HAS_CONFLICT=false
         MR_TITLE="chore(rpms): ${COMMIT_MSG}"
