@@ -13,8 +13,8 @@ spec:
   data:
     intention: staging
     pulp:
-      domain: public-hummingbird
-      secretName: hummingbird-pulp-credentials-production-secret
+      domain: {{ pulp_domain }}
+      secretName: {{ pulp_secret_name }}
     releaseNotes:
       product_id: [1071]
       product_name: "Red Hat Hardened Images"
@@ -50,7 +50,7 @@ spec:
         - name: url
           value: "https://github.com/konflux-ci/release-service-catalog.git"
         - name: revision
-          value: 352e71ee990bc97e99d8291345d1a548999f2ba0
+          value: {{ pipeline_revision }}
         - name: pathInRepo
           value: "pipelines/managed/push-rpms-to-pulp/push-rpms-to-pulp.yaml"
       resolver: git

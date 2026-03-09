@@ -1,0 +1,847 @@
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ReleasePlanAdmission
+metadata:
+  labels:
+    release.appstudio.openshift.io/block-releases: 'false'
+    pp.engineering.redhat.com/business-unit: rhel-platforms
+  name: hummingbird-rpms-tech-preview-staging
+  namespace: rhtap-releng-tenant
+spec:
+  applications:
+    - rpms-main
+  data:
+    intention: staging
+    pulp:
+      domain: public-hummingbird-staging
+      secretName: hummingbird-pulp-credentials-staging-secret
+    releaseNotes:
+      product_id: [1071]
+      product_name: "Red Hat Hardened Images"
+      product_version: "1"
+      solution: |
+        Red Hat Hardened Images RPM Release
+      synopsis: Red Hat Hardened Images RPM Release
+      topic: |
+        Red Hat Hardened Images RPM Release
+      description: |
+        Red Hat Hardened Images RPM Release
+    singleComponentMode: true
+    sign:
+      configMapName: hacbs-signing-pipeline-config-staging-redhatrelease2
+      cosignSecretName: konflux-cosign-signing-stage
+    pyxis:
+      secret: pyxis-staging-secret
+      server: stage
+    atlas:
+      server: stage
+    mapping:
+      defaults:
+        pushSourceContainer: true
+      components:
+        - name: pyyaml-main
+          contentType: rpm
+        - name: r-rpm-macros-main
+          contentType: rpm
+        - name: shellcheck-main
+          contentType: rpm
+        - name: abattis-cantarell-fonts-main
+          contentType: rpm
+        - name: acl-main
+          contentType: rpm
+        - name: alsa-lib-main
+          contentType: rpm
+        - name: annobin-main
+          contentType: rpm
+        - name: ansible-packaging-main
+          contentType: rpm
+        - name: aom-main
+          contentType: rpm
+        - name: apr-main
+          contentType: rpm
+        - name: apr-util-main
+          contentType: rpm
+        - name: attr-main
+          contentType: rpm
+        - name: audit-main
+          contentType: rpm
+        - name: authselect-main
+          contentType: rpm
+        - name: autoconf-main
+          contentType: rpm
+        - name: automake-main
+          contentType: rpm
+        - name: avahi-main
+          contentType: rpm
+        - name: babeltrace-main
+          contentType: rpm
+        - name: bash-main
+          contentType: rpm
+        - name: bash-completion-main
+          contentType: rpm
+        - name: bind-main
+          contentType: rpm
+        - name: binutils-main
+          contentType: rpm
+        - name: boost-main
+          contentType: rpm
+        - name: brotli-main
+          contentType: rpm
+        - name: busybox-main
+          contentType: rpm
+        - name: bzip2-main
+          contentType: rpm
+        - name: c-ares-main
+          contentType: rpm
+        - name: ca-certificates-main
+          contentType: rpm
+        - name: caddy-main
+          contentType: rpm
+        - name: capstone-main
+          contentType: rpm
+        - name: cargo-rpm-macros-main
+          contentType: rpm
+        - name: catatonit-main
+          contentType: rpm
+        - name: chkconfig-main
+          contentType: rpm
+        - name: chunkah-main
+          contentType: rpm
+        - name: cmake-main
+          contentType: rpm
+        - name: composer-main
+          contentType: rpm
+        - name: container-selinux-main
+          contentType: rpm
+        - name: containers-common-main
+          contentType: rpm
+        - name: coreutils-main
+          contentType: rpm
+        - name: cpio-main
+          contentType: rpm
+        - name: cracklib-main
+          contentType: rpm
+        - name: createrepo-c-main
+          contentType: rpm
+        - name: crypto-policies-main
+          contentType: rpm
+        - name: ctags-main
+          contentType: rpm
+        - name: cups-main
+          contentType: rpm
+        - name: curl-main
+          contentType: rpm
+        - name: cyrus-sasl-main
+          contentType: rpm
+        - name: dav1d-main
+          contentType: rpm
+        - name: dbus-main
+          contentType: rpm
+        - name: dbus-broker-main
+          contentType: rpm
+        - name: debugedit-main
+          contentType: rpm
+        - name: diffutils-main
+          contentType: rpm
+        - name: dnf-main
+          contentType: rpm
+        - name: dnf5-main
+          contentType: rpm
+        - name: dns-root-data-main
+          contentType: rpm
+        - name: dotnet10-0-main
+          contentType: rpm
+        - name: dotnet8-0-main
+          contentType: rpm
+        - name: dotnet9-0-main
+          contentType: rpm
+        - name: drpm-main
+          contentType: rpm
+        - name: dwz-main
+          contentType: rpm
+        - name: e2fsprogs-main
+          contentType: rpm
+        - name: ecj-main
+          contentType: rpm
+        - name: ed-main
+          contentType: rpm
+        - name: efi-rpm-macros-main
+          contentType: rpm
+        - name: elfutils-main
+          contentType: rpm
+        - name: emacs-filesystem-main
+          contentType: rpm
+        - name: expat-main
+          contentType: rpm
+        - name: fedora-logos-main
+          contentType: rpm
+        - name: fedora-repos-main
+          contentType: rpm
+        - name: file-main
+          contentType: rpm
+        - name: filesystem-main
+          contentType: rpm
+        - name: findutils-main
+          contentType: rpm
+        - name: fmt-main
+          contentType: rpm
+        - name: fontconfig-main
+          contentType: rpm
+        - name: fonts-rpm-macros-main
+          contentType: rpm
+        - name: forge-srpm-macros-main
+          contentType: rpm
+        - name: fpc-srpm-macros-main
+          contentType: rpm
+        - name: freetype-main
+          contentType: rpm
+        - name: fsverity-utils-main
+          contentType: rpm
+        - name: gap-srpm-macros-main
+          contentType: rpm
+        - name: gawk-main
+          contentType: rpm
+        - name: gcc-main
+          contentType: rpm
+        - name: gd-main
+          contentType: rpm
+        - name: gdb-main
+          contentType: rpm
+        - name: gdbm-main
+          contentType: rpm
+        - name: gettext-main
+          contentType: rpm
+        - name: ghc-srpm-macros-main
+          contentType: rpm
+        - name: git-main
+          contentType: rpm
+        - name: glib2-main
+          contentType: rpm
+        - name: glibc-main
+          contentType: rpm
+        - name: gmp-main
+          contentType: rpm
+        - name: gnat-srpm-macros-main
+          contentType: rpm
+        - name: gnulib-l10n-main
+          contentType: rpm
+        - name: gnupg2-main
+          contentType: rpm
+        - name: gnutls-main
+          contentType: rpm
+        - name: go-rpm-macros-main
+          contentType: rpm
+        - name: golang-fips1-25-main
+          contentType: rpm
+        - name: golang1-25-main
+          contentType: rpm
+        - name: golang1-26-main
+          contentType: rpm
+        - name: google-noto-fonts-main
+          contentType: rpm
+        - name: gperftools-main
+          contentType: rpm
+        - name: gpgme-main
+          contentType: rpm
+        - name: gpgverify-main
+          contentType: rpm
+        - name: graphite2-main
+          contentType: rpm
+        - name: grep-main
+          contentType: rpm
+        - name: groff-main
+          contentType: rpm
+        - name: gzip-main
+          contentType: rpm
+        - name: haproxy-main
+          contentType: rpm
+        - name: harfbuzz-main
+          contentType: rpm
+        - name: hiredis-main
+          contentType: rpm
+        - name: hostname-main
+          contentType: rpm
+        - name: httpd-main
+          contentType: rpm
+        - name: hugo-main
+          contentType: rpm
+        - name: hummingbird-release-main
+          contentType: rpm
+        - name: icu-main
+          contentType: rpm
+        - name: ima-evm-utils-main
+          contentType: rpm
+        - name: iproute-main
+          contentType: rpm
+        - name: jansson-main
+          contentType: rpm
+        - name: java-21-openjdk-main
+          contentType: rpm
+        - name: java-21-openjdk-portable-main
+          contentType: rpm
+        - name: java-25-openjdk-main
+          contentType: rpm
+        - name: java-25-openjdk-portable-main
+          contentType: rpm
+        - name: java-rpm-macros-main
+          contentType: rpm
+        - name: javapackages-tools-main
+          contentType: rpm
+        - name: jbigkit-main
+          contentType: rpm
+        - name: jemalloc-main
+          contentType: rpm
+        - name: jq-main
+          contentType: rpm
+        - name: json-c-main
+          contentType: rpm
+        - name: kernel-headers-main
+          contentType: rpm
+        - name: kernel-srpm-macros-main
+          contentType: rpm
+        - name: keyutils-main
+          contentType: rpm
+        - name: krb5-main
+          contentType: rpm
+        - name: kubernetes1-35-main
+          contentType: rpm
+        - name: langpacks-main
+          contentType: rpm
+        - name: less-main
+          contentType: rpm
+        - name: libx11-main
+          contentType: rpm
+        - name: libxau-main
+          contentType: rpm
+        - name: libxcomposite-main
+          contentType: rpm
+        - name: libxext-main
+          contentType: rpm
+        - name: libxi-main
+          contentType: rpm
+        - name: libxpm-main
+          contentType: rpm
+        - name: libxrender-main
+          contentType: rpm
+        - name: libxtst-main
+          contentType: rpm
+        - name: libaio-main
+          contentType: rpm
+        - name: libarchive-main
+          contentType: rpm
+        - name: libassuan-main
+          contentType: rpm
+        - name: libavif-main
+          contentType: rpm
+        - name: libb2-main
+          contentType: rpm
+        - name: libbpf-main
+          contentType: rpm
+        - name: libcap-main
+          contentType: rpm
+        - name: libcap-ng-main
+          contentType: rpm
+        - name: libcbor-main
+          contentType: rpm
+        - name: libcomps-main
+          contentType: rpm
+        - name: libdnf-main
+          contentType: rpm
+        - name: libeconf-main
+          contentType: rpm
+        - name: libedit-main
+          contentType: rpm
+        - name: libevent-main
+          contentType: rpm
+        - name: libffi-main
+          contentType: rpm
+        - name: libfido2-main
+          contentType: rpm
+        - name: libfontenc-main
+          contentType: rpm
+        - name: libgcrypt-main
+          contentType: rpm
+        - name: libgit2-main
+          contentType: rpm
+        - name: libgpg-error-main
+          contentType: rpm
+        - name: libidn2-main
+          contentType: rpm
+        - name: libipt-main
+          contentType: rpm
+        - name: libjpeg-turbo-main
+          contentType: rpm
+        - name: libksba-main
+          contentType: rpm
+        - name: liblerc-main
+          contentType: rpm
+        - name: libmnl-main
+          contentType: rpm
+        - name: libmodulemd-main
+          contentType: rpm
+        - name: libmpc-main
+          contentType: rpm
+        - name: libnl3-main
+          contentType: rpm
+        - name: libnsl2-main
+          contentType: rpm
+        - name: libpng-main
+          contentType: rpm
+        - name: libpsl-main
+          contentType: rpm
+        - name: libpwquality-main
+          contentType: rpm
+        - name: librepo-main
+          contentType: rpm
+        - name: libseccomp-main
+          contentType: rpm
+        - name: libselinux-main
+          contentType: rpm
+        - name: libsemanage-main
+          contentType: rpm
+        - name: libsepol-main
+          contentType: rpm
+        - name: libsodium-main
+          contentType: rpm
+        - name: libsolv-main
+          contentType: rpm
+        - name: libssh-main
+          contentType: rpm
+        - name: libssh2-main
+          contentType: rpm
+        - name: libtasn1-main
+          contentType: rpm
+        - name: libtiff-main
+          contentType: rpm
+        - name: libtirpc-main
+          contentType: rpm
+        - name: libtool-main
+          contentType: rpm
+        - name: libunistring-main
+          contentType: rpm
+        - name: libunwind-main
+          contentType: rpm
+        - name: libusb1-main
+          contentType: rpm
+        - name: libuv-main
+          contentType: rpm
+        - name: libverto-main
+          contentType: rpm
+        - name: libwebp-main
+          contentType: rpm
+        - name: libxcb-main
+          contentType: rpm
+        - name: libxcrypt-main
+          contentType: rpm
+        - name: libxml2-main
+          contentType: rpm
+        - name: libxslt-main
+          contentType: rpm
+        - name: libyaml-main
+          contentType: rpm
+        - name: libyuv-main
+          contentType: rpm
+        - name: libzip-main
+          contentType: rpm
+        - name: lksctp-tools-main
+          contentType: rpm
+        - name: llhttp-main
+          contentType: rpm
+        - name: llvm-main
+          contentType: rpm
+        - name: lmdb-main
+          contentType: rpm
+        - name: logrotate-main
+          contentType: rpm
+        - name: lua-main
+          contentType: rpm
+        - name: lua-rpm-macros-main
+          contentType: rpm
+        - name: lz4-main
+          contentType: rpm
+        - name: lzo-main
+          contentType: rpm
+        - name: m4-main
+          contentType: rpm
+        - name: mailcap-main
+          contentType: rpm
+        - name: make-main
+          contentType: rpm
+        - name: mariadb-connector-c-main
+          contentType: rpm
+        - name: mariadb10-11-main
+          contentType: rpm
+        - name: mariadb11-8-main
+          contentType: rpm
+        - name: mawk-main
+          contentType: rpm
+        - name: memcached-main
+          contentType: rpm
+        - name: mkfontscale-main
+          contentType: rpm
+        - name: mpdecimal-main
+          contentType: rpm
+        - name: mpfr-main
+          contentType: rpm
+        - name: ncurses-main
+          contentType: rpm
+        - name: nettle-main
+          contentType: rpm
+        - name: nghttp2-main
+          contentType: rpm
+        - name: nghttp3-main
+          contentType: rpm
+        - name: nginx-main
+          contentType: rpm
+        - name: ngtcp2-main
+          contentType: rpm
+        - name: nodejs20-main
+          contentType: rpm
+        - name: nodejs22-main
+          contentType: rpm
+        - name: nodejs24-main
+          contentType: rpm
+        - name: nodejs25-main
+          contentType: rpm
+        - name: npth-main
+          contentType: rpm
+        - name: nss-main
+          contentType: rpm
+        - name: nss-fips-main
+          contentType: rpm
+        - name: ocaml-srpm-macros-main
+          contentType: rpm
+        - name: oniguruma-main
+          contentType: rpm
+        - name: openblas-srpm-macros-main
+          contentType: rpm
+        - name: openldap-main
+          contentType: rpm
+        - name: openssh-main
+          contentType: rpm
+        - name: openssl-main
+          contentType: rpm
+        - name: openssl-fips-provider-main
+          contentType: rpm
+        - name: oras-main
+          contentType: rpm
+        - name: p11-kit-main
+          contentType: rpm
+        - name: package-notes-main
+          contentType: rpm
+        - name: pam-main
+          contentType: rpm
+        - name: patch-main
+          contentType: rpm
+        - name: pcre2-main
+          contentType: rpm
+        - name: perl-main
+          contentType: rpm
+        - name: perl-carp-main
+          contentType: rpm
+        - name: perl-data-dumper-main
+          contentType: rpm
+        - name: perl-digest-main
+          contentType: rpm
+        - name: perl-digest-md5-main
+          contentType: rpm
+        - name: perl-encode-main
+          contentType: rpm
+        - name: perl-error-main
+          contentType: rpm
+        - name: perl-exporter-main
+          contentType: rpm
+        - name: perl-file-path-main
+          contentType: rpm
+        - name: perl-file-temp-main
+          contentType: rpm
+        - name: perl-getopt-long-main
+          contentType: rpm
+        - name: perl-http-tiny-main
+          contentType: rpm
+        - name: perl-io-socket-ip-main
+          contentType: rpm
+        - name: perl-io-socket-ssl-main
+          contentType: rpm
+        - name: perl-mime-base32-main
+          contentType: rpm
+        - name: perl-mime-base64-main
+          contentType: rpm
+        - name: perl-net-ssleay-main
+          contentType: rpm
+        - name: perl-pathtools-main
+          contentType: rpm
+        - name: perl-pod-escapes-main
+          contentType: rpm
+        - name: perl-pod-perldoc-main
+          contentType: rpm
+        - name: perl-pod-simple-main
+          contentType: rpm
+        - name: perl-pod-usage-main
+          contentType: rpm
+        - name: perl-scalar-list-utils-main
+          contentType: rpm
+        - name: perl-socket-main
+          contentType: rpm
+        - name: perl-storable-main
+          contentType: rpm
+        - name: perl-term-ansicolor-main
+          contentType: rpm
+        - name: perl-term-cap-main
+          contentType: rpm
+        - name: perl-termreadkey-main
+          contentType: rpm
+        - name: perl-text-parsewords-main
+          contentType: rpm
+        - name: perl-text-tabs-wrap-main
+          contentType: rpm
+        - name: perl-time-hires-main
+          contentType: rpm
+        - name: perl-time-local-main
+          contentType: rpm
+        - name: perl-uri-main
+          contentType: rpm
+        - name: perl-constant-main
+          contentType: rpm
+        - name: perl-libnet-main
+          contentType: rpm
+        - name: perl-parent-main
+          contentType: rpm
+        - name: perl-podlators-main
+          contentType: rpm
+        - name: perl-srpm-macros-main
+          contentType: rpm
+        - name: php-main
+          contentType: rpm
+        - name: php-pecl-zip-main
+          contentType: rpm
+        - name: pkgconf-main
+          contentType: rpm
+        - name: policycoreutils-main
+          contentType: rpm
+        - name: popt-main
+          contentType: rpm
+        - name: postgresql18-main
+          contentType: rpm
+        - name: protobuf-c-main
+          contentType: rpm
+        - name: psmisc-main
+          contentType: rpm
+        - name: publicsuffix-list-main
+          contentType: rpm
+        - name: pyproject-rpm-macros-main
+          contentType: rpm
+        - name: pytest-main
+          contentType: rpm
+        - name: python-attrs-main
+          contentType: rpm
+        - name: python-certifi-main
+          contentType: rpm
+        - name: python-charset-normalizer-main
+          contentType: rpm
+        - name: python-cryptography-main
+          contentType: rpm
+        - name: python-gitlab-main
+          contentType: rpm
+        - name: python-idna-main
+          contentType: rpm
+        - name: python-iniconfig-main
+          contentType: rpm
+        - name: python-jinja2-main
+          contentType: rpm
+        - name: python-jinja2-cli-main
+          contentType: rpm
+        - name: python-jsonschema-main
+          contentType: rpm
+        - name: python-jsonschema-specifications-main
+          contentType: rpm
+        - name: python-markupsafe-main
+          contentType: rpm
+        - name: python-mypy-extensions-main
+          contentType: rpm
+        - name: python-packaging-main
+          contentType: rpm
+        - name: python-pathspec-main
+          contentType: rpm
+        - name: python-pip-main
+          contentType: rpm
+        - name: python-pluggy-main
+          contentType: rpm
+        - name: python-productmd-main
+          contentType: rpm
+        - name: python-pygments-main
+          contentType: rpm
+        - name: python-referencing-main
+          contentType: rpm
+        - name: python-requests-main
+          contentType: rpm
+        - name: python-requests-toolbelt-main
+          contentType: rpm
+        - name: python-rpds-py-main
+          contentType: rpm
+        - name: python-rpm-macros-main
+          contentType: rpm
+        - name: python-sentry-sdk-main
+          contentType: rpm
+        - name: python-setuptools-main
+          contentType: rpm
+        - name: python-specfile-main
+          contentType: rpm
+        - name: python-types-pyyaml-main
+          contentType: rpm
+        - name: python-types-requests-main
+          contentType: rpm
+        - name: python-typing-extensions-main
+          contentType: rpm
+        - name: python-urllib3-main
+          contentType: rpm
+        - name: python3-mypy-main
+          contentType: rpm
+        - name: python3-11-main
+          contentType: rpm
+        - name: python3-12-main
+          contentType: rpm
+        - name: python3-13-main
+          contentType: rpm
+        - name: python3-14-main
+          contentType: rpm
+        - name: qt5-main
+          contentType: rpm
+        - name: qt6-main
+          contentType: rpm
+        - name: rdma-core-main
+          contentType: rpm
+        - name: readline-main
+          contentType: rpm
+        - name: redhat-rpm-config-main
+          contentType: rpm
+        - name: rootfiles-main
+          contentType: rpm
+        - name: rpm-main
+          contentType: rpm
+        - name: ruby3-3-main
+          contentType: rpm
+        - name: ruby3-4-main
+          contentType: rpm
+        - name: ruby4-0-main
+          contentType: rpm
+        - name: rubygem-json-main
+          contentType: rpm
+        - name: rubygem-rdoc-main
+          contentType: rpm
+        - name: rubypick-main
+          contentType: rpm
+        - name: ruff-main
+          contentType: rpm
+        - name: rust-main
+          contentType: rpm
+        - name: rust-add-determinism-main
+          contentType: rpm
+        - name: rust-archery-main
+          contentType: rpm
+        - name: rust-imagequant-sys-main
+          contentType: rpm
+        - name: rust-rav1e-main
+          contentType: rpm
+        - name: rust-rpds-main
+          contentType: rpm
+        - name: rust-rpm-sequoia-main
+          contentType: rpm
+        - name: sdbus-cpp-main
+          contentType: rpm
+        - name: sed-main
+          contentType: rpm
+        - name: selinux-policy-main
+          contentType: rpm
+        - name: setup-main
+          contentType: rpm
+        - name: sgml-common-main
+          contentType: rpm
+        - name: shadow-utils-main
+          contentType: rpm
+        - name: skopeo-main
+          contentType: rpm
+        - name: snappy-main
+          contentType: rpm
+        - name: source-highlight-main
+          contentType: rpm
+        - name: sqlite-main
+          contentType: rpm
+        - name: subversion-main
+          contentType: rpm
+        - name: svt-av1-main
+          contentType: rpm
+        - name: syft-main
+          contentType: rpm
+        - name: systemd-main
+          contentType: rpm
+        - name: systemd-stub-main
+          contentType: rpm
+        - name: tar-main
+          contentType: rpm
+        - name: tomcat10-main
+          contentType: rpm
+        - name: tomcat11-main
+          contentType: rpm
+        - name: tpm2-tss-main
+          contentType: rpm
+        - name: tree-sitter-srpm-macros-main
+          contentType: rpm
+        - name: ttmkfdir-main
+          contentType: rpm
+        - name: tzdata-main
+          contentType: rpm
+        - name: unbound-main
+          contentType: rpm
+        - name: unzip-main
+          contentType: rpm
+        - name: uriparser-main
+          contentType: rpm
+        - name: util-linux-main
+          contentType: rpm
+        - name: uuid-main
+          contentType: rpm
+        - name: valkey-main
+          contentType: rpm
+        - name: vmaf-main
+          contentType: rpm
+        - name: which-main
+          contentType: rpm
+        - name: xcaddy-main
+          contentType: rpm
+        - name: xorg-x11-fonts-main
+          contentType: rpm
+        - name: xxhash-main
+          contentType: rpm
+        - name: xz-main
+          contentType: rpm
+        - name: yarnpkg-main
+          contentType: rpm
+        - name: yq-main
+          contentType: rpm
+        - name: zchunk-main
+          contentType: rpm
+        - name: zig-srpm-macros-main
+          contentType: rpm
+        - name: zip-main
+          contentType: rpm
+        - name: zlib-ng-main
+          contentType: rpm
+        - name: zstd-main
+          contentType: rpm
+  origin: hummingbird-tenant
+  pipeline:
+    pipelineRef:
+      params:
+        - name: url
+          value: "https://github.com/konflux-ci/release-service-catalog.git"
+        - name: revision
+          value: development
+        - name: pathInRepo
+          value: "pipelines/managed/push-rpms-to-pulp/push-rpms-to-pulp.yaml"
+      resolver: git
+    serviceAccountName: hummingbird-rpm-release-staging
+    timeouts:
+      pipeline: 4h0m0s
+      tasks: 4h0m0s
+  policy: rpm-hummingbird-stage
