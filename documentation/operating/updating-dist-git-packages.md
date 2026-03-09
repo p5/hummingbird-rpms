@@ -11,6 +11,9 @@ Packages are automatically updated from Fedora dist-git. Each update creates a s
 # Dry-run (check first 5 packages, no MRs)
 ./ci/dist_git_update_multi_mr.sh --clone --max-packages=5
 
+# Check only a specific package (for testing/debugging)
+./ci/dist_git_update_multi_mr.sh --clone --only-package=libgcrypt
+
 # Check only clean packages (skip modified/native)
 ./ci/dist_git_update_multi_mr.sh --clone --clean-only
 
@@ -42,6 +45,7 @@ export CHORE_MR_GITLAB_TOKEN="glpat-xxxxxxxxxxxxxxxxxxxx"
 - `--max-packages=N` - Check only the first N packages (limits input set)
 - `--max-updates=N` - Stop after finding N updates (limits output MRs created)
 - `--create-mrs` - Actually create MRs (requires token)
+- `--only-package=NAME` - Check only the specified package (for testing/debugging specific packages)
 - `--clean-only` - Skip packages with `modification_status` of 'modified' or 'native', only process clean packages
 - `--modified-only` - Skip packages with `modification_status` of 'clean' or 'native', only process modified packages (mutually exclusive with `--clean-only`)
 
