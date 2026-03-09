@@ -24,20 +24,18 @@ discover:
       test: "PYTHON=python${pybasever}d TOX=false VERSION=${pybasever} CYTHON=true ./venv.sh"
     - name: selftest
       path: /selftest
-      test: "VERSION=${pybasever} X='-i test_check_probes -i test_sysconfigdata_json -i test_margin_is_sufficient' ./parallel.sh"
+      test: "VERSION=${pybasever} X='-i test_check_probes' ./parallel.sh"
     - name: debugtest
       path: /selftest
       # test_base_interpreter: https://github.com/python/cpython/issues/131372
-      # test_interrupt and test_interrupt_no_handler: https://github.com/python/cpython/issues/133651
-      # test_margin_is_sufficient: https://github.com/python/cpython/issues/140222
-      test: "VERSION=${pybasever} PYTHON=python${pybasever}d X='-i test_check_probes -i test_sysconfigdata_json -i test_base_interpreter -i test_interrupt -i test_interrupt_no_handler -i test_margin_is_sufficient' ./parallel.sh"
+      test: "VERSION=${pybasever} PYTHON=python${pybasever}d X='-i test_check_probes -i test_base_interpreter' ./parallel.sh"
     - name: freethreadingtest
       path: /selftest
-      test: "VERSION=${pybasever}t X='-i test_check_probes -i test_sysconfigdata_json -i test_base_interpreter -i test_margin_is_sufficient' ./parallel.sh"
+      test: "VERSION=${pybasever}t X='-i test_check_probes -i test_base_interpreter' ./parallel.sh"
     - name: selftest_jit
       path: /selftest
       # test_attr_promotion_failure: https://github.com/python/cpython/issues/141833
-      test: "VERSION=${pybasever} PYTHON_JIT=1 X='-i test_check_probes -i test_sysconfigdata_json -i test_attr_promotion_failure -i test_margin_is_sufficient' ./parallel.sh"
+      test: "VERSION=${pybasever} PYTHON_JIT=1 X='-i test_check_probes -i test_attr_promotion_failure' ./parallel.sh"
     - name: jit_disabled_by_default
       test: "python${pybasever} -c 'import sys; assert not sys._jit.is_enabled()'"
     - name: jit_disabled_explicitly
