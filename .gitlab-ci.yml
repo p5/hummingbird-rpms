@@ -132,35 +132,30 @@ dist_git_update:
     - !reference [.rules, schedule]
     - !reference [.rules, mr_manual]
 
-# disabled until (1) noarch rpms are published into pulp again, and (2) we
-# prevent landing MRs without Konflux tests:
-# - https://gitlab.com/redhat/hummingbird/rpms/-/merge_requests/796#note_3149028917 ff.
-# - https://gitlab.com/redhat/hummingbird/rpms/-/merge_requests/782 should prevent that
-# or at least (3) we figure out why the `start_in: 10 minutes` does not work
-# (but !782 is better)
-# chore_mr_approval:
-#   stage: deploy
-#   environment:
-#     name: chore-mr-approval
-#     action: access
-#   script:
-#     - gitlab
-#       --private-token "${CHORE_MR_APPROVAL_GITLAB_TOKEN}"
-#       project-merge-request approve
-#       --project-id "${CI_PROJECT_ID}"
-#       --iid "${CI_MERGE_REQUEST_IID}"
-#   allow_failure: true
-#   rules:
-#     - if: |
-#         ($GITLAB_USER_NAME != 'chore-mr') && (
-#           $GITLAB_USER_NAME != 'pipelines-as-code' ||
-#           $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME !~ /chore\//
-#         )
-#       when: never
-#     - !reference [.rules, mr]
-#     - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
-#       when: delayed
-#       start_in: 10 minutes  # give Konflux some time to post its commit statuses
+chore_mr_approval:
+  stage: deploy
+  environment:
+    name: chore-mr-approval
+    action: access
+  script:
+    - python3 ci/check_konflux_statuses.py
+    - gitlab
+      --private-token "${CHORE_MR_APPROVAL_GITLAB_TOKEN}"
+      project-merge-request approve
+      --project-id "${CI_PROJECT_ID}"
+      --iid "${CI_MERGE_REQUEST_IID}"
+  allow_failure: true
+  rules:
+    - if: |
+        ($GITLAB_USER_NAME != 'chore-mr') && (
+          $GITLAB_USER_NAME != 'pipelines-as-code' ||
+          $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME !~ /chore\//
+        )
+      when: never
+    - !reference [.rules, mr]
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+      when: delayed
+      start_in: 10 minutes  # give Konflux some time to post its commit statuses
 
 deploy_hugo_tag:
   environment:
