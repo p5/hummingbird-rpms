@@ -1,5 +1,5 @@
 %global nspr_version 4.38.2
-%global nss_version 3.119.1
+%global nss_version 3.121.0
 # NOTE: To avoid NVR clashes of nspr* packages:
 # - reset %%{nspr_release} to 1, when updating %%{nspr_version}
 # - increment %%{nspr_version}, when updating the NSS part only
@@ -7,7 +7,7 @@
 %global nss_release %baserelease
 # use "%%global nspr_release %%[%%baserelease+n]" to handle offsets when
 # release number between nss and nspr are different.
-%global nspr_release %[%baserelease+1]
+%global nspr_release %[%baserelease+3]
 # only need to update this as we added new
 # algorithms under nss policy control
 %global crypto_policies_version 20240521
@@ -54,13 +54,6 @@ rpm.define(string.format("nss_archive_version %s",
 
 # Mozilla messed up the versioning for 3.119.1, it seems to be only this version
 %{lua:
-if rpm.expand("%{nss_version}") == "3.119.1" then
-    rpm.define(string.format("nss_archive_version %s",
-               string.gsub(rpm.expand("%{nss_archive_version}"), "%.", "_")))
-end
-}
-
-%{lua:
 rpm.define(string.format("nss_release_tag NSS_%s_RTM",
            string.gsub(rpm.expand("%nss_archive_version"), "%.", "_")))
 }
@@ -70,7 +63,7 @@ rpm.define(string.format("nss_release_tag NSS_%s_RTM",
 Summary:          Network Security Services
 Name:             nss
 Version:          %{nss_version}
-Release:          %{nss_release}.1%{?dist}
+Release:          %{nss_release}%{?dist}
 License:          MPL-2.0
 URL:              http://www.mozilla.org/projects/security/pki/nss/
 Requires:         nspr >= %{nspr_version}
@@ -1110,6 +1103,16 @@ fi
 
 
 %changelog
+* Tue Mar  3 2026 Frantisek Krenzelok <fkrenzel@redhat.com> - 3.121.0-1
+- Update NSS to 3.121.0
+- Updated patch nss-3.118-ml-dsa-leancrypto.patch
+
+* Wed Feb 18 2026 Frantisek Krenzelok <fkrenzel@redhat.com> - 3.120.1-1
+- Update NSS to 3.120.1
+
+* Mon Jan 19 2026 Frantisek Krenzelok <fkrenzel@redhat.com> - 3.120.0-1
+- Update NSS to 3.120.0
+
 * Mon Jan 5 2026 Frantisek Krenzelok <fkrenzel@redhat.com> - 3.119.1-1
 - Update NSS to 3.119.1 with NSPR 4.38.2
 
