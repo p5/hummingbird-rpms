@@ -1,0 +1,1 @@
+new-fs dump file (big endian), This dump Mon Sep 24 07:53:12 2012, Previous dump Thu Jan  1 00:00:00 1970, Volume 1, Level zero, type: tape header, Label myext3fs, Filesystem /mnt/myext3fs, Device /dev/loop0, Host unknown.host.on.unknown.domain.com, Flags 3
