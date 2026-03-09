@@ -13,6 +13,7 @@
 #   ./ci/dist_git_update_multi_mr.sh --clean-only --max-updates=10     # Check clean packages, create up to 10 MRs
 #   ./ci/dist_git_update_multi_mr.sh --clone --clean-only      # Clone mode, check only clean packages
 #   ./ci/dist_git_update_multi_mr.sh --max-packages=50 --max-updates=10  # Check first 50 packages, create up to 10 MRs
+#   ./ci/dist_git_update_multi_mr.sh --only-package=libgcrypt     # Check only libgcrypt package
 #
 # Environment variables:
 #   CHORE_MR_GITLAB_TOKEN    - GitLab API token with write_repository scope (required for --create-mrs)
@@ -27,6 +28,7 @@ MAX_PACKAGES=0  # 0 means check all packages
 MAX_UPDATES=0   # 0 means unlimited
 CLEAN_ONLY=false
 MODIFIED_ONLY=false
+ONLY_PACKAGE=""  # Empty means check all packages
 TEMP_DIR=""
 
 while [[ $# -gt 0 ]]; do
@@ -63,9 +65,13 @@ while [[ $# -gt 0 ]]; do
             MODIFIED_ONLY=true
             shift
             ;;
+        --only-package=*)
+            ONLY_PACKAGE="${1#*=}"
+            shift
+            ;;
         *)
             echo "Unknown option: $1"
-            echo "Usage: $0 [--clone] [--max-packages=N] [--max-updates=N] [--create-mrs] [--clean-only] [--modified-only]"
+            echo "Usage: $0 [--clone] [--max-packages=N] [--max-updates=N] [--create-mrs] [--clean-only] [--modified-only] [--only-package=NAME]"
             exit 1
             ;;
     esac
@@ -201,7 +207,15 @@ echo "Target branch: ${TARGET_BRANCH}"
 echo ""
 
 # Determine which packages to check
-metadata_files=("${METADATA_DIR}"/*.json)
+
+# Apply --only-package filter first if specified
+if [[ -n "${ONLY_PACKAGE}" ]]; then
+    echo "Filtering to single package: ${ONLY_PACKAGE}"
+    metadata_files=("${METADATA_DIR}/${ONLY_PACKAGE}.json")
+else
+    metadata_files=("${METADATA_DIR}"/*.json)
+fi
+
 total_packages=${#metadata_files[@]}
 
 # Apply --max-packages limit to determine input set
