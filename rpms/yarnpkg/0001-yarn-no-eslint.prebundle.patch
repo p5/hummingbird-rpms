@@ -1,4 +1,4 @@
-diff -rupN --no-dereference yarn-1.22.22/.eslintignore yarn-1.22.22-new/.eslintignore
+diff -rupN yarn-1.22.22/.eslintignore yarn-1.22.22-new/.eslintignore
 --- yarn-1.22.22/.eslintignore	2024-03-09 22:33:28.000000000 +0100
 +++ yarn-1.22.22-new/.eslintignore	1970-01-01 01:00:00.000000000 +0100
 @@ -1,12 +0,0 @@
@@ -14,7 +14,7 @@ diff -rupN --no-dereference yarn-1.22.22/.eslintignore yarn-1.22.22-new/.eslinti
 -artifacts
 -dist
 -packages
-diff -rupN --no-dereference yarn-1.22.22/.eslintrc.json yarn-1.22.22-new/.eslintrc.json
+diff -rupN yarn-1.22.22/.eslintrc.json yarn-1.22.22-new/.eslintrc.json
 --- yarn-1.22.22/.eslintrc.json	2024-03-09 22:33:28.000000000 +0100
 +++ yarn-1.22.22-new/.eslintrc.json	1970-01-01 01:00:00.000000000 +0100
 @@ -1,56 +0,0 @@
@@ -74,9 +74,9 @@ diff -rupN --no-dereference yarn-1.22.22/.eslintrc.json yarn-1.22.22-new/.eslint
 -    }
 -  ]
 -}
-diff -rupN --no-dereference yarn-1.22.22/package.json yarn-1.22.22-new/package.json
---- yarn-1.22.22/package.json	2025-09-30 14:26:03.997138837 +0200
-+++ yarn-1.22.22-new/package.json	2025-09-30 14:26:04.000964590 +0200
+diff -rupN yarn-1.22.22/package.json yarn-1.22.22-new/package.json
+--- yarn-1.22.22/package.json	2024-03-09 22:33:28.000000000 +0100
++++ yarn-1.22.22-new/package.json	2026-01-29 19:42:33.944311623 +0100
 @@ -58,7 +58,6 @@
    },
    "devDependencies": {
@@ -85,9 +85,9 @@ diff -rupN --no-dereference yarn-1.22.22/package.json yarn-1.22.22-new/package.j
      "babel-loader": "^6.2.5",
      "babel-plugin-array-includes": "^2.0.3",
      "babel-plugin-inline-import": "^3.0.0",
-@@ -70,18 +69,6 @@
-     "babel-preset-stage-0": "^6.0.0",
+@@ -71,18 +70,6 @@
      "babylon": "^6.5.0",
+     "commitizen": "^2.9.6",
      "cz-conventional-changelog": "^2.0.0",
 -    "eslint": "^4.3.0",
 -    "eslint-config-fb-strict": "^22.0.0",
@@ -104,7 +104,7 @@ diff -rupN --no-dereference yarn-1.22.22/package.json yarn-1.22.22-new/package.j
      "execa": "^0.11.0",
      "fancy-log": "^1.3.2",
      "flow-bin": "^0.66.0",
-@@ -122,9 +109,7 @@
+@@ -123,9 +110,7 @@
      "build-win-installer": "scripts\\build-windows-installer.bat",
      "changelog": "git-release-notes $(git describe --tags --abbrev=0 $(git describe --tags --abbrev=0)^)..$(git describe --tags --abbrev=0) scripts/changelog.md",
      "dupe-check": "yarn jsinspect ./src",
