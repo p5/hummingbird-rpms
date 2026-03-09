@@ -96,8 +96,10 @@ fi
 
 # Capture push output to check if MR was created
 echo "Pushing branch with MR creation options..."
-PUSH_OUTPUT=$(git push "${push_options[@]}" "${REMOTE:-origin}" "${BRANCH_NAME}" 2>&1)
-PUSH_EXIT=$?
+set -x
+PUSH_EXIT=0
+PUSH_OUTPUT=$(git push "${push_options[@]}" "${REMOTE:-origin}" "${BRANCH_NAME}" 2>&1) || PUSH_EXIT=$?
+set +x
 
 echo ""
 echo "Git push output:"
