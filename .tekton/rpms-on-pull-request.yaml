@@ -13,6 +13,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/PyYAML/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -82,6 +84,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/R-rpm-macros/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -151,6 +155,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/ShellCheck/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -220,6 +226,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/abattis-cantarell-fonts/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -289,6 +297,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/acl/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -358,6 +368,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/alsa-lib/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -427,6 +439,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/annobin/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -496,6 +510,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/ansible-packaging/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -565,6 +581,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/aom/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -634,6 +652,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/apr/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -703,6 +723,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/apr-util/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -774,6 +796,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/attr/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -843,6 +867,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/audit/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -912,6 +938,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/authselect/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -981,6 +1009,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/autoconf/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -1050,6 +1080,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/automake/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -1119,6 +1151,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/avahi/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -1188,6 +1222,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/babeltrace/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -1257,6 +1293,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/bash/***, test/rpms/bash.yml]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -1326,6 +1364,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/bash-completion/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -1395,6 +1435,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/bind/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -1464,6 +1506,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/binutils/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -1533,6 +1577,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/boost/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -1602,6 +1648,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/brotli/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -1671,6 +1719,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/busybox/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -1740,6 +1790,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/bzip2/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -1809,6 +1861,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/c-ares/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -1878,6 +1932,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/ca-certificates/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -1947,6 +2003,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/caddy/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -2016,6 +2074,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/capstone/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -2085,6 +2145,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/cargo-rpm-macros/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -2154,6 +2216,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/catatonit/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -2223,6 +2287,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/chkconfig/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -2292,6 +2358,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/chunkah/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -2361,6 +2429,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/cmake/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -2430,6 +2500,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/composer/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -2499,6 +2571,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/container-selinux/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -2568,6 +2642,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/containers-common/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -2637,6 +2713,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/coreutils/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -2706,6 +2784,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/cpio/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -2775,6 +2855,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/cracklib/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -2844,6 +2926,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/createrepo_c/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -2913,6 +2997,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/crypto-policies/***, test/rpms/crypto-policies.yml]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -2982,6 +3068,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/ctags/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -3051,6 +3139,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/cups/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -3120,6 +3210,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/curl/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -3193,6 +3285,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/cyrus-sasl/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -3262,6 +3356,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/dav1d/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -3331,6 +3427,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/dbus/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -3400,6 +3498,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/dbus-broker/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -3471,6 +3571,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/debugedit/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -3544,6 +3646,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/diffutils/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -3613,6 +3717,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/dnf/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -3682,6 +3788,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/dnf5/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -3751,6 +3859,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/dns-root-data/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -3830,6 +3940,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/dotnet10.0/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -3899,6 +4011,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/dotnet8.0/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -3968,6 +4082,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/dotnet9.0/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -4039,6 +4155,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/drpm/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -4108,6 +4226,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/dwz/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -4177,6 +4297,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/e2fsprogs/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -4246,6 +4368,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/ecj/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -4315,6 +4439,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/ed/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -4384,6 +4510,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/efi-rpm-macros/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -4453,6 +4581,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/elfutils/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -4526,6 +4656,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/emacs-filesystem/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -4597,6 +4729,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/expat/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -4666,6 +4800,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/fedora-logos/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -4737,6 +4873,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/fedora-repos/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -4806,6 +4944,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/file/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -4875,6 +5015,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/filesystem/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -4944,6 +5086,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/findutils/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -5021,6 +5165,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/fmt/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -5090,6 +5236,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/fontconfig/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -5159,6 +5307,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/fonts-rpm-macros/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -5230,6 +5380,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/forge-srpm-macros/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -5299,6 +5451,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/fpc-srpm-macros/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -5370,6 +5524,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/freetype/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -5439,6 +5595,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/fsverity-utils/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -5514,6 +5672,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/gap-srpm-macros/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -5583,6 +5743,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/gawk/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -5652,6 +5814,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/gcc/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -5723,6 +5887,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/gd/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -5792,6 +5958,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/gdb/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -5861,6 +6029,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/gdbm/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -5930,6 +6100,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/gettext/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -6015,6 +6187,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/ghc-srpm-macros/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -6086,6 +6260,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/git/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -6155,6 +6331,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/glib2/***, test/rpms/glib2.yml]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -6224,6 +6402,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/glibc/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -6297,6 +6477,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/gmp/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -6366,6 +6548,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/gnat-srpm-macros/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -6435,6 +6619,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/gnulib-l10n/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -6506,6 +6692,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/gnupg2/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -6575,6 +6763,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/gnutls/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -6646,6 +6836,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/go-rpm-macros/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -6721,6 +6913,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/golang-fips1.25/***, test/rpms/golang-fips1.25.yml]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -6794,6 +6988,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/golang1.25/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -6863,6 +7059,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/golang1.26/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -6932,6 +7130,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/google-noto-fonts/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -7003,6 +7203,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/gperftools/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -7072,6 +7274,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/gpgme/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -7141,6 +7345,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/gpgverify/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -7212,6 +7418,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/graphite2/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -7281,6 +7489,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/grep/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -7350,6 +7560,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/groff/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -7429,6 +7641,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/gzip/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -7498,6 +7712,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/haproxy/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -7569,6 +7785,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/harfbuzz/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -7642,6 +7860,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/hiredis/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -7711,6 +7931,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/hostname/***, test/rpms/hostname.yml]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -7780,6 +8002,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/httpd/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -7849,6 +8073,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/hugo/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -7918,6 +8144,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/hummingbird-release/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -7987,6 +8215,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/icu/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -8056,6 +8286,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/ima-evm-utils/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -8127,6 +8359,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/iproute/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -8202,6 +8436,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/jansson/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -8271,6 +8507,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/java-21-openjdk/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -8340,6 +8578,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/java-21-openjdk-portable/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -8409,6 +8649,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/java-25-openjdk/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -8478,6 +8720,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/java-25-openjdk-portable/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -8547,6 +8791,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/java-rpm-macros/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -8616,6 +8862,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/javapackages-tools/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -8685,6 +8933,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/jbigkit/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -8754,6 +9004,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/jemalloc/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -8825,6 +9077,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/jq/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -8894,6 +9148,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/json-c/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -8969,6 +9225,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/kernel-headers/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -9038,6 +9296,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/kernel-srpm-macros/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -9107,6 +9367,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/keyutils/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -9178,6 +9440,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/krb5/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -9247,6 +9511,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/kubernetes1.35/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -9318,6 +9584,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/langpacks/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -9387,6 +9655,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/less/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -9456,6 +9726,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libX11/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -9525,6 +9797,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libXau/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -9594,6 +9868,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libXcomposite/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -9663,6 +9939,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libXext/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -9732,6 +10010,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libXi/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -9801,6 +10081,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libXpm/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -9870,6 +10152,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libXrender/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -9939,6 +10223,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libXtst/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -10008,6 +10294,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libaio/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -10077,6 +10365,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libarchive/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -10146,6 +10436,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libassuan/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -10215,6 +10507,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libavif/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -10284,6 +10578,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libb2/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -10353,6 +10649,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libbpf/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -10422,6 +10720,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libcap/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -10491,6 +10791,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libcap-ng/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -10560,6 +10862,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libcbor/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -10629,6 +10933,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libcomps/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -10698,6 +11004,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libdnf/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -10767,6 +11075,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libeconf/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -10836,6 +11146,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libedit/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -10905,6 +11217,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libevent/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -10974,6 +11288,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libffi/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -11043,6 +11359,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libfido2/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -11112,6 +11430,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libfontenc/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -11181,6 +11501,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libgcrypt/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -11250,6 +11572,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libgit2/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -11319,6 +11643,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libgpg-error/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -11388,6 +11714,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libidn2/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -11457,6 +11785,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libipt/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -11526,6 +11856,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libjpeg-turbo/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -11595,6 +11927,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libksba/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -11664,6 +11998,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/liblerc/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -11733,6 +12069,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libmnl/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -11802,6 +12140,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libmodulemd/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -11871,6 +12211,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libmpc/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -11940,6 +12282,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libnl3/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -12009,6 +12353,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libnsl2/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -12078,6 +12424,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libpng/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -12147,6 +12495,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libpsl/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -12216,6 +12566,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libpwquality/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -12285,6 +12637,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/librepo/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -12354,6 +12708,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libseccomp/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -12423,6 +12779,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libselinux/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -12492,6 +12850,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libsemanage/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -12561,6 +12921,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libsepol/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -12630,6 +12992,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libsodium/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -12699,6 +13063,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libsolv/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -12768,6 +13134,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libssh/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -12837,6 +13205,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libssh2/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -12908,6 +13278,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libtasn1/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -12977,6 +13349,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libtiff/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -13046,6 +13420,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libtirpc/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -13115,6 +13491,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libtool/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -13184,6 +13562,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libunistring/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -13253,6 +13633,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libunwind/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -13322,6 +13704,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libusb1/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -13391,6 +13775,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libuv/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -13460,6 +13846,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libverto/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -13531,6 +13919,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libwebp/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -13600,6 +13990,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libxcb/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -13669,6 +14061,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libxcrypt/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -13738,6 +14132,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libxml2/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -13807,6 +14203,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libxslt/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -13876,6 +14274,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libyaml/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -13945,6 +14345,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libyuv/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -14014,6 +14416,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/libzip/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -14089,6 +14493,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/lksctp-tools/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -14158,6 +14564,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/llhttp/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -14227,6 +14635,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/llvm/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -14298,6 +14708,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/lmdb/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -14367,6 +14779,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/logrotate/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -14436,6 +14850,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/lua/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -14505,6 +14921,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/lua-rpm-macros/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -14574,6 +14992,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/lz4/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -14645,6 +15065,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/lzo/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -14714,6 +15136,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/m4/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -14783,6 +15207,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/mailcap/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -14852,6 +15278,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/make/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -14921,6 +15349,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/mariadb-connector-c/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -14990,6 +15420,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/mariadb10.11/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -15059,6 +15491,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/mariadb11.8/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -15128,6 +15562,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/mawk/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -15197,6 +15633,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/memcached/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -15296,6 +15734,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/mkfontscale/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -15369,6 +15809,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/mpdecimal/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -15438,6 +15880,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/mpfr/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -15513,6 +15957,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/ncurses/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -15588,6 +16034,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/nettle/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -15659,6 +16107,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/nghttp2/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -15728,6 +16178,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/nghttp3/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -15797,6 +16249,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/nginx/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -15866,6 +16320,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/ngtcp2/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -15941,6 +16397,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/nodejs20/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -16010,6 +16468,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/nodejs22/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -16079,6 +16539,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/nodejs24/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -16148,6 +16610,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/nodejs25/***, test/rpms/nodejs25.yml]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -16221,6 +16685,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/npth/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -16290,6 +16756,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/nss/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -16359,6 +16827,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/nss-fips/***, test/rpms/nss-fips.yml]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -16436,6 +16906,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/ocaml-srpm-macros/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -16505,6 +16977,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/oniguruma/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -16574,6 +17048,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/openblas-srpm-macros/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -16643,6 +17119,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/openldap/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -16716,6 +17194,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/openssh/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -16785,6 +17265,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/openssl/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -16854,6 +17336,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/openssl-fips-provider/***, test/rpms/openssl-fips-provider.yml]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -16927,6 +17411,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/oras/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -17000,6 +17486,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/p11-kit/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -17069,6 +17557,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/package-notes/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -17138,6 +17628,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/pam/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -17211,6 +17703,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/patch/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -17280,6 +17774,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/pcre2/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -17351,6 +17847,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/perl/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -17422,6 +17920,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/perl-Carp/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -17491,6 +17991,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/perl-Data-Dumper/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -17560,6 +18062,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/perl-Digest/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -17629,6 +18133,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/perl-Digest-MD5/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -17698,6 +18204,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/perl-Encode/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -17767,6 +18275,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/perl-Error/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -17836,6 +18346,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/perl-Exporter/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -17905,6 +18417,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/perl-File-Path/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -17974,6 +18488,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/perl-File-Temp/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -18043,6 +18559,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/perl-Getopt-Long/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -18112,6 +18630,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/perl-HTTP-Tiny/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -18181,6 +18701,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/perl-IO-Socket-IP/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -18250,6 +18772,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/perl-IO-Socket-SSL/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -18319,6 +18843,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/perl-MIME-Base32/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -18388,6 +18914,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/perl-MIME-Base64/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -18457,6 +18985,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/perl-Net-SSLeay/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -18526,6 +19056,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/perl-PathTools/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -18595,6 +19127,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/perl-Pod-Escapes/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -18664,6 +19198,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/perl-Pod-Perldoc/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -18733,6 +19269,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/perl-Pod-Simple/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -18802,6 +19340,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/perl-Pod-Usage/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -18871,6 +19411,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/perl-Scalar-List-Utils/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -18940,6 +19482,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/perl-Socket/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -19009,6 +19553,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/perl-Storable/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -19078,6 +19624,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/perl-Term-ANSIColor/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -19147,6 +19695,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/perl-Term-Cap/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -19216,6 +19766,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/perl-TermReadKey/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -19285,6 +19837,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/perl-Text-ParseWords/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -19354,6 +19908,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/perl-Text-Tabs+Wrap/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -19423,6 +19979,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/perl-Time-HiRes/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -19492,6 +20050,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/perl-Time-Local/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -19561,6 +20121,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/perl-URI/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -19632,6 +20194,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/perl-constant/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -19703,6 +20267,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/perl-libnet/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -19772,6 +20338,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/perl-parent/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -19841,6 +20409,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/perl-podlators/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -19910,6 +20480,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/perl-srpm-macros/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -19979,6 +20551,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/php/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -20052,6 +20626,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/php-pecl-zip/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -20123,6 +20699,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/pkgconf/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -20196,6 +20774,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/policycoreutils/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -20265,6 +20845,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/popt/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -20334,6 +20916,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/postgresql18/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -20411,6 +20995,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/protobuf-c/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -20480,6 +21066,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/psmisc/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -20551,6 +21139,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/publicsuffix-list/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -20624,6 +21214,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/pyproject-rpm-macros/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -20693,6 +21285,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/pytest/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -20766,6 +21360,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/python-attrs/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -20839,6 +21435,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/python-certifi/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -20908,6 +21506,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/python-charset-normalizer/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -20977,6 +21577,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/python-cryptography/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -21062,6 +21664,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/python-gitlab/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -21133,6 +21737,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/python-idna/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -21204,6 +21810,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/python-iniconfig/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -21275,6 +21883,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/python-jinja2/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -21344,6 +21954,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/python-jinja2-cli/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -21413,6 +22025,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/python-jsonschema/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -21482,6 +22096,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/python-jsonschema-specifications/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -21553,6 +22169,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/python-markupsafe/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -21624,6 +22242,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/python-mypy_extensions/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -21693,6 +22313,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/python-packaging/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -21762,6 +22384,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/python-pathspec/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -21833,6 +22457,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/python-pip/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -21902,6 +22528,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/python-pluggy/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -21973,6 +22601,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/python-productmd/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -22042,6 +22672,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/python-pygments/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -22119,6 +22751,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/python-referencing/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -22188,6 +22822,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/python-requests/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -22257,6 +22893,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/python-requests-toolbelt/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -22326,6 +22964,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/python-rpds-py/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -22399,6 +23039,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/python-rpm-macros/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -22468,6 +23110,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/python-sentry-sdk/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -22537,6 +23181,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/python-setuptools/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -22606,6 +23252,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/python-specfile/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -22691,6 +23339,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/python-types-pyyaml/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -22760,6 +23410,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/python-types-requests/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -22829,6 +23481,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/python-typing-extensions/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -22898,6 +23552,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/python-urllib3/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -22973,6 +23629,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/python3-mypy/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -23042,6 +23700,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/python3.11/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -23111,6 +23771,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/python3.12/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -23180,6 +23842,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/python3.13/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -23249,6 +23913,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/python3.14/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -23322,6 +23988,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/qt5/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -23393,6 +24061,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/qt6/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -23464,6 +24134,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/rdma-core/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -23533,6 +24205,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/readline/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -23602,6 +24276,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/redhat-rpm-config/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -23675,6 +24351,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/rootfiles/***, test/rpms/rootfiles.yml]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -23744,6 +24422,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/rpm/***, test/rpms/rpm.yml]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -23815,6 +24495,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/ruby3.3/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -23884,6 +24566,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/ruby3.4/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -23953,6 +24637,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/ruby4.0/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -24024,6 +24710,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/rubygem-json/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -24093,6 +24781,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/rubygem-rdoc/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -24162,6 +24852,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/rubypick/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -24231,6 +24923,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/ruff/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -24300,6 +24994,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/rust/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -24378,6 +25074,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/rust-add-determinism/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -24447,6 +25145,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/rust-archery/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -24516,6 +25216,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/rust-imagequant-sys/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -24585,6 +25287,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/rust-rav1e/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -24654,6 +25358,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/rust-rpds/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -24723,6 +25429,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/rust-rpm-sequoia/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -24792,6 +25500,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/sdbus-cpp/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -24861,6 +25571,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/sed/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -24930,6 +25642,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/selinux-policy/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -24999,6 +25713,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/setup/***, test/rpms/setup.yml, ci/***, mock/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -25068,6 +25784,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/sgml-common/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -25137,6 +25855,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/shadow-utils/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -25206,6 +25926,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/skopeo/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -25277,6 +25999,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/snappy/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -25348,6 +26072,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/source-highlight/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -25417,6 +26143,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/sqlite/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -25488,6 +26216,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/subversion/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -25557,6 +26287,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/svt-av1/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -25626,6 +26358,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/syft/***, test/rpms/syft.yml]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -25699,6 +26433,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/systemd/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -25768,6 +26504,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/systemd-stub/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -25839,6 +26577,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/tar/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -25912,6 +26652,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/tomcat10/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -25981,6 +26723,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/tomcat11/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -26054,6 +26798,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/tpm2-tss/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -26123,6 +26869,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/tree-sitter-srpm-macros/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -26192,6 +26940,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/ttmkfdir/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -26261,6 +27011,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/tzdata/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -26330,6 +27082,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/unbound/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -26399,6 +27153,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/unzip/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -26468,6 +27224,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/uriparser/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -26537,6 +27295,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/util-linux/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -26606,6 +27366,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/uuid/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -26675,6 +27437,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/valkey/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -26744,6 +27508,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/vmaf/***, test/rpms/vmaf.yml]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -26813,6 +27579,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/which/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -26884,6 +27652,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/xcaddy/***, test/rpms/xcaddy.yml]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -26957,6 +27727,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/xorg-x11-fonts/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -27026,6 +27798,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/xxhash/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -27095,6 +27869,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/xz/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -27164,6 +27940,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/yarnpkg/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -27233,6 +28011,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/yq/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -27302,6 +28082,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/zchunk/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -27371,6 +28153,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/zig-srpm-macros/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -27440,6 +28224,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/zip/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -27509,6 +28295,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/zlib-ng/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main
@@ -27578,6 +28366,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-path-change: "[rpms/zstd/***]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      !event.pull_request.labels.exists(l, l.name == "no-test")
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: rpms-main

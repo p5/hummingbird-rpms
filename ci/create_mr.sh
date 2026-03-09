@@ -11,6 +11,7 @@ TARGET_BRANCH=${CI_COMMIT_BRANCH:-main}
 AUTO_MERGE=
 MR_DESCRIPTION=
 MARK_AS_DRAFT=
+MR_LABELS=()
 
 while [[ $# -gt 0 ]]; do
     case $1 in
@@ -33,6 +34,10 @@ while [[ $# -gt 0 ]]; do
         --draft)
             MARK_AS_DRAFT=true
             shift
+            ;;
+        --label)
+            MR_LABELS+=("$2")
+            shift 2
             ;;
         *)
             echo "ERROR: Unknown option: $1" >&2
@@ -93,6 +98,10 @@ fi
 if [[ -n ${AUTO_MERGE} ]]; then
     push_options+=(--push-option merge_request.merge_when_pipeline_succeeds)
 fi
+
+for label in "${MR_LABELS[@]}"; do
+    push_options+=(--push-option "merge_request.label=${label}")
+done
 
 # Capture push output to check if MR was created
 echo "Pushing branch with MR creation options..."
