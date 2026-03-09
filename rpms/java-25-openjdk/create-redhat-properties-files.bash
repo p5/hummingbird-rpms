@@ -111,7 +111,6 @@ EOF
 
 # Make sure java.security exists before appending
 test -e "${SECURITY}"/java.security || ( echo "${SECURITY}/java.security not found" && false )
-cp -v "${SECURITY}"/java.security "${SECURITY}"/java.security.upstream
 cat >> "${SECURITY}"/java.security <<'EOF'
 
 #
