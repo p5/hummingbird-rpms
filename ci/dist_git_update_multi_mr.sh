@@ -437,10 +437,10 @@ for COMMIT_SHA in "${COMMIT_SHAS[@]}"; do
             MR_ARGS+=(--description "${MR_DESCRIPTION}")
         fi
 
-        # Conflict MRs: mark as draft, no auto-merge
+        # Conflict MRs: mark as draft, no auto-merge, add no-test label
         # Clean MRs: auto-merge
         if [[ "${HAS_CONFLICT}" == true ]]; then
-            MR_ARGS+=(--draft)
+            MR_ARGS+=(--draft --label no-test)
         else
             MR_ARGS+=(--auto-merge)
         fi
