@@ -1,8 +1,8 @@
 {
   "branch": "rawhide",
-  "release": "9",
-  "sha": "5b94b9e120f08f5a68418110138e70b7bb184e8a",
+  "modification_status": "clean",
+  "release": "1",
+  "sha": "54bd81b88b3ee454ab63ce8919899eaee5e8777f",
   "source": "https://src.fedoraproject.org/rpms/file.git",
-  "version": "5.46",
-  "modification_status": "clean"
+  "version": "5.47"
 }

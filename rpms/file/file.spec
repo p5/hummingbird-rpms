@@ -14,8 +14,8 @@
 
 Summary: Utility for determining file types
 Name: file
-Version: 5.46
-Release: 9%{?dist}
+Version: 5.47
+Release: 1%{?dist}
 
 # Main license is BSD-2-Clause-Darwin
 # Shipped exceptions:
@@ -48,17 +48,8 @@ Patch3: file-5.45-readelf-limit-revert.patch
 
 Patch4: file-5.46-fix-tests-rpm-magic.patch
 
-# upstream: https://github.com/file/file/commit/b874d520c592ecd55ebcae0d662dc6e54f5c5414
-Patch5: file-5.47-magic-entries.patch
-
-# upstream commit: https://github.com/file/file/commit/6bc6cf03ad4ad136088260e22f30c6d191c161a3
-Patch6: file-5.47-buffer-overrun-1.patch
-
-# upstream commit: https://github.com/file/file/commit/83aab94724a226c04bf8b85c9ceb2be91dca8dd5
-Patch7: file-5.47-buffer-overrun-2.patch
-
-# upstream commit: https://github.com/file/file/commit/b3384a1fbfa1fee99986e5750ab8e700de4f24ad
-Patch8: file-5.47-stack-overrun.patch
+# Fix tabs->spaces in python/magic.py (upstream 5.47 used tabs; rhbz#2419719)
+Patch5: file-5.47-python-magic-close-fix-whitespace.patch
 
 URL: https://www.darwinsys.com/file/
 Requires: file-libs%{?_isa} = %{version}-%{release}
@@ -192,6 +183,13 @@ cd %{py3dir}
 
 %check
 export LD_LIBRARY_PATH=$PWD/src/.libs
+%ifarch s390x
+# efi-signature-list-sha256: New in 5.47 (commit 2a457644). EFI Signature List magic
+# in magic/Magdir/efi uses little-endian types; on big-endian s390x file reports
+# "data" instead of the expected string and the test fails. Remove on s390x until
+# upstream makes the EFI magic endian-safe.
+rm -f tests/efi-signature-list-sha256.testfile tests/efi-signature-list-sha256.result
+%endif
 make -C tests check
 
 %files
@@ -241,6 +239,13 @@ make -C tests check
 %endif
 
 %changelog
+* Tue Mar 03 2026 Vincent Mihalkovic <vmihalko@redhat.com> - 5.47-1
+- Upgrade to 5.47
+- Add file-5.47-python-magic-close-fix-whitespace.patch
+
+* Tue Feb 17 2026 Vincent Mihalkovic <vmihalko@redhat.com> - 5.46-10
+- Fix TypeError when Python process exits with magic module (rhbz#2419719)
+
 * Fri Jan 16 2026 Fedora Release Engineering <releng@fedoraproject.org> - 5.46-9
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_44_Mass_Rebuild
 

@@ -1,0 +1,1 @@
+Mach-O universal binary with 2 architectures: [i386:\012- Mach-O i386 executable, flags:<NOUNDEFS|DYLDLINK|TWOLEVEL>] [\012- ppc:\012- Mach-O ppc executable, flags:<NOUNDEFS|DYLDLINK|TWOLEVEL>]
