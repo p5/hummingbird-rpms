@@ -45,7 +45,7 @@ Version: 17.1
 
 # The release always contains a leading reserved number, start it at 1.
 # `upstream' is not a part of `name' to stay fully rpm dependencies compatible for the testing.
-Release: 1.1%{?dist}
+Release: 5%{?dist}
 
 License: GPL-3.0-or-later AND BSD-3-Clause AND FSFAP AND LGPL-2.1-or-later AND GPL-2.0-or-later AND LGPL-2.0-or-later AND LicenseRef-Fedora-Public-Domain AND GFDL-1.3-or-later AND LGPL-2.0-or-later WITH GCC-exception-2.0 AND GPL-3.0-or-later WITH GCC-exception-3.1 AND GPL-2.0-or-later WITH GNU-compiler-exception AND MIT
 # Do not provide URL for snapshots as the file lasts there only for 2 days.
@@ -220,11 +220,6 @@ BuildRequires: %{?scl_testing_prefix}gcc %{?scl_testing_prefix}gcc-c++ %{?scl_te
 BuildRequires: gcc-objc
 %endif
 
-# We don't support gcc-gdb-plugin on RHEL anymore.
-%if 0%{!?rhel:1}
-BuildRequires: gcc-gdb-plugin%{?_isa}
-%endif
-
 BuildRequires: systemtap-sdt-devel
 BuildRequires: opencl-headers ocl-icd-devel%{bits_local} ocl-icd-devel%{bits_other}
 
@@ -309,7 +304,7 @@ machine than the one which is running the program being debugged.
 
 %package doc
 Summary: Documentation for GDB (the GNU source-level debugger)
-License: GFDL
+License: GFDL-1.3-or-later
 BuildArch: noarch
 %if 0%{?scl:1}
 # As of F-28, packages won't need to call /sbin/install-info by hand
@@ -439,8 +434,9 @@ COMMON_GDB_CONFIGURE_FLAGS="\
         --with-lzma                                             \
         --with-debuginfod                                       \
 %if 0%{?rhel:1}
-        --disable-libctf
+        --disable-libctf                                        \
 %endif
+        --disable-gdb-compile
 "
 
 # The base set of targets that Fedora and RHEL support.  These are the
@@ -936,6 +932,37 @@ fi
 # endif scl
 
 %changelog
+* Wed Feb 25 2026 Kevin Buettner <kevinb@redhat.com>
+- Backport upstream commit d2cc16cd7fc from Jan Vrany to fix
+  FAILs in gdb.base/fileio.exp caused by macro expansion of
+  path components in OUTDIR.
+
+* Tue Feb 24 2026 Kevin Buettner <kevinb@redhat.com>
+- Backport upstream commit c1da013915e from Kevin Buettner to fix
+  gcore failures caused by glibc 2.42 guard page changes (RHBZ 2413405).
+
+* Mon Feb 16 2026 Guinevere Larsen <guinevere@redhat.com>
+- Backport upstream commit f08ffbbf269 to fix RHBZ 2435950
+  This reverts a new feature that was never properly approved
+  for merging in upstream GDB.
+
+* Wed Feb 11 2026 Andrew Burgess <aburgess@redhat.com>
+- Backport upstream commits 0fa4f62568b1deeb, ccd56e22703c094e, and
+  c09ebee0d3ae9148 to address RHEL-86890.  These backports will not be
+  needed once we rebase to GDB 18.
+
+* Wed Feb 4 2026 Andrew Burgess <aburgess@redhat.com>
+- Backport upstream commit 70b66cf338b14336 to fix RH BZ 2402580.
+  This backport will not be needed once we rebase to GDB 18.
+
+* Tue Feb 3 2026 Kevin Buettner <kevinb@redhat.com>
+- Remove gcc-gdb-plugin BuildRequires and build with --disable-gdb-compile
+  due to this feature's brokenness. Tests using this feature skip cleanly
+  without timeouts.  Reduces binary size and attack surface.
+
+* Fri Jan 16 2026 Fedora Release Engineering <releng@fedoraproject.org>
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_44_Mass_Rebuild
+
 * Thu Jan 8 2026 Kevin Buettner <kevinb@redhat.com> - 17.1-1
 - Rebase to FSF GDB 17.1.
   Deleted: gdb-fix-bg-execution-repeat.patch

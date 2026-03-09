@@ -4,3 +4,8 @@
 %patch -p1 -P004
 %patch -p1 -P005
 %patch -p1 -P006
+%patch -p1 -P007
+%patch -p1 -P008
+%patch -p1 -P009
+%patch -p1 -P010
+%patch -p1 -P011

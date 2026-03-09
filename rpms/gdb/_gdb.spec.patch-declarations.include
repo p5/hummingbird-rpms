@@ -31,3 +31,29 @@ Patch005: gdb-rhbz2424325-c23-more-const-fixes.patch
 # (RH BZ 2424325).
 Patch006: gdb-rhbz2424325-c++20-implicit-lambda-capture.patch
 
+# Backport of upstream commit 70b66cf338b14336 to address RHBZ
+# 2402580.  This backport can be dropped when rebasing to GDB 18.
+# There were some moderate merge conflicts which needed resolving
+# when backporting this fix.
+Patch007: gdb-rhbz2403580-misplaced-symtabs.patch
+
+# Backport of three upstream patches.  The first two relate to index
+# generation, while the third relates to symbol lookup, but is needed
+# so that the tests from the earlier two patches will pass.
+#
+# These backports will all drop out when rebasing onto GDB 18.
+Patch008: gdb-index-generation-fixes.patch
+
+# Backport of upstream commit f08ffbbf2691bad2d5df660ee644647687775f0c
+# Can be dropped on a rebase to gdb 17.2 or 18.1
+Patch009: gdb-rhbz2435950-skip-revert.patch
+
+# Backport of upstream commit c1da013915e from Kevin Buettner
+# (RHBZ 2413405).
+Patch010: gdb-rhbz2413405-gcore-unreadable-pages.patch
+
+# Backport of upstream commit d2cc16cd7fc from Jan Vrany fixing
+# FAILs in gdb.base/fileio.exp caused by macro expansion of path
+# components (e.g. "linux") in OUTDIR.
+Patch011: gdb-fileio-test-fixes.patch
+
