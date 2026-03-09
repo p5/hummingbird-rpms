@@ -1,9 +1,9 @@
 {
   "branch": "f43",
-  "release": "1",
-  "sha": "349a1a64829ae05a7b151aafffe152058988bd53",
-  "source": "https://src.fedoraproject.org/rpms/nss.git",
-  "version": "3.119.1",
+  "modification_reason": "Lower nss-softokn minimum version to 3.90.0 to allow FIPS-certified softokn from RHEL 9.2",
   "modification_status": "modified",
-  "modification_reason": "Lower nss-softokn minimum version to 3.90.0 to allow FIPS-certified softokn from RHEL 9.2"
+  "release": "1",
+  "sha": "f97da13cbff826185fa4896bf6529cc44094056d",
+  "source": "https://src.fedoraproject.org/rpms/nss.git",
+  "version": "3.121.0"
 }

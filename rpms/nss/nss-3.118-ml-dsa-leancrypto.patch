@@ -20433,12 +20433,12 @@ diff --git a/lib/freebl/manifest.mn b/lib/freebl/manifest.mn
  	ldvector.c \
  	sysrand.c \
 @@ -161,10 +164,11 @@
-         $(KYBER_PQCRYSTALS) \
+ 	$(KYBER_PQCRYSTALS) \
  	$(MPI_SRCS) \
  	$(MPCPU_SRCS) \
  	$(ECL_SRCS) \
  	$(VERIFIED_SRCS) \
-+        $(ML_DSA_SRCS) \
++	$(ML_DSA_SRCS) \
  	$(STUBS_SRCS) \
  	$(LOWHASH_SRCS) \
  	$(EXTRA_SRCS) \
