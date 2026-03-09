@@ -820,13 +820,24 @@ def import_(url: str, branch: str, ref: str | None = None, directory: str | None
         run_git_commit('-m', commit_msg, cwd=ROOT_DIR)
 
 
+def normalize_release_in_specs(directory: Path) -> None:
+    """Normalize Release: lines in all .spec files to avoid merge conflicts."""
+    for spec_file in directory.glob('*.spec'):
+        content = spec_file.read_text()
+        normalized = re.sub(r'^Release:.*$', 'Release: 0%{?dist}', content, flags=re.MULTILINE)
+        spec_file.write_text(normalized)
+
+
 def merge_local_modifications(package_name: str, package_dir: Path, tmpdir: Path,
                               metadata: PackageMetadata, upstream_dir: Path,
-                              new_sha: str) -> None:
-    """Merge local modifications with new upstream version.
+                              new_sha: str) -> bool:
+    """Merge local modifications with new upstream version using git merge.
 
-    Create a diff of local changes against old upstream, apply it on top of new upstream.
-    Exit with error on conflicts.
+    Uses git's 3-way merge to automatically handle conflicts with proper markers.
+    Normalizes Release: lines temporarily to avoid conflicts, then removes the normalization.
+
+    Returns:
+        True if conflicts exist, False if merge succeeded cleanly
     """
     assert metadata.get('modification_status') == 'modified'
     assert 'branch' in metadata
@@ -835,68 +846,63 @@ def merge_local_modifications(package_name: str, package_dir: Path, tmpdir: Path
 
     old_sha = metadata['sha']
 
-    # Clone old upstream to compute diff
-    old_upstream_dir = tmpdir / f'{package_name}-old'
-    run_git('clone', '--quiet', '--branch', metadata['branch'], '--single-branch',
-            metadata['source'], str(old_upstream_dir))
-    run_git('checkout', '--quiet', old_sha, cwd=old_upstream_dir)
-    shutil.rmtree(old_upstream_dir / '.git')
-
-    # Copy current local package to tmpdir for easier patching
-    local_copy = tmpdir / f'{package_name}-local'
-    shutil.copytree(package_dir, local_copy)
-
-    # Normalize Release: lines in spec files before diffing
-    # Avoid that our downstream Release: changes create conflicts, we always want upstream to win
-    for dir_path in [old_upstream_dir, local_copy]:
-        for spec_file in dir_path.glob('*.spec'):
-            content = spec_file.read_text()
-            # Replace Release: line with a normalized value
-            normalized = re.sub(r'^Release:.*$', 'Release: 0%{?dist}', content, flags=re.MULTILINE)
-            spec_file.write_text(normalized)
-
-    # Compute diff: old upstream → local (our modifications)
-    # Release: changes are normalized out, so only real modifications remain
-    logging.info("Computing local modifications diff...")
-    result = subprocess.run(
-        ['diff', '-Nur', '--exclude=.git', f'{package_name}-old', f'{package_name}-local'],
-        cwd=tmpdir,
-        capture_output=True,
-        text=True
-    )
-    local_patch = result.stdout
-
-    # Update to new upstream
     logging.info("Updating %s: %s -> %s (merging local changes)", package_name, old_sha[:8], new_sha[:8])
+
+    # Configure git for commits/rebases in merge workspace
+    run_git('config', 'user.name', 'Hummingbird Bot', cwd=upstream_dir)
+    run_git('config', 'user.email', 'bot@example.com', cwd=upstream_dir)
+
+    # Checkout old upstream and create branch for our local modifications
+    run_git('checkout', '--quiet', old_sha, cwd=upstream_dir)
+    run_git('checkout', '--quiet', '-b', 'hummingbird-local', cwd=upstream_dir)
+
+    # Normalize Release: in old upstream to avoid merge conflicts
+    # This is temporary - we'll remove this commit later
+    normalize_release_in_specs(upstream_dir)
+    run_git('commit', '--allow-empty', '-a', '-m', 'Normalize Release (temporary)', cwd=upstream_dir)
+
+    # First, remove everything except .git
+    for item in upstream_dir.iterdir():
+        if item.name != '.git':
+            if item.is_dir():
+                shutil.rmtree(item)
+            else:
+                item.unlink()
+
+    # Copy our local files with our modifications
+    shutil.copytree(package_dir, upstream_dir, dirs_exist_ok=True)
+
+    # Normalize Release: in local files too
+    normalize_release_in_specs(upstream_dir)
+
+    # Commit our local modifications
+    run_git('add', '-A', cwd=upstream_dir)
+    status_result = run_git('status', '--porcelain', cwd=upstream_dir)
+    assert status_result.stdout.strip(), "Expected local modifications but git status is clean"
+    run_git('commit', '-m', 'Local Hummingbird modifications', cwd=upstream_dir)
+
+    # Drop the previous "Normalize Release" commit, to leave only our actual modifications, with Release: untouched
+    run_git('rebase', '--onto', old_sha, 'HEAD~1', cwd=upstream_dir)
+
+    # Checkout new upstream (don't normalize - we want to keep its Release)
+    run_git('checkout', '--quiet', '-b', 'new-upstream', new_sha, cwd=upstream_dir)
+
+    # Merge our local modifications into new upstream
+    merge_result = run_git('merge', 'hummingbird-local', cwd=upstream_dir, check=False)
+
+    # Check for conflicts
+    has_conflicts = merge_result.returncode != 0
+    if has_conflicts:
+        logging.warning("Merge has conflicts - manual resolution required")
+    else:
+        logging.info("Local modifications applied successfully")
+
+    # Copy merged result (with or without conflict markers) back to package_dir
     shutil.rmtree(package_dir)
     shutil.rmtree(upstream_dir / '.git')
     shutil.copytree(upstream_dir, package_dir)
 
-    # Apply local modifications patch
-    if local_patch:
-        logging.info("Applying local modifications...")
-        # Patch paths are like "vanilla-old/file" → "vanilla-local/file"
-        # Replace "package-old" with "a/package" and "package-local" with "b/package"
-        adjusted_patch = local_patch.replace(f'{package_name}-old/', f'a/{package_name}/')
-        adjusted_patch = adjusted_patch.replace(f'{package_name}-local/', f'b/{package_name}/')
-
-        # Apply with -p2 to strip both a/ and package_name/
-        result = subprocess.run(
-            ['patch', '-p2', '--no-backup-if-mismatch', '--directory', str(package_dir)],
-            input=adjusted_patch,
-            capture_output=True,
-            text=True
-        )
-
-        if result.returncode != 0:
-            # Merge conflict
-            logging.error("Merge conflict applying local modifications")
-            logging.error("Patch output:\n%s", result.stdout)
-            logging.error("Patch errors:\n%s", result.stderr)
-            sys.exit(f"ERROR: Merge conflict applying local modifications to {package_name}\n"
-                    f"       Manual resolution required\n"
-                    f"       {result.stdout}\n{result.stderr}")
-        logging.info("Local modifications applied successfully")
+    return has_conflicts
 
 
 def update(package_name: str, skip_build_check: bool = False, sync: bool = False,
@@ -1017,10 +1023,11 @@ def update(package_name: str, skip_build_check: bool = False, sync: bool = False
         # Update mode: merge local modifications with upstream changes
         # Sync mode: discard local modifications
         has_modifications = not is_package_unmodified(package_name, metadata, upstream_dir)
+        has_conflicts = False
 
         if not sync and metadata.get('modification_status') == 'modified' and has_modifications:
-            merge_local_modifications(package_name, package_dir, Path(tmpdir),
-                                     metadata, upstream_dir, latest_sha)
+            has_conflicts = merge_local_modifications(package_name, package_dir, Path(tmpdir),
+                                                     metadata, upstream_dir, latest_sha)
         else:
             # No modifications or sync mode - simple update
             action = "Syncing" if sync else "Updating"
@@ -1070,6 +1077,10 @@ def update(package_name: str, skip_build_check: bool = False, sync: bool = False
             verb = "Sync" if sync else "Update"
             commit_msg = f"{verb} {upstream_package_name} from {old_version}-{old_release} to {version}-{release}\n\nUpstream: {latest_sha}"
             run_git_commit('-m', commit_msg, cwd=ROOT_DIR)
+
+            # Exit with code 2 for conflicts (success but needs manual resolution)
+            if has_conflicts:
+                sys.exit(2)
 
 
 def check_git_config() -> None:

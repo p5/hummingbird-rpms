@@ -9,6 +9,8 @@ TARGET_BRANCH=${CI_COMMIT_BRANCH:-main}
 
 # Parse arguments
 AUTO_MERGE=
+MR_DESCRIPTION=
+MARK_AS_DRAFT=
 
 while [[ $# -gt 0 ]]; do
     case $1 in
@@ -20,8 +22,16 @@ while [[ $# -gt 0 ]]; do
             MR_TITLE="$2"
             shift 2
             ;;
+        --description)
+            MR_DESCRIPTION="$2"
+            shift 2
+            ;;
         --auto-merge)
             AUTO_MERGE=true
+            shift
+            ;;
+        --draft)
+            MARK_AS_DRAFT=true
             shift
             ;;
         *)
@@ -72,7 +82,15 @@ push_options=(
     --push-option merge_request.remove_source_branch
 )
 
-if [[ -n ${AUTO_MERGE}  ]]; then
+if [[ -n ${MR_DESCRIPTION} ]]; then
+    push_options+=(--push-option "merge_request.description=${MR_DESCRIPTION}")
+fi
+
+if [[ -n ${MARK_AS_DRAFT} ]]; then
+    push_options+=(--push-option merge_request.draft)
+fi
+
+if [[ -n ${AUTO_MERGE} ]]; then
     push_options+=(--push-option merge_request.merge_when_pipeline_succeeds)
 fi
 

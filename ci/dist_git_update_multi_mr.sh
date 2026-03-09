@@ -77,6 +77,9 @@ if [[ "${CLEAN_ONLY}" == true && "${MODIFIED_ONLY}" == true ]]; then
     exit 1
 fi
 
+# Configuration
+TARGET_BRANCH=${CI_COMMIT_BRANCH:-${CI_DEFAULT_BRANCH:-main}}
+
 # Cleanup function for clone mode
 # shellcheck disable=SC2329  # Function is invoked via EXIT trap
 cleanup() {
@@ -111,7 +114,7 @@ if [[ "${CLONE_MODE}" == true ]]; then
     fi
 
     echo "Cloning repository from GitLab..."
-    git clone --quiet --depth 1 --single-branch --branch main "${GITLAB_REMOTE_URL}" "${TEMP_DIR}"
+    git clone --quiet --depth 1 --single-branch --branch "${TARGET_BRANCH}" "${GITLAB_REMOTE_URL}" "${TEMP_DIR}"
     cd "${TEMP_DIR}"
 
     # Configure git for the cloned repo
@@ -168,8 +171,7 @@ if [[ -z "$(git config user.email 2>/dev/null || true)" ]]; then
     fi
 fi
 
-# Configuration
-TARGET_BRANCH=${CI_COMMIT_BRANCH:-${CI_DEFAULT_BRANCH:-main}}
+# Additional configuration
 METADATA_DIR="metadata"
 
 # Statistics tracking
@@ -178,6 +180,7 @@ UPDATE_FAILURES=0
 MR_FAILURES=0
 PACKAGES_SKIPPED=0
 PACKAGES_SKIPPED_MODIFIED_NATIVE=0
+UPDATES_WITH_CONFLICTS=0
 FAILED_PACKAGES=()
 CREATED_MR_URLS=()
 
@@ -267,29 +270,46 @@ for metadata_file in "${packages_to_check[@]}"; do
     # Save commit before update to detect if one was created
     COMMIT_BEFORE=$(git rev-parse HEAD)
 
-    # Run update and capture failure without exiting (despite set -e)
-    if ! ./ci/dist_git.py update "${package}" 2>&1; then
+    # Run update and capture exit code without exiting (despite set -e)
+    UPDATE_EXIT_CODE=0
+    ./ci/dist_git.py update "${package}" 2>&1 || UPDATE_EXIT_CODE=$?
+
+    # Check if a commit was created
+    COMMIT_AFTER=$(git rev-parse HEAD)
+
+    if [[ ${UPDATE_EXIT_CODE} -eq 0 ]]; then
+        # Clean update
+        if [[ "${COMMIT_BEFORE}" != "${COMMIT_AFTER}" ]]; then
+            echo "  ✓ Update found (clean merge)"
+            updates_found=$((updates_found + 1))
+        else
+            echo "  ✓ Already up-to-date"
+        fi
+    elif [[ ${UPDATE_EXIT_CODE} -eq 2 ]]; then
+        # Update with conflicts
+        if [[ "${COMMIT_BEFORE}" != "${COMMIT_AFTER}" ]]; then
+            echo "  ⚠ Update found (CONFLICTS - needs manual resolution)"
+            updates_found=$((updates_found + 1))
+            UPDATES_WITH_CONFLICTS=$((UPDATES_WITH_CONFLICTS + 1))
+        else
+            echo "  ✗ Unexpected: exit code 2 but no commit created"
+            UPDATE_FAILURES=$((UPDATE_FAILURES + 1))
+            FAILED_PACKAGES+=("${package} (conflict detection failed)")
+        fi
+    else
+        # Actual failure (exit code 1 or other)
         echo "  ✗ Failed to update ${package}"
         UPDATE_FAILURES=$((UPDATE_FAILURES + 1))
         FAILED_PACKAGES+=("${package} (update failed)")
         continue
     fi
 
-    # Check if a commit was created
-    COMMIT_AFTER=$(git rev-parse HEAD)
-    if [[ "${COMMIT_BEFORE}" == "${COMMIT_AFTER}" ]]; then
-        echo "  ✓ Already up-to-date"
-    else
-        echo "  ✓ Update found"
-        updates_found=$((updates_found + 1))
-
-        # If we've found enough updates, stop checking packages
-        if [[ ${MAX_UPDATES} -gt 0 && ${updates_found} -ge ${MAX_UPDATES} ]]; then
-            echo ""
-            echo "Found ${updates_found} updates (reached --max-updates=${MAX_UPDATES}). Stopping package checks."
-            echo "Skipping remaining $((${#packages_to_check[@]} - package_num)) packages."
-            break
-        fi
+    # If we've found enough updates, stop checking packages
+    if [[ ${MAX_UPDATES} -gt 0 && ${updates_found} -ge ${MAX_UPDATES} ]]; then
+        echo ""
+        echo "Found ${updates_found} updates (reached --max-updates=${MAX_UPDATES}). Stopping package checks."
+        echo "Skipping remaining $((${#packages_to_check[@]} - package_num)) packages."
+        break
     fi
 done
 
@@ -340,7 +360,6 @@ for COMMIT_SHA in "${COMMIT_SHAS[@]}"; do
 
     # Create package-specific branch and MR title
     BRANCH_NAME="chore/dist-git-update-${PACKAGE}"
-    MR_TITLE="chore(rpms): ${COMMIT_MSG}"
 
     # Create a new branch from START_COMMIT (before updates) and cherry-pick this commit
     if ! git checkout --quiet "${START_COMMIT}"; then
@@ -369,20 +388,59 @@ for COMMIT_SHA in "${COMMIT_SHAS[@]}"; do
         continue
     fi
 
+    # Check for conflict markers
+    CONFLICT_FILES=$(git grep -l "^<<<<<<< HEAD" -- "rpms/${PACKAGE}/" 2>/dev/null | sed "s|rpms/${PACKAGE}/||" | tr '\n' ', ' | sed 's/, $//' || true)
+    if [[ -n "${CONFLICT_FILES}" ]]; then
+        HAS_CONFLICT=true
+        echo "  ⚠ Has conflicts: ${CONFLICT_FILES}"
+        MR_TITLE="CONFLICT: chore(rpms): ${COMMIT_MSG}"
+        MR_DESCRIPTION="**Merge conflicts in:**
+${CONFLICT_FILES}
+
+Look for conflict markers in the files above. Resolve and push updates to this branch."
+    else
+        HAS_CONFLICT=false
+        MR_TITLE="chore(rpms): ${COMMIT_MSG}"
+        MR_DESCRIPTION=""
+    fi
+
     if [[ "${CLONE_MODE}" == true && "${CREATE_MRS}" == false ]]; then
         # Clone mode without --create-mrs: dry-run, show what would be created
         echo "  → Would create MR:"
         echo "      Branch: ${BRANCH_NAME}"
         echo "      Title: ${MR_TITLE}"
+        if [[ "${HAS_CONFLICT}" == true ]]; then
+            echo "      Type: CONFLICT (no auto-merge)"
+        fi
         echo "  ✓ [DRY-RUN] MR would be created for ${PACKAGE}"
         PACKAGES_UPDATED=$((PACKAGES_UPDATED + 1))
     else
         # Production mode or clone mode with --create-mrs: actually create the MR
         echo "  → Creating MR: ${MR_TITLE}"
 
+        # Build arguments for create_mr.sh
+        MR_ARGS=(--branch "${BRANCH_NAME}" --title "${MR_TITLE}")
+
+        # Add description if we have one (for conflicts)
+        if [[ -n "${MR_DESCRIPTION}" ]]; then
+            MR_ARGS+=(--description "${MR_DESCRIPTION}")
+        fi
+
+        # Conflict MRs: mark as draft, no auto-merge
+        # Clean MRs: auto-merge
+        if [[ "${HAS_CONFLICT}" == true ]]; then
+            MR_ARGS+=(--draft)
+        else
+            MR_ARGS+=(--auto-merge)
+        fi
+
         # Create MR for this package using existing create_mr.sh
-        if ./ci/create_mr.sh --branch "${BRANCH_NAME}" --title "${MR_TITLE}" --auto-merge; then
-            echo "  ✓ Created MR for ${PACKAGE}"
+        if ./ci/create_mr.sh "${MR_ARGS[@]}"; then
+            if [[ "${HAS_CONFLICT}" == true ]]; then
+                echo "  ✓ Created conflict MR for ${PACKAGE} (needs manual resolution)"
+            else
+                echo "  ✓ Created MR for ${PACKAGE}"
+            fi
             PACKAGES_UPDATED=$((PACKAGES_UPDATED + 1))
 
             # Track MR URL if we have GitLab info
@@ -426,6 +484,7 @@ fi
 echo "  Updates succeeded:       $((${#packages_to_check[@]} - UPDATE_FAILURES))"
 echo "  Updates failed:          ${UPDATE_FAILURES}"
 echo "  Commits created:         ${COMMITS_CREATED}"
+echo "  Commits with conflicts:  ${UPDATES_WITH_CONFLICTS}"
 echo "  Commits skipped:         ${PACKAGES_SKIPPED}"
 echo "  MR failures:             ${MR_FAILURES}"
 

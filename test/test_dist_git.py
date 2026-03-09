@@ -1166,7 +1166,7 @@ def test_update_merge_clean(workdir: Path, upstream_repos: dict[str, Path], modi
 
 
 def test_update_merge_conflict(workdir: Path, upstream_repos: dict[str, Path]) -> None:
-    """Update fails when local and upstream changes conflict."""
+    """Update creates commit with conflict markers when local and upstream changes conflict."""
     # Import chocolate
     subprocess.run(
         [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["chocolate"]}'],
@@ -1180,27 +1180,53 @@ def test_update_merge_conflict(workdir: Path, upstream_repos: dict[str, Path]) -
     chocolate_spec.write_text(modified_spec)
     subprocess.run(
         [str(workdir / 'ci' / 'dist_git.py'), '--dry-run', 'mark-modified', '--modified',
-         '--reason', 'Local comment added', 'chocolate'], cwd=workdir, check=True,
+         '--reason', 'Local license change', 'chocolate'], cwd=workdir, check=True,
     )
     subprocess.run(['git', 'commit', '-a', '-m', 'Local modification'], cwd=workdir, check=True)
 
-    # Make conflicting upstream change: change the same License line differently
+    # Make conflicting upstream change: change the same License line differently and bump version
     upstream_spec = upstream_repos['chocolate'] / 'chocolate.spec'
     upstream_content = upstream_spec.read_text()
     updated_upstream = upstream_content.replace('License: GPL', 'License: Apache-2.0')
+    updated_upstream = updated_upstream.replace('Version: 10', 'Version: 11')
     upstream_spec.write_text(updated_upstream)
     subprocess.run(['git', 'commit', '-a', '-m', 'Change license to Apache'],
                    cwd=upstream_repos['chocolate'], check=True)
 
-    # update fails due to conflict
+    # Get the new upstream SHA
+    new_sha = subprocess.run(
+        ['git', 'rev-parse', 'HEAD'],
+        cwd=upstream_repos['chocolate'], capture_output=True, text=True, check=True
+    ).stdout.strip()
+
+    # update succeeds with exit code 2 (conflicts)
     result = subprocess.run(
         [str(workdir / 'ci' / 'dist_git.py'), 'update', '--skip-build-check', 'chocolate'],
         cwd=workdir, capture_output=True, text=True,
     )
-    assert result.returncode != 0
-    assert 'conflict' in result.stderr
-    assert 'Manual resolution required' in result.stderr
-    assert 'chocolate.spec.rej' in result.stderr
+    assert result.returncode == 2, f"Expected exit code 2 for conflicts, got {result.returncode}"
+    assert 'conflict' in result.stderr.lower(), "Expected 'conflict' in stderr"
+
+    # Verify one commit was created
+    commits_after = subprocess.run(
+        ['git', 'rev-list', '--count', 'HEAD'],
+        cwd=workdir, capture_output=True, text=True, check=True
+    ).stdout.strip()
+    # Initial commit, Import, Local modification; then the Update commit
+    assert commits_after == "4"
+
+    commit_msg = subprocess.run(
+        ['git', 'log', '-1', '--format=%B'],
+        cwd=workdir, capture_output=True, text=True, check=True
+    ).stdout
+    assert commit_msg == f'Update chocolate from 10-1 to 11-1\n\nUpstream: {new_sha}\n\n'
+
+    # Verify spec file has conflict markers and both old and new License versions
+    spec_content = chocolate_spec.read_text()
+    assert '<<<<<<< HEAD' in spec_content
+    assert '>>>>>>> hummingbird-local' in spec_content
+    assert 'License: MIT' in spec_content
+    assert 'License: Apache-2.0' in spec_content
 
 
 def test_native_package_blocks_update(workdir: Path, upstream_repos: dict[str, Path]) -> None:
