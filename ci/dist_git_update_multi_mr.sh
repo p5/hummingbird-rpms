@@ -185,7 +185,6 @@ PACKAGES_UPDATED=0
 UPDATE_FAILURES=0
 MR_FAILURES=0
 PACKAGES_SKIPPED=0
-PACKAGES_SKIPPED_MODIFIED_NATIVE=0
 UPDATES_WITH_CONFLICTS=0
 FAILED_PACKAGES=()
 CREATED_MR_URLS=()
@@ -233,36 +232,25 @@ if [[ ${MAX_UPDATES} -gt 0 ]]; then
 fi
 echo ""
 
-# Pre-filter packages if --clean-only or --modified-only is set
-if [[ "${CLEAN_ONLY}" == true ]]; then
-    echo "Filtering for clean packages only (skipping modified/native)..."
-    filtered_packages=()
-    for metadata_file in "${packages_to_check[@]}"; do
-        status=$(jq -r '.modification_status // "clean"' "${metadata_file}")
-        if [[ "${status}" == "clean" ]]; then
-            filtered_packages+=("${metadata_file}")
-        else
-            PACKAGES_SKIPPED_MODIFIED_NATIVE=$((PACKAGES_SKIPPED_MODIFIED_NATIVE + 1))
-        fi
-    done
-    packages_to_check=("${filtered_packages[@]}")
-    echo "After filtering: ${#packages_to_check[@]} packages to check (${PACKAGES_SKIPPED_MODIFIED_NATIVE} skipped)"
-    echo ""
-elif [[ "${MODIFIED_ONLY}" == true ]]; then
-    echo "Filtering for modified packages only (skipping clean/native)..."
-    filtered_packages=()
-    for metadata_file in "${packages_to_check[@]}"; do
-        status=$(jq -r '.modification_status // "clean"' "${metadata_file}")
-        if [[ "${status}" == "modified" ]]; then
-            filtered_packages+=("${metadata_file}")
-        else
-            PACKAGES_SKIPPED_MODIFIED_NATIVE=$((PACKAGES_SKIPPED_MODIFIED_NATIVE + 1))
-        fi
-    done
-    packages_to_check=("${filtered_packages[@]}")
-    echo "After filtering: ${#packages_to_check[@]} packages to check (${PACKAGES_SKIPPED_MODIFIED_NATIVE} skipped)"
-    echo ""
-fi
+# Filter packages based on modification status; always skip native
+# By default: try to update clean and modified packages, but check --*-only flags
+echo "Filtering packages..."
+filtered_packages=()
+for metadata_file in "${packages_to_check[@]}"; do
+    status=$(jq -r '.modification_status // "clean"' "${metadata_file}")
+
+    if [[ "${status}" == "clean" && "${MODIFIED_ONLY}" != true ]]; then
+        filtered_packages+=("${metadata_file}")
+    elif [[ "${status}" == "modified" && "${CLEAN_ONLY}" != true ]]; then
+        filtered_packages+=("${metadata_file}")
+    else
+        PACKAGES_SKIPPED=$((PACKAGES_SKIPPED + 1))
+    fi
+done
+
+packages_to_check=("${filtered_packages[@]}")
+echo "After filtering: ${#packages_to_check[@]} packages to check (${PACKAGES_SKIPPED} skipped)"
+echo ""
 
 # Make sure we're on the target branch before running updates
 git checkout --quiet "${TARGET_BRANCH}" 2>/dev/null || true
@@ -487,16 +475,11 @@ else
     echo "  MRs: ${PACKAGES_UPDATED} created"
 fi
 echo "  Packages checked:        ${#packages_to_check[@]}"
-if [[ "${CLEAN_ONLY}" == true && ${PACKAGES_SKIPPED_MODIFIED_NATIVE} -gt 0 ]]; then
-    echo "  Packages skipped (modified/native): ${PACKAGES_SKIPPED_MODIFIED_NATIVE}"
-elif [[ "${MODIFIED_ONLY}" == true && ${PACKAGES_SKIPPED_MODIFIED_NATIVE} -gt 0 ]]; then
-    echo "  Packages skipped (clean/native): ${PACKAGES_SKIPPED_MODIFIED_NATIVE}"
-fi
+echo "  Packages skipped:        ${PACKAGES_SKIPPED}"
 echo "  Updates succeeded:       $((${#packages_to_check[@]} - UPDATE_FAILURES))"
 echo "  Updates failed:          ${UPDATE_FAILURES}"
 echo "  Commits created:         ${COMMITS_CREATED}"
 echo "  Commits with conflicts:  ${UPDATES_WITH_CONFLICTS}"
-echo "  Commits skipped:         ${PACKAGES_SKIPPED}"
 echo "  MR failures:             ${MR_FAILURES}"
 
 if [[ ${#FAILED_PACKAGES[@]} -gt 0 ]]; then
