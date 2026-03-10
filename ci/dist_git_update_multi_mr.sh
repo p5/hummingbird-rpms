@@ -185,6 +185,7 @@ PACKAGES_UPDATED=0
 UPDATE_FAILURES=0
 MR_FAILURES=0
 PACKAGES_SKIPPED=0
+EXISTING_UPDATES=0
 UPDATES_WITH_CONFLICTS=0
 FAILED_PACKAGES=()
 CREATED_MR_URLS=()
@@ -434,7 +435,12 @@ for COMMIT_SHA in "${COMMIT_SHAS[@]}"; do
         fi
 
         # Create MR for this package using existing create_mr.sh
-        if ./ci/create_mr.sh "${MR_ARGS[@]}"; then
+        # Exit codes: 0 = created, 2 = already exists, 1 = failure
+        MR_EXIT_CODE=0
+        ./ci/create_mr.sh "${MR_ARGS[@]}" || MR_EXIT_CODE=$?
+
+        if [[ ${MR_EXIT_CODE} -eq 0 ]]; then
+            # MR successfully created
             if [[ "${HAS_CONFLICT}" == true ]]; then
                 echo "  ✓ Created conflict MR for ${PACKAGE} (needs manual resolution)"
             else
@@ -447,7 +453,11 @@ for COMMIT_SHA in "${COMMIT_SHAS[@]}"; do
                 MR_URL="https://${GITLAB_HOST}/${GITLAB_PROJECT}/-/merge_requests?source_branch=${BRANCH_NAME}"
                 CREATED_MR_URLS+=("${MR_URL}")
             fi
+        elif [[ ${MR_EXIT_CODE} -eq 2 ]]; then
+            # MR already exists - not a failure, but don't count as created
+            EXISTING_UPDATES=$((EXISTING_UPDATES + 1))
         else
+            # MR creation failed
             echo "  ✗ Failed to create MR for ${PACKAGE}"
             MR_FAILURES=$((MR_FAILURES + 1))
             FAILED_PACKAGES+=("${PACKAGE} (MR creation failed)")
@@ -480,6 +490,7 @@ echo "  Updates succeeded:       $((${#packages_to_check[@]} - UPDATE_FAILURES))
 echo "  Updates failed:          ${UPDATE_FAILURES}"
 echo "  Commits created:         ${COMMITS_CREATED}"
 echo "  Commits with conflicts:  ${UPDATES_WITH_CONFLICTS}"
+echo "  Existing updates:        ${EXISTING_UPDATES}"
 echo "  MR failures:             ${MR_FAILURES}"
 
 if [[ ${#FAILED_PACKAGES[@]} -gt 0 ]]; then

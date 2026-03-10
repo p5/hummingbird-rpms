@@ -72,7 +72,7 @@ echo "${COMMITS_AHEAD} commit(s) detected, creating MR..."
 if git ls-remote --exit-code --heads "${REMOTE:-origin}" "${BRANCH_NAME}" >/dev/null 2>&1; then
     echo "Branch ${BRANCH_NAME} already exists on remote, skipping push (MR already exists)"
     echo "  Existing MR: https://gitlab.com/redhat/hummingbird/rpms/-/merge_requests?source_branch=${BRANCH_NAME}"
-    exit 0
+    exit 2
 fi
 
 # Switch to MR branch (create if needed)
