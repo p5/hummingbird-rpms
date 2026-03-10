@@ -1,6 +1,7 @@
 {
   "branch": "rawhide",
-  "modification_status": "clean",
+  "modification_reason": "drop asciidoctor BuildRequires",
+  "modification_status": "modified",
   "release": "2",
   "sha": "1a22bdac573dd37abd3f9b90e562b4589069973c",
   "source": "https://src.fedoraproject.org/rpms/javapackages-tools.git",

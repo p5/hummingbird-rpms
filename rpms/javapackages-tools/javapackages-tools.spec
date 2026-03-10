@@ -22,7 +22,6 @@ BuildArch:      noarch
 Source:         https://github.com/fedora-java/javapackages/archive/%{version}.tar.gz
 
 BuildRequires:  coreutils
-BuildRequires:  rubygem-asciidoctor
 BuildRequires:  %{python_prefix}-devel
 BuildRequires:  %{python_prefix}-lxml
 BuildRequires:  %{python_prefix}-setuptools
@@ -129,6 +128,11 @@ support Java packaging as well as some additions to them.
     --without-ivy \
 %endif
     --without-generators
+# HUM: stub out asciidoctor; just touch the target file. We don't want to
+# predict the section, so just create both .1 and .7. The ./install script
+# picks out the right one.
+asciidoctor() { set -x; T="target/$(basename $5 .txt)"; touch ${T}.1 ${T}.7; set +x; }
+export -f asciidoctor
 ./build
 
 %install
