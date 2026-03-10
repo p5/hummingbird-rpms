@@ -1,0 +1,8 @@
+{
+  "branch": "rawhide",
+  "modification_status": "clean",
+  "release": "1",
+  "sha": "3dd9adf5bd92a49ef341127a5db0cd5b13de6cac",
+  "source": "https://src.fedoraproject.org/rpms/pyOpenSSL.git",
+  "version": "25.3.0"
+}

@@ -11737,7 +11737,44 @@ spec:
     method: webhook
     title: SBOM-event-to-Bombino
 # --- pyOpenSSL ---
-# PENDING
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
+  name: pyopenssl-main
+spec:
+  application: rpms-main
+  componentName: pyopenssl-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/pyopenssl-main
+  source:
+    git:
+      context: rpms/pyOpenSSL
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: pyopenssl-main
+  name: pyopenssl-main
+spec:
+  image:
+    name: hummingbird-tenant/pyopenssl-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
 # --- pygobject3 ---
 # PENDING
 # --- pyproject-rpm-macros ---
