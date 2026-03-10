@@ -1,8 +1,8 @@
 {
   "branch": "rawhide",
-  "release": "10",
-  "sha": "9f1ad64868cb6be5c2ba590ff1fd1aaa64cc308c",
+  "modification_status": "clean",
+  "release": "1",
+  "sha": "dfb04359917e44b52109b30baa86ce647deab53c",
   "source": "https://src.fedoraproject.org/rpms/liblerc.git",
-  "version": "4.0.0",
-  "modification_status": "clean"
+  "version": "4.1.0"
 }
