@@ -442,6 +442,153 @@ def test_check_package_version_falls_back_to_version(cuv_module, workdir: Path) 
 
 
 #
+# Tests — check_package_version with basename / track_version
+#
+
+
+def test_check_package_version_uses_basename(cuv_module, workdir: Path) -> None:
+    """Uses basename from metadata to query Anitya instead of package name."""
+    _create_package(workdir, 'golang1.26', '1.26.3',
+                    metadata={'version': '1.26.3', 'release': '1',
+                              'basename': 'golang', 'track_version': '1.26'})
+
+    cuv_module.RPMS_DIR = workdir / 'rpms'
+    cuv_module.METADATA_DIR = workdir / 'metadata'
+
+    mock_response = {
+        'version': '1.27.0',
+        'stable_versions': ['1.27.0', '1.26.5', '1.26.4', '1.25.10'],
+        'id': 100,
+    }
+
+    queried_names = []
+    original_query = cuv_module.query_anitya
+
+    def tracking_query(name, distro='Fedora'):
+        queried_names.append(name)
+        return mock_response
+
+    with patch.object(cuv_module, 'query_anitya', side_effect=tracking_query):
+        result = cuv_module.check_package_version('golang1.26')
+
+    # Should query Anitya with 'golang', not 'golang1.26'
+    assert queried_names == ['golang']
+    # Should filter to track_version 1.26 prefix -> 1.26.5
+    assert result.upstream_version == '1.26.5'
+    assert result.has_update is True
+
+
+def test_check_package_version_track_version_filters_stable(cuv_module, workdir: Path) -> None:
+    """track_version filters stable_versions to matching prefix."""
+    _create_package(workdir, 'pkg', '1.26.3',
+                    metadata={'version': '1.26.3', 'release': '1',
+                              'track_version': '1.26'})
+
+    cuv_module.RPMS_DIR = workdir / 'rpms'
+    cuv_module.METADATA_DIR = workdir / 'metadata'
+
+    mock_response = {
+        'version': '2.0',
+        'stable_versions': ['2.0', '1.27.0', '1.26.5'],
+        'id': 42,
+    }
+
+    with patch.object(cuv_module, 'query_anitya', return_value=mock_response):
+        result = cuv_module.check_package_version('pkg')
+
+    assert result.upstream_version == '1.26.5'
+    assert result.has_update is True
+
+
+def test_check_package_version_track_version_no_match(cuv_module, workdir: Path) -> None:
+    """Reports no upstream version when no stable versions match track_version."""
+    _create_package(workdir, 'pkg', '1.24.0',
+                    metadata={'version': '1.24.0', 'release': '1',
+                              'track_version': '1.24'})
+
+    cuv_module.RPMS_DIR = workdir / 'rpms'
+    cuv_module.METADATA_DIR = workdir / 'metadata'
+
+    mock_response = {
+        'version': '2.0',
+        'stable_versions': ['2.0', '1.27.0', '1.26.5'],
+        'id': 42,
+    }
+
+    with patch.object(cuv_module, 'query_anitya', return_value=mock_response):
+        result = cuv_module.check_package_version('pkg')
+
+    # version field (2.0) also doesn't match 1.24 prefix
+    assert result.upstream_version is None
+    assert result.has_update is False
+    assert result.error == "No upstream version reported by Anitya"
+
+
+def test_check_package_version_track_version_exact_match(cuv_module, workdir: Path) -> None:
+    """track_version matches exact version (not just prefix)."""
+    _create_package(workdir, 'pkg', '1.26',
+                    metadata={'version': '1.26', 'release': '1',
+                              'track_version': '1.26'})
+
+    cuv_module.RPMS_DIR = workdir / 'rpms'
+    cuv_module.METADATA_DIR = workdir / 'metadata'
+
+    mock_response = {
+        'version': '1.27',
+        'stable_versions': ['1.27', '1.26'],
+        'id': 42,
+    }
+
+    with patch.object(cuv_module, 'query_anitya', return_value=mock_response):
+        result = cuv_module.check_package_version('pkg')
+
+    # 1.26 exact match is kept, but it's the same as current so no update
+    assert result.upstream_version == '1.26'
+    assert result.has_update is False
+
+
+def test_check_package_version_basename_without_track_version(cuv_module, workdir: Path) -> None:
+    """basename is used for Anitya lookup even without track_version."""
+    _create_package(workdir, 'python3.13', '3.13.1',
+                    metadata={'version': '3.13.1', 'release': '1',
+                              'basename': 'python3.13'})
+
+    cuv_module.RPMS_DIR = workdir / 'rpms'
+    cuv_module.METADATA_DIR = workdir / 'metadata'
+
+    mock_response = {
+        'version': '3.13.2',
+        'stable_versions': ['3.13.2'],
+        'id': 50,
+    }
+
+    queried_names = []
+
+    def tracking_query(name, distro='Fedora'):
+        queried_names.append(name)
+        return mock_response
+
+    with patch.object(cuv_module, 'query_anitya', side_effect=tracking_query):
+        result = cuv_module.check_package_version('python3.13')
+
+    assert queried_names == ['python3.13']
+    assert result.upstream_version == '3.13.2'
+    assert result.has_update is True
+
+
+def test_matches_track_version(cuv_module) -> None:
+    """_matches_track_version correctly handles prefix matching."""
+    matches = cuv_module._matches_track_version
+    assert matches('1.26', '1.26') is True
+    assert matches('1.26.0', '1.26') is True
+    assert matches('1.26.3', '1.26') is True
+    assert matches('1.27.0', '1.26') is False
+    assert matches('1.260', '1.26') is False
+    assert matches('1.3', '1.26') is False
+    assert matches('2.0', '1.26') is False
+
+
+#
 # Tests — get_all_packages
 #
 

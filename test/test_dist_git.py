@@ -1907,3 +1907,157 @@ def test_list_prerelease_packages(workdir: Path, upstream_repos: dict[str, Path]
     assert '2.0~rc1' in result.stdout
     assert 'chocolate' not in result.stdout
     assert 'PRE-RELEASE PACKAGES (1):' in result.stdout
+
+
+def test_set_basename(workdir: Path, upstream_repos: dict[str, Path]) -> None:
+    """set-basename sets basename and track_version in metadata."""
+    # Import vanilla
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["vanilla"]}'],
+        cwd=workdir, check=True,
+    )
+
+    # Set basename with track_version
+    result = subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'set-basename', '--name', 'golang',
+         '--track-version', '1.26', 'vanilla'],
+        cwd=workdir, capture_output=True, text=True, check=True,
+    )
+
+    # Verify metadata
+    metadata_file = workdir / 'metadata' / 'vanilla.json'
+    with open(metadata_file) as f:
+        metadata = json.load(f)
+    assert metadata['basename'] == 'golang'
+    assert metadata['track_version'] == '1.26'
+
+
+def test_set_basename_without_track_version(workdir: Path, upstream_repos: dict[str, Path]) -> None:
+    """set-basename without --track-version sets only basename."""
+    # Import vanilla
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["vanilla"]}'],
+        cwd=workdir, check=True,
+    )
+
+    # Set basename without track_version
+    result = subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'set-basename', '--name', 'python', 'vanilla'],
+        cwd=workdir, capture_output=True, text=True, check=True,
+    )
+
+    # Verify metadata
+    metadata_file = workdir / 'metadata' / 'vanilla.json'
+    with open(metadata_file) as f:
+        metadata = json.load(f)
+    assert metadata['basename'] == 'python'
+    assert 'track_version' not in metadata
+
+
+def test_set_basename_clears_track_version(workdir: Path, upstream_repos: dict[str, Path]) -> None:
+    """set-basename without --track-version removes existing track_version."""
+    # Import vanilla
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["vanilla"]}'],
+        cwd=workdir, check=True,
+    )
+
+    # Set basename with track_version
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'set-basename', '--name', 'golang',
+         '--track-version', '1.26', 'vanilla'],
+        cwd=workdir, check=True,
+    )
+
+    metadata_file = workdir / 'metadata' / 'vanilla.json'
+    with open(metadata_file) as f:
+        metadata = json.load(f)
+    assert metadata['track_version'] == '1.26'
+
+    # Set basename without track_version - should remove track_version
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'set-basename', '--name', 'golang', 'vanilla'],
+        cwd=workdir, check=True,
+    )
+
+    with open(metadata_file) as f:
+        metadata = json.load(f)
+    assert metadata['basename'] == 'golang'
+    assert 'track_version' not in metadata
+
+
+def test_set_basename_unknown_package(workdir: Path) -> None:
+    """set-basename on non-existent package fails."""
+    result = subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'set-basename', '--name', 'golang', 'nonexistent'],
+        cwd=workdir, capture_output=True, text=True,
+    )
+
+    assert result.returncode != 0
+    assert "Package nonexistent not found" in result.stderr
+
+
+def test_update_skips_when_track_version_mismatch(workdir: Path, upstream_repos: dict[str, Path]) -> None:
+    """Update skips package when upstream version doesn't match track_version prefix."""
+    # Import vanilla
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["vanilla"]}'],
+        cwd=workdir, check=True,
+    )
+
+    # Set track_version to 1.0 (matches current version)
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'set-basename', '--name', 'vanilla',
+         '--track-version', '1.0', 'vanilla'],
+        cwd=workdir, check=True,
+    )
+
+    # Update upstream to version 2.0 (doesn't match track_version 1.0)
+    add_upstream_commit(upstream_repos["vanilla"], 'vanilla', '1.0', '2.0')
+
+    # Update should skip due to track_version mismatch
+    result = subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'update', '--skip-build-check', 'vanilla'],
+        cwd=workdir, capture_output=True, text=True, check=True,
+    )
+
+    assert "doesn't match tracked version" in result.stderr
+
+    # Verify package was NOT updated
+    metadata_file = workdir / 'metadata' / 'vanilla.json'
+    with open(metadata_file) as f:
+        metadata = json.load(f)
+    assert metadata['version'] == '1.0'
+
+
+def test_update_proceeds_when_track_version_matches(workdir: Path, upstream_repos: dict[str, Path]) -> None:
+    """Update proceeds when upstream version matches track_version prefix."""
+    # Import vanilla
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["vanilla"]}'],
+        cwd=workdir, check=True,
+    )
+
+    # Set track_version to 1 (matches 1.0 and 1.x)
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'set-basename', '--name', 'vanilla',
+         '--track-version', '1', 'vanilla'],
+        cwd=workdir, check=True,
+    )
+
+    # Update upstream to version 1.5 (matches track_version prefix "1")
+    add_upstream_commit(upstream_repos["vanilla"], 'vanilla', '1.0', '1.5')
+
+    # Update should proceed
+    result = subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'update', '--skip-build-check', 'vanilla'],
+        cwd=workdir, capture_output=True, text=True, check=True,
+    )
+
+    assert "Updating vanilla" in result.stderr
+
+    # Verify package was updated
+    metadata_file = workdir / 'metadata' / 'vanilla.json'
+    with open(metadata_file) as f:
+        metadata = json.load(f)
+    assert metadata['version'] == '1.5'

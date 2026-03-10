@@ -123,6 +123,40 @@ longer needed (e.g., the fix landed in Fedora):
 This removes the `modified` status and allows the package to receive automatic
 updates from Fedora again.
 
+### Set Basename and Version Constraint
+
+Use this when a package has been renamed with a version suffix (e.g., `golang1.26`
+imported from `golang`) and you need to constrain automatic updates to a specific
+version series:
+
+```bash
+# Set basename with version constraint
+./ci/dist_git.py set-basename --name golang --track-version 1.26 golang1.26
+
+# Set basename only (no version constraint)
+./ci/dist_git.py set-basename --name python python3.13
+```
+
+This sets two optional metadata fields:
+
+| Field            | Description                                           | Example  |
+|------------------|-------------------------------------------------------|----------|
+| `basename`       | Original upstream package name                        | `golang` |
+| `track_version`  | Version prefix to constrain updates                   | `1.26`   |
+
+These fields affect two systems:
+
+- **`dist_git.py update`**: When `track_version` is set, skips upstream versions
+  that don't match the prefix. For example, `track_version: "1.26"` allows
+  `1.26`, `1.26.0`, `1.26.3` but rejects `1.27.0`.
+- **`check_upstream_versions.py`**: When `basename` is set, queries
+  release-monitoring.org using the basename instead of the package directory name
+  (e.g., looks up `golang` instead of `golang1.26`). When `track_version` is set,
+  filters the reported upstream versions to only those matching the prefix.
+
+Running `set-basename` without `--track-version` removes any existing
+`track_version` constraint.
+
 ### Enable/Disable Upstream Version Tracking
 
 Use this to opt a package into automatic upstream version checking via
@@ -148,8 +182,9 @@ The `./ci/dist_git.py update` command (used by automation) checks modification
 status before updating packages:
 
 - **clean packages**: Updated automatically when new Fedora versions are available
-- **modified packages**: Update blocked with error message showing the reason
+- **modified packages**: Automatically merged with upstream changes (conflicts create draft MRs)
 - **native packages**: Update blocked (not sourced from Fedora)
+- **version-constrained packages**: Skipped if upstream version doesn't match `track_version` prefix
 
 To force-update a modified package (discarding local changes):
 

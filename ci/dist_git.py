@@ -53,6 +53,8 @@ class PackageMetadata(TypedDict):
     modification_status: NotRequired[Literal["clean", "modified", "native"]]
     modification_reason: NotRequired[str]  # Only for 'modified'
     track_upstream: NotRequired[bool]
+    basename: NotRequired[str]  # Original package name when JSON filename differs
+    track_version: NotRequired[str]  # Version prefix to constrain updates (e.g., "1.26")
 
 
 class KojiBuild(TypedDict, total=False):
@@ -986,6 +988,15 @@ def update(package_name: str, skip_build_check: bool = False, sync: bool = False
         version, release = parse_spec_version(upstream_dir)
         logging.info("Version: %s-%s", version, release)
 
+        # Check track_version constraint - skip if upstream version doesn't match prefix
+        if not sync and 'track_version' in metadata:
+            tv = metadata['track_version']
+            if not (version == tv or version.startswith(tv + '.')):
+                logging.warning(
+                    "Skipping %s: upstream version %s doesn't match tracked version %s",
+                    package_name, version, tv)
+                return
+
         # Check for pre-release version (unless sync or --allow-prerelease)
         if not sync and not allow_prerelease:
             is_pre, pattern = is_prerelease(version, release)
@@ -1159,6 +1170,35 @@ def mark_track_upstream(package_name: str, enable: bool) -> None:
     # Save updated metadata
     save_package_metadata(package_name, metadata)
     imports[package_name] = metadata
+
+
+def set_basename(package_name: str, basename: str, track_version: str | None = None) -> None:
+    """Set basename and optional track_version for versioned packages.
+
+    Args:
+        package_name: Package name (e.g., golang1.26)
+        basename: Base package name (e.g., golang)
+        track_version: Version prefix to constrain updates (e.g., 1.26)
+    """
+    if package_name not in imports:
+        sys.exit(f"ERROR: Package {package_name} not found (missing metadata/{package_name}.json)")
+
+    metadata = imports[package_name]
+
+    metadata['basename'] = basename
+
+    if track_version is not None:
+        metadata['track_version'] = track_version
+    else:
+        metadata.pop('track_version', None)
+
+    save_package_metadata(package_name, metadata)
+    imports[package_name] = metadata
+
+    if track_version:
+        logging.info("Set basename=%s, track_version=%s for %s", basename, track_version, package_name)
+    else:
+        logging.info("Set basename=%s for %s", basename, package_name)
 
 
 def diff_package(package_name: str, output_mode: str = 'full', raw: bool = False) -> bool | None:
@@ -1440,6 +1480,15 @@ Examples:
     track_group.add_argument('--disable', action='store_true',
                              help='Disable upstream version tracking')
 
+    # set-basename command
+    basename_parser = subparsers.add_parser('set-basename',
+                                            help='Set basename and optional track_version for versioned packages')
+    basename_parser.add_argument('package', help='Package name (e.g., golang1.26)')
+    basename_parser.add_argument('--name', required=True,
+                                 help='Base package name (e.g., golang)')
+    basename_parser.add_argument('--track-version',
+                                 help='Version prefix to track (e.g., 1.26). Constrains updates to this prefix.')
+
     # list command
     list_parser = subparsers.add_parser('list',
                                        help='List packages with modification status')
@@ -1481,7 +1530,7 @@ Examples:
         sys.exit("ERROR: --dry-run is not supported with the rename command")
 
     # Check git config for commands that will commit
-    if args.command not in ['list', 'diff'] and (not args.dry_run or args.command == 'rename'):
+    if args.command not in ['list', 'diff', 'set-basename'] and (not args.dry_run or args.command == 'rename'):
         check_git_config()
 
     match args.command:
@@ -1502,6 +1551,8 @@ Examples:
             mark_modified(args.package, args.modified, args.reason)
         case 'mark-track-upstream':
             mark_track_upstream(args.package, args.enable)
+        case 'set-basename':
+            set_basename(args.package, args.name, args.track_version)
         case 'list':
             # Determine filter based on flags
             status_filter = None
