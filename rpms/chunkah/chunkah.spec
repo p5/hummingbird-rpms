@@ -2,7 +2,7 @@
 
 Name:           chunkah
 Version:        0.2.0
-Release:        3%{?dist}
+Release:        3.1%{?dist}
 Summary:        OCI building tool for content-based container image layers
 
 # chunkah itself is MIT OR Apache-2.0
@@ -13,6 +13,7 @@ Source0:        %{url}/releases/download/v%{version}/%{crate}-%{version}.tar.gz
 Source1:        %{url}/releases/download/v%{version}/%{crate}-%{version}-vendor.tar.gz
 Patch0:         0001-scan-sort-xattrs-for-reproducibility.patch
 Patch1:         0002-scan-skip-trusted.-xattrs.patch
+Patch2:         0003-rpm-fix-non-deterministic-stability-from-HashMap-iteration.patch
 
 BuildRequires:  cargo-rpm-macros >= 26
 BuildRequires:  openssl-devel

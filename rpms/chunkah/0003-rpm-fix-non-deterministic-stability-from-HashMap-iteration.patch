@@ -1,0 +1,62 @@
+From c05927f1278ec5b0806ba16fa609dd68c2724d8a Mon Sep 17 00:00:00 2001
+From: Jonathan Lebon <jonathan@jlebon.com>
+Date: Mon, 9 Mar 2026 09:56:39 -0400
+Subject: [PATCH] rpm: fix non-deterministic stability from HashMap iteration
+
+If a rootfs has packages built from different versions of the same SRPM,
+(e.g. `foo-1.0-1` and `foo-libs-1.0-2`), current chunkah logic is to
+still put them in the same component. This seems like the right call
+because clearly the package set hasn't converged yet and more churn
+is expected.
+
+If that does happen, we should make sure to have a deterministic
+stability. Right now it just depends on whichever subpackage is
+encountered first, which may change between invocations.
+
+Always calculate stability, and use the lower of the two. While we're
+there, warn if we encounter this since it likely indicates a compose bug
+on the user's side.
+
+Closes: https://github.com/coreos/chunkah/issues/80
+Assisted-by: OpenCode (Claude Opus 4.6)
+---
+ src/components/rpm.rs | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
+
+diff --git a/src/components/rpm.rs b/src/components/rpm.rs
+index c6a7310..007758e 100644
+--- a/src/components/rpm.rs
++++ b/src/components/rpm.rs
+@@ -65,17 +65,27 @@ impl RpmRepo {
+             };
+ 
+             let entry = components.entry(component_name.to_string());
++            let stability = calculate_stability(&pkg.changelog_times, pkg.buildtime, now)?;
+             let component_id = ComponentId(entry.index());
+             match entry {
+                 indexmap::map::Entry::Occupied(mut e) => {
+                     // Build time across subpackages for a given SRPM can vary.
+                     // We want the max() of all of them as the clamp.
+-                    let (existing_bt, _) = e.get_mut();
++                    let (existing_bt, existing_stability) = e.get_mut();
+                     *existing_bt = (*existing_bt).max(pkg.buildtime);
++                    if stability != *existing_stability && !pkg.changelog_times.is_empty() {
++                        // Stability was derived from changelogs only and yet
++                        // they're different? This likely means that the RPMs
++                        // coming from different versions of the same SRPM are
++                        // intermixed in the rootfs. This yields suboptimal
++                        // packing and likely indicates a compose bug. Warn.
++                        tracing::warn!(package = %pkg.name, "package has different changelog than sibling RPM");
++                    }
++                    // for determinism, we want the min() of all stabilities if they differ.
++                    *existing_stability = (*existing_stability).min(stability);
+                 }
+                 indexmap::map::Entry::Vacant(e) => {
+                     tracing::trace!(component = %component_name, id = component_id.0, "rpm component created");
+-                    let stability = calculate_stability(&pkg.changelog_times, pkg.buildtime, now)?;
+                     e.insert((pkg.buildtime, stability));
+                 }
+             }
+-- 
+2.49.0
+
