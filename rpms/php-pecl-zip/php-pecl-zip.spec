@@ -15,16 +15,22 @@
 %global ini_name         40-%{pecl_name}.ini
 %global upstream_version 1.22.8
 #global upstream_prever  RC6
-%global sources          %{pecl_name}-%{upstream_version}%{?upstream_prever}
+%global sources          %{gh_proj}-%{tag}
+
+# Github forge
+%global gh_vend     pierrejoye
+%global gh_proj     php_zip
+%global forgeurl    https://github.com/%{gh_vend}/%{gh_proj}
+%global tag         %{upstream_version}%{?upstream_prever}
 
 Summary:      A ZIP archive management extension
 Name:         %{php_base}-pecl-zip
 Version:      %{upstream_version}%{?upstream_prever:~%{upstream_prever}}
-Release:      1%{?dist}
+%forgemeta
+Release:      2%{?dist}
 License:      PHP-3.01
-URL:          https://pecl.php.net/package/zip
-
-Source0:      https://pecl.php.net/get/%{sources}.tgz
+URL:          %{forgeurl}
+Source0:      %{forgesource}
 
 ExcludeArch:   %{ix86}
 
@@ -33,7 +39,6 @@ BuildRequires: gcc
 BuildRequires: %{php_base}-devel
 BuildRequires: pkgconfig(libzip) >= 1.0.0
 BuildRequires: zlib-devel
-BuildRequires: php-pear
 
 Requires:     php(zend-abi) = %{php_zend_api}
 Requires:     php(api) = %{php_core_api}
@@ -61,11 +66,6 @@ Zip is an extension to create and read zip files.
 
 %prep 
 %setup -c -q
-
-# Don't install/register tests
-sed -e 's/role="test"/role="src"/' \
-    -e '/LICENSE/s/role="doc"/role="src"/' \
-    -i package.xml
 
 cd %{sources}
 # Sanity check, really often broken
@@ -100,17 +100,9 @@ sed -e 's/INSTALL_ROOT/DESTDIR/' -i build/Makefile.global
 : Install the configuration file
 install -D -m 644 %{ini_name} %{buildroot}%{php_inidir}/%{ini_name}
 
-: Install XML package description
-install -D -m 644 package.xml %{buildroot}%{pecl_xmldir}/%{name}.xml
-
 cd %{sources}
 : Install the extension
 %make_install
-
-: Install the Documentation
-for i in $(grep 'role="doc"' ../package.xml | sed -e 's/^.*name="//;s/".*$//')
-do install -Dpm 644 $i %{buildroot}%{pecl_docdir}/%{pecl_name}/$i
-done
 
 
 %check
@@ -128,14 +120,18 @@ TEST_PHP_EXECUTABLE=%{__php} \
 
 %files
 %license %{sources}/LICENSE
-%doc %{pecl_docdir}/%{pecl_name}
-%{pecl_xmldir}/%{name}.xml
+%doc %{sources}/CREDITS
+%doc %{sources}/examples
 
 %config(noreplace) %{php_inidir}/%{ini_name}
 %{php_extdir}/%{pecl_name}.so
 
 
 %changelog
+* Tue Mar 10 2026 Remi Collet <remi@remirepo.net> - 1.22.8-2
+- drop pear/pecl dependency
+- sources from github
+
 * Fri Mar  6 2026 Remi Collet <remi@remirepo.net> - 1.22.8-1
 - update to 1.22.8
 
