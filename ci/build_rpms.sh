@@ -24,6 +24,9 @@ Usage: ./ci/build_rpms.sh [OPTIONS] PACKAGE_NAME
   --local-rpms-dir DIR - Directory containing local RPMs to use as an additional
                        high-priority repo (useful for testing build compatibility)
   --nocheck          - Skip running %check tests during the build
+  --shell-before     - Drop into interactive shell instead of running mock
+                       (displays the mock command that would be executed)
+  --shell-after      - Drop into interactive shell after running mock
   --help, -h         - Show this help message
 
 The built RPMs can be found in: builds/PACKAGE_NAME/RPMS/ and builds/PACKAGE_NAME/SRPMS/
@@ -39,6 +42,8 @@ arch=$(uname -m)
 build_dir=""
 local_rpms_dir=""
 nocheck=""
+shell_before=""
+shell_after=""
 package_name=""
 
 # Parse arguments
@@ -62,6 +67,14 @@ while [[ $# -gt 0 ]]; do
             ;;
         --nocheck)
             nocheck="--nocheck"
+            shift
+            ;;
+        --shell-before)
+            shell_before="1"
+            shift
+            ;;
+        --shell-after)
+            shell_after="1"
             shift
             ;;
         *)
@@ -215,8 +228,15 @@ if [[ -n "${local_rpms_dir}" ]]; then
     podman_args+=(-v "${local_rpms_dir}:/local-rpms-src:ro,z")
 fi
 
-podman run "${podman_args[@]}" "${image}" \
-bash -euo pipefail -c "
+# mock command for building package_name
+mock_cmd="mock -r /config/mock.cfg \\
+     --spec '/repo/rpms/${package_name}/${spec_file_name}' \\
+     --sources /sources \\
+     --resultdir /results \\
+     --no-clean --no-cleanup-after \\
+     ${nocheck}"
+
+podman run "${podman_args[@]}" "${image}" bash -euo pipefail -c "
 # Configure curl's header until https://github.com/release-engineering/dist-git/issues/88 is fixed
 echo 'header = \"Accept-Encoding: identity\"' > /tmp/.curlrc
 
@@ -249,13 +269,39 @@ dist-git-client --configdir \${CONFIG_DIR} --forked-from ${upstream_repo_url} so
 echo 'Copying sources to /sources directory...'
 cp -v * /sources/ 2>/dev/null || true
 
-mock -r /config/mock.cfg \
-     --spec '/repo/rpms/${package_name}/${spec_file_name}' \
-     --sources /sources \
-     --resultdir /results \
-     ${nocheck}
+# Install dnf5 into the mock buildroot if using shell mode
+if [[ -n '${shell_before}' || -n '${shell_after}' ]]; then
+    echo 'Installing dnf5 into mock buildroot...'
+    mock -r /config/mock.cfg --resultdir /results --no-clean --install dnf5
+fi
 
-popd
+# Either run mock or drop into interactive shell
+if [[ -n '${shell_before}' ]]; then
+    echo ''
+    echo '=========================================='
+    echo 'Ready to build. The mock command would be:'
+    echo ''
+    echo '${mock_cmd}'
+    echo ''
+    echo 'Dropping into mock shell instead...'
+    echo '=========================================='
+    echo ''
+    mock -r /config/mock.cfg --resultdir /results --no-clean --enable-network --shell
+elif [[ -n '${shell_after}' ]]; then
+    ${mock_cmd}
+
+    popd
+    echo ''
+    echo '=========================================='
+    echo 'Build complete. Dropping into mock shell.'
+    echo '=========================================='
+    echo ''
+    mock -r /config/mock.cfg --resultdir /results --no-clean --enable-network --shell
+else
+    ${mock_cmd}
+
+    popd
+fi
 "
 
 # Organize RPMs into separate directories
