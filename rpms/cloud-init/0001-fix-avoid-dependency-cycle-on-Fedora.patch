@@ -1,4 +1,4 @@
-From 170a1e6037554c6b302f0aa166455a955c92eefe Mon Sep 17 00:00:00 2001
+From d7e47f0ea7cfff876807240421bae6122a9ffeca Mon Sep 17 00:00:00 2001
 From: Jeremy Cline <jeremycline@linux.microsoft.com>
 Date: Mon, 25 Aug 2025 17:06:02 -0400
 Subject: [PATCH] fix: avoid dependency cycle on Fedora
@@ -27,7 +27,7 @@ Signed-off-by: Jeremy Cline <jeremycline@linux.microsoft.com>
  3 files changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/systemd/cloud-init-local.service.tmpl b/systemd/cloud-init-local.service.tmpl
-index 26a6aee1d..bebcf0862 100644
+index e88b15c..fc83232 100644
 --- a/systemd/cloud-init-local.service.tmpl
 +++ b/systemd/cloud-init-local.service.tmpl
 @@ -2,7 +2,7 @@
@@ -39,7 +39,7 @@ index 26a6aee1d..bebcf0862 100644
  DefaultDependencies=no
  {% endif %}
  Wants=network-pre.target
-@@ -23,7 +23,7 @@ ConditionEnvironment=!KERNEL_CMDLINE=cloud-init=disabled
+@@ -22,7 +22,7 @@ ConditionEnvironment=!KERNEL_CMDLINE=cloud-init=disabled
  
  [Service]
  Type=oneshot
@@ -49,7 +49,7 @@ index 26a6aee1d..bebcf0862 100644
  {% endif %}
  # This service is a shim which preserves systemd ordering while allowing a
 diff --git a/systemd/cloud-init-main.service.tmpl b/systemd/cloud-init-main.service.tmpl
-index 2ca6220c2..a1f017722 100644
+index 2ca6220..a1f0177 100644
 --- a/systemd/cloud-init-main.service.tmpl
 +++ b/systemd/cloud-init-main.service.tmpl
 @@ -8,7 +8,7 @@
@@ -71,18 +71,17 @@ index 2ca6220c2..a1f017722 100644
  {% endif %}
  
 diff --git a/systemd/cloud-init-network.service.tmpl b/systemd/cloud-init-network.service.tmpl
-index 61425b4a9..6fd2624aa 100644
+index c284024..dec4fc7 100644
 --- a/systemd/cloud-init-network.service.tmpl
 +++ b/systemd/cloud-init-network.service.tmpl
 @@ -2,7 +2,7 @@
  [Unit]
  # https://docs.cloud-init.io/en/latest/explanation/boot.html
  Description=Cloud-init: Network Stage
--{% if variant not in ["almalinux", "cloudlinux", "photon", "raspberry-pi-os", "rhel"] %}
-+{% if variant not in ["almalinux", "cloudlinux", "photon", "raspberry-pi-os", "rhel", "fedora"] %}
+-{% if variant not in ["almalinux", "cloudlinux", "photon", "rhel"] %}
++{% if variant not in ["almalinux", "cloudlinux", "photon", "rhel", "fedora"] %}
  DefaultDependencies=no
  {% endif %}
  Wants=cloud-init-local.service
 -- 
-2.51.0
-
+2.53.0

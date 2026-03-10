@@ -26,6 +26,9 @@
 # All available MPLs can be found in the:
 # https://konflux.pages.redhat.com/docs/users/getting-started/multi-platform-builds.html documentation.
 
+cloud-init:
+  forked_from: "https://gitlab.com/redhat/hummingbird/rpms"
+
 dotnet8.0:
   timeout_hours: 12
 
