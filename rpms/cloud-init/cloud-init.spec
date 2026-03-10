@@ -17,7 +17,8 @@ Source1:        cloud-init-tmpfiles.conf
 # https://github.com/canonical/cloud-init/pull/6423
 # Fixes systemd dependency cycle on Fedora by adding DefaultDependencies=no
 # and including Fedora in distribution-specific conditional blocks
-Patch:          0001-fix-avoid-dependency-cycle-on-Fedora.patch
+Patch0:         0001-fix-avoid-dependency-cycle-on-Fedora.patch
+Patch1:         0002-fix-force-fedora-variant-for-template-rendering.patch
 
 BuildArch:      noarch
 
