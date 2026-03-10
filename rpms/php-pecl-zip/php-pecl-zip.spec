@@ -15,7 +15,6 @@
 %global ini_name         40-%{pecl_name}.ini
 %global upstream_version 1.22.8
 #global upstream_prever  RC6
-%global sources          %{gh_proj}-%{tag}
 
 # Github forge
 %global gh_vend     pierrejoye
@@ -27,7 +26,7 @@ Summary:      A ZIP archive management extension
 Name:         %{php_base}-pecl-zip
 Version:      %{upstream_version}%{?upstream_prever:~%{upstream_prever}}
 %forgemeta
-Release:      2%{?dist}
+Release:      3%{?dist}
 License:      PHP-3.01
 URL:          %{forgeurl}
 Source0:      %{forgesource}
@@ -65,9 +64,8 @@ Zip is an extension to create and read zip files.
 
 
 %prep 
-%setup -c -q
+%forgesetup
 
-cd %{sources}
 # Sanity check, really often broken
 extver=$(sed -n '/#define PHP_ZIP_VERSION/{s/.* "//;s/".*$//;p}' php8/php_zip.h)
 if test "x${extver}" != "x%{upstream_version}%{?upstream_prever}"; then
@@ -75,7 +73,6 @@ if test "x${extver}" != "x%{upstream_version}%{?upstream_prever}"; then
    exit 1
 fi
 
-cd ..
 : Create the configuration file
 cat >%{ini_name} << 'EOF'
 ; Enable ZIP extension module
@@ -84,7 +81,6 @@ EOF
 
 
 %build
-cd %{sources}
 %{__phpize}
 sed -e 's/INSTALL_ROOT/DESTDIR/' -i build/Makefile.global
 
@@ -100,13 +96,11 @@ sed -e 's/INSTALL_ROOT/DESTDIR/' -i build/Makefile.global
 : Install the configuration file
 install -D -m 644 %{ini_name} %{buildroot}%{php_inidir}/%{ini_name}
 
-cd %{sources}
 : Install the extension
 %make_install
 
 
 %check
-cd %{sources}
 : minimal load test of the extension
 %{__php} --no-php-ini \
     --define extension=%{buildroot}%{php_extdir}/%{pecl_name}.so \
@@ -119,15 +113,18 @@ TEST_PHP_EXECUTABLE=%{__php} \
 
 
 %files
-%license %{sources}/LICENSE
-%doc %{sources}/CREDITS
-%doc %{sources}/examples
+%license LICENSE
+%doc CREDITS
+%doc examples
 
 %config(noreplace) %{php_inidir}/%{ini_name}
 %{php_extdir}/%{pecl_name}.so
 
 
 %changelog
+* Tue Mar 10 2026 Remi Collet <remi@remirepo.net> - 1.22.8-3
+- cleanup
+
 * Tue Mar 10 2026 Remi Collet <remi@remirepo.net> - 1.22.8-2
 - drop pear/pecl dependency
 - sources from github
