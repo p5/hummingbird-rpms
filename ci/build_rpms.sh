@@ -288,7 +288,7 @@ if [[ -n '${shell_before}' ]]; then
     echo ''
     mock -r /config/mock.cfg --resultdir /results --no-clean --enable-network --shell
 elif [[ -n '${shell_after}' ]]; then
-    ${mock_cmd}
+    ${mock_cmd} || true
 
     popd
     echo ''
