@@ -47,6 +47,26 @@ limactl shell fedora bash -c 'cd /path/to/repo && ./ci/build_rpms.sh --build-dir
 
 The build directory must be on the VM's native filesystem (not a macOS mount) to ensure Linux file ownership, permissions, and symlinks work correctly with `/var/lib/mock`.
 
+### Interactive repository debugging
+
+To investigate package/dependency/installability issues, you can run an interactive shell in the same environment used by the package builds:
+
+```bash
+./ci/build_rpms.sh --shell-before setup
+```
+
+This will show you the `mock` command that would be used to build the `setup`
+package, and drop you into a shell in the same environment before executing the
+build, with `dnf` available. You can then run the command manually and inspect
+the environment, repositories, and package metadata.
+
+If you want it to actually build the local package first, so that you can
+include it in your investigation, use `--shell-after` instead:
+
+```bash
+./ci/build_rpms.sh --shell-after setup
+```
+
 ## Test locally (containerized)
 
 Run the default and package-specific tests against one or more built RPMs:
