@@ -12,30 +12,6 @@ spec:
     - rpms-main
   data:
     intention: staging
-    mapping:
-      "rpm-repositories": [
-        {
-          "name": "x86_64",
-          "arch": "x86_64",
-          "repository_id": "public-hummingbird-x86_64-rpms",
-          "repository_name": "x86_64",
-          "distro": "hummingbird-20251124"
-        },
-        {
-          "name": "aarch64",
-          "arch": "aarch64",
-          "repository_id": "public-hummingbird-aarch64-rpms",
-          "repository_name": "aarch64",
-          "distro": "hummingbird-20251124"
-        },
-        {
-          "name": "source",
-          "arch": "source",
-          "repository_id": "public-hummingbird-source-rpms",
-          "repository_name": "source",
-          "distro": "hummingbird-20251124"
-        }
-      ]
     pulp:
       domain: public-hummingbird
       secretName: hummingbird-pulp-credentials-production-secret
@@ -60,6 +36,22 @@ spec:
     atlas:
       server: stage
     mapping:
+      rpm-repositories:
+        - name: x86_64
+          arch: x86_64
+          repository_id: public-hummingbird-x86_64-rpms
+          repository_name: x86_64
+          distro: hummingbird-20251124
+        - name: aarch64
+          arch: aarch64
+          repository_id: public-hummingbird-aarch64-rpms
+          repository_name: aarch64
+          distro: hummingbird-20251124
+        - name: source
+          arch: source
+          repository_id: public-hummingbird-source-rpms
+          repository_name: source
+          distro: hummingbird-20251124
       defaults:
         pushSourceContainer: true
       components:
