@@ -1928,6 +1928,50 @@ def test_update_autorelease_modified(workdir: Path, upstream_repos: dict[str, Pa
     assert metadata['release'] == '3'
 
 
+def test_update_with_ref(workdir: Path, upstream_repos: dict[str, Path]) -> None:
+    """Update with --ref to get a specific older commit."""
+    # Import chocolate at latest
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["chocolate"]}'],
+        cwd=workdir, check=True,
+    )
+
+    # Get the current SHA
+    import_json_file = workdir / 'metadata' / 'chocolate.json'
+    with open(import_json_file) as f:
+        import_data = json.load(f)
+    old_sha = import_data['sha']
+    assert import_data['version'] == '10'
+
+    # Add new commits upstream
+    add_upstream_commit(upstream_repos["chocolate"], 'chocolate', '10', '11')
+    intermediate_sha = add_upstream_commit(upstream_repos["chocolate"], 'chocolate', '11', '12')
+    final_sha = add_upstream_commit(upstream_repos["chocolate"], 'chocolate', '12', '13')
+
+    # Update with --ref to get the intermediate version (not latest)
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'update', '--ref', intermediate_sha,
+         '--skip-build-check', 'chocolate'],
+        cwd=workdir, check=True,
+    )
+
+    # Check that we updated to the intermediate version
+    with open(import_json_file) as f:
+        import_data = json.load(f)
+    assert import_data['sha'] == intermediate_sha
+    assert import_data['version'] == '12'
+    assert import_data['release'] == '1'
+
+    # Verify commit message includes the intermediate SHA
+    subject, body = get_last_commit_info(workdir)
+    assert subject == 'Update chocolate from 10-1 to 12-1'
+    assert f"Upstream: {intermediate_sha}" in body
+
+    # Spec should have version 12
+    spec_content = (workdir / 'rpms' / 'chocolate' / 'chocolate.spec').read_text()
+    assert 'Version: 12' in spec_content
+
+
 def test_sync_bypasses_prerelease_check(workdir: Path, upstream_repos: dict[str, Path]) -> None:
     """Sync command bypasses pre-release check."""
     # Import vanilla

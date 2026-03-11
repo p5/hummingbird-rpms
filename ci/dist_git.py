@@ -930,13 +930,16 @@ def merge_local_modifications(package_name: str, package_dir: Path, tmpdir: Path
 
 
 def update(package_name: str, skip_build_check: bool = False, sync: bool = False,
-           dry_run: bool = False, allow_prerelease: bool = False, mark: bool = False) -> None:
+           dry_run: bool = False, allow_prerelease: bool = False, mark: bool = False,
+           ref: str | None = None) -> None:
     """Update a single package from upstream.
 
     In update mode (not sync), local modifications are automatically merged with upstream changes.
     If the merge has conflicts, the operation fails.
 
-    In sync mode, local modifications are discarded."""
+    In sync mode, local modifications are discarded.
+
+    If ref is provided, update to that specific commit instead of latest."""
     if package_name not in imports:
         sys.exit(f"ERROR: Package {package_name} not found (missing metadata/{package_name}.json)")
 
@@ -954,11 +957,15 @@ def update(package_name: str, skip_build_check: bool = False, sync: bool = False
     # This may differ from the directory name
     upstream_package_name = Path(metadata['source']).stem
 
-    # Check latest commit from upstream with ls-remote (fast, no clone needed)
-    result = run_git('ls-remote', metadata['source'], metadata['branch'])
-    if not result.stdout.strip():
-        sys.exit(f"ERROR: Unable to query remote for {package_name}")
-    latest_sha = result.stdout.split()[0]
+    if ref:
+        # When ref is provided, we'll verify it exists when we clone
+        latest_sha = ref  # Will be resolved to full SHA during clone
+    else:
+        # Use ls-remote to get latest commit (fast, no clone needed)
+        result = run_git('ls-remote', metadata['source'], metadata['branch'])
+        if not result.stdout.strip():
+            sys.exit(f"ERROR: Unable to query remote for {package_name}")
+        latest_sha = result.stdout.split()[0]
 
     # Check if there's an update
     if latest_sha == metadata['sha']:
@@ -1005,6 +1012,12 @@ def update(package_name: str, skip_build_check: bool = False, sync: bool = False
         upstream_dir = Path(tmpdir) / package_name
         run_git('clone', '--quiet', '--branch', metadata['branch'], '--single-branch',
                 metadata['source'], str(upstream_dir))
+        if ref:
+            logging.info("Checking out ref: %s", ref)
+            run_git('checkout', '--quiet', ref, cwd=upstream_dir)
+            # Get the actual commit SHA
+            latest_sha = run_git('rev-parse', 'HEAD', cwd=upstream_dir).stdout.strip()
+            logging.info("Commit: %s", latest_sha)
 
         # Parse spec file to get version-release
         version, release = parse_spec_version(upstream_dir)
@@ -1447,12 +1460,16 @@ Examples:
                               help='Skip Koji build verification (for testing)')
     update_parser.add_argument('--allow-prerelease', action='store_true',
                               help='Allow updating to pre-release versions (rc, alpha, beta, dev, etc.)')
+    update_parser.add_argument('--ref', type=str,
+                              help='Update to specific commit/tag/ref instead of latest')
 
     # sync command
     sync_parser = subparsers.add_parser('sync', help='Force-sync package to upstream (discards local changes)')
     sync_parser.add_argument('package', help='Package name to sync')
     sync_parser.add_argument('--mark', action='store_true',
                             help='Mark package as synced even if already at upstream (creates empty commit with Upstream: trailer). Fails if package has actual modifications.')
+    sync_parser.add_argument('--ref', type=str,
+                            help='Sync to specific commit/tag/ref instead of latest')
 
     # update-releases command
     subparsers.add_parser('update-releases',
@@ -1543,9 +1560,9 @@ Examples:
             packages = [args.package] if args.package else list(imports.keys())
             for pkg in packages:
                 update(pkg, args.skip_build_check, dry_run=args.dry_run,
-                       allow_prerelease=args.allow_prerelease)
+                       allow_prerelease=args.allow_prerelease, ref=args.ref)
         case 'sync':
-            update(args.package, sync=True, dry_run=args.dry_run, mark=args.mark)
+            update(args.package, sync=True, dry_run=args.dry_run, mark=args.mark, ref=args.ref)
         case 'update-releases':
             update_releases()
         case 'rename':
