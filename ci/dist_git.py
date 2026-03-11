@@ -33,6 +33,9 @@ RELEASES_JSON = ROOT_DIR / 'upstream-releases.json'
 PACKAGE_OVERRIDES_YAML = ROOT_DIR / 'ci' / 'package-overrides.yaml'
 RENAMED_PACKAGES_JSON = ROOT_DIR / 'ci' / 'renamed_packages.json'
 
+# Match %autorelease in Release: line (possibly with braces/options like -b, -e, etc.)
+AUTORELEASE_PATTERN = r'^(Release:\s*)%\{?\??autorelease(?:\}|\b).*$'
+
 # Global imports dict, loaded at startup
 imports: dict[str, 'PackageMetadata'] = {}
 
@@ -72,8 +75,7 @@ def uses_autorelease(package_dir: Path) -> bool:
         return False
 
     spec_content = spec_files[0].read_text()
-    # Check for %autorelease in Release: line (possibly with options like -b, -e, etc.)
-    return bool(re.search(r'^Release:\s*%\{?\??autorelease\b', spec_content, re.MULTILINE))
+    return bool(re.search(AUTORELEASE_PATTERN, spec_content, re.MULTILINE))
 
 
 def parse_spec_version(package_dir: Path) -> tuple[str, str]:
@@ -776,7 +778,7 @@ def import_(url: str, branch: str, ref: str | None = None, directory: str | None
                 spec_file = spec_files[0]
                 spec_content = spec_file.read_text()
                 new_content = re.sub(
-                    r'^(Release:\s*)%\{?\??autorelease\b.*$',
+                    AUTORELEASE_PATTERN,
                     rf'\g<1>{release}%{{?dist}}',
                     spec_content,
                     flags=re.MULTILINE
@@ -1055,7 +1057,7 @@ def update(package_name: str, skip_build_check: bool = False, sync: bool = False
                 spec_content = spec_file.read_text()
                 # Replace %autorelease (with optional braces/options) with release + %{?dist}
                 new_content = re.sub(
-                    r'^(Release:\s*)%\{?\??autorelease\b.*$',
+                    AUTORELEASE_PATTERN,
                     rf'\g<1>{release}%{{?dist}}',
                     spec_content,
                     flags=re.MULTILINE
