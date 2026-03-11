@@ -1,8 +1,8 @@
 {
   "branch": "rawhide",
-  "release": "2",
-  "sha": "9ac2fa77ca7b6d9bc235867d8e71a672b00ebe35",
+  "modification_status": "clean",
+  "release": "1",
+  "sha": "588456567d0c040010a37dc73c67230aa7d8d2ff",
   "source": "https://src.fedoraproject.org/rpms/python-charset-normalizer.git",
-  "version": "3.4.4",
-  "modification_status": "clean"
+  "version": "3.4.5"
 }
