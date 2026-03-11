@@ -535,7 +535,6 @@ packages:
   - rpm
   - ruby
   - rubygem
-  - rubygem-rdoc
   - rubypick
   - ruff
   - rust
