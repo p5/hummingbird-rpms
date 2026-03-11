@@ -8,8 +8,8 @@ Name: redhat-rpm-config
 # If the branches haven't diverged yet, keep the Fedora release number from
 # the older branch. When the branch diverges, bump the Version to the Fedora
 # release number.
-Version: 343
-Release: 19%{?dist}
+Version: 344
+Release: 1%{?dist}
 # config.guess, config.sub are GPL-3.0-or-later WITH Autoconf-exception-generic
 License: GPL-1.0-or-later AND GPL-2.0-or-later AND GPL-3.0-or-later WITH Autoconf-exception-generic
 URL: https://src.fedoraproject.org/rpms/redhat-rpm-config
@@ -112,6 +112,7 @@ Requires: filesystem-srpm-macros
 
 %if ! 0%{?rhel}
 Requires: ansible-srpm-macros
+Requires: erlang-srpm-macros
 Requires: fpc-srpm-macros
 Requires: gap-srpm-macros
 Requires: ghc-srpm-macros
