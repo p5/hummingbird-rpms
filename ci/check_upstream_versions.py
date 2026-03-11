@@ -581,11 +581,26 @@ def query_anitya(package: str, distro: str = DEFAULT_DISTRO) -> dict:
         raise ConnectionError(f"Failed to connect to release-monitoring.org: {e}")
 
 
+def _matches_track_version(version: str, track_version: str) -> bool:
+    """Check if a version matches a track_version prefix.
+
+    Returns True if version equals track_version or starts with track_version + '.'.
+    For example, track_version='1.26' matches '1.26', '1.26.0', '1.26.3'
+    but not '1.27.0' or '1.3'.
+    """
+    return version == track_version or version.startswith(track_version + ".")
+
+
 def check_package_version(
     package: str, distro: str = DEFAULT_DISTRO
 ) -> VersionCheckResult:
     """
     Check if a newer version is available for a package.
+
+    If the package metadata contains a ``basename`` field, that name is used
+    to query release-monitoring.org instead of the package directory name.
+    If the metadata contains a ``track_version`` field, only upstream versions
+    matching that prefix are considered.
 
     Args:
         package: Package name
@@ -613,9 +628,17 @@ def check_package_version(
             error="Could not determine current version",
         )
 
+    # Use basename from metadata for Anitya lookup if available
+    meta = get_package_metadata(package)
+    lookup_name = package
+    track_version = None
+    if meta:
+        lookup_name = meta.get("basename", package)
+        track_version = meta.get("track_version")
+
     # Query release-monitoring.org
     try:
-        anitya_data = query_anitya(package, distro)
+        anitya_data = query_anitya(lookup_name, distro)
     except ValueError as e:
         return VersionCheckResult(
             package=package,
@@ -636,10 +659,28 @@ def check_package_version(
     # Prefer stable_versions[0] over version field, as version can sometimes
     # contain incorrect data (e.g., development tags that aren't real releases)
     stable_versions = anitya_data.get("stable_versions", [])
+
+    # If track_version is set, filter stable_versions to matching prefix
+    if track_version and stable_versions:
+        filtered = [v for v in stable_versions if _matches_track_version(v, track_version)]
+        if filtered:
+            stable_versions = filtered
+        else:
+            # No matching versions found in stable_versions
+            logger.debug(
+                "%s: no stable versions matching track_version %s",
+                package, track_version,
+            )
+            stable_versions = []
+
     if stable_versions:
         upstream_version = stable_versions[0]
     else:
         upstream_version = anitya_data.get("version")
+        # Apply track_version filter to fallback version field too
+        if track_version and upstream_version:
+            if not _matches_track_version(upstream_version, track_version):
+                upstream_version = None
 
     if not upstream_version:
         return VersionCheckResult(

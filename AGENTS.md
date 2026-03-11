@@ -10,6 +10,7 @@ Common operational tasks that users or AI agents may need to perform:
 | Rebuild package (no-change) | [Rebuilding Packages](documentation/operating/rebuilding-packages.md)              | Faulty RPM published; need to bump Release for rebuild   |
 | Backport a patch            | [Rebuilding Packages](documentation/operating/rebuilding-packages.md)              | Fast-track an upstream fix not yet in Fedora             |
 | Mark package modified       | [Package Modification Tracking](documentation/operating/package-modification-tracking.md) | Track local changes; prevent automatic Fedora updates    |
+| Set package basename        | [Package Modification Tracking](documentation/operating/package-modification-tracking.md) | Set basename/track_version for versioned packages        |
 | Track upstream versions     | [Package Modification Tracking](documentation/operating/package-modification-tracking.md) | Enable/disable upstream version checking for a package   |
 | List upstream version status| [Package Modification Tracking](documentation/operating/package-modification-tracking.md) | See all packages with upstream version and tracking info  |
 | View package differences    | [Package Modification Tracking](documentation/operating/package-modification-tracking.md) | See what changed in modified packages vs Fedora          |
