@@ -13,7 +13,7 @@
 Name:           python-setuptools
 # When updating, update the bundled libraries versions bellow!
 Version:        80.10.2
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Easily build and distribute Python packages
 # setuptools is MIT
 # autocommand is LGPL-3.0-only
@@ -46,6 +46,10 @@ Patch:          Adjust-the-setup.py-install-deprecation-message.patch
 # - Resolution: deprecated functionality won't be fixed.
 # brp-mangle-shebang script cannot mangle this and fails for many pkgs.
 Patch:          Revert-Always-rewrite-a-Python-shebang-to-python.patch
+
+# Avoid using (deprecated in Python 3.15) json.__version__ in tests,
+# merged upstream.
+Patch:          https://github.com/pypa/setuptools/pull/5194.patch
 
 BuildArch:      noarch
 
