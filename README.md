@@ -22,3 +22,7 @@ The primary goal is to establish a fully automated process for:
 ## Structure
 
 All spec files and package definitions are organized within this mono repository to facilitate centralized management and automated builds.
+
+## Scope
+
+We aim to having all rpms that directly go into our [Hummingbird containers](https://gitlab.com/redhat/hummingbird/containers) built from this repository. However, this does *not* include the transitive set of `BuildRequires` -- we keep the Fedora stable repository available for [building packages](./mock/mock.cfg) and also [testing](./ci/repos/).
