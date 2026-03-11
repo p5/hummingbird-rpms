@@ -8,7 +8,7 @@
 Summary: Tool for managing bootable, immutable filesystem trees
 Name: ostree
 Version: 2025.7
-Release: 2%{?dist}
+Release: 3%{?dist}
 Source0: https://github.com/ostreedev/%{name}/releases/download/v%{version}/libostree-%{version}.tar.xz
 License: LGPL-2.0-or-later
 URL: https://ostreedev.github.io/ostree/
@@ -18,6 +18,9 @@ URL: https://ostreedev.github.io/ostree/
 %if 0%{?rhel} >= 10
 ExcludeArch:    %{ix86}
 %endif
+
+# Needed for https://src.fedoraproject.org/rpms/dracut/pull-request/90
+Patch0: 0001-boot-dracut-use-systemdsystemunitdir-instead-of-syst.patch
 
 BuildRequires: make
 BuildRequires: git
