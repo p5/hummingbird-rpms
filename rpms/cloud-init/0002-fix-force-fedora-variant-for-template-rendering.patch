@@ -1,0 +1,31 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Robert Sturla <rsturla@icloud.com>
+Date: Sun, 09 Mar 2026 00:00:00 +0000
+Subject: [PATCH] fix: force fedora variant for template rendering
+
+Hummingbird OS is a Fedora derivative but cloud-init does not recognize
+it. When building on a Hummingbird host the auto-detected variant falls
+through to the generic "linux" default, which causes systemd templates
+to render with incorrect paths (e.g. /usr/lib/cloud-init/ds-identify
+instead of /usr/libexec/cloud-init/ds-identify).
+
+Force the template renderer to default to the "fedora" variant so that
+all paths match the Fedora filesystem layout.
+
+---
+ tools/render-template | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tools/render-template b/tools/render-template
+index 1234567..abcdefg 100755
+--- a/tools/render-template
++++ b/tools/render-template
+@@ -47,7 +47,7 @@ def main():
+     platform = util.system_info()
+     parser.add_argument(
+         "--variant",
+-        default=platform["variant"],
++        default="fedora",
+         action="store",
+         help="define the variant.",
+         choices=VARIANTS,

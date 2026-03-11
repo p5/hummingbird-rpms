@@ -123,6 +123,8 @@ spec:
           contentType: rpm
         - name: chunkah-main
           contentType: rpm
+        - name: cloud-init-main
+          contentType: rpm
         - name: cmake-main
           contentType: rpm
         - name: composer-main
@@ -540,6 +542,8 @@ spec:
         - name: openssl-fips-provider-main
           contentType: rpm
         - name: oras-main
+          contentType: rpm
+        - name: ostree-main
           contentType: rpm
         - name: p11-kit-main
           contentType: rpm
