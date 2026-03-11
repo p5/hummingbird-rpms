@@ -101,6 +101,8 @@ spec:
           contentType: rpm
         - name: boost-main
           contentType: rpm
+        - name: bootc-main
+          contentType: rpm
         - name: brotli-main
           contentType: rpm
         - name: busybox-main
