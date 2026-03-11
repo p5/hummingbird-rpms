@@ -3,6 +3,7 @@
 import json
 import os
 import subprocess
+import sys
 import types
 from pathlib import Path
 from unittest.mock import MagicMock, patch
@@ -163,6 +164,22 @@ def get_last_commit_info(workdir: Path) -> tuple[str, str]:
     subject = lines[0]
     body = '\n'.join(lines[2:]) if len(lines) > 2 else ''
     return subject, body
+
+
+def run_dist_git(dist_git_module, workdir: Path, *args: str) -> None:
+    """Helper to run dist_git.main() in-process (when using mocks)."""
+    # Set up module to use workdir
+    dist_git_module.ROOT_DIR = workdir
+    dist_git_module.RPMS_DIR = workdir / 'rpms'
+    dist_git_module.METADATA_DIR = workdir / 'metadata'
+    dist_git_module.RELEASES_JSON = workdir / 'upstream-releases.json'
+
+    old_argv = sys.argv
+    try:
+        sys.argv = ['dist_git.py'] + list(args)
+        dist_git_module.main()
+    finally:
+        sys.argv = old_argv
 
 
 #
@@ -333,6 +350,37 @@ def test_import_with_ref(workdir: Path, upstream_repos: dict[str, Path]) -> None
     assert f"Upstream: {new_sha}" in body
 
 
+@pytest.mark.parametrize('release_line,expected_release', [
+    ('Release: %autorelease', 'Release: 5%{?dist}\n'),
+    ('Release:        %{autorelease}', 'Release:        5%{?dist}\n'),  # Preserves whitespace
+])
+def test_import_autorelease(workdir: Path, upstream_repos: dict[str, Path], dist_git_module,
+                            release_line: str, expected_release: str) -> None:
+    """Test importing a package with %autorelease in Release line."""
+    # Modify vanilla to use %autorelease
+    vanilla_spec = upstream_repos['vanilla'] / 'vanilla.spec'
+    spec_content = vanilla_spec.read_text()
+    vanilla_spec.write_text(spec_content.replace('Release: 1', release_line))
+    subprocess.run(['git', 'commit', '-am', 'Use autorelease'], cwd=upstream_repos['vanilla'], check=True)
+
+    # Mock get_mdapi_latest_build to return release "5"
+    with patch.object(dist_git_module, 'get_mdapi_latest_build') as mock_mdapi:
+        mock_mdapi.return_value = {'version': '1.0', 'release': '5.fc99'}
+
+        run_dist_git(dist_git_module, workdir, 'import', f'file://{upstream_repos["vanilla"]}')
+
+    # Verify %autorelease was replaced in spec file
+    spec_content = (workdir / 'rpms' / 'vanilla' / 'vanilla.spec').read_text()
+    assert expected_release in spec_content
+    assert '%autorelease' not in spec_content
+
+    # Verify metadata has correct release
+    with open(workdir / 'metadata' / 'vanilla.json') as f:
+        metadata = json.load(f)
+    assert metadata['version'] == '1.0'
+    assert metadata['release'] == '5'
+
+
 def test_update(workdir: Path, upstream_repos: dict[str, Path]) -> None:
     """update command"""
     # Case 1: Import vanilla (unmodified, current)
@@ -462,13 +510,7 @@ def test_update_unbuilt(workdir: Path, upstream_repos: dict[str, Path], dist_git
         mock_server_class.return_value = mock_server
 
         # Run update in-process
-        dist_git_module.ROOT_DIR = workdir
-        dist_git_module.RPMS_DIR = workdir / 'rpms'
-        dist_git_module.METADATA_DIR = workdir / 'metadata'
-        dist_git_module.RELEASES_JSON = workdir / 'upstream-releases.json'
-        dist_git_module.imports = dist_git_module.get_all_imported_packages()
-        dist_git_module.releases = json.loads((workdir / 'upstream-releases.json').read_text())
-        dist_git_module.update('chocolate')
+        run_dist_git(dist_git_module, workdir, 'update', 'chocolate')
         # Should try fc99 first, then fallback to fc40 (both not found)
         assert mock_server.getBuild.call_count == 2
         mock_server.getBuild.assert_any_call('chocolate-11-1.fc99')
@@ -506,13 +548,7 @@ def test_update_built(workdir: Path, upstream_repos: dict[str, Path], dist_git_m
         mock_server_class.return_value = mock_server
 
         # Run update in-process
-        dist_git_module.ROOT_DIR = workdir
-        dist_git_module.RPMS_DIR = workdir / 'rpms'
-        dist_git_module.METADATA_DIR = workdir / 'metadata'
-        dist_git_module.RELEASES_JSON = workdir / 'upstream-releases.json'
-        dist_git_module.imports = dist_git_module.get_all_imported_packages()
-        dist_git_module.releases = json.loads((workdir / 'upstream-releases.json').read_text())
-        dist_git_module.update('chocolate')
+        run_dist_git(dist_git_module, workdir, 'update', 'chocolate')
         mock_server.getBuild.assert_called_once_with('chocolate-11-1.fc99')
         with open(chocolate_import_json) as f:
             import_data = json.load(f)
@@ -544,13 +580,7 @@ def test_update_branch_dist_tag(workdir: Path, upstream_repos: dict[str, Path], 
         mock_server_class.return_value = mock_server
 
         # Run update in-process
-        dist_git_module.ROOT_DIR = workdir
-        dist_git_module.RPMS_DIR = workdir / 'rpms'
-        dist_git_module.METADATA_DIR = workdir / 'metadata'
-        dist_git_module.RELEASES_JSON = workdir / 'upstream-releases.json'
-        dist_git_module.imports = dist_git_module.get_all_imported_packages()
-        dist_git_module.releases = json.loads((workdir / 'upstream-releases.json').read_text())
-        dist_git_module.update('chocolate')
+        run_dist_git(dist_git_module, workdir, 'update', 'chocolate')
         # Should query for .fc40 (from branch f40), not rawhide version
         mock_server.getBuild.assert_called_once_with('chocolate-5-1.fc40')
         chocolate_import_json = workdir / 'metadata' / 'chocolate.json'
@@ -593,13 +623,7 @@ def test_update_rawhide_fallback(workdir: Path, upstream_repos: dict[str, Path],
         mock_server_class.return_value = mock_server
 
         # Run update in-process
-        dist_git_module.ROOT_DIR = workdir
-        dist_git_module.RPMS_DIR = workdir / 'rpms'
-        dist_git_module.METADATA_DIR = workdir / 'metadata'
-        dist_git_module.RELEASES_JSON = workdir / 'upstream-releases.json'
-        dist_git_module.imports = dist_git_module.get_all_imported_packages()
-        dist_git_module.releases = json.loads((workdir / 'upstream-releases.json').read_text())
-        dist_git_module.update('vanilla')
+        run_dist_git(dist_git_module, workdir, 'update', 'vanilla')
 
         # Should have called getBuild twice: once for fc99, then fallback to fc40
         assert mock_server.getBuild.call_count == 2
@@ -940,9 +964,7 @@ def test_update_releases(workdir: Path, dist_git_module) -> None:
         mock_check_output.return_value = json.dumps(mock_bodhi_response)
 
         # Run update-releases in-process
-        dist_git_module.ROOT_DIR = workdir
-        dist_git_module.RELEASES_JSON = workdir / 'upstream-releases.json'
-        dist_git_module.update_releases()
+        run_dist_git(dist_git_module, workdir, 'update-releases')
 
     # Rawhide branch is NOT stored, but its dist_tag (f45) is captured
     assert json.loads((workdir / 'upstream-releases.json').read_text()) == {
@@ -1780,6 +1802,174 @@ def test_update_batch_continues_on_prerelease(workdir: Path, upstream_repos: dic
     assert "Updating chocolate" in result.stderr
     # Exit code may be non-zero if updates occurred, that's ok
     assert result.returncode in (0, 1)
+
+
+@pytest.mark.parametrize('use_indirect', [False, True], ids=['direct', 'indirect'])
+def test_update_autorelease(workdir: Path, upstream_repos: dict[str, Path], dist_git_module,
+                            use_indirect: bool) -> None:
+    """Test updating a package with %autorelease (direct or indirect)."""
+    # Modify vanilla to use %autorelease (direct or indirect via macro)
+    vanilla_spec = upstream_repos['vanilla'] / 'vanilla.spec'
+    spec_content = vanilla_spec.read_text()
+    vanilla_spec.write_text(spec_content.replace(
+        'Release: 1',
+        '%global my_release %{autorelease}\nRelease: %{my_release}' if use_indirect
+        else 'Release: %autorelease'
+    ))
+
+    subprocess.run(['git', 'commit', '-am', 'Use autorelease'], cwd=upstream_repos['vanilla'], check=True)
+
+    # Import with release "2"
+    with patch.object(dist_git_module, 'get_mdapi_latest_build') as mock_mdapi:
+        mock_mdapi.return_value = {'version': '1.0', 'release': '2.fc99'}
+        run_dist_git(dist_git_module, workdir, 'import', f'file://{upstream_repos["vanilla"]}')
+
+    # Make a minor upstream change (same version)
+    spec_content = vanilla_spec.read_text()
+    vanilla_spec.write_text(spec_content.replace('Summary: Test package vanilla', 'Summary: Test package update'))
+    subprocess.run(['git', 'commit', '-am', 'Update summary'], cwd=upstream_repos['vanilla'], check=True)
+
+    # Update with incremented release "3" (same version)
+    with patch.object(dist_git_module, 'get_mdapi_latest_build') as mock_mdapi:
+        mock_mdapi.return_value = {'version': '1.0', 'release': '3.fc99'}
+        run_dist_git(dist_git_module, workdir, 'update', 'vanilla', '--skip-build-check')
+
+    # Verify that update: same version, incremented release
+    spec_content = (workdir / 'rpms' / 'vanilla' / 'vanilla.spec').read_text()
+    assert 'Version: 1.0' in spec_content
+    assert 'Summary: Test package update' in spec_content
+    assert '%autorelease' not in spec_content
+
+    if use_indirect:
+        # Indirect: macro definition should have the release, Release: line stays as %{my_release}
+        assert '%global my_release 3%{?dist}' in spec_content
+        assert 'Release: %{my_release}' in spec_content
+    else:
+        # Direct: Release line should be updated
+        assert 'Release: 3%{?dist}\n' in spec_content
+
+    metadata_file = workdir / 'metadata' / 'vanilla.json'
+    with open(metadata_file) as f:
+        metadata = json.load(f)
+    assert metadata['version'] == '1.0'
+    assert metadata['release'] == '3'
+
+    # Update upstream to version 2.0, this usually resets release to 1 in MDAPI
+    upstream_spec_content = vanilla_spec.read_text()
+    vanilla_spec.write_text(upstream_spec_content.replace('Version: 1.0', 'Version: 2.0'))
+    subprocess.run(['git', 'commit', '-am', 'Update to 2.0'], cwd=upstream_repos['vanilla'], check=True)
+
+    with patch.object(dist_git_module, 'get_mdapi_latest_build') as mock_mdapi:
+        mock_mdapi.return_value = {'version': '2.0', 'release': '1.fc99'}
+        run_dist_git(dist_git_module, workdir, 'update', 'vanilla', '--skip-build-check')
+
+    # Verify second update: new version, reset release
+    spec_content = (workdir / 'rpms' / 'vanilla' / 'vanilla.spec').read_text()
+    assert 'Version: 2.0' in spec_content
+    assert '%autorelease' not in spec_content
+
+    if use_indirect:
+        # Indirect: macro definition should have reset release
+        assert '%global my_release 1%{?dist}' in spec_content
+        assert 'Release: %{my_release}' in spec_content
+    else:
+        # Direct: Release line should be reset
+        assert 'Release: 1%{?dist}\n' in spec_content
+
+    with open(metadata_file) as f:
+        metadata = json.load(f)
+    assert metadata['version'] == '2.0'
+    assert metadata['release'] == '1'
+
+
+def test_update_autorelease_modified(workdir: Path, upstream_repos: dict[str, Path], dist_git_module) -> None:
+    """Test updating a modified package with %autorelease (triggers merge path)."""
+    # Modify vanilla to use %autorelease
+    vanilla_spec = upstream_repos['vanilla'] / 'vanilla.spec'
+    spec_content = vanilla_spec.read_text()
+    vanilla_spec.write_text(spec_content.replace('Release: 1', 'Release: %autorelease'))
+    subprocess.run(['git', 'commit', '-am', 'Use autorelease'], cwd=upstream_repos['vanilla'], check=True)
+
+    # Import with release "2"
+    with patch.object(dist_git_module, 'get_mdapi_latest_build') as mock_mdapi:
+        mock_mdapi.return_value = {'version': '1.0', 'release': '2.fc99'}
+        run_dist_git(dist_git_module, workdir, 'import', f'file://{upstream_repos["vanilla"]}')
+
+    # Make a local modification (to trigger merge path)
+    local_spec = workdir / 'rpms' / 'vanilla' / 'vanilla.spec'
+    local_content = local_spec.read_text()
+    local_spec.write_text(local_content.replace('License: MIT', 'License: MIT\n# Local comment'))
+    run_dist_git(dist_git_module, workdir, 'mark-modified', 'vanilla', '--modified',
+                 '--reason', 'Test local modification')
+    subprocess.run(['git', 'commit', '-am', 'Local modification'], cwd=workdir, check=True)
+
+    # Make a minor upstream change (same version, still uses %autorelease)
+    spec_content = vanilla_spec.read_text()
+    vanilla_spec.write_text(spec_content.replace('Summary: Test package vanilla', 'Summary: Test package update'))
+    subprocess.run(['git', 'commit', '-am', 'Update summary'], cwd=upstream_repos['vanilla'], check=True)
+
+    # Update with incremented release "3" (should merge local + upstream changes)
+    with patch.object(dist_git_module, 'get_mdapi_latest_build') as mock_mdapi:
+        mock_mdapi.return_value = {'version': '1.0', 'release': '3.fc99'}
+        run_dist_git(dist_git_module, workdir, 'update', 'vanilla', '--skip-build-check')
+
+    # Verify that update: same version, incremented release, both changes merged
+    spec_content = (workdir / 'rpms' / 'vanilla' / 'vanilla.spec').read_text()
+    assert 'Version: 1.0' in spec_content
+    assert 'Release: 3%{?dist}\n' in spec_content
+    assert 'Summary: Test package update' in spec_content  # Upstream change
+    assert '# Local comment' in spec_content  # Local modification preserved
+    assert '%autorelease' not in spec_content
+
+    metadata_file = workdir / 'metadata' / 'vanilla.json'
+    with open(metadata_file) as f:
+        metadata = json.load(f)
+    assert metadata['version'] == '1.0'
+    assert metadata['release'] == '3'
+
+
+def test_update_with_ref(workdir: Path, upstream_repos: dict[str, Path]) -> None:
+    """Update with --ref to get a specific older commit."""
+    # Import chocolate at latest
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["chocolate"]}'],
+        cwd=workdir, check=True,
+    )
+
+    # Get the current SHA
+    import_json_file = workdir / 'metadata' / 'chocolate.json'
+    with open(import_json_file) as f:
+        import_data = json.load(f)
+    old_sha = import_data['sha']
+    assert import_data['version'] == '10'
+
+    # Add new commits upstream
+    add_upstream_commit(upstream_repos["chocolate"], 'chocolate', '10', '11')
+    intermediate_sha = add_upstream_commit(upstream_repos["chocolate"], 'chocolate', '11', '12')
+    final_sha = add_upstream_commit(upstream_repos["chocolate"], 'chocolate', '12', '13')
+
+    # Update with --ref to get the intermediate version (not latest)
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'update', '--ref', intermediate_sha,
+         '--skip-build-check', 'chocolate'],
+        cwd=workdir, check=True,
+    )
+
+    # Check that we updated to the intermediate version
+    with open(import_json_file) as f:
+        import_data = json.load(f)
+    assert import_data['sha'] == intermediate_sha
+    assert import_data['version'] == '12'
+    assert import_data['release'] == '1'
+
+    # Verify commit message includes the intermediate SHA
+    subject, body = get_last_commit_info(workdir)
+    assert subject == 'Update chocolate from 10-1 to 12-1'
+    assert f"Upstream: {intermediate_sha}" in body
+
+    # Spec should have version 12
+    spec_content = (workdir / 'rpms' / 'chocolate' / 'chocolate.spec').read_text()
+    assert 'Version: 12' in spec_content
 
 
 def test_sync_bypasses_prerelease_check(workdir: Path, upstream_repos: dict[str, Path]) -> None:
