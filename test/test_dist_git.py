@@ -1804,12 +1804,19 @@ def test_update_batch_continues_on_prerelease(workdir: Path, upstream_repos: dic
     assert result.returncode in (0, 1)
 
 
-def test_update_autorelease(workdir: Path, upstream_repos: dict[str, Path], dist_git_module) -> None:
-    """Test updating a package with %autorelease in Release line."""
-    # Modify vanilla to use %autorelease
+@pytest.mark.parametrize('use_indirect', [False, True], ids=['direct', 'indirect'])
+def test_update_autorelease(workdir: Path, upstream_repos: dict[str, Path], dist_git_module,
+                            use_indirect: bool) -> None:
+    """Test updating a package with %autorelease (direct or indirect)."""
+    # Modify vanilla to use %autorelease (direct or indirect via macro)
     vanilla_spec = upstream_repos['vanilla'] / 'vanilla.spec'
     spec_content = vanilla_spec.read_text()
-    vanilla_spec.write_text(spec_content.replace('Release: 1', 'Release: %autorelease'))
+    vanilla_spec.write_text(spec_content.replace(
+        'Release: 1',
+        '%global my_release %{autorelease}\nRelease: %{my_release}' if use_indirect
+        else 'Release: %autorelease'
+    ))
+
     subprocess.run(['git', 'commit', '-am', 'Use autorelease'], cwd=upstream_repos['vanilla'], check=True)
 
     # Import with release "2"
@@ -1830,9 +1837,16 @@ def test_update_autorelease(workdir: Path, upstream_repos: dict[str, Path], dist
     # Verify that update: same version, incremented release
     spec_content = (workdir / 'rpms' / 'vanilla' / 'vanilla.spec').read_text()
     assert 'Version: 1.0' in spec_content
-    assert 'Release: 3%{?dist}\n' in spec_content
     assert 'Summary: Test package update' in spec_content
     assert '%autorelease' not in spec_content
+
+    if use_indirect:
+        # Indirect: macro definition should have the release, Release: line stays as %{my_release}
+        assert '%global my_release 3%{?dist}' in spec_content
+        assert 'Release: %{my_release}' in spec_content
+    else:
+        # Direct: Release line should be updated
+        assert 'Release: 3%{?dist}\n' in spec_content
 
     metadata_file = workdir / 'metadata' / 'vanilla.json'
     with open(metadata_file) as f:
@@ -1852,8 +1866,15 @@ def test_update_autorelease(workdir: Path, upstream_repos: dict[str, Path], dist
     # Verify second update: new version, reset release
     spec_content = (workdir / 'rpms' / 'vanilla' / 'vanilla.spec').read_text()
     assert 'Version: 2.0' in spec_content
-    assert 'Release: 1%{?dist}\n' in spec_content
     assert '%autorelease' not in spec_content
+
+    if use_indirect:
+        # Indirect: macro definition should have reset release
+        assert '%global my_release 1%{?dist}' in spec_content
+        assert 'Release: %{my_release}' in spec_content
+    else:
+        # Direct: Release line should be reset
+        assert 'Release: 1%{?dist}\n' in spec_content
 
     with open(metadata_file) as f:
         metadata = json.load(f)

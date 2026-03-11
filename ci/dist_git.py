@@ -33,8 +33,10 @@ RELEASES_JSON = ROOT_DIR / 'upstream-releases.json'
 PACKAGE_OVERRIDES_YAML = ROOT_DIR / 'ci' / 'package-overrides.yaml'
 RENAMED_PACKAGES_JSON = ROOT_DIR / 'ci' / 'renamed_packages.json'
 
-# Match %autorelease in Release: line (possibly with braces/options like -b, -e, etc.)
-AUTORELEASE_PATTERN = r'^(Release:\s*)%\{?\??autorelease(?:\}|\b).*$'
+# Match %autorelease in spec files (possibly with braces/options like -b, -e, etc.)
+# Can be anywhere, not just in the Release: line, as some packages like nodejs* use
+# it through indirect macros.
+AUTORELEASE_PATTERN = r'%\{?\??autorelease(?:\}|\b)'
 
 # Global imports dict, loaded at startup
 imports: dict[str, 'PackageMetadata'] = {}
@@ -75,7 +77,7 @@ def uses_autorelease(package_dir: Path) -> bool:
         return False
 
     spec_content = spec_files[0].read_text()
-    return bool(re.search(AUTORELEASE_PATTERN, spec_content, re.MULTILINE))
+    return bool(re.search(AUTORELEASE_PATTERN, spec_content))
 
 
 def query_autorelease_from_mdapi(package_name: str, branch: str, fallback_release: str) -> str | None:
@@ -105,10 +107,11 @@ def replace_autorelease_in_spec(package_dir: Path, release: str) -> None:
         spec_content = spec_file.read_text()
         new_content = re.sub(
             AUTORELEASE_PATTERN,
-            rf'\g<1>{release}%{{?dist}}',
-            spec_content,
-            flags=re.MULTILINE
+            f'{release}%{{?dist}}',
+            spec_content
         )
+        if new_content == spec_content:
+            raise ValueError(f"Failed to replace %autorelease in {spec_file.name}")
         spec_file.write_text(new_content)
         logging.info("Replaced %%autorelease with %s%%{?dist} in %s", release, spec_file.name)
 
