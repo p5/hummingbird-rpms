@@ -1,3 +1,15 @@
+* Tue Mar 10 2026 Zdenek Pytela <zpytela@redhat.com> - 43.1-1
+- Allow redis_t to create netlink_rdma_socket
+- Allow systemd create symlinks in /run/varlink/registry
+- Support hooks in /run/systemd/resolve.hook
+- Allow virtlogd_t dac_override for virtlock (bsc#1253389)
+- Allow mdadm use modprobe (bsc#1257793)
+- Allow systemd-mountfsd the perfmon capability
+- Allow lttng tracing in default configuration
+- Allow rtkit-daemon write systemd inhibit pipes
+- Apply the systemd system generator template to the kdump-dep generator
+- Apply the systemd system generator template to the anaconda generator
+
 * Thu Mar 05 2026 Zdenek Pytela <zpytela@redhat.com> - 42.25-1
 - Dontaudit ps permissions that tlp_t does not need (bsc#1257527)
 - TLP uses ps aux to check for different services (bsc#1257527)
