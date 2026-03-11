@@ -645,6 +645,8 @@ spec:
           contentType: rpm
         - name: publicsuffix-list-main
           contentType: rpm
+        - name: pyopenssl-main
+          contentType: rpm
         - name: pyproject-rpm-macros-main
           contentType: rpm
         - name: pytest-main
