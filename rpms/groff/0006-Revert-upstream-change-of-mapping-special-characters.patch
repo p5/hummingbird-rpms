@@ -1,17 +1,18 @@
-From f4f76740ad4693cb967801e366f1d6410381dd71 Mon Sep 17 00:00:00 2001
+From 96da94a1973bfe1d5f8c8378aeb653591e279eaf Mon Sep 17 00:00:00 2001
 From: groff owner <groff-owner@fedoraproject.org>
 Date: Thu, 2 Nov 2023 13:09:37 +0000
 Subject: [PATCH] Revert upstream change of mapping special characters for
  UTF-8
 
 Adopt Debian decision: https://salsa.debian.org/debian/groff/-/commit/d5394c68d70e6c5199b01d2522e094c8fd52e64e
+
 ---
  tmac/man.local  | 16 ++++++++++++++++
- tmac/mdoc.local | 17 ++++++++++++++++-
- 2 files changed, 32 insertions(+), 1 deletion(-)
+ tmac/mdoc.local | 16 ++++++++++++++++
+ 2 files changed, 32 insertions(+)
 
 diff --git a/tmac/man.local b/tmac/man.local
-index 5daa507..4bed937 100644
+index d01988c..c87b094 100644
 --- a/tmac/man.local
 +++ b/tmac/man.local
 @@ -2,6 +2,22 @@
@@ -34,11 +35,11 @@ index 5daa507..4bed937 100644
 +.  char ^ \[ha]
 +.  char ~ \[ti]
 +.\}
- .\" Change "0" to "1" to enable OSC 8 links on SGR-capable grotty(1)
- .\" output devices.
- .if !'\*[.T]'html' \
+ .\" Some nroff devices or pager programs may not gracefully handle OSC 8
+ .\" hyperlink escape sequences that they don't understand.
+ .\" .if n .if !r U .nr U 0
 diff --git a/tmac/mdoc.local b/tmac/mdoc.local
-index 94688ab..1bb47d6 100644
+index 299c382..02dad55 100644
 --- a/tmac/mdoc.local
 +++ b/tmac/mdoc.local
 @@ -2,6 +2,22 @@
@@ -61,14 +62,9 @@ index 94688ab..1bb47d6 100644
 +.  char ^ \[ha]
 +.  char ~ \[ti]
 +.\}
- .\" "CW" is not a portable font name, but some man pages use it anyway.
- .\" Uncomment this to suppress warnings produced by such pages.  This
- .\" test remaps the font to roman ("R") on nroff (terminal) devices. You
-@@ -12,4 +28,3 @@
- .\" mode: nroff
- .\" fill-column: 72
- .\" End:
--.\" vim: set filetype=groff textwidth=72:
+ .\" Some nroff devices or pager programs may not gracefully handle OSC 8
+ .\" hyperlink escape sequences that they don't understand.
+ .\" .if n .if !r U .nr U 0
 -- 
-2.41.0
+2.50.0
 

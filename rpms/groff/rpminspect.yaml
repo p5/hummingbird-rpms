@@ -1,0 +1,8 @@
+---
+patches:
+    ignore_list:
+        - "0001-missing-groff-x11-info-message-when-gxditview-not-fo.patch"
+        - "0002-load-site-font-and-site-tmac-from-etc-groff.patch"
+        - "0003-various-security-fixes.patch"
+        - "0005-do-not-overwrite-docdir.patch"
+        - "0006-Revert-upstream-change-of-mapping-special-characters.patch"

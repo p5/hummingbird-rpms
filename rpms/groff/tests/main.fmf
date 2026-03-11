@@ -1,2 +1,3 @@
 summary: Smoke test
-test: ./run_tests.sh
+test: ./runtest.sh
+framework: beakerlib
