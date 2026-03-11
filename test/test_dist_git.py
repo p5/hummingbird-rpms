@@ -3,6 +3,7 @@
 import json
 import os
 import subprocess
+import sys
 import types
 from pathlib import Path
 from unittest.mock import MagicMock, patch
@@ -163,6 +164,22 @@ def get_last_commit_info(workdir: Path) -> tuple[str, str]:
     subject = lines[0]
     body = '\n'.join(lines[2:]) if len(lines) > 2 else ''
     return subject, body
+
+
+def run_dist_git(dist_git_module, workdir: Path, *args: str) -> None:
+    """Helper to run dist_git.main() in-process (when using mocks)."""
+    # Set up module to use workdir
+    dist_git_module.ROOT_DIR = workdir
+    dist_git_module.RPMS_DIR = workdir / 'rpms'
+    dist_git_module.METADATA_DIR = workdir / 'metadata'
+    dist_git_module.RELEASES_JSON = workdir / 'upstream-releases.json'
+
+    old_argv = sys.argv
+    try:
+        sys.argv = ['dist_git.py'] + list(args)
+        dist_git_module.main()
+    finally:
+        sys.argv = old_argv
 
 
 #
@@ -462,13 +479,7 @@ def test_update_unbuilt(workdir: Path, upstream_repos: dict[str, Path], dist_git
         mock_server_class.return_value = mock_server
 
         # Run update in-process
-        dist_git_module.ROOT_DIR = workdir
-        dist_git_module.RPMS_DIR = workdir / 'rpms'
-        dist_git_module.METADATA_DIR = workdir / 'metadata'
-        dist_git_module.RELEASES_JSON = workdir / 'upstream-releases.json'
-        dist_git_module.imports = dist_git_module.get_all_imported_packages()
-        dist_git_module.releases = json.loads((workdir / 'upstream-releases.json').read_text())
-        dist_git_module.update('chocolate')
+        run_dist_git(dist_git_module, workdir, 'update', 'chocolate')
         # Should try fc99 first, then fallback to fc40 (both not found)
         assert mock_server.getBuild.call_count == 2
         mock_server.getBuild.assert_any_call('chocolate-11-1.fc99')
@@ -506,13 +517,7 @@ def test_update_built(workdir: Path, upstream_repos: dict[str, Path], dist_git_m
         mock_server_class.return_value = mock_server
 
         # Run update in-process
-        dist_git_module.ROOT_DIR = workdir
-        dist_git_module.RPMS_DIR = workdir / 'rpms'
-        dist_git_module.METADATA_DIR = workdir / 'metadata'
-        dist_git_module.RELEASES_JSON = workdir / 'upstream-releases.json'
-        dist_git_module.imports = dist_git_module.get_all_imported_packages()
-        dist_git_module.releases = json.loads((workdir / 'upstream-releases.json').read_text())
-        dist_git_module.update('chocolate')
+        run_dist_git(dist_git_module, workdir, 'update', 'chocolate')
         mock_server.getBuild.assert_called_once_with('chocolate-11-1.fc99')
         with open(chocolate_import_json) as f:
             import_data = json.load(f)
@@ -544,13 +549,7 @@ def test_update_branch_dist_tag(workdir: Path, upstream_repos: dict[str, Path], 
         mock_server_class.return_value = mock_server
 
         # Run update in-process
-        dist_git_module.ROOT_DIR = workdir
-        dist_git_module.RPMS_DIR = workdir / 'rpms'
-        dist_git_module.METADATA_DIR = workdir / 'metadata'
-        dist_git_module.RELEASES_JSON = workdir / 'upstream-releases.json'
-        dist_git_module.imports = dist_git_module.get_all_imported_packages()
-        dist_git_module.releases = json.loads((workdir / 'upstream-releases.json').read_text())
-        dist_git_module.update('chocolate')
+        run_dist_git(dist_git_module, workdir, 'update', 'chocolate')
         # Should query for .fc40 (from branch f40), not rawhide version
         mock_server.getBuild.assert_called_once_with('chocolate-5-1.fc40')
         chocolate_import_json = workdir / 'metadata' / 'chocolate.json'
@@ -593,13 +592,7 @@ def test_update_rawhide_fallback(workdir: Path, upstream_repos: dict[str, Path],
         mock_server_class.return_value = mock_server
 
         # Run update in-process
-        dist_git_module.ROOT_DIR = workdir
-        dist_git_module.RPMS_DIR = workdir / 'rpms'
-        dist_git_module.METADATA_DIR = workdir / 'metadata'
-        dist_git_module.RELEASES_JSON = workdir / 'upstream-releases.json'
-        dist_git_module.imports = dist_git_module.get_all_imported_packages()
-        dist_git_module.releases = json.loads((workdir / 'upstream-releases.json').read_text())
-        dist_git_module.update('vanilla')
+        run_dist_git(dist_git_module, workdir, 'update', 'vanilla')
 
         # Should have called getBuild twice: once for fc99, then fallback to fc40
         assert mock_server.getBuild.call_count == 2
@@ -940,9 +933,7 @@ def test_update_releases(workdir: Path, dist_git_module) -> None:
         mock_check_output.return_value = json.dumps(mock_bodhi_response)
 
         # Run update-releases in-process
-        dist_git_module.ROOT_DIR = workdir
-        dist_git_module.RELEASES_JSON = workdir / 'upstream-releases.json'
-        dist_git_module.update_releases()
+        run_dist_git(dist_git_module, workdir, 'update-releases')
 
     # Rawhide branch is NOT stored, but its dist_tag (f45) is captured
     assert json.loads((workdir / 'upstream-releases.json').read_text()) == {
