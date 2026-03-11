@@ -1,6 +1,6 @@
 summary: CI Gating Plan
 discover:
     how: fmf
-    url: https://src.fedoraproject.org/tests/annobin.git
+    url: https://gitlab.com/redhat/centos-stream/tests/annobin.git
 execute:
     how: tmt
