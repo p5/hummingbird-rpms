@@ -1,8 +1,8 @@
 {
   "branch": "rawhide",
   "modification_status": "clean",
-  "release": "1",
-  "sha": "fb152f207f26edf054e1a1765fc47082a1969862",
+  "release": "2",
+  "sha": "805a153268bc7c42bcfc47fa698e91c3f1311850",
   "source": "https://src.fedoraproject.org/rpms/gawk.git",
   "version": "5.4.0"
 }
