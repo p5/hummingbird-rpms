@@ -1,8 +1,0 @@
-{
-  "branch": "rawhide",
-  "release": "201",
-  "sha": "141456856f6c2483297a6db4642ff9a23c10b348",
-  "source": "https://src.fedoraproject.org/rpms/rubygem-rdoc.git",
-  "version": "7.0.3",
-  "modification_status": "clean"
-}
