@@ -78,6 +78,41 @@ def uses_autorelease(package_dir: Path) -> bool:
     return bool(re.search(AUTORELEASE_PATTERN, spec_content, re.MULTILINE))
 
 
+def query_autorelease_from_mdapi(package_name: str, branch: str, fallback_release: str) -> str | None:
+    """Query MDAPI for autorelease value.
+
+    Returns the resolved release number (without dist suffix), or None if query fails.
+    """
+    logging.info("Upstream uses %%autorelease, querying MDAPI for latest release...")
+    mdapi_build = get_mdapi_latest_build(package_name, branch)
+
+    if mdapi_build:
+        release = mdapi_build['release']
+        # Strip dist suffix (e.g., "1.fc42" -> "1")
+        release = re.sub(r'\.(fc|el)\d+$', '', release)
+        logging.info("MDAPI latest release: %s", release)
+        return release
+    else:
+        logging.warning("No MDAPI build found for %s, keeping %%autorelease", package_name)
+        return None
+
+
+def replace_autorelease_in_spec(package_dir: Path, release: str) -> None:
+    """Replace %autorelease in spec file with actual release value."""
+    spec_files = list(package_dir.glob('*.spec'))
+    if spec_files:
+        spec_file = spec_files[0]
+        spec_content = spec_file.read_text()
+        new_content = re.sub(
+            AUTORELEASE_PATTERN,
+            rf'\g<1>{release}%{{?dist}}',
+            spec_content,
+            flags=re.MULTILINE
+        )
+        spec_file.write_text(new_content)
+        logging.info("Replaced %%autorelease with %s%%{?dist} in %s", release, spec_file.name)
+
+
 def parse_spec_version(package_dir: Path) -> tuple[str, str]:
     """Extract version and release from package directory's spec file."""
     # Find the spec file
@@ -757,36 +792,18 @@ def import_(url: str, branch: str, ref: str | None = None, directory: str | None
 
     # Parse spec file for version/release
     version, release = parse_spec_version(package_dir)
+
+    # Resolve %autorelease if present
+    if uses_autorelease(package_dir):
+        resolved_release = query_autorelease_from_mdapi(package_name, branch, release)
+        if resolved_release:
+            release = resolved_release
+            replace_autorelease_in_spec(package_dir, release)
+
     logging.info("Version: %s-%s", version, release)
 
     # We can't have sub .git directories in our repo
     shutil.rmtree(package_dir / '.git')
-
-    # Check if spec uses %autorelease - if so, query MDAPI for actual release
-    if uses_autorelease(package_dir):
-        logging.info("Upstream uses %%autorelease, querying MDAPI for latest release...")
-        mdapi_build = get_mdapi_latest_build(package_name, branch)
-        if mdapi_build:
-            release = mdapi_build['release']
-            # Strip dist suffix (e.g., "1.fc42" -> "1")
-            release = re.sub(r'\.(fc|el)\d+$', '', release)
-            logging.info("MDAPI latest release: %s", release)
-
-            # Replace %autorelease in spec file with actual release value
-            spec_files = list(package_dir.glob('*.spec'))
-            if spec_files:
-                spec_file = spec_files[0]
-                spec_content = spec_file.read_text()
-                new_content = re.sub(
-                    AUTORELEASE_PATTERN,
-                    rf'\g<1>{release}%{{?dist}}',
-                    spec_content,
-                    flags=re.MULTILINE
-                )
-                spec_file.write_text(new_content)
-                logging.info("Replaced %%autorelease with %s%%{?dist} in %s", release, spec_file.name)
-        else:
-            logging.warning("No MDAPI build found for %s, keeping %%autorelease", package_name)
 
     # Save package metadata to import.json
     # The source URL contains the upstream package name, so we don't need to store it separately
@@ -988,6 +1005,14 @@ def update(package_name: str, skip_build_check: bool = False, sync: bool = False
 
         # Parse spec file to get version-release
         version, release = parse_spec_version(upstream_dir)
+
+        # Query MDAPI for autorelease if needed (but don't modify upstream_dir yet, it's a git repo)
+        has_autorelease = uses_autorelease(upstream_dir)
+        if has_autorelease:
+            resolved_release = query_autorelease_from_mdapi(package_name, metadata['branch'], release)
+            if resolved_release:
+                release = resolved_release
+
         logging.info("Version: %s-%s", version, release)
 
         # Check track_version constraint - skip if upstream version doesn't match prefix
@@ -1009,21 +1034,6 @@ def update(package_name: str, skip_build_check: bool = False, sync: bool = False
                 return
 
         dist_tag = get_dist_tag(metadata['branch'])
-
-        # Check if upstream uses %autorelease - if so, query MDAPI for actual release
-        has_autorelease = uses_autorelease(upstream_dir)
-        if has_autorelease:
-            logging.info("Upstream uses %%autorelease, querying MDAPI for latest release...")
-            mdapi_build = get_mdapi_latest_build(package_name, metadata['branch'])
-            if mdapi_build:
-                release = mdapi_build['release']
-                # Strip dist suffix (e.g., "1.fc42" -> "1")
-                release = re.sub(r'\.(fc|el)\d+$', '', release)
-                logging.info("MDAPI latest release: %s", release)
-            else:
-                logging.warning("No MDAPI build found for %s, using spec release: %s",
-                               upstream_package_name, release)
-                has_autorelease = False  # Don't replace if we couldn't get MDAPI release
 
         # Check if this version-release was built in Koji; syncing is a human thing,
         # assume they know what they are doing
@@ -1049,21 +1059,9 @@ def update(package_name: str, skip_build_check: bool = False, sync: bool = False
             shutil.rmtree(upstream_dir / '.git')
             shutil.copytree(upstream_dir, package_dir)
 
-        # Replace %autorelease with actual release value from MDAPI
+        # Replace %autorelease in package_dir (now safe, no longer a git repo)
         if has_autorelease:
-            spec_files = list(package_dir.glob('*.spec'))
-            if spec_files:
-                spec_file = spec_files[0]
-                spec_content = spec_file.read_text()
-                # Replace %autorelease (with optional braces/options) with release + %{?dist}
-                new_content = re.sub(
-                    AUTORELEASE_PATTERN,
-                    rf'\g<1>{release}%{{?dist}}',
-                    spec_content,
-                    flags=re.MULTILINE
-                )
-                spec_file.write_text(new_content)
-                logging.info("Replaced %%autorelease with %s%%{?dist} in %s", release, spec_file.name)
+            replace_autorelease_in_spec(package_dir, release)
 
         logging.info("Updated to %s-%s", version, release)
 
