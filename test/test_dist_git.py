@@ -350,6 +350,37 @@ def test_import_with_ref(workdir: Path, upstream_repos: dict[str, Path]) -> None
     assert f"Upstream: {new_sha}" in body
 
 
+@pytest.mark.parametrize('release_line,expected_release', [
+    ('Release: %autorelease', 'Release: 5%{?dist}\n'),
+    ('Release:        %{autorelease}', 'Release:        5%{?dist}\n'),  # Preserves whitespace
+])
+def test_import_autorelease(workdir: Path, upstream_repos: dict[str, Path], dist_git_module,
+                            release_line: str, expected_release: str) -> None:
+    """Test importing a package with %autorelease in Release line."""
+    # Modify vanilla to use %autorelease
+    vanilla_spec = upstream_repos['vanilla'] / 'vanilla.spec'
+    spec_content = vanilla_spec.read_text()
+    vanilla_spec.write_text(spec_content.replace('Release: 1', release_line))
+    subprocess.run(['git', 'commit', '-am', 'Use autorelease'], cwd=upstream_repos['vanilla'], check=True)
+
+    # Mock get_mdapi_latest_build to return release "5"
+    with patch.object(dist_git_module, 'get_mdapi_latest_build') as mock_mdapi:
+        mock_mdapi.return_value = {'version': '1.0', 'release': '5.fc99'}
+
+        run_dist_git(dist_git_module, workdir, 'import', f'file://{upstream_repos["vanilla"]}')
+
+    # Verify %autorelease was replaced in spec file
+    spec_content = (workdir / 'rpms' / 'vanilla' / 'vanilla.spec').read_text()
+    assert expected_release in spec_content
+    assert '%autorelease' not in spec_content
+
+    # Verify metadata has correct release
+    with open(workdir / 'metadata' / 'vanilla.json') as f:
+        metadata = json.load(f)
+    assert metadata['version'] == '1.0'
+    assert metadata['release'] == '5'
+
+
 def test_update(workdir: Path, upstream_repos: dict[str, Path]) -> None:
     """update command"""
     # Case 1: Import vanilla (unmodified, current)
@@ -1771,6 +1802,109 @@ def test_update_batch_continues_on_prerelease(workdir: Path, upstream_repos: dic
     assert "Updating chocolate" in result.stderr
     # Exit code may be non-zero if updates occurred, that's ok
     assert result.returncode in (0, 1)
+
+
+def test_update_autorelease(workdir: Path, upstream_repos: dict[str, Path], dist_git_module) -> None:
+    """Test updating a package with %autorelease in Release line."""
+    # Modify vanilla to use %autorelease
+    vanilla_spec = upstream_repos['vanilla'] / 'vanilla.spec'
+    spec_content = vanilla_spec.read_text()
+    vanilla_spec.write_text(spec_content.replace('Release: 1', 'Release: %autorelease'))
+    subprocess.run(['git', 'commit', '-am', 'Use autorelease'], cwd=upstream_repos['vanilla'], check=True)
+
+    # Import with release "2"
+    with patch.object(dist_git_module, 'get_mdapi_latest_build') as mock_mdapi:
+        mock_mdapi.return_value = {'version': '1.0', 'release': '2.fc99'}
+        run_dist_git(dist_git_module, workdir, 'import', f'file://{upstream_repos["vanilla"]}')
+
+    # Make a minor upstream change (same version)
+    spec_content = vanilla_spec.read_text()
+    vanilla_spec.write_text(spec_content.replace('Summary: Test package vanilla', 'Summary: Test package update'))
+    subprocess.run(['git', 'commit', '-am', 'Update summary'], cwd=upstream_repos['vanilla'], check=True)
+
+    # Update with incremented release "3" (same version)
+    with patch.object(dist_git_module, 'get_mdapi_latest_build') as mock_mdapi:
+        mock_mdapi.return_value = {'version': '1.0', 'release': '3.fc99'}
+        run_dist_git(dist_git_module, workdir, 'update', 'vanilla', '--skip-build-check')
+
+    # Verify that update: same version, incremented release
+    spec_content = (workdir / 'rpms' / 'vanilla' / 'vanilla.spec').read_text()
+    assert 'Version: 1.0' in spec_content
+    assert 'Release: 3%{?dist}\n' in spec_content
+    assert 'Summary: Test package update' in spec_content
+    assert '%autorelease' not in spec_content
+
+    metadata_file = workdir / 'metadata' / 'vanilla.json'
+    with open(metadata_file) as f:
+        metadata = json.load(f)
+    assert metadata['version'] == '1.0'
+    assert metadata['release'] == '3'
+
+    # Update upstream to version 2.0, this usually resets release to 1 in MDAPI
+    upstream_spec_content = vanilla_spec.read_text()
+    vanilla_spec.write_text(upstream_spec_content.replace('Version: 1.0', 'Version: 2.0'))
+    subprocess.run(['git', 'commit', '-am', 'Update to 2.0'], cwd=upstream_repos['vanilla'], check=True)
+
+    with patch.object(dist_git_module, 'get_mdapi_latest_build') as mock_mdapi:
+        mock_mdapi.return_value = {'version': '2.0', 'release': '1.fc99'}
+        run_dist_git(dist_git_module, workdir, 'update', 'vanilla', '--skip-build-check')
+
+    # Verify second update: new version, reset release
+    spec_content = (workdir / 'rpms' / 'vanilla' / 'vanilla.spec').read_text()
+    assert 'Version: 2.0' in spec_content
+    assert 'Release: 1%{?dist}\n' in spec_content
+    assert '%autorelease' not in spec_content
+
+    with open(metadata_file) as f:
+        metadata = json.load(f)
+    assert metadata['version'] == '2.0'
+    assert metadata['release'] == '1'
+
+
+def test_update_autorelease_modified(workdir: Path, upstream_repos: dict[str, Path], dist_git_module) -> None:
+    """Test updating a modified package with %autorelease (triggers merge path)."""
+    # Modify vanilla to use %autorelease
+    vanilla_spec = upstream_repos['vanilla'] / 'vanilla.spec'
+    spec_content = vanilla_spec.read_text()
+    vanilla_spec.write_text(spec_content.replace('Release: 1', 'Release: %autorelease'))
+    subprocess.run(['git', 'commit', '-am', 'Use autorelease'], cwd=upstream_repos['vanilla'], check=True)
+
+    # Import with release "2"
+    with patch.object(dist_git_module, 'get_mdapi_latest_build') as mock_mdapi:
+        mock_mdapi.return_value = {'version': '1.0', 'release': '2.fc99'}
+        run_dist_git(dist_git_module, workdir, 'import', f'file://{upstream_repos["vanilla"]}')
+
+    # Make a local modification (to trigger merge path)
+    local_spec = workdir / 'rpms' / 'vanilla' / 'vanilla.spec'
+    local_content = local_spec.read_text()
+    local_spec.write_text(local_content.replace('License: MIT', 'License: MIT\n# Local comment'))
+    run_dist_git(dist_git_module, workdir, 'mark-modified', 'vanilla', '--modified',
+                 '--reason', 'Test local modification')
+    subprocess.run(['git', 'commit', '-am', 'Local modification'], cwd=workdir, check=True)
+
+    # Make a minor upstream change (same version, still uses %autorelease)
+    spec_content = vanilla_spec.read_text()
+    vanilla_spec.write_text(spec_content.replace('Summary: Test package vanilla', 'Summary: Test package update'))
+    subprocess.run(['git', 'commit', '-am', 'Update summary'], cwd=upstream_repos['vanilla'], check=True)
+
+    # Update with incremented release "3" (should merge local + upstream changes)
+    with patch.object(dist_git_module, 'get_mdapi_latest_build') as mock_mdapi:
+        mock_mdapi.return_value = {'version': '1.0', 'release': '3.fc99'}
+        run_dist_git(dist_git_module, workdir, 'update', 'vanilla', '--skip-build-check')
+
+    # Verify that update: same version, incremented release, both changes merged
+    spec_content = (workdir / 'rpms' / 'vanilla' / 'vanilla.spec').read_text()
+    assert 'Version: 1.0' in spec_content
+    assert 'Release: 3%{?dist}\n' in spec_content
+    assert 'Summary: Test package update' in spec_content  # Upstream change
+    assert '# Local comment' in spec_content  # Local modification preserved
+    assert '%autorelease' not in spec_content
+
+    metadata_file = workdir / 'metadata' / 'vanilla.json'
+    with open(metadata_file) as f:
+        metadata = json.load(f)
+    assert metadata['version'] == '1.0'
+    assert metadata['release'] == '3'
 
 
 def test_sync_bypasses_prerelease_check(workdir: Path, upstream_repos: dict[str, Path]) -> None:
