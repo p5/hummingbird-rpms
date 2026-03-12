@@ -22063,8 +22063,8 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
-        - "linux/arm64"
+        - "linux-d160-c8xlarge/arm64"
+        - "linux-d160-c8xlarge/amd64"
     - name: specfile
       value: "python-sentry-sdk.spec"
     - name: monorepo-subdir
