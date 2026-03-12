@@ -105,6 +105,8 @@ spec:
           contentType: rpm
         - name: brotli-main
           contentType: rpm
+        - name: btrfs-progs-main
+          contentType: rpm
         - name: busybox-main
           contentType: rpm
         - name: bzip2-main

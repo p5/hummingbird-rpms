@@ -1,0 +1,8 @@
+{
+  "branch": "rawhide",
+  "modification_status": "clean",
+  "release": "1",
+  "sha": "930775b880f5a3625ff025b39a6dce69ecacaa37",
+  "source": "https://src.fedoraproject.org/rpms/btrfs-progs.git",
+  "version": "6.19"
+}
