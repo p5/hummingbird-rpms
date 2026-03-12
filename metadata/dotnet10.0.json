@@ -2,7 +2,7 @@
   "branch": "rawhide",
   "modification_status": "clean",
   "release": "1",
-  "sha": "add3b5ce3ebc9d4314941c6acd77d9acea68bf31",
+  "sha": "04e31798908ee5d6dc31ed8c600b4493e480cbbe",
   "source": "https://src.fedoraproject.org/rpms/dotnet10.0.git",
-  "version": "10.0.103"
+  "version": "10.0.104"
 }
