@@ -76,13 +76,13 @@ cp -a *.whl %{buildroot}%{python_wheel_dir}
 venv/bin/pip install --no-index --no-cache-dir %{buildroot}%{python_wheel_dir}/*.whl
 
 test -f %{venvsite}/testwheel-1.dist-info/RECORD
-test -f %{venvsite}/testwheel-1.dist-info/sboms/bom.json
-grep '^testwheel-1.dist-info/sboms/bom.json,' %{venvsite}/testwheel-1.dist-info/RECORD
+test -f %{venvsite}/testwheel-1.dist-info/sboms/rpm.cdx.json
+grep '^testwheel-1.dist-info/sboms/rpm.cdx.json,' %{venvsite}/testwheel-1.dist-info/RECORD
 # a more specific grep. we don't care about CRLF line ends (pip uses those? without the sed the $ doesn't match line end)
-sed 's/\r//g' %{venvsite}/testwheel-1.dist-info/RECORD | grep -E '^testwheel-1.dist-info/sboms/bom.json,sha256=[a-f0-9]{64},[0-9]+$'
+sed 's/\r//g' %{venvsite}/testwheel-1.dist-info/RECORD | grep -E '^testwheel-1.dist-info/sboms/rpm.cdx.json,sha256=[a-f0-9]{64},[0-9]+$'
 
 test -f %{venvsite}/testwheel/_vendor/dependency-2.2.2.dist-info/RECORD
-test -f %{venvsite}/testwheel/_vendor/dependency-2.2.2.dist-info/sboms/bom.json && exit 1 || true
+test -f %{venvsite}/testwheel/_vendor/dependency-2.2.2.dist-info/sboms/rpm.cdx.json && exit 1 || true
 
 # this deliberately uses a different mechanism than the macro
 # if you are running this test on a different distro, adjust it
@@ -90,21 +90,26 @@ test -f %{venvsite}/testwheel/_vendor/dependency-2.2.2.dist-info/sboms/bom.json 
 
 PYTHONOPTIMIZE=0 %{python3} -c "
 import json
-with open('%{venvsite}/testwheel-1.dist-info/sboms/bom.json') as fp:
+with open('%{venvsite}/testwheel-1.dist-info/sboms/rpm.cdx.json') as fp:
     sbom = json.load(fp)
 assert len(sbom['components']) == 1
 assert sbom['components'][0]['type'] == 'library'
 assert sbom['components'][0]['name'] == 'testwheel'
 assert sbom['components'][0]['version'] == '1-0%{?dist}'
 assert sbom['components'][0]['purl'] == 'pkg:rpm/%{ns}/testwheel@1-0%{?dist}?epoch=42&arch=src'
+
+assert sbom['metadata']['tools']['components'][0]['name'] == 'python-rpm-macros'
+assert sbom['metadata']['tools']['components'][0]['version'].startswith('%{__default_python3_version}-')
+assert sbom['metadata']['tools']['components'][0]['purl'].startswith('pkg:rpm/%{ns}/python-rpm-macros@%{__default_python3_version}-')
+assert sbom['metadata']['tools']['components'][0]['purl'].endswith('?arch=src')
 "
 
 # replace the installation with the original unaltered wheel
 venv/bin/pip install --force-reinstall --no-index --no-cache-dir *.whl
 test -f %{venvsite}/testwheel-1.dist-info/RECORD
 # no SBOM
-test ! -e %{venvsite}/testwheel-1.dist-info/sboms/bom.json
-grep '^testwheel-1.dist-info/sboms/bom.json,' %{venvsite}/testwheel-1.dist-info/RECORD  && exit 1 || true
+test ! -e %{venvsite}/testwheel-1.dist-info/sboms/rpm.cdx.json
+grep '^testwheel-1.dist-info/sboms/rpm.cdx.json,' %{venvsite}/testwheel-1.dist-info/RECORD  && exit 1 || true
 
 
 %files
