@@ -7,7 +7,7 @@
 
 Name:           python-requests
 Version:        2.32.5
-Release:        5%{?dist}
+Release:        5.1%{?dist}
 Summary:        HTTP library, written in Python, for human beings
 
 License:        Apache-2.0
