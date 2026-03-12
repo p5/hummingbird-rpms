@@ -1,8 +1,8 @@
 {
   "branch": "rawhide",
-  "release": "2",
-  "sha": "dfd0ae1fe56159ce390b6aa02941495b23b56476",
+  "modification_status": "clean",
+  "release": "1",
+  "sha": "4da0543472c5008fbe4e780afd819c458738d7bd",
   "source": "https://src.fedoraproject.org/rpms/expat.git",
-  "version": "2.7.3",
-  "modification_status": "clean"
+  "version": "2.7.4"
 }
