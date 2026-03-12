@@ -2,6 +2,7 @@
 
 import json
 import os
+import shutil
 import subprocess
 import sys
 import types
@@ -32,35 +33,35 @@ def dist_git_module():
 def workdir(tmp_path: Path) -> Path:
     """Shallow copy of the project with no imports"""
 
-    subprocess.run(['git', 'init'], cwd=tmp_path, check=True)
-    subprocess.run(['git', 'config', 'user.name', 'Test'], cwd=tmp_path, check=True)
-    subprocess.run(['git', 'config', 'user.email', 'test@example.com'], cwd=tmp_path, check=True)
+    rpms_dir = tmp_path / 'workdir'
+    rpms_dir.mkdir()
 
-    # Copy dist_git script
-    script_src = Path(__file__).parent.parent / 'ci' / 'dist_git.py'
-    script_dst = tmp_path / 'ci' / 'dist_git.py'
-    script_dst.parent.mkdir()
-    script_dst.write_text(script_src.read_text())
-    script_dst.chmod(0o755)
+    subprocess.run(['git', 'init'], cwd=rpms_dir, check=True)
+    subprocess.run(['git', 'config', 'user.name', 'Test'], cwd=rpms_dir, check=True)
+    subprocess.run(['git', 'config', 'user.email', 'test@example.com'], cwd=rpms_dir, check=True)
 
-    (tmp_path / 'rpms').mkdir()
-    (tmp_path / 'metadata').mkdir()
+    project_root = Path(__file__).parent.parent
+
+    # Copy ci/, config, and templates
+    shutil.copytree(project_root / 'ci', rpms_dir / 'ci')
+    shutil.copy(project_root / 'target-packages.yml', rpms_dir / 'target-packages.yml')
+    shutil.copytree(project_root / '.tekton', rpms_dir / '.tekton')
+    shutil.copytree(project_root / 'konflux-templates', rpms_dir / 'konflux-templates')
+
+    # Create directories for imports
+    (rpms_dir / 'rpms').mkdir()
+    (rpms_dir / 'metadata').mkdir()
 
     # Create default upstream-releases.json for tests
     # Note: rawhide is not included as it's auto-resolved to the highest version
-    (tmp_path / 'upstream-releases.json').write_text(
+    (rpms_dir / 'upstream-releases.json').write_text(
         json.dumps({'fedora': {'f40': 'f40', 'f99': 'f99'}}) + '\n'
     )
 
-    # no-op generate_resources.py
-    (tmp_path / 'ci' / 'generate_resources.py').write_text('# no-op for tests\n')
-    (tmp_path / '.tekton').mkdir()
-    (tmp_path / 'konflux-templates').mkdir()
+    subprocess.run(['git', 'add', '.'], cwd=rpms_dir, check=True)
+    subprocess.run(['git', 'commit', '-m', 'Initial commit'], cwd=rpms_dir, check=True)
 
-    subprocess.run(['git', 'add', '.'], cwd=tmp_path, check=True)
-    subprocess.run(['git', 'commit', '-m', 'Initial commit'], cwd=tmp_path, check=True)
-
-    return tmp_path
+    return rpms_dir
 
 
 @pytest.fixture
@@ -211,6 +212,13 @@ def test_import(workdir: Path, upstream_repos: dict[str, Path]) -> None:
     assert subject == 'Import chocolate-10-1'
     assert 'Branch: rawhide' in body
     assert f"Upstream: {import_data['sha']}" in body
+
+    # did not miss any changes
+    status_result = subprocess.run(
+        ['git', 'status', '--porcelain'],
+        cwd=workdir, capture_output=True, check=True, text=True
+    )
+    assert status_result.stdout == '', f"git status should be clean after import, found:\n{status_result.stdout}"
 
 
 def test_import_dry_run(workdir: Path, upstream_repos: dict[str, Path]) -> None:
