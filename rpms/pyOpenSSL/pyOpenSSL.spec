@@ -2,7 +2,7 @@
 
 Name:           pyOpenSSL
 Version:        25.3.0
-Release:        1%{?dist}
+Release:        1.1%{?dist}
 Summary:        Python wrapper module around the OpenSSL library
 License:        Apache-2.0
 URL:            https://pyopenssl.readthedocs.org/
