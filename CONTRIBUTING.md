@@ -159,8 +159,8 @@ All of these commands automatically commit changes with descriptive commit messa
 - Enable upstream version tracking for a package (used by `check_upstream_versions.py check`). These commands modify the metadata file but do not create a git commit:
 
 ```bash
-./ci/dist_git.py mark-track-upstream bash --enable
-./ci/dist_git.py mark-track-upstream bash --disable
+./ci/dist_git.py set-upstream bash --track
+./ci/dist_git.py set-upstream bash --no-track
 ```
 
 - Check upstream version status. The `check` subcommand checks tracked packages; `list` shows all packages in a table:

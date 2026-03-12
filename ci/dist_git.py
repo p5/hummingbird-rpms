@@ -57,9 +57,8 @@ class PackageMetadata(TypedDict):
     release: str
     modification_status: NotRequired[Literal["clean", "modified", "native"]]
     modification_reason: NotRequired[str]  # Only for 'modified'
-    track_upstream: NotRequired[bool]
-    basename: NotRequired[str]  # Original package name when JSON filename differs
-    track_version: NotRequired[str]  # Version prefix to constrain updates (e.g., "1.26")
+    track_upstream: NotRequired[str]  # "latest" or version prefix (e.g., "1.26")
+    release_monitoring_project_id: NotRequired[int | str]  # Anitya project ID (int) or upstream name (str)
 
 
 class KojiBuild(TypedDict, total=False):
@@ -1031,9 +1030,9 @@ def update(package_name: str, skip_build_check: bool = False, sync: bool = False
 
         logging.info("Version: %s-%s", version, release)
 
-        # Check track_version constraint - skip if upstream version doesn't match prefix
-        if not sync and 'track_version' in metadata:
-            tv = metadata['track_version']
+        # Check track_upstream constraint - skip if upstream version doesn't match prefix
+        tv = metadata.get('track_upstream')
+        if not sync and tv and tv != 'latest':
             if not (version == tv or version.startswith(tv + '.')):
                 logging.warning(
                     "Skipping %s: upstream version %s doesn't match tracked version %s",
@@ -1164,57 +1163,51 @@ def mark_modified(package_name: str, modified: bool, reason: str | None = None) 
     imports[package_name] = metadata
 
 
-def mark_track_upstream(package_name: str, enable: bool) -> None:
-    """Enable or disable upstream version tracking for a package.
+_UNSET = object()
+
+
+def set_upstream(
+    package_name: str,
+    track_version=_UNSET,
+    project_id=_UNSET,
+) -> None:
+    """Configure upstream tracking settings for a package.
+
+    Each parameter uses a sentinel default (_UNSET) to mean "don't change".
+    Pass an explicit value to set, or None to remove.
 
     Args:
         package_name: Package name to update
-        enable: True to enable tracking, False to disable
+        track_version: "latest" enables tracking any version,
+            a version prefix (e.g. "1.26") enables tracking that prefix,
+            None removes tracking entirely
+        project_id: int sets Anitya project ID for direct lookup,
+            str sets upstream package name for name-based lookup,
+            None removes the setting (reverts to RPM name)
     """
     if package_name not in imports:
         sys.exit(f"ERROR: Package {package_name} not found (missing metadata/{package_name}.json)")
 
     metadata = imports[package_name]
 
-    if enable:
-        metadata['track_upstream'] = True
-        logging.info("Enabled upstream version tracking for %s", package_name)
-    else:
-        metadata.pop('track_upstream', None)
-        logging.info("Disabled upstream version tracking for %s", package_name)
+    if track_version is not _UNSET:
+        if track_version is None:
+            metadata.pop('track_upstream', None)
+            logging.info("Disabled upstream version tracking for %s", package_name)
+        else:
+            metadata['track_upstream'] = track_version
+            logging.info("Set track_upstream=%s for %s", track_version, package_name)
 
-    # Save updated metadata
-    save_package_metadata(package_name, metadata)
-    imports[package_name] = metadata
-
-
-def set_basename(package_name: str, basename: str, track_version: str | None = None) -> None:
-    """Set basename and optional track_version for versioned packages.
-
-    Args:
-        package_name: Package name (e.g., golang1.26)
-        basename: Base package name (e.g., golang)
-        track_version: Version prefix to constrain updates (e.g., 1.26)
-    """
-    if package_name not in imports:
-        sys.exit(f"ERROR: Package {package_name} not found (missing metadata/{package_name}.json)")
-
-    metadata = imports[package_name]
-
-    metadata['basename'] = basename
-
-    if track_version is not None:
-        metadata['track_version'] = track_version
-    else:
-        metadata.pop('track_version', None)
+    if project_id is not _UNSET:
+        if project_id is None:
+            metadata.pop('release_monitoring_project_id', None)
+            logging.info("Removed release_monitoring_project_id for %s", package_name)
+        else:
+            metadata['release_monitoring_project_id'] = project_id
+            logging.info("Set release_monitoring_project_id=%s for %s", project_id, package_name)
 
     save_package_metadata(package_name, metadata)
     imports[package_name] = metadata
-
-    if track_version:
-        logging.info("Set basename=%s, track_version=%s for %s", basename, track_version, package_name)
-    else:
-        logging.info("Set basename=%s for %s", basename, package_name)
 
 
 def diff_package(package_name: str, output_mode: str = 'full', raw: bool = False) -> bool | None:
@@ -1490,24 +1483,22 @@ Examples:
                            help='Mark as clean (allows auto-updates)')
     mark_parser.add_argument('--reason', help='Reason for modification (required for --modified)')
 
-    # mark-track-upstream command
-    track_parser = subparsers.add_parser('mark-track-upstream',
-                                         help='Enable or disable upstream version tracking')
-    track_parser.add_argument('package', help='Package name')
-    track_group = track_parser.add_mutually_exclusive_group(required=True)
-    track_group.add_argument('--enable', action='store_true',
-                             help='Enable upstream version tracking')
-    track_group.add_argument('--disable', action='store_true',
-                             help='Disable upstream version tracking')
-
-    # set-basename command
-    basename_parser = subparsers.add_parser('set-basename',
-                                            help='Set basename and optional track_version for versioned packages')
-    basename_parser.add_argument('package', help='Package name (e.g., golang1.26)')
-    basename_parser.add_argument('--name', required=True,
-                                 help='Base package name (e.g., golang)')
-    basename_parser.add_argument('--track-version',
-                                 help='Version prefix to track (e.g., 1.26). Constrains updates to this prefix.')
+    # set-upstream command
+    upstream_parser = subparsers.add_parser('set-upstream',
+                                            help='Configure upstream tracking settings for a package')
+    upstream_parser.add_argument('package', help='Package name')
+    tv_group = upstream_parser.add_mutually_exclusive_group()
+    tv_group.add_argument('--track-version', type=str, default=None,
+                          help='Version prefix to track (e.g., "1.26"), '
+                               'or "latest" to track any version')
+    tv_group.add_argument('--no-track-version', action='store_true',
+                          help='Disable upstream version tracking')
+    pid_group = upstream_parser.add_mutually_exclusive_group()
+    pid_group.add_argument('--project-id', type=str, default=None,
+                           help='Anitya project ID (integer) or upstream '
+                                'package name (string) for release-monitoring.org lookup')
+    pid_group.add_argument('--no-project-id', action='store_true',
+                           help='Remove project ID (revert to RPM name lookup)')
 
     # list command
     list_parser = subparsers.add_parser('list',
@@ -1550,7 +1541,7 @@ Examples:
         sys.exit("ERROR: --dry-run is not supported with the rename command")
 
     # Check git config for commands that will commit
-    if args.command not in ['list', 'diff', 'set-basename'] and (not args.dry_run or args.command == 'rename'):
+    if args.command not in ['list', 'diff', 'set-upstream'] and (not args.dry_run or args.command == 'rename'):
         check_git_config()
 
     match args.command:
@@ -1569,10 +1560,30 @@ Examples:
             rename(args.package)
         case 'mark-modified':
             mark_modified(args.package, args.modified, args.reason)
-        case 'mark-track-upstream':
-            mark_track_upstream(args.package, args.enable)
-        case 'set-basename':
-            set_basename(args.package, args.name, args.track_version)
+        case 'set-upstream':
+            track_version = _UNSET
+            if args.track_version is not None:
+                track_version = args.track_version
+            elif args.no_track_version:
+                track_version = None
+
+            project_id = _UNSET
+            if args.project_id is not None:
+                try:
+                    project_id = int(args.project_id)
+                except ValueError:
+                    project_id = args.project_id
+            elif args.no_project_id:
+                project_id = None
+
+            if track_version is _UNSET and project_id is _UNSET:
+                sys.exit("ERROR: set-upstream requires at least one flag "
+                         "(e.g. --track-version, --project-id)")
+            set_upstream(
+                args.package,
+                track_version=track_version,
+                project_id=project_id,
+            )
         case 'list':
             # Determine filter based on flags
             status_filter = None

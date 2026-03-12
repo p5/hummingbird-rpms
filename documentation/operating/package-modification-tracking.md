@@ -123,58 +123,83 @@ longer needed (e.g., the fix landed in Fedora):
 This removes the `modified` status and allows the package to receive automatic
 updates from Fedora again.
 
-### Set Basename and Version Constraint
+### Configure Upstream Tracking
 
-Use this when a package has been renamed with a version suffix (e.g., `golang1.26`
-imported from `golang`) and you need to constrain automatic updates to a specific
-version series:
+Use `set-upstream` to configure upstream tracking settings for a package.
+Each flag independently sets or clears one metadata field. At least one
+flag is required; omitted flags leave their fields untouched.
 
 ```bash
-# Set basename with version constraint
-./ci/dist_git.py set-basename --name golang --track-version 1.26 golang1.26
-
-# Set basename only (no version constraint)
-./ci/dist_git.py set-basename --name python python3.13
+./ci/dist_git.py set-upstream <package> [flags]
 ```
 
-This sets two optional metadata fields:
+| Flag | Sets field | Clears with |
+|---|---|---|
+| `--track-version latest` | `track_upstream: "latest"` | `--no-track-version` |
+| `--track-version VER` | `track_upstream: "VER"` | `--no-track-version` |
+| `--project-id ID` | `release_monitoring_project_id` (int) | `--no-project-id` |
+| `--project-id NAME` | `release_monitoring_project_id` (str) | `--no-project-id` |
 
-| Field            | Description                                           | Example  |
-|------------------|-------------------------------------------------------|----------|
-| `basename`       | Original upstream package name                        | `golang` |
-| `track_version`  | Version prefix to constrain updates                   | `1.26`   |
+Each set/clear pair is mutually exclusive (can't pass `--track-version`
+and `--no-track-version` together).
+
+**Examples:**
+
+```bash
+# Enable upstream version tracking (any version)
+./ci/dist_git.py set-upstream bash --track-version latest
+
+# Disable upstream version tracking
+./ci/dist_git.py set-upstream bash --no-track-version
+
+# Set upstream name with version constraint for versioned packages
+./ci/dist_git.py set-upstream golang1.26 --project-id golang --track-version 1.26
+
+# Set release-monitoring.org project ID (integer)
+./ci/dist_git.py set-upstream python3.11 --track-version 3.11 --project-id 13254
+
+# Remove project ID (reverts to RPM name lookup)
+./ci/dist_git.py set-upstream python3.11 --no-project-id
+
+# Combine multiple flags in one call
+./ci/dist_git.py set-upstream golang1.26 \
+  --track-version 1.26 --project-id 13254
+```
+
+**Metadata fields:**
+
+| Field                          | Description                                           | Example            |
+|--------------------------------|-------------------------------------------------------|--------------------|
+| `track_upstream`               | `"latest"` or version prefix to constrain updates     | `"latest"`, `"1.26"`|
+| `release_monitoring_project_id`| Anitya project ID (int) or upstream name (str)        | `13254`, `"golang"` |
 
 These fields affect two systems:
 
-- **`dist_git.py update`**: When `track_version` is set, skips upstream versions
-  that don't match the prefix. For example, `track_version: "1.26"` allows
-  `1.26`, `1.26.0`, `1.26.3` but rejects `1.27.0`.
-- **`check_upstream_versions.py`**: When `basename` is set, queries
-  release-monitoring.org using the basename instead of the package directory name
-  (e.g., looks up `golang` instead of `golang1.26`). When `track_version` is set,
-  filters the reported upstream versions to only those matching the prefix.
+- **`dist_git.py update`**: When `track_upstream` is a version prefix, skips
+  upstream versions that don't match. For example, `track_upstream: "1.26"`
+  allows `1.26`, `1.26.0`, `1.26.3` but rejects `1.27.0`.
+- **`check_upstream_versions.py`**: When `release_monitoring_project_id` is an
+  integer, queries the v2 API directly by Anitya project ID. When it is a
+  string, queries release-monitoring.org using that name instead of the RPM
+  package name (e.g., looks up `golang` instead of `golang1.26`). When absent,
+  uses the RPM package name. When `track_upstream` is a version prefix, filters
+  the reported upstream versions to only those matching the prefix. Only
+  packages with `track_upstream` set are checked by
+  `check_upstream_versions.py check` when no explicit package arguments are
+  given.
 
-Running `set-basename` without `--track-version` removes any existing
-`track_version` constraint.
+Find release-monitoring.org project IDs by searching on
+https://release-monitoring.org.
 
-### Enable/Disable Upstream Version Tracking
+The project ID can be combined with a version prefix to filter versions
+returned by the project ID lookup:
 
-Use this to opt a package into automatic upstream version checking via
-`check_upstream_versions.py`:
-
-```bash
-# Enable upstream version tracking
-./ci/dist_git.py mark-track-upstream <package> --enable
-
-# Disable upstream version tracking
-./ci/dist_git.py mark-track-upstream <package> --disable
+```json
+{
+  "release_monitoring_project_id": 13254,
+  "track_upstream": "3.11"
+}
 ```
-
-When enabled, `"track_upstream": true` is set in the metadata. When disabled,
-the field is removed. Only packages with this field set to `true` are checked
-by `check_upstream_versions.py check` when no explicit package arguments are
-given. To see all packages regardless of tracking status, use
-`check_upstream_versions.py list`.
 
 ## How Auto-Updates Work
 
@@ -184,7 +209,7 @@ status before updating packages:
 - **clean packages**: Updated automatically when new Fedora versions are available
 - **modified packages**: Automatically merged with upstream changes (conflicts create draft MRs)
 - **native packages**: Update blocked (not sourced from Fedora)
-- **version-constrained packages**: Skipped if upstream version doesn't match `track_version` prefix
+- **version-constrained packages**: Skipped if upstream version doesn't match `track_upstream` prefix
 
 To force-update a modified package (discarding local changes):
 

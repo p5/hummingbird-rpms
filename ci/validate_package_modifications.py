@@ -384,6 +384,10 @@ def validate_package(package_name: str, check_actual_state: bool = True) -> tupl
     if 'track_upstream' in metadata and not isinstance(metadata['track_upstream'], bool):
         return False, f"{package_name}: track_upstream must be a boolean, got {type(metadata['track_upstream']).__name__}"
 
+    # Check 4.5: release_monitoring_project_id must be an integer if present
+    if 'release_monitoring_project_id' in metadata and not isinstance(metadata['release_monitoring_project_id'], int):
+        return False, f"{package_name}: release_monitoring_project_id must be an integer"
+
     # Check 5: Modified packages must have reason
     if status == 'modified' and not metadata.get('modification_reason'):
         return False, f"{package_name}: Marked as modified but missing modification_reason"
