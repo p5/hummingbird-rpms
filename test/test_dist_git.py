@@ -213,6 +213,13 @@ def test_import(workdir: Path, upstream_repos: dict[str, Path]) -> None:
     assert 'Branch: rawhide' in body
     assert f"Upstream: {import_data['sha']}" in body
 
+    # did not miss any changes
+    status_result = subprocess.run(
+        ['git', 'status', '--porcelain'],
+        cwd=workdir, capture_output=True, check=True, text=True
+    )
+    assert status_result.stdout == '', f"git status should be clean after import, found:\n{status_result.stdout}"
+
 
 def test_import_dry_run(workdir: Path, upstream_repos: dict[str, Path]) -> None:
     """--dry-run prevents commits."""

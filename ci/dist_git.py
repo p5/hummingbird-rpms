@@ -839,7 +839,7 @@ def import_(url: str, branch: str, ref: str | None = None, directory: str | None
     # Commit the changes
     if not dry_run:
         run_git('add', '-f', f'rpms/{dir_name}', f'metadata/{dir_name}.json',
-                'konflux-templates', '.tekton', cwd=ROOT_DIR)
+                'konflux-templates', '.tekton', 'releng', cwd=ROOT_DIR)
         commit_msg = f"Import {package_name}-{version}-{release}\n\nBranch: {branch}\nUpstream: {sha}"
         run_git_commit('-m', commit_msg, cwd=ROOT_DIR)
 
