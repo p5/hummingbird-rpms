@@ -1,6 +1,6 @@
 discover:
     how: fmf
     url: https://github.com/packit/specfile.git
-    ref: d96a70a9f16b91b8973c733d889e3cce3948b525
+    ref: c0061d82e6bed803b831e0b013f6b2ecb5092dcc
 execute:
     how: tmt
