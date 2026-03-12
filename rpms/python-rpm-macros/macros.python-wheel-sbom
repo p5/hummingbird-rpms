@@ -14,9 +14,9 @@
 
 
 # Path of the SBOM file in the PEP 770 .dist-info/sboms directory
-# This filename is explicitly mentioned in https://cyclonedx.org/specification/overview/
+# This filename pattern is explicitly mentioned in https://cyclonedx.org/specification/overview/
 # section Recognized file patterns
-%__python_wheel_sbom_filename bom.json
+%__python_wheel_sbom_filename rpm.cdx.json
 
 
 # The SBOM content to put to the file
@@ -24,6 +24,18 @@
 %__python_wheel_sbom_content %{expand:{
   "bomFormat": "CycloneDX",
   "specVersion": "1.6",
+  "metadata": {
+    "tools": {
+      "components": [
+        {
+          "type": "application",
+          "name": "python-rpm-macros",
+          "version": "%{__python_wheel_macros_verrel}",
+          "purl": "%{__python_wheel_macros_purl}"
+        }
+      ]
+    }
+  },
   "components": [
     {
       "type": "library",
@@ -40,6 +52,8 @@
 # Note that epoch needs special handling, see https://github.com/package-url/purl-spec/issues/69
 # and https://redhatproductsecurity.github.io/security-data-guidelines/purl/
 %__python_wheel_purl pkg:rpm/%{__python_wheel_dist_purl_namespace}/%{name}@%{version}-%{release}?%{?epoch:epoch=%{epoch}&}arch=src
+%__python_wheel_macros_verrel %(rpm -q python-rpm-macros --qf '%%{version}-%%{release}')
+%__python_wheel_macros_purl pkg:rpm/%{__python_wheel_dist_purl_namespace}/python-rpm-macros@%{__python_wheel_macros_verrel}?arch=src
 
 
 # The purl namespace used above
