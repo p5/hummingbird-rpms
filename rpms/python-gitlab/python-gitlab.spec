@@ -3,7 +3,7 @@
 
 Name:           python-%{pypi_name}
 Version:        7.1.0
-Release:        %autorelease
+Release:        1.1%{?dist}
 Summary:        Interact with GitLab API
 
 # Automatically converted from old format: LGPLv3 - review is highly recommended.
@@ -57,10 +57,6 @@ sed -i 's/anyio==.*/anyio/'                            requirements-test.txt
 # not available in rawhide 11 Aug 2022
 sed -i 's/pytest-console-scripts.*//'                  requirements-test.txt
 sed -i 's/pytest-github-actions-annotate-failures.*//' requirements-test.txt
-
-# coverage disabled
-sed -i 's/pytest-cov.*//'                              requirements-test.txt
-sed -i 's/coverage.*//'                                requirements-test.txt
 
 %generate_buildrequires
 %pyproject_buildrequires -t

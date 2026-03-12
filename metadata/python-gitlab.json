@@ -1,8 +1,8 @@
 {
-  "branch": "rawhide",
-  "release": "1",
-  "sha": "1b84def30a5e780048822828dd7878a4e251c40c",
+  "branch": "f43",
+  "modification_status": "clean",
+  "release": "1.1",
+  "sha": "c005224357d85b601791d5201162d382c7c8e006",
   "source": "https://src.fedoraproject.org/rpms/python-gitlab.git",
-  "version": "7.1.0",
-  "modification_status": "clean"
+  "version": "7.1.0"
 }
