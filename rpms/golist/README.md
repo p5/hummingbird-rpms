@@ -1,0 +1,3 @@
+# golist
+
+The golist package

@@ -105,6 +105,8 @@ spec:
           contentType: rpm
         - name: brotli-main
           contentType: rpm
+        - name: btrfs-progs-main
+          contentType: rpm
         - name: busybox-main
           contentType: rpm
         - name: bzip2-main
@@ -257,6 +259,8 @@ spec:
           contentType: rpm
         - name: golang1-26-main
           contentType: rpm
+        - name: golist-main
+          contentType: rpm
         - name: google-noto-fonts-main
           contentType: rpm
         - name: gperftools-main
@@ -405,6 +409,8 @@ spec:
           contentType: rpm
         - name: libnsl2-main
           contentType: rpm
+        - name: libpipeline-main
+          contentType: rpm
         - name: libpng-main
           contentType: rpm
         - name: libpsl-main
@@ -486,6 +492,8 @@ spec:
         - name: mailcap-main
           contentType: rpm
         - name: make-main
+          contentType: rpm
+        - name: man-db-main
           contentType: rpm
         - name: mariadb-connector-c-main
           contentType: rpm
@@ -792,6 +800,8 @@ spec:
         - name: svt-av1-main
           contentType: rpm
         - name: syft-main
+          contentType: rpm
+        - name: sysprof-main
           contentType: rpm
         - name: systemd-main
           contentType: rpm
