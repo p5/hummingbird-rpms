@@ -105,7 +105,8 @@ def is_release_only_commit(commit_sha: str, package_name: str) -> bool:
         '--format=',  # Don't show commit message
         '-b',  # Ignore changes in amount of whitespace
         '--ignore-blank-lines',
-        '-I', '^Release:',  # Ignore lines matching this pattern
+        '-I', '^Release:',  # Ignore Release: field in spec file
+        '-I', '^%.*[rR]elease',  # Ignore release macros (%global baserelease, etc.)
         commit_sha,
         '--',
         package_path,
