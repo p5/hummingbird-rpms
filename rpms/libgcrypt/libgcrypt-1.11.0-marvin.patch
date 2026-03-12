@@ -696,16 +696,16 @@ index 0fb53a07..cecb1937 100644
  		      unsigned long op_enable)
  {
    /* Note: dual mask with AND/OR used for EM leakage mitigation */
--  unsigned char mask1 = ct_ulong_gen_mask(op_enable);
--  unsigned char mask2 = ct_ulong_gen_inv_mask(op_enable);
-+  volatile unsigned char mask1 = ct_ulong_gen_mask(op_enable);
-+  volatile unsigned char mask2 = ct_ulong_gen_inv_mask(op_enable);
+-  u64 mask1 = ct_u64_gen_mask (op_enable);
+-  u64 mask2 = ct_u64_gen_inv_mask (op_enable);
++  volatile u64 mask1 = ct_u64_gen_mask (op_enable);
++  volatile u64 mask2 = ct_u64_gen_inv_mask (op_enable);
    unsigned char *b_dst = dst;
    const unsigned char *b_src = src;
-   size_t i;
+ 
 @@ -86,3 +86,27 @@ _gcry_ct_memmov_cond (void *dst, const void *src, size_t len,
-   for (i = 0; i < len; i++)
-     b_dst[i] = (b_dst[i] & mask2) | (b_src[i] & mask1);
+       len--;
+     }
  }
 +
 +/*
@@ -717,7 +717,7 @@ index 0fb53a07..cecb1937 100644
 +void
 +_gcry_ct_memcpy (void *dst, const void *src, size_t len, size_t buffer_len)
 +{
-+  unsigned char mask_a, mask_b;
++  volatile unsigned char mask_a, mask_b;
 +  unsigned char *b_dst = dst;
 +  const unsigned char *b_src = src;
 +  unsigned int writing;
@@ -759,17 +759,17 @@ index 245967eb..74055a4b 100644
  static inline size_t
  ct_lt_s (size_t a, size_t b)
 @@ -112,6 +121,7 @@ unsigned int _gcry_ct_memequal (const void *b1, const void *b2, size_t len);
- DEFINE_CT_TYPE_GEN_MASK(uintptr, uintptr_t)
  DEFINE_CT_TYPE_GEN_MASK(ulong, unsigned long)
  DEFINE_CT_TYPE_GEN_MASK(int16, int16_t)
+ DEFINE_CT_TYPE_GEN_MASK(u64, u64)
 +DEFINE_CT_TYPE_GEN_MASK(uchar, unsigned char)
  
  /*
   * Return all bits set if A is 0 and return 1 otherwise.
 @@ -137,6 +147,7 @@ DEFINE_CT_TYPE_GEN_MASK(int16, int16_t)
- DEFINE_CT_TYPE_GEN_INV_MASK(uintptr, uintptr_t)
  DEFINE_CT_TYPE_GEN_INV_MASK(ulong, unsigned long)
  DEFINE_CT_TYPE_GEN_INV_MASK(int16, int16_t)
+ DEFINE_CT_TYPE_GEN_INV_MASK(u64, u64)
 +DEFINE_CT_TYPE_GEN_INV_MASK(uchar, unsigned char)
  
  /*
@@ -1511,7 +1511,7 @@ diff --git a/src/cipher.h b/src/cipher.h
 index 0a2551fe..e522f39b 100644
 --- a/src/cipher.h
 +++ b/src/cipher.h
-@@ -26,24 +26,25 @@
+@@ -26,26 +26,27 @@
  
  #include "../random/random.h"
  
@@ -1533,6 +1533,8 @@ index 0a2551fe..e522f39b 100644
 -#define PUBKEY_FLAG_DJB_TWEAK      (1 << 15)
 -#define PUBKEY_FLAG_SM2            (1 << 16)
 -#define PUBKEY_FLAG_PREHASH        (1 << 17)
+-#define PUBKEY_FLAG_BYTE_STRING    (1 << 18)
+-#define PUBKEY_FLAG_NO_PREFIX      (1 << 19)
 +#define PUBKEY_FLAG_NO_BLINDING           (1 << 0)
 +#define PUBKEY_FLAG_RFC6979               (1 << 1)
 +#define PUBKEY_FLAG_FIXEDLEN              (1 << 2)
@@ -1551,23 +1553,12 @@ index 0a2551fe..e522f39b 100644
 +#define PUBKEY_FLAG_DJB_TWEAK             (1 << 15)
 +#define PUBKEY_FLAG_SM2                   (1 << 16)
 +#define PUBKEY_FLAG_PREHASH               (1 << 17)
-+#define PUBKEY_FLAG_NO_IMPLICIT_REJECTION (1 << 18)
- 
- 
- enum pk_operation
-diff --git a/src/const-time.c b/src/const-time.c
-index cecb1937..2b6a4b4e 100644
---- a/src/const-time.c
-+++ b/src/const-time.c
-@@ -96,7 +96,7 @@ _gcry_ct_memmov_cond (void *dst, const void *src, size_t len,
- void
- _gcry_ct_memcpy (void *dst, const void *src, size_t len, size_t buffer_len)
- {
--  unsigned char mask_a, mask_b;
-+  volatile unsigned char mask_a, mask_b;
-   unsigned char *b_dst = dst;
-   const unsigned char *b_src = src;
-   unsigned int writing;
++#define PUBKEY_FLAG_BYTE_STRING           (1 << 18)
++#define PUBKEY_FLAG_NO_PREFIX             (1 << 19)
++#define PUBKEY_FLAG_NO_IMPLICIT_REJECTION (1 << 20)
+ /*
+  * The internal flag to select least leak implementation for ECC.
+  * It needs to be a distinct value not covered by PUBKEY_* above.
 diff --git a/src/const-time.h b/src/const-time.h
 index 74055a4b..5e656e15 100644
 --- a/src/const-time.h
@@ -1582,9 +1573,9 @@ index 74055a4b..5e656e15 100644
  
  static inline size_t
 @@ -164,6 +164,7 @@ DEFINE_CT_TYPE_GEN_INV_MASK(uchar, unsigned char)
- DEFINE_CT_TYPE_SELECT_FUNC(uintptr, uintptr_t)
  DEFINE_CT_TYPE_SELECT_FUNC(ulong, unsigned long)
  DEFINE_CT_TYPE_SELECT_FUNC(int16, int16_t)
+ DEFINE_CT_TYPE_SELECT_FUNC(u64, u64)
 +DEFINE_CT_TYPE_SELECT_FUNC(uchar, unsigned char)
  
  /*
