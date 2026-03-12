@@ -1,0 +1,33 @@
+# See the documentation for more information:
+# https://packit.dev/docs/configuration/
+
+specfile_path: libpipeline.spec
+
+
+# name in upstream package repository or registry (e.g. in PyPI)
+upstream_package_name: libpipeline
+upstream_project_url: https://gitlab.com/libpipeline/libpipeline.git
+# downstream (Fedora) RPM package name
+downstream_package_name: libpipeline
+issue_repository: https://github.com/ljavorsk/Packit-issues
+
+jobs:
+  - job: pull_from_upstream
+    trigger: release
+    packit_instances: ["prod", "stg"]
+    dist_git_branches:
+      - fedora-latest
+      - fedora-rawhide
+
+  - job: koji_build
+    trigger: commit
+    allowed_pr_authors: ["packit", "ljavorsk", "nforro"]
+    allowed_committers: ["packit", "ljavorsk", "nforro"]
+    dist_git_branches:
+      - fedora-latest
+      - fedora-rawhide
+
+  - job: bodhi_update
+    trigger: commit
+    dist_git_branches:
+      - fedora-latest # rawhide updates are created automatically

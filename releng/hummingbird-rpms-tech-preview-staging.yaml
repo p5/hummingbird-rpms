@@ -409,6 +409,8 @@ spec:
           contentType: rpm
         - name: libnsl2-main
           contentType: rpm
+        - name: libpipeline-main
+          contentType: rpm
         - name: libpng-main
           contentType: rpm
         - name: libpsl-main
