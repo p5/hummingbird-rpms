@@ -83,6 +83,40 @@ def find_last_sync_commit(package_name: str) -> str | None:
     return None
 
 
+def is_release_only_commit(commit_sha: str, package_name: str) -> bool:
+    """Check if a commit only changes Release: fields in spec files.
+
+    Release-only commits are not considered modifications per project policy.
+    This implements the same logic as is_package_unmodified() in dist_git.py.
+
+    Args:
+        commit_sha: The commit SHA to check
+        package_name: Package name
+
+    Returns:
+        True if commit only changes Release: lines, False otherwise
+    """
+    package_path = f'rpms/{package_name}'
+
+    # Get the diff for this commit, ignoring whitespace and Release: lines
+    # Similar to is_package_unmodified() logic in dist_git.py
+    result = run_git(
+        'show',
+        '--format=',  # Don't show commit message
+        '-b',  # Ignore changes in amount of whitespace
+        '--ignore-blank-lines',
+        '-I', '^Release:',  # Ignore lines matching this pattern
+        commit_sha,
+        '--',
+        package_path,
+        cwd=ROOT_DIR,
+        check=False
+    )
+
+    # If diff is empty after ignoring Release: lines, it's a release-only commit
+    return not result.stdout.strip()
+
+
 def check_git_history_state(package_name: str, last_sync_sha: str | None) -> tuple[bool, str | None]:
     """
     Check if package is clean based on git commit history.
@@ -90,8 +124,12 @@ def check_git_history_state(package_name: str, last_sync_sha: str | None) -> tup
     A package is considered "clean" if all commits since the last Sync
     (or all commits if no Sync exists) have the "Upstream:" trailer.
 
+    Release-only commits (commits that only modify Release: fields) are
+    ignored per project policy.
+
     Uses git's native filtering for speed:
     - Uses --grep to find commits missing "Upstream:" trailer
+    - Filters out release-only commits
 
     Args:
         package_name: Package name to check
@@ -137,15 +175,26 @@ def check_git_history_state(package_name: str, last_sync_sha: str | None) -> tup
     bad_commits = [line for line in bad_commits if not line.startswith('e5066a9dca178d5eeba0b1bfdacec5269314e99e ')]
 
     if bad_commits:
-        # Report the first problematic commit
-        parts = bad_commits[0].split(' ', 1)
-        sha = parts[0]
-        subject = parts[1] if len(parts) == 2 else '(no subject)'
+        # Filter out release-only commits (per project policy, Release-only changes
+        # are not considered modifications)
+        non_release_commits = []
+        for commit_line in bad_commits:
+            parts = commit_line.split(' ', 1)
+            sha = parts[0]
 
-        return False, (
-            f"{package_name}: Commit {sha[:8]} ('{subject}') is missing "
-            f"'Upstream:' trailer. Package appears to be locally modified."
-        )
+            if not is_release_only_commit(sha, package_name):
+                non_release_commits.append(commit_line)
+
+        if non_release_commits:
+            # Report the first problematic commit
+            parts = non_release_commits[0].split(' ', 1)
+            sha = parts[0]
+            subject = parts[1] if len(parts) == 2 else '(no subject)'
+
+            return False, (
+                f"{package_name}: Commit {sha[:8]} ('{subject}') is missing "
+                f"'Upstream:' trailer. Package appears to be locally modified."
+            )
 
     return True, None
 
