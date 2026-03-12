@@ -1,0 +1,209 @@
+From bbf7701c4f8269090a12791f3c9bde80d45c8765 Mon Sep 17 00:00:00 2001
+From: "G. Branden Robinson" <g.branden.robinson@gmail.com>
+Date: Wed, 19 Jul 2023 01:58:07 -0500
+Subject: [PATCH 17/30] Improve lexgrog(1) portability
+
+This fixes a test failure in man1/lexgrog.1 when building against groff
+1.23.0.
+
+Borrow code from groff 1.23.0's "an-ext.tmac" file (licensed as
+permissively as a decadent society) to implement `EX` and `EE` extension
+macros from Ninth Edition Research Unix (1986) (and groff) to get
+monospaced code displays in a more portable way.  There is no way to
+portably change font families in pure man(7) itself, and the names of
+troff typefaces aren't very portable either.  There is also no portable
+way to test for the _existence_ of a font.  FTW.
+
+("Portable" here largely means "to AT&T device-independent troff
+implementations", for which there has been no official source since the
+mid-1990s.[1]  Several AT&T Unix System V licensees/descendants have
+continued to ship their own vendored versions, but these have enjoyed
+little or no development for the past 3 decades.)
+
+* Define a string `mC` to store the name of a presumed monospaced roman
+  typeface.  Use "CW", which is portable to AT&T device-independent
+  troff of the early 1980s before it occurred to anyone that Courier
+  might someday be available in italic and bold styles (and budget
+  available to purchase them).
+* Define `mC` as "CR" if using a typesetting device and the formatter is
+  groff, or claims groff compatibility by the setting the `.g` register.
+  This is reasonably portable to modern implementations given
+  traditional troff font naming practices and the pervasive influence of
+  Adobe Software and the "base fonts" of its PostScript and PDF
+  specifications.
+* If not typesetting (i.e., if using nroff), define `mC` as "R", which
+  is certain to be available.
+* Define `EX` and `EE` macros as groff does, if the formatter does not
+  set the `.g` register.
+* Migrate from `ft CW` and `nf` requests to `EX` macro calls.
+* Migrate from `ft P` and `fi` requests to `EE` macro calls.
+* Replace an inline use of `\f(CW` with a change to inline bold.  There
+  is to date no portable way to inline a font family change.
+
+Test passes now.  Tested as-is and with the `EX` and `EE` macro
+definitions forcibly enabled.
+
+[1] https://groups.google.com/g/comp.text/c/COkqrii4W0E/m/7HarA8Ha2dAJ
+---
+ man/man1/lexgrog.man1 | 57 ++++++++++++++++++++++++++++++++-----------
+ 1 file changed, 43 insertions(+), 14 deletions(-)
+
+diff --git a/man/man1/lexgrog.man1 b/man/man1/lexgrog.man1
+index 37b9d287..f9f708f8 100644
+--- a/man/man1/lexgrog.man1
++++ b/man/man1/lexgrog.man1
+@@ -5,6 +5,41 @@
+ .\" You may distribute under the terms of the GNU General Public
+ .\" License as specified in the file docs/COPYING.GPLv2 that comes with the
+ .\" man-db distribution.
++.\"
++.ds mC CW
++.if t .if \n(.g .ds mC CR
++.if n .ds mC R
++.
++.nr mE 0 \" in an example (EX/EE)?
++.
++.if \n(.g \{\
++.de EX
++.  br
++.  if !\\n(mE \{\
++.    nr mF \\n(.f
++.    nr mP \\n(PD
++.    nr PD 1v
++.    nf
++.    ft \\*(mC
++.    nr mE 1
++.  \}
++..
++.\}
++.
++.
++.\" End example.
++.if \n(.g \{\
++.de EE
++.  br
++.  if \\n(mE \{\
++.    ft \\n(mF
++.    nr PD \\n(mP
++.    fi
++.    nr mE 0
++.  \}
++..
++.\}
++.
+ .pc
+ .TH LEXGROG 1 "%date%" "%version%" "Manual pager utils"
+ .SH NAME
+@@ -133,12 +168,10 @@ macro set, a correct
+ section looks something like this:
+ .PP
+ .RS
+-.ft CW
+-.nf
++.EX
+ \&.SH NAME
+ foo \e\- program to do something
+-.fi
+-.ft P
++.EE
+ .RE
+ .PP
+ Some manual pagers require the \(oq\e\-\(cq to be exactly as shown;
+@@ -157,18 +190,16 @@ If several features with different descriptions are being documented in the
+ same manual page, the following form is therefore used:
+ .PP
+ .RS
+-.ft CW
+-.nf
++.EX
+ \&.SH NAME
+ foo, bar \e\- programs to do something
+ \&.br
+ baz \e\- program to do nothing
+-.fi
+-.ft P
++.EE
+ .RE
+ .PP
+-(A macro which starts a new paragraph, like \f(CW.PP\fP, may be used instead
+-of the break macro \f(CW.br\fP.)
++(A macro which starts a new paragraph, like \fB.PP\fP, may be used instead
++of the break macro \fB.br\fP.)
+ .PP
+ When using the BSD-derived
+ .I mdoc
+@@ -177,13 +208,11 @@ macro set, a correct
+ section looks something like this:
+ .PP
+ .RS
+-.ft CW
+-.nf
++.EX
+ \&.Sh NAME
+ \&.Nm foo
+ \&.Nd program to do something
+-.fi
+-.ft P
++.EE
+ .RE
+ 
+ There are several common reasons why whatis parsing fails.
+-- 
+2.41.0
+
+From 043c3cb83ce179e4c49528742df24b3b53923c4d Mon Sep 17 00:00:00 2001
+From: Colin Watson <cjwatson@debian.org>
+Date: Wed, 19 Jul 2023 23:14:20 +0100
+Subject: [PATCH 18/30] Avoid translation fallout from lexgrog(1) fix
+
+* man/man1/lexgrog.man1: Protect `.ds mC CW` with `.if !'po4a'hide'`, to
+avoid "CW" showing up as a string for translation.
+---
+ man/man1/lexgrog.man1 | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/man/man1/lexgrog.man1 b/man/man1/lexgrog.man1
+index f9f708f8..5a5f4206 100644
+--- a/man/man1/lexgrog.man1
++++ b/man/man1/lexgrog.man1
+@@ -6,7 +6,7 @@
+ .\" License as specified in the file docs/COPYING.GPLv2 that comes with the
+ .\" man-db distribution.
+ .\"
+-.ds mC CW
++.if !'po4a'hide' .ds mC CW
+ .if t .if \n(.g .ds mC CR
+ .if n .ds mC R
+ .
+-- 
+2.41.0
+
+From b12ffb9df7a6a8956b08206c36be70fac78508bd Mon Sep 17 00:00:00 2001
+From: Colin Watson <cjwatson@debian.org>
+Date: Thu, 20 Jul 2023 00:18:59 +0100
+Subject: [PATCH 19/30] Update warning regex for groff 1.23.0
+
+Part of https://gitlab.com/man-db/man-db/-/issues/25.
+
+* man/check-man: groff 1.23.0 says "cannot break line" rather than
+"can't break line"; update regular expression.
+---
+ man/check-man | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/man/check-man b/man/check-man
+index a58b7f9d..f8985a0d 100755
+--- a/man/check-man
++++ b/man/check-man
+@@ -31,7 +31,7 @@ errors="$(LC_ALL=C MANWIDTH=80 MAN_KEEP_FORMATTING=1 "$top_builddir/libtool" \
+ # Indeed, even for other languages we're going to get "cannot adjust line"
+ # if %manpath_config_file% expands to something long. Hmm. We'll just ignore
+ # this across the board for now.
+-errors="$(echo "$errors" | $EGREP -v "(cannot adjust line|can't break line)")" || true
++errors="$(echo "$errors" | $EGREP -v "(cannot adjust line|(can't|cannot) break line)")" || true
+ 
+ if [ "$code" != 0 ]; then
+ 	echo "man -E UTF-8 -l $1 failed with exit status $code and error output:"
+-- 
+2.41.0
+

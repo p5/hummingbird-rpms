@@ -493,6 +493,8 @@ spec:
           contentType: rpm
         - name: make-main
           contentType: rpm
+        - name: man-db-main
+          contentType: rpm
         - name: mariadb-connector-c-main
           contentType: rpm
         - name: mariadb10-11-main
