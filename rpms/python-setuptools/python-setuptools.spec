@@ -13,7 +13,7 @@
 Name:           python-setuptools
 # When updating, update the bundled libraries versions bellow!
 Version:        80.10.2
-Release:        2%{?dist}
+Release:        2.1%{?dist}
 Summary:        Easily build and distribute Python packages
 # setuptools is MIT
 # autocommand is LGPL-3.0-only
