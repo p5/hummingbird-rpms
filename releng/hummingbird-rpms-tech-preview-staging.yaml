@@ -259,6 +259,8 @@ spec:
           contentType: rpm
         - name: golang1-26-main
           contentType: rpm
+        - name: golist-main
+          contentType: rpm
         - name: google-noto-fonts-main
           contentType: rpm
         - name: gperftools-main

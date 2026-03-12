@@ -1,0 +1,8 @@
+{
+  "branch": "rawhide",
+  "modification_status": "clean",
+  "release": "11",
+  "sha": "fc0b740475cd0aeda57660d3f925d2619e044c23",
+  "source": "https://src.fedoraproject.org/rpms/golist.git",
+  "version": "0.10.4"
+}
