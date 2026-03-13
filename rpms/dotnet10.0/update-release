@@ -17,8 +17,8 @@ print_usage() {
 
 download_release_json() {
     version=$1
-    cat > query <<EOF
-    [ .[] | select(.name | contains(".NET $dotnet_major_minor_version")) | select(.author.login | contains("dotnet-sb-bot")) ]
+    cat > query <<'EOF'
+    [ .[] | select(.name | test("\\.NET .*\($v)\\.1\\d{2}")) | select(.author.login | contains("dotnet-sb-bot")) ]
     | first
     | { tag_name: .tag_name,
         tarball: .tarball_url,
@@ -26,7 +26,7 @@ download_release_json() {
         release_manifest: .assets[] | select(.name == "release.json") | .browser_download_url }
 EOF
     curl https://api.github.com/repos/dotnet/dotnet/releases \
-        | jq --from-file query > release.metadata.github
+        | jq --arg v $dotnet_major_minor_version --from-file query > release.metadata.github
     curl -L "$(jq -r .release_manifest release.metadata.github)" -o release.json
 }
 
