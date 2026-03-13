@@ -59,7 +59,7 @@ fi
 
 # The ${LANG} manipulation is necessary only in virtual terminal (a.k.a. console - /dev/tty*):
 if [ -n "${LANG}" ] && [ "${TERM}" = 'linux' ] && /usr/bin/tty | /usr/bin/grep --quiet -e '/dev/tty'; then
-    if /usr/bin/grep --quiet -E -i -e '^.+\.utf-?8$' <<< "${LANG}"; then
+    if printf %s "${LANG}" | /usr/bin/grep --quiet -E -i -e '^.+\.utf-?8$'; then
         case ${LANG} in
             ja*)    LANG=en_US.UTF-8 ;;
             ko*)    LANG=en_US.UTF-8 ;;
