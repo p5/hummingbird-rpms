@@ -1,8 +1,8 @@
 {
   "branch": "rawhide",
   "modification_status": "clean",
-  "release": "1",
-  "sha": "02d85e29ae07ec35d1dea80871ab7749640def07",
+  "release": "2",
+  "sha": "0b3754c5e373b55b239685d0949bf0f9d4bb940a",
   "source": "https://src.fedoraproject.org/rpms/harfbuzz.git",
-  "version": "13.0.1"
+  "version": "13.1.1"
 }
