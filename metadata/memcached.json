@@ -1,8 +1,8 @@
 {
   "branch": "rawhide",
+  "modification_status": "clean",
   "release": "1",
-  "sha": "092fa59f05a56427c9a51bb377bff74bcb0426f4",
+  "sha": "2dea064e1455f69c595c4e6b7cbf044a96f05f4f",
   "source": "https://src.fedoraproject.org/rpms/memcached.git",
-  "version": "1.6.40",
-  "modification_status": "clean"
+  "version": "1.6.41"
 }
