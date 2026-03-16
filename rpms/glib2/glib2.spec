@@ -1,11 +1,11 @@
 Name:           glib2
-Version:        2.87.5
+Version:        2.88.0
 Release:        1%{?dist}
 Summary:        A library of handy utility functions
 
 License:        LGPL-2.1-or-later
 URL:            https://www.gtk.org
-Source:         https://download.gnome.org/sources/glib/2.87/glib-%{version}.tar.xz
+Source:         https://download.gnome.org/sources/glib/2.88/glib-%{version}.tar.xz
 
 # Disable GLib's built-in GHmac for FIPS compliance.
 # Applications should use a FIPS-certified crypto library directly.
