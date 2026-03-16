@@ -123,9 +123,9 @@ if [[ ! -d "${RPMS_DIR}" ]]; then
     exit 1
 fi
 
-# Get list of SRPMs from container lockfiles
+# Get list of SRPMs from Hummingbird container lockfiles
 get_lockfile_srpms() {
-	(cd "${CONTAINERS_DIR}"; make --no-print-directory list-lockfile-srpms)
+	(cd "${CONTAINERS_DIR}"; make --no-print-directory list-hummingbird-lockfile-srpms)
 }
 
 # Get list of already imported packages
