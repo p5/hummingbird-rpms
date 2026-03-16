@@ -107,6 +107,19 @@ deploy_releases_to_konflux:
     - !reference [.rules, push]
     - !reference [.rules, web]
 
+sync_releng:
+  variables:
+    PARENT_PROJECT_PATH: $CI_PROJECT_PATH
+    PARENT_COMMIT_SHA: $CI_COMMIT_SHA
+    ONLY_JOB_NAME: rpms-releng-sync
+  trigger:
+    project: redhat/hummingbird/infrastructure
+    strategy: depend
+  allow_failure: true
+  rules:
+    - !reference [.rules, push]
+    - !reference [.rules, web]
+
 dist_git_update:
   tags: [big-runner]
   environment:
