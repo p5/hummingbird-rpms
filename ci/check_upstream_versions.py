@@ -581,6 +581,32 @@ def query_anitya(package: str, distro: str = DEFAULT_DISTRO) -> dict:
         raise ConnectionError(f"Failed to connect to release-monitoring.org: {e}")
 
 
+def query_anitya_by_project_id(project_id: int) -> dict:
+    """
+    Query release-monitoring.org for version information by project ID.
+
+    Uses the v2 API endpoint: /api/v2/versions/?project_id=<id>
+
+    Returns a dict with 'stable_versions' and 'latest_version' fields,
+    normalized to match the format expected by check_package_version()
+    (i.e., 'version' key maps to 'latest_version').
+    """
+    url = f"{ANITYA_API_BASE}/v2/versions/?project_id={project_id}"
+
+    req = urllib.request.Request(
+        url, headers={"User-Agent": "hummingbird-rpms-version-checker/1.0"}
+    )
+    with urllib.request.urlopen(req, timeout=30) as response:
+        data = json.loads(response.read().decode("utf-8"))
+
+    # Normalize: the v2 versions endpoint uses 'latest_version' where the
+    # distro API uses 'version'.  Map it so callers can use the same key.
+    return {
+        "stable_versions": data.get("stable_versions", []),
+        "version": data.get("latest_version"),
+    }
+
+
 def _matches_track_version(version: str, track_version: str) -> bool:
     """Check if a version matches a track_version prefix.
 
@@ -597,10 +623,10 @@ def check_package_version(
     """
     Check if a newer version is available for a package.
 
-    If the package metadata contains a ``basename`` field, that name is used
-    to query release-monitoring.org instead of the package directory name.
-    If the metadata contains a ``track_version`` field, only upstream versions
-    matching that prefix are considered.
+    If the metadata contains a ``release_monitoring_project_id`` field, it is
+    used to identify the upstream project on release-monitoring.org (int for
+    project ID, str for name).  If ``track_upstream`` is a version prefix,
+    only upstream versions matching that prefix are considered.
 
     Args:
         package: Package name
@@ -628,26 +654,24 @@ def check_package_version(
             error="Could not determine current version",
         )
 
-    # Use basename from metadata for Anitya lookup if available
+    # Use metadata for Anitya lookup if available
     meta = get_package_metadata(package)
-    lookup_name = package
     track_version = None
+    project_id = None
     if meta:
-        lookup_name = meta.get("basename", package)
-        track_version = meta.get("track_version")
+        track_upstream = meta.get("track_upstream")
+        if track_upstream and track_upstream != "latest":
+            track_version = track_upstream
+        project_id = meta.get("release_monitoring_project_id")
 
     # Query release-monitoring.org
     try:
-        anitya_data = query_anitya(lookup_name, distro)
-    except ValueError as e:
-        return VersionCheckResult(
-            package=package,
-            current_version=current_version,
-            upstream_version=None,
-            has_update=False,
-            error=str(e),
-        )
-    except ConnectionError as e:
+        if isinstance(project_id, int):
+            anitya_data = query_anitya_by_project_id(project_id)
+        else:
+            lookup_name = project_id if isinstance(project_id, str) else package
+            anitya_data = query_anitya(lookup_name, distro)
+    except (ValueError, ConnectionError, urllib.error.URLError) as e:
         return VersionCheckResult(
             package=package,
             current_version=current_version,
@@ -746,7 +770,7 @@ def list_all(args: argparse.Namespace) -> None:
 
         # Determine tracking status from metadata
         meta = get_package_metadata(package)
-        tracking = "yes" if (meta and meta.get("track_upstream") is True) else "no"
+        tracking = "yes" if (meta and meta.get("track_upstream")) else "no"
 
         # Determine status and upstream version display
         if result.error:
@@ -827,11 +851,11 @@ def run_check(args: argparse.Namespace) -> None:
         packages = args.packages
     else:
         packages = get_all_packages()
-        # Filter to only packages with track_upstream: true in metadata
+        # Filter to only packages with track_upstream set in metadata
         tracked = []
         for pkg in packages:
             meta = get_package_metadata(pkg)
-            if meta and meta.get("track_upstream") is True:
+            if meta and meta.get("track_upstream"):
                 tracked.append(pkg)
         packages = tracked
         if not args.quiet:
@@ -1021,7 +1045,7 @@ Examples:
         description=(
             "Check tracked packages for upstream version updates. "
             "When package names are given, checks those specific packages. "
-            "Otherwise checks all packages with track_upstream: true."
+            "Otherwise checks all packages with track_upstream set."
         ),
     )
     check_parser.add_argument(

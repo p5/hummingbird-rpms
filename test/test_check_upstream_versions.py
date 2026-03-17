@@ -442,15 +442,16 @@ def test_check_package_version_falls_back_to_version(cuv_module, workdir: Path) 
 
 
 #
-# Tests — check_package_version with basename / track_version
+# Tests — check_package_version with project_id / track_upstream
 #
 
 
-def test_check_package_version_uses_basename(cuv_module, workdir: Path) -> None:
-    """Uses basename from metadata to query Anitya instead of package name."""
+def test_check_package_version_uses_project_id_string(cuv_module, workdir: Path) -> None:
+    """Uses string project_id from metadata to query Anitya by name."""
     _create_package(workdir, 'golang1.26', '1.26.3',
                     metadata={'version': '1.26.3', 'release': '1',
-                              'basename': 'golang', 'track_version': '1.26'})
+                              'release_monitoring_project_id': 'golang',
+                              'track_upstream': '1.26'})
 
     cuv_module.RPMS_DIR = workdir / 'rpms'
     cuv_module.METADATA_DIR = workdir / 'metadata'
@@ -482,7 +483,7 @@ def test_check_package_version_track_version_filters_stable(cuv_module, workdir:
     """track_version filters stable_versions to matching prefix."""
     _create_package(workdir, 'pkg', '1.26.3',
                     metadata={'version': '1.26.3', 'release': '1',
-                              'track_version': '1.26'})
+                              'track_upstream': '1.26'})
 
     cuv_module.RPMS_DIR = workdir / 'rpms'
     cuv_module.METADATA_DIR = workdir / 'metadata'
@@ -504,7 +505,7 @@ def test_check_package_version_track_version_no_match(cuv_module, workdir: Path)
     """Reports no upstream version when no stable versions match track_version."""
     _create_package(workdir, 'pkg', '1.24.0',
                     metadata={'version': '1.24.0', 'release': '1',
-                              'track_version': '1.24'})
+                              'track_upstream': '1.24'})
 
     cuv_module.RPMS_DIR = workdir / 'rpms'
     cuv_module.METADATA_DIR = workdir / 'metadata'
@@ -528,7 +529,7 @@ def test_check_package_version_track_version_exact_match(cuv_module, workdir: Pa
     """track_version matches exact version (not just prefix)."""
     _create_package(workdir, 'pkg', '1.26',
                     metadata={'version': '1.26', 'release': '1',
-                              'track_version': '1.26'})
+                              'track_upstream': '1.26'})
 
     cuv_module.RPMS_DIR = workdir / 'rpms'
     cuv_module.METADATA_DIR = workdir / 'metadata'
@@ -547,11 +548,103 @@ def test_check_package_version_track_version_exact_match(cuv_module, workdir: Pa
     assert result.has_update is False
 
 
-def test_check_package_version_basename_without_track_version(cuv_module, workdir: Path) -> None:
-    """basename is used for Anitya lookup even without track_version."""
+def test_check_package_version_uses_project_id(cuv_module, workdir: Path) -> None:
+    """Uses release_monitoring_project_id to query Anitya by project ID."""
+    _create_package(workdir, 'python3.11', '3.11.11',
+                    metadata={'version': '3.11.11', 'release': '1',
+                              'release_monitoring_project_id': 13254})
+
+    cuv_module.RPMS_DIR = workdir / 'rpms'
+    cuv_module.METADATA_DIR = workdir / 'metadata'
+
+    mock_response = {
+        'stable_versions': ['3.11.12', '3.11.11', '3.11.10'],
+        'version': '3.11.12',
+    }
+
+    with patch.object(cuv_module, 'query_anitya_by_project_id',
+                      return_value=mock_response) as mock_query, \
+         patch.object(cuv_module, 'query_anitya') as mock_name_query:
+        result = cuv_module.check_package_version('python3.11')
+
+    # Should query by project ID, not by name
+    mock_query.assert_called_once_with(13254)
+    mock_name_query.assert_not_called()
+    assert result.upstream_version == '3.11.12'
+    assert result.has_update is True
+
+
+def test_check_package_version_project_id_with_track_version(cuv_module, workdir: Path) -> None:
+    """Project ID lookup combined with track_version filtering works."""
+    _create_package(workdir, 'python3.11', '3.11.11',
+                    metadata={'version': '3.11.11', 'release': '1',
+                              'release_monitoring_project_id': 13254,
+                              'track_upstream': '3.11'})
+
+    cuv_module.RPMS_DIR = workdir / 'rpms'
+    cuv_module.METADATA_DIR = workdir / 'metadata'
+
+    mock_response = {
+        'stable_versions': ['3.13.2', '3.12.8', '3.11.12', '3.11.11'],
+        'version': '3.13.2',
+    }
+
+    with patch.object(cuv_module, 'query_anitya_by_project_id',
+                      return_value=mock_response):
+        result = cuv_module.check_package_version('python3.11')
+
+    # track_version should filter to 3.11.x
+    assert result.upstream_version == '3.11.12'
+    assert result.has_update is True
+
+
+def test_check_package_version_project_id_int(cuv_module, workdir: Path) -> None:
+    """Integer project ID queries Anitya by project ID."""
+    _create_package(workdir, 'python3.11', '3.11.11',
+                    metadata={'version': '3.11.11', 'release': '1',
+                              'release_monitoring_project_id': 13254})
+
+    cuv_module.RPMS_DIR = workdir / 'rpms'
+    cuv_module.METADATA_DIR = workdir / 'metadata'
+
+    mock_response = {
+        'stable_versions': ['3.11.12'],
+        'version': '3.11.12',
+    }
+
+    with patch.object(cuv_module, 'query_anitya_by_project_id',
+                      return_value=mock_response) as mock_query, \
+         patch.object(cuv_module, 'query_anitya') as mock_name_query:
+        result = cuv_module.check_package_version('python3.11')
+
+    # Should use project ID (int), not name-based lookup
+    mock_query.assert_called_once_with(13254)
+    mock_name_query.assert_not_called()
+    assert result.upstream_version == '3.11.12'
+
+
+def test_check_package_version_project_id_not_found(cuv_module, workdir: Path) -> None:
+    """Returns error when project ID lookup fails (404)."""
+    _create_package(workdir, 'pkg', '1.0',
+                    metadata={'version': '1.0', 'release': '1',
+                              'release_monitoring_project_id': 99999})
+
+    cuv_module.RPMS_DIR = workdir / 'rpms'
+    cuv_module.METADATA_DIR = workdir / 'metadata'
+
+    with patch.object(cuv_module, 'query_anitya_by_project_id',
+                      side_effect=ValueError('Project ID 99999 not found on release-monitoring.org')):
+        result = cuv_module.check_package_version('pkg')
+
+    assert result.has_update is False
+    assert 'Project ID 99999 not found' in result.error
+
+
+def test_check_package_version_project_id_string_without_track_version(cuv_module, workdir: Path) -> None:
+    """String project_id is used for Anitya lookup even without track_version."""
     _create_package(workdir, 'python3.13', '3.13.1',
                     metadata={'version': '3.13.1', 'release': '1',
-                              'basename': 'python3.13'})
+                              'release_monitoring_project_id': 'python3.13'})
 
     cuv_module.RPMS_DIR = workdir / 'rpms'
     cuv_module.METADATA_DIR = workdir / 'metadata'
@@ -855,7 +948,7 @@ def test_main_skips_packages_without_track_upstream(cuv_module, workdir: Path) -
     """main() skips packages without track_upstream when no CLI args given."""
     _create_package(workdir, 'tracked', '1.0',
                     metadata={'version': '1.0', 'release': '1',
-                              'track_upstream': True})
+                              'track_upstream': 'latest'})
     _create_package(workdir, 'untracked', '1.0',
                     metadata={'version': '1.0', 'release': '1'})
 
@@ -889,7 +982,7 @@ def test_main_checks_tracked_packages(cuv_module, workdir: Path) -> None:
     """main() checks packages that have track_upstream: true."""
     _create_package(workdir, 'pkg', '1.0',
                     metadata={'version': '1.0', 'release': '1',
-                              'track_upstream': True})
+                              'track_upstream': 'latest'})
 
     cuv_module.RPMS_DIR = workdir / 'rpms'
     cuv_module.METADATA_DIR = workdir / 'metadata'
@@ -943,7 +1036,7 @@ def test_list_subcommand_includes_all_packages(
     """list subcommand includes both tracked and untracked packages."""
     _create_package(workdir, 'tracked-pkg', '1.0',
                     metadata={'version': '1.0', 'release': '1',
-                              'track_upstream': True})
+                              'track_upstream': 'latest'})
     _create_package(workdir, 'untracked-pkg', '1.0',
                     metadata={'version': '1.0', 'release': '1'})
 
@@ -995,7 +1088,7 @@ def test_list_subcommand_json_output(
     """list subcommand with --json produces valid JSON with all packages."""
     _create_package(workdir, 'alpha', '1.0',
                     metadata={'version': '1.0', 'release': '1',
-                              'track_upstream': True})
+                              'track_upstream': 'latest'})
     _create_package(workdir, 'beta', '2.0',
                     metadata={'version': '2.0', 'release': '1'})
 
@@ -1031,7 +1124,7 @@ def test_list_subcommand_shows_tracking_status(
     """list subcommand shows correct tracking status from metadata."""
     _create_package(workdir, 'tracked', '1.0',
                     metadata={'version': '1.0', 'release': '1',
-                              'track_upstream': True})
+                              'track_upstream': 'latest'})
     _create_package(workdir, 'untracked', '1.0',
                     metadata={'version': '1.0', 'release': '1'})
 
@@ -1068,7 +1161,7 @@ def test_check_subcommand_filters_tracked(cuv_module, workdir: Path) -> None:
     """check subcommand only checks packages with track_upstream: true."""
     _create_package(workdir, 'tracked', '1.0',
                     metadata={'version': '1.0', 'release': '1',
-                              'track_upstream': True})
+                              'track_upstream': 'latest'})
     _create_package(workdir, 'untracked', '1.0',
                     metadata={'version': '1.0', 'release': '1'})
 

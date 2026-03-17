@@ -80,17 +80,19 @@ MRs created by this script are configured to:
 
 ## Version-Constrained Updates
 
-Packages with a `basename` or `track_version` field in their metadata are
+Packages with `track_upstream` set to a version prefix in their metadata are
 version-constrained. This is used for versioned packages like `golang1.26`
 that track a specific upstream version line.
 
 ### How It Works
 
-The `basename` and `track_version` metadata fields work together across two systems:
+The `track_upstream` and `release_monitoring_project_id` metadata fields work
+together across two systems:
 
 **`dist_git.py update`** (dist-git sync from Fedora):
 
-When `track_version` is set (e.g., `"1.26"`), the update command uses prefix matching:
+When `track_upstream` is a version prefix (e.g., `"1.26"`), the update command
+uses prefix matching:
 - `1.26` matches `1.26`, `1.26.0`, `1.26.3` (allowed)
 - `1.26` does **not** match `1.27.0`, `2.0` (skipped)
 
@@ -101,29 +103,30 @@ WARNING: Skipping golang1.26: upstream version 1.27.0 doesn't match tracked vers
 
 **`check_upstream_versions.py`** (release-monitoring.org checks):
 
-When `basename` is set, Anitya is queried using the basename instead of the
-package directory name. For example, `golang1.26` with `basename: "golang"`
-queries Anitya for `golang`. When `track_version` is also set, the list of
-upstream versions returned by Anitya is filtered to only those matching the
-prefix. This means `check_upstream_versions.py check` will report `1.26.5`
-as the latest version for `golang1.26` even if Anitya reports `1.27.0` as
-the latest `golang` release.
+When `release_monitoring_project_id` is a string, Anitya is queried using that
+name instead of the RPM package name. For example, `golang1.26` with
+`release_monitoring_project_id: "golang"` queries Anitya for `golang`. When it
+is an integer, the v2 API is queried directly by project ID. When
+`track_upstream` is a version prefix, the list of upstream versions returned by
+Anitya is filtered to only those matching the prefix. This means
+`check_upstream_versions.py check` will report `1.26.5` as the latest version
+for `golang1.26` even if Anitya reports `1.27.0` as the latest `golang` release.
 
 ### Setting Up Version Constraints
 
 ```bash
 # Constrain golang1.26 to only receive 1.26.x updates
-./ci/dist_git.py set-basename --name golang --track-version 1.26 golang1.26
+./ci/dist_git.py set-upstream golang1.26 --project-id golang --track-version 1.26
 
 # Remove the version constraint
-./ci/dist_git.py set-basename --name golang golang1.26
+./ci/dist_git.py set-upstream golang1.26 --no-track-version
 ```
 
 ### Behavior
 
 - `dist_git.py`: Version constraint is checked before pre-release and Koji build checks
 - `dist_git.py`: The `sync` command bypasses the version constraint (explicit force operation)
-- `check_upstream_versions.py`: `basename` is used for the Anitya lookup name; `track_version` filters the returned versions
+- `check_upstream_versions.py`: `release_monitoring_project_id` determines the Anitya lookup (int for project ID, string for name, absent for RPM name); `track_upstream` filters versions when set to a prefix
 - Batch operations continue processing other packages after skipping constrained ones
 
 ## Pre-Release Version Filtering

@@ -2011,61 +2011,193 @@ def test_sync_bypasses_prerelease_check(workdir: Path, upstream_repos: dict[str,
     assert import_data['version'] == '2.0~rc1'
 
 
-def test_mark_track_upstream_enable(workdir: Path, upstream_repos: dict[str, Path]) -> None:
-    """mark-track-upstream --enable sets track_upstream to true."""
-    # Import vanilla package
+def test_set_upstream_track(workdir: Path, upstream_repos: dict[str, Path]) -> None:
+    """set-upstream --track-version latest sets track_upstream to 'latest'."""
     subprocess.run(
         [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["vanilla"]}'],
-        cwd=workdir, check=True,
-    )
-
-    # Verify track_upstream is not present initially
-    metadata_file = workdir / 'metadata' / 'vanilla.json'
-    with open(metadata_file) as f:
-        metadata = json.load(f)
-    assert 'track_upstream' not in metadata
-
-    # Enable track_upstream
-    result = subprocess.run(
-        [str(workdir / 'ci' / 'dist_git.py'), 'mark-track-upstream', 'vanilla', '--enable'],
-        cwd=workdir, capture_output=True, text=True, check=True,
-    )
-
-    # Verify metadata updated
-    with open(metadata_file) as f:
-        metadata = json.load(f)
-    assert metadata['track_upstream'] is True
-
-
-def test_mark_track_upstream_disable(workdir: Path, upstream_repos: dict[str, Path]) -> None:
-    """mark-track-upstream --disable removes track_upstream from metadata."""
-    # Import vanilla package
-    subprocess.run(
-        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["vanilla"]}'],
-        cwd=workdir, check=True,
-    )
-
-    # Enable track_upstream first
-    subprocess.run(
-        [str(workdir / 'ci' / 'dist_git.py'), 'mark-track-upstream', 'vanilla', '--enable'],
         cwd=workdir, check=True,
     )
 
     metadata_file = workdir / 'metadata' / 'vanilla.json'
     with open(metadata_file) as f:
         metadata = json.load(f)
-    assert metadata['track_upstream'] is True
+    assert 'track_upstream' not in metadata
 
-    # Disable track_upstream
-    result = subprocess.run(
-        [str(workdir / 'ci' / 'dist_git.py'), 'mark-track-upstream', 'vanilla', '--disable'],
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'set-upstream', 'vanilla',
+         '--track-version', 'latest'],
         cwd=workdir, capture_output=True, text=True, check=True,
     )
 
-    # Verify track_upstream removed from metadata
+    with open(metadata_file) as f:
+        metadata = json.load(f)
+    assert metadata['track_upstream'] == 'latest'
+
+
+def test_set_upstream_no_track(workdir: Path, upstream_repos: dict[str, Path]) -> None:
+    """set-upstream --no-track-version removes track_upstream from metadata."""
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["vanilla"]}'],
+        cwd=workdir, check=True,
+    )
+
+    # Enable first
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'set-upstream', 'vanilla',
+         '--track-version', 'latest'],
+        cwd=workdir, check=True,
+    )
+
+    metadata_file = workdir / 'metadata' / 'vanilla.json'
+    with open(metadata_file) as f:
+        metadata = json.load(f)
+    assert metadata['track_upstream'] == 'latest'
+
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'set-upstream', 'vanilla',
+         '--no-track-version'],
+        cwd=workdir, capture_output=True, text=True, check=True,
+    )
+
     with open(metadata_file) as f:
         metadata = json.load(f)
     assert 'track_upstream' not in metadata
+
+
+def test_set_upstream_project_id_string(workdir: Path, upstream_repos: dict[str, Path]) -> None:
+    """set-upstream --project-id with string sets upstream name in metadata."""
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["vanilla"]}'],
+        cwd=workdir, check=True,
+    )
+
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'set-upstream', 'vanilla',
+         '--project-id', 'golang'],
+        cwd=workdir, capture_output=True, text=True, check=True,
+    )
+
+    metadata_file = workdir / 'metadata' / 'vanilla.json'
+    with open(metadata_file) as f:
+        metadata = json.load(f)
+    assert metadata['release_monitoring_project_id'] == 'golang'
+
+
+def test_set_upstream_track_version(workdir: Path, upstream_repos: dict[str, Path]) -> None:
+    """set-upstream --track-version stores version prefix in track_upstream."""
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["vanilla"]}'],
+        cwd=workdir, check=True,
+    )
+
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'set-upstream', 'vanilla',
+         '--track-version', '1.26'],
+        cwd=workdir, capture_output=True, text=True, check=True,
+    )
+
+    metadata_file = workdir / 'metadata' / 'vanilla.json'
+    with open(metadata_file) as f:
+        metadata = json.load(f)
+    assert metadata['track_upstream'] == '1.26'
+
+
+def test_set_upstream_no_track_version(workdir: Path, upstream_repos: dict[str, Path]) -> None:
+    """set-upstream --no-track-version removes track_upstream."""
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["vanilla"]}'],
+        cwd=workdir, check=True,
+    )
+
+    # Set track_version first
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'set-upstream', 'vanilla',
+         '--track-version', '1.26'],
+        cwd=workdir, check=True,
+    )
+
+    metadata_file = workdir / 'metadata' / 'vanilla.json'
+    with open(metadata_file) as f:
+        metadata = json.load(f)
+    assert metadata['track_upstream'] == '1.26'
+
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'set-upstream', 'vanilla', '--no-track-version'],
+        cwd=workdir, capture_output=True, text=True, check=True,
+    )
+
+    with open(metadata_file) as f:
+        metadata = json.load(f)
+    assert 'track_upstream' not in metadata
+
+
+def test_set_upstream_project_id(workdir: Path, upstream_repos: dict[str, Path]) -> None:
+    """set-upstream --project-id sets release_monitoring_project_id."""
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["vanilla"]}'],
+        cwd=workdir, check=True,
+    )
+
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'set-upstream', 'vanilla',
+         '--project-id', '13254'],
+        cwd=workdir, capture_output=True, text=True, check=True,
+    )
+
+    metadata_file = workdir / 'metadata' / 'vanilla.json'
+    with open(metadata_file) as f:
+        metadata = json.load(f)
+    assert metadata['release_monitoring_project_id'] == 13254
+
+
+def test_set_upstream_no_project_id(workdir: Path, upstream_repos: dict[str, Path]) -> None:
+    """set-upstream --no-project-id removes release_monitoring_project_id."""
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["vanilla"]}'],
+        cwd=workdir, check=True,
+    )
+
+    # Set project ID and tracking first
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'set-upstream', 'vanilla',
+         '--track-version', 'latest', '--project-id', '13254'],
+        cwd=workdir, check=True,
+    )
+
+    metadata_file = workdir / 'metadata' / 'vanilla.json'
+    with open(metadata_file) as f:
+        metadata = json.load(f)
+    assert metadata['release_monitoring_project_id'] == 13254
+
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'set-upstream', 'vanilla', '--no-project-id'],
+        cwd=workdir, capture_output=True, text=True, check=True,
+    )
+
+    with open(metadata_file) as f:
+        metadata = json.load(f)
+    assert metadata['track_upstream'] == 'latest'
+    assert 'release_monitoring_project_id' not in metadata
+
+
+def test_set_upstream_combined(workdir: Path, upstream_repos: dict[str, Path]) -> None:
+    """set-upstream with multiple flags sets all specified fields."""
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["vanilla"]}'],
+        cwd=workdir, check=True,
+    )
+
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'set-upstream', 'vanilla',
+         '--track-version', '1.26', '--project-id', '13254'],
+        cwd=workdir, capture_output=True, text=True, check=True,
+    )
+
+    metadata_file = workdir / 'metadata' / 'vanilla.json'
+    with open(metadata_file) as f:
+        metadata = json.load(f)
+    assert metadata['track_upstream'] == '1.26'
+    assert metadata['release_monitoring_project_id'] == 13254
 
 
 def test_list_prerelease_packages(workdir: Path, upstream_repos: dict[str, Path]) -> None:
@@ -2107,92 +2239,32 @@ def test_list_prerelease_packages(workdir: Path, upstream_repos: dict[str, Path]
     assert 'PRE-RELEASE PACKAGES (1):' in result.stdout
 
 
-def test_set_basename(workdir: Path, upstream_repos: dict[str, Path]) -> None:
-    """set-basename sets basename and track_version in metadata."""
-    # Import vanilla
-    subprocess.run(
-        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["vanilla"]}'],
-        cwd=workdir, check=True,
-    )
-
-    # Set basename with track_version
+def test_set_upstream_unknown_package(workdir: Path) -> None:
+    """set-upstream on non-existent package fails."""
     result = subprocess.run(
-        [str(workdir / 'ci' / 'dist_git.py'), 'set-basename', '--name', 'golang',
-         '--track-version', '1.26', 'vanilla'],
-        cwd=workdir, capture_output=True, text=True, check=True,
-    )
-
-    # Verify metadata
-    metadata_file = workdir / 'metadata' / 'vanilla.json'
-    with open(metadata_file) as f:
-        metadata = json.load(f)
-    assert metadata['basename'] == 'golang'
-    assert metadata['track_version'] == '1.26'
-
-
-def test_set_basename_without_track_version(workdir: Path, upstream_repos: dict[str, Path]) -> None:
-    """set-basename without --track-version sets only basename."""
-    # Import vanilla
-    subprocess.run(
-        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["vanilla"]}'],
-        cwd=workdir, check=True,
-    )
-
-    # Set basename without track_version
-    result = subprocess.run(
-        [str(workdir / 'ci' / 'dist_git.py'), 'set-basename', '--name', 'python', 'vanilla'],
-        cwd=workdir, capture_output=True, text=True, check=True,
-    )
-
-    # Verify metadata
-    metadata_file = workdir / 'metadata' / 'vanilla.json'
-    with open(metadata_file) as f:
-        metadata = json.load(f)
-    assert metadata['basename'] == 'python'
-    assert 'track_version' not in metadata
-
-
-def test_set_basename_clears_track_version(workdir: Path, upstream_repos: dict[str, Path]) -> None:
-    """set-basename without --track-version removes existing track_version."""
-    # Import vanilla
-    subprocess.run(
-        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["vanilla"]}'],
-        cwd=workdir, check=True,
-    )
-
-    # Set basename with track_version
-    subprocess.run(
-        [str(workdir / 'ci' / 'dist_git.py'), 'set-basename', '--name', 'golang',
-         '--track-version', '1.26', 'vanilla'],
-        cwd=workdir, check=True,
-    )
-
-    metadata_file = workdir / 'metadata' / 'vanilla.json'
-    with open(metadata_file) as f:
-        metadata = json.load(f)
-    assert metadata['track_version'] == '1.26'
-
-    # Set basename without track_version - should remove track_version
-    subprocess.run(
-        [str(workdir / 'ci' / 'dist_git.py'), 'set-basename', '--name', 'golang', 'vanilla'],
-        cwd=workdir, check=True,
-    )
-
-    with open(metadata_file) as f:
-        metadata = json.load(f)
-    assert metadata['basename'] == 'golang'
-    assert 'track_version' not in metadata
-
-
-def test_set_basename_unknown_package(workdir: Path) -> None:
-    """set-basename on non-existent package fails."""
-    result = subprocess.run(
-        [str(workdir / 'ci' / 'dist_git.py'), 'set-basename', '--name', 'golang', 'nonexistent'],
+        [str(workdir / 'ci' / 'dist_git.py'), 'set-upstream', 'nonexistent',
+         '--track-version', 'latest'],
         cwd=workdir, capture_output=True, text=True,
     )
 
     assert result.returncode != 0
     assert "Package nonexistent not found" in result.stderr
+
+
+def test_set_upstream_no_flags(workdir: Path, upstream_repos: dict[str, Path]) -> None:
+    """set-upstream with no flags exits with error."""
+    subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'import', f'file://{upstream_repos["vanilla"]}'],
+        cwd=workdir, check=True,
+    )
+
+    result = subprocess.run(
+        [str(workdir / 'ci' / 'dist_git.py'), 'set-upstream', 'vanilla'],
+        cwd=workdir, capture_output=True, text=True,
+    )
+
+    assert result.returncode != 0
+    assert "set-upstream requires at least one flag" in result.stderr
 
 
 def test_update_skips_when_track_version_mismatch(workdir: Path, upstream_repos: dict[str, Path]) -> None:
@@ -2205,8 +2277,8 @@ def test_update_skips_when_track_version_mismatch(workdir: Path, upstream_repos:
 
     # Set track_version to 1.0 (matches current version)
     subprocess.run(
-        [str(workdir / 'ci' / 'dist_git.py'), 'set-basename', '--name', 'vanilla',
-         '--track-version', '1.0', 'vanilla'],
+        [str(workdir / 'ci' / 'dist_git.py'), 'set-upstream', 'vanilla',
+         '--track-version', '1.0'],
         cwd=workdir, check=True,
     )
 
@@ -2238,8 +2310,8 @@ def test_update_proceeds_when_track_version_matches(workdir: Path, upstream_repo
 
     # Set track_version to 1 (matches 1.0 and 1.x)
     subprocess.run(
-        [str(workdir / 'ci' / 'dist_git.py'), 'set-basename', '--name', 'vanilla',
-         '--track-version', '1', 'vanilla'],
+        [str(workdir / 'ci' / 'dist_git.py'), 'set-upstream', 'vanilla',
+         '--track-version', '1'],
         cwd=workdir, check=True,
     )
 
