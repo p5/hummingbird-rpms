@@ -795,6 +795,128 @@ def test_download_new_sources_no_version_in_filename(cuv_module, workdir: Path) 
 
 
 #
+# Tests — _regenerate_vendor_archive / go-vendor-tools
+#
+
+
+def test_download_new_sources_regenerates_vendor_archive(
+    cuv_module, workdir: Path
+) -> None:
+    """Regenerates vendor archive for packages with go-vendor-tools.toml."""
+    pkg_dir = _create_package(
+        workdir, 'gopkg', '2.0',
+        sources={
+            'gopkg-1.0.tar.gz': 'oldhash_src',
+            'gopkg-1.0-vendor.tar.bz2': 'oldhash_vendor',
+        },
+    )
+    # Create go-vendor-tools.toml to trigger vendor regeneration
+    (pkg_dir / 'go-vendor-tools.toml').write_text('[archive]\n')
+
+    def fake_subprocess_run(cmd, **kwargs):
+        """Simulate go_vendor_archive creating the output file."""
+        if cmd[0] == 'go_vendor_archive':
+            assert '-O' not in cmd, "-O must not be passed with a specfile"
+            # The tool derives the output name from the spec; simulate
+            # by creating the expected vendor archive in cwd
+            cwd = Path(kwargs.get('cwd', '.'))
+            (cwd / 'gopkg-2.0-vendor.tar.bz2').write_bytes(b'fake vendor archive')
+            return subprocess.CompletedProcess(cmd, 0, stdout='', stderr='')
+        return subprocess.CompletedProcess(cmd, 0, stdout='', stderr='')
+
+    with patch.object(cuv_module, '_download_file') as mock_dl, \
+         patch.object(cuv_module, '_upload_to_lookaside') as mock_ul, \
+         patch.object(cuv_module, '_compute_file_hash',
+                      return_value='newhash'), \
+         patch.object(cuv_module, '_get_spec_source_urls',
+                      return_value={
+                          0: 'https://example.com/gopkg/gopkg-2.0.tar.gz',
+                      }), \
+         patch('subprocess.run', side_effect=fake_subprocess_run):
+
+        cuv_module.RPMS_DIR = workdir / 'rpms'
+        downloaded = cuv_module.download_new_sources('gopkg', '1.0', '2.0')
+
+    # Both the URL source and vendor archive should be in the result
+    assert 'gopkg-2.0.tar.gz' in downloaded
+    assert 'gopkg-2.0-vendor.tar.bz2' in downloaded
+
+    # Upload should be called twice: once for the URL source, once for vendor
+    assert mock_ul.call_count == 2
+
+    # sources file should be updated with both entries
+    entries = cuv_module._parse_sources_file(pkg_dir / 'sources')
+    filenames = {e['filename'] for e in entries}
+    assert 'gopkg-2.0.tar.gz' in filenames
+    assert 'gopkg-2.0-vendor.tar.bz2' in filenames
+    # Old filenames should be gone
+    assert 'gopkg-1.0.tar.gz' not in filenames
+    assert 'gopkg-1.0-vendor.tar.bz2' not in filenames
+
+
+def test_download_new_sources_no_vendor_without_toml(
+    cuv_module, workdir: Path
+) -> None:
+    """Does not regenerate vendor archive when go-vendor-tools.toml is absent."""
+    _create_package(
+        workdir, 'pkg', '2.0',
+        sources={
+            'pkg-1.0.tar.gz': 'oldhash_src',
+            'pkg-1.0-vendor.tar.bz2': 'oldhash_vendor',
+        },
+    )
+    # No go-vendor-tools.toml
+
+    with patch.object(cuv_module, '_download_file'), \
+         patch.object(cuv_module, '_upload_to_lookaside'), \
+         patch.object(cuv_module, '_compute_file_hash',
+                      return_value='newhash'), \
+         patch.object(cuv_module, '_get_spec_source_urls',
+                      return_value={
+                          0: 'https://example.com/pkg/pkg-2.0.tar.gz',
+                      }):
+
+        cuv_module.RPMS_DIR = workdir / 'rpms'
+        downloaded = cuv_module.download_new_sources('pkg', '1.0', '2.0')
+
+    # Only the URL-based source should be downloaded, vendor left untouched
+    assert downloaded == ['pkg-2.0.tar.gz']
+
+
+def test_regenerate_vendor_archive_failure(cuv_module, workdir: Path) -> None:
+    """Raises RuntimeError when go_vendor_archive fails."""
+    pkg_dir = _create_package(
+        workdir, 'gopkg', '2.0',
+        sources={
+            'gopkg-1.0.tar.gz': 'oldhash_src',
+            'gopkg-1.0-vendor.tar.bz2': 'oldhash_vendor',
+        },
+    )
+    (pkg_dir / 'go-vendor-tools.toml').write_text('[archive]\n')
+
+    def fake_subprocess_run(cmd, **kwargs):
+        if cmd[0] == 'go_vendor_archive':
+            return subprocess.CompletedProcess(
+                cmd, 1, stdout='', stderr='vendor creation failed'
+            )
+        return subprocess.CompletedProcess(cmd, 0, stdout='', stderr='')
+
+    with patch.object(cuv_module, '_download_file'), \
+         patch.object(cuv_module, '_upload_to_lookaside'), \
+         patch.object(cuv_module, '_compute_file_hash',
+                      return_value='newhash'), \
+         patch.object(cuv_module, '_get_spec_source_urls',
+                      return_value={
+                          0: 'https://example.com/gopkg/gopkg-2.0.tar.gz',
+                      }), \
+         patch('subprocess.run', side_effect=fake_subprocess_run):
+
+        cuv_module.RPMS_DIR = workdir / 'rpms'
+        with pytest.raises(RuntimeError, match='vendor creation failed'):
+            cuv_module.download_new_sources('gopkg', '1.0', '2.0')
+
+
+#
 # Tests — update_spec_version
 #
 

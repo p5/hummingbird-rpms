@@ -322,6 +322,100 @@ def _upload_to_lookaside(
     logger.info(f"{package}: uploaded {filepath.name} to lookaside cache")
 
 
+def _regenerate_vendor_archive(
+    package: str,
+    old_version: str,
+    new_version: str,
+    sources_entries: list[dict],
+) -> str | None:
+    """
+    Regenerate a go-vendor-tools vendor archive after a version update.
+
+    If the package directory contains a ``go-vendor-tools.toml`` file and
+    the sources file has a ``*-vendor.tar.*`` entry, regenerate the vendor
+    archive using ``go_vendor_archive create``, upload it to the lookaside
+    cache, and update *sources_entries* in place.
+
+    Args:
+        package: Package name
+        old_version: Version before the spec update
+        new_version: Version after the spec update
+        sources_entries: Mutable list of source entry dicts (modified in place)
+
+    Returns:
+        The new vendor filename, or None if this package does not use
+        go-vendor-tools.
+    """
+    package_dir = RPMS_DIR / package
+    config_path = package_dir / "go-vendor-tools.toml"
+    if not config_path.exists():
+        return None
+
+    # Find the vendor entry in sources
+    vendor_entry = None
+    for entry in sources_entries:
+        if "-vendor.tar." in entry["filename"]:
+            vendor_entry = entry
+            break
+
+    if vendor_entry is None:
+        logger.debug(f"{package}: go-vendor-tools.toml exists but no vendor entry in sources")
+        return None
+
+    old_vendor_filename = vendor_entry["filename"]
+    new_vendor_filename = old_vendor_filename.replace(old_version, new_version)
+
+    # Find the spec file
+    spec_files = list(package_dir.glob("*.spec"))
+    if len(spec_files) != 1:
+        logger.warning(f"{package}: expected one spec file, found {len(spec_files)}")
+        return None
+
+    # Run go_vendor_archive create
+    logger.info(f"{package}: regenerating vendor archive {new_vendor_filename}")
+    result = subprocess.run(
+        [
+            "go_vendor_archive",
+            "create",
+            "-c",
+            str(config_path),
+            str(spec_files[0]),
+        ],
+        cwd=str(package_dir),
+        capture_output=True,
+        text=True,
+    )
+    if result.returncode != 0:
+        stderr = result.stderr.strip() or result.stdout.strip()
+        raise RuntimeError(
+            f"go_vendor_archive create failed (exit {result.returncode}): {stderr}"
+        )
+
+    vendor_path = package_dir / new_vendor_filename
+    if not vendor_path.exists():
+        raise FileNotFoundError(
+            f"go_vendor_archive did not produce {new_vendor_filename}"
+        )
+
+    # Upload to lookaside cache
+    algo = vendor_entry["algo"]
+    _upload_to_lookaside(vendor_path, package, algo)
+
+    # Compute hash and update the sources entry in place
+    new_hash = _compute_file_hash(vendor_path, algo)
+    vendor_entry["filename"] = new_vendor_filename
+    vendor_entry["hash"] = new_hash
+
+    # Remove old vendor archive if the filename changed
+    if old_vendor_filename != new_vendor_filename:
+        old_vendor_path = package_dir / old_vendor_filename
+        if old_vendor_path.exists():
+            old_vendor_path.unlink()
+            logger.debug(f"{package}: removed old vendor archive {old_vendor_filename}")
+
+    return new_vendor_filename
+
+
 def download_new_sources(
     package: str,
     old_version: str,
@@ -400,6 +494,13 @@ def download_new_sources(
             if old_file.exists():
                 old_file.unlink()
                 logger.debug(f"{package}: removed old source {old_filename}")
+
+    # Regenerate vendor archive for go-vendor-tools packages
+    vendor_file = _regenerate_vendor_archive(
+        package, old_version, new_version, sources_entries,
+    )
+    if vendor_file:
+        downloaded.append(vendor_file)
 
     # Write updated sources file if anything changed
     if downloaded:
