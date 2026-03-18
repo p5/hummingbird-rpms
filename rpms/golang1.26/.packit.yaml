@@ -12,11 +12,12 @@ actions:
     - bash -c "echo - New release ${PACKIT_PROJECT_VERSION}"
 
 jobs:
-  # Fedora 42 follows Go 1.24
+  # Fedora 42 follows Go 1.25
+  # https://pagure.io/fesco/issue/3570
   - job: pull_from_upstream
     trigger: release
     dist_git_branches: fedora-42
-    upstream_tag_include: "^go1.24.+"
+    upstream_tag_include: "^go1.25.+"
 
   # Fedora 43 follows Go 1.25
   - job: pull_from_upstream
@@ -27,7 +28,7 @@ jobs:
   # Fedora 44 follows Go 1.26
   - job: pull_from_upstream
     trigger: release
-    dist_git_branches: fedora-rawhide
+    dist_git_branches: fedora-44
     upstream_tag_include: "^go1.26.+"
 
   # Fedora Rawhide follows the latest version
