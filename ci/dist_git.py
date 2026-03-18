@@ -84,7 +84,7 @@ def query_autorelease_from_mdapi(package_name: str, branch: str, fallback_releas
 
     Returns the resolved release number (without dist suffix), or None if query fails.
     """
-    logging.info("Upstream uses %%autorelease, querying MDAPI for latest release...")
+    logging.info("Upstream uses %%autorelease, querying MDAPI for %s (%s)...", package_name, branch)
     mdapi_build = get_mdapi_latest_build(package_name, branch)
 
     if mdapi_build:
@@ -1024,7 +1024,7 @@ def update(package_name: str, skip_build_check: bool = False, sync: bool = False
         # Query MDAPI for autorelease if needed (but don't modify upstream_dir yet, it's a git repo)
         has_autorelease = uses_autorelease(upstream_dir)
         if has_autorelease:
-            resolved_release = query_autorelease_from_mdapi(package_name, metadata['branch'], release)
+            resolved_release = query_autorelease_from_mdapi(upstream_package_name, metadata['branch'], release)
             if resolved_release:
                 release = resolved_release
 
