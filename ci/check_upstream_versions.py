@@ -469,7 +469,8 @@ def mark_package_modified(
         logger.error(f"{package}: failed to read metadata: {e}")
         return
 
-    data["modification_status"] = "modified"
+    if data.get("modification_status") != "native":
+        data["modification_status"] = "modified"
     data["modification_reason"] = reason
     if version is not None:
         data["version"] = version
