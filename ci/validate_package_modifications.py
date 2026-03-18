@@ -380,9 +380,9 @@ def validate_package(package_name: str, check_actual_state: bool = True) -> tupl
     if not is_valid:
         return False, error
 
-    # Check 4: track_upstream must be a boolean if present
-    if 'track_upstream' in metadata and not isinstance(metadata['track_upstream'], bool):
-        return False, f"{package_name}: track_upstream must be a boolean, got {type(metadata['track_upstream']).__name__}"
+    # Check 4: track_upstream must be a string if present ("latest" or version prefix)
+    if 'track_upstream' in metadata and not isinstance(metadata['track_upstream'], str):
+        return False, f"{package_name}: track_upstream must be a string, got {type(metadata['track_upstream']).__name__}"
 
     # Check 4.5: release_monitoring_project_id must be an integer if present
     if 'release_monitoring_project_id' in metadata and not isinstance(metadata['release_monitoring_project_id'], int):

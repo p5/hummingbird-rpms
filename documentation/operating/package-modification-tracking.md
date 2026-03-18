@@ -21,11 +21,14 @@ field with one of three values:
 | `modified` | Local changes (patches, spec modifications)| ❌ Blocked   |
 | `native`   | Hummingbird-native package (not from Fedora)| ❌ Blocked  |
 
-An optional `track_upstream` boolean field controls whether a package is
+An optional `track_upstream` string field controls whether a package is
 checked by `check_upstream_versions.py` for new upstream releases (via
-release-monitoring.org). The `check` subcommand only checks packages with
-`"track_upstream": true` when no explicit package arguments are given. The
-`list` subcommand shows all packages regardless of this field.
+release-monitoring.org). Set it to `"latest"` to track the latest version,
+or to a version prefix like `"1.26"` to constrain updates to that series.
+Its presence enables tracking; omit the field to disable it. The `check`
+subcommand only checks packages with `track_upstream` set when no explicit
+package arguments are given. The `list` subcommand shows all packages
+regardless of this field.
 
 ## Checking Package Status
 
@@ -385,7 +388,7 @@ This validation ensures:
 
 1. All packages have a `modification_status` field
 2. The value is one of: `clean`, `modified`, `native`
-3. If `track_upstream` is present, it must be a boolean
+3. If `track_upstream` is present, it must be a string (`"latest"` or a version prefix)
 4. Modified packages have a `modification_reason`
 5. Native packages do not have source/branch/sha fields (Hummingbird-native only)
 6. Git commit history matches the declared modification status
