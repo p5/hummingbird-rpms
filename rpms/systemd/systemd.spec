@@ -23,7 +23,10 @@
 # e.g. when re-building cryptsetup on a json-c SONAME-bump.
 %bcond bootstrap 0
 %bcond tests     1
-%bcond lto       1
+
+# riscv64 has LTO disabled globally
+%bcond lto       %["%_arch" != "riscv64"]
+
 # Build docs on 64-bit architectures only
 %bcond docs      %[%{?__isa_bits} >= 64]
 
@@ -45,7 +48,7 @@
 %global __meson_auto_features auto
 %endif
 
-# Override %%autorelease. This is ugly, but rpmautospec doesn't implement
+# Override %1%{?dist}. This is ugly, but rpmautospec doesn't implement
 # autorelease correctly if the macro is conditionalized in the Release field.
 %{?release_override:%global autorelease %{release_override}%{?dist}}
 
@@ -73,7 +76,7 @@ Url:            https://systemd.io
 # But don't do that on OBS, otherwise the version subst fails, and will be
 # like 257-123-gabcd257.1 instead of 257-123-gabcd
 %if %{without obs}
-Version:        %{?version_override}%{!?version_override:259.1}
+Version:        %{?version_override}%{!?version_override:260}
 %else
 Version:        %{?version_override}%{!?version_override:%(cat meson.version)}
 %endif
@@ -141,10 +144,6 @@ Patch:          https://github.com/systemd/systemd/pull/26494.patch
 # Create user journals for users with high UIDs
 # https://bugzilla.redhat.com/show_bug.cgi?id=2251843
 Patch:          30846.patch
-
-# Again create runlevelX.target. Dropping those files breaks upgrades.
-# https://bugzilla.redhat.com/show_bug.cgi?id=2411195
-Patch:          0001-Revert-units-drop-runlevel-0-6-.target.patch
 
 # userdb: create userdb root directory with correct label
 # We can drop this after SELinux policy is updated to handle the transition.
@@ -1188,6 +1187,10 @@ fi \
 %post
 systemd-machine-id-setup &>/dev/null || :
 
+# This is for upgrades from previous versions before getty@.service needed to be enabled
+[ $1 -gt 1 ] && systemctl is-enabled getty@tty1.service &>/dev/null && \
+    touch %{_localstatedir}/lib/rpm-state/systemd-getty-was-active || :
+
 [ $1 -eq 1 ] || exit 0
 
 # create /var/log/journal only on initial installation,
@@ -1215,6 +1218,8 @@ if [ $1 -ge 2 ]; then
   systemctl daemon-reexec || :
 
   systemd-tmpfiles --create &>/dev/null || :
+
+  rm -f %{_localstatedir}/lib/rpm-state/systemd-getty-was-active || :
 fi
 
 %systemd_posttrans_with_restart systemd-timedated.service systemd-hostnamed.service systemd-journald.service systemd-localed.service systemd-userdbd.service
@@ -1232,16 +1237,15 @@ fi
 # This is for upgrades from previous versions before systemd restart was moved to %%postun
 systemctl daemon-reexec || :
 
-%triggerpostun -- systemd < 253~rc1-2
-# This is for upgrades from previous versions where systemd-journald-audit.socket
-# had a static enablement symlink.
-# We use %%triggerpostun here because rpm doesn't allow a second %%triggerun with
-# a different package version.
-systemctl --no-reload preset systemd-journald-audit.socket &>/dev/null || :
+%triggerpostun -- systemd < 260~rc1
+if [ -f %{_localstatedir}/lib/rpm-state/systemd-getty-was-active ]; then
+    systemctl --no-reload enable getty@.service || :
+fi
 
 %global udev_services %{shrink:
                         cryptsetup-pre.target
                         cryptsetup.target
+                        getty@.service
                         hibernate.target
                         hybrid-sleep.target
                         initrd-cleanup.service
@@ -1320,7 +1324,7 @@ systemctl --no-reload preset systemd-journald-audit.socket &>/dev/null || :
                         systemd-suspend.service
                         systemd-sysctl.service
                         systemd-timesyncd.service
-                        systemd-tmpfiles-clear.service
+                        systemd-tmpfiles-clean.service
                         systemd-tmpfiles-setup-dev-early.service
                         systemd-tmpfiles-setup-dev.service
                         systemd-udev-load-credentials.service
