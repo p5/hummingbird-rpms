@@ -40,7 +40,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "PyYAML.spec"
@@ -109,7 +109,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "R-rpm-macros.spec"
@@ -178,7 +178,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "ShellCheck.spec"
@@ -247,7 +247,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "abattis-cantarell-fonts.spec"
@@ -316,7 +316,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "acl.spec"
@@ -385,7 +385,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "alsa-lib.spec"
@@ -454,7 +454,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "annobin.spec"
@@ -523,7 +523,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "ansible-packaging.spec"
@@ -592,7 +592,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "aom.spec"
@@ -661,7 +661,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "apr.spec"
@@ -730,7 +730,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "apr-util.spec"
@@ -801,7 +801,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "attr.spec"
@@ -870,7 +870,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "audit.spec"
@@ -939,7 +939,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "authselect.spec"
@@ -1008,7 +1008,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "autoconf.spec"
@@ -1077,7 +1077,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "automake.spec"
@@ -1146,7 +1146,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "avahi.spec"
@@ -1215,7 +1215,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "babeltrace.spec"
@@ -1284,7 +1284,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "bash.spec"
@@ -1353,7 +1353,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "bash-completion.spec"
@@ -1422,7 +1422,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "bind.spec"
@@ -1491,7 +1491,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "binutils.spec"
@@ -1560,7 +1560,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "boost.spec"
@@ -1629,7 +1629,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "bootc.spec"
@@ -1702,7 +1702,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "brotli.spec"
@@ -1771,7 +1771,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "btrfs-progs.spec"
@@ -1840,7 +1840,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "busybox.spec"
@@ -1909,7 +1909,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "bzip2.spec"
@@ -1978,7 +1978,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "c-ares.spec"
@@ -2047,7 +2047,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "ca-certificates.spec"
@@ -2116,7 +2116,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "caddy.spec"
@@ -2185,7 +2185,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "capstone.spec"
@@ -2254,7 +2254,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "cargo-rpm-macros.spec"
@@ -2323,7 +2323,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "catatonit.spec"
@@ -2392,7 +2392,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "chkconfig.spec"
@@ -2461,7 +2461,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "chunkah.spec"
@@ -2530,7 +2530,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "cloud-init.spec"
@@ -2603,7 +2603,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "cmake.spec"
@@ -2672,7 +2672,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "composer.spec"
@@ -2741,7 +2741,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "container-selinux.spec"
@@ -2810,7 +2810,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "containers-common.spec"
@@ -2879,7 +2879,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "coreutils.spec"
@@ -2948,7 +2948,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "cpio.spec"
@@ -3017,7 +3017,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "cracklib.spec"
@@ -3086,7 +3086,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "createrepo_c.spec"
@@ -3155,7 +3155,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "crypto-policies.spec"
@@ -3224,7 +3224,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "ctags.spec"
@@ -3293,7 +3293,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "cups.spec"
@@ -3362,7 +3362,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "curl.spec"
@@ -3435,7 +3435,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "cyrus-sasl.spec"
@@ -3504,7 +3504,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "dav1d.spec"
@@ -3573,7 +3573,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "dbus.spec"
@@ -3642,7 +3642,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "dbus-broker.spec"
@@ -3713,7 +3713,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "debugedit.spec"
@@ -3786,7 +3786,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "diffutils.spec"
@@ -3855,7 +3855,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "dnf.spec"
@@ -3924,7 +3924,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "dnf5.spec"
@@ -3993,7 +3993,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "dns-root-data.spec"
@@ -4072,7 +4072,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "dotnet10.0.spec"
@@ -4141,7 +4141,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "dotnet8.0.spec"
@@ -4210,7 +4210,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "dotnet9.0.spec"
@@ -4281,7 +4281,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "drpm.spec"
@@ -4350,7 +4350,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "dwz.spec"
@@ -4419,7 +4419,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "e2fsprogs.spec"
@@ -4488,7 +4488,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "ecj.spec"
@@ -4557,7 +4557,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "ed.spec"
@@ -4626,7 +4626,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "efi-rpm-macros.spec"
@@ -4695,7 +4695,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "elfutils.spec"
@@ -4768,7 +4768,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "emacs-filesystem.spec"
@@ -4839,7 +4839,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "expat.spec"
@@ -4908,7 +4908,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "fedora-logos.spec"
@@ -4979,7 +4979,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "fedora-repos.spec"
@@ -5048,7 +5048,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "file.spec"
@@ -5117,7 +5117,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "filesystem.spec"
@@ -5186,7 +5186,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "findutils.spec"
@@ -5263,7 +5263,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "fmt.spec"
@@ -5332,7 +5332,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "fontconfig.spec"
@@ -5401,7 +5401,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "fonts-rpm-macros.spec"
@@ -5472,7 +5472,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "forge-srpm-macros.spec"
@@ -5541,7 +5541,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "fpc-srpm-macros.spec"
@@ -5612,7 +5612,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "freetype.spec"
@@ -5681,7 +5681,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "fsverity-utils.spec"
@@ -5756,7 +5756,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "gap-srpm-macros.spec"
@@ -5825,7 +5825,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "gawk.spec"
@@ -5965,7 +5965,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "gd.spec"
@@ -6034,7 +6034,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "gdb.spec"
@@ -6103,7 +6103,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "gdbm.spec"
@@ -6257,7 +6257,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "ghc-srpm-macros.spec"
@@ -6328,7 +6328,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "git.spec"
@@ -6397,7 +6397,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "glib2.spec"
@@ -6539,7 +6539,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "gmp.spec"
@@ -6608,7 +6608,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "gnat-srpm-macros.spec"
@@ -6677,7 +6677,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "gnulib-l10n.spec"
@@ -6748,7 +6748,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "gnupg2.spec"
@@ -6817,7 +6817,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "gnutls.spec"
@@ -6886,7 +6886,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "go-fdo-client.spec"
@@ -6955,7 +6955,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "go-fdo-server.spec"
@@ -7026,7 +7026,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "go-rpm-macros.spec"
@@ -7101,7 +7101,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "golang.spec"
@@ -7174,7 +7174,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "golang.spec"
@@ -7243,7 +7243,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "golang.spec"
@@ -7312,7 +7312,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "golist.spec"
@@ -7381,7 +7381,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "google-noto-fonts.spec"
@@ -7452,7 +7452,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "gperftools.spec"
@@ -7521,7 +7521,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "gpgme.spec"
@@ -7590,7 +7590,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "gpgverify.spec"
@@ -7661,7 +7661,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "graphite2.spec"
@@ -7730,7 +7730,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "grep.spec"
@@ -7799,7 +7799,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "groff.spec"
@@ -7878,7 +7878,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "gzip.spec"
@@ -7947,7 +7947,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "haproxy.spec"
@@ -8018,7 +8018,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "harfbuzz.spec"
@@ -8091,7 +8091,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "hiredis.spec"
@@ -8160,7 +8160,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "hostname.spec"
@@ -8229,7 +8229,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "httpd.spec"
@@ -8298,7 +8298,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "hugo.spec"
@@ -8367,7 +8367,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "hummingbird-release.spec"
@@ -8436,7 +8436,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "icu.spec"
@@ -8505,7 +8505,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "ima-evm-utils.spec"
@@ -8576,7 +8576,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "iproute.spec"
@@ -8651,7 +8651,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "jansson.spec"
@@ -8720,7 +8720,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "java-21-openjdk.spec"
@@ -8996,7 +8996,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "java-rpm-macros.spec"
@@ -9065,7 +9065,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "javapackages-tools.spec"
@@ -9134,7 +9134,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "jbigkit.spec"
@@ -9203,7 +9203,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "jemalloc.spec"
@@ -9274,7 +9274,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "jq.spec"
@@ -9343,7 +9343,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "json-c.spec"
@@ -9418,7 +9418,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "kernel-headers.spec"
@@ -9487,7 +9487,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "kernel-srpm-macros.spec"
@@ -9556,7 +9556,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "keyutils.spec"
@@ -9627,7 +9627,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "krb5.spec"
@@ -9696,7 +9696,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "kubernetes1.35.spec"
@@ -9767,7 +9767,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "langpacks.spec"
@@ -9836,7 +9836,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "less.spec"
@@ -9905,7 +9905,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libX11.spec"
@@ -9974,7 +9974,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libXau.spec"
@@ -10043,7 +10043,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libXcomposite.spec"
@@ -10112,7 +10112,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libXext.spec"
@@ -10181,7 +10181,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libXi.spec"
@@ -10250,7 +10250,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libXpm.spec"
@@ -10319,7 +10319,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libXrender.spec"
@@ -10388,7 +10388,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libXtst.spec"
@@ -10457,7 +10457,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libaio.spec"
@@ -10526,7 +10526,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libarchive.spec"
@@ -10595,7 +10595,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libassuan.spec"
@@ -10664,7 +10664,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libavif.spec"
@@ -10733,7 +10733,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libb2.spec"
@@ -10802,7 +10802,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libbpf.spec"
@@ -10871,7 +10871,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libcap.spec"
@@ -10940,7 +10940,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libcap-ng.spec"
@@ -11009,7 +11009,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libcbor.spec"
@@ -11078,7 +11078,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libcomps.spec"
@@ -11147,7 +11147,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libdnf.spec"
@@ -11216,7 +11216,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libeconf.spec"
@@ -11285,7 +11285,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libedit.spec"
@@ -11354,7 +11354,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libevent.spec"
@@ -11423,7 +11423,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libffi.spec"
@@ -11492,7 +11492,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libfido2.spec"
@@ -11561,7 +11561,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libfontenc.spec"
@@ -11630,7 +11630,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libgcrypt.spec"
@@ -11699,7 +11699,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libgit2.spec"
@@ -11768,7 +11768,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libgpg-error.spec"
@@ -11837,7 +11837,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libidn2.spec"
@@ -11906,7 +11906,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libipt.spec"
@@ -11975,7 +11975,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libjpeg-turbo.spec"
@@ -12044,7 +12044,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libksba.spec"
@@ -12113,7 +12113,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "liblerc.spec"
@@ -12182,7 +12182,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libmnl.spec"
@@ -12251,7 +12251,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libmodulemd.spec"
@@ -12320,7 +12320,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libmpc.spec"
@@ -12389,7 +12389,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libnl3.spec"
@@ -12458,7 +12458,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libnsl2.spec"
@@ -12527,7 +12527,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libpipeline.spec"
@@ -12596,7 +12596,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libpng.spec"
@@ -12665,7 +12665,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libpsl.spec"
@@ -12734,7 +12734,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libpwquality.spec"
@@ -12803,7 +12803,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "librepo.spec"
@@ -12872,7 +12872,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libseccomp.spec"
@@ -12941,7 +12941,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libselinux.spec"
@@ -13010,7 +13010,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libsemanage.spec"
@@ -13079,7 +13079,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libsepol.spec"
@@ -13148,7 +13148,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libsodium.spec"
@@ -13217,7 +13217,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libsolv.spec"
@@ -13286,7 +13286,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libssh.spec"
@@ -13355,7 +13355,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libssh2.spec"
@@ -13426,7 +13426,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libtasn1.spec"
@@ -13495,7 +13495,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libtiff.spec"
@@ -13564,7 +13564,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libtirpc.spec"
@@ -13633,7 +13633,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libtool.spec"
@@ -13702,7 +13702,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libunistring.spec"
@@ -13771,7 +13771,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libunwind.spec"
@@ -13840,7 +13840,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libusb1.spec"
@@ -13909,7 +13909,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libuv.spec"
@@ -13978,7 +13978,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libverto.spec"
@@ -14049,7 +14049,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libwebp.spec"
@@ -14118,7 +14118,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libxcb.spec"
@@ -14187,7 +14187,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libxcrypt.spec"
@@ -14256,7 +14256,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libxml2.spec"
@@ -14325,7 +14325,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libxslt.spec"
@@ -14394,7 +14394,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libyaml.spec"
@@ -14463,7 +14463,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libyuv.spec"
@@ -14532,7 +14532,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "libzip.spec"
@@ -14607,7 +14607,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "lksctp-tools.spec"
@@ -14676,7 +14676,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "llhttp.spec"
@@ -14816,7 +14816,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "lmdb.spec"
@@ -14885,7 +14885,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "logrotate.spec"
@@ -14954,7 +14954,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "lua.spec"
@@ -15023,7 +15023,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "lua-rpm-macros.spec"
@@ -15092,7 +15092,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "lz4.spec"
@@ -15163,7 +15163,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "lzo.spec"
@@ -15232,7 +15232,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "m4.spec"
@@ -15301,7 +15301,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "mailcap.spec"
@@ -15370,7 +15370,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "make.spec"
@@ -15439,7 +15439,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "man-db.spec"
@@ -15508,7 +15508,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "mariadb-connector-c.spec"
@@ -15577,7 +15577,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "mariadb10.11.spec"
@@ -15646,7 +15646,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "mariadb11.8.spec"
@@ -15715,7 +15715,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "mawk.spec"
@@ -15784,7 +15784,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "memcached.spec"
@@ -15883,7 +15883,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "mkfontscale.spec"
@@ -15956,7 +15956,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "mpdecimal.spec"
@@ -16025,7 +16025,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "mpfr.spec"
@@ -16100,7 +16100,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "ncurses.spec"
@@ -16175,7 +16175,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "nettle.spec"
@@ -16246,7 +16246,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "nghttp2.spec"
@@ -16315,7 +16315,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "nghttp3.spec"
@@ -16384,7 +16384,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "nginx.spec"
@@ -16453,7 +16453,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "ngtcp2.spec"
@@ -16528,7 +16528,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "nodejs20.spec"
@@ -16597,7 +16597,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "nodejs22.spec"
@@ -16666,7 +16666,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "nodejs24.spec"
@@ -16808,7 +16808,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "npth.spec"
@@ -16877,7 +16877,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "nss.spec"
@@ -16946,7 +16946,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "nss-fips.spec"
@@ -17023,7 +17023,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "ocaml-srpm-macros.spec"
@@ -17092,7 +17092,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "oniguruma.spec"
@@ -17161,7 +17161,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "openblas-srpm-macros.spec"
@@ -17230,7 +17230,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "openldap.spec"
@@ -17303,7 +17303,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "openssh.spec"
@@ -17372,7 +17372,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "openssl.spec"
@@ -17441,7 +17441,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "openssl-fips-provider.spec"
@@ -17514,7 +17514,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "oras.spec"
@@ -17587,7 +17587,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "ostree.spec"
@@ -17656,7 +17656,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "p11-kit.spec"
@@ -17725,7 +17725,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "package-notes.spec"
@@ -17794,7 +17794,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "pam.spec"
@@ -17867,7 +17867,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "patch.spec"
@@ -17936,7 +17936,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "pcre2.spec"
@@ -18007,7 +18007,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "perl.spec"
@@ -18078,7 +18078,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "perl-Carp.spec"
@@ -18147,7 +18147,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "perl-Data-Dumper.spec"
@@ -18216,7 +18216,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "perl-Digest.spec"
@@ -18285,7 +18285,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "perl-Digest-MD5.spec"
@@ -18354,7 +18354,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "perl-Encode.spec"
@@ -18423,7 +18423,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "perl-Error.spec"
@@ -18492,7 +18492,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "perl-Exporter.spec"
@@ -18561,7 +18561,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "perl-File-Path.spec"
@@ -18630,7 +18630,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "perl-File-Temp.spec"
@@ -18699,7 +18699,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "perl-Getopt-Long.spec"
@@ -18768,7 +18768,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "perl-HTTP-Tiny.spec"
@@ -18837,7 +18837,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "perl-IO-Socket-IP.spec"
@@ -18906,7 +18906,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "perl-IO-Socket-SSL.spec"
@@ -18975,7 +18975,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "perl-MIME-Base32.spec"
@@ -19044,7 +19044,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "perl-MIME-Base64.spec"
@@ -19113,7 +19113,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "perl-Net-SSLeay.spec"
@@ -19182,7 +19182,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "perl-PathTools.spec"
@@ -19251,7 +19251,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "perl-Pod-Escapes.spec"
@@ -19320,7 +19320,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "perl-Pod-Perldoc.spec"
@@ -19389,7 +19389,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "perl-Pod-Simple.spec"
@@ -19458,7 +19458,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "perl-Pod-Usage.spec"
@@ -19527,7 +19527,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "perl-Scalar-List-Utils.spec"
@@ -19596,7 +19596,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "perl-Socket.spec"
@@ -19665,7 +19665,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "perl-Storable.spec"
@@ -19734,7 +19734,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "perl-Term-ANSIColor.spec"
@@ -19803,7 +19803,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "perl-Term-Cap.spec"
@@ -19872,7 +19872,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "perl-TermReadKey.spec"
@@ -19941,7 +19941,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "perl-Text-ParseWords.spec"
@@ -20010,7 +20010,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "perl-Text-Tabs+Wrap.spec"
@@ -20079,7 +20079,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "perl-Thread-Queue.spec"
@@ -20148,7 +20148,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "perl-Time-HiRes.spec"
@@ -20217,7 +20217,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "perl-Time-Local.spec"
@@ -20286,7 +20286,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "perl-URI.spec"
@@ -20357,7 +20357,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "perl-constant.spec"
@@ -20428,7 +20428,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "perl-libnet.spec"
@@ -20497,7 +20497,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "perl-parent.spec"
@@ -20566,7 +20566,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "perl-podlators.spec"
@@ -20635,7 +20635,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "perl-srpm-macros.spec"
@@ -20704,7 +20704,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "perl-threads.spec"
@@ -20773,7 +20773,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "perl-threads-shared.spec"
@@ -20842,7 +20842,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "php.spec"
@@ -20915,7 +20915,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "php-pecl-zip.spec"
@@ -20986,7 +20986,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "pkgconf.spec"
@@ -21059,7 +21059,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "policycoreutils.spec"
@@ -21128,7 +21128,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "popt.spec"
@@ -21197,7 +21197,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "postgresql18.spec"
@@ -21274,7 +21274,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "protobuf-c.spec"
@@ -21343,7 +21343,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "psmisc.spec"
@@ -21414,7 +21414,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "publicsuffix-list.spec"
@@ -21483,7 +21483,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "pyOpenSSL.spec"
@@ -21554,7 +21554,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "pyproject-rpm-macros.spec"
@@ -21623,7 +21623,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "pytest.spec"
@@ -21696,7 +21696,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "python-attrs.spec"
@@ -21769,7 +21769,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "python-certifi.spec"
@@ -21838,7 +21838,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "python-charset-normalizer.spec"
@@ -21907,7 +21907,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "python-cryptography.spec"
@@ -21992,7 +21992,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "python-gitlab.spec"
@@ -22063,7 +22063,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "python-idna.spec"
@@ -22134,7 +22134,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "python-iniconfig.spec"
@@ -22205,7 +22205,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "python-jinja2.spec"
@@ -22274,7 +22274,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "python-jinja2-cli.spec"
@@ -22343,7 +22343,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "python-jsonschema.spec"
@@ -22412,7 +22412,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "python-jsonschema-specifications.spec"
@@ -22483,7 +22483,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "python-markupsafe.spec"
@@ -22554,7 +22554,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "python-mypy_extensions.spec"
@@ -22623,7 +22623,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "python-packaging.spec"
@@ -22692,7 +22692,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "python-pathspec.spec"
@@ -22763,7 +22763,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "python-pip.spec"
@@ -22832,7 +22832,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "python-pluggy.spec"
@@ -22903,7 +22903,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "python-productmd.spec"
@@ -22972,7 +22972,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "python-pygments.spec"
@@ -23049,7 +23049,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "python-referencing.spec"
@@ -23118,7 +23118,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "python-requests.spec"
@@ -23187,7 +23187,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "python-requests-toolbelt.spec"
@@ -23256,7 +23256,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "python-rpds-py.spec"
@@ -23329,7 +23329,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "python-rpm-macros.spec"
@@ -23467,7 +23467,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "python-setuptools.spec"
@@ -23536,7 +23536,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "python-specfile.spec"
@@ -23621,7 +23621,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "python-types-pyyaml.spec"
@@ -23690,7 +23690,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "python-types-requests.spec"
@@ -23759,7 +23759,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "python-typing-extensions.spec"
@@ -23828,7 +23828,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "python-urllib3.spec"
@@ -23903,7 +23903,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "python3-mypy.spec"
@@ -23972,7 +23972,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "python3.11.spec"
@@ -24041,7 +24041,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "python3.12.spec"
@@ -24252,7 +24252,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "qt5.spec"
@@ -24323,7 +24323,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "qt6.spec"
@@ -24394,7 +24394,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "rdma-core.spec"
@@ -24463,7 +24463,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "readline.spec"
@@ -24532,7 +24532,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "redhat-rpm-config.spec"
@@ -24605,7 +24605,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "rootfiles.spec"
@@ -24674,7 +24674,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "rpm.spec"
@@ -24745,7 +24745,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "ruby.spec"
@@ -24814,7 +24814,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "ruby.spec"
@@ -24883,7 +24883,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "ruby.spec"
@@ -24954,7 +24954,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "rubypick.spec"
@@ -25170,7 +25170,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "rust-add-determinism.spec"
@@ -25239,7 +25239,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "rust-archery.spec"
@@ -25308,7 +25308,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "rust-imagequant-sys.spec"
@@ -25377,7 +25377,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "rust-rav1e.spec"
@@ -25446,7 +25446,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "rust-rpds.spec"
@@ -25515,7 +25515,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "rust-rpm-sequoia.spec"
@@ -25584,7 +25584,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "sdbus-cpp.spec"
@@ -25653,7 +25653,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "sed.spec"
@@ -25722,7 +25722,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "selinux-policy.spec"
@@ -25791,7 +25791,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "setup.spec"
@@ -25860,7 +25860,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "sgml-common.spec"
@@ -25929,7 +25929,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "shadow-utils.spec"
@@ -25998,7 +25998,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "skopeo.spec"
@@ -26069,7 +26069,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "snappy.spec"
@@ -26140,7 +26140,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "source-highlight.spec"
@@ -26209,7 +26209,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "sqlite.spec"
@@ -26280,7 +26280,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "subversion.spec"
@@ -26349,7 +26349,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "svt-av1.spec"
@@ -26418,7 +26418,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "syft.spec"
@@ -26491,7 +26491,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "sysprof.spec"
@@ -26560,7 +26560,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "systemd.spec"
@@ -26629,7 +26629,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "systemd-stub.spec"
@@ -26700,7 +26700,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "tar.spec"
@@ -26773,7 +26773,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "tomcat.spec"
@@ -26842,7 +26842,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "tomcat.spec"
@@ -26915,7 +26915,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "tpm2-tss.spec"
@@ -26984,7 +26984,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "tree-sitter-srpm-macros.spec"
@@ -27053,7 +27053,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "ttmkfdir.spec"
@@ -27122,7 +27122,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "tzdata.spec"
@@ -27191,7 +27191,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "unbound.spec"
@@ -27260,7 +27260,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "unzip.spec"
@@ -27329,7 +27329,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "uriparser.spec"
@@ -27398,7 +27398,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "util-linux.spec"
@@ -27467,7 +27467,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "uuid.spec"
@@ -27536,7 +27536,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "valkey.spec"
@@ -27605,7 +27605,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "vmaf.spec"
@@ -27674,7 +27674,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "which.spec"
@@ -27745,7 +27745,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "xcaddy.spec"
@@ -27818,7 +27818,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "xorg-x11-fonts.spec"
@@ -27887,7 +27887,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "xxhash.spec"
@@ -27956,7 +27956,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "xz.spec"
@@ -28025,7 +28025,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "yarnpkg.spec"
@@ -28094,7 +28094,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "yq.spec"
@@ -28163,7 +28163,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "zchunk.spec"
@@ -28232,7 +28232,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "zig-srpm-macros.spec"
@@ -28301,7 +28301,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "zip.spec"
@@ -28370,7 +28370,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "zlib-ng.spec"
@@ -28439,7 +28439,7 @@ spec:
         - x86_64
     - name: build-platforms
       value:
-        - "linux/amd64"
+        - "linux/x86_64"
         - "linux/arm64"
     - name: specfile
       value: "zstd.spec"
