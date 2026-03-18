@@ -1,0 +1,185 @@
+---
+# https://packit.dev/docs/configuration/
+
+# We want to generate packages with the original commit sha
+# https://packit.dev/docs/configuration#merge_pr_in_ci
+merge_pr_in_ci: false
+
+files_to_sync:
+  - src:
+      - ".packit.yaml"
+      - "build/package/rpm/go-fdo-server.spec"
+      - "build/package/rpm/go-fdo-server-group.conf"
+      - "build/package/rpm/go-fdo-server-*-user.conf"
+      - "build/package/rpm/go-fdo-server-*-vendor.tar.bz2"
+    dest: .
+
+issue_repository: https://github.com/fido-device-onboard/go-fdo-server
+
+upstream_package_name: go-fdo-server
+downstream_package_name: go-fdo-server
+
+upstream_tag_template: v{version}
+copy_upstream_release_description: true
+
+srpm_build_deps:
+  - git
+  - golang
+  - go-vendor-tools
+  - python3-tomlkit
+  - askalono-cli
+  - rpmdevtools
+
+packages:
+  go-fdo-server-fedora:
+    downstream_package_name: go-fdo-server
+    upstream_package_name: go-fdo-server
+    specfile_path: build/package/rpm/go-fdo-server.spec
+  go-fdo-server-centos:
+    downstream_package_name: go-fdo-server
+    upstream_package_name: go-fdo-server
+    specfile_path: build/package/rpm/go-fdo-server.spec
+    pkg_tool: centpkg
+
+actions:
+  post-modifications:
+    # https://fedora.gitlab.io/sigs/go/go-vendor-tools/scenarios/#manual-update
+    - |
+      bash -xc '
+      #! /bin/bash
+      export GOTOOLCHAIN=auto
+      export BASE_DIR=${PACKIT_UPSTREAM_REPO}/build/package/rpm
+      export GO_VENDOR_TOOLS_CONFIG=${BASE_DIR}/go-vendor-tools.toml
+      export SPEC_FILE=${BASE_DIR}/go-fdo-server.spec
+      # Download the source tarball (Source0) needed by go_vendor_archive
+      spectool -g -C ${BASE_DIR} ${SPEC_FILE}
+      go_vendor_archive create --config ${GO_VENDOR_TOOLS_CONFIG} ${SPEC_FILE}
+      go_vendor_license \
+        --config ${GO_VENDOR_TOOLS_CONFIG} \
+        --path ${SPEC_FILE} \
+        report \
+        --verify-spec
+      if [ -n "${PACKIT_DOWNSTREAM_REPO}" ]; then
+        cp "${BASE_DIR}/go-fdo-server-${PACKIT_PROJECT_VERSION}-vendor.tar.bz2" "${PACKIT_DOWNSTREAM_REPO}"
+      fi
+      '
+
+jobs:
+
+  # Fedora jobs
+
+  # We build and test Fedora 43 ('latest-stable'), Fedora 44 ('latest' when branched) and Fedora Rawhide
+  # because they are the only ones officially released with golang >= 1.25.0
+  - &copr_fedora
+    job: copr_build
+    packages: [go-fdo-server-fedora]
+    trigger: pull_request
+    targets: &copr_fedora_targets
+      - "fedora-latest-stable-x86_64"
+      - "fedora-latest-stable-aarch64"
+      - "fedora-latest-x86_64"
+      - "fedora-latest-aarch64"
+      - "fedora-rawhide-x86_64"
+      - "fedora-rawhide-aarch64"
+
+    # Build all versions in '@fedora-iot/copr' copr because it's possible to add golang >= 1.25.0
+    # see: https://copr.fedorainfracloud.org/coprs/g/fedora-iot/fedora-iot/edit_chroot/fedora-42-x86_64/
+  - <<: *copr_fedora
+    trigger: commit
+    branch: main
+    owner: "@fedora-iot"
+    project: fedora-iot
+    targets:
+     - "fedora-stable-x86_64"
+     - "fedora-stable-aarch64"
+     - "fedora-development-x86_64"
+     - "fedora-development-aarch64"
+     - "fedora-eln-x86_64"
+     - "fedora-eln-aarch64"
+
+  # Only Fedora >= 43 have golang >= 1.25.0
+  # https://packit.dev/docs/configuration/upstream/propose_downstream
+  - job: propose_downstream
+    trigger: release
+    packages: [go-fdo-server-fedora]
+    dist_git_branches: ["fedora-development", "fedora-latest-stable"]
+
+  - job: koji_build
+    trigger: commit
+    allowed_pr_authors:
+      - packit
+      - all_committers
+    dist_git_branches: &fedora_dist_git_branches
+      - "fedora-latest-stable"
+      - "fedora-latest"
+      - "fedora-rawhide"
+
+  - job: bodhi_update
+    trigger: commit
+    allowed_builders:
+      - packit
+      - all_committers
+    dist_git_branches: *fedora_dist_git_branches
+
+  # Fedora E2E Testing jobs
+  # We build and test Fedora 43 ('latest-stable'), Fedora 44 ('latest' when branched) and Fedora Rawhide
+  # because they are the only ones officially released with golang >= 1.25.0
+  - job: tests
+    trigger: pull_request
+    identifier: rpm-e2e-fedora
+    tmt_plan: test/fmf/plans/rpm-e2e
+    packages: [go-fdo-server-fedora]
+    targets: *copr_fedora_targets
+
+  - job: tests
+    trigger: pull_request
+    identifier: bootc-e2e-fedora
+    tmt_plan: test/fmf/plans/bootc-e2e
+    packages: [go-fdo-server-fedora]
+    targets: # Temporarily disabling rawhide due to bug https://issues.redhat.com/browse/HMS-9867
+      - "fedora-latest-stable-x86_64"
+      - "fedora-latest-stable-aarch64"
+
+  # CentOS jobs
+
+  - &copr_centos
+    job: copr_build
+    packages: [go-fdo-server-centos]
+    trigger: pull_request
+    targets: &copr_centos_targets
+      - "centos-stream-9-x86_64"
+      - "centos-stream-9-aarch64"
+      - "centos-stream-10-x86_64"
+      - "centos-stream-10-aarch64"
+
+  # Build also for epel-9 and epel-10 in '@fedora-iot/fedora-iot' copr
+  - <<: *copr_centos
+    trigger: commit
+    branch: main
+    owner: "@fedora-iot"
+    project: fedora-iot
+    targets:
+      - "centos-stream-9-x86_64"
+      - "centos-stream-9-aarch64"
+      - "centos-stream-10-x86_64"
+      - "centos-stream-10-aarch64"
+      - "epel-9-x86"
+      - "epel-9-aarch64"
+      - "epel-10-x86"
+      - "epel-10-aarch64"
+
+  # https://packit.dev/docs/configuration/upstream/propose_downstream#syncing-the-release-to-centos-stream
+  - job: propose_downstream
+    trigger: release
+    packages: [go-fdo-server-centos]
+    dist_git_branches:
+      - "c10s"
+
+  # CentOS E2E Testing jobs
+  #
+  - job: tests
+    trigger: pull_request
+    identifier: rpm-e2e-centos
+    tmt_plan: test/fmf/plans/rpm-e2e
+    packages: [go-fdo-server-centos]
+    targets: *copr_centos_targets
