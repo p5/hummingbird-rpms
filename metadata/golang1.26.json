@@ -3,7 +3,7 @@
   "modification_reason": "Carry hummingbird path along",
   "modification_status": "modified",
   "release": "1",
-  "sha": "336c560fb8670fbb5081b1bcaebcd8a36da6ee7d",
+  "sha": "ad3112443e76268e1e614261608e4ed9f2c36e16",
   "source": "https://src.fedoraproject.org/rpms/golang.git",
-  "version": "1.26.0"
+  "version": "1.26.1"
 }
