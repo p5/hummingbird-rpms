@@ -251,6 +251,8 @@ spec:
           contentType: rpm
         - name: gnutls-main
           contentType: rpm
+        - name: go-fdo-server-main
+          contentType: rpm
         - name: go-rpm-macros-main
           contentType: rpm
         - name: golang-fips1-25-main
