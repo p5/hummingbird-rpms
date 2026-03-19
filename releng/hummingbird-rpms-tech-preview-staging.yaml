@@ -649,6 +649,8 @@ spec:
           contentType: rpm
         - name: perl-threads-main
           contentType: rpm
+        - name: perl-threads-shared-main
+          contentType: rpm
         - name: php-main
           contentType: rpm
         - name: php-pecl-zip-main
