@@ -145,6 +145,37 @@ dist_git_update:
     - !reference [.rules, schedule]
     - !reference [.rules, mr_manual]
 
+upstream_version_update:
+  tags: [big-runner]
+  environment:
+    name: chore-mr
+    action: access
+  id_tokens:
+    GITLAB_OIDC_TOKEN:
+      aud: https://gitlab.com
+  allow_failure: true
+  before_script:
+    - |
+      git config --local user.name "${GITLAB_USER_NAME}"
+      git config --local user.email "${GITLAB_USER_EMAIL}"
+      git fetch --quiet origin
+      git config --local credential.username ignored
+      git config --local credential.helper "!echo \"password=\$CHORE_MR_GITLAB_TOKEN\"; :"
+      # Workaround for GitLab Runner 18.6 MR !5912:
+      # Remove include.path to .gitlab-runner.ext.conf which re-injects the read-only
+      # gitlab-ci-token into the remote URL, preventing the credential helper from working.
+      git config --local --unset-all include.path || true
+      git branch --quiet --force "${CI_COMMIT_BRANCH:-$CI_DEFAULT_BRANCH}" "origin/${CI_COMMIT_BRANCH:-$CI_DEFAULT_BRANCH}"
+  script:
+    - |
+      printenv GITLAB_OIDC_TOKEN > /tmp/oidc-token
+      export AWS_WEB_IDENTITY_TOKEN_FILE=/tmp/oidc-token
+      export AWS_ROLE_ARN="arn:aws:iam::${LOOKASIDE_UPLOAD_AWS_ACCOUNT_ID}:role/${LOOKASIDE_UPLOAD_AWS_ROLE_NAME}"
+      export AWS_ROLE_SESSION_NAME="gitlab-ci-${CI_JOB_ID}"
+      ./ci/upstream_update_multi_mr.sh
+  rules:
+    - !reference [.rules, mr_manual]
+
 chore_mr_approval:
   stage: deploy
   environment:
