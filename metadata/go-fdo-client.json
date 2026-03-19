@@ -1,0 +1,8 @@
+{
+  "branch": "rawhide",
+  "modification_status": "clean",
+  "release": "1",
+  "sha": "410fb14cb0eaf6584384803ba94687bfcbaaafbb",
+  "source": "https://src.fedoraproject.org/rpms/go-fdo-client.git",
+  "version": "1.0.0"
+}
