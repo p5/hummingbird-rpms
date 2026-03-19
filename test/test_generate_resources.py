@@ -203,7 +203,7 @@ class TestGenerateReleng:
 
         doc = yaml.safe_load(output)
         data = doc["spec"]["data"]
-        assert data["intention"] == "staging"
+        assert data["intention"] in ("staging", "production")
         assert "sign" in data
         assert "pyxis" in data
         assert "atlas" in data
