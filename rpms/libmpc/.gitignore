@@ -2,3 +2,5 @@
 .build-*
 mpc-*/
 /mpc-*.tar.gz
+/mpc-*.tar.xz
+/mpc-*.tar.xz.sig
