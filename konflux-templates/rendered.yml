@@ -11400,6 +11400,45 @@ spec:
     event: repo_push
     method: webhook
     title: SBOM-event-to-Bombino
+# --- perl-Thread-Queue ---
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    build.appstudio.openshift.io/status: '{"pac":{"state":"enabled"},"message":"done"}'
+    git-provider: gitlab
+    git-provider-url: https://gitlab.com
+    mintmaker.appstudio.redhat.com/disabled: "true"
+    test.appstudio.openshift.io/comment_strategy: disable_all
+  name: perl-thread-queue-main
+spec:
+  application: rpms-main
+  componentName: perl-thread-queue-main
+  containerImage: quay.io/redhat-user-workloads/hummingbird-tenant/perl-thread-queue-main
+  source:
+    git:
+      context: rpms/perl-Thread-Queue
+      revision: main
+      url: https://gitlab.com/redhat/hummingbird/rpms.git
+---
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: ImageRepository
+metadata:
+  labels:
+    appstudio.redhat.com/application: rpms-main
+    appstudio.redhat.com/component: perl-thread-queue-main
+  name: perl-thread-queue-main
+spec:
+  image:
+    name: hummingbird-tenant/perl-thread-queue-main
+    visibility: public
+  notifications:
+  - config:
+      url: https://bombino.api.redhat.com/v1/sbom/quay/push
+    event: repo_push
+    method: webhook
+    title: SBOM-event-to-Bombino
 # --- perl-Time-HiRes ---
 ---
 apiVersion: appstudio.redhat.com/v1alpha1

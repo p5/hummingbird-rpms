@@ -1,0 +1,4 @@
+summary: Upstream tests
+component: perl-Thread-Queue
+require: perl-Thread-Queue-tests
+test: /usr/libexec/perl-Thread-Queue/test
