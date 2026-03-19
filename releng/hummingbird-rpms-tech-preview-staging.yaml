@@ -11,7 +11,7 @@ spec:
   applications:
     - rpms-main
   data:
-    intention: staging
+    intention: production
     pulp:
       domain: public-hummingbird
       secretName: hummingbird-pulp-credentials-production-secret
@@ -874,6 +874,17 @@ spec:
         - name: pathInRepo
           value: "pipelines/managed/push-rpms-to-pulp/push-rpms-to-pulp.yaml"
       resolver: git
+    taskRunSpecs:
+      - pipelineTaskName: populate-release-notes
+        stepSpecs:
+          - computeResources:
+              limits:
+                cpu: '1'
+                memory: 256Mi
+              requests:
+                cpu: '1'
+                memory: 256Mi
+            name: populate-release-notes-artifacts
     serviceAccountName: hummingbird-rpm-release-staging
     timeouts:
       pipeline: 4h0m0s
