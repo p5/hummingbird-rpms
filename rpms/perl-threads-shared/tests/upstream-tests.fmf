@@ -1,0 +1,4 @@
+summary: Upstream tests
+component: perl-threads-shared
+require: perl-threads-shared-tests
+test: /usr/libexec/perl-threads-shared/test

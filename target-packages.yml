@@ -423,8 +423,11 @@ packages:
   - perl-Term-Cap
   - perl-Text-ParseWords
   - perl-Text-Tabs+Wrap
+  - perl-Thread-Queue
   - perl-Time-HiRes
   - perl-Time-Local
+  - perl-threads
+  - perl-threads-shared
   - perl-URI
   - perl-XML-Parser
   - perl-constant
