@@ -1,8 +1,8 @@
 {
   "branch": "rawhide",
-  "release": "2",
-  "sha": "9a1859380d8fd86bc34e3426774b4dc325796f4b",
+  "modification_status": "clean",
+  "release": "3",
+  "sha": "38ae3a967d845a6978cb6fa16c3629294fe22863",
   "source": "https://src.fedoraproject.org/rpms/python-attrs.git",
-  "version": "25.4.0",
-  "modification_status": "clean"
+  "version": "25.4.0"
 }
