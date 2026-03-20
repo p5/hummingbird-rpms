@@ -18,7 +18,7 @@ ROOT_DIR = Path(__file__).resolve().parent.parent
 
 # Default configuration
 DEFAULT_TIMEOUT_HOURS = 4
-DEFAULT_BUILD_PLATFORMS = ["linux/amd64", "linux/arm64"]
+DEFAULT_BUILD_PLATFORMS = ["linux/x86_64", "linux/arm64"]
 BUILD_TRIGGER_RPM_NAME = "setup"
 
 # renovate: datasource=docker depName=quay.io/hummingbird-ci/rpmbuild-pipeline
