@@ -52,8 +52,8 @@
 # Note that epoch needs special handling, see https://github.com/package-url/purl-spec/issues/69
 # and https://redhatproductsecurity.github.io/security-data-guidelines/purl/
 %__python_wheel_purl pkg:rpm/%{__python_wheel_dist_purl_namespace}/%{name}@%{version}-%{release}?%{?epoch:epoch=%{epoch}&}arch=src
-%__python_wheel_macros_verrel %(rpm -q python-rpm-macros --qf '%%{version}-%%{release}')
-%__python_wheel_macros_purl pkg:rpm/%{__python_wheel_dist_purl_namespace}/python-rpm-macros@%{__python_wheel_macros_verrel}?arch=src
+%__python_wheel_macros_verrel PLACEHOLDER
+%__python_wheel_macros_purl PLACEHOLDER
 
 
 # The purl namespace used above
