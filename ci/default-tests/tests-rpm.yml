@@ -198,6 +198,23 @@ src-rpm-hum-suffix-check:
 
     echo "Source RPM release '${release}' has correct Hummingbird suffix"
 
+src-rpm-name-check:
+  command: |
+    # Only run if TEST_SRC_RPM is provided
+    if [[ -z ${TEST_SRC_RPM} ]]; then
+      echo "Skipping: No source RPM provided"
+      exit 0
+    fi
+
+    # Verify the SRPM name matches the package directory name
+    srpm_name=$(rpm -qp --queryformat '%{NAME}' "${TEST_SRC_RPM}")
+
+    if [[ ${srpm_name} != "${PACKAGE_NAME}" ]]; then
+      TEST_FAIL "SRPM name '${srpm_name}' does not match directory name '${PACKAGE_NAME}' - the spec Name: field must match the rpms/ directory name"
+    fi
+
+    echo "SRPM name '${srpm_name}' matches directory name '${PACKAGE_NAME}'"
+
 src-rpm-integrity-check:
   command: |
     # Only run if TEST_SRC_RPM is provided
