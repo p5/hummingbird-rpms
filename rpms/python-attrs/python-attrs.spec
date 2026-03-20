@@ -4,7 +4,7 @@
 
 Name:           python-attrs
 Version:        25.4.0
-Release:        2.1%{?dist}
+Release:        3%{?dist}
 Summary:        Python attributes without boilerplate
 
 # SPDX
@@ -12,6 +12,9 @@ License:        MIT
 URL:            http://www.attrs.org/
 BuildArch:      noarch
 Source:         https://github.com/python-attrs/attrs/archive/%{version}/attrs-%{version}.tar.gz
+
+# Compatibility with Python 3.15 alpha 7
+Patch:          https://github.com/python-attrs/attrs/commit/31e0286.patch
 
 BuildRequires:  python3-devel
 
