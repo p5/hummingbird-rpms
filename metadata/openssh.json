@@ -1,8 +1,8 @@
 {
   "branch": "rawhide",
   "modification_status": "clean",
-  "release": "5",
-  "sha": "6565cda719931206bdf2801f115e2d7f63d80277",
+  "release": "7",
+  "sha": "9008269fd096a7ed9b57ba447f8fdc133e0016a7",
   "source": "https://src.fedoraproject.org/rpms/openssh.git",
   "version": "10.2p1"
 }
