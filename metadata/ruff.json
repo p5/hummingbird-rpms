@@ -1,9 +1,9 @@
 {
   "branch": "rawhide",
-  "release": "1",
-  "sha": "2ed24bbc3848718a86180e270683212a5cef32fd",
-  "source": "https://src.fedoraproject.org/rpms/ruff.git",
-  "version": "0.14.11",
+  "modification_reason": "Pre-existing modification - requires review",
   "modification_status": "modified",
-  "modification_reason": "Pre-existing modification - requires review"
+  "release": "1",
+  "sha": "dc7f2fb5be3e150ab29ebe69fc1997dbea526b40",
+  "source": "https://src.fedoraproject.org/rpms/ruff.git",
+  "version": "0.15.7"
 }
