@@ -1,3 +1,20 @@
+* Sat Mar 21 2026 Zdenek Pytela <zpytela@redhat.com> - 43.2-1
+- Allow fedoratp_exec_t be an entrypoint of unconfined_t
+- Allow rasdaemon_t to list pstore (bsc#1259742)
+- Allow virtqemud_t send kill signal to svirt_tcg_t
+- Allow virtqemud_t get priority of a svirt_t process
+- Allow sysadm user connect to lvm over a unix stream socket
+- Allow staff user delete thump_tmp_t files
+- Allow staff user connect to systemd-logind over a unix stream socket
+- Allow staff user mount /proc
+- Allow virtqemud map vhost net device
+- Dontaudit ps to read proc (bsc#1257527)
+- Allow dovecot_deliver_t map its private tmp files
+- Allow rpcbind get attributes of the pidfs filesystem
+- Fix names in mysql.if
+- Allow create kerberos files in mysql db home
+- Allow systemd-resolved connect to systemd-networkd over a unix stream socket
+
 * Tue Mar 10 2026 Zdenek Pytela <zpytela@redhat.com> - 43.1-1
 - Allow redis_t to create netlink_rdma_socket
 - Allow systemd create symlinks in /run/varlink/registry
