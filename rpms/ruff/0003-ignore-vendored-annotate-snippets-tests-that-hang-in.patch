@@ -1,4 +1,4 @@
-From 6527e1abf0cdc077c619cfaeb8a01b9055bc2d9a Mon Sep 17 00:00:00 2001
+From 79c1f6192a5b89f05cf38b866debe6a64704c5c8 Mon Sep 17 00:00:00 2001
 From: Fabio Valentini <decathorpe@gmail.com>
 Date: Wed, 12 Mar 2025 19:34:50 +0100
 Subject: [PATCH 3/3] ignore vendored annotate-snippets tests that hang
@@ -43,5 +43,5 @@ index b6576629f9..b7d66af319 100644
      let target = "multislice";
      let expected = snapbox::file!["../examples/multislice.svg": TermSvg];
 -- 
-2.52.0
+2.53.0
 

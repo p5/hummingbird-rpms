@@ -1,7 +1,7 @@
 %bcond check 0
 
 Name:           ruff
-Version:        0.14.11
+Version:        0.15.7
 # The ruff package has a permanent exception to the Updates Policy in Fedora,
 # so it can be updated in stable releases across SemVer boundaries (subject to
 # good judgement and actual compatibility of any reverse dependencies). See
@@ -9,7 +9,7 @@ Version:        0.14.11
 # https://pagure.io/fesco/issue/3197. It also has a corresponding exception in
 # EPEL, but only in leading branches and only until version 1.0; see
 # https://pagure.io/epel/issue/350.
-Release:        %autorelease
+Release:        1%{?dist}
 Summary:        Extremely fast Python linter and code formatter
 
 # The license of the ruff project is MIT, except:
@@ -115,7 +115,6 @@ SourceLicense:  %{shrink:
 # Apache-2.0 OR BSL-1.0
 # Apache-2.0 OR MIT
 # Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT
-# BSD-2-Clause OR Apache-2.0 OR MIT
 # CC0-1.0
 # ISC
 # MIT
@@ -135,7 +134,6 @@ License:        %{shrink:
     MIT AND
     Apache-2.0 AND
     (Apache-2.0 OR BSD-2-Clause) AND
-    (Apache-2.0 OR BSD-2-Clause OR MIT) AND
     (Apache-2.0 OR BSL-1.0) AND
     (Apache-2.0 OR MIT) AND
     (Apache-2.0 OR MIT OR Zlib) AND
@@ -172,9 +170,9 @@ Source:         %{url}/archive/%{version}/ruff-%{version}.tar.gz
 # particular hurry to do so. We therefore bundle the fork as prescribed in:
 #   https://docs.fedoraproject.org/en-US/packaging-guidelines/Rust/#_replacing_git_dependencies
 %global lsp_types_git https://github.com/astral-sh/lsp-types
-%global lsp_types_rev 3512a9f33eadc5402cfab1b8f7340824c8ca1439
+%global lsp_types_rev e15db0593f0ecbbd80599c3f5880e4bf5da1ca0c
 %global lsp_types_baseversion 0.95.1
-%global lsp_types_snapdate 20240429
+%global lsp_types_snapdate 20260220
 Source200:      %{lsp_types_git}/archive/%{lsp_types_rev}/lsp-types-%{lsp_types_rev}.tar.gz
 
 # For now, ruff still needs to use a git snapshot of salsa because it
@@ -187,17 +185,17 @@ Source200:      %{lsp_types_git}/archive/%{lsp_types_rev}/lsp-types-%{lsp_types_
 # observe the version and https://github.com/salsa-rs/commit/%%{salsa_rev} to
 # observe the date.
 %global salsa_git https://github.com/salsa-rs/salsa
-%global salsa_rev 309c249088fdeef0129606fa34ec2eefc74736ff
-%global salsa_baseversion 0.25.2
-%global salsa_snapdate 20251226
+%global salsa_rev 53421c2fff87426fa0bb51cab06632b87646de13
+%global salsa_baseversion 0.26.0
+%global salsa_snapdate 20260207
 Source300:      %{salsa_git}/archive/%{salsa_rev}/salsa-%{salsa_rev}.tar.gz
 
 # Get this from ruff/crates/ty_vendored/vendor/typeshed/source_commit.txt.
-%global typeshed_rev d1d5fe58664b30a0c2dde3cd5c3dc8091f0f16ae
+%global typeshed_rev f8f0794d0fe249c06dc9f31a004d85be6cca6ced
 # The typeshed project as a whole has never been versioned.
 %global typeshed_baseversion 0
 # Inspect https://github.com/python/typeshed/commit/%%{typeshed_rev}.
-%global typeshed_snapdate 20261226
+%global typeshed_snapdate 20260314
 
 # Downstream patch: always find the system-wide ruff executable
 #
@@ -525,12 +523,20 @@ skip="${skip-} --skip python_environment::ty_environment_is_system_not_virtual"
 skip="${skip-} --skip config_option::config_file_override"
 skip="${skip-} --skip 'exit_code::both_warnings_and_errors_and_error_on_warning_is_true'"
 
-# This panics consistently on s390x only; not reported upstream since it
-# couldn’t be reproduced in a git checkout under qemu-user-static emulation.
 %ifarch s390x
+# This panics consistently on s390x only; not reported upstream since it
+# couldn't be reproduced in a git checkout under qemu-user-static emulation.
 skip="${skip-} --skip mdtest__generics_specialize_constrained"
+
+%if %{defined fc42}
+# Segfaults on F42 only. LLVM bug? Not worth reporting upstream since it
+# doesn't appear elsewhere.
+skip="${skip-} --skip cycle_nested_deep_panic"
+%endif
 %endif
 
+# Avoid flaky “text file busy” errors in insta tests
+export RUST_TEST_THREADS=1
 %cargo_test -- -- ${skip-}
 %endif
 
