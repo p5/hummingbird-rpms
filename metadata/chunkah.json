@@ -1,9 +1,8 @@
 {
   "branch": "rawhide",
-  "modification_reason": "Backport fix for non-deterministic stability from HashMap iteration (https://github.com/coreos/chunkah/commit/c05927f1278ec5b0806ba16fa609dd68c2724d8a)",
-  "modification_status": "modified",
-  "release": "3",
-  "sha": "197c052ee1210d59ca65e88029661ea1f3c9ddb9",
+  "modification_status": "clean",
+  "release": "1",
+  "sha": "99d80162a3830185b5ff05cd17c5fe76415609f7",
   "source": "https://src.fedoraproject.org/rpms/chunkah.git",
-  "version": "0.2.0"
+  "version": "0.3.1"
 }
