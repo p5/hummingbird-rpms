@@ -1,7 +1,9 @@
---- cmake-4.0.0-rc4/Modules/FindRuby.cmake	2025-03-11 18:12:16.000000000 +0100
-+++ cmake-4.0.0-rc4/Modules/FindRuby.cmake	2025-03-23 19:44:54.419957176 +0100
-@@ -289,6 +289,9 @@
-   execute_process(COMMAND ${Ruby_EXECUTABLE} -r vendor-specific -e "print 'true'"
+Index: cmake-4.3.0/Modules/FindRuby.cmake
+===================================================================
+--- cmake-4.3.0.orig/Modules/FindRuby.cmake
++++ cmake-4.3.0/Modules/FindRuby.cmake
+@@ -410,6 +410,9 @@ if (Ruby_EXECUTABLE AND NOT Ruby_EXECUTA
+   execute_process(COMMAND "${Ruby_EXECUTABLE}" -r vendor-specific -e "print 'true'"
                    OUTPUT_VARIABLE Ruby_HAS_VENDOR_RUBY ERROR_QUIET)
  
 +  # Overwrite by Fedora
