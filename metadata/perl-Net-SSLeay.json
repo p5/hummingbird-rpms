@@ -1,8 +1,8 @@
 {
   "branch": "rawhide",
-  "release": "12",
-  "sha": "a00e7f843fa72136b1ffb92b018c408423cae600",
+  "modification_status": "clean",
+  "release": "1",
+  "sha": "d6569d085cee864056be477731cd8e13af8d6bb8",
   "source": "https://src.fedoraproject.org/rpms/perl-Net-SSLeay.git",
-  "version": "1.94",
-  "modification_status": "clean"
+  "version": "1.96"
 }
