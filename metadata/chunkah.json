@@ -2,7 +2,7 @@
   "branch": "rawhide",
   "modification_status": "clean",
   "release": "1",
-  "sha": "99d80162a3830185b5ff05cd17c5fe76415609f7",
+  "sha": "d6912b2498c2a3a0b05d739b63625d785d41e9f3",
   "source": "https://src.fedoraproject.org/rpms/chunkah.git",
-  "version": "0.3.1"
+  "version": "0.3.2"
 }
