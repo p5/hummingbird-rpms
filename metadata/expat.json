@@ -2,7 +2,7 @@
   "branch": "rawhide",
   "modification_status": "clean",
   "release": "1",
-  "sha": "4da0543472c5008fbe4e780afd819c458738d7bd",
+  "sha": "76216637648fa5f518ad93f7a0791706e14871fa",
   "source": "https://src.fedoraproject.org/rpms/expat.git",
-  "version": "2.7.4"
+  "version": "2.7.5"
 }
