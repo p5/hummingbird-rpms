@@ -43,7 +43,7 @@
 Summary: An open source implementation of SSH protocol version 2
 Name: openssh
 Version: %{openssh_ver}
-Release: 7%{?dist}
+Release: 8%{?dist}
 URL: http://www.openssh.com/portable.html
 Source0: ftp://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-%{version}.tar.gz
 Source1: ftp://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-%{version}.tar.gz.asc
@@ -578,6 +578,9 @@ test -f %{sysconfig_anaconda} && \
 %attr(0755,root,root) %{_libdir}/sshtest/sk-dummy.so
 
 %changelog
+* Mon Mar 23 2026 Zoltan Fridrich <zfridric@redhat.com> - 10.2p1-8
+- Fix typo in GSSAPIProxyS4U2Services
+
 * Thu Mar 19 2026 Dmitry Belyavskiy <dbelyavs@redhat.com> - 10.2p1-7
 - Providing GssAPIAllowS4U2Self/GssAPIProxyS4U2Services funcionality
 
