@@ -1,8 +1,8 @@
 {
   "branch": "rawhide",
+  "modification_status": "clean",
   "release": "1",
-  "sha": "3156264f2a9f0703ff08a14b1cef2cee74dd3b64",
+  "sha": "7c28cec1b892f6ce8745412f1add1028386b7174",
   "source": "https://src.fedoraproject.org/rpms/audit.git",
-  "version": "4.1.3",
-  "modification_status": "clean"
+  "version": "4.1.4"
 }
