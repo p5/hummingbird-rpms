@@ -2,7 +2,7 @@
   "branch": "rawhide",
   "modification_status": "clean",
   "release": "2",
-  "sha": "575bed8c40781f405ea35ecfe8645c54766e081c",
+  "sha": "1e6dfa5a1e2fae97bf46b772c01b1fa16b92f6be",
   "source": "https://src.fedoraproject.org/rpms/cmake.git",
-  "version": "4.2.3"
+  "version": "4.3.0"
 }
