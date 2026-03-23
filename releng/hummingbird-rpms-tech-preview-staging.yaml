@@ -217,6 +217,8 @@ spec:
           contentType: rpm
         - name: freetype-main
           contentType: rpm
+        - name: fstrm-main
+          contentType: rpm
         - name: fsverity-utils-main
           contentType: rpm
         - name: gap-srpm-macros-main
@@ -402,6 +404,8 @@ spec:
         - name: libksba-main
           contentType: rpm
         - name: liblerc-main
+          contentType: rpm
+        - name: libmaxminddb-main
           contentType: rpm
         - name: libmnl-main
           contentType: rpm
