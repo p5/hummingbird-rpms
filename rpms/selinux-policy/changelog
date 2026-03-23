@@ -1,3 +1,6 @@
+* Mon Mar 23 2026 Zdenek Pytela <zpytela@redhat.com> - 43.3-1
+- Move interfaces from other modules to optional block
+
 * Sat Mar 21 2026 Zdenek Pytela <zpytela@redhat.com> - 43.2-1
 - Allow fedoratp_exec_t be an entrypoint of unconfined_t
 - Allow rasdaemon_t to list pstore (bsc#1259742)
