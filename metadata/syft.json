@@ -1,5 +1,7 @@
 {
-    "version": "1.40.0",
-    "release": "1.hum1",
-    "modification_status": "native"
+  "modification_status": "native",
+  "release": "1.hum1",
+  "release_monitoring_project_id": 385937,
+  "track_upstream": "latest",
+  "version": "1.40.0"
 }

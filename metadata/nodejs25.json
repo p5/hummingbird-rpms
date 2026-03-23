@@ -1,5 +1,7 @@
 {
-  "version": "25.6.1",
+  "modification_status": "native",
   "release": "1",
-  "modification_status": "native"
+  "release_monitoring_project_id": 8251,
+  "track_upstream": "25",
+  "version": "25.6.1"
 }
