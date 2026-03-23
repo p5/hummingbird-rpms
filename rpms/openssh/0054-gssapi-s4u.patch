@@ -843,14 +843,14 @@ index a558bbc33..d8b6af13f 100644
  		restore_uid();
  	}
 +	/*
-+	 * GSSAPIAllowS4U2Self / GSSAPIS42UProxyServices: if no credentials were stored
++	 * GSSAPIAllowS4U2Self / GSSAPIProxyS4U2Services: if no credentials were stored
 +	 * above (i.e. no GSSAPI auth with delegation occurred), use S4U2Self
 +	 * to obtain an impersonated credential for the user, then optionally
 +	 * follow with S4U2Proxy for configured target services.
 +	 *
 +	 * GSSAPIAllowS4U2Self alone:    store S4U2Self evidence ticket only;
 +	 *                            the host TGT is removed.
-+	 * GSSAPIS42UProxyServices alone: store host TGT and S4U2Proxy service
++	 * GSSAPIProxyS4U2Services alone: store host TGT and S4U2Proxy service
 +	 *                            tickets; the S4U2Self evidence ticket
 +	 *                            is removed.
 +	 * Both:                     store host TGT, S4U2Self evidence ticket,
@@ -921,7 +921,7 @@ index a558bbc33..d8b6af13f 100644
 +			 * stay so that applications recognise the ccache as
 +			 * holding live Kerberos credentials.
 +			 * Remove the S4U2Self evidence ticket in proxy-only
-+			 * mode (GSSAPIS42UProxyServices without GSSAPIAllowS4U2Self).
++			 * mode (GSSAPIProxyS4U2Services without GSSAPIAllowS4U2Self).
 +			 */
 +			filter = 0;
 +			if (options.gss_allow_s4u2self &&
@@ -977,7 +977,7 @@ index 3dbce55fc..d25b406fb 100644
 +.Pp
 +The default is
 +.Cm no .
-+.It Cm GSSAPIS42UProxyServices
++.It Cm GSSAPIProxyS4U2Services
 +Specifies a list of Kerberos service principals for which constrained
 +delegation (S4U2Proxy) tickets should be obtained after a successful
 +S4U2Self protocol transition.
