@@ -405,6 +405,8 @@ spec:
           contentType: rpm
         - name: liblerc-main
           contentType: rpm
+        - name: libmaxminddb-main
+          contentType: rpm
         - name: libmnl-main
           contentType: rpm
         - name: libmodulemd-main
