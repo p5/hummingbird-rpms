@@ -217,6 +217,8 @@ spec:
           contentType: rpm
         - name: freetype-main
           contentType: rpm
+        - name: fstrm-main
+          contentType: rpm
         - name: fsverity-utils-main
           contentType: rpm
         - name: gap-srpm-macros-main

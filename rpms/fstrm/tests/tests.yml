@@ -1,0 +1,15 @@
+- hosts: localhost
+  roles:
+    - role: standard-test-basic
+      tags:
+        - classic
+      required_packages:
+        - fstrm-devel
+        - gcc
+      tests:
+        - pkg-config:
+            dir: .
+            run: pkg-config --modversion libfstrm
+        - build-sample-program:
+            dir: samples
+            run: gcc -Wall -Wextra $(pkg-config --cflags --libs libfstrm) -o /dev/null fstrm-sample-program.c
