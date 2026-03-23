@@ -324,7 +324,7 @@ def test_mark_package_modified_preserves_native(cuv_module, workdir: Path) -> No
     with open(workdir / 'metadata' / 'pkg.json') as f:
         data = json.load(f)
     assert data['modification_status'] == 'native'
-    assert data['modification_reason'] == 'Update to upstream version 2.0'
+    assert 'modification_reason' not in data
     assert data['version'] == '2.0'
     assert data['release'] == '1'
 
