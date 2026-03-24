@@ -621,7 +621,7 @@ def update_spec_version(package: str, new_version: str) -> list[str]:
     spec_file = spec_files[0]
     spec = Specfile(str(spec_file), sourcedir=str(package_dir))
 
-    old_version = spec.version
+    old_version = spec.expanded_version
 
     spec.update_version(new_version)
     if not spec.has_autorelease:
