@@ -623,18 +623,16 @@ def update_spec_version(package: str, new_version: str) -> list[str]:
 
     old_version = spec.version
 
-    if spec.has_autorelease:
-        # With autorelease, only update the version tag; release is automatic
-        spec.update_version(new_version)
-    else:
+    spec.update_version(new_version)
+    if not spec.has_autorelease:
         # Use Release 0.1 so that when the same version is later imported
         # from Fedora (with Release >= 1), it sorts higher and replaces
         # this locally-built version.
-        spec.set_version_and_release(new_version, "0.1")
+        spec.update_tag("Release", "0.1%{?dist}")
 
     # Add changelog entry (no-op if %autochangelog is used)
     spec.add_changelog_entry(
-        f"Update to {new_version}",
+        f"- Update to {new_version}",
         author="Hummingbird",
         email="hummingbird@redhat.com",
     )
