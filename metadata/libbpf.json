@@ -1,8 +1,8 @@
 {
   "branch": "rawhide",
   "modification_status": "clean",
-  "release": "2",
-  "sha": "2f73af52006f4a3ea9ec4acd184d176f8d2ad551",
+  "release": "1",
+  "sha": "b2d4699868013d655378d661f3eabf3669fc290d",
   "source": "https://src.fedoraproject.org/rpms/libbpf.git",
-  "version": "1.6.3"
+  "version": "1.7.0"
 }
