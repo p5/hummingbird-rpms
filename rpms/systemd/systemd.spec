@@ -48,7 +48,7 @@
 %global __meson_auto_features auto
 %endif
 
-# Override %1%{?dist}. This is ugly, but rpmautospec doesn't implement
+# Override %2%{?dist}. This is ugly, but rpmautospec doesn't implement
 # autorelease correctly if the macro is conditionalized in the Release field.
 %{?release_override:%global autorelease %{release_override}%{?dist}}
 
@@ -76,11 +76,11 @@ Url:            https://systemd.io
 # But don't do that on OBS, otherwise the version subst fails, and will be
 # like 257-123-gabcd257.1 instead of 257-123-gabcd
 %if %{without obs}
-Version:        %{?version_override}%{!?version_override:260}
+Version:        %{?version_override}%{!?version_override:260.1}
 %else
 Version:        %{?version_override}%{!?version_override:%(cat meson.version)}
 %endif
-Release:        1%{?dist}
+Release:        2%{?dist}
 
 %global stable %(c="%version"; [ "$c" = "${c#*.*}" ]; echo $?)
 
