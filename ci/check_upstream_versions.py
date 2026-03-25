@@ -6,6 +6,14 @@ This script queries release-monitoring.org (Anitya) to check if there are
 newer versions available for RPM packages in the repository. It can also
 update the spec files to the new version.
 
+When --update is used, the default behaviour updates the spec via the
+specfile library and downloads new sources from the URLs in the spec.
+Packages that require custom logic can provide a hooks file at
+``metadata/<package>.update-hooks.yaml`` with up to three phases
+(update_spec, download_sources, post_update) that override or extend
+the defaults. See the Package Modification Tracking documentation for
+the full hook reference.
+
 Subcommands:
     check   Check tracked packages for updates
     list    List ALL packages with version and tracking status
@@ -47,6 +55,8 @@ import urllib.request
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional
+
+import yaml
 
 # Try to import rpm for version comparison; fall back to packaging if unavailable
 try:
@@ -591,23 +601,133 @@ def mark_package_modified(
     logger.info(f"{package}: marked as modified in metadata")
 
 
+# ---------------------------------------------------------------------------
+# Per-package update hooks
+# ---------------------------------------------------------------------------
+
+_VALID_HOOK_PHASES = frozenset({"update_spec", "download_sources", "post_update"})
+
+
+@dataclass
+class UpdateHooks:
+    """Optional per-package hook commands loaded from update-hooks.yaml."""
+
+    update_spec: Optional[str] = None
+    download_sources: Optional[str] = None
+    post_update: Optional[str] = None
+
+
+def _load_update_hooks(package: str) -> Optional[UpdateHooks]:
+    """Load update-hooks.yaml from a package directory.
+
+    Returns an ``UpdateHooks`` instance if the file exists, or ``None``
+    if no hooks file is present.
+
+    Raises ``ValueError`` if the file contains unknown phase keys.
+    """
+    hooks_file = METADATA_DIR / f"{package}.update-hooks.yaml"
+    if not hooks_file.exists():
+        return None
+
+    with open(hooks_file) as f:
+        data = yaml.safe_load(f)
+
+    if not isinstance(data, dict):
+        raise ValueError(
+            f"{hooks_file}: expected a YAML mapping, got {type(data).__name__}"
+        )
+
+    unknown = set(data.keys()) - _VALID_HOOK_PHASES
+    if unknown:
+        raise ValueError(
+            f"{hooks_file}: unknown hook phase(s): {', '.join(sorted(unknown))}"
+        )
+
+    return UpdateHooks(
+        update_spec=data.get("update_spec"),
+        download_sources=data.get("download_sources"),
+        post_update=data.get("post_update"),
+    )
+
+
+def _build_hook_env(
+    package: str, old_version: str, new_version: str
+) -> dict[str, str]:
+    """Build the environment dict passed to hook commands."""
+    package_dir = RPMS_DIR / package
+    spec_files = list(package_dir.glob("*.spec"))
+    spec_file = str(spec_files[0]) if spec_files else ""
+    return {
+        **os.environ,
+        "UPDATE_PACKAGE": package,
+        "UPDATE_OLD_VERSION": old_version,
+        "UPDATE_NEW_VERSION": new_version,
+        "UPDATE_SPEC_FILE": spec_file,
+        "UPDATE_PACKAGE_DIR": str(package_dir),
+        "UPDATE_SOURCES_FILE": str(package_dir / "sources"),
+        "UPDATE_ROOT_DIR": str(ROOT_DIR),
+    }
+
+
+def _run_hook(
+    hook_name: str, command: str, package: str, env: dict[str, str]
+) -> subprocess.CompletedProcess[str]:
+    """Run a hook command via ``bash -eo pipefail``.
+
+    Returns the completed process on success.
+    Raises ``RuntimeError`` on non-zero exit.
+    """
+    package_dir = RPMS_DIR / package
+    logger.info(f"{package}: running {hook_name} hook")
+    result = subprocess.run(
+        ["bash", "-eo", "pipefail", "-c", command],
+        cwd=str(package_dir),
+        env=env,
+        capture_output=True,
+        text=True,
+    )
+    if result.returncode != 0:
+        stderr = result.stderr.strip() or result.stdout.strip()
+        raise RuntimeError(
+            f"{package}: {hook_name} hook failed "
+            f"(exit {result.returncode}): {stderr}"
+        )
+    logger.debug(f"{package}: {hook_name} hook stdout: {result.stdout.strip()}")
+    return result
+
+
 def update_spec_version(package: str, new_version: str) -> list[str]:
     """
     Update the spec file for a package to a new version and download
     new source archives.
 
-    - Sets Version to new_version
-    - Resets Release to 0.1 (unless %autorelease is used)
-    - Adds a %changelog entry (unless %autochangelog is used)
-    - Downloads new source archives and updates the sources file
+    Default behaviour (no hooks file):
+
+    - Sets ``Version:`` to *new_version*
+    - Resets ``Release:`` to ``0.1%{?dist}`` (unless ``%autorelease``
+      is used).  ``0.1`` is chosen so that when the same version is
+      later imported from Fedora (with ``Release >= 1``), it sorts
+      higher and replaces this locally-built version.
+    - Adds a ``%changelog`` entry (unless ``%autochangelog`` is used)
+    - Downloads new source archives and updates the ``sources`` file
     - Marks the package metadata as modified
+
+    If ``metadata/<package>.update-hooks.yaml`` exists, the hook commands
+    defined there replace (or extend) the default phases:
+
+    - **update_spec** — replaces the Version/Release update described
+      above (a changelog entry is still added via the Specfile object).
+    - **download_sources** — replaces the default URL-based source
+      download; stdout lines are treated as filenames to upload to the
+      lookaside cache.
+    - **post_update** — runs after the spec and source phases (additive).
 
     Returns:
         List of downloaded source filenames
 
     Raises:
         FileNotFoundError: If spec file is not found
-        Exception: On specfile library errors
+        RuntimeError: If a hook command fails
     """
     from specfile import Specfile
 
@@ -615,40 +735,102 @@ def update_spec_version(package: str, new_version: str) -> list[str]:
     spec_files = list(package_dir.glob("*.spec"))
     if len(spec_files) != 1:
         raise FileNotFoundError(
-            f"Expected exactly one .spec file in {package_dir}, found {len(spec_files)}"
+            f"Expected exactly one .spec file in {package_dir}, "
+            f"found {len(spec_files)}"
         )
 
     spec_file = spec_files[0]
+
+    # Load optional per-package hooks
+    hooks = _load_update_hooks(package)
+
+    # --- Phase 1: spec update ------------------------------------------------
+    if hooks and hooks.update_spec:
+        # Recover old_version from metadata (the hook will mutate the
+        # spec file directly, so we cannot rely on Specfile to tell us
+        # the pre-update version).
+        meta = get_package_metadata(package)
+        old_version = meta.get("version") if meta else None
+        if not old_version:
+            old_version = parse_spec_version(package_dir) or new_version
+
+        env = _build_hook_env(package, old_version, new_version)
+        _run_hook("update_spec", hooks.update_spec, package, env)
+    else:
+        # Default specfile-library path
+        spec = Specfile(str(spec_file), sourcedir=str(package_dir))
+        old_version = spec.expanded_version
+
+        spec.update_version(new_version)
+        if not spec.has_autorelease:
+            # Use Release 0.1 so that when the same version is later
+            # imported from Fedora (with Release >= 1), it sorts higher
+            # and replaces this locally-built version.
+            spec.update_tag("Release", "0.1%{?dist}")
+        spec.save()
+
+    # Add changelog entry (common to both paths)
     spec = Specfile(str(spec_file), sourcedir=str(package_dir))
-
-    old_version = spec.expanded_version
-
-    spec.update_version(new_version)
-    if not spec.has_autorelease:
-        # Use Release 0.1 so that when the same version is later imported
-        # from Fedora (with Release >= 1), it sorts higher and replaces
-        # this locally-built version.
-        spec.update_tag("Release", "0.1%{?dist}")
-
-    # Add changelog entry (no-op if %autochangelog is used)
     spec.add_changelog_entry(
         f"- Update to {new_version}",
         author="Hummingbird",
         email="hummingbird@redhat.com",
     )
-
     spec.save()
     logger.info(f"{package}: updated spec {old_version} -> {new_version}")
 
-    # Download new source archives
-    downloaded = download_new_sources(package, old_version, new_version)
+    # --- Phase 2: source download --------------------------------------------
+    if hooks and hooks.download_sources:
+        env = _build_hook_env(package, old_version, new_version)
+        result = _run_hook(
+            "download_sources", hooks.download_sources, package, env,
+        )
+        # Each non-empty stdout line is a filename to upload
+        downloaded: list[str] = []
+        sources_path = package_dir / "sources"
+        sources_entries = _parse_sources_file(sources_path)
 
-    # Read back the resolved version and release from the updated spec
+        for line in result.stdout.splitlines():
+            filename = line.strip()
+            if not filename:
+                continue
+            filepath = package_dir / filename
+            if not filepath.exists():
+                raise FileNotFoundError(
+                    f"{package}: download_sources hook listed "
+                    f"'{filename}' but the file does not exist"
+                )
+            _upload_to_lookaside(filepath, package)
+            new_hash = _compute_file_hash(filepath, "SHA512")
+
+            # Update or add entry in sources
+            existing = next(
+                (e for e in sources_entries if e["filename"] == filename),
+                None,
+            )
+            if existing:
+                existing["hash"] = new_hash
+            else:
+                sources_entries.append(
+                    {"algo": "SHA512", "filename": filename, "hash": new_hash}
+                )
+            downloaded.append(filename)
+
+        if downloaded:
+            _write_sources_file(sources_path, sources_entries)
+    else:
+        downloaded = download_new_sources(package, old_version, new_version)
+
+    # --- Phase 3: post-update (additive) -------------------------------------
+    if hooks and hooks.post_update:
+        env = _build_hook_env(package, old_version, new_version)
+        _run_hook("post_update", hooks.post_update, package, env)
+
+    # --- Metadata bookkeeping ------------------------------------------------
     vr = parse_spec_version_release(package_dir)
     resolved_version = vr[0] if vr else new_version
     resolved_release = vr[1] if vr else None
 
-    # Mark metadata as modified to prevent auto-updates from overwriting
     mark_package_modified(
         package,
         f"Update to upstream version {new_version}",

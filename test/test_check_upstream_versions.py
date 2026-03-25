@@ -966,6 +966,281 @@ def test_update_spec_version_sets_release_0_1(cuv_module, workdir: Path) -> None
 
 
 #
+# Tests — _load_update_hooks
+#
+
+
+def test_load_update_hooks_no_file(cuv_module, workdir: Path) -> None:
+    """Returns None when no update-hooks.yaml exists."""
+    _create_package(workdir, 'pkg', '1.0')
+    cuv_module.RPMS_DIR = workdir / 'rpms'
+    cuv_module.METADATA_DIR = workdir / 'metadata'
+    assert cuv_module._load_update_hooks('pkg') is None
+
+
+def test_load_update_hooks_all_phases(cuv_module, workdir: Path) -> None:
+    """All three phases are populated from the YAML file."""
+    import yaml
+    _create_package(workdir, 'pkg', '1.0')
+    hooks_data = {
+        'update_spec': 'echo spec',
+        'download_sources': 'echo src',
+        'post_update': 'echo post',
+    }
+    (workdir / 'metadata' / 'pkg.update-hooks.yaml').write_text(
+        yaml.dump(hooks_data)
+    )
+
+    cuv_module.RPMS_DIR = workdir / 'rpms'
+    cuv_module.METADATA_DIR = workdir / 'metadata'
+    hooks = cuv_module._load_update_hooks('pkg')
+    assert hooks is not None
+    assert hooks.update_spec == 'echo spec'
+    assert hooks.download_sources == 'echo src'
+    assert hooks.post_update == 'echo post'
+
+
+def test_load_update_hooks_partial(cuv_module, workdir: Path) -> None:
+    """Only post_update set; other fields are None."""
+    import yaml
+    _create_package(workdir, 'pkg', '1.0')
+    hooks_data = {'post_update': 'echo done'}
+    (workdir / 'metadata' / 'pkg.update-hooks.yaml').write_text(
+        yaml.dump(hooks_data)
+    )
+
+    cuv_module.RPMS_DIR = workdir / 'rpms'
+    cuv_module.METADATA_DIR = workdir / 'metadata'
+    hooks = cuv_module._load_update_hooks('pkg')
+    assert hooks is not None
+    assert hooks.update_spec is None
+    assert hooks.download_sources is None
+    assert hooks.post_update == 'echo done'
+
+
+def test_load_update_hooks_unknown_key(cuv_module, workdir: Path) -> None:
+    """Unknown phase key raises ValueError."""
+    import yaml
+    _create_package(workdir, 'pkg', '1.0')
+    hooks_data = {'post_update': 'echo ok', 'pre_build': 'echo bad'}
+    (workdir / 'metadata' / 'pkg.update-hooks.yaml').write_text(
+        yaml.dump(hooks_data)
+    )
+
+    cuv_module.RPMS_DIR = workdir / 'rpms'
+    cuv_module.METADATA_DIR = workdir / 'metadata'
+    with pytest.raises(ValueError, match='pre_build'):
+        cuv_module._load_update_hooks('pkg')
+
+
+#
+# Tests — _build_hook_env
+#
+
+
+def test_build_hook_env(cuv_module, workdir: Path) -> None:
+    """Environment dict has all expected UPDATE_* variables."""
+    _create_package(workdir, 'mypkg', '1.0')
+    cuv_module.RPMS_DIR = workdir / 'rpms'
+    cuv_module.ROOT_DIR = workdir
+
+    env = cuv_module._build_hook_env('mypkg', '1.0', '2.0')
+    assert env['UPDATE_PACKAGE'] == 'mypkg'
+    assert env['UPDATE_OLD_VERSION'] == '1.0'
+    assert env['UPDATE_NEW_VERSION'] == '2.0'
+    assert env['UPDATE_SPEC_FILE'].endswith('mypkg.spec')
+    assert env['UPDATE_PACKAGE_DIR'] == str(workdir / 'rpms' / 'mypkg')
+    assert env['UPDATE_SOURCES_FILE'].endswith('sources')
+    assert env['UPDATE_ROOT_DIR'] == str(workdir)
+
+
+#
+# Tests — _run_hook
+#
+
+
+def test_run_hook_success(cuv_module, workdir: Path) -> None:
+    """Successful command returns CompletedProcess with stdout."""
+    _create_package(workdir, 'pkg', '1.0')
+    cuv_module.RPMS_DIR = workdir / 'rpms'
+    import os
+    env = {**os.environ, 'UPDATE_PACKAGE': 'pkg'}
+
+    result = cuv_module._run_hook('test', 'echo hello', 'pkg', env)
+    assert result.returncode == 0
+    assert 'hello' in result.stdout
+
+
+def test_run_hook_failure(cuv_module, workdir: Path) -> None:
+    """Failing command raises RuntimeError."""
+    _create_package(workdir, 'pkg', '1.0')
+    cuv_module.RPMS_DIR = workdir / 'rpms'
+    import os
+    env = {**os.environ, 'UPDATE_PACKAGE': 'pkg'}
+
+    with pytest.raises(RuntimeError, match='test hook failed'):
+        cuv_module._run_hook('test', 'exit 1', 'pkg', env)
+
+
+def test_run_hook_receives_env(cuv_module, workdir: Path) -> None:
+    """Hook command can read the UPDATE_* environment variables."""
+    _create_package(workdir, 'pkg', '1.0')
+    cuv_module.RPMS_DIR = workdir / 'rpms'
+    import os
+    env = {**os.environ, 'UPDATE_NEW_VERSION': '9.9.9'}
+
+    result = cuv_module._run_hook(
+        'test', 'echo "$UPDATE_NEW_VERSION"', 'pkg', env,
+    )
+    assert '9.9.9' in result.stdout
+
+
+#
+# Tests — update_spec_version with hooks
+#
+
+
+def test_update_spec_version_with_update_spec_hook(
+    cuv_module, workdir: Path,
+) -> None:
+    """update_spec hook replaces default version update logic."""
+    _create_package(workdir, 'pkg', '1.0',
+                    sources={'pkg-1.0.tar.gz': 'oldhash'},
+                    metadata={'version': '1.0', 'release': '1'})
+
+    import yaml
+    hooks_data = {
+        'update_spec': 'sed -i "s/Version: 1.0/Version: 2.0/" "${UPDATE_SPEC_FILE}"',
+    }
+    (workdir / 'metadata' / 'pkg.update-hooks.yaml').write_text(
+        yaml.dump(hooks_data)
+    )
+
+    cuv_module.RPMS_DIR = workdir / 'rpms'
+    cuv_module.METADATA_DIR = workdir / 'metadata'
+    cuv_module.ROOT_DIR = workdir
+
+    with patch.object(cuv_module, 'download_new_sources',
+                      return_value=['pkg-2.0.tar.gz']):
+        downloaded = cuv_module.update_spec_version('pkg', '2.0')
+
+    assert downloaded == ['pkg-2.0.tar.gz']
+    spec_content = (workdir / 'rpms' / 'pkg' / 'pkg.spec').read_text()
+    assert 'Version: 2.0' in spec_content
+
+
+def test_update_spec_version_with_download_sources_hook(
+    cuv_module, workdir: Path,
+) -> None:
+    """download_sources hook replaces default download path."""
+    pkg_dir = _create_package(workdir, 'pkg', '1.0',
+                              sources={'pkg-1.0.tar.gz': 'oldhash'},
+                              metadata={'version': '1.0', 'release': '1'})
+
+    import yaml
+    # The hook creates a fake file and prints its name
+    hooks_data = {
+        'download_sources': (
+            'echo "fake data" > pkg-2.0.tar.gz\n'
+            'echo pkg-2.0.tar.gz\n'
+        ),
+    }
+    (workdir / 'metadata' / 'pkg.update-hooks.yaml').write_text(
+        yaml.dump(hooks_data)
+    )
+
+    cuv_module.RPMS_DIR = workdir / 'rpms'
+    cuv_module.METADATA_DIR = workdir / 'metadata'
+    cuv_module.ROOT_DIR = workdir
+
+    with patch.object(cuv_module, '_upload_to_lookaside'):
+        downloaded = cuv_module.update_spec_version('pkg', '2.0')
+
+    assert 'pkg-2.0.tar.gz' in downloaded
+    # sources file should be updated
+    entries = cuv_module._parse_sources_file(pkg_dir / 'sources')
+    filenames = {e['filename'] for e in entries}
+    assert 'pkg-2.0.tar.gz' in filenames
+
+
+def test_update_spec_version_with_post_update_hook(
+    cuv_module, workdir: Path,
+) -> None:
+    """post_update hook runs after default phases."""
+    pkg_dir = _create_package(workdir, 'pkg', '1.0',
+                              sources={'pkg-1.0.tar.gz': 'oldhash'},
+                              metadata={'version': '1.0', 'release': '1'})
+
+    import yaml
+    hooks_data = {
+        'post_update': 'echo "post-hook ran" > post-hook-marker',
+    }
+    (workdir / 'metadata' / 'pkg.update-hooks.yaml').write_text(
+        yaml.dump(hooks_data)
+    )
+
+    cuv_module.RPMS_DIR = workdir / 'rpms'
+    cuv_module.METADATA_DIR = workdir / 'metadata'
+    cuv_module.ROOT_DIR = workdir
+
+    with patch.object(cuv_module, 'download_new_sources', return_value=[]):
+        cuv_module.update_spec_version('pkg', '2.0')
+
+    # The hook should have created a marker file
+    marker = pkg_dir / 'post-hook-marker'
+    assert marker.exists()
+    assert 'post-hook ran' in marker.read_text()
+
+
+def test_update_spec_version_hook_failure_propagates(
+    cuv_module, workdir: Path,
+) -> None:
+    """Hook failure propagates RuntimeError to caller."""
+    pkg_dir = _create_package(workdir, 'pkg', '1.0',
+                              sources={'pkg-1.0.tar.gz': 'oldhash'},
+                              metadata={'version': '1.0', 'release': '1'})
+
+    import yaml
+    hooks_data = {
+        'update_spec': 'exit 42',
+    }
+    (workdir / 'metadata' / 'pkg.update-hooks.yaml').write_text(
+        yaml.dump(hooks_data)
+    )
+
+    cuv_module.RPMS_DIR = workdir / 'rpms'
+    cuv_module.METADATA_DIR = workdir / 'metadata'
+    cuv_module.ROOT_DIR = workdir
+
+    with pytest.raises(RuntimeError, match='update_spec hook failed'):
+        cuv_module.update_spec_version('pkg', '2.0')
+
+
+def test_update_spec_version_no_hooks_default_path(
+    cuv_module, workdir: Path,
+) -> None:
+    """Without hooks file, the default specfile-library path is used."""
+    _create_package(workdir, 'pkg', '1.0',
+                    sources={'pkg-1.0.tar.gz': 'oldhash'},
+                    metadata={'version': '1.0', 'release': '1'})
+
+    cuv_module.RPMS_DIR = workdir / 'rpms'
+    cuv_module.METADATA_DIR = workdir / 'metadata'
+    cuv_module.ROOT_DIR = workdir
+
+    with patch.object(cuv_module, 'download_new_sources',
+                      return_value=['pkg-2.0.tar.gz']) as mock_dl:
+        downloaded = cuv_module.update_spec_version('pkg', '2.0')
+
+    assert downloaded == ['pkg-2.0.tar.gz']
+    mock_dl.assert_called_once_with('pkg', '1.0', '2.0')
+
+    spec_content = (workdir / 'rpms' / 'pkg' / 'pkg.spec').read_text()
+    assert 'Version: 2.0' in spec_content
+    assert 'Release: 0.1%{?dist}' in spec_content
+
+
+#
 # Tests — git commit excludes lookaside files
 #
 
