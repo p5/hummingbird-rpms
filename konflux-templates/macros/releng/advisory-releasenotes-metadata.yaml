@@ -1,0 +1,106 @@
+---
+synopsis: |
+  {%- if advisory.spec.type == "RHSA" %}
+  {{ advisory.spec.product_name }} RPMs Security Update
+  {%- else %}
+  {{ advisory.spec.product_name }} RPMs bug fix and enhancement update
+  {%- endif %}
+topic: |
+  An update for {{ advisory.spec.product_name }} RPMs is now available.
+
+description: |
+  This update includes the following RPMs:
+  {%- if advisory.spec.content.artifacts %}
+    {#- Build a dictionary: first find source RPM names per component, then group all RPMs #}
+    {%- set src_rpms = {} %}
+    {#- First pass: find source RPM name for each component #}
+    {%- for artifact in advisory.spec.content.artifacts %}
+      {%- if artifact.architecture == 'source' %}
+        {%- set purl_path = artifact.purl.split('?')[0] %}
+        {%- set name_version = purl_path.split('/')[-1] %}
+        {%- set src_name = name_version.split('@')[0] %}
+        {%- set src_version = name_version.split('@')[1] %}
+        {%- set _ = src_rpms.update({artifact.component: {'name': src_name, 'version': src_version, 'rpms': {}}}) %}
+      {%- endif %}
+    {%- endfor %}
+    {#- Second pass: collect all RPMs under their source RPM, keeping source separate #}
+    {%- for artifact in advisory.spec.content.artifacts %}
+      {%- set purl_path = artifact.purl.split('?')[0] %}
+      {%- set name_version = purl_path.split('/')[-1] %}
+      {%- set rpm_name = name_version.split('@')[0] %}
+      {%- set rpm_version = name_version.split('@')[1] %}
+      {%- if artifact.component in src_rpms %}
+        {%- set src = src_rpms[artifact.component] %}
+        {#- Use different key for source RPMs to keep them separate from binary RPMs #}
+        {%- if artifact.architecture == 'source' %}
+          {%- set rpm_key = rpm_name ~ '.src' %}
+          {%- if rpm_key not in src['rpms'] %}
+            {%- set _ = src['rpms'].update({rpm_key: {'name': rpm_name, 'version': rpm_version, 'arches': [], 'is_src': true}}) %}
+          {%- endif %}
+          {%- if artifact.architecture not in src['rpms'][rpm_key]['arches'] %}
+            {%- set _ = src['rpms'][rpm_key]['arches'].append(artifact.architecture) %}
+          {%- endif %}
+        {%- else %}
+          {%- if rpm_name not in src['rpms'] %}
+            {%- set _ = src['rpms'].update({rpm_name: {'name': rpm_name, 'version': rpm_version, 'arches': [], 'is_src': false}}) %}
+          {%- endif %}
+          {%- if artifact.architecture not in src['rpms'][rpm_name]['arches'] %}
+            {%- set _ = src['rpms'][rpm_name]['arches'].append(artifact.architecture) %}
+          {%- endif %}
+        {%- endif %}
+      {%- endif %}
+    {%- endfor %}
+    {#- Output grouped by source RPM name: binary RPMs first, then source RPM last #}
+    {%- for component, src in src_rpms.items() %}
+
+  {{ src['name'] }}:
+      {%- for rpm_key, rpm_info in src['rpms'].items() if not rpm_info['is_src'] %}
+    * {{ rpm_info['name'] }}-{{ rpm_info['version'] }} ({{ rpm_info['arches'] | sort | join(', ') }})
+      {%- endfor %}
+      {%- for rpm_key, rpm_info in src['rpms'].items() if rpm_info['is_src'] %}
+    * {{ rpm_info['name'] }}-{{ rpm_info['version'] }}.src ({{ rpm_info['arches'] | sort | join(', ') }})
+      {%- endfor %}
+    {%- endfor %}
+  {%- endif %}
+  {#- Collect CVEs grouped by component #}
+  {%- set cves_by_component = {} %}
+  {%- if advisory.spec.content.artifacts %}
+    {%- for artifact in advisory.spec.content.artifacts %}
+      {%- if artifact.cves and artifact.cves.fixed %}
+        {%- set component_name = src_rpms[artifact.component]['name'] if artifact.component in src_rpms else artifact.component %}
+        {%- if component_name not in cves_by_component %}
+          {%- set _ = cves_by_component.update({component_name: {}}) %}
+        {%- endif %}
+        {%- for cve_id, cve_info in artifact.cves.fixed.items() %}
+          {%- if cve_id not in cves_by_component[component_name] %}
+            {%- set _ = cves_by_component[component_name].update({cve_id: cve_info}) %}
+          {%- endif %}
+        {%- endfor %}
+      {%- endif %}
+    {%- endfor %}
+  {%- endif %}
+  {%- if cves_by_component | length > 0 %}
+
+  Security Fix(es):
+    {%- for component_name, cves in cves_by_component.items() %}
+
+  {{ component_name }}:
+      {%- for cve_id, cve_info in cves.items() %}
+    * {{ cve_id }}
+      {%- endfor %}
+    {%- endfor %}
+  {%- endif %}
+  {%- if advisory.spec.issues and advisory.spec.issues.fixed %}
+    {%- if advisory.spec.issues.fixed | length > 0 %}
+
+  Bug Fix(es) and Enhancement(s):
+      {%- for jira in advisory.spec.issues.fixed %}
+    * {{ jira.id }}{% if jira.summary %} ({{ jira.summary }}){% endif %}
+      {%- endfor %}
+    {%- endif %}
+  {%- endif %}
+solution: |
+  For details on how to apply this update, which includes the changes described in this advisory, refer to:
+  https://hardened.redhat.com/
+references:
+  - https://hardened.redhat.com/
