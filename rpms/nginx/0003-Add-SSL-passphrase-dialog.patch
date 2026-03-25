@@ -1,11 +1,11 @@
-From a9ba90c8c01ab88884c93b655ca22c2ade06e6d2 Mon Sep 17 00:00:00 2001
+From 6c01e9d8f1326e3dc1a9090d46ab18519654c192 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Lubo=C5=A1=20Uhliarik?= <luhliari@redhat.com>
 Date: Tue, 8 Jul 2025 15:19:41 +0200
-Subject: [PATCH 3/5] Add SSL passphrase dialog
+Subject: [PATCH 3/6] Add SSL passphrase dialog
 
 ---
  contrib/vim/syntax/nginx.vim             |   1 +
- src/event/ngx_event_openssl.c            |  34 ++++++--
+ src/event/ngx_event_openssl.c            |  38 +++++++--
  src/event/ngx_event_openssl.h            |  16 +++-
  src/event/ngx_event_openssl_cache.c      | 102 ++++++++++++++++++++++-
  src/http/modules/ngx_http_grpc_module.c  |   2 +-
@@ -18,7 +18,7 @@ Subject: [PATCH 3/5] Add SSL passphrase dialog
  src/stream/ngx_stream_proxy_module.c     |   2 +-
  src/stream/ngx_stream_ssl_module.c       |  61 +++++++++++++-
  src/stream/ngx_stream_ssl_module.h       |   2 +
- 14 files changed, 344 insertions(+), 20 deletions(-)
+ 14 files changed, 348 insertions(+), 20 deletions(-)
 
 diff --git a/contrib/vim/syntax/nginx.vim b/contrib/vim/syntax/nginx.vim
 index 29eef7a23cd7..e7227eb7f873 100644
@@ -33,10 +33,21 @@ index 29eef7a23cd7..e7227eb7f873 100644
  syn keyword ngxDirective contained ssl_preread
  syn keyword ngxDirective contained ssl_protocols
 diff --git a/src/event/ngx_event_openssl.c b/src/event/ngx_event_openssl.c
-index defffa583eb5..fb6a5e950504 100644
+index defffa583eb5..28afa5e94f4d 100644
 --- a/src/event/ngx_event_openssl.c
 +++ b/src/event/ngx_event_openssl.c
-@@ -419,7 +419,7 @@ ngx_ssl_create(ngx_ssl_t *ssl, ngx_uint_t protocols, void *data)
+@@ -12,6 +12,10 @@
+ 
+ #define NGX_SSL_PASSWORD_BUFFER_SIZE  4096
+ 
++#if OPENSSL_VERSION_NUMBER < 0x30000000L
++#define EVP_PKEY_get_base_id EVP_PKEY_base_id
++#endif
++
+ 
+ typedef struct {
+     ngx_uint_t  engine;   /* unsigned  engine:1; */
+@@ -419,7 +423,7 @@ ngx_ssl_create(ngx_ssl_t *ssl, ngx_uint_t protocols, void *data)
  
  ngx_int_t
  ngx_ssl_certificates(ngx_conf_t *cf, ngx_ssl_t *ssl, ngx_array_t *certs,
@@ -45,7 +56,7 @@ index defffa583eb5..fb6a5e950504 100644
  {
      ngx_str_t   *cert, *key;
      ngx_uint_t   i;
-@@ -429,7 +429,7 @@ ngx_ssl_certificates(ngx_conf_t *cf, ngx_ssl_t *ssl, ngx_array_t *certs,
+@@ -429,7 +433,7 @@ ngx_ssl_certificates(ngx_conf_t *cf, ngx_ssl_t *ssl, ngx_array_t *certs,
  
      for (i = 0; i < certs->nelts; i++) {
  
@@ -54,7 +65,7 @@ index defffa583eb5..fb6a5e950504 100644
              != NGX_OK)
          {
              return NGX_ERROR;
-@@ -442,7 +442,7 @@ ngx_ssl_certificates(ngx_conf_t *cf, ngx_ssl_t *ssl, ngx_array_t *certs,
+@@ -442,7 +446,7 @@ ngx_ssl_certificates(ngx_conf_t *cf, ngx_ssl_t *ssl, ngx_array_t *certs,
  
  ngx_int_t
  ngx_ssl_certificate(ngx_conf_t *cf, ngx_ssl_t *ssl, ngx_str_t *cert,
@@ -63,7 +74,7 @@ index defffa583eb5..fb6a5e950504 100644
  {
      char            *err;
      X509            *x509, **elm;
-@@ -450,6 +450,7 @@ ngx_ssl_certificate(ngx_conf_t *cf, ngx_ssl_t *ssl, ngx_str_t *cert,
+@@ -450,6 +454,7 @@ ngx_ssl_certificate(ngx_conf_t *cf, ngx_ssl_t *ssl, ngx_str_t *cert,
      EVP_PKEY        *pkey;
      ngx_uint_t       mask;
      STACK_OF(X509)  *chain;
@@ -71,7 +82,7 @@ index defffa583eb5..fb6a5e950504 100644
  
      mask = 0;
      elm = NULL;
-@@ -457,7 +458,7 @@ ngx_ssl_certificate(ngx_conf_t *cf, ngx_ssl_t *ssl, ngx_str_t *cert,
+@@ -457,7 +462,7 @@ ngx_ssl_certificate(ngx_conf_t *cf, ngx_ssl_t *ssl, ngx_str_t *cert,
  retry:
  
      chain = ngx_ssl_cache_fetch(cf, NGX_SSL_CACHE_CERT | mask,
@@ -80,7 +91,7 @@ index defffa583eb5..fb6a5e950504 100644
      if (chain == NULL) {
          if (err != NULL) {
              ngx_ssl_error(NGX_LOG_EMERG, ssl->log, 0,
-@@ -562,9 +563,24 @@ retry:
+@@ -562,9 +567,24 @@ retry:
  
  #endif
  
@@ -107,7 +118,7 @@ index defffa583eb5..fb6a5e950504 100644
          if (err != NULL) {
              ngx_ssl_error(NGX_LOG_EMERG, ssl->log, 0,
                            "cannot load certificate key \"%s\": %s",
-@@ -751,7 +767,7 @@ ngx_ssl_client_certificate(ngx_conf_t *cf, ngx_ssl_t *ssl, ngx_str_t *cert,
+@@ -751,7 +771,7 @@ ngx_ssl_client_certificate(ngx_conf_t *cf, ngx_ssl_t *ssl, ngx_str_t *cert,
          return NGX_ERROR;
      }
  
@@ -116,7 +127,7 @@ index defffa583eb5..fb6a5e950504 100644
      if (chain == NULL) {
          if (err != NULL) {
              ngx_ssl_error(NGX_LOG_EMERG, ssl->log, 0,
-@@ -849,7 +865,7 @@ ngx_ssl_trusted_certificate(ngx_conf_t *cf, ngx_ssl_t *ssl, ngx_str_t *cert,
+@@ -849,7 +869,7 @@ ngx_ssl_trusted_certificate(ngx_conf_t *cf, ngx_ssl_t *ssl, ngx_str_t *cert,
          return NGX_ERROR;
      }
  
@@ -125,7 +136,7 @@ index defffa583eb5..fb6a5e950504 100644
      if (chain == NULL) {
          if (err != NULL) {
              ngx_ssl_error(NGX_LOG_EMERG, ssl->log, 0,
-@@ -905,7 +921,7 @@ ngx_ssl_crl(ngx_conf_t *cf, ngx_ssl_t *ssl, ngx_str_t *crl)
+@@ -905,7 +925,7 @@ ngx_ssl_crl(ngx_conf_t *cf, ngx_ssl_t *ssl, ngx_str_t *crl)
          return NGX_ERROR;
      }
  
@@ -802,5 +813,5 @@ index ffa03a6f3439..3dbbca7dcce8 100644
      ngx_str_t         ocsp_responder;
      ngx_shm_zone_t   *ocsp_cache_zone;
 -- 
-2.52.0
+2.53.0
 

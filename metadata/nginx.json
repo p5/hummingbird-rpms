@@ -1,8 +1,8 @@
 {
   "branch": "rawhide",
+  "modification_status": "clean",
   "release": "1",
-  "sha": "1ce085a0c64ec86069a2986c09c7fca1e3152a35",
+  "sha": "eb76fc2b41468741973e84fa2d1d99ad2db4e7e2",
   "source": "https://src.fedoraproject.org/rpms/nginx.git",
-  "version": "1.28.2",
-  "modification_status": "clean"
+  "version": "1.28.3"
 }
