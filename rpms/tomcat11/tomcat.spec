@@ -31,7 +31,7 @@
 %global jspspec 4.0
 %global major_version 11
 %global minor_version 0
-%global micro_version 18
+%global micro_version 20
 %global packdname apache-tomcat-%{version}-src
 %global servletspec 6.1
 %global elspec 6.0
@@ -61,7 +61,7 @@
 Name:          tomcat11
 Epoch:         1
 Version:       %{major_version}.%{minor_version}.%{micro_version}
-Release:       1.2%{?dist}
+Release:       0.1%{?dist}
 Summary:       Apache Servlet/JSP Engine, RI for Servlet %{servletspec}/JSP %{jspspec} API
 
 # Automatically converted from old format: ASL 2.0 - review is highly recommended.
@@ -530,5 +530,8 @@ install -m0644 -D tomcat.sysusers.conf %{buildroot}%{_sysusersdir}/tomcat.conf
 %{appdir}/ROOT
 
 %changelog
+* Wed Mar 25 2026 Hummingbird <hummingbird@redhat.com> - 1:11.0.20-0.1
+- Update to 11.0.20
+
 * Mon Feb 23 2026 Robert Sturla <rsturla@redhat.com> - 1:11.0.18-1.1
 - Initial tomcat11 package based on tomcat10 spec
