@@ -42,7 +42,6 @@
 /hugo-0.147.7.tar.gz
 /hugo-0.147.7-vendor.tar.bz2
 /libsass-3.6.6.tar.gz
-/libwebp-1.3.2.tar.gz
 /hugo-0.147.8.tar.gz
 /hugo-0.147.8-vendor.tar.bz2
 /hugo-0.152.2-vendor.tar.bz2
@@ -51,7 +50,7 @@
 /hugo-0.153.1-vendor.tar.bz2
 /hugo-0.153.2.tar.gz
 /hugo-0.153.2-vendor.tar.bz2
-/0010-skip-modules-TestClient.patch
-/go-vendor-tools.toml
 /hugo-0.154.3.tar.gz
 /hugo-0.154.3-vendor.tar.bz2
+/hugo-0.159.0.tar.gz
+/hugo-0.159.0-vendor.tar.bz2
