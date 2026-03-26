@@ -204,6 +204,61 @@ returned by the project ID lookup:
 }
 ```
 
+## Per-Package Update Hooks
+
+When `check_upstream_versions.py check --update` updates a package, by
+default it sets `Version:` to the new upstream version and `Release:` to
+`0.1%{?dist}` (unless `%autorelease` is used), adds a changelog entry,
+and downloads new sources from the URLs declared in the spec. Some
+packages need custom logic (e.g. generating stripped tarballs or patching
+macro-based version lines). A per-package hooks file lets you override or
+extend these default phases without changing `check_upstream_versions.py`
+itself.
+
+### Hooks file location
+
+```
+metadata/<package>.update-hooks.yaml
+```
+
+For example, `metadata/nodejs25.update-hooks.yaml`.
+
+### Hook phases
+
+The YAML file supports three optional keys. Each value is a shell command
+string executed with `bash -eo pipefail -c` in the package directory as
+the working directory.
+
+| Phase | Behaviour |
+|---|---|
+| `update_spec` | **Replaces** the default update that sets `Version:` to the new upstream version and `Release:` to `0.1%{?dist}`. A changelog entry is still added automatically. |
+| `download_sources` | **Replaces** the default URL-based source download. Must print one filename per line to stdout for files to upload to the lookaside cache. Redirect any other output to stderr (`>&2`). |
+| `post_update` | **Additive** — runs after spec + sources are ready. No default equivalent. |
+
+Omitting a phase means the default logic runs for that phase. Packages
+without a hooks file behave identically to before.
+
+Unknown phase keys in the YAML cause a `ValueError` (fail-fast).
+
+### Environment variables
+
+Every hook receives these environment variables:
+
+| Variable | Example |
+|---|---|
+| `UPDATE_PACKAGE` | `nodejs25` |
+| `UPDATE_OLD_VERSION` | `25.6.1` |
+| `UPDATE_NEW_VERSION` | `25.8.2` |
+| `UPDATE_SPEC_FILE` | `/home/rpms/rpms/nodejs25/nodejs25.spec` |
+| `UPDATE_PACKAGE_DIR` | `/home/rpms/rpms/nodejs25` |
+| `UPDATE_SOURCES_FILE` | `/home/rpms/rpms/nodejs25/sources` |
+| `UPDATE_ROOT_DIR` | `/home/rpms` |
+
+### Example
+
+See [`metadata/nodejs25.update-hooks.yaml`](../../../metadata/nodejs25.update-hooks.yaml)
+for a working example that uses all three hook phases.
+
 ## How Auto-Updates Work
 
 The `./ci/dist_git.py update` command (used by automation) checks modification

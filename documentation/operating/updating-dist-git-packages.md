@@ -112,6 +112,12 @@ Anitya is filtered to only those matching the prefix. This means
 `check_upstream_versions.py check` will report `1.26.5` as the latest version
 for `golang1.26` even if Anitya reports `1.27.0` as the latest `golang` release.
 
+When `--update` is used, the script updates the spec file, downloads new
+sources, and commits the result. Packages that need custom update logic can
+provide a hooks file at `metadata/<package>.update-hooks.yaml` to override the
+spec update, source download, or add a post-update step. See
+[Package Modification Tracking](../package-modification-tracking) for details.
+
 ### Setting Up Version Constraints
 
 ```bash
