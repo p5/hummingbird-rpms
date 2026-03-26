@@ -1157,10 +1157,11 @@ def test_update_spec_version_with_download_sources_hook(
         downloaded = cuv_module.update_spec_version('pkg', '2.0')
 
     assert 'pkg-2.0.tar.gz' in downloaded
-    # sources file should be updated
+    # sources file should replace old entry, not append
     entries = cuv_module._parse_sources_file(pkg_dir / 'sources')
     filenames = {e['filename'] for e in entries}
     assert 'pkg-2.0.tar.gz' in filenames
+    assert 'pkg-1.0.tar.gz' not in filenames
 
 
 def test_update_spec_version_with_post_update_hook(

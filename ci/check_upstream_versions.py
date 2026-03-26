@@ -803,12 +803,15 @@ def update_spec_version(package: str, new_version: str) -> list[str]:
             _upload_to_lookaside(filepath, package)
             new_hash = _compute_file_hash(filepath, "SHA512")
 
-            # Update or add entry in sources
+            # Replace existing entry whose filename matches the old
+            # version, or update in-place if the filename is unchanged.
+            old_filename = filename.replace(new_version, old_version)
             existing = next(
-                (e for e in sources_entries if e["filename"] == filename),
+                (e for e in sources_entries if e["filename"] in (filename, old_filename)),
                 None,
             )
             if existing:
+                existing["filename"] = filename
                 existing["hash"] = new_hash
             else:
                 sources_entries.append(
