@@ -101,6 +101,6 @@ description: |
   {%- endif %}
 solution: |
   For details on how to apply this update, which includes the changes described in this advisory, refer to:
-  https://hardened.redhat.com/
+  https://images.redhat.com/
 references:
-  - https://hardened.redhat.com/
+  - https://images.redhat.com/
