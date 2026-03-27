@@ -2,7 +2,7 @@
   "branch": "rawhide",
   "modification_status": "clean",
   "release": "1",
-  "sha": "6d56f0a0aa3c31f20b536fb97dbb0ff63b3229dc",
+  "sha": "5cfab0b7655e82d5b08b373a0b248e336231b4dc",
   "source": "https://src.fedoraproject.org/rpms/langpacks.git",
   "version": "4.3"
 }
