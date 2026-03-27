@@ -1,8 +1,8 @@
 {
   "branch": "rawhide",
   "modification_status": "clean",
-  "release": "2",
-  "sha": "047a50a2142776b90b8aa239522e1b351671d21d",
+  "release": "1",
+  "sha": "5f4ddf633d2891db464a1e9770fca50ea679ff51",
   "source": "https://src.fedoraproject.org/rpms/sysprof.git",
-  "version": "50~rc"
+  "version": "50.0"
 }
