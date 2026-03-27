@@ -1,0 +1,118 @@
+name: Build RPMs
+
+on:
+  pull_request:
+    paths:
+      - 'rpms/**'
+      - 'metadata/**'
+      - 'mock/**'
+      - 'ci/build_rpms.sh'
+      - 'ci/package-overrides.yaml'
+      - '.github/workflows/build-rpms.yml'
+
+# Cancel in-progress runs for the same PR when a new commit is pushed.
+concurrency:
+  group: build-rpms-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  detect-packages:
+    name: Detect changed packages
+    runs-on: ubuntu-latest
+    outputs:
+      packages: ${{ steps.detect.outputs.packages }}
+      count: ${{ steps.detect.outputs.count }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Detect changed packages
+        id: detect
+        run: |
+          base="${{ github.event.pull_request.base.sha }}"
+          head="${{ github.event.pull_request.head.sha }}"
+
+          # Find directories under rpms/ that have changed files.
+          packages=$(git diff --name-only "${base}..${head}" -- 'rpms/' \
+            | cut -d/ -f2 \
+            | sort -u \
+            | jq -R -s -c 'split("\n") | map(select(length > 0))')
+
+          count=$(echo "${packages}" | jq 'length')
+          echo "packages=${packages}" >> "$GITHUB_OUTPUT"
+          echo "count=${count}" >> "$GITHUB_OUTPUT"
+          echo "Changed packages (${count}): $(echo "${packages}" | jq -r 'join(", ")')"
+
+  build:
+    name: Build ${{ matrix.package }}
+    needs: detect-packages
+    if: needs.detect-packages.outputs.count != '0'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        package: ${{ fromJson(needs.detect-packages.outputs.packages) }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt-get install -y acl podman
+
+      - name: Build ${{ matrix.package }}
+        run: |
+          # The build script uses `podman run -ti` which requires a TTY.
+          # Replace -ti with -i for non-interactive CI.
+          sed -i 's/--rm -ti --privileged/--rm -i --privileged/' ci/build_rpms.sh
+
+          ./ci/build_rpms.sh --nocheck "${{ matrix.package }}"
+
+      - name: Upload RPMs
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rpms-${{ matrix.package }}
+          path: |
+            builds/${{ matrix.package }}/RPMS/*.rpm
+            builds/${{ matrix.package }}/SRPMS/*.src.rpm
+          retention-days: 7
+
+  results:
+    name: Build results
+    needs: [detect-packages, build]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Summary
+        run: |
+          packages='${{ needs.detect-packages.outputs.packages }}'
+          count='${{ needs.detect-packages.outputs.count }}'
+          build_result='${{ needs.build.result }}'
+
+          echo "## RPM Build Results" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+
+          if [[ "${count}" == "0" ]]; then
+            echo "No packages changed in this PR." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          echo "**Packages built:** ${count}" >> "$GITHUB_STEP_SUMMARY"
+          echo "**Result:** ${build_result}" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Package | Status |" >> "$GITHUB_STEP_SUMMARY"
+          echo "|---------|--------|" >> "$GITHUB_STEP_SUMMARY"
+          for pkg in $(echo "${packages}" | jq -r '.[]'); do
+            if [[ "${build_result}" == "success" ]]; then
+              echo "| ${pkg} | :white_check_mark: |" >> "$GITHUB_STEP_SUMMARY"
+            else
+              echo "| ${pkg} | :x: |" >> "$GITHUB_STEP_SUMMARY"
+            fi
+          done
+
+          if [[ "${build_result}" == "failure" ]]; then
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "> [!CAUTION]" >> "$GITHUB_STEP_SUMMARY"
+            echo "> One or more RPM builds failed. Check individual job logs for details." >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
