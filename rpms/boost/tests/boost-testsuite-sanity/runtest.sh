@@ -15,10 +15,10 @@
 #   published by the Free Software Foundation, either version 2 of
 #   the License, or (at your option) any later version.
 #
-#   This program is distributed in the hope that it will be
-#   useful, but WITHOUT ANY WARRANTY; without even the implied
-#   warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
-#   PURPOSE.  See the GNU General Public License for more details.
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
 #
 #   You should have received a copy of the GNU General Public License
 #   along with this program. If not, see http://www.gnu.org/licenses/.
@@ -75,7 +75,7 @@ rlJournalStart
       if [ -f $BuildDir/libs/$test_path/test/Jamfile* ]; then
         rlRun "cd $BuildDir/libs/$test_path/test"
         if [ "$test_path" = regex ]; then
-          rlRun "[ -e ../include ] || ln -s ../../ ../include"
+          rlRun "[ -e ../include ] || ln -s ../../../boost ../include"
         fi
         rlRun "su -c '/usr/bin/b2 -d1 --build-dir=$TmpDir/test-build &>>$TmpDir/testsuite.log' $BUILD_USER"
         rm -fr $TmpDir/test-build
@@ -88,7 +88,7 @@ rlJournalStart
 
   rlPhaseStartTest "evaluate results"
     rlRun "cd $TmpDir"
-    rlRun "grep -E '\.\.\.failed .+$TmpDir/test-build' testsuite.log" 1 "There should be no failure"
+    rlRun "grep -E '\.\.\.$failed .+$TmpDir/test-build' testsuite.log" 1 "There should be no failure"
     rlRun "tests_count=\$(grep -E '\*\*passed\*\*.+$TmpDir/test-build' testsuite.log | wc -l)"
     [ "$tests_count" -ge "$TESTS_COUNT_MIN" ] && rlLogInfo "Test counter: $tests_count" || rlFail "Test counter $tests_count should be greater than or equal to $TESTS_COUNT_MIN"
   rlPhaseEnd
