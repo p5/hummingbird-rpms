@@ -5,7 +5,7 @@
 %global srcname cryptography
 
 Name:           python-%{srcname}
-Version:        46.0.5
+Version:        46.0.6
 Release:        1%{?dist}
 Summary:        PyCA's cryptography library
 
@@ -30,10 +30,10 @@ ExclusiveArch:  %{rust_arches}
 BuildRequires:  openssl-devel
 BuildRequires:  gcc
 BuildRequires:  gnupg2
-%if 0%{?fedora} && ! 0%{?hummingbird}
+%if 0%{?fedora}
 BuildRequires:  rust-packaging
 %else
-BuildRequires:  cargo-rpm-macros >= 26
+BuildRequires:  rust-toolset
 %endif
 
 BuildRequires:  python%{python3_pkgversion}-cffi >= 1.12
@@ -42,7 +42,7 @@ BuildRequires:  python%{python3_pkgversion}-setuptools
 BuildRequires:  python%{python3_pkgversion}-setuptools-rust >= 0.11.4
 
 %if %{with tests}
-%if 0%{?fedora} && ! 0%{?hummingbird}
+%if 0%{?fedora}
 BuildRequires:  python%{python3_pkgversion}-certifi
 BuildRequires:  python%{python3_pkgversion}-hypothesis >= 1.11.4
 BuildRequires:  python%{python3_pkgversion}-iso8601
@@ -62,7 +62,7 @@ Summary:        PyCA's cryptography library
 %{?python_provide:%python_provide python%{python3_pkgversion}-%{srcname}}
 
 Requires:       openssl-libs
-%if 0%{?fedora} >= 35 || 0%{?rhel} >= 9 || 0%{?hummingbird}
+%if 0%{?fedora} >= 35 || 0%{?rhel} >= 9
 # Can be safely removed in Fedora 37
 Obsoletes: python%{python3_pkgversion}-cryptography-vectors < 3.4.7
 %endif
@@ -72,21 +72,23 @@ cryptography is a package designed to expose cryptographic primitives and
 recipes to Python developers.
 
 %prep
-%if 0%{?fedora} && ! 0%{?hummingbird}
-%autosetup -p1 -n %{srcname}-%{version}
+%autosetup -p1 %{!?fedora:-a1} -n %{srcname}-%{version}
+%if 0%{?fedora}
 %cargo_prep
 sed -i 's/locked = true//g' pyproject.toml
 %else
-# RHEL/Hummingbird: use vendored Rust crates
-%autosetup -p1 -a1 -n %{srcname}-%{version}
+# RHEL: use vendored Rust crates
 %cargo_prep -v vendor
+%endif
+
+%if ! 0%{?fedora}
 sed -i 's,--benchmark-disable,,' pyproject.toml
 %endif
 
 
 %generate_buildrequires
 %pyproject_buildrequires
-%if 0%{?fedora} && ! 0%{?hummingbird}
+%if 0%{?fedora}
 # Fedora: use RPMified crates
 %cargo_generate_buildrequires
 %endif
@@ -100,7 +102,7 @@ export CFLAGS="${CFLAGS} -DOPENSSL_NO_ENGINE=1 "
 
 %cargo_license_summary
 %{cargo_license} > LICENSE.dependencies
-%if ! 0%{?fedora} || 0%{?hummingbird}
+%if ! 0%{?fedora}
 %cargo_vendor_manifest
 %endif
 
@@ -116,8 +118,8 @@ find . -name Cargo.toml -print -delete
 
 %check
 %if %{with tests}
-%if 0%{?rhel} || 0%{?hummingbird}
-# skip benchmark and hypothesis tests on RHEL/Hummingbird
+%if 0%{?rhel}
+# skip benchmark and hypothesis tests on RHEL
 rm -rf tests/bench tests/hypothesis
 # append skipper to skip iso8601 and pretend tests
 cat < %{SOURCE2} >> tests/conftest.py
@@ -143,7 +145,7 @@ PYTHONPATH=${PWD}/vectors:%{buildroot}%{python3_sitearch} \
 %doc README.rst docs
 %license LICENSE LICENSE.APACHE LICENSE.BSD
 %license LICENSE.dependencies
-%if ! 0%{?fedora} || 0%{?hummingbird}
+%if ! 0%{?fedora}
 %license cargo-vendor.txt
 %endif
 
