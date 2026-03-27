@@ -1,8 +1,8 @@
 {
   "branch": "rawhide",
-  "release": "9",
-  "sha": "8ea49f350ba69b0379d603cdad069b41c94c155a",
+  "modification_status": "clean",
+  "release": "10",
+  "sha": "52fc02f48fb2787e16c78c3b9e1e8c89b026ffe9",
   "source": "https://src.fedoraproject.org/rpms/libtool.git",
-  "version": "2.5.4",
-  "modification_status": "clean"
+  "version": "2.5.4"
 }
