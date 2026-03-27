@@ -1,8 +1,8 @@
 {
   "branch": "rawhide",
-  "release": "4",
-  "sha": "53a26600710394962486bb130d06af8d6a012b6e",
+  "modification_status": "clean",
+  "release": "5",
+  "sha": "aea6a074609c2bc867eb685f94f8a1c993422758",
   "source": "https://src.fedoraproject.org/rpms/snappy.git",
-  "version": "1.2.2",
-  "modification_status": "clean"
+  "version": "1.2.2"
 }
