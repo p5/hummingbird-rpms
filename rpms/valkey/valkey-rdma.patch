@@ -1,0 +1,26 @@
+diff --git a/deps/Makefile b/deps/Makefile
+index 94d938552..0e3466e68 100644
+--- a/deps/Makefile
++++ b/deps/Makefile
+@@ -54,7 +54,7 @@ endif
+ ifneq (,$(filter $(BUILD_RDMA),yes module))
+     LIBVALKEY_MAKE_FLAGS += USE_RDMA=1
+ 	ifneq (,$(filter $(BUILD_RDMA),module))
+-		LIBVALKEY_MAKE_FLAGS += USE_DLOPEN_RDMA=1
++		LIBVALKEY_MAKE_FLAGS += USE_DLOPEN_RDMA=0
+ 	endif
+ endif
+ 
+diff --git a/src/Makefile b/src/Makefile
+index 73815ac2b..db2938ed4 100644
+--- a/src/Makefile
++++ b/src/Makefile
+@@ -373,7 +373,7 @@ RDMA_MODULE_NAME:=valkey-rdma$(PROG_SUFFIX).so
+ RDMA_MODULE_CFLAGS:=$(FINAL_CFLAGS)
+ ifeq ($(BUILD_RDMA),module)
+ 	FINAL_CFLAGS+=-DUSE_RDMA=$(BUILD_MODULE)
+-	RDMA_CLIENT_LIBS = ../deps/libvalkey/lib/libvalkey_rdma.a
++	RDMA_CLIENT_LIBS = ../deps/libvalkey/lib/libvalkey_rdma.a $(RDMA_LIBS)
+ 	RDMA_MODULE=$(RDMA_MODULE_NAME)
+ 	RDMA_MODULE_CFLAGS+=-DUSE_RDMA=$(BUILD_MODULE) -DBUILD_RDMA_MODULE=$(BUILD_MODULE) $(RDMA_LIBS)
+ endif

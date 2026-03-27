@@ -32,7 +32,7 @@ diff -up ./valkey.conf.rpm ./valkey.conf
  
  ################################## MODULES #####################################
  
-@@ -163,7 +166,7 @@ tcp-backlog 511
+@@ -163,7 +166,7 @@
  # incoming connections. There is no default, so the server will not listen
  # on a unix socket when not specified.
  #
@@ -41,7 +41,7 @@ diff -up ./valkey.conf.rpm ./valkey.conf
  # unixsocketgroup wheel
  # unixsocketperm 700
  
-@@ -409,7 +412,7 @@ daemonize no
+@@ -425,7 +428,7 @@
  #
  # Note that on modern Linux systems "/run/valkey.pid" is more conforming
  # and should be used instead.
@@ -50,7 +50,7 @@ diff -up ./valkey.conf.rpm ./valkey.conf
  
  # Specify the server verbosity level.
  # This can be one of:
-@@ -440,7 +443,7 @@ loglevel notice
+@@ -457,7 +460,7 @@
  # Specify the log file name. Also the empty string can be used to force
  # the server to log on the standard output. Note that if you use standard
  # output for logging but daemonize, logs will be sent to /dev/null
@@ -59,3 +59,12 @@ diff -up ./valkey.conf.rpm ./valkey.conf
  
  # To enable logging to the system logger, just set 'syslog-enabled' to yes,
  # and optionally update the other syslog parameters to suit your needs.
+@@ -661,7 +664,7 @@
+ # Note that modifying 'dir' during runtime may have unexpected behavior,
+ # for example when a child process is running, related file operations may
+ # have unexpected effects.
+-dir ./
++dir /var/lib/valkey
+ 
+ ################################# REPLICATION #################################
+ 

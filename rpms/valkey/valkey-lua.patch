@@ -1,0 +1,54 @@
+diff -up ./src/Makefile.old ./src/Makefile
+--- ./src/Makefile.old	2026-03-17 16:49:22.086043863 +0100
++++ ./src/Makefile	2026-03-17 17:02:31.748498351 +0100
+@@ -63,7 +63,7 @@ endif
+ 
+ PREFIX?=/usr/local
+ INSTALL_BIN=$(PREFIX)/bin
+-INSTALL_LIB=$(PREFIX)/lib
++INSTALL_LIB=$(PREFIX)/lib64
+ INSTALL=install
+ PKG_CONFIG?=pkg-config
+ 
+@@ -263,12 +263,10 @@ else
+ 	LUA_MODULE_INSTALL=install-lua-module
+ 
+ 	current_dir = $(shell pwd)
+-	FINAL_CFLAGS+=-DLUA_ENABLED -DLUA_LIB=libvalkeylua.so
++	FINAL_CFLAGS+=-DLUA_ENABLED -DLUA_LIB=libvalkeylua.so -DLUA_LIB_PATH=/usr/lib64/valkey/modules/lua.so
+ ifeq ($(uname_S),Darwin)
+ 	FINAL_LDFLAGS+= -Wl,-rpath,$(PREFIX)/lib
+ 	FINAL_LDFLAGS+= -Wl,-rpath,$(current_dir)/modules/lua
+-else
+-	FINAL_LDFLAGS+= -Wl,-rpath,$(PREFIX)/lib:$(current_dir)/modules/lua -Wl,--disable-new-dtags
+ endif
+ endif
+ 
+@@ -836,8 +834,8 @@ install: all $(LUA_MODULE_INSTALL)
+ 	$(call MAYBE_INSTALL_REDIS_SYMLINK,$(ENGINE_SENTINEL_NAME),$(INSTALL_BIN))
+ 
+ install-lua-module: $(LUA_MODULE)
+-	@mkdir -p $(INSTALL_LIB)
+-	$(call MAKE_INSTALL,$(LUA_MODULE),$(INSTALL_LIB))
++	@mkdir -p $(INSTALL_LIB)/valkey/modules
++	$(call MAKE_INSTALL,$(LUA_MODULE),$(INSTALL_LIB)/valkey/modules/lua.so)
+ 
+ uninstall:
+ 	@rm -f $(INSTALL_BIN)/{$(SERVER_NAME),$(ENGINE_BENCHMARK_NAME),$(ENGINE_CLI_NAME),$(ENGINE_CHECK_RDB_NAME),$(ENGINE_CHECK_AOF_NAME),$(ENGINE_SENTINEL_NAME)}
+diff -up ./src/server.c.old ./src/server.c
+--- ./src/server.c.old	2026-03-17 16:50:55.410170510 +0100
++++ ./src/server.c	2026-03-17 16:58:39.140382232 +0100
+@@ -7628,9 +7628,12 @@ __attribute__((weak)) int main(int argc,
+ 
+     /* Initialize the LUA scripting engine. */
+ #ifdef LUA_ENABLED
++/* LUA_LIB_PATH ini installation dir, LUA_LIB_STR in sources dir */
++#define LUA_LIB_PATH_STR STRINGIFY(LUA_LIB_PATH)
+ #define LUA_LIB_STR STRINGIFY(LUA_LIB)
+     if (scriptingEngineManagerFind("lua") == NULL) {
+-        if (moduleLoad(LUA_LIB_STR, NULL, 0, 0, 1) != C_OK) {
++        if (moduleLoad(LUA_LIB_PATH_STR, NULL, 0, 0, 1) != C_OK &&
++            moduleLoad(LUA_LIB_STR, NULL, 0, 0, 1) != C_OK) {
+             serverPanic("Lua engine initialization failed, check the server logs.");
+         }
+     }
