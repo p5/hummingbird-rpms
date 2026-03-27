@@ -15,10 +15,10 @@
 #   published by the Free Software Foundation, either version 2 of
 #   the License, or (at your option) any later version.
 #
-#   This program is distributed in the hope that it will be
-#   useful, but WITHOUT ANY WARRANTY; without even the implied
-#   warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
-#   PURPOSE.  See the GNU General Public License for more details.
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
 #
 #   You should have received a copy of the GNU General Public License
 #   along with this program. If not, see http://www.gnu.org/licenses/.
@@ -42,7 +42,7 @@ rlJournalStart
   rlPhaseStartSetup
     rlShowRunningKernel
     rlAssertRpm --all
-    rlRun "TmpDir=`mktemp -d /home/boost.XXXXXXXXXX`"  # work in /home due to high demands on disk space
+    rlRun "TmpDir=`mktemp -d /home/boost.XXXXXXXXXXXXX`"  # work in /home due to high demands on disk space
     rlRun "cp tests $TmpDir"
     rlRun "pushd $TmpDir"
     rlFetchSrcForInstalled $PACKAGE
@@ -74,6 +74,9 @@ rlJournalStart
     while read test_path; do
       if [ -f $BuildDir/libs/$test_path/test/Jamfile* ]; then
         rlRun "cd $BuildDir/libs/$test_path/test"
+        if [ "$test_path" = regex ]; then
+          rlRun "[ -e ../include ] || ln -s ../../../boost ../include"
+        fi
         rlRun "su -c '/usr/bin/b2 -d1 --build-dir=$TmpDir/test-build &>>$TmpDir/testsuite.log' $BUILD_USER"
         rm -fr $TmpDir/test-build
       else
