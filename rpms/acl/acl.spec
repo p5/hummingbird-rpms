@@ -1,4 +1,3 @@
-# Test CI workflow trigger
 Summary: Access control list utilities
 Name: acl
 Version: 2.3.2
