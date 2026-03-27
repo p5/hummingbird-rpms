@@ -1,7 +1,7 @@
-From 86bf542577d4ea8829d2932d4046cc504c3abbfb Mon Sep 17 00:00:00 2001
+From d7d716f3270235529995e0d28b8d6c89f4171045 Mon Sep 17 00:00:00 2001
 From: Robbie Harwood <rharwood@redhat.com>
 Date: Fri, 9 Nov 2018 15:12:21 -0500
-Subject: [PATCH 01/18] FIPS: Add support for PRNG, RADIUS (krad), and crypto
+Subject: [PATCH 01/21] FIPS: Add support for PRNG, RADIUS (krad), and crypto
  providers
 
 In FIPS mode:
@@ -656,13 +656,13 @@ index 1a772d450f..32baaecbb8 100644
      vt->name = "spake";
      vt->pa_type_list = pa_types;
 -- 
-2.51.1
+2.53.0
 
 
-From c889d6d7fb14334ff6db9d4534cdfe0f6be7397f Mon Sep 17 00:00:00 2001
+From 1a4d6a7393887bf5372674942eea53030de0fed9 Mon Sep 17 00:00:00 2001
 From: Julien Rische <jrische@redhat.com>
 Date: Thu, 5 May 2022 17:15:12 +0200
-Subject: [PATCH 02/18] FIPS: Allow krad UDP/TCP localhost connection
+Subject: [PATCH 02/21] FIPS: Allow krad UDP/TCP localhost connection
 
 libkrad allows to establish connections only to UNIX socket in FIPS
 mode, because MD5 digest is not considered safe enough to be used for
@@ -740,13 +740,13 @@ index 891404d5b7..7654bab21b 100644
          retval = ESOCKTNOSUPPORT;
          goto error;
 -- 
-2.51.1
+2.53.0
 
 
-From 8a1d38c9fa0d072619f5c7db09827b99e5a5e185 Mon Sep 17 00:00:00 2001
+From 9b5aa1ecb9b49d684534bffbad39f08358f797e3 Mon Sep 17 00:00:00 2001
 From: Julien Rische <jrische@redhat.com>
 Date: Tue, 23 May 2023 12:19:54 +0200
-Subject: [PATCH 03/18] FIPS: Make PKINIT CMS SHA-1 signature verification
+Subject: [PATCH 03/21] FIPS: Make PKINIT CMS SHA-1 signature verification
  available
 
 We recommend using the SHA1 crypto-module in order to allow the
@@ -786,13 +786,13 @@ index f222dbdf92..1d99559485 100644
          goto cleanup;
      }
 -- 
-2.51.1
+2.53.0
 
 
-From f263a0efed9f7374ad3390db586efac6732f46cf Mon Sep 17 00:00:00 2001
+From c082c835672d41b9a68d1d3195fe0c44cb689fd7 Mon Sep 17 00:00:00 2001
 From: Julien Rische <jrische@redhat.com>
 Date: Thu, 19 Jan 2023 19:22:27 +0100
-Subject: [PATCH 04/18] FIPS: Allow KRB5KDF, MD5, MD4 and HMAC-MD4/5
+Subject: [PATCH 04/21] FIPS: Allow KRB5KDF, MD5, MD4 and HMAC-MD4/5
 
 OpenSSL's restrictions to use KRB5KDF, MD5, and MD4 in FIPS mode are
 bypassed in case AES SHA-1 HMAC or RC4 encryption types are allowed by
@@ -1218,13 +1218,13 @@ index 7654bab21b..96da3c451d 100644
  static bool is_inet_localhost(struct addrinfo *info)
  {
 -- 
-2.51.1
+2.53.0
 
 
-From 2ba6b85c0957998d52a4e5868de62b2a86e6c8be Mon Sep 17 00:00:00 2001
+From c64ff3431496d96f30ac1303be3a5aedf518cab1 Mon Sep 17 00:00:00 2001
 From: Robbie Harwood <rharwood@redhat.com>
 Date: Tue, 26 Mar 2019 18:51:10 -0400
-Subject: [PATCH 05/18] 3DES: Remove support
+Subject: [PATCH 05/21] 3DES: Remove support
 
 Completely remove support for all DES3 enctypes (des3-cbc-raw,
 des3-hmac-sha1, des3-cbc-sha1-kd).  Update all tests and documentation
@@ -7498,13 +7498,13 @@ index 1aebdd0b4a..c38eefd2bd 100644
       <td>The AES Advanced Encryption Standard
  family, like 3DES, is a symmetric block cipher and was designed
 -- 
-2.51.1
+2.53.0
 
 
-From 7be0d2df84b0c3864383c913c9dc3a4073f22a1f Mon Sep 17 00:00:00 2001
+From f6b425e86cec7feb91d62a9d312f2660f06ac2ac Mon Sep 17 00:00:00 2001
 From: Robbie Harwood <rharwood@redhat.com>
 Date: Tue, 23 Aug 2016 16:29:58 -0400
-Subject: [PATCH 06/18] PAM: Add integration to ksu
+Subject: [PATCH 06/21] PAM: Add integration to ksu
 
 Modify ksu so that it performs account and session management on behalf of
 the target user account, mimicking the action of regular su.  The default
@@ -8278,13 +8278,13 @@ index 9fc569f195..99268dfd78 100644
  if test "${localedir+set}" != set; then
      localedir='$(datadir)/locale'
 -- 
-2.51.1
+2.53.0
 
 
-From d794491cc41944d6f1cc2b4d56f4aa021726415e Mon Sep 17 00:00:00 2001
+From dac2e975d5729d53f22dc7d77428feb55263b982 Mon Sep 17 00:00:00 2001
 From: Robbie Harwood <rharwood@redhat.com>
 Date: Tue, 23 Aug 2016 16:30:53 -0400
-Subject: [PATCH 07/18] SELINUX: Add integration
+Subject: [PATCH 07/21] SELINUX: Add integration
 
 SELinux bases access to files on the domain of the requesting process,
 the operation being performed, and the context applied to the file.
@@ -9320,13 +9320,13 @@ index 0000000000..b10f927b2e
 +
 +#endif /* USE_SELINUX */
 -- 
-2.51.1
+2.53.0
 
 
-From da421afad9b499de867d5bdadac82ae94b3c1b05 Mon Sep 17 00:00:00 2001
+From 8523c362c7a0bc2a702ede1ec82b24555ff12ba5 Mon Sep 17 00:00:00 2001
 From: Julien Rische <jrische@redhat.com>
 Date: Mon, 9 Jan 2023 22:39:52 +0100
-Subject: [PATCH 08/18] INSTALL: Do not set root as ksu file owner
+Subject: [PATCH 08/21] INSTALL: Do not set root as ksu file owner
 
 Upstream Makefile uses the install command to set root as owner of the
 ksu executable file. However, this is no longer supported on latest
@@ -9352,13 +9352,13 @@ index 9f64fd190f..3724d26ae6 100644
  ## ${prefix}.
  prefix=@prefix@
 -- 
-2.51.1
+2.53.0
 
 
-From 1388a13772c22e02347d8f6bdc5610a584fbbc09 Mon Sep 17 00:00:00 2001
+From 307d0b16159de59092b00a109d44f68de323f5f1 Mon Sep 17 00:00:00 2001
 From: Julien Rische <jrische@redhat.com>
 Date: Wed, 7 Dec 2022 13:22:42 +0100
-Subject: [PATCH 09/18] SSSD: Make tests compatible with
+Subject: [PATCH 09/21] SSSD: Make tests compatible with
  sssd_krb5_locator_plugin.so
 
 The sssd_krb5_locator_plugin.so plugin provided by sssd-client conflicts
@@ -9394,13 +9394,13 @@ index 87bac17929..26bc95a8dc 100644
          fail('URI answers do not match')
      j += 1
 -- 
-2.51.1
+2.53.0
 
 
-From 3d79761243343cb9e870ffac81a53f7b742c04b2 Mon Sep 17 00:00:00 2001
+From 82ec4d257ba4f0ea5e57c56b680bc888b69ae3df Mon Sep 17 00:00:00 2001
 From: Julien Rische <jrische@redhat.com>
 Date: Wed, 15 Mar 2023 15:56:34 +0100
-Subject: [PATCH 10/18] PAC: Allow to set ticket signature as optional
+Subject: [PATCH 10/21] PAC: Allow to set ticket signature as optional
 
 MS-PAC states that "The ticket signature SHOULD be included in tickets
 that are not encrypted to the krbtgt account". However, the
@@ -9674,13 +9674,13 @@ index 15ddc17dc5..96cdd52982 100644
  .sp
  This command requires the \fBmodify\fP privilege.
 -- 
-2.51.1
+2.53.0
 
 
-From f48585758d9e8f5ba7fff25ac3d2dcf7908e1a47 Mon Sep 17 00:00:00 2001
+From f160430a84cdbc2f24e4e9dc32fafac04ddcb887 Mon Sep 17 00:00:00 2001
 From: Robbie Harwood <rharwood@redhat.com>
 Date: Tue, 23 Aug 2016 16:49:25 -0400
-Subject: [PATCH 11/18] BUILD: fix debuginfo with y.tab.c
+Subject: [PATCH 11/21] BUILD: fix debuginfo with y.tab.c
 
 We want to keep these y.tab.c files around because the debuginfo points to
 them.  It would be more elegant at the end to use symbolic links, but that
@@ -9731,13 +9731,13 @@ index 8669c2436c..f243017ce9 100644
 -	$(RM) $(PROG) $(OBJS) getdate.c
 +	$(RM) $(PROG) $(OBJS) getdate.c y.tab.c
 -- 
-2.51.1
+2.53.0
 
 
-From 2a5ddea0ac158f20b92cf1acc953c2ef8abf1f78 Mon Sep 17 00:00:00 2001
+From 621dac3f7d2989adfd746d40ba74468fa0275ab5 Mon Sep 17 00:00:00 2001
 From: Alexander Bokovoy <abokovoy@redhat.com>
 Date: Sun, 21 Sep 2025 11:14:51 +0300
-Subject: [PATCH 12/18] PKINIT: If configured, attempt Anonymous PKINIT for
+Subject: [PATCH 12/21] PKINIT: If configured, attempt Anonymous PKINIT for
  FAST
 
 If auto_fast_armor is configured for the realm or globally, optimistically
@@ -9959,13 +9959,13 @@ index 6f7890abcd..12c2ea1e5d 100644
  Specifies the name of the host\(aqs site for the purpose of DNS\-based
  KDC discovery for this realm.  New in release 1.22.
 -- 
-2.51.1
+2.53.0
 
 
-From 5d7099fa78f0cb021763504b0dd94e0282bd9385 Mon Sep 17 00:00:00 2001
+From 347f81103e95536b5655bee31bb9ced05d06b098 Mon Sep 17 00:00:00 2001
 From: Alexander Bokovoy <abokovoy@redhat.com>
 Date: Sun, 19 Oct 2025 18:14:29 +0300
-Subject: [PATCH 13/18] Fix OTP preauth crash with null prompter
+Subject: [PATCH 13/21] Fix OTP preauth crash with null prompter
 
 In doprompt(), check if the caller provided a prompter before
 dereferencing it.  Similar code returns either EIO or
@@ -9995,13 +9995,13 @@ index 07ffc15c22..48003da62f 100644
          return EINVAL;
  
 -- 
-2.51.1
+2.53.0
 
 
-From 3c6340e9d7bfa8d20cd7599a444b66e03ae00190 Mon Sep 17 00:00:00 2001
+From 2073be1acd51f906ac68c1a73c4f1ae8380eee35 Mon Sep 17 00:00:00 2001
 From: Alexander Bokovoy <abokovoy@redhat.com>
 Date: Wed, 10 Dec 2025 10:42:02 +0200
-Subject: [PATCH 14/18] Fix strchr() conformance to C23
+Subject: [PATCH 14/21] Fix strchr() conformance to C23
 
 C23 7.28.5.1 specifies search functions such as strchr() as generic,
 returning const char * if the first argument is of type const char *.
@@ -10185,13 +10185,13 @@ index 82f870ea5d..4221a20283 100644
                  key = strdup(data->otp_answer);
                  if (key == NULL)
 -- 
-2.51.1
+2.53.0
 
 
-From 111f553452b21d4ecca7a78d128264d592ff057a Mon Sep 17 00:00:00 2001
+From df905ea146a4feb39275f657918373e343cda28f Mon Sep 17 00:00:00 2001
 From: Greg Hudson <ghudson@mit.edu>
 Date: Sun, 28 Sep 2025 15:39:10 -0400
-Subject: [PATCH 15/18] Add paChecksum2 to PKINIT ASN.1 tests
+Subject: [PATCH 15/21] Add paChecksum2 to PKINIT ASN.1 tests
 
 Commit 310793ba63782af5ffa3a95d20e41f8f03ca7e00 added the paChecksum2
 field to krb5_pk_authenticator.  ktest_make_sample_pk_authenticator()
@@ -10360,13 +10360,13 @@ index c47bd71f67..418be63546 100644
  .  [2] [Sequence/Sequence Of]
  .  .  [Sequence/Sequence Of]
 -- 
-2.51.1
+2.53.0
 
 
-From d435e59bea1195f0c6332a0656155742d164f1d8 Mon Sep 17 00:00:00 2001
+From c851405051ca0af7779a6d6f40df4f28221230f3 Mon Sep 17 00:00:00 2001
 From: Dax Kelson <dakelson@redhat.com>
 Date: Tue, 13 May 2025 11:54:41 -0600
-Subject: [PATCH 16/18] Add xrealmauthz KDC policy module and tests
+Subject: [PATCH 16/21] Add xrealmauthz KDC policy module and tests
 
 This module provides fine-grained access control for cross-realm
 authentications by checking string attributes on the incoming
@@ -11121,13 +11121,13 @@ index 0000000000..3b3921f036
 +
 +success('Cross-realm authorization tests completed successfully')
 -- 
-2.51.1
+2.53.0
 
 
-From 01657a53828592c699460ed05705397805ca6111 Mon Sep 17 00:00:00 2001
+From 4634ca1f8242c24632e006d7b651064a7556cc92 Mon Sep 17 00:00:00 2001
 From: Julien Rische <jrische@redhat.com>
 Date: Thu, 29 Jan 2026 19:05:01 +0100
-Subject: [PATCH 17/18] Install xrealmauthz like other plugins
+Subject: [PATCH 17/21] Install xrealmauthz like other plugins
 
 The xrealmauthz kdcpolicy plugin was merged upstream, but it is not
 installed my the Makefile. The commit adds additional configuration to
@@ -11185,13 +11185,13 @@ index 78346d6572..b6740210a7 100644
  @libnover_frag@
  @libobj_frag@
 -- 
-2.51.1
+2.53.0
 
 
-From 2637750a603ee7710fc35dafda520753e1aa9935 Mon Sep 17 00:00:00 2001
+From 6d066787d23c913789dcfc220b34cd3a78ada4c7 Mon Sep 17 00:00:00 2001
 From: Julien Rische <jrische@redhat.com>
 Date: Mon, 16 Feb 2026 16:30:14 +0100
-Subject: [PATCH 18/18] Force "fork" method for RADIUS daemon in OTP test
+Subject: [PATCH 18/21] Force "fork" method for RADIUS daemon in OTP test
 
 The RADIUS daemon used in the OTP test relies on
 multiprocessing.Process. Since Python 3.14, multiprocessing changed its
@@ -11255,5 +11255,318 @@ index dd5cdc5c26..c173b55c41 100755
  daemon2 = UnixRadiusDaemon(args=(socket_file, None, 'accept2', queue2))
  daemon1.start()
 -- 
-2.51.1
+2.53.0
+
+
+From 4d8e778bdbf6476e8aa397ef046126ae532f03d6 Mon Sep 17 00:00:00 2001
+From: Alexander Bokovoy <abokovoy@redhat.com>
+Date: Sun, 8 Mar 2026 21:50:52 +0200
+Subject: [PATCH 19/21] Fix S4U2Self ignoring time_req when acquiring
+ impersonated credentials
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+gss_acquire_cred() for the service locates the existing TGT in the
+ccache and records its KDC-granted endtime as cred->expire; it never
+requests a shorter-lived TGT.  So when gss_acquire_cred_impersonate_name()
+calls kg_impersonate_name() with a time_req, the impersonator TGT already
+carries a KDC-defined lifetime, not the requested one.
+
+kg_impersonate_name() compounds this by zero-initialising in_creds
+(leaving in_creds.times.endtime = 0) and never writing time_req into it.
+When that reaches send_tgs.c:
+
+    req.till = desired->times.endtime ? desired->times.endtime
+                                      : tgt->times.endtime;
+
+the zero endtime causes the fallback to tgt->times.endtime — the
+impersonator TGT's full KDC-granted lifetime.  The KDC therefore issues
+the S4U2Self ticket with KDC-policy lifetime, not the requested time_req.
+
+The subsequent S4U2Proxy request via gss_init_sec_context() gets the
+correct lifetime because that is an entirely separate call with its own
+time_req: kg_new_connection() converts it to an absolute timestamp
+(ctx->krb_times.endtime = ts_incr(now, time_req)) and get_credentials()
+places it into in_creds.times.endtime before calling krb5_get_credentials().
+send_tgs.c then takes the first branch and sends the requested deadline.
+This has nothing to do with what gss_acquire_cred_impersonate_name() did.
+
+Fix kg_impersonate_name() to apply the same time_req-to-endtime
+conversion that kg_new_connection() already performs, so the S4U2Self
+TGS-REQ carries the caller's requested deadline rather than silently
+falling back to the impersonator TGT's full lifetime.
+
+Signed-off-by: Alexander Bokovoy <abokovoy@redhat.com>
+(cherry picked from commit 083f805989b44a1692784618531fe3134c5ed715)
+---
+ src/lib/gssapi/krb5/s4u_gss_glue.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/src/lib/gssapi/krb5/s4u_gss_glue.c b/src/lib/gssapi/krb5/s4u_gss_glue.c
+index fa7f980af7..9f2cbebec7 100644
+--- a/src/lib/gssapi/krb5/s4u_gss_glue.c
++++ b/src/lib/gssapi/krb5/s4u_gss_glue.c
+@@ -53,6 +53,17 @@ kg_impersonate_name(OM_uint32 *minor_status,
+     *output_cred = NULL;
+     memset(&in_creds, 0, sizeof(in_creds));
+ 
++    if (time_req != 0 && time_req != GSS_C_INDEFINITE) {
++        krb5_timestamp now;
++
++        code = krb5_timeofday(context, &now);
++        if (code != 0) {
++            *minor_status = code;
++            return GSS_S_FAILURE;
++        }
++        in_creds.times.endtime = ts_incr(now, time_req);
++    }
++
+     if (user->is_cert)
+         subject_cert = user->princ->data;
+     else
+-- 
+2.53.0
+
+
+From 5b185893438f775538a8d6340e9f4f39f6383cc7 Mon Sep 17 00:00:00 2001
+From: Alexander Bokovoy <abokovoy@redhat.com>
+Date: Mon, 9 Mar 2026 09:16:56 +0200
+Subject: [PATCH 20/21] Fix S4U2Self ignoring time_req when copying
+ impersonator TGT
+
+gss_acquire_cred_impersonate_name() with a time_req bounded the
+S4U2Self evidence ticket but left the impersonator TGT in the
+delegated ccache with its original unrestricted lifetime.
+
+Replace the krb5_cc_copy_creds() call in make_proxy_cred() with a
+manual iteration that caps each copied credential's endtime to the
+evidence ticket's endtime when time_req was specified.
+
+Signed-off-by: Alexander Bokovoy <abokovoy@redhat.com>
+(cherry picked from commit 5ece439a6c5950314f9492e04d0441d7b14a9ebb)
+---
+ src/lib/gssapi/krb5/s4u_gss_glue.c | 33 ++++++++++++++++++++++++++----
+ 1 file changed, 29 insertions(+), 4 deletions(-)
+
+diff --git a/src/lib/gssapi/krb5/s4u_gss_glue.c b/src/lib/gssapi/krb5/s4u_gss_glue.c
+index 9f2cbebec7..10288ebe94 100644
+--- a/src/lib/gssapi/krb5/s4u_gss_glue.c
++++ b/src/lib/gssapi/krb5/s4u_gss_glue.c
+@@ -192,14 +192,35 @@ krb5_gss_acquire_cred_impersonate_name(OM_uint32 *minor_status,
+  */
+ static krb5_error_code
+ make_proxy_cred(krb5_context context, krb5_gss_cred_id_t cred,
+-                krb5_gss_cred_id_t impersonator_cred)
++                krb5_gss_cred_id_t impersonator_cred,
++                krb5_timestamp max_endtime)
+ {
+     krb5_error_code code;
+     krb5_data data;
++    krb5_cc_cursor cur = 0;
++    krb5_creds cur_creds;
+     char *str;
+ 
+-    code = krb5_cc_copy_creds(context, impersonator_cred->ccache,
+-                              cred->ccache);
++    /* Copy credentials from the impersonator ccache, bounding endtime when
++     * requested so copied TGTs don't outlive the S4U2Self evidence ticket. */
++    code = krb5_cc_start_seq_get(context, impersonator_cred->ccache, &cur);
++    if (code)
++        return code;
++
++    while (!(code = krb5_cc_next_cred(context, impersonator_cred->ccache,
++                                      &cur, &cur_creds))) {
++        if (max_endtime != 0 && cur_creds.times.endtime > max_endtime)
++            cur_creds.times.endtime = max_endtime;
++        code = krb5_cc_store_cred(context, cred->ccache, &cur_creds);
++        krb5_free_cred_contents(context, &cur_creds);
++        if (code)
++            break;
++    }
++
++    if (cur)
++        krb5_cc_end_seq_get(context, impersonator_cred->ccache, &cur);
++    if (code == KRB5_CC_END)
++        code = 0;
+     if (code)
+         return code;
+ 
+@@ -275,7 +296,11 @@ kg_compose_deleg_cred(OM_uint32 *minor_status,
+     if (code != 0)
+         goto cleanup;
+ 
+-    code = make_proxy_cred(context, cred, impersonator_cred);
++    /* Bound copied credentials to the evidence ticket's endtime when the
++     * caller specified a time_req, so TGTs don't outlive the impersonation. */
++    code = make_proxy_cred(context, cred, impersonator_cred,
++                           (time_req != 0 && time_req != GSS_C_INDEFINITE) ?
++                           subject_creds->times.endtime : 0);
+     if (code != 0)
+         goto cleanup;
+ 
+-- 
+2.53.0
+
+
+From 8df1c41911e7179d2e6cdb72b3bb568c1db08bd3 Mon Sep 17 00:00:00 2001
+From: Alexander Bokovoy <abokovoy@redhat.com>
+Date: Mon, 9 Mar 2026 09:17:08 +0200
+Subject: [PATCH 21/21] Add t_s4u test for time_req bounding all delegated-cred
+ tickets
+
+Add --time-req N option to t_s4u and a check_cred_endtimes() function
+that exports the S4U2Self credential to a MEMORY ccache and verifies
+every non-config ticket's endtime is within N seconds of now.
+
+Add a t_s4u.py test case that exercises this with time_req=600 to
+catch regressions where the impersonator TGT escapes the lifetime
+bound.
+
+Signed-off-by: Alexander Bokovoy <abokovoy@redhat.com>
+(cherry picked from commit bbd23bd06efbf31757a0011e303444193df1674e)
+---
+ src/tests/gssapi/t_s4u.c  | 78 +++++++++++++++++++++++++++++++++++++--
+ src/tests/gssapi/t_s4u.py |  5 +++
+ 2 files changed, 80 insertions(+), 3 deletions(-)
+
+diff --git a/src/tests/gssapi/t_s4u.c b/src/tests/gssapi/t_s4u.c
+index 0400f8f61f..c73f187b25 100644
+--- a/src/tests/gssapi/t_s4u.c
++++ b/src/tests/gssapi/t_s4u.c
+@@ -57,6 +57,7 @@
+ #include "common.h"
+ 
+ static int use_spnego = 0;
++static OM_uint32 time_req = GSS_C_INDEFINITE;
+ 
+ static void
+ test_greet_authz_data(gss_name_t *name)
+@@ -122,6 +123,66 @@ init_accept_sec_context(gss_cred_id_t claimant_cred_handle,
+     (void)gss_delete_sec_context(&minor, &acceptor_context, NULL);
+ }
+ 
++/*
++ * Export cred to a MEMORY ccache and verify that every non-config ticket's
++ * endtime is within secs seconds of now.  Used to check that time_req is
++ * honoured for all credentials copied into the delegated-cred ccache (not
++ * just the S4U2Self evidence ticket).
++ */
++static void
++check_cred_endtimes(gss_cred_id_t cred, OM_uint32 secs)
++{
++    krb5_error_code ret;
++    krb5_context context = NULL;
++    krb5_creds kcred;
++    krb5_cc_cursor cur;
++    krb5_ccache ccache;
++    krb5_timestamp now, max_endtime;
++    gss_key_value_set_desc store;
++    gss_key_value_element_desc elem;
++    OM_uint32 major, minor;
++    const char *ccname = "MEMORY:endtime";
++
++    store.count = 1;
++    store.elements = &elem;
++    elem.key = "ccache";
++    elem.value = ccname;
++    major = gss_store_cred_into(&minor, cred, GSS_C_INITIATE, &mech_krb5, 1, 0,
++                                &store, NULL, NULL);
++    check_gsserr("gss_store_cred_into", major, minor);
++
++    ret = krb5_init_context(&context);
++    check_k5err(context, "krb5_init_context", ret);
++
++    ret = krb5_timeofday(context, &now);
++    check_k5err(context, "krb5_timeofday", ret);
++
++    /* Allow 5 seconds of slack for test overhead. */
++    max_endtime = now + (krb5_timestamp)secs + 5;
++
++    ret = krb5_cc_resolve(context, ccname, &ccache);
++    check_k5err(context, "krb5_cc_resolve", ret);
++
++    ret = krb5_cc_start_seq_get(context, ccache, &cur);
++    check_k5err(context, "krb5_cc_start_seq_get", ret);
++
++    while (!krb5_cc_next_cred(context, ccache, &cur, &kcred)) {
++        if (!krb5_is_config_principal(context, kcred.server) &&
++            kcred.times.endtime > max_endtime) {
++            printf("Credential endtime %d exceeds allowed %d (time_req=%u)\n",
++                   (int)kcred.times.endtime, (int)max_endtime, secs);
++            exit(1);
++        }
++        krb5_free_cred_contents(context, &kcred);
++    }
++
++    ret = krb5_cc_end_seq_get(context, ccache, &cur);
++    check_k5err(context, "krb5_cc_end_seq_get", ret);
++
++    krb5_cc_destroy(context, ccache);
++    krb5_free_context(context);
++}
++
+ static void
+ check_ticket_count(gss_cred_id_t cred, int expected)
+ {
+@@ -244,8 +305,8 @@ main(int argc, char *argv[])
+     gss_OID_set mechs;
+     gss_buffer_set_t bufset = GSS_C_NO_BUFFER_SET;
+ 
+-    if (argc < 2 || argc > 5) {
+-        fprintf(stderr, "Usage: %s [--spnego] [user] "
++    if (argc < 2 || argc > 7) {
++        fprintf(stderr, "Usage: %s [--spnego] [--time-req N] user "
+                 "[proxy-target] [keytab]\n", argv[0]);
+         fprintf(stderr, "       proxy-target and keytab are optional\n");
+         exit(1);
+@@ -257,6 +318,12 @@ main(int argc, char *argv[])
+         argv++;
+     }
+ 
++    if (argc > 2 && strcmp(argv[1], "--time-req") == 0) {
++        time_req = (OM_uint32)atol(argv[2]);
++        argc -= 2;
++        argv += 2;
++    }
++
+     user = import_name(argv[1]);
+ 
+     if (argc > 2 && strcmp(argv[2], "-"))
+@@ -281,11 +348,16 @@ main(int argc, char *argv[])
+ 
+     /* Get S4U2Self cred. */
+     major = gss_acquire_cred_impersonate_name(&minor, impersonator_cred_handle,
+-                                              user, GSS_C_INDEFINITE, mechs,
++                                              user, time_req, mechs,
+                                               GSS_C_INITIATE,
+                                               &user_cred_handle, NULL, NULL);
+     check_gsserr("gss_acquire_cred_impersonate_name", major, minor);
+ 
++    /* When a time_req was specified, verify all ccache credentials are
++     * bounded by it, including any TGT copied from the impersonator. */
++    if (time_req != GSS_C_INDEFINITE)
++        check_cred_endtimes(user_cred_handle, time_req);
++
+     init_accept_sec_context(user_cred_handle, impersonator_cred_handle,
+                             &delegated_cred_handle);
+     printf("\n");
+diff --git a/src/tests/gssapi/t_s4u.py b/src/tests/gssapi/t_s4u.py
+index 4a1cdb2355..813e27fc15 100755
+--- a/src/tests/gssapi/t_s4u.py
++++ b/src/tests/gssapi/t_s4u.py
+@@ -113,6 +113,11 @@ if 'auth1: user@' not in out or 'auth2: user@' not in out:
+ # Successful S4U2Self -> S4U2Proxy.
+ out = realm.run(['./t_s4u', puser, pservice2])
+ 
++# Verify that time_req bounds all credentials in the delegated ccache,
++# including the impersonator TGT copied by make_proxy_cred().
++mark('S4U2Self time_req bounds impersonator TGT in delegated ccache')
++realm.run(['./t_s4u', '--time-req', '600', puser, pservice2])
++
+ # Regression test for #8139: get a user ticket directly for service1 and
+ # try krb5 -> S4U2Proxy.
+ realm.kinit(realm.user_princ, None, ['-f', '-k', '-c', usercache,
+-- 
+2.53.0
 
