@@ -1,8 +1,8 @@
 {
   "branch": "rawhide",
   "modification_status": "clean",
-  "release": "2",
-  "sha": "b23f4ada77c2a79bc6345037732f51747bd68f0f",
+  "release": "4",
+  "sha": "8b6f55348f59390914777623533345c94bfc60fb",
   "source": "https://src.fedoraproject.org/rpms/krb5.git",
   "version": "1.22.2"
 }
