@@ -667,9 +667,9 @@ index 1093dcbac..019070505 100644
 --- a/servconf.c
 +++ b/servconf.c
 @@ -149,6 +149,9 @@ initialize_server_options(ServerOptions *options)
+ 	options->gss_indicators = NULL;
  	options->gss_store_rekey = -1;
  	options->gss_kex_algorithms = NULL;
- 	options->gss_indicators = NULL;
 +	options->gss_allow_s4u2self = -1;
 +	options->gss_proxy_services = NULL;
 +	options->num_gss_proxy_services = 0;
@@ -947,10 +947,10 @@ diff --git a/sshd_config.5 b/sshd_config.5
 index 3dbce55fc..d25b406fb 100644
 --- a/sshd_config.5
 +++ b/sshd_config.5
-@@ -832,6 +832,76 @@ FIDO2-based pre-authentication in FreeIPA, using FIDO2 USB and NFC tokens
- .El
- .Pp
- The default is to not use GSSAPI authentication indicators for access decisions.
+@@ -834,6 +834,76 @@ FIDO2-based pre-authentication in FreeIP
+ The default
+ .Dq none
+ is to not use GSSAPI authentication indicators for access decisions.
 +.It Cm GSSAPIAllowS4U2Self
 +Controls whether the SSH server performs a Kerberos protocol transition
 +(S4U2Self) after a successful authentication using any other method.

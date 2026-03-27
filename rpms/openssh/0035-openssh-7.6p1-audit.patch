@@ -2118,7 +2118,7 @@ index d6bece941..e49e4fb51 100644
 +#endif /* WITH_OPENSSL */
 +      case KEY_ED25519_CERT:
 +      case KEY_ED25519:
-+              return (k->ed25519_pk != NULL);
++              return (k->ed25519_sk != NULL);
 +      default:
 +              /* fatal("key_is_private: bad key type %d", k->type); */
 +              return 0;
