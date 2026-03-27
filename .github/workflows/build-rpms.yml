@@ -82,12 +82,18 @@ jobs:
     needs: [detect-packages, build]
     if: always()
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
     steps:
-      - name: Summary
+      - name: Summary and labeling
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           packages='${{ needs.detect-packages.outputs.packages }}'
           count='${{ needs.detect-packages.outputs.count }}'
           build_result='${{ needs.build.result }}'
+          pr_number='${{ github.event.pull_request.number }}'
+          repo='${{ github.repository }}'
 
           echo "## RPM Build Results" >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
@@ -110,9 +116,16 @@ jobs:
             fi
           done
 
+          # Signal build status to Factory via PR labels.
           if [[ "${build_result}" == "failure" ]]; then
             echo "" >> "$GITHUB_STEP_SUMMARY"
             echo "> [!CAUTION]" >> "$GITHUB_STEP_SUMMARY"
             echo "> One or more RPM builds failed. Check individual job logs for details." >> "$GITHUB_STEP_SUMMARY"
+
+            # Add label so the build-fix agent picks up this PR.
+            gh pr edit "${pr_number}" --repo "${repo}" --add-label "build-fix-needed" 2>/dev/null || true
             exit 1
+          else
+            # Build passed — remove the label if it was set by a prior failure.
+            gh pr edit "${pr_number}" --repo "${repo}" --remove-label "build-fix-needed" 2>/dev/null || true
           fi
