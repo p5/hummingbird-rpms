@@ -1,8 +1,8 @@
 {
   "branch": "rawhide",
-  "release": "59",
-  "sha": "1e198be4fdc21ab68fe4a1364f4fbd25baa65169",
+  "modification_status": "clean",
+  "release": "0.rc5.43",
+  "sha": "b13ce582f93c8e9ac9c27aa72e147be3cf4a5747",
   "source": "https://src.fedoraproject.org/rpms/kernel-headers.git",
-  "version": "6.19.0",
-  "modification_status": "clean"
+  "version": "7.0.0"
 }
