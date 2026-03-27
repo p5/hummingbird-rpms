@@ -42,7 +42,7 @@ rlJournalStart
   rlPhaseStartSetup
     rlShowRunningKernel
     rlAssertRpm --all
-    rlRun "TmpDir=`mktemp -d /home/boost.XXXXXXXXXX`"  # work in /home due to high demands on disk space
+    rlRun "TmpDir=`mktemp -d /home/boost.XXXXXXXXXXXXX`"  # work in /home due to high demands on disk space
     rlRun "cp tests $TmpDir"
     rlRun "pushd $TmpDir"
     rlFetchSrcForInstalled $PACKAGE
@@ -88,7 +88,7 @@ rlJournalStart
 
   rlPhaseStartTest "evaluate results"
     rlRun "cd $TmpDir"
-    rlRun "grep -E '\.\.\.$failed .+$TmpDir/test-build' testsuite.log" 1 "There should be no failure"
+    rlRun "grep -E '\.\.\.failed .+$TmpDir/test-build' testsuite.log" 1 "There should be no failure"
     rlRun "tests_count=\$(grep -E '\*\*passed\*\*.+$TmpDir/test-build' testsuite.log | wc -l)"
     [ "$tests_count" -ge "$TESTS_COUNT_MIN" ] && rlLogInfo "Test counter: $tests_count" || rlFail "Test counter $tests_count should be greater than or equal to $TESTS_COUNT_MIN"
   rlPhaseEnd
