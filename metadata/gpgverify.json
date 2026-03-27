@@ -1,8 +1,8 @@
 {
   "branch": "rawhide",
+  "modification_status": "clean",
   "release": "4",
-  "sha": "fe09d5a91337fea1afcdc7bb2edee94a91abc68e",
+  "sha": "8cadccccf6fa79b6d81e3d28d682012a6b4ecf02",
   "source": "https://src.fedoraproject.org/rpms/gpgverify.git",
-  "version": "2.2",
-  "modification_status": "clean"
+  "version": "2.2"
 }
