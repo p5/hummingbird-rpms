@@ -59,3 +59,23 @@ find-missing-rpms: # This lists rpms missing in pulp that need to be published.
 .PHONY: analyze-rpms
 analyze-rpms: # This lists rpms defined in the containers repo that are not present in the rpms repo
 	+@ci/analyze-rpms.sh $(ARGS)
+
+
+.PHONY: list
+list:
+	@find rpms -maxdepth 2 -name '*.spec' -type f | sed 's|rpms/||;s|/.*||' | sort -u
+
+.PHONY: lint
+lint:
+	@find rpms -maxdepth 2 -name '*.spec' -type f -exec rpmlint {} +
+
+.PHONY: srpm
+srpm:
+ifndef PACKAGE
+	$(error PACKAGE is not set. Usage: make srpm PACKAGE=<package-name>)
+endif
+	./ci/build_rpms.sh --nocheck "$(PACKAGE)"
+
+.PHONY: clean
+clean:
+	rm -rf builds/
