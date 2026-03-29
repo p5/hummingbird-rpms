@@ -1506,6 +1506,10 @@ make -C postgresql-setup-%{setup_version} check
 
 
 %changelog
+* Sat Mar 29 2026 Factory Bot <factory@p5.github.com> - 18.3-1
+- Package follows versioned naming convention (postgresql18)
+- Resolves: #137
+
 * Thu Feb 26 2026 Packit <hello@packit.dev> - 18.3-1
 - Update to version 18.3
 - Resolves: rhbz#2439336
