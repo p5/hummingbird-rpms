@@ -58,7 +58,7 @@
 %global __requires_exclude_from ^%{nginx_srcdir}/.*$
 
 
-Name:              nginx
+Name:              nginx-stable
 Epoch:             2
 Version:           1.28.3
 Release:           1%{?dist}
