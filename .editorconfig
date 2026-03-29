@@ -1,0 +1,28 @@
+# EditorConfig is awesome: https://EditorConfig.org
+
+# top-most EditorConfig file
+root = true
+
+# Default settings for all files
+[*]
+charset = utf-8
+end_of_line = lf
+indent_style = space
+indent_size = 4
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+# Makefiles require tabs
+[Makefile]
+indent_style = tab
+
+[*.mk]
+indent_style = tab
+
+# YAML files use 2-space indent
+[*.{yml,yaml}]
+indent_size = 2
+
+# Spec files use 4-space indent (already covered by default, but explicit for clarity)
+[*.spec]
+indent_size = 4
