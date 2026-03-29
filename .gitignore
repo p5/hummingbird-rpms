@@ -1,8 +1,17 @@
 builds/
 __pycache__
 
+# RPM build artifacts
+*.rpm
+*.src.rpm
+rpmbuild/
+.build-*.log
+
 # Source tarballs (stored in lookaside cache, referenced via sources file)
 # Generate checksums with: sha512sum --tag <file>
 rpms/*/*.tar.gz
 rpms/*/*.tar.bz2
 rpms/*/*.tar.xz
+*.tar.gz
+*.tar.bz2
+*.tar.xz
